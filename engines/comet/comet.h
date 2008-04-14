@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- * $URL: https://svn.7fc1.org/repo/comet/m4.h $
- * $Id: comet.h 30 2007-02-25 15:19:12Z eriktorbjorn $
+ * $URL$
+ * $Id$
  *
  */
 
