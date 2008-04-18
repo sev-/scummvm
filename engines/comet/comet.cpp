@@ -28,8 +28,8 @@ enum {
 	kMouseRightUp		= 4
 };
 
-CometEngine::CometEngine(OSystem *syst) :
-	Engine(syst) {
+CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
+	Engine(syst), _gameDescription(gameDesc) {
 
 	// Setup mixer
 	if (!_mixer->isReady()) {

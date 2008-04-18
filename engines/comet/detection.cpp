@@ -130,6 +130,8 @@ static const Common::ADParams detectionParams = {
 	0
 };
 
+} // End of namespace Comet
+
 using namespace Comet;
 
 class CometMetaEngine : public Common::AdvancedMetaEngine {
@@ -145,8 +147,6 @@ public:
 	}
 
 	virtual bool createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const;
-
-	const Common::ADGameDescription *fallbackDetect(const FSList *fslist) const;
 };
 
 bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const {
@@ -157,25 +157,5 @@ bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const Commo
 	return gd != 0;
 }
 
-const Common::ADGameDescription *CometMetaEngine::fallbackDetector(const FSList *fslist) {
-	// Set the default values for the fallback descriptor's ADGameDescription part.
-	g_fallbackDesc.desc.language = Common::UNK_LANG;
-	g_fallbackDesc.desc.platform = Common::kPlatformPC;
-	g_fallbackDesc.desc.flags = Common::ADGF_NO_FLAGS;
-
-	// Set default values for the fallback descriptor's CometGameDescription part.
-	g_fallbackDesc.gameID = 0;
-	g_fallbackDesc.features = 0;
-	g_fallbackDesc.version = 0;
-
-	Common::EncapsulatedADGameDesc result;
-
-	return result;
-}
-
-} // End of namespace Comet
-
 REGISTER_PLUGIN(COMET, PLUGIN_TYPE_ENGINE, CometMetaEngine);
-
-} // End of namespace Comet
 
