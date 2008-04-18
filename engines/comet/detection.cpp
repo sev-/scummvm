@@ -111,7 +111,53 @@ static CometGameDescription g_fallbackDesc = {
 	0,
 };
 
-Common::EncapsulatedADGameDesc fallbackDetector(const FSList *fslist) {
+static const Common::ADParams detectionParams = {
+	// Pointer to ADGameDescription or its superset structure
+	(const byte *)Comet::gameDescriptions,
+	// Size of that superset structure
+	sizeof(Comet::CometGameDescription),
+	// Number of bytes to compute MD5 sum for
+	5000,
+	// List of all engine targets
+	cometGames,
+	// Structure for autoupgrading obsolete targets
+	0,
+	// Name of single gameid (optional)
+	"comet",
+	// List of files for file-based fallback detection (optional)
+	0,
+	// Flags
+	0
+};
+
+using namespace Comet;
+
+class CometMetaEngine : public Common::AdvancedMetaEngine {
+public:
+	CometMetaEngine() : Common::AdvancedMetaEngine(detectionParams) {}
+
+	virtual const char *getName() const {
+		return "Comet Engine";
+	}
+
+	virtual const char *getCopyright() const {
+		return "Shadow of the Comet";
+	}
+
+	virtual bool createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const;
+
+	const Common::ADGameDescription *fallbackDetect(const FSList *fslist) const;
+};
+
+bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const {
+	const Comet::CometGameDescription *gd = (const Comet::CometGameDescription *)desc;
+	if (gd) {
+		*engine = new Comet::CometEngine(syst, gd);
+	}
+	return gd != 0;
+}
+
+const Common::ADGameDescription *CometMetaEngine::fallbackDetector(const FSList *fslist) {
 	// Set the default values for the fallback descriptor's ADGameDescription part.
 	g_fallbackDesc.desc.language = Common::UNK_LANG;
 	g_fallbackDesc.desc.platform = Common::kPlatformPC;
@@ -129,39 +175,7 @@ Common::EncapsulatedADGameDesc fallbackDetector(const FSList *fslist) {
 
 } // End of namespace Comet
 
-static const Common::ADParams detectionParams = {
-	// Pointer to ADGameDescription or its superset structure
-	(const byte *)Comet::gameDescriptions,
-	// Size of that superset structure
-	sizeof(Comet::CometGameDescription),
-	// Number of bytes to compute MD5 sum for
-	5000,
-	// List of all engine targets
-	cometGames,
-	// Structure for autoupgrading obsolete targets
-	0,
-	// Name of single gameid (optional)
-	"comet",
-	// List of files for file-based fallback detection (optional)
-	0,
-	// Fallback callback
-	Comet::fallbackDetector,
-	// Flags
-	Common::kADFlagAugmentPreferredTarget
-};
-
-ADVANCED_DETECTOR_DEFINE_PLUGIN(COMET, Comet::CometEngine, detectionParams);
-
-REGISTER_PLUGIN(COMET, "Comet Engine", "Shadow of the Comet");
-
-namespace Comet {
-
-bool CometEngine::initGame() {
-	Common::EncapsulatedADGameDesc encapsulatedDesc = Common::AdvancedDetector::detectBestMatchingGame(detectionParams);
-	_gameDescription = (const CometGameDescription *)(encapsulatedDesc.realDesc);
-
-	return (_gameDescription != 0);
-}
+REGISTER_PLUGIN(COMET, PLUGIN_TYPE_ENGINE, CometMetaEngine);
 
 } // End of namespace Comet
 
