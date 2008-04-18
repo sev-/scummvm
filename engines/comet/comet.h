@@ -174,7 +174,7 @@ protected:
 	bool initGame();
 
 public:
-	CometEngine(OSystem *syst);
+	CometEngine(OSystem *syst, const CometGameDescription *gameDesc);
 	virtual ~CometEngine();
 
 	int getGameType() const;
