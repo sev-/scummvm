@@ -157,5 +157,8 @@ bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const Commo
 	return gd != 0;
 }
 
-REGISTER_PLUGIN(COMET, PLUGIN_TYPE_ENGINE, CometMetaEngine);
-
+#if PLUGIN_ENABLED_DYNAMIC(COMET)
+REGISTER_PLUGIN_DYNAMIC(COMET, PLUGIN_TYPE_ENGINE, CometMetaEngine);
+#else
+REGISTER_PLUGIN_STATIC(COMET, PLUGIN_TYPE_ENGINE, CometMetaEngine);
+#endif
