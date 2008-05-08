@@ -52,13 +52,6 @@ CometEngine::~CometEngine() {
 
 
 int CometEngine::init() {
-
-	// Detect game
-	if (!initGame()) {
-		GUIErrorMessage("No valid games were found in the specified directory.");
-		return -1;
-	}
-
 	// Initialize backend
 	_system->beginGFXTransaction();
 		initCommonGFX(true);
