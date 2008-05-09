@@ -55,6 +55,9 @@ enum {
 
 struct CometGameDescription;
 
+class Dialog;
+class Screen;
+
 class Font;
 class Anim;
 class MusicPlayer;
@@ -121,12 +124,6 @@ struct SpriteDraw {
 	byte index;
 };
 
-struct DialogItem {
-	int16 index;
-	char *text;
-	byte *scriptIp;
-};
-
 struct RectItem {
 	int x, y, x2, y2, id;
 };
@@ -142,7 +139,7 @@ class Script {
 public:
     byte *code;
     byte *ip;
-    byte objectIndex;
+    int16 objectIndex;
     uint16 status;
     int scriptNumber;
     int counter;
@@ -163,7 +160,7 @@ private:
 typedef Common::Array<Common::Point> PointArray;
 
 class CometEngine : public Engine {
-    //friend class ScriptInterpreter;
+    // FIXME: I don't need no friends
     friend class Script;
     friend class Anim;
 protected:
@@ -191,9 +188,14 @@ public:
 private:
 	bool detectGame();
 
-protected:
+//protected:
+// Everything is public during the transition phase to more object-oriented design
+public:
 
-    byte *_sceneBackground, *_workScreen, *_scratchBuffer;
+	Screen *_screen;
+	Dialog *_dialog;
+
+    byte *_sceneBackground, *_scratchBuffer;
 	byte *_textBuffer1, *_textBuffer2, *_textBuffer3;
     byte *_palette;
 
@@ -206,9 +208,7 @@ protected:
     Common::Array<SceneItem> _sceneItems;
     int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
-	bool _screenTransitionEffectFlag;
-	int _screenZoomFactor, _screenZoomXPos, _screenZoomYPos;
-    int _paletteMode, _paletteValue, _paletteValue2;
+    int _paletteValue2;
     byte *_paletteBuffer;
 
     int _backgroundFileIndex;
@@ -236,7 +236,6 @@ protected:
 	int _currentFileNumber, _currentScriptNumber;
 	int _fileNumber3, _scriptNumber3;
 
-    Font *_font;
     Anim *_bulleVa2, *_marche0Va2, *_objectsVa2, *_cursorVa2, *_iconeVa2;
     Anim *_staticObjects;
     byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
@@ -251,21 +250,11 @@ protected:
 
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
 
-	int _dialogSelectedItemIndex, _dialogSelectedItemIndex2;
-	int _dialogTextSubIndex, _dialogTextX, _dialogTextY;
-	byte _dialogTextColor;
-	int _dialogTextColorInc;
-	bool _dialogRunning;
-	Common::Array<DialogItem> _dialogItems;
-	Common::Array<RectItem> _dialogRects;
-
     Common::Array<Common::Rect> _blockingRects;
 
 	int _talkieMode;
 	bool _textFlag1, _textFlag2;
 	int _textColor;
-	
-	bool _palFlag;
 	
 	bool _endLoopFlag;
 	
@@ -326,7 +315,6 @@ protected:
 	
 	void updateTextDialog();
 	void updateText();
-	void updateDialog();
 	void updateTalkAnims();
 	void sceneObjectUpdate01(SceneObject *sceneObject);
 	void sceneObjectUpdate02(SceneObject *sceneObject);
@@ -338,20 +326,9 @@ protected:
 
 	void updateScreen();
 
-	void screenZoomEffect2x(int x, int y);
-	void screenZoomEffect3x(int x, int y);
-	void screenZoomEffect4x(int x, int y);
-	void screenTransitionEffect();
-	
-	void buildPalette(byte *sourcePal, byte *destPal, int value);
-	void paletteFadeIn();
-	void paletteFadeOut();
-
     int random(int maxValue);
     
     /* Graphics */
-    void drawRect(int x1, int y1, int x2, int y2, byte color);
-    void drawLine(int x1, int y1, int x2, int y2, byte color);
 	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
 
     void drawBubble(int x1, int y1, int x2, int y2);
@@ -361,7 +338,6 @@ protected:
 	char *getTextEntry(int index, byte *textBuffer);
 	void setText(char *text);
 	void resetTextValues();
-	int drawText3(char *text, int x, int y, int color, int flag);
 	void drawDialogTextBubbles();
 	void setTextEx(int index, byte *textBuffer);
 
@@ -547,16 +523,6 @@ protected:
 
     /* Graphics */
     //TODO: Move to Screen class?
-    static int *gfxPrimitivesPolyInts;
-    static int gfxPrimitivesPolyAllocated;
-    void hLine(int x, int y, int x2, uint32 color);
-    void vLine(int x, int y, int y2, byte color);
-    void fillRect(int x1, int y1, int x2, int y2, byte color);
-    void frameRect(int x1, int y1, int x2, int y2, byte color);
-    void filledPolygonColor(PointArray &poly, byte color);
-
-    void setPartialPalette(byte *palette, int start, int count);
-    void setFullPalette(byte *palette);
 
 public:
     /* Misc */
@@ -564,7 +530,6 @@ public:
     int _dotFlag;
     int calcDirection(int x1, int y1, int x2, int y2);
     void drawLines();
-    byte *getScreen();
 
 protected:
 

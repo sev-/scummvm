@@ -1,26 +1,19 @@
+#include "sound/voc.h"
+#include "common/stream.h"
+#include "graphics/surface.h"
+#include "graphics/primitives.h"
+
 #include "comet/comet.h"
 #include "comet/font.h"
 #include "comet/anim.h"
 #include "comet/pak.h"
 
-#include "sound/voc.h"
-#include "common/stream.h"
-
-#include "graphics/surface.h"
-#include "graphics/primitives.h"
+#include "comet/screen.h"
+#include "comet/dialog.h"
 
 namespace Comet {
 
 // TODO: Move a lot of stuff to own classes
-
-int *CometEngine::gfxPrimitivesPolyInts = NULL;
-int CometEngine::gfxPrimitivesPolyAllocated = 0;
-
-void CometEngine::drawRect(int x1, int y1, int x2, int y2, byte color) {
-}
-
-void CometEngine::drawLine(int x1, int y1, int x2, int y2, byte color) {
-}
 
 void drawDottedLinePlotProc(int x, int y, int color, void *data = NULL) {
 	// FIXME: Fix this messy stuff
@@ -28,7 +21,7 @@ void drawDottedLinePlotProc(int x, int y, int color, void *data = NULL) {
     if (x >= 0 && x < 320 && y >= 0 && y < 200) {
         engine->_dotFlag++;
         if (engine->_dotFlag & 2)
-            engine->getScreen()[x + y * 320] = color;
+            engine->_screen->getScreen()[x + y * 320] = color;
     }
 }
 
@@ -106,8 +99,8 @@ int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
 void CometEngine::drawLines() {
     for (int i = 0; i < _linesArray.size(); i++) {
         if (_linesArray[i].directionIndex == 3) {
-            fillRect(_linesArray[i].x, 198, _linesArray[i].x2, 199, 120);
-            hLine(_linesArray[i].x + 1, 199, _linesArray[i].x2 - 2, 127);
+            _screen->fillRect(_linesArray[i].x, 198, _linesArray[i].x2, 199, 120);
+            _screen->hLine(_linesArray[i].x + 1, 199, _linesArray[i].x2 - 2, 127);
         }
     }
 }
@@ -116,14 +109,14 @@ void CometEngine::drawLines() {
 
 void CometEngine::initSceneBackground() {
 	
-	memset(_workScreen, 0, 64320);
+	_screen->clearScreen();
 	
 	loadSceneBackground();
 	loadStaticObjects();
 	
-	memcpy(_workScreen, _sceneBackground, 64000);
+	memcpy(_screen->getScreen(), _sceneBackground, 64000);
 	drawSceneForeground();
-	memcpy(_sceneBackground, _workScreen, 64000);
+	memcpy(_sceneBackground, _screen->getScreen(), 64000);
 
 	/*TODO
 	if (screenCopyFlag != 0)
@@ -188,174 +181,11 @@ void plotProc(int x, int y, int color, void *data) {
         ((byte*)data)[x + y * 320] = color;
 }
 
-void CometEngine::hLine(int x, int y, int x2, uint32 color) {
-	// Clipping
-	if (y < 0 || y >= 200)
-		return;
-
-	if (x2 < x)
-		SWAP(x2, x);
-
-	if (x < 0)
-		x = 0;
-	if (x2 >= 320)
-		x2 = 320 - 1;
-
-    byte *ptr = getScreen() + x + y * 320;
-	if (x2 >= x)
-		memset(ptr, color, x2-x+1);
-
-}
-
-void CometEngine::vLine(int x, int y, int y2, byte color) {
-	// Clipping
-	if (x < 0 || x >= 320)
-		return;
-
-	if (y2 < y)
-		SWAP(y2, y);
-
-	if (y < 0)
-		y = 0;
-	if (y2 >= 200)
-		y2 = 200 - 1;
-
-    byte *ptr = getScreen() + x + y * 320;
-	while (y++ <= y2) {
-		*ptr = (byte)color;
-		ptr += 320;
-	}
-
-}
-
-void CometEngine::fillRect(int x1, int y1, int x2, int y2, byte color) {
-
-    if (x1 < 0) x1 = 0;
-    else if (x1 >= 320) x1 = 319;
-    if (x2 < 0) x2 = 0;
-    else if (x2 >= 320) x2 = 319;
-    if (y1 < 0) y1 = 0;
-    else if (y1 >= 200) y1 = 199;
-
-	if (x2 < x1)
-		SWAP(x2, x1);
-
-	if (y2 < y1)
-		SWAP(y2, y1);
-
-	int width = x2 - x1;
-	int height = y2 - y1 + 1;
-
-    byte *ptr = getScreen() + x1 + y1 * 320;
-	while (height--) {
-		memset(ptr, color, width);
-		ptr += 320;
-	}
-
-}
-
-void CometEngine::frameRect(int x1, int y1, int x2, int y2, byte color) {
-	hLine(x1, y1, x2-1, color);
-	hLine(x1, y2-1, x2-1, color);
-	vLine(x1, y1, y2-1, color);
-	vLine(x2-1, y1, y2-1, color);
-}
-
-int gfxPrimitivesCompareInt(const void *a, const void *b)
-{
-    return (*(const int *) a) - (*(const int *) b);
-}
-
-void CometEngine::filledPolygonColor(PointArray &poly, byte color) {
-    int i, y, xa, xb, miny, maxy;
-    int x1, y1, x2, y2;
-    int ind1, ind2;
-    int ints;
-
-    /* Sanity check */
-    if (poly.size() < 3)
-    	return;
-
-    /* Allocate temp array, only grow array */
-    if (!gfxPrimitivesPolyAllocated) {
-	   gfxPrimitivesPolyInts = (int*)malloc(sizeof(int) * poly.size());
-	   gfxPrimitivesPolyAllocated = poly.size();
-    } else {
-        if (gfxPrimitivesPolyAllocated < poly.size()) {
-            gfxPrimitivesPolyInts = (int*)realloc(gfxPrimitivesPolyInts, sizeof(int) * poly.size());
-	       gfxPrimitivesPolyAllocated = poly.size();
-	    }
-    }
-
-    /* Determine Y maxima */
-    miny = poly[0].y;
-    maxy = poly[0].y;
-    for (i = 1; i < poly.size(); i++) {
-        if (poly[i].y < miny) {
-            miny = poly[i].y;
-        } else if (poly[i].y > maxy) {
-            maxy = poly[i].y;
-        }
-    }
-
-    /* Draw, scanning y */
-
-    for (y = miny; y <= maxy; y++) {
-
-    	ints = 0;
-
-    	for (i = 0; i < poly.size(); i++) {
-            if (!i) {
-        		ind1 = poly.size() - 1;
-        		ind2 = 0;
-    	    } else {
-        		ind1 = i - 1;
-        		ind2 = i;
-    	    }
-    	    y1 = poly[ind1].y;
-    	    y2 = poly[ind2].y;
-    	    if (y1 < y2) {
-        		x1 = poly[ind1].x;
-        		x2 = poly[ind2].x;
-    	    } else if (y1 > y2) {
-        		y2 = poly[ind1].y;
-        		y1 = poly[ind2].y;
-        		x2 = poly[ind1].x;
-        		x1 = poly[ind2].x;
-    	    } else {
-                continue;
-    	    }
-
-    	    if ( (y >= y1 && y < y2) || (y == maxy && y > y1 && y <= y2) ) {
-                gfxPrimitivesPolyInts[ints++] = ((65536 * (y - y1)) / (y2 - y1)) * (x2 - x1) + (65536 * x1);
-    	    }
-
-    	}
-
-    	qsort(gfxPrimitivesPolyInts, ints, sizeof(int), gfxPrimitivesCompareInt);
-
-    	for (i = 0; i < ints; i += 2) {
-    	    xa = gfxPrimitivesPolyInts[i] + 1;
-    	    xa = (xa >> 16) + ((xa & 32768) >> 15);
-    	    xb = gfxPrimitivesPolyInts[i+1] - 1;
-    	    xb = (xb >> 16) + ((xb & 32768) >> 15);
-    	    hLine(xa, y, xb, color);
-    	}
-
-    }
-
-}
-
-byte *CometEngine::getScreen() {
-    return _workScreen;
-}
-
 void CometEngine::initAndLoadGlobalData() {
 
 	//TODO: cbFileOpenPtr = NULL;
 
-	_font = new Font();
-	_font->load("RES.PAK", 0);
+	_screen->loadFont("RES.PAK", 0);
 
     _bulleVa2 = new Anim(this);
     _bulleVa2->load("RES.PAK", 1);
@@ -377,7 +207,7 @@ void CometEngine::initAndLoadGlobalData() {
     _iconeVa2 = new Anim(this);
     _iconeVa2->load("RES.PAK", 3);
     
-    _font->setColor(0);
+    _screen->setFontColor(0);
 
 	//TODO: seg001:0758 Mouse cursor stuff...
 	
@@ -403,8 +233,6 @@ void CometEngine::loadGlobalTextData() {
 
 void CometEngine::initData() {
 
-    _workScreen = new byte[64320];
-
     _sceneBackground = new byte[72000];
     _scratchBuffer = _sceneBackground + 64000;
     _scriptData = new byte[3000];
@@ -418,7 +246,7 @@ void CometEngine::initData() {
 	memset(_scriptVars2, 0, sizeof(_scriptVars2));
 	memset(_scriptVars3, 0, sizeof(_scriptVars3));
 
-	_font->setColor(19);
+	_screen->setFontColor(19);
 	resetHeroDirectionChanged();
 	
 	_currentFileNumber = 0;
@@ -467,7 +295,7 @@ void CometEngine::updateGame() {
 	if (_scriptNumber != _currentScriptNumber)
 		updateScriptNumber();
 
-	memcpy(_workScreen, _sceneBackground, 64000);
+	memcpy(_screen->getScreen(), _sceneBackground, 64000);
     
     if (_cmdLook)
         updateSub03(true);
@@ -499,15 +327,17 @@ void CometEngine::updateGame() {
 
 	if (_talkieMode == 1 && (_textFlag2 || _flag03))
 	    updateText();
-	if (_dialogRunning)
-	    updateDialog();
+
+	if (_dialog->isRunning())
+	    _dialog->update();
 
     updateTalkAnims();
 
     if (_talkieMode == 2 || _flag03)
         updateText();
-	if (_dialogRunning)
-	    updateDialog();
+
+	if (_dialog->isRunning())
+	    _dialog->update();
 	    
     updateTalkAnims();
     
@@ -518,14 +348,14 @@ void CometEngine::updateGame() {
 
 	/* begin DEBUG rectangles */
 	for (int i = 0; i < _blockingRects.size(); i++)
-	    fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
-	fillRect(_sceneObjects[0].x - _sceneObjects[0].deltaX, _sceneObjects[0].y - _sceneObjects[0].deltaY,
+	    _screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
+	_screen->fillRect(_sceneObjects[0].x - _sceneObjects[0].deltaX, _sceneObjects[0].y - _sceneObjects[0].deltaY,
 		_sceneObjects[0].x + _sceneObjects[0].deltaX, _sceneObjects[0].y, 150);
 	for (int index = 0; index < _linesArray.size(); index++) {
 		int x3, y3, x4, y4;
         getPortalRect(index, x3, y3, x4, y4);
         //printf("PORTAL: (%d, %d, %d, %d); direction = %d; fileNumber = %d; scriptNumber = %d\n", x3, y3, x4, y4, _linesArray[index].directionIndex, _linesArray[index].fileNumber, _linesArray[index].scriptNumber);
-        fillRect(x3, y3, x4, y4, 25);
+        _screen->fillRect(x3, y3, x4, y4, 25);
 	}
 	/* end DEBUG rectangles */
 
@@ -577,7 +407,8 @@ void CometEngine::updateScriptNumber() {
 		_sceneObjects[0].y5 = 0;
 		_sceneObjects[0].x6 = 319;
 		_sceneObjects[0].y6 = 199;
-		_palFlag = false;
+
+		// TODO: _palFlag = false;
 
 		loadAndRunScript();
 		
@@ -629,7 +460,8 @@ void CometEngine::updateSub03(bool flag) {
 	        _itemDirection = _sceneObjects[0].direction;
 	        _itemX = sceneItem->x;
 	        _itemY = sceneItem->y - 6;
-			if (flag && (!_dialogRunning || !_textFlag2)) {
+
+			if (flag && (!_dialog->isRunning() || !_textFlag2)) {
 				byte *textBuffer;
 		        if (sceneItem->paramType == 0)
 		            textBuffer = _textBuffer3;
@@ -808,8 +640,8 @@ void CometEngine::updateTextDialog() {
 	if (_textFlag2 || _flag03)
 	    updateText();
 	    
-	if (_dialogRunning)
-	    updateDialog();
+	if (_dialog->isRunning())
+	    _dialog->update();
 	
 }
 
@@ -830,7 +662,7 @@ void CometEngine::updateText() {
 
     drawBubble( x - _textMaxTextWidth - 4, y - 4, x + _textMaxTextWidth + 4, y + _textMaxTextHeight );
 
-    drawText3(_currentText, x + 1, y, _textColor, 0);
+    _screen->drawText3(x + 1, y, _currentText, _textColor, 0);
     
 	_textDuration--;
 	
@@ -868,53 +700,6 @@ void CometEngine::updateText() {
 		}
 	}
 
-}
-
-void CometEngine::updateDialog() {
-
-	int oldDialogSelectedItemIndex;
-	
-	oldDialogSelectedItemIndex = _dialogSelectedItemIndex;
-	
-	if (_mouseButtons4 & 1) {
-	    waitForKeys();
-	    if (_dialogSelectedItemIndex > 0)
-	    	_dialogSelectedItemIndex--;
-	} else if (_mouseButtons4 & 2) {
-		waitForKeys();
-		if (_dialogSelectedItemIndex < _dialogItems.size() - 1)
-		    _dialogSelectedItemIndex++;
-	}
-	
-	if (oldDialogSelectedItemIndex == _dialogSelectedItemIndex) {
-	    // TODO: Handle selection by mouse
-	} else {
-	    // TODO: Move mouse cursor to center of selected dialog item
-	}
-
-	if (oldDialogSelectedItemIndex != _dialogSelectedItemIndex) {
-	    // Reset the text color
-	    _dialogTextColor = 79;
-	}
-	
-	drawDialogTextBubbles();
-
-	// The following was in dialogHandleInput() in the original code, we do it right here
-
-    //handleEvents();
-	
-	printf("Dialog(2)::_keyScancode = %d\n", _keyScancode);
-
-	// TODO: Check for mouseclick later, too
-	if (_keyScancode == Common::KEYCODE_RETURN && _dialogSelectedItemIndex != -1) {
-	    //DEBUG: if (_talkieMode == 1)
-		{
-	        textProc2(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
-	        //TODO: loop with updateTalkAnims()
-		}
-		_dialogRunning = false;
-	}
-	
 }
 
 void CometEngine::updateTalkAnims() {
@@ -1094,7 +879,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2);
 	
 	printf("## %d, %d -> %d, %d; %d; %02X\n", sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, comp, sceneObject->walkStatus); fflush(stdout);
-	fillRect(sceneObject->x2 - 6, sceneObject->y2 - 6, sceneObject->x2 + 6, sceneObject->y2 + 6, 220);
+	_screen->fillRect(sceneObject->x2 - 6, sceneObject->y2 - 6, sceneObject->x2 + 6, sceneObject->y2 + 6, 220);
 	drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, 100);
 	
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
@@ -1185,21 +970,6 @@ void CometEngine::sceneObjectUpdate05(int y, int objectIndex) {
 
 }
 
-void CometEngine::setPartialPalette(byte *palette, int start, int count) {
-    byte colors[1024];
-    for (int i = start; i < count; i++) {
-		colors[i * 4 + 0] = palette[i * 3 + 0];
-		colors[i * 4 + 1] = palette[i * 3 + 1];
-		colors[i * 4 + 2] = palette[i * 3 + 2];
-		colors[i * 4 + 3] = 0;
-    }
-    _system->setPalette(colors, start, count);
-}
-
-void CometEngine::setFullPalette(byte *palette) {
-    setPartialPalette(palette, 0, 256);
-}
-
 void CometEngine::loadAndRunScript() {
 
 	Common::File fd;
@@ -1243,111 +1013,29 @@ void CometEngine::updateScreen() {
 	    memcpy(_paletteBuffer, _ctuPal, 768);
 	    memcpy(_ctuPal, _pali0Pal, 768);
 	    memcpy(_palette, _pali0Pal, 768);
-		memset(_workScreen, 0, 64000);
-		setFullPalette(_ctuPal);
+	    _screen->clearScreen();
+		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 3;
 	} else if (_currentFileNumber == 9 && _currentScriptNumber == 1 && _paletteValue2 == 3) {
 	    memcpy(_ctuPal, _cdintroPal, 768);
 	    memcpy(_palette, _cdintroPal, 768);
-		memset(_workScreen, 0, 64000);
-		setFullPalette(_ctuPal);
+  		_screen->clearScreen();
+		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 2;
 	} else if (_currentFileNumber == 5 && _currentScriptNumber == 0 && (_paletteValue2 == 2 || _paletteValue2 == 3)) {
 	    memcpy(_ctuPal, _paletteBuffer, 768);
 	    memcpy(_palette, _paletteBuffer, 768);
-		memset(_workScreen, 0, 64000);
-		setFullPalette(_ctuPal);
+  		_screen->clearScreen();
+		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 0;
 	} else if (_currentFileNumber == 0 && _currentScriptNumber == 0 && _paletteValue2 != 0) {
 	    memcpy(_ctuPal, _paletteBuffer, 768);
 	    memcpy(_palette, _paletteBuffer, 768);
-		setFullPalette(_ctuPal);
+		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 0;
 	}
 
-    if (_screenTransitionEffectFlag && _screenZoomFactor == 0 && _paletteMode == 0) {
-        screenTransitionEffect();
-	} else if (_paletteMode == 1) {
-	    paletteFadeIn();
-	} else if (_paletteMode == 2) {
-	    paletteFadeOut();
-	} else {
-
-	    switch (_screenZoomFactor) {
-	    case 0:
-	        _system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
-	        _system->updateScreen();
-	        break;
-		case 1:
-      		screenZoomEffect2x(_screenZoomXPos, _screenZoomYPos);
-      		break;
-		case 2:
-      		screenZoomEffect3x(_screenZoomXPos, _screenZoomYPos);
-      		break;
-		case 3:
-      		screenZoomEffect4x(_screenZoomXPos, _screenZoomYPos);
-      		break;
-		default:
-		    break;
-		}
-
-    	//_system->delayMillis(40);
-    	_system->delayMillis(5);//DEBUG
-	}
-
-}
-
-void CometEngine::buildPalette(byte *sourcePal, byte *destPal, int value) {
-	for (int i = 0; i < 768; i++)
-	    destPal[i] = (sourcePal[i] * value) >> 8;
-}
-
-void CometEngine::paletteFadeIn() {
-
-	buildPalette(_ctuPal, _palette, 0);
-	setFullPalette(_palette);
-	_system->updateScreen();
-	_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
-
-	int value = 0;
-	while (value < 255) {
-		buildPalette(_ctuPal, _palette, value);
-		setFullPalette(_palette);
-		_system->updateScreen();
-		value += _paletteValue;
-		_system->delayMillis(10);
-	}
-
-	buildPalette(_ctuPal, _palette, 255);
-	setFullPalette(_palette);
-	_system->updateScreen();
-	
-	_paletteMode = 0;
-	_palFlag = 0;
-
-}
-
-void CometEngine::paletteFadeOut() {
-
-	buildPalette(_ctuPal, _palette, 255);
-	setFullPalette(_palette);
-	_system->updateScreen();
-
-	int value = 255;
-	while (value > 0) {
-		buildPalette(_ctuPal, _palette, value);
-		setFullPalette(_palette);
-		_system->updateScreen();
-		value -= _paletteValue;
-		_system->delayMillis(10);
-	}
-
-	buildPalette(_ctuPal, _palette, 0);
-	setFullPalette(_palette);
-	_system->updateScreen();
-
-	_paletteMode = 0;
-	_palFlag = 1;
+	_screen->update();
 
 }
 
@@ -1518,7 +1206,7 @@ void CometEngine::setText(char *text) {
 	_textDuration = 0;
 	
 	while (*text != '*') {
-		int textWidth = _font->getTextWidth(text);
+		int textWidth = _screen->_font->getTextWidth(text);
         _textDuration += textWidth / 4;
         if (_textDuration < 100)
             _textDuration = 100;
@@ -1547,109 +1235,9 @@ void CometEngine::setText(char *text) {
 }
 
 void CometEngine::resetTextValues() {
-	_dialogRunning = false;
+	_dialog->stop();
 	_flag03 = false;
 	_textFlag2 = false;
-}
-
-int CometEngine::drawText3(char *text, int x, int y, int color, int flag) {
-
-	int tw = 0, linesDrawn = 0, textX = x, textY = y;
-	
-	if (textY < 3)
-	    textY = 3;
-	    
-    _font->setColor(color);
-	    
-	while (*text != '*' && ++linesDrawn <= 3) {
-
-	    int textWidth, textWidth2;
-	
-	    if (flag == 0) {
-	        textWidth = _font->getTextWidth(text);
-            textWidth2 = textWidth / 2;
-            textX = x - textWidth2;
-            tw = x + textWidth2;
-			if (textX < 3)
-			    textX = 3;
-			if (tw > 316)
-			    textX -= tw - 316;
-		} else {
-			textWidth2 = 1;//HACK
-		}
-
-		if (textWidth2 != 0) {
-		    _font->drawText(textX, textY, _workScreen, text);
-		    textY += 8;
-		}
-		
-		text += strlen(text) + 1;
-
-	}
-	
-	return textY;
-
-}
-
-void CometEngine::drawDialogTextBubbles() {
-
-	int x, y;
-	byte color1, color2;
-
-	//TODO: Before...
-	
-	_dialogRects.clear();
-	
-	x = _dialogTextX;
-	y = _dialogTextY;
-	
-	if (_sceneObjects[0].color == 25)
-	    color1 = 22;
- 	else
- 	    color1 = _sceneObjects[0].color;
- 	    
-	for (int i = 0; i < _dialogItems.size(); i++) {
-	
-		color2 = color1;
-		
-		if (i == _dialogSelectedItemIndex) {
-		    if (_sceneObjects[0].color == 25) {
-		        color2 = _dialogTextColor;
-		        _dialogTextColor += _dialogTextColorInc;
-		        if (_dialogTextColor > 25) {
-		            _dialogTextColor = 25;
-		            _dialogTextColorInc = -1;
-				} else if (_dialogTextColor < 22) {
-		            _dialogTextColor = 22;
-		            _dialogTextColorInc = 1;
-				}
-			} else if (_textColorFlag & 1) {
-			    color2 = _sceneObjects[0].color;
-			} else {
-			    color2 = 159;
-			}
-		}
-		
-		setText(_dialogItems[i].text);
-
-		drawBubble(x - 4, y - 4, x + _textMaxTextWidth * 2 + 4, y + _textMaxTextHeight);
-
-		y = drawText3(_dialogItems[i].text, x, y, color2, 1);
-		
-		RectItem rect;
-		rect.x = x - 4;
-		rect.y = y - 4 - _textMaxTextHeight;
-		rect.x2 = x + _textMaxTextWidth * 2 + 4;
-		rect.y2 = y;
-		rect.id = i;
-		_dialogRects.push_back(rect);
-
-		y += 8;
-		
-	}
-	
-	//TODO: After...
-
 }
 
 void CometEngine::initPointsArray2() {
@@ -1761,7 +1349,6 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 
 	Common::Rect tempRect(x - deltaX, y - deltaY, x + deltaX, y);
     
-    // FIXME: Make me beaufiful
 	if (checkCollisionWithScenePortals(tempRect, 1) ||
 		checkCollisionWithScenePortals(tempRect, 2) ||
 		checkCollisionWithScenePortals(tempRect, 3) ||
@@ -1776,186 +1363,6 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 
 	if (y > 199)
 	    y = 199;
-
-}
-
-void CometEngine::screenZoomEffect2x(int x, int y) {
-
-    if (x - 80 < 0) x = 0;
-    if (x > 159) x = 159;
-    if (y - 80 < 0) y = 0;
-    if (y > 99) y = 99;
-
-    byte *vgaScreen = (byte*)malloc(64000);
-    byte *sourceBuf = _workScreen + x + (y * 320);
-    byte *destBuf = vgaScreen;
-
-    for (int yc = 0; yc < 100; yc++) {
-
-        for (int xc = 0; xc < 160; xc++) {
-            byte pixel = *sourceBuf++;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-        }
-
-        sourceBuf -= 160;
-
-        for (int xc = 0; xc < 160; xc++) {
-            byte pixel = *sourceBuf++;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-        }
-
-        sourceBuf += 160;
-
-    }
-
-	_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-	_system->updateScreen();
-
-    delete[] vgaScreen;
-
-}
-
-void CometEngine::screenZoomEffect3x(int x, int y) {
-
-    if (x - 53 < 0) x = 0;
-    if (x > 213) x = 213;
-    if (y - 50 < 0) y = 0;
-    if (y > 133) y = 133;
-
-    byte *vgaScreen = (byte*)malloc(64000);
-    byte *sourceBuf = _workScreen + x + (y * 320);
-    byte *destBuf = vgaScreen;
-
-    for (int yc = 0; yc < 66; yc++) {
-
-        byte pixel;
-
-        for (int xc = 0; xc < 106; xc++) {
-            pixel = *sourceBuf++;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-        }
-        *destBuf++ = pixel;
-        *destBuf++ = pixel;
-
-        sourceBuf -= 106;
-
-        for (int xc = 0; xc < 106; xc++) {
-            pixel = *sourceBuf++;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-        }
-        *destBuf++ = pixel;
-        *destBuf++ = pixel;
-
-        sourceBuf -= 106;
-
-        for (int xc = 0; xc < 106; xc++) {
-            pixel = *sourceBuf++;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-        }
-        *destBuf++ = pixel;
-        *destBuf++ = pixel;
-
-        sourceBuf += 214;
-
-    }
-
-    memset(destBuf, 0, 640);
-
-	_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-	_system->updateScreen();
-
-    delete[] vgaScreen;
-
-}
-
-void CometEngine::screenZoomEffect4x(int x, int y) {
-
-    if (x - 40 < 0) x = 0;
-    if (x > 239) x = 239;
-    if (y - 44 < 0) y = 0;
-    if (y > 149) y = 149;
-
-    byte *vgaScreen = (byte*)malloc(64000);
-    byte *sourceBuf = _workScreen + x + (y * 320);
-    byte *destBuf = vgaScreen;
-
-    for (int yc = 0; yc < 50; yc++) {
-
-        byte pixel;
-
-        for (int xc = 0; xc < 80; xc++) {
-            pixel = *sourceBuf++;
-
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            destBuf += 316;
-
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            destBuf += 316;
-
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            destBuf += 316;
-
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            *destBuf++ = pixel;
-            destBuf -= 960;
-
-        }
-
-        sourceBuf += 240;
-        destBuf += 960;
-
-    }
-
-	_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-	_system->updateScreen();
-
-    delete[] vgaScreen;
-
-}
-
-void CometEngine::screenTransitionEffect() {
-
-	byte *vgaScreen = (byte*)malloc(64000);
-	
-	Graphics::Surface *screen = _system->lockScreen();
-	memcpy(vgaScreen, screen->pixels, 320 * 200);
-	_system->unlockScreen();
-
-    for (int i = 0; i < 7; i++) {
-        byte *sourceBuf = _workScreen + i;
-        byte *destBuf = vgaScreen + i;
-        for (int x = 0; x < 320 * 200 / 6; x++) {
-            *destBuf = *sourceBuf;
-            sourceBuf += 6;
-            destBuf += 6;
-        }
-		_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-		_system->updateScreen();
-    	_system->delayMillis(40);
-    }
-
-    free(vgaScreen);
-
-	_screenTransitionEffectFlag = false;
 
 }
 
@@ -2117,7 +1524,7 @@ void CometEngine::handleInput() {
 	
 	// TODO: seg009:212C...skip_mouse
 	
-	if ((_mouseFlag & _mouseButtons4) || _dialogRunning) {
+	if ((_mouseFlag & _mouseButtons4) || _dialog->isRunning()) {
 	    _mouseCursor2 = 0;
 	    _mouseButtons5 = 0;
 	} else {
@@ -2130,7 +1537,7 @@ void CometEngine::handleInput() {
     if (sceneObject->walkStatus & 3)
         return;
         
-	if (_dialogRunning && sceneObject->directionAdd != 0) {
+	if (_dialog->isRunning() && sceneObject->directionAdd != 0) {
 	    sceneObjectResetDirectionAdd(sceneObject);
 	    return;
 	}
@@ -2584,7 +1991,7 @@ void CometEngine::handleSceneChange(int scriptNumber, int fileNumber) {
 	/* TODO
 	if (_paletteMode == 0) {
 	    buildPalette(_ctuPal, _palette, _palValue);
-	    setFullPalette(_palette);
+	    _screen->setFullPalette(_palette);
 	}
 	*/
 
