@@ -1,6 +1,9 @@
 #include "comet/comet.h"
 #include "comet/music.h"
 
+#include "comet/screen.h"
+#include "comet/dialog.h"
+
 namespace Comet {
 
 /* Script */
@@ -62,7 +65,7 @@ bool Script::evalBoolOp(int value1, int value2, int boolOp) {
     case 7: // OR
         return (value1 | value2) != 0;
     default:
-        printf("Script::evalBoolOp()  Unknown bool operation code %d!\n", boolOp);
+        error("Script::evalBoolOp() Unknown bool operation code %d", boolOp);
     }
     return false;
 }
@@ -162,9 +165,11 @@ void CometEngine::runScriptSub4() {
 
 void CometEngine::runScriptSub5() {
 
-	if (_dialogRunning == 0) {
+	if (!_dialog->isRunning()) {
 	    _curScript->status &= ~kScriptDialogRunning;
-        _curScript->ip = _dialogItems[_dialogSelectedItemIndex].scriptIp;
+	    // FIXME: I don't like that getChoiceScriptIp directly returns a pointer
+		// should be encapsulated in either Script or Dialog
+        _curScript->ip = _dialog->getChoiceScriptIp();
         _curScript->jump();
 	} else {
  		_scriptBreakFlag = true;
@@ -180,7 +185,8 @@ void CometEngine::runScriptSub6() {
 	        if (_animIndex != -1)
 	            _sceneObjects[_animIndex].visible = true;
 			_sceneObjects[10].flag = 0;
-			_screenTransitionEffectFlag = true;
+			//_screenTransitionEffectFlag = true;
+			_screen->enableTransitionEffect();
 		} else if (_animIndex != -1) {
 	    	SceneObject *sceneObject = getSceneObject(_sceneObjectIndex);
 	    	sceneObjectSetAnimNumber(sceneObject, _animIndex);
@@ -449,9 +455,7 @@ void CometEngine::runScript(int scriptNumber) {
 		    o1_sample_1(_curScript);
             break;
         default:
-            printf("CometEngine::runScript()  Unknown opcode %d\n", funcIndex);
-			fflush(stdout);
-            _system->delayMillis(5000);
+            error("CometEngine::runScript() Unknown opcode %d", funcIndex);
             break;
         }
 
@@ -460,6 +464,7 @@ void CometEngine::runScript(int scriptNumber) {
 }
 
 void CometEngine::runAllScripts() {
+	// Run all scripts except the main script
     for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++) {
         runScript(scriptNumber);
     }
@@ -827,8 +832,7 @@ void CometEngine::o1_updateDirection2(Script *script) {
     int x = script->loadByte() * 2;
     int y = script->loadByte();
 
-    printf("o1_updateDirection2(%d, %d)\n", x, y);
-    //fflush(stdout); _system->delayMillis(1000);
+    debug(2, "o1_updateDirection2(%d, %d)\n", x, y);
     
     script->object()->directionChanged = 0;
     
@@ -874,66 +878,21 @@ void CometEngine::o1_setMarcheNumber(Script *script) {
 void CometEngine::o1_setZoomByItem(Script *script) {
 
 	int objectIndex = script->loadByte();
-	_screenZoomFactor = script->loadByte();
+	int zoomFactor = script->loadByte();
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	_screenZoomXPos = sceneObject->x;
-	_screenZoomYPos = sceneObject->y;
-
+	_screen->setZoom(zoomFactor, sceneObject->x, sceneObject->y);
+	
 }
 
 void CometEngine::o1_startDialog(Script *script) {
 
-	int dialogItemCount, textOfs;
-	byte *textBuffer;
+	_dialog->run(script);
 
-    resetTextValues();
-    
-    _dialogTextSubIndex = script->loadInt16();
-    
-    textOfs = 0x1C;
-    textBuffer = _textBuffer1;
-    WRITE_LE_UINT32(textBuffer, textOfs);
-    
-    if (_dialogTextSubIndex != -1) {
-        textOfs += loadString(_narFileIndex + 3, _dialogTextSubIndex, _textBuffer1 + textOfs);
-	}
-	
-	_dialogTextX = script->loadByte() * 2;
-	_dialogTextY = script->loadByte();
-	
-	dialogItemCount = script->loadByte();
-	
-	_dialogItems.clear();
-	
-	for (int index = 0; index < dialogItemCount; index++) {
-		DialogItem dialogItem;
-		
-		dialogItem.index = script->loadInt16();
-		
-  		WRITE_LE_UINT32(textBuffer + (index + 1) * 4, textOfs);
-  		
-  		textOfs += loadString(_narFileIndex + 3, dialogItem.index, _textBuffer1 + textOfs );
-  		
-  		dialogItem.text = getTextEntry(index + 1, _textBuffer1);
-  		
-  		dialogItem.scriptIp = script->ip;
-  		script->ip += 2;
-
-        _dialogItems.push_back(dialogItem);
-  		
-	}
-
-	if (_dialogItems[0].index == _dialogTextSubIndex)
-	    _dialogTextSubIndex = -1;
-	    
-    _dialogSelectedItemIndex2 = -1;
-    _dialogSelectedItemIndex = 0;
-    _dialogRunning = true;
     script->status |= kScriptDialogRunning;
     _scriptBreakFlag = true;
-    drawDialogTextBubbles();
+
     //TODO: waitForKey();
     
 }
@@ -943,7 +902,7 @@ void CometEngine::o1_waitWhilePlayerIsInRect(Script *script) {
 	printf("o1_waitWhilePlayerIsInRect(%d, %d, %d, %d)\n", script->x, script->y, script->x2, script->y2);
 
 	//DEBUG
-	fillRect(script->x, script->y, script->x2, script->y2, 60);
+	_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
 
     if (isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
     	script->ip--;
@@ -962,7 +921,7 @@ void CometEngine::o1_waitUntilPlayerIsInRect(Script *script) {
 	printf("o1_waitUntilPlayerIsInRect(%d, %d, %d, %d)\n", script->x, script->y, script->x2, script->y2);
 
 	//DEBUG
-	fillRect(script->x, script->y, script->x2, script->y2, 70);
+	_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
 
 
 	if (!isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
@@ -1081,7 +1040,7 @@ bool CometEngine::o1_Sub_rectCompare01(Script *script) {
 	script->y2 = script->loadByte();
 	
 	//DEBUG
-	fillRect(script->x, script->y, script->x2, script->y2, 50);
+	_screen->fillRect(script->x, script->y, script->x2, script->y2, 50);
 	
 	
 	Common::Rect rect1(script->x, script->y, script->x2, script->y2);
@@ -1233,7 +1192,8 @@ void CometEngine::o1_sub_AD04(Script *script) {
 	sceneObjectSetXY(10, 0, 199);
 	textProc2(10, narSubIndex, animNumber);
 	_animIndex = objectIndex;
-	_screenTransitionEffectFlag = true;
+	//_screenTransitionEffectFlag = true;
+	_screen->enableTransitionEffect();
 
 }
 
@@ -1265,20 +1225,20 @@ void CometEngine::o1_setObjectVisible(Script *script) {
 	int visible = script->loadByte();
     printf("o1_setObjectVisible(%d)\n", visible);
     script->object()->visible = visible;
-
 }
 
 void CometEngine::o1_paletteFadeIn(Script *script) {
-    _paletteValue = script->loadByte();
-    printf("o1_paletteFadeIn(%d)\n", _paletteValue);
-    _paletteMode = 1;
-
+    int paletteValue = script->loadByte();
+    printf("o1_paletteFadeIn(%d)\n", paletteValue);
+    _screen->setFadeType(kFadeIn);
+    _screen->setFadeValue(paletteValue);
 }
 
 void CometEngine::o1_paletteFadeOut(Script *script) {
-    _paletteValue = script->loadByte();
-    printf("o1_paletteFadeOut(%d)\n", _paletteValue);
-    _paletteMode = 2;
+    int paletteValue = script->loadByte();
+    printf("o1_paletteFadeOut(%d)\n", paletteValue);
+    _screen->setFadeType(kFadeOut);
+    _screen->setFadeValue(paletteValue);
 }
 
 void CometEngine::o1_setNarFileIndex(Script *script) {

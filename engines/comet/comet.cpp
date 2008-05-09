@@ -18,6 +18,9 @@
 #include "comet/pak.h"
 #include "comet/music.h"
 
+#include "comet/screen.h"
+#include "comet/dialog.h"
+
 namespace Comet {
 
 enum {
@@ -46,20 +49,23 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 
 
 CometEngine::~CometEngine() {
-	if (_music)
-	    delete _music;
+	delete _music;
+	delete _screen;
+	delete _dialog;
 }
 
 
 int CometEngine::init() {
+
 	// Initialize backend
 	_system->beginGFXTransaction();
 		initCommonGFX(true);
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
-
     _music = new MusicPlayer(this);
+    _screen = new Screen(this);
+    _dialog = new Dialog(this);
 
 	return 0;
 }
@@ -96,8 +102,6 @@ int CometEngine::go() {
 	_curScript = NULL;
 	_paletteValue2 = 0;
 	_marcheNumber = 0;
-	_paletteMode = 0;
-	_screenZoomFactor = 0;
 	_textFlag2 = 0;
 
 	_flag03 = false;
@@ -107,11 +111,7 @@ int CometEngine::go() {
 	_needToLoadSavegameFlag = false;
 	_loadingGameFlag = false;
  	_linesArray.clear();
-	_screenTransitionEffectFlag = false;
-	_screenZoomFactor = 0;
-	_screenZoomXPos = 160;
-	_screenZoomYPos = 100;
-	
+
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
 	
@@ -135,12 +135,6 @@ int CometEngine::go() {
 	
 	_invActiveItem = -1;
 	
-	_dialogTextSubIndex = 0;
-	_dialogTextX = 0;
-	_dialogTextY = 0;
-	_dialogTextColor = 79;
-	_dialogTextColorInc = -1;
-	_dialogRunning = false;
 	_animIndex = -1;
 
     _scriptVars1[0] = &_scriptNumber3;
@@ -284,7 +278,7 @@ int CometEngine::go() {
         if (_fileNumber == 9 && _scriptNumber == 0) {
 		    memcpy(_ctuPal, _paletteBuffer, 768);
 		    memcpy(_palette, _paletteBuffer, 768);
-			setFullPalette(_ctuPal);
+			_screen->setFullPalette(_ctuPal);
 			_paletteValue2 = 0;
         	//_fileNumber = 1;
         	_fileNumber = 0;

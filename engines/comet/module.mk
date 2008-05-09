@@ -2,6 +2,7 @@ MODULE := engines/comet
 
 MODULE_OBJS = \
 	detection.o \
+	dialog.o \
 	font.o \
 	anim.o \
 	comet.o \
@@ -9,6 +10,7 @@ MODULE_OBJS = \
 	pak.o \
 	unpack.o \
 	sceneobjects.o \
+	screen.o \
 	marche.o \
 	shadow.o \
 	music.o \

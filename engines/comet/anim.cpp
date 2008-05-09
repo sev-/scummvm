@@ -3,6 +3,7 @@
 #include "comet/comet.h"
 #include "comet/anim.h"
 #include "comet/pak.h"
+#include "comet/screen.h"
 
 namespace Comet {
 
@@ -535,10 +536,8 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
                 break;
 
             default:
-                printf("Anim::unpackRle()  Unknown RLE command %d\n", cmd);
-                fflush(stdout);
-                _vm->_system->delayMillis(5000);
-                return; //
+                error("Anim::unpackRle() Unknown RLE command %d", cmd);
+                
             }
 
         } while (--count > 0);
@@ -615,19 +614,19 @@ void Anim::runSeq1(uint16 index, int x, int y) {
                     args[0].x -= getFrameWidth(tempIndex);
                 if (flags & 0x20)
                     args[0].y += getFrameHeight(tempIndex);
-                drawFrame((flags << 8) | tempIndex, args[0].x, args[0].y, _vm->getScreen());
+                drawFrame((flags << 8) | tempIndex, args[0].x, args[0].y, _vm->_screen->getScreen());
             }
             break;
 
         case 4:
             {
-                _vm->filledPolygonColor(args, arg2);
+                _vm->_screen->filledPolygonColor(args, arg2);
                 if (arg1 != 0xFF) {
                     args.push_back(args[0]);
                     arg2 = arg1;
                     for (int i = 0; i < args.size() - 1; i++) {
                         Graphics::drawLine(args[i].x, args[i].y, args[i+1].x, args[i+1].y,
-                            arg2, plotProc, _vm->getScreen());
+                            arg2, plotProc, _vm->_screen->getScreen());
                     }
                 }
             }
@@ -635,9 +634,9 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 
         case 5:
             {
-                _vm->fillRect(args[0].x, args[0].y, args[1].x, args[1].y, arg2);
+                _vm->_screen->fillRect(args[0].x, args[0].y, args[1].x, args[1].y, arg2);
                 if (arg1 != 0xFF)
-                    _vm->frameRect(args[0].x, args[0].y, args[1].x, args[1].y, arg1);
+                    _vm->_screen->frameRect(args[0].x, args[0].y, args[1].x, args[1].y, arg1);
             }
             break;
 
@@ -645,7 +644,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
             {
                 for (int i = 0; i < args.size() - 1; i++) {
                     Graphics::drawLine(args[i].x, args[i].y, args[i+1].x, args[i+1].y,
-                        arg2, plotProc, _vm->getScreen());
+                        arg2, plotProc, _vm->_screen->getScreen());
                     argCount--;
                 }
             }
@@ -657,7 +656,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
                     int pointX = args[i].x;
                     int pointY = args[i].y;
                     //if (pointX >= 0 && x < 320 && y >= 0 && y < 199)
-                        plotProc(pointX, pointY, arg2, _vm->getScreen());
+                        plotProc(pointX, pointY, arg2, _vm->_screen->getScreen());
                 }
             }
             break;
@@ -665,23 +664,13 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 		case 10:
 		    {
 		        byte *rleData = getSubSection(1, (arg2 << 8) | arg1);
-		        unpackRle(args[0].x, args[0].y - rleData[1] + 1, rleData + 2, _vm->getScreen());
+		        unpackRle(args[0].x, args[0].y - rleData[1] + 1, rleData + 2, _vm->_screen->getScreen());
 			}
 			break;
 
         default:
-            {
-                printf("Anim::runSeq1()  Unknown command %d\n", command);
-
-                /*
-                FILE *f = fopen("Q:\\OldGames\\SotC\\scummvm\\engines\\comet\\crap.va2", "wb");
-                fwrite(_animData, 64000, 1, f);
-                fclose(f);
-                */
-                
-                exit(0);
-
-            }
+            error("Anim::runSeq1() Unknown command %d", command);
+            
         }
 
     }
