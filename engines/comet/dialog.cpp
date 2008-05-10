@@ -26,16 +26,16 @@ void Dialog::run(Script *script) {
 	int dialogItemCount, textOfs;
 	byte *textBuffer;
 
-    _vm->resetTextValues();
+	_vm->resetTextValues();
 
-    _dialogTextSubIndex = script->loadInt16();
+	_dialogTextSubIndex = script->loadInt16();
 
-    textOfs = 0x1C;
-    textBuffer = _vm->_textBuffer1;
-    WRITE_LE_UINT32(textBuffer, textOfs);
+	textOfs = 0x1C;
+	textBuffer = _vm->_textBuffer1;
+	WRITE_LE_UINT32(textBuffer, textOfs);
 
-    if (_dialogTextSubIndex != -1) {
-        textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_textBuffer1 + textOfs);
+	if (_dialogTextSubIndex != -1) {
+		textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_textBuffer1 + textOfs);
 	}
 
 	_dialogTextX = script->loadByte() * 2;
@@ -53,17 +53,17 @@ void Dialog::run(Script *script) {
   		dialogItem.text = _vm->getTextEntry(index + 1, _vm->_textBuffer1);
   		dialogItem.scriptIp = script->ip;
   		script->ip += 2;
-        _dialogItems.push_back(dialogItem);
+		_dialogItems.push_back(dialogItem);
 	}
 
 	if (_dialogItems[0].index == _dialogTextSubIndex)
-	    _dialogTextSubIndex = -1;
+		_dialogTextSubIndex = -1;
 
-    _dialogSelectedItemIndex2 = -1;
-    _dialogSelectedItemIndex = 0;
-    _dialogRunning = true;
+	_dialogSelectedItemIndex2 = -1;
+	_dialogSelectedItemIndex = 0;
+	_dialogRunning = true;
 
-    drawTextBubbles();
+	drawTextBubbles();
 
 }
 
@@ -78,40 +78,40 @@ void Dialog::update() {
 	oldDialogSelectedItemIndex = _dialogSelectedItemIndex;
 
 	if (_vm->_mouseButtons4 & 1) {
-	    _vm->waitForKeys();
-	    if (_dialogSelectedItemIndex > 0)
-	    	_dialogSelectedItemIndex--;
+		_vm->waitForKeys();
+		if (_dialogSelectedItemIndex > 0)
+			_dialogSelectedItemIndex--;
 	} else if (_vm->_mouseButtons4 & 2) {
 		_vm->waitForKeys();
 		if (_dialogSelectedItemIndex < _dialogItems.size() - 1)
-		    _dialogSelectedItemIndex++;
+			_dialogSelectedItemIndex++;
 	}
 
 	if (oldDialogSelectedItemIndex == _dialogSelectedItemIndex) {
-	    // TODO: Handle selection by mouse
+		// TODO: Handle selection by mouse
 	} else {
-	    // TODO: Move mouse cursor to center of selected dialog item
+		// TODO: Move mouse cursor to center of selected dialog item
 	}
 
 	if (oldDialogSelectedItemIndex != _dialogSelectedItemIndex) {
-	    // Reset the text color
-	    _dialogTextColor = 79;
+		// Reset the text color
+		_dialogTextColor = 79;
 	}
 
 	drawTextBubbles();
 
 	// The following was in dialogHandleInput() in the original code, we do it right here
 
-    //handleEvents();
+	//handleEvents();
 
 	//printf("Dialog(2)::_keyScancode = %d\n", _keyScancode);
 
 	// TODO: Check for mouseclick later, too
 	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _dialogSelectedItemIndex != -1) {
-	    //DEBUG: if (_talkieMode == 1)
+		//DEBUG: if (_talkieMode == 1)
 		{
-	        _vm->textProc2(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
-	        //TODO: loop with updateTalkAnims()
+			_vm->textProc2(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
+			//TODO: loop with updateTalkAnims()
 		}
 		_dialogRunning = false;
 	}
@@ -131,29 +131,29 @@ void Dialog::drawTextBubbles() {
 	y = _dialogTextY;
 
 	if (_vm->_sceneObjects[0].color == 25)
-	    color1 = 22;
+		color1 = 22;
  	else
- 	    color1 = _vm->_sceneObjects[0].color;
+ 		color1 = _vm->_sceneObjects[0].color;
 
 	for (int i = 0; i < _dialogItems.size(); i++) {
 
 		color2 = color1;
 
 		if (i == _dialogSelectedItemIndex) {
-		    if (_vm->_sceneObjects[0].color == 25) {
-		        color2 = _dialogTextColor;
-		        _dialogTextColor += _dialogTextColorInc;
-		        if (_dialogTextColor > 25) {
-		            _dialogTextColor = 25;
-		            _dialogTextColorInc = -1;
+			if (_vm->_sceneObjects[0].color == 25) {
+				color2 = _dialogTextColor;
+				_dialogTextColor += _dialogTextColorInc;
+				if (_dialogTextColor > 25) {
+					_dialogTextColor = 25;
+					_dialogTextColorInc = -1;
 				} else if (_dialogTextColor < 22) {
-		            _dialogTextColor = 22;
-		            _dialogTextColorInc = 1;
+					_dialogTextColor = 22;
+					_dialogTextColorInc = 1;
 				}
 			} else if (_vm->_textColorFlag & 1) {
-			    color2 = _vm->_sceneObjects[0].color;
+				color2 = _vm->_sceneObjects[0].color;
 			} else {
-			    color2 = 159;
+				color2 = 159;
 			}
 		}
 

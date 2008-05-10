@@ -1,5 +1,5 @@
 /*
-    Global TODO:
+	Global TODO:
 */
 
 
@@ -63,9 +63,9 @@ int CometEngine::init() {
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
-    _music = new MusicPlayer(this);
-    _screen = new Screen(this);
-    _dialog = new Dialog(this);
+	_music = new MusicPlayer(this);
+	_screen = new Screen(this);
+	_dialog = new Dialog(this);
 
 	return 0;
 }
@@ -75,14 +75,14 @@ int CometEngine::go() {
 	/*
 	int size = getPakSize("A00.PAK", 38);
 	byte *temp = loadFromPak("A00.PAK", 38);
-    FILE *f = fopen("Q:\\OldGames\\SotC\\scummvm\\engines\\comet\\test.va2", "wb");
-    fwrite(temp, size, 1, f);
-    fclose(f);
-    exit(0);
-    */
+	FILE *f = fopen("Q:\\OldGames\\SotC\\scummvm\\engines\\comet\\test.va2", "wb");
+	fwrite(temp, size, 1, f);
+	fclose(f);
+	exit(0);
+	*/
 
-    Common::Event event;
-    Common::EventManager *eventMan = _system->getEventManager();
+	Common::Event event;
+	Common::EventManager *eventMan = _system->getEventManager();
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -94,8 +94,8 @@ int CometEngine::go() {
 	_scriptNumber3 = -1;
 	_currentScriptNumber = -1;
 	_scriptNumber = 0;
-    memset(_marcheItems, 0, sizeof(_marcheItems));
-    memset(_sceneObjects, 0, sizeof(_sceneObjects));
+	memset(_marcheItems, 0, sizeof(_marcheItems));
+	memset(_sceneObjects, 0, sizeof(_sceneObjects));
 	_scriptData = NULL;
 	_scriptCount = 0;
 	_curScriptNumber = -1;
@@ -137,30 +137,30 @@ int CometEngine::go() {
 	
 	_animIndex = -1;
 
-    _scriptVars1[0] = &_scriptNumber3;
-    for (int i = 0; i < 10; i++) {
-    	_scriptVars1[1 + i * 3] = &_sceneObjects[i].flag;
-    	_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
-    	_scriptVars1[3 + i * 3] = &_sceneObjects[i].y;
-    }
-    _scriptVars1[31] = &_mouseButtons4;
-    _scriptVars1[32] = &_scriptMouseFlag;
-    _scriptVars1[33] = &_scriptRandomValue;
-    _scriptVars1[34] = &_fileNumber3;
+	_scriptVars1[0] = &_scriptNumber3;
+	for (int i = 0; i < 10; i++) {
+		_scriptVars1[1 + i * 3] = &_sceneObjects[i].flag;
+		_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
+		_scriptVars1[3 + i * 3] = &_sceneObjects[i].y;
+	}
+	_scriptVars1[31] = &_mouseButtons4;
+	_scriptVars1[32] = &_scriptMouseFlag;
+	_scriptVars1[33] = &_scriptRandomValue;
+	_scriptVars1[34] = &_fileNumber3;
 
 	for (int i = 0; i < 17; i++)
-	    _scripts[i] = new Script(this);
+		_scripts[i] = new Script(this);
 
-    _talkieMode = 1;
+	_talkieMode = 1;
 
-    _startupFileNumber = 9;
-    _startupScriptNumber = 0;
+	_startupFileNumber = 9;
+	_startupScriptNumber = 0;
 
 	_narFile = NULL;
 	_narCount = 0;
 	_narOffsets = NULL;
 
-    initAndLoadGlobalData();
+	initAndLoadGlobalData();
 
 	//DEBUG:
 	//setFullPalette(_cdintroPal);
@@ -168,7 +168,7 @@ int CometEngine::go() {
 
 	//TEST
 	_talkieMode = 1;
-    //_music->playMusic(4);
+	//_music->playMusic(4);
 
 //#define DOINTRO
 
@@ -176,46 +176,46 @@ int CometEngine::go() {
 
 #if 1
 	/* Play intro */
-    _endLoopFlag = false;
-    while (!_endLoopFlag) {
-        handleEvents();
-        printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
-        
-        if (_keyScancode == Common::KEYCODE_ESCAPE)
-            break;
+	_endLoopFlag = false;
+	while (!_endLoopFlag) {
+		handleEvents();
+		printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
+		
+		if (_keyScancode == Common::KEYCODE_ESCAPE)
+			break;
 
-        static bool slow = false;
+		static bool slow = false;
 		if (_keyScancode == Common::KEYCODE_a)
-		    slow = !slow;
+			slow = !slow;
 		if (slow)
 			_system->delayMillis(40);
 
-        if (_keyScancode == Common::KEYCODE_KP_PLUS)
-        	_scriptNumber++;
-        else if (_keyScancode == Common::KEYCODE_KP_MINUS)
-        	if (_scriptNumber > 0) _scriptNumber--;
-        	
-        /* Debugging helpers ends here */
-        
-        updateGame();
+		if (_keyScancode == Common::KEYCODE_KP_PLUS)
+			_scriptNumber++;
+		else if (_keyScancode == Common::KEYCODE_KP_MINUS)
+			if (_scriptNumber > 0) _scriptNumber--;
+			
+		/* Debugging helpers ends here */
+		
+		updateGame();
 #if 1
-        //DEBUG
-        if (_fileNumber == 9 && _scriptNumber == 0) {
-        	_fileNumber = 5;
-        	_scriptNumber = 0;
-        }
+		//DEBUG
+		if (_fileNumber == 9 && _scriptNumber == 0) {
+			_fileNumber = 5;
+			_scriptNumber = 0;
+		}
 #endif
 #if 0
-        //DEBUG - jump to scene
-        if (_fileNumber == 9 && _scriptNumber == 0) {
-		    memcpy(_ctuPal, _paletteBuffer, 768);
-		    memcpy(_palette, _paletteBuffer, 768);
+		//DEBUG - jump to scene
+		if (_fileNumber == 9 && _scriptNumber == 0) {
+			memcpy(_ctuPal, _paletteBuffer, 768);
+			memcpy(_palette, _paletteBuffer, 768);
 			setFullPalette(_ctuPal);
 			_paletteValue2 = 0;
-        	_fileNumber = 0;
-        	_scriptNumber = 1;
-        	//_scriptNumber = 11;
-        }
+			_fileNumber = 0;
+			_scriptNumber = 1;
+			//_scriptNumber = 11;
+		}
 #endif
 	}
 #endif
@@ -229,62 +229,62 @@ int CometEngine::go() {
 
 #if 1
 	/* Hacked together main loop */
-    _endLoopFlag = false;
-    while (!_endLoopFlag) {
-        handleEvents();
+	_endLoopFlag = false;
+	while (!_endLoopFlag) {
+		handleEvents();
 
 		/* Debugging helpers follows */
-        printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
-        if (_keyScancode == Common::KEYCODE_ESCAPE)
-            break;
+		printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
+		if (_keyScancode == Common::KEYCODE_ESCAPE)
+			break;
 
-        static bool slow = false;
+		static bool slow = false;
 		if (_keyScancode == Common::KEYCODE_a)
-		    slow = !slow;
+			slow = !slow;
 		if (slow)
 			_system->delayMillis(40);
 
 		if (_keyScancode == Common::KEYCODE_RETURN)
-		    skipText();
+			skipText();
 
 		if (_keyScancode == Common::KEYCODE_t)
-      		_cmdTalk = true;
+	  		_cmdTalk = true;
 		else if (_keyScancode == Common::KEYCODE_g)
-      		_cmdGet = true;
+	  		_cmdGet = true;
 		else if (_keyScancode == Common::KEYCODE_l)
-      		_cmdLook = true;
+	  		_cmdLook = true;
 
 		// DEBUG
-        if (_keyScancode == Common::KEYCODE_KP_PLUS) {
-        	_scriptNumber++;
-        } else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
-        	if (_scriptNumber > 0) _scriptNumber--;
-        } if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
-        	_fileNumber++;
-        	_scriptNumber = 0;
-        } else if (_keyScancode == Common::KEYCODE_KP_DIVIDE) {
-        	if (_fileNumber > 0) {
+		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
+			_scriptNumber++;
+		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
+			if (_scriptNumber > 0) _scriptNumber--;
+		} if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
+			_fileNumber++;
+			_scriptNumber = 0;
+		} else if (_keyScancode == Common::KEYCODE_KP_DIVIDE) {
+			if (_fileNumber > 0) {
 				_fileNumber--;
-        		_scriptNumber = 0;
-        	}
-        }
+				_scriptNumber = 0;
+			}
+		}
 
-        /* Debugging helpers ends here */
+		/* Debugging helpers ends here */
 
-        updateGame();
+		updateGame();
 
 #if 1
-        //DEBUG - jump to scene
-        if (_fileNumber == 9 && _scriptNumber == 0) {
-		    memcpy(_ctuPal, _paletteBuffer, 768);
-		    memcpy(_palette, _paletteBuffer, 768);
+		//DEBUG - jump to scene
+		if (_fileNumber == 9 && _scriptNumber == 0) {
+			memcpy(_ctuPal, _paletteBuffer, 768);
+			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
 			_paletteValue2 = 0;
-        	//_fileNumber = 1;
-        	_fileNumber = 0;
-        	_scriptNumber = 0;
-        	//_scriptNumber = 11;
-        }
+			//_fileNumber = 1;
+			_fileNumber = 0;
+			_scriptNumber = 0;
+			//_scriptNumber = 11;
+		}
 #endif
 	}
 #endif
@@ -292,34 +292,34 @@ int CometEngine::go() {
 
 
 #if 0
-    memset(getScreen(), 0, 64000);
+	memset(getScreen(), 0, 64000);
 
-    setFullPalette(_ctuPal);
-    
-    _startupFileNumber = 9;
-    _startupScriptNumber = 0;
+	setFullPalette(_ctuPal);
+	
+	_startupFileNumber = 9;
+	_startupScriptNumber = 0;
 
-    initAndLoadGlobalData();
+	initAndLoadGlobalData();
 
 	Anim *anim = new Anim(this);
 	anim->load("A05.PAK", 21);
 	//0, 11, 21
 
-    _font->setColor(254);
+	_font->setColor(254);
 
 	int seqIndex = 0;
 	int seqCount = READ_LE_UINT32(anim->getSection(0)) / 4;
 	int xp = 240, yp = 170;
 
 
-    seqIndex = 12;
-    
+	seqIndex = 12;
+	
 
-    memset(getScreen(), 0, 64000);
-    anim->runSeq1(seqIndex, xp, yp);
+	memset(getScreen(), 0, 64000);
+	anim->runSeq1(seqIndex, xp, yp);
 
-    bool done = false;
-    while (!done) {
+	bool done = false;
+	while (!done) {
 
 		while (eventMan->pollEvent(event)) {
 		switch (event.type) {
@@ -327,23 +327,23 @@ int CometEngine::go() {
 
 				switch (event.kbd.keycode) {
 				case Common::KEYCODE_ESCAPE:
-				    return 0;
+					return 0;
 				case Common::KEYCODE_LEFT:
-                    if (seqIndex > 0) {
+					if (seqIndex > 0) {
 						seqIndex--;
-                    	memset(getScreen(), 0, 64000);
-                    	printf("seqIndex = %d\n", seqIndex);
-                    	anim->runSeq1(seqIndex, xp, yp);
-                    }
-				    break;
+						memset(getScreen(), 0, 64000);
+						printf("seqIndex = %d\n", seqIndex);
+						anim->runSeq1(seqIndex, xp, yp);
+					}
+					break;
 				case Common::KEYCODE_RIGHT:
-                    if (seqIndex + 1 < seqCount) {
+					if (seqIndex + 1 < seqCount) {
 						seqIndex++;
-                    	memset(getScreen(), 0, 64000);
-                    	printf("seqIndex = %d\n", seqIndex);
-                    	anim->runSeq1(seqIndex, xp, yp);
-                    }
-				    break;
+						memset(getScreen(), 0, 64000);
+						printf("seqIndex = %d\n", seqIndex);
+						anim->runSeq1(seqIndex, xp, yp);
+					}
+					break;
 				}
 
 				break;
@@ -373,13 +373,13 @@ int CometEngine::go() {
 
 		char text[512];
 		sprintf(text, "seqIndex = %d; x = %d; y = %d", seqIndex, xp, yp);
-        _font->drawText(0, 0, getScreen(), text);
+		_font->drawText(0, 0, getScreen(), text);
 
 		_system->copyRectToScreen(getScreen(), 320, 0, 0, 320, 200);
 
 		_system->updateScreen();
 		_system->delayMillis(10);
-    }
+	}
 
 	//delete anim;
 #endif
