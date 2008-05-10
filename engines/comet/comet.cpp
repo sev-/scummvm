@@ -59,7 +59,7 @@ int CometEngine::init() {
 
 	// Initialize backend
 	_system->beginGFXTransaction();
-		initCommonGFX(true);
+		initCommonGFX(false);
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
