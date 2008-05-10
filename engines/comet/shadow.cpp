@@ -82,7 +82,7 @@ int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
 	int deltaX = (x2 - x1) / 2;
 	int deltaY = y2 - y1;
 	
-	if (abs(deltaX) <= abs(deltaY)) {
+	if (ABS(deltaX) <= ABS(deltaY)) {
 		if (deltaX <= 0)
 			return kDirectionLeft;
 		else

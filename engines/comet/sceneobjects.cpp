@@ -76,12 +76,12 @@ void CometEngine::sceneObjectCalcDirection(SceneObject *sceneObject) {
 	deltaY = sceneObject->y2 - sceneObject->y;
 	direction = sceneObject->direction;
 
-	if (flags == 1 || (flags == 0 && (abs(deltaX) > abs(deltaY)))) {
+	if (flags == 1 || (flags == 0 && (ABS(deltaX) > ABS(deltaY)))) {
 		if (deltaX > 0)
 			direction = 2;
 		else if (deltaX < 0)
 			direction = 4;
-	} else if (flags == 2 || (flags == 0 && (abs(deltaY) > abs(deltaX)))) {
+	} else if (flags == 2 || (flags == 0 && (ABS(deltaY) > ABS(deltaX)))) {
 		if (deltaY > 0)
 			direction = 3;
 		else if (deltaY < 0)
