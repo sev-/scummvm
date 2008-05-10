@@ -122,7 +122,7 @@ protected:
 	ChannelTableElement _channelDataTable[11];
 	ChannelTable2Element _channelTable2[11], _channelTable3[11];
 
-    void initTables();
+	void initTables();
 	void writeOPL(byte reg, byte val);
 	void createDefaultChannel(int index);
 	void resetChannelFrequency(int channelIdx);

@@ -99,7 +99,7 @@ MusicPlayer::MusicPlayer(CometEngine *vm) : _vm(vm) {
 	_ended = false;
 	_playing = false;
 
-    _currentMusic = -1;
+	_currentMusic = -1;
 
 	_musicVolume = 0x7F;
 	_musicParam1 = 0;
@@ -109,14 +109,14 @@ MusicPlayer::MusicPlayer(CometEngine *vm) : _vm(vm) {
 	_generalVolume = 0;
 	_musicTimer = 0;
 	_nextUpdateTimer = musicSync;
-    _regBDConf = 0xC0;
-    
-    initTables();
+	_regBDConf = 0xC0;
+	
+	initTables();
 
-    for (int i = 0; i < 11; i++) {
-    	_channelTable2[i].var4 |= 0x20;
-    	_channelTable2[i].var2->var4 |= 0x20;
-    	createDefaultChannel(i);
+	for (int i = 0; i < 11; i++) {
+		_channelTable2[i].var4 |= 0x20;
+		_channelTable2[i].var2->var4 |= 0x20;
+		createDefaultChannel(i);
   	}
 
 	_vm->_mixer->playInputStream(Audio::Mixer::kMusicSoundType, &_handle,
@@ -158,7 +158,7 @@ int MusicPlayer::readBuffer(int16 *buffer, const int numSamples) {
 void MusicPlayer::initTables() {
 
 	for (int i = 0; i < 11; i++) {
-	    _channelDataTable[i].var0 = 0xFFFF;
+		_channelDataTable[i].var0 = 0xFFFF;
 		_channelDataTable[i].var2 = 0x40;
 		_channelDataTable[i].var4 = 0xFF;
 		_channelDataTable[i].var5 = 0xFF;
@@ -229,13 +229,13 @@ void MusicPlayer::setupChannelFrequency(int channelIdx, int cl, int dx,int bp) {
   	uint8 frequencyHigh;
   	uint8 blockNumber;
   	if (!(bp & 0x8000))
-    	writeOPL(0xB0 + channelIdx, 0);
+		writeOPL(0xB0 + channelIdx, 0);
   	di = globTable[cl & 0xF];
   	if(bp & 0x80) {
    		// exit(1);
   	}
   	if(cl & 0x80) {
-    	dx = 0x40;
+		dx = 0x40;
   	}
   	frequency = di[bp & 0xFF];
   	frequencyLow = frequency & 0xFF;
@@ -243,7 +243,7 @@ void MusicPlayer::setupChannelFrequency(int channelIdx, int cl, int dx,int bp) {
   	blockNumber = (cl & 0x70) >> 2;
   	frequencyHigh = ((frequency >> 8) & 0x3) | blockNumber;
   	if (!(dx & 0x40))
-    	frequencyHigh |= 0x20; // set key on
+		frequencyHigh |= 0x20; // set key on
   	writeOPL(0xB0 + channelIdx, frequencyHigh);
 }
 
@@ -252,22 +252,22 @@ int MusicPlayer::musicStart() {
   	writeOPL(8, 0);
   	writeOPL(0xBD, _regBDConf);
   	for (int i = 0; i < 18; i++) {
-    	writeOPL(0x60 + channelTableMelodic[i], 0xFF);
-    	writeOPL(0x80 + channelTableMelodic[i], 0xFF);
+		writeOPL(0x60 + channelTableMelodic[i], 0xFF);
+		writeOPL(0x80 + channelTableMelodic[i], 0xFF);
   	}
   	for (int i = 0; i < 9; i++) {
-    	resetChannelFrequency(i);
+		resetChannelFrequency(i);
   	}
   	for (int i = 0; i < 11; i++) {
-    	createDefaultChannel(i);
+		createDefaultChannel(i);
   	}
   	if (!_musicParam1) {
-    	resetChannelFrequency(6);
-    	setupChannelFrequency(6, 0, 0x40, 0);
-    	resetChannelFrequency(7);
-    	setupChannelFrequency(7, 7, 0x40, 0);
-    	resetChannelFrequency(8);
-    	setupChannelFrequency(8, 0, 0x40, 0);
+		resetChannelFrequency(6);
+		setupChannelFrequency(6, 0, 0x40, 0);
+		resetChannelFrequency(7);
+		setupChannelFrequency(7, 7, 0x40, 0);
+		resetChannelFrequency(8);
+		setupChannelFrequency(8, 0, 0x40, 0);
   	}
   	return 0;
 }
@@ -279,19 +279,19 @@ int MusicPlayer::musicLoad(void *ptr) {
   	flag1 = musicPtr[0x3C] & 0xC0;
   	_musicParam1 = musicPtr[0x3D];
   	if (!_musicParam1) {
-    	flag1 |= 0x20;
-    	channelTable = channelTableRythme;
+		flag1 |= 0x20;
+		channelTable = channelTableRythme;
   	}
   	_regBDConf = flag1;
   	for (int i = 0; i < 11; i++) {
-    	unsigned long int offset;
-    	offset = *((uint32*)(musicPtr + i*4 + 8));
-    	if (offset) {
-      		_channelTable2[i].dataPtr = musicPtr + offset;
-    	} else {
-      		_channelTable2[i].dataPtr = NULL;
-    	}
-    	_channelTable2[i].var4 |= 0x40;
+		unsigned long int offset;
+		offset = *((uint32*)(musicPtr + i*4 + 8));
+		if (offset) {
+	  		_channelTable2[i].dataPtr = musicPtr + offset;
+		} else {
+	  		_channelTable2[i].dataPtr = NULL;
+		}
+		_channelTable2[i].var4 |= 0x40;
   	}
   	_currentMusicPtr = musicPtr + *((uint16*)(musicPtr + 0x34));
   	return 0;
@@ -301,39 +301,39 @@ void MusicPlayer::executeMusicCommand(ChannelTable2Element *entry) {
   	uint16 opcode;
 
   	if (entry->var4 & 0x40)
-    	return;
+		return;
 
-    // start channel
+	// start channel
   	if (entry->var4 & 0x02) {
-    	entry->commandPtr = entry->dataPtr;
-    	entry->var4 &= 0xFFFD;
-    	entry->var18 = 0;
+		entry->commandPtr = entry->dataPtr;
+		entry->var4 &= 0xFFFD;
+		entry->var18 = 0;
   	} else {
-    	if(entry->var1A != entry->var1D) {
-      		//exit(1);
-    	}
-    	entry->varE--; // voice delay
-	    if (entry->varE <= 0) {
-      		entry->varE = entry->var10;
-    	} else {
-      		return;
-    	}
+		if(entry->var1A != entry->var1D) {
+	  		//exit(1);
+		}
+		entry->varE--; // voice delay
+		if (entry->varE <= 0) {
+	  		entry->varE = entry->var10;
+		} else {
+	  		return;
+		}
   	}
 
   	do {
-    	opcode = *(uint16*)(entry->commandPtr);
-    	entry->commandPtr += 2;
+		opcode = *(uint16*)(entry->commandPtr);
+		entry->commandPtr += 2;
 
-        int param = opcode >> 8;
+		int param = opcode >> 8;
 
 		switch (opcode & 0x7F) {
 		case 0:
   			entry->var4 |= 2;
   			if (entry->var4 & 0x20)
-    			return;
+				return;
   			entry->var4 |= 0x40;
   			if (!(entry->var4 & 0x8000))
-    			return;
+				return;
   			entry->var2->var4 &= 0xFFFB;
 			break;
 		case 1:
@@ -354,13 +354,13 @@ void MusicPlayer::executeMusicCommand(ChannelTable2Element *entry) {
 		  	entry->var17 = param;
 		  	break;
 		case 6:
-		    break;
+			break;
 		case 7:
 		case 8:
 		case 9:
-		    break;
+			break;
 		default:
-		    break;
+			break;
 		}
 
   	} while (!(opcode & 0x80));
@@ -368,46 +368,46 @@ void MusicPlayer::executeMusicCommand(ChannelTable2Element *entry) {
 
 void MusicPlayer::applyDirectFrequency(int index, int param1, int param2, int param3) {
   	if (_musicParam1) {
-    	setupChannelFrequency(index,param1,param2,param3);
-    	return;
+		setupChannelFrequency(index,param1,param2,param3);
+		return;
   	} else {
-    	int ah;
-    	if (index < 6) {
-      		setupChannelFrequency(index,param1,param2,param3);
-      		return;
-    	}
-    	if (index == 6) {
-      		setupChannelFrequency(index,param1,0x40,param3);
-    	} else if (index == 8 && !(param1 & 0x80)) {
-      		int indexBackup = index;
-      		int param1Backup = param1;
-	        int al = param1 & 0x70;
-      		setupChannelFrequency(8, param1, 0x40, param3);
-    		index = 7;
-    		param1 &= 0xF;
-    		param1 += 7;
-    		if (param1 >= 0xC) {
-      			param1 -= 0xC;
-      			if (al != 0x70)
-        			al += 0x10;
-    			}
-    		setupChannelFrequency( index, param1, 0x40,param3);
-      		param1 = param1Backup;
-      		index = indexBackup;
-    	}
-    	ah = (~(smallTable[index - 6])) & _regBDConf;
-    	writeOPL(0xBD,ah);
-    	if (!(param2 & 0x40) && !(param1 & 0x80)) {
-      		ah |= smallTable[index - 6];
-      		writeOPL(0xBD, ah);
-    	}
-    	_regBDConf = ah;
+		int ah;
+		if (index < 6) {
+	  		setupChannelFrequency(index,param1,param2,param3);
+	  		return;
+		}
+		if (index == 6) {
+	  		setupChannelFrequency(index,param1,0x40,param3);
+		} else if (index == 8 && !(param1 & 0x80)) {
+	  		int indexBackup = index;
+	  		int param1Backup = param1;
+			int al = param1 & 0x70;
+	  		setupChannelFrequency(8, param1, 0x40, param3);
+			index = 7;
+			param1 &= 0xF;
+			param1 += 7;
+			if (param1 >= 0xC) {
+	  			param1 -= 0xC;
+	  			if (al != 0x70)
+					al += 0x10;
+				}
+			setupChannelFrequency( index, param1, 0x40,param3);
+	  		param1 = param1Backup;
+	  		index = indexBackup;
+		}
+		ah = (~(smallTable[index - 6])) & _regBDConf;
+		writeOPL(0xBD,ah);
+		if (!(param2 & 0x40) && !(param1 & 0x80)) {
+	  		ah |= smallTable[index - 6];
+	  		writeOPL(0xBD, ah);
+		}
+		_regBDConf = ah;
   	}
 }
 
 void MusicPlayer::configChannel(uint8 value, uint8* data) {
   	if (smallData2[value] != 0xFF) {
-    	writeOPL(0xC0 + smallData2[value], data[2]);
+		writeOPL(0xC0 + smallData2[value], data[2]);
   	}
   	writeOPL(0x60 + value, data[4]); // Attack Rate  Decay Rate
   	writeOPL(0x80 + value, data[5]); // Sustain Level  Release Rate
@@ -419,7 +419,7 @@ void MusicPlayer::changeOuputLevel(uint8 value, uint8 *data, int bp) {
   	int keyScaleLevel;
   	int outputLevel;
   	if (value == 0xFF)
-    	return;
+		return;
   	data++;
   	outputLevel = (*data) & 0x3F;
   	outputLevel = 0x3F - ((((outputLevel * bp)*2) + 0x7F) / 0xFE);
@@ -433,39 +433,39 @@ void MusicPlayer::applyMusicCommandToOPL(ChannelTable2Element *element2, Channel
   	uint8 operator1, operator2;
 
   	if ((element2->var4 & 0x40) != element->var2) {
-    	element->var2 = element2->var4 & 0x40;
-    	if(element2->var4 & 0x40) {
-      		applyDirectFrequency(element2->index,element2->var15 | 0x80, 0x40, element2->var17);
-      		createDefaultChannel(element2->index);
-      		return;
-    	}
+		element->var2 = element2->var4 & 0x40;
+		if(element2->var4 & 0x40) {
+	  		applyDirectFrequency(element2->index,element2->var15 | 0x80, 0x40, element2->var17);
+	  		createDefaultChannel(element2->index);
+	  		return;
+		}
   	}
 
   	if (element2->var4 & 0x40)
-    	return;
+		return;
 
   	if ((element->var8 & 1) || (element->var8 != (element2->var4 & 0x8000))) {
-    	element->var8 = element2->var4&0x8000;
-    	element->var5 = 0xFF;
-    	element->var4 = 0xFF;
-    	element->var0 = 0xFFFF;
-    	element->var7 = 0x9C;
+		element->var8 = element2->var4&0x8000;
+		element->var5 = 0xFF;
+		element->var4 = 0xFF;
+		element->var0 = 0xFFFF;
+		element->var7 = 0x9C;
   	}
 
   	operator1 = channelTable[element2->index * 2];
   	operator2 = channelTable[(element2->index * 2) + 1];
 
   	if (operator1 == 0xFF && operator2 == 0xFF) // do we have an operator ?
-    	return;
+		return;
 
-    // change channel main config
+	// change channel main config
   	if (element2->var12 != element->var4) {
-    	element->var4 = element2->var12;
-    	configChannel(operator1,(_currentMusicPtr2 + 0xD * element2->var12) + 1);
-    	if (operator2 != 0xFF) {
-      		configChannel(operator2,(_currentMusicPtr2+0xD*element2->var12)+7);
-    	}
-    	element->var5 = 0xFF;
+		element->var4 = element2->var12;
+		configChannel(operator1,(_currentMusicPtr2 + 0xD * element2->var12) + 1);
+		if (operator2 != 0xFF) {
+	  		configChannel(operator2,(_currentMusicPtr2+0xD*element2->var12)+7);
+		}
+		element->var5 = 0xFF;
   	}
 
   	// Ouput level handling
@@ -473,31 +473,31 @@ void MusicPlayer::applyMusicCommandToOPL(ChannelTable2Element *element2, Channel
   	al = element2->var1D - element2->var1E;
 
   	if (al < 0)
-    	al = 0;
+		al = 0;
 
   	if (element->var5 != al) {
-    	int dx2;
-    	element->var5 = al;
-    	dx2 = element2->var1D;
-    	if(operator2==0xFF) {
-      		dx2 = element->var5;
-    	}
-    	changeOuputLevel(operator1,_currentMusicPtr2+0xD*element2->var12,dx2);
-    	if(operator2 != 0xFF) {
-      		changeOuputLevel(operator2,(_currentMusicPtr2+0xD*element2->var12)+6,element->var5);
-    	}
+		int dx2;
+		element->var5 = al;
+		dx2 = element2->var1D;
+		if(operator2==0xFF) {
+	  		dx2 = element->var5;
+		}
+		changeOuputLevel(operator1,_currentMusicPtr2+0xD*element2->var12,dx2);
+		if(operator2 != 0xFF) {
+	  		changeOuputLevel(operator2,(_currentMusicPtr2+0xD*element2->var12)+6,element->var5);
+		}
   	}
 
   	bp = dx = element2->var17;
 
   	if (element2->var17 != element->var7) {
-    	element->var7 = element2->var17;
-    	if (element2->var15 == element->var0) {
-      		bp |= 0x8000;
-    	}
+		element->var7 = element2->var17;
+		if (element2->var15 == element->var0) {
+	  		bp |= 0x8000;
+		}
   	} else {
-    	if (element2->var15 == element->var0)
-      	return;
+		if (element2->var15 == element->var0)
+	  	return;
   	}
 
   	element->var0 = element2->var15 = element2->var15 | 0x8000;
@@ -509,17 +509,17 @@ int MusicPlayer::update() {
 
   	ChannelTable2Element *si;
   	if (_generalVolume & 0xFF)
-    	return 0;
+		return 0;
   	for (int i = 0; i < 11; i++) {
-    	_currentMusicPtr2 = _currentMusicPtr;
-    	executeMusicCommand(&_channelTable2[i]);
-    	si = &_channelTable2[i];
-    	if (_channelTable2[i].var4 & 4) {
-      		_currentMusicPtr2 = _currentMusicPtr3;
-      		si = _channelTable2[i].var2;
-      		executeMusicCommand(_channelTable2[i].var2);
-    	}
-    	applyMusicCommandToOPL(si, &_channelDataTable[i]);
+		_currentMusicPtr2 = _currentMusicPtr;
+		executeMusicCommand(&_channelTable2[i]);
+		si = &_channelTable2[i];
+		if (_channelTable2[i].var4 & 4) {
+	  		_currentMusicPtr2 = _currentMusicPtr3;
+	  		si = _channelTable2[i].var2;
+	  		executeMusicCommand(_channelTable2[i].var2);
+		}
+		applyMusicCommandToOPL(si, &_channelDataTable[i]);
   	}
   	return 0;
 }
@@ -540,73 +540,73 @@ int MusicPlayer::fadeMusic(int param1, int param2, int param3) {
   	si = -1;
 
   	if (!bp)
-    	bp = 0x7FF;
+		bp = 0x7FF;
 
   	for (int i = 0; i < 11; i++) {
-      	if (_channelTable2[i].dataPtr) {
-        	if (dx & 0x100) {
-          		//exit(1);
-        	}
-        	if (dx & 0x40) {
-          		if (!_channelTable2[i].var4 & 0x40)
-            		_channelTable2[i].var4 |= 0x40;
-        	}
-            // start all
-        	if (dx & 0x80) {
-          		_channelTable2[i].var4 = 0x40;
-          		cx &= 0x7F;
-          		_channelTable2[i].var1D = cx;
-          		_channelTable2[i].var1A = cx;
-          		_channelTable2[i].var1E = 0;
-          		createDefaultChannel(_channelTable2[i].index);
-          		_channelTable2[i].var4 = 2;
-        	}
-        	if (dx & 0x20) {
-          		//exit(1);
-        	}
-        	if (dx & 0x2000) {
-          		//exit(1);
-        	}
-        	if (dx & 0x8000) {
-          		_channelTable2[i].var1A = cx;
-        	}
-        	if (dx & 0x1000) {
-          		//exit(1);
-        	}
-        	// still running?
-        	if (dx & 0x10) {
-          		if (!(dx & 0x2000)) {
-            		if (!(_channelTable2[i].var4 & 0x40)) {
-              			if (si < _channelTable2[i].var18)
-                			si = _channelTable2[i].var18;
-            		}
-          		} else {
-            		if (_channelTable2[i].var1D != cx) {
-              			si = 0;
-            		}
-          		}
-        	}
-      	}
+	  	if (_channelTable2[i].dataPtr) {
+			if (dx & 0x100) {
+		  		//exit(1);
+			}
+			if (dx & 0x40) {
+		  		if (!_channelTable2[i].var4 & 0x40)
+					_channelTable2[i].var4 |= 0x40;
+			}
+			// start all
+			if (dx & 0x80) {
+		  		_channelTable2[i].var4 = 0x40;
+		  		cx &= 0x7F;
+		  		_channelTable2[i].var1D = cx;
+		  		_channelTable2[i].var1A = cx;
+		  		_channelTable2[i].var1E = 0;
+		  		createDefaultChannel(_channelTable2[i].index);
+		  		_channelTable2[i].var4 = 2;
+			}
+			if (dx & 0x20) {
+		  		//exit(1);
+			}
+			if (dx & 0x2000) {
+		  		//exit(1);
+			}
+			if (dx & 0x8000) {
+		  		_channelTable2[i].var1A = cx;
+			}
+			if (dx & 0x1000) {
+		  		//exit(1);
+			}
+			// still running?
+			if (dx & 0x10) {
+		  		if (!(dx & 0x2000)) {
+					if (!(_channelTable2[i].var4 & 0x40)) {
+			  			if (si < _channelTable2[i].var18)
+							si = _channelTable2[i].var18;
+					}
+		  		} else {
+					if (_channelTable2[i].var1D != cx) {
+			  			si = 0;
+					}
+		  		}
+			}
+	  	}
   	}
 
   	return si;
 }
 
 void MusicPlayer::loadMusic(char *musicPtr) {
-    musicLoad(musicPtr);
-    musicStart();
+	musicLoad(musicPtr);
+	musicStart();
 }
 
 void MusicPlayer::playMusic(int musicNumber) {
-    if (musicNumber >= 0) {
+	if (musicNumber >= 0) {
 		if (fadeMusic(0,0,0x10) == -1) {
-	      	byte *musicPtr = loadFromPak("MUS.PAK", musicNumber);
-    	  	_currentMusic = musicNumber;
-        	fadeMusic(0,0,0x40);
-        	loadMusic((char*)musicPtr);
-        	fadeMusic(_musicVolume,0,0x80);
-        	_playing = true;
-        }
+		  	byte *musicPtr = loadFromPak("MUS.PAK", musicNumber);
+		  	_currentMusic = musicNumber;
+			fadeMusic(0,0,0x40);
+			loadMusic((char*)musicPtr);
+			fadeMusic(_musicVolume,0,0x80);
+			_playing = true;
+		}
   	}
 }
 
