@@ -65,8 +65,8 @@ protected:
 
 	byte *_workScreen;
 
-	bool _screenTransitionEffectFlag;
-	int _screenZoomFactor, _screenZoomXPos, _screenZoomYPos;
+	bool _transitionEffect;
+	int _zoomFactor, _zoomX, _zoomY;
 	
 	PaletteFadeType _fadeType;
 	int _fadeValue;

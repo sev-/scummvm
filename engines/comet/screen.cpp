@@ -15,10 +15,10 @@ uint Screen::gfxPrimitivesPolyAllocated = 0;
 Screen::Screen(CometEngine *vm) : _vm(vm) {
 
 	_fadeType = kFadeNone;
-	_screenTransitionEffectFlag = false;
-	_screenZoomFactor = 0;
-	_screenZoomXPos = 160;
-	_screenZoomYPos = 100;
+	_transitionEffect = false;
+	_zoomFactor = 0;
+	_zoomX = 160;
+	_zoomY = 100;
 
 	_workScreen = new byte[64320];
 	_font = new Font();
@@ -32,7 +32,7 @@ Screen::~Screen() {
 
 void Screen::update() {
 
-	if (_screenTransitionEffectFlag && _screenZoomFactor == 0 && _fadeType == kFadeNone) {
+	if (_transitionEffect && _zoomFactor == 0 && _fadeType == kFadeNone) {
 		screenTransitionEffect();
 	} else if (_fadeType == kFadeIn) {
 		paletteFadeIn();
@@ -40,19 +40,19 @@ void Screen::update() {
 		paletteFadeOut();
 	} else {
 
-		switch (_screenZoomFactor) {
+		switch (_zoomFactor) {
 		case 0:
 			_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
 			_vm->_system->updateScreen();
 			break;
 		case 1:
-	  		screenZoomEffect2x(_screenZoomXPos, _screenZoomYPos);
+	  		screenZoomEffect2x(_zoomX, _zoomY);
 	  		break;
 		case 2:
-	  		screenZoomEffect3x(_screenZoomXPos, _screenZoomYPos);
+	  		screenZoomEffect3x(_zoomX, _zoomY);
 	  		break;
 		case 3:
-	  		screenZoomEffect4x(_screenZoomXPos, _screenZoomYPos);
+	  		screenZoomEffect4x(_zoomX, _zoomY);
 	  		break;
 		default:
 			break;
@@ -65,13 +65,13 @@ void Screen::update() {
 }
 
 void Screen::enableTransitionEffect() {
-	_screenTransitionEffectFlag = true;
+	_transitionEffect = true;
 }
 
 void Screen::setZoom(int zoomFactor, int x, int y) {
-	_screenZoomFactor = zoomFactor;
-	_screenZoomXPos = x;
-	_screenZoomYPos = y;
+	_zoomFactor = zoomFactor;
+	_zoomX = x;
+	_zoomY = y;
 }
 
 void Screen::setFadeType(PaletteFadeType fadeType) {
@@ -258,7 +258,7 @@ void Screen::screenTransitionEffect() {
 
 	free(vgaScreen);
 
-	_screenTransitionEffectFlag = false;
+	_transitionEffect = false;
 
 }
 
