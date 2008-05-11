@@ -27,7 +27,7 @@ enum {
 	kMouseNone			= 0,
 	kMouseLeftDown		= 1,
 	kMouseLeftUp		= 2,
-	kMouseRightDown     = 3,
+	kMouseRightDown		= 3,
 	kMouseRightUp		= 4
 };
 
@@ -74,17 +74,7 @@ int CometEngine::init() {
 
 int CometEngine::go() {
 
-	/*
-	int size = getPakSize("A00.PAK", 38);
-	byte *temp = loadFromPak("A00.PAK", 38);
-	FILE *f = fopen("Q:\\OldGames\\SotC\\scummvm\\engines\\comet\\test.va2", "wb");
-	fwrite(temp, size, 1, f);
-	fclose(f);
-	exit(0);
-	*/
-
 	Common::Event event;
-	Common::EventManager *eventMan = _system->getEventManager();
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -181,7 +171,6 @@ int CometEngine::go() {
 	_endLoopFlag = false;
 	while (!_endLoopFlag) {
 		handleEvents();
-		printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
 		
 		if (_keyScancode == Common::KEYCODE_ESCAPE)
 			break;
@@ -236,7 +225,6 @@ int CometEngine::go() {
 		handleEvents();
 
 		/* Debugging helpers follows */
-		printf("l: _keyScancode = %d\n", _keyScancode); fflush(stdout);
 		if (_keyScancode == Common::KEYCODE_ESCAPE)
 			break;
 
@@ -289,101 +277,6 @@ int CometEngine::go() {
 		}
 #endif
 	}
-#endif
-
-
-
-#if 0
-	memset(getScreen(), 0, 64000);
-
-	setFullPalette(_ctuPal);
-	
-	_startupFileNumber = 9;
-	_startupScriptNumber = 0;
-
-	initAndLoadGlobalData();
-
-	Anim *anim = new Anim(this);
-	anim->load("A05.PAK", 21);
-	//0, 11, 21
-
-	_font->setColor(254);
-
-	int seqIndex = 0;
-	int seqCount = READ_LE_UINT32(anim->getSection(0)) / 4;
-	int xp = 240, yp = 170;
-
-
-	seqIndex = 12;
-	
-
-	memset(getScreen(), 0, 64000);
-	anim->runSeq1(seqIndex, xp, yp);
-
-	bool done = false;
-	while (!done) {
-
-		while (eventMan->pollEvent(event)) {
-		switch (event.type) {
-			case Common::EVENT_KEYDOWN:
-
-				switch (event.kbd.keycode) {
-				case Common::KEYCODE_ESCAPE:
-					return 0;
-				case Common::KEYCODE_LEFT:
-					if (seqIndex > 0) {
-						seqIndex--;
-						memset(getScreen(), 0, 64000);
-						printf("seqIndex = %d\n", seqIndex);
-						anim->runSeq1(seqIndex, xp, yp);
-					}
-					break;
-				case Common::KEYCODE_RIGHT:
-					if (seqIndex + 1 < seqCount) {
-						seqIndex++;
-						memset(getScreen(), 0, 64000);
-						printf("seqIndex = %d\n", seqIndex);
-						anim->runSeq1(seqIndex, xp, yp);
-					}
-					break;
-				}
-
-				break;
-			case Common::EVENT_KEYUP:
-				break;
-			case Common::EVENT_MOUSEMOVE:
-				xp = event.mouse.x;
-				yp = event.mouse.y;
-				anim->runSeq1(seqIndex, xp, yp);
-				break;
-			case Common::EVENT_LBUTTONDOWN:
-				break;
-			case Common::EVENT_LBUTTONUP:
-				break;
-			case Common::EVENT_RBUTTONDOWN:
-				break;
-			case Common::EVENT_RBUTTONUP:
-				break;
-			case Common::EVENT_QUIT:
-				// TODO
-				//exit(0);
-				return 0;
-			default:
-				break;
-			}
-		}
-
-		char text[512];
-		sprintf(text, "seqIndex = %d; x = %d; y = %d", seqIndex, xp, yp);
-		_font->drawText(0, 0, getScreen(), text);
-
-		_system->copyRectToScreen(getScreen(), 320, 0, 0, 320, 200);
-
-		_system->updateScreen();
-		_system->delayMillis(10);
-	}
-
-	//delete anim;
 #endif
 
 	return 0;

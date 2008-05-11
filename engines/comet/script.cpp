@@ -22,7 +22,7 @@ void Script::jump() {
 
 	int16 ofs = (int16)READ_LE_UINT16(ip);
 
-	printf("    jump: %d (%04X)\n", ofs, ofs);
+	debug(3, "    jump: %d (%04X)", ofs, ofs);
 	
 	ip += ofs;
 	
@@ -82,7 +82,7 @@ void CometEngine::initializeScript() {
 
 	_scriptCount = READ_LE_UINT16(_scriptData) / 2;
 	
-	printf("CometEngine::initializeScript()  _scriptCount = %d\n", _scriptCount);
+	debug(2, "CometEngine::initializeScript()  _scriptCount = %d", _scriptCount);
 	
 	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++)
 		prepareScript(scriptNumber);
@@ -109,7 +109,7 @@ void CometEngine::prepareScript(int scriptNumber) {
 
 void CometEngine::runScriptSub1() {
 
-	//printf("######## runScriptSub1()\n");
+	//debug(3, "######## runScriptSub1()");
 
 	int scriptNumber = _curScript->scriptNumber;
 	Script *script = _scripts[scriptNumber];
@@ -127,7 +127,7 @@ void CometEngine::runScriptSub1() {
 
 void CometEngine::runScriptSub2() {
 
-	//printf("######## runScriptSub2()\n");
+	//debug(3, "######## runScriptSub2()");
 
 	if (_curScript->scriptNumber > 0)
 		_curScript->scriptNumber--;
@@ -142,9 +142,12 @@ void CometEngine::runScriptSub2() {
 
 void CometEngine::runScriptSub3() {
 
-	printf("######## runScriptSub3()  objectIndex = %d\n", _curScript->objectIndex);
+	debug(3, "######## runScriptSub3()  objectIndex = %d", _curScript->objectIndex);
 
-	if (!(_curScript->object()->walkStatus & 3) || _curScript->object()->flag == 0) {
+	debug(2, "CometEngine::runScriptSub3() walkStatus = %d; flag = %d",
+		_curScript->object()->walkStatus, _curScript->object()->flag);
+
+	if ((_curScript->object()->walkStatus & 3) == 0 || _curScript->object()->flag == 0) {
 		_curScript->status &= ~kScriptWalking;
 		sceneObjectSetAnimNumber(_curScript->object(), 0);
 	} else {
@@ -202,30 +205,25 @@ void CometEngine::runScriptSub6() {
 
 void CometEngine::runScript(int scriptNumber) {
 
-	//printf("CometEngine::runScript(%d)\n", scriptNumber); fflush(stdout);
+	//debug(3, "CometEngine::runScript(%d)", scriptNumber);
 
 	_curScriptNumber = scriptNumber;
 	_curScript = _scripts[scriptNumber];
 
 	_scriptBreakFlag = false;
 
-	/*
-	printf("%02d ", scriptNumber);
 	if (_curScript->status & kScriptWalking)
-		printf("kScriptWalking ", scriptNumber);
+		debug(2, "kScriptWalking %d", scriptNumber);
 	if (_curScript->status & kScriptSleeping)
-		printf("kScriptSleeping ", scriptNumber);
+		debug(2, "kScriptSleeping %d", scriptNumber);
 	if (_curScript->status & kScriptAnimPlaying)
-		printf("kScriptAnimPlaying ", scriptNumber);
+		debug(2, "kScriptAnimPlaying %d", scriptNumber);
 	if (_curScript->status & kScriptDialogRunning)
-		printf("kScriptDialogRunning ", scriptNumber);
+		debug(2, "kScriptDialogRunning %d", scriptNumber);
 	if (_curScript->status & kScriptPaused)
-		printf("kScriptPaused ", scriptNumber);
+		debug(2, "kScriptPaused %d", scriptNumber);
 	if (_curScript->status & kScriptTalking)
-		printf("kScriptTalking ", scriptNumber);
-	printf("\n");
-	fflush(stdout);
-	*/
+		debug(2, "kScriptTalking %d", scriptNumber);
 
 	if (_curScript->status & kScriptPaused)
 		return;
@@ -248,15 +246,14 @@ void CometEngine::runScript(int scriptNumber) {
 	if (_curScript->status & kScriptTalking)
 		runScriptSub6();
 
-	//printf("%02d: _scriptBreakFlag = %d\n", scriptNumber, _scriptBreakFlag); fflush(stdout);
+	//debug(3, "%02d: _scriptBreakFlag = %d", scriptNumber, _scriptBreakFlag);
 
 	// TODO: Put script functions into a nice array
 
 	while (!_scriptBreakFlag) {
 		byte funcIndex = *_curScript->ip++;
 
-		printf("-----------------------------------------------   op %d\n", funcIndex);
-		printf("%02d ", scriptNumber); fflush(stdout);
+		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(_curScript->ip - _curScript->code), funcIndex);
 
 		switch (funcIndex) {
 		case 0:
@@ -502,7 +499,7 @@ void CometEngine::objectWalkToXYAbs(Script *script, bool xyFlag) {
 		y = newValue;
 	}
 
-	printf("objectWalkToXYAbs()  object: %d; old: %d, %d; new: %d, %d\n", script->objectIndex, script->object()->x, script->object()->y, x, y); fflush(stdout);
+	debug(3, "objectWalkToXYAbs()  object: %d; old: %d, %d; new: %d, %d", script->objectIndex, script->object()->x, script->object()->y, x, y);
 
 	if (sceneObjectUpdateDirection2(script->objectIndex, x, y)) {
 		if (!xyFlag) {
@@ -531,7 +528,7 @@ void CometEngine::objectWalkToXYRel(Script *script, bool xyFlag) {
 		y = _sceneObjects[0].y + delta;
 	}
 
-	printf("objectWalkToXYRel()  object: %d; old: %d, %d; new: %d, %d\n", script->objectIndex, script->object()->x, script->object()->y, x, y); fflush(stdout);
+	debug(3, "objectWalkToXYRel()  object: %d; old: %d, %d; new: %d, %d", script->objectIndex, script->object()->x, script->object()->y, x, y);
 
 	if (sceneObjectUpdateDirection2(script->objectIndex, x, y)) {
 		if (!xyFlag) {
@@ -559,7 +556,7 @@ void CometEngine::o1_addSceneItem(Script *script, int paramType) {
 	x = script->loadByte() * 2;
 	y = script->loadByte();
 	
-	printf("o1_addSceneItem(%d, %d, %d)", itemIndex, x, y);
+	debug(2, "o1_addSceneItem(%d, %d, %d)", itemIndex, x, y);
 	
 	SceneItem sceneItem;
 	sceneItem.itemIndex = itemIndex;
@@ -574,7 +571,7 @@ void CometEngine::o1_addSceneItem(Script *script, int paramType) {
 /* Script functions */
 
 void CometEngine::o1_sceneObjectSetDirection(Script *script) {
-	printf("o1_sceneObjectSetDirection\n");
+	debug(2, "o1_sceneObjectSetDirection");
 
 	int direction = script->loadByte();
 	script->object()->directionChanged = 0;
@@ -583,19 +580,19 @@ void CometEngine::o1_sceneObjectSetDirection(Script *script) {
 }
 
 void CometEngine::o1_jump(Script *script) {
-	printf("o1_jump()\n");
+	debug(2, "o1_jump()");
 	
 	script->jump();
 }
 
 void CometEngine::o1_objectWalkToXAbs(Script *script) {
-	printf("o1_objectWalkToXAbs()\n");
+	debug(2, "o1_objectWalkToXAbs()");
 
 	objectWalkToXYAbs(script, false);
 }
 
 void CometEngine::o1_objectWalkToYAbs(Script *script) {
-	printf("o1_objectWalkToYAbs()\n");
+	debug(2, "o1_objectWalkToYAbs()");
 
 	objectWalkToXYAbs(script, true);
 }
@@ -604,7 +601,7 @@ void CometEngine::o1_loop(Script *script) {
 
 	byte loopCount = script->ip[2];
 	
-	printf("o1_loop(%d)\n", loopCount);
+	debug(2, "o1_loop(%d)", loopCount);
 	
 	script->counter++;
 	
@@ -622,7 +619,7 @@ void CometEngine::o1_objectSetPosition(Script *script) {
 	int x = script->loadByte() * 2;
 	int y = script->loadByte();
 
-	printf("o1_objectSetPosition(%d, %d)\n", x, y);
+	debug(2, "o1_objectSetPosition(%d, %d)", x, y);
 
 	sceneObjectSetXY(script->objectIndex, x, y);
 
@@ -632,7 +629,7 @@ void CometEngine::o1_sleep(Script *script) {
 
 	int sleepCount = script->loadByte();
 
-	printf("o1_sleep(%d)\n", sleepCount);
+	debug(2, "o1_sleep(%d)", sleepCount);
 
 	script->scriptNumber = sleepCount;
 	script->status |= kScriptSleeping;
@@ -647,7 +644,7 @@ void CometEngine::o1_if(Script *script) {
 	uint16 value2 = script->loadValue();
 
 	const char* boolOps[] = {"==", "!=", ">", ">=", "<", "<=", "&", "|"};
-	printf("o1_if %d %s %d\n", value1, boolOps[boolOp], value2);
+	debug(2, "o1_if %d %s %d", value1, boolOps[boolOp], value2);
 
 	if (script->evalBoolOp(value1, value2, boolOp))
 		script->ip += 2;
@@ -665,13 +662,13 @@ void CometEngine::o1_condJump2(Script *script) {
 }
 
 void CometEngine::o1_objectWalkToXRel(Script *script) {
-	printf("o1_objectWalkToXRel()\n");
+	debug(2, "o1_objectWalkToXRel()");
 
 	objectWalkToXYRel(script, false);
 }
 
 void CometEngine::o1_objectWalkToYRel(Script *script) {
-	printf("o1_objectWalkToYRel()\n");
+	debug(2, "o1_objectWalkToYRel()");
 
 	objectWalkToXYRel(script, true);
 }
@@ -680,7 +677,7 @@ void CometEngine::o1_setMouseFlags(Script *script) {
 
 	int flagIndex = script->loadByte();
 	
-	printf("o1_setMouseFlags(%d)\n", flagIndex);
+	debug(2, "o1_setMouseFlags(%d)", flagIndex);
 
 	if (flagIndex == 0) {
 		_mouseCursor2 = 0;
@@ -694,7 +691,7 @@ void CometEngine::o1_setMouseFlags(Script *script) {
 }
 
 void CometEngine::o1_resetHeroDirectionChanged(Script *script) {
-	printf("o1_resetHeroDirectionChanged()\n");
+	debug(2, "o1_resetHeroDirectionChanged()");
 	
 	resetHeroDirectionChanged();
 }
@@ -713,14 +710,14 @@ void CometEngine::o1_selectObject(Script *script) {
 
 	int objectIndex = script->loadByte();
 	
-	printf("o1_selectObject(%d)\n", objectIndex);
+	debug(2, "o1_selectObject(%d)", objectIndex);
 	
 	script->objectIndex = objectIndex;
 	
 }
 
 void CometEngine::o1_initPoints(Script *script) {
-	printf("o1_initPoints\n");
+	debug(2, "o1_initPoints");
 
 	initPoints(script->ip);
 	script->ip += *script->ip * 2 + 1;
@@ -728,7 +725,7 @@ void CometEngine::o1_initPoints(Script *script) {
 }
 
 void CometEngine::o1_initLines(Script *script) {
-	printf("o1_initLines\n");
+	debug(2, "o1_initLines");
 
 	initLines(script->ip);
 	script->ip += *script->ip * 5 + 1;
@@ -743,7 +740,7 @@ void CometEngine::o1_startScript(Script *script) {
 
 	int scriptNumber = script->loadByte();
 
-	printf("o1_startScript(%d)\n", scriptNumber);
+	debug(2, "o1_startScript(%d)", scriptNumber);
 
 	if (scriptNumber < _scriptCount) {
 		prepareScript(scriptNumber);
@@ -756,7 +753,7 @@ void CometEngine::o1_pauseScript(Script *script) {
 
 	int scriptNumber = script->loadByte();
 
-	printf("o1_pauseScript(%d)\n", scriptNumber);
+	debug(2, "o1_pauseScript(%d)", scriptNumber);
 
 	_scripts[scriptNumber]->status |= kScriptPaused;
 
@@ -782,7 +779,7 @@ void CometEngine::o1_setVar(Script *script) {
 	int varIndex = script->loadInt16();
 	int value = script->loadValue();
 
-	printf("o1_setVar(%d, %d)\n", varIndex, value);
+	debug(2, "o1_setVar(%d, %d)", varIndex, value);
 
 	int *varPtr = getVarPointer(varIndex);
 	*varPtr = value;
@@ -794,7 +791,7 @@ void CometEngine::o1_incVar(Script *script) {
 	int varIndex = script->loadInt16();
 	int value = script->loadValue();
 
-	printf("o1_incVar(%d, %d)\n", varIndex, value);
+	debug(2, "o1_incVar(%d, %d)", varIndex, value);
 
 	int *varPtr = getVarPointer(varIndex);
 	*varPtr += value;
@@ -806,7 +803,7 @@ void CometEngine::o1_subVar(Script *script) {
 	int varIndex = script->loadInt16();
 	int value = script->loadValue();
 
-	printf("o1_subVar(%d, %d)\n", varIndex, value);
+	debug(2, "o1_subVar(%d, %d)", varIndex, value);
 
 	int *varPtr = getVarPointer(varIndex);
 	*varPtr -= value;
@@ -815,14 +812,14 @@ void CometEngine::o1_subVar(Script *script) {
 
 void CometEngine::o1_setItemValue5To8(Script *script) {
 
-	printf("o1_setItemValue5To8()\n");
+	debug(2, "o1_setItemValue5To8()");
 
 	script->object()->value5 = 8;
 }
 
 void CometEngine::o1_setItemValue5To0(Script *script) {
 
-	printf("o1_setItemValue5To0()\n");
+	debug(2, "o1_setItemValue5To0()");
 
 	script->object()->value5 = 0;
 }
@@ -832,7 +829,7 @@ void CometEngine::o1_updateDirection2(Script *script) {
 	int x = script->loadByte() * 2;
 	int y = script->loadByte();
 
-	debug(2, "o1_updateDirection2(%d, %d)\n", x, y);
+	debug(2, "o1_updateDirection2(%d, %d)", x, y);
 	
 	script->object()->directionChanged = 0;
 	
@@ -847,7 +844,7 @@ void CometEngine::o1_setGlobalScriptNumber(Script *script) {
 
 	int scriptNumber = script->loadByte();
 
-	printf("o1_setGlobalScriptNumber(%d)\n", scriptNumber);
+	debug(2, "o1_setGlobalScriptNumber(%d)", scriptNumber);
 
 	if (scriptNumber == 0xFF) {
 		_scriptNumber = -1;
@@ -862,7 +859,7 @@ void CometEngine::o1_setAnimValues(Script *script) {
 	int animIndex = script->loadByte();
 	int animFrameIndex = script->loadByte();
 
-	printf("o1_setAnimValues(%d, %d)\n", animIndex, animFrameIndex);
+	debug(2, "o1_setAnimValues(%d, %d)", animIndex, animFrameIndex);
 
 	script->object()->animIndex = animIndex;
 	script->object()->animFrameIndex = animFrameIndex;
@@ -899,7 +896,7 @@ void CometEngine::o1_startDialog(Script *script) {
 
 void CometEngine::o1_waitWhilePlayerIsInRect(Script *script) {
 
-	printf("o1_waitWhilePlayerIsInRect(%d, %d, %d, %d)\n", script->x, script->y, script->x2, script->y2);
+	debug(2, "o1_waitWhilePlayerIsInRect(%d, %d, %d, %d)", script->x, script->y, script->x2, script->y2);
 
 	//DEBUG
 	_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
@@ -918,7 +915,7 @@ void CometEngine::o1_waitUntilPlayerIsInRect(Script *script) {
 	script->x2 = script->loadByte() * 2;
 	script->y2 = script->loadByte();
 
-	printf("o1_waitUntilPlayerIsInRect(%d, %d, %d, %d)\n", script->x, script->y, script->x2, script->y2);
+	debug(2, "o1_waitUntilPlayerIsInRect(%d, %d, %d, %d)", script->x, script->y, script->x2, script->y2);
 
 	//DEBUG
 	_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
@@ -932,7 +929,7 @@ void CometEngine::o1_waitUntilPlayerIsInRect(Script *script) {
 }
 
 void CometEngine::o1_freeMarcheEx(Script *script) {
-	printf("o1_freeMarcheEx\n");
+	debug(2, "o1_freeMarcheEx");
 
 	if (script->objectIndex != 0) {
 		script->object()->flag = 0;
@@ -947,7 +944,7 @@ void CometEngine::o1_setObjectClipX(Script *script) {
 	int x5 = script->loadByte() * 2;
 	int x6 = script->loadByte() * 2;
 
-	printf("o1_setObjectClipX(%d, %d)\n", x5, x6);
+	debug(2, "o1_setObjectClipX(%d, %d)", x5, x6);
 	
 	script->object()->x5 = x5;
 	script->object()->x6 = x6;
@@ -959,7 +956,7 @@ void CometEngine::o1_setObjectClipY(Script *script) {
 	int y5 = script->loadByte();
 	int y6 = script->loadByte();
 
-	printf("o1_setObjectClipY(%d, %d)\n", y5, y6);
+	debug(2, "o1_setObjectClipY(%d, %d)", y5, y6);
 
 	script->object()->y5 = y5;
 	script->object()->y6 = y6;
@@ -967,7 +964,7 @@ void CometEngine::o1_setObjectClipY(Script *script) {
 }
 
 void CometEngine::o1_orVar(Script *script) {
-	printf("o1_orVar\n");
+	debug(2, "o1_orVar");
 
 	int varIndex = script->loadInt16();
 	int value = script->loadValue();
@@ -980,7 +977,7 @@ void CometEngine::o1_loadScene(Script *script) {
 
 	_backgroundFileIndex = script->loadByte() * 2;
 
-	printf("o1_loadScene(%d)\n", _backgroundFileIndex);
+	debug(2, "o1_loadScene(%d)", _backgroundFileIndex);
 
 	initSceneBackground();
 
@@ -993,7 +990,7 @@ void CometEngine::o1_addBlockingRect(Script *script) {
 	int x2 = script->loadByte();
 	int y2 = script->loadByte();
 
-	printf("o1_addBlockingRect(%d,%d,%d,%d)\n", x, y, x2, y2);
+	debug(2, "o1_addBlockingRect(%d,%d,%d,%d)", x, y, x2, y2);
 
 	addBlockingRect(x, y, x2, y2);
 
@@ -1014,7 +1011,7 @@ void CometEngine::o1_sub_A67F(Script *script) {
 
 void CometEngine::o1_sub_A64B(Script *script) {
 
-	printf("o1_sub_A64B()\n");
+	debug(2, "o1_sub_A64B()");
 
 	if (_cmdTalk) {
 		if (o1_Sub_rectCompare01(script)) {
@@ -1057,7 +1054,7 @@ bool CometEngine::o1_Sub_rectCompare01(Script *script) {
 void CometEngine::o1_sub_A735(Script *script) {
 	// LOOK AT handler
 
-	printf("o1_sub_A735()\n");
+	debug(2, "o1_sub_A735()");
 
 	if (_cmdLook) {
 		if (o1_Sub_rectCompare01(script)) {
@@ -1088,7 +1085,7 @@ void CometEngine::o1_removeBlockingRect(Script *script) {
 }
 
 void CometEngine::o1_setSceneObjectColor(Script *script) {
-	printf("o1_setSceneObjectColor\n");
+	debug(2, "o1_setSceneObjectColor");
 
 	script->object()->color = script->loadByte();
 	
@@ -1099,7 +1096,7 @@ void CometEngine::o1_setTextXY(Script *script) {
 	int textX = script->loadByte() * 2;
 	int textY = script->loadByte();
 
-	printf("o1_setTextXY(%d, %d)\n", textX, textY);
+	debug(2, "o1_setTextXY(%d, %d)", textX, textY);
 
 	script->object()->textX = textX;
 	script->object()->textY = textY;
@@ -1110,7 +1107,7 @@ void CometEngine::o1_playMusic(Script *script) {
 
 	int fileIndex = script->loadByte();
 
-	printf("o1_playMusic(%d)\n", fileIndex);
+	debug(2, "o1_playMusic(%d)", fileIndex);
 
 	if (fileIndex != 0xFF) {
 		//TODO: playMusic(fileIndex);
@@ -1123,13 +1120,13 @@ void CometEngine::o1_playMusic(Script *script) {
 }
 
 void CometEngine::o1_setRandomValue(Script *script) {
-	printf("o1_setRandomValue()\n");
+	debug(2, "o1_setRandomValue()");
 	_scriptRandomValue = random(script->loadByte());
 }
 
 void CometEngine::o1_setFileNumber(Script *script) {
 	_fileNumber = script->loadByte();
-	printf("o1_setFileNumber(%d)\n", _fileNumber);
+	debug(2, "o1_setFileNumber(%d)", _fileNumber);
 	_scriptBreakFlag = true;
 }
 
@@ -1139,7 +1136,7 @@ void CometEngine::o1_dialog(Script *script) {
 	int narSubIndex = script->loadInt16();
 	int animNumber = script->loadByte();
 
-	printf("o1_dialog(%d, %d, %d)\n", objectIndex, narSubIndex, animNumber);
+	debug(2, "o1_dialog(%d, %d, %d)", objectIndex, narSubIndex, animNumber);
 
 	textProc2(objectIndex, narSubIndex, animNumber);
 
@@ -1150,7 +1147,7 @@ void CometEngine::o1_addSceneItem2(Script *script) {
 }
 
 void CometEngine::o1_playAnim(Script *script) {
-	printf("o1_playAnim\n");
+	debug(2, "o1_playAnim");
 
 	o1_sceneObjectSetAnimNumber(script);
 	script->status |= kScriptAnimPlaying;
@@ -1162,7 +1159,7 @@ void CometEngine::o1_sceneObjectSetAnimNumber(Script *script) {
 
 	int animIndex = script->loadByte();
 
-	printf("o1_sceneObjectSetAnimNumber(%d)\n", animIndex);
+	debug(2, "o1_sceneObjectSetAnimNumber(%d)", animIndex);
 
 	sceneObjectSetAnimNumber(script->object(), animIndex);
 	script->object()->directionChanged = 2;
@@ -1176,7 +1173,7 @@ void CometEngine::o1_sub_AD04(Script *script) {
 	int animNumber = script->loadByte();
 	int fileIndex = script->loadByte();
 	
-	printf("o1_sub_AD04(%d, %d, %d, %d)\n", objectIndex, narSubIndex, animNumber, fileIndex);
+	debug(2, "o1_sub_AD04(%d, %d, %d, %d)", objectIndex, narSubIndex, animNumber, fileIndex);
 	//_system->delayMillis(5000);
 
 	int marcheIndex = loadMarche(_marcheNumber, fileIndex);
@@ -1198,7 +1195,7 @@ void CometEngine::o1_sub_AD04(Script *script) {
 }
 
 void CometEngine::o1_initSceneObject(Script *script) {
-	printf("o1_initSceneObject\n");
+	debug(2, "o1_initSceneObject");
 
 	o1_selectObject(script);
 
@@ -1212,7 +1209,7 @@ void CometEngine::o1_loadMarche(Script *script) {
 
 	int fileIndex = script->loadByte();
 	
-	printf("o1_loadMarche(%d)\n", fileIndex);
+	debug(2, "o1_loadMarche(%d)", fileIndex);
 
 	freeMarcheEx(script->object());
 	
@@ -1223,20 +1220,20 @@ void CometEngine::o1_loadMarche(Script *script) {
 
 void CometEngine::o1_setObjectVisible(Script *script) {
 	int visible = script->loadByte();
-	printf("o1_setObjectVisible(%d)\n", visible);
+	debug(2, "o1_setObjectVisible(%d)", visible);
 	script->object()->visible = visible;
 }
 
 void CometEngine::o1_paletteFadeIn(Script *script) {
 	int paletteValue = script->loadByte();
-	printf("o1_paletteFadeIn(%d)\n", paletteValue);
+	debug(2, "o1_paletteFadeIn(%d)", paletteValue);
 	_screen->setFadeType(kFadeIn);
 	_screen->setFadeValue(paletteValue);
 }
 
 void CometEngine::o1_paletteFadeOut(Script *script) {
 	int paletteValue = script->loadByte();
-	printf("o1_paletteFadeOut(%d)\n", paletteValue);
+	debug(2, "o1_paletteFadeOut(%d)", paletteValue);
 	_screen->setFadeType(kFadeOut);
 	_screen->setFadeValue(paletteValue);
 }
@@ -1245,7 +1242,7 @@ void CometEngine::o1_setNarFileIndex(Script *script) {
 
 	_narFileIndex = script->loadByte();
 
-	printf("o1_setNarFileIndex(%d)\n", _narFileIndex);
+	debug(2, "o1_setNarFileIndex(%d)", _narFileIndex);
 
 	openVoiceFile(_narFileIndex);
 	
@@ -1255,7 +1252,7 @@ void CometEngine::o1_deactivateSceneItem(Script *script) {
 
 	int itemIndex = script->loadByte();
 
-	int index = 0;
+	uint index = 0;
 	while (index < _sceneItems.size()) {
 		if (_sceneItems[index].itemIndex == itemIndex) {
 			_sceneItems.remove_at(index);
@@ -1267,7 +1264,7 @@ void CometEngine::o1_deactivateSceneItem(Script *script) {
 }
 
 void CometEngine::o1_sample_2(Script *script) {
-	printf("o1_sample_2\n");
+	debug(2, "o1_sample_2");
 
 	int narFileIndex = script->loadByte();
 	
@@ -1276,7 +1273,7 @@ void CometEngine::o1_sample_2(Script *script) {
 }
 
 void CometEngine::o1_sample_1(Script *script) {
-	printf("o1_sample_1\n");
+	debug(2, "o1_sample_1");
 
 	int narFileIndex = script->loadByte();
 	int value = script->loadByte();

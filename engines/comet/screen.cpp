@@ -1,4 +1,5 @@
 #include "graphics/surface.h"
+#include "graphics/primitives.h"
 
 #include "comet/comet.h"
 #include "comet/font.h"
@@ -9,7 +10,7 @@
 namespace Comet {
 
 int *Screen::gfxPrimitivesPolyInts = NULL;
-int Screen::gfxPrimitivesPolyAllocated = 0;
+uint Screen::gfxPrimitivesPolyAllocated = 0;
 
 Screen::Screen(CometEngine *vm) : _vm(vm) {
 
@@ -334,6 +335,11 @@ void Screen::clearScreen() {
 	memset(_workScreen, 0, 64320);
 }
 
+void Screen::putPixel(int x, int y, byte color) {
+	if (x >= 0 && x < 320 && y >= 0 && y < 200)
+		_workScreen[x + y * 320] = color;
+}
+
 void Screen::hLine(int x, int y, int x2, byte color) {
 	// Clipping
 	if (y < 0 || y >= 200)
@@ -374,6 +380,10 @@ void Screen::vLine(int x, int y, int y2, byte color) {
 
 }
 
+void Screen::line(int x1, int y1, int x2, int y2, byte color) {
+	Graphics::drawLine(x1, y1, x2, y2, color, Screen::plotProc, (void*)this);
+}
+
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
 
 	if (x1 < 0) x1 = 0;
@@ -412,10 +422,10 @@ int gfxPrimitivesCompareInt(const void *a, const void *b) {
 }
 
 void Screen::filledPolygonColor(PointArray &poly, byte color) {
-	int i, y, xa, xb, miny, maxy;
+	int y, xa, xb, miny, maxy;
 	int x1, y1, x2, y2;
 	int ind1, ind2;
-	int ints;
+	uint ints;
 
 	/* Sanity check */
 	if (poly.size() < 3)
@@ -435,7 +445,7 @@ void Screen::filledPolygonColor(PointArray &poly, byte color) {
 	/* Determine Y maxima */
 	miny = poly[0].y;
 	maxy = poly[0].y;
-	for (i = 1; i < poly.size(); i++) {
+	for (uint i = 1; i < poly.size(); i++) {
 		if (poly[i].y < miny) {
 			miny = poly[i].y;
 		} else if (poly[i].y > maxy) {
@@ -449,7 +459,7 @@ void Screen::filledPolygonColor(PointArray &poly, byte color) {
 
 		ints = 0;
 
-		for (i = 0; i < poly.size(); i++) {
+		for (uint i = 0; i < poly.size(); i++) {
 			if (!i) {
 				ind1 = poly.size() - 1;
 				ind2 = 0;
@@ -479,7 +489,7 @@ void Screen::filledPolygonColor(PointArray &poly, byte color) {
 
 		qsort(gfxPrimitivesPolyInts, ints, sizeof(int), gfxPrimitivesCompareInt);
 
-		for (i = 0; i < ints; i += 2) {
+		for (uint i = 0; i < ints; i += 2) {
 			xa = gfxPrimitivesPolyInts[i] + 1;
 			xa = (xa >> 16) + ((xa & 32768) >> 15);
 			xb = gfxPrimitivesPolyInts[i+1] - 1;
@@ -499,8 +509,8 @@ void Screen::setFontColor(byte color) {
 	_font->setColor(color);
 }
 
-void Screen::drawText(int x, int y, const char *text) {
-	_font->drawText(x, y, getScreen(), (char*)text);
+void Screen::drawText(int x, int y, char *text) {
+	_font->drawText(x, y, getScreen(), text);
 }
 
 int Screen::drawText3(int x, int y, char *text, byte color, int flag) {
@@ -542,4 +552,9 @@ int Screen::drawText3(int x, int y, char *text, byte color, int flag) {
 
 }
 
+void Screen::plotProc(int x, int y, int color, void *data) {
+	Screen *screen = (Screen*)data;
+	screen->putPixel(x, y, color);
 }
+
+} // End of namespace Comet

@@ -81,22 +81,20 @@ uint8 *loadFromPak(const char *name, int index) {
 	pakInfoStruct pakInfo;
 	uint8 *ptr = NULL;
 
-	printf("name = %s; index = %d\n", name, index);
+	debug(3, "name = %s; index = %d", name, index);
 
 	file.open(name);
   
 	if (!file.isOpen())
 		return NULL;
 
-	printf("PAK: index = %d\n", index);
+	debug(3, "PAK: index = %d", index);
 
 	file.seek((index + 1) * 4);
 
 	file.read(&fileOffset, 4);
 
-	printf("PAK: offset = %08X\n", fileOffset);
-
-	fflush(stdout);
+	debug(3, "PAK: offset = %08X", fileOffset);
 
 	file.seek(fileOffset);
 
@@ -106,13 +104,12 @@ uint8 *loadFromPak(const char *name, int index) {
 
 	if (pakInfo.offset) {
 		file.read(nameBuffer, pakInfo.offset);
-		printf("name = %s\n", nameBuffer);
+		debug(3, "name = %s", nameBuffer);
 	} else {
 		file.seek(pakInfo.offset, SEEK_CUR);
 	}
 	
-	printf("pakInfo.compressionFlag = %d\n", pakInfo.compressionFlag);
-	fflush(stdout);
+	debug(3, "pakInfo.compressionFlag = %d", pakInfo.compressionFlag);
 
 	switch (pakInfo.compressionFlag) {
 	case 0:
@@ -123,17 +120,17 @@ uint8 *loadFromPak(const char *name, int index) {
 		}
 	case 1:
 		{
-			printf("pakInfo.uncompressedSize = %d; pakInfo.discSize = %d\n", pakInfo.uncompressedSize, pakInfo.discSize); fflush(stdout);
+			debug(3, "pakInfo.uncompressedSize = %d; pakInfo.discSize = %d", pakInfo.uncompressedSize, pakInfo.discSize);
 
-			printf("%08X\n", pakInfo.uncompressedSize); fflush(stdout);
+			debug(3, "%08X", pakInfo.uncompressedSize);
 
 			ptr = (uint8*)malloc(pakInfo.uncompressedSize);
 
-			printf("ptr = %p\n", ptr); fflush(stdout);
+			debug(3, "ptr = %p", ptr);
 
 			uint8 *compressedDataPtr = (uint8*)malloc(pakInfo.discSize);
 			
-			printf("compressedDataPtr = %p\n", compressedDataPtr); fflush(stdout);
+			debug(3, "compressedDataPtr = %p", compressedDataPtr);
 			
 			file.read(compressedDataPtr, pakInfo.discSize);
 			memset(ptr, 0, pakInfo.uncompressedSize);
@@ -141,29 +138,21 @@ uint8 *loadFromPak(const char *name, int index) {
 			free(compressedDataPtr);
 			break;
 		}
-/*
-	case 4:
-	  {
-		char * compressedDataPtr = (char *) malloc(pakInfo.discSize);
-		fread(compressedDataPtr, pakInfo.discSize, 1, fileHandle);
-		ptr = (char *) malloc(pakInfo.uncompressedSize);
-
-		PAK_deflate(compressedDataPtr, ptr, pakInfo.discSize, pakInfo.uncompressedSize);
-
-		free(compressedDataPtr);
-		break;
-	  }
-*/
-	default:
-		printf("PAK: Compression method %d not supported\n", pakInfo.compressionFlag);
-		fflush(stdout);
-	}
-	
 	/*
-	FILE *o = fopen(nameBuffer, "wb");
-	fwrite(ptr, pakInfo.uncompressedSize, 1, o);
-	fclose(o);
+	CHECKME: Doesn't seem to be used in Shadow of the Comet
+	case 4:
+		{
+			char * compressedDataPtr = (char *) malloc(pakInfo.discSize);
+			fread(compressedDataPtr, pakInfo.discSize, 1, fileHandle);
+			ptr = (char *) malloc(pakInfo.uncompressedSize);
+			PAK_deflate(compressedDataPtr, ptr, pakInfo.discSize, pakInfo.uncompressedSize);
+			free(compressedDataPtr);
+			break;
+		}
 	*/
+	default:
+		debug(3, "PAK: Compression method %d not supported", pakInfo.compressionFlag);
+	}
 	
 	file.close();
 
