@@ -1090,7 +1090,7 @@ void CometEngine::textProc2(int objectIndex, int narSubIndex, int animNumber) {
 
 int CometEngine::random(int maxValue) {
 	if (maxValue >= 2)
-		return rand() % maxValue;
+		return _rnd.getRandomNumber(maxValue - 1);
 	else
 		return 0;
 }
