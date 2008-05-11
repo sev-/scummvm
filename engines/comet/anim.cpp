@@ -154,7 +154,7 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 			
 			cmd = ((cmd & 0xC0) | (flags & 0x3E)) >> 1;
 			
-			//printf("cmd = %d\n", cmd); fflush(stdout);
+			//debug(2, "cmd = %d", cmd); fflush(stdout);
 
 			switch (cmd) {
 
@@ -555,7 +555,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 	byte count = *seq++;
 
 	/*
-	printf("Anim::runSeq1()  flags = %02X; x = %d; y = %d\n", flags, x, y);
+	debug(2, "Anim::runSeq1()  flags = %02X; x = %d; y = %d", flags, x, y);
 	*/
 
 	while (count--) {
@@ -566,7 +566,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 		byte arg2 = seq[3];
 		seq += 4;
 		
-		//printf("runSeq1()  cmd = %d; argCount = %d; arg1 = %02X; arg2 = %02X\n", command, argCount, arg1, arg2);
+		//debug(2, "runSeq1()  cmd = %d; argCount = %d; arg1 = %02X; arg2 = %02X", command, argCount, arg1, arg2);
 
 		args.clear();
 
@@ -590,7 +590,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 			if (flags & 0x20)
 				ay = -ay;
 
-			//printf("arg: x = %d; y = %d\n", ax + x, ay + y);
+			//debug(2, "arg: x = %d; y = %d", ax + x, ay + y);
 
 			args.push_back(Common::Point(ax + x, ay + y));
 
@@ -624,7 +624,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 				if (arg1 != 0xFF) {
 					args.push_back(args[0]);
 					arg2 = arg1;
-					for (int i = 0; i < args.size() - 1; i++) {
+					for (uint i = 0; i < args.size() - 1; i++) {
 						Graphics::drawLine(args[i].x, args[i].y, args[i+1].x, args[i+1].y,
 							arg2, plotProc, _vm->_screen->getScreen());
 					}
@@ -642,9 +642,8 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 
 		case 6:
 			{
-				for (int i = 0; i < args.size() - 1; i++) {
-					Graphics::drawLine(args[i].x, args[i].y, args[i+1].x, args[i+1].y,
-						arg2, plotProc, _vm->_screen->getScreen());
+				for (uint i = 0; i < args.size() - 1; i++) {
+					_vm->_screen->line(args[i].x, args[i].y, args[i+1].x, args[i+1].y, arg2);
 					argCount--;
 				}
 			}
@@ -652,11 +651,10 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 
 		case 7:
 			{
-				for (int i = 0; i < args.size(); i++) {
+				for (uint i = 0; i < args.size(); i++) {
 					int pointX = args[i].x;
 					int pointY = args[i].y;
-					//if (pointX >= 0 && x < 320 && y >= 0 && y < 199)
-						plotProc(pointX, pointY, arg2, _vm->_screen->getScreen());
+					_vm->_screen->putPixel(pointX, pointY, arg2);
 				}
 			}
 			break;

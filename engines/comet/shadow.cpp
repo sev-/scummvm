@@ -273,14 +273,14 @@ void CometEngine::setFileAndScriptNumber(int fileNumber, int scriptNumber) {
 	_fileNumber = fileNumber;
 	_scriptNumber = scriptNumber;
 	
-	//printf("CometEngine::setFileAndScriptNumber(%d, %d)\n", fileNumber, scriptNumber);
+	//debug(4, "CometEngine::setFileAndScriptNumber(%d, %d)", fileNumber, scriptNumber);
 	
 	//FIXME
 	sprintf(AName, "A%d%d.PAK", _fileNumber / 10, _fileNumber % 10);
 	sprintf(DName, "D%d%d.PAK", _fileNumber / 10, _fileNumber % 10);
 	sprintf(RName, "R%d%d.CC4", _fileNumber / 10, _fileNumber % 10);
 	
-	printf("AName = %s; DName = %s; RName = %s\n", AName, DName, RName);
+	//debug(4, "AName = %s; DName = %s; RName = %s", AName, DName, RName);
 	
 }
 
@@ -354,7 +354,7 @@ void CometEngine::updateGame() {
 	for (int index = 0; index < _linesArray.size(); index++) {
 		int x3, y3, x4, y4;
 		getPortalRect(index, x3, y3, x4, y4);
-		//printf("PORTAL: (%d, %d, %d, %d); direction = %d; fileNumber = %d; scriptNumber = %d\n", x3, y3, x4, y4, _linesArray[index].directionIndex, _linesArray[index].fileNumber, _linesArray[index].scriptNumber);
+		//debug(4, "PORTAL: (%d, %d, %d, %d); direction = %d; fileNumber = %d; scriptNumber = %d", x3, y3, x4, y4, _linesArray[index].directionIndex, _linesArray[index].fileNumber, _linesArray[index].scriptNumber);
 		_screen->fillRect(x3, y3, x4, y4, 25);
 	}
 	/* end DEBUG rectangles */
@@ -421,7 +421,7 @@ void CometEngine::updateScriptNumber() {
 }
 
 void CometEngine::updateSub02() {
-	printf("CometEngine::updateSub02()\n");
+	//debug(4, "CometEngine::updateSub02()");
 	
 	Common::Rect rect1;
 	calcRect01(rect1, 0, 50);
@@ -444,11 +444,11 @@ void CometEngine::updateSub02() {
 
 void CometEngine::updateSub03(bool flag) {
 
-	//printf("TODO CometEngine::updateSub03(%d)\n", flag);
+	//debug(4, "TODO CometEngine::updateSub03(%d)", flag);
 	
 	_itemInSight = false;
 	
-	printf("_mouseFlag = %d\n", _mouseFlag);
+	//debug(4, "_mouseFlag = %d", _mouseFlag);
 	
 	if (_mouseFlag != 15) {
 		Common::Rect rect;
@@ -577,7 +577,7 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 
 	byte *sec2 = anim->getSubSection(2, sceneObject->animIndex) + 2;
 	
-	//printf("setScreenRect(%d, %d, %d, %d)\n", sceneObject->x5, sceneObject->y5, sceneObject->x6, sceneObject->y6);
+	//debug(4, "setScreenRect(%d, %d, %d, %d)", sceneObject->x5, sceneObject->y5, sceneObject->x6, sceneObject->y6);
 	//TODO: setScreenRect(sceneObject->x5, sceneObject->y5, sceneObject->x6, sceneObject->y6);
 
 	if (sceneObject->directionChanged == 2) {
@@ -608,7 +608,7 @@ int CometEngine::drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int
 		lsec2 += 8;
 	}
 
-	//printf("x = %d; y = %d; lx = %d; ly = %d; gfxMode = %d; mulVal = %d\n", x, y, lx, ly, gfxMode, mulVal);
+	//debug(4, "x = %d; y = %d; lx = %d; ly = %d; gfxMode = %d; mulVal = %d", x, y, lx, ly, gfxMode, mulVal);
 	
 	if (gfxMode == 0) {
 		anim->runSeq1(index, lx, ly);
@@ -620,7 +620,7 @@ int CometEngine::drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int
 #endif
  	} else {
  	
-		printf("CometEngine::drawSceneObject()  gfxMode == %d not yet implemented\n", gfxMode);
+		//debug(4, "CometEngine::drawSceneObject()  gfxMode == %d not yet implemented", gfxMode);
 		
 		/*
 		// Dump Anim
@@ -817,7 +817,7 @@ void CometEngine::resetVars() {
 
 void CometEngine::sceneObjectDirection1(int objectIndex, SceneObject *sceneObject) {
 
-	printf("sceneObjectDirection1 %d\n", objectIndex); fflush(stdout);
+	//debug(4, "sceneObjectDirection1 %d", objectIndex); fflush(stdout);
 
 	int x = sceneObject->x;
 	int y = sceneObject->y;
@@ -847,16 +847,16 @@ void CometEngine::sceneObjectDirection1(int objectIndex, SceneObject *sceneObjec
 
 void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject) {
 
-	printf("CometEngine::sceneObjectUpdateDirectionTo()  objectIndex = %d\n", objectIndex); fflush(stdout);
-	printf("CometEngine::sceneObjectUpdateDirectionTo()  sceneObject->value5 = %d\n", sceneObject->value5); fflush(stdout);
+	debug(4, "CometEngine::sceneObjectUpdateDirectionTo()  objectIndex = %d", objectIndex); fflush(stdout);
+	debug(4, "CometEngine::sceneObjectUpdateDirectionTo()  sceneObject->value5 = %d", sceneObject->value5); fflush(stdout);
 
 	if (sceneObject->value5 == 1 || sceneObject->value5 == 2) {
 		// TODO
-		printf("CometEngine::sceneObjectUpdateDirectionTo()\n"); fflush(stdout);
+		//debug(4, "CometEngine::sceneObjectUpdateDirectionTo()"); fflush(stdout);
 		sceneObjectDirection2(objectIndex, sceneObject);
 	} else if (sceneObject->value5 == 6 && sceneObject->value6 == 6 && sceneObject->linesIndex == 0) {
 		// TODO
-		printf("CometEngine::sceneObjectUpdateDirectionTo()\n"); fflush(stdout);
+		//debug(4, "CometEngine::sceneObjectUpdateDirectionTo()"); fflush(stdout);
 		fflush(stdout); _system->delayMillis(5000);
 		sceneObject->value6 = 0;
 		sceneObjectResetDirectionAdd(sceneObject);
@@ -871,19 +871,19 @@ void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sce
 
 void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag) {
 
-	printf("CometEngine::sceneObjectUpdate03()\n"); fflush(stdout);
+	//debug(4, "CometEngine::sceneObjectUpdate03()"); fflush(stdout);
 
 	if (!flag)
 		sceneObjectUpdateDirectionTo(objectIndex, sceneObject);
 	
 	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2);
 	
-	printf("## %d, %d -> %d, %d; %d; %02X\n", sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, comp, sceneObject->walkStatus); fflush(stdout);
+	//debug(4, "## %d, %d -> %d, %d; %d; %02X", sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, comp, sceneObject->walkStatus); fflush(stdout);
 	_screen->fillRect(sceneObject->x2 - 6, sceneObject->y2 - 6, sceneObject->x2 + 6, sceneObject->y2 + 6, 220);
 	drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, 100);
 	
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
-		printf("--1\n"); fflush(stdout);
+		debug(4, "--1"); fflush(stdout);
 	
 		if (sceneObject->walkStatus & 4) {
 			sceneObjectUpdateDirection2(objectIndex, sceneObject->x3, sceneObject->y3);
@@ -893,7 +893,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 		}
 		
 	} else if ((sceneObject->walkStatus & 3) == comp) {
-		printf("--2\n"); fflush(stdout);
+		//debug(4, "--2"); fflush(stdout);
 		sceneObject->walkStatus ^= 3;
 		sceneObjectCalcDirection(sceneObject);
 	}
@@ -902,7 +902,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 
 bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 
-	printf("CometEngine::sceneObjectUpdate04(%d)\n", objectIndex);
+	//debug(4, "CometEngine::sceneObjectUpdate04(%d)", objectIndex);
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 
@@ -912,7 +912,7 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 	int x = sceneObject->x;
 	int y = sceneObject->y;
 
-	printf("CometEngine::sceneObjectUpdate04(%d)  old: %d, %d\n", objectIndex, x, y);
+	//debug(4, "CometEngine::sceneObjectUpdate04(%d)  old: %d, %d", objectIndex, x, y);
 
 	Anim *anim = _marcheItems[sceneObject->marcheIndex].anim;
 
@@ -927,14 +927,14 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
  	
  	if (sceneObject->walkStatus & 3) {
 		sceneObjectGetXY1(sceneObject, x, y);
-		printf("CometEngine::sceneObjectUpdate04(%d)  target: %d, %d\n", objectIndex, x, y);
+		//debug(4, "CometEngine::sceneObjectUpdate04(%d)  target: %d, %d", objectIndex, x, y);
 	}
 
 	if (sceneObject->value5 != 8) {
 
 		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction);
 		
-		//printf("collisionType = %04X\n", collisionType); fflush(stdout);
+		//debug(4, "collisionType = %04X", collisionType); fflush(stdout);
 		
 		if (collisionType != 0) {
 			collisionType = handleCollision(sceneObject, objectIndex, collisionType);
@@ -946,7 +946,7 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 
 	}
 
-	printf("CometEngine::sceneObjectUpdate04(%d)  new: %d, %d\n", objectIndex, x, y);
+	//debug(4, "CometEngine::sceneObjectUpdate04(%d)  new: %d, %d", objectIndex, x, y);
 
 	sceneObject->x = x;
 	sceneObject->y = y;
@@ -1616,7 +1616,7 @@ void CometEngine::openVoiceFile(int index) {
 	_narFile->open(narFilename);
 	
 	if (!_narFile->isOpen()) {
-		printf("CometEngine::openVoiceFile()  Could not open %s\n", narFilename);
+		debug(4, "CometEngine::openVoiceFile()  Could not open %s", narFilename);
 		return;
 	}
 	
@@ -1640,30 +1640,30 @@ void CometEngine::playVoice(int number) {
 	if (!_narOffsets || number >= _narCount)
 		return;
 
-	printf("CometEngine::playVoice(): number = %d; count = %d\n", number, _narCount);
+	//debug(4, "CometEngine::playVoice(): number = %d; count = %d", number, _narCount);
 		
 	if (number + 1 >= _narCount) {
-		printf("CometEngine::playVoice(%d)  Voice number error from debugging rooms\n", number);
+		debug(4, "CometEngine::playVoice(%d)  Voice number error from debugging rooms", number);
 		return;
 	}
 
 	if (_narOffsets[number] == 0)
 		return;
 
-	printf("CometEngine::playVoice(): offset = %08X\n", _narOffsets[number]);
+	//debug(4, "CometEngine::playVoice(): offset = %08X", _narOffsets[number]);
 
 	_narFile->seek(_narOffsets[number]);
 
 	int size, rate;
 	
 	if (_narOffsets[number + 1] <= _narOffsets[number]) {
-		printf("CometEngine::playVoice(%d)  Offset error\n", number);
+		debug(4, "CometEngine::playVoice(%d)  Offset error", number);
 		return;
 	}
 	
 	size = _narOffsets[number + 1] - _narOffsets[number];
 
-	printf("CometEngine::playVoice() size = %d\n", size);
+	//debug(4, "CometEngine::playVoice() size = %d", size);
 	fflush(stdout);
 
 	/* The VOC header's first byte is '\0' instead of a 'C' so we have to work around it */
@@ -1878,7 +1878,7 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 			collisionType = checkCollisionWithActors(index, rect);
 	}
 
-	printf("CometEngine::checkCollision() collisionType = %02X\n", collisionType); fflush(stdout);
+	//debug(4, "CometEngine::checkCollision() collisionType = %02X", collisionType); fflush(stdout);
 
 	return collisionType;
 
@@ -1938,7 +1938,7 @@ uint16 CometEngine::handleCollision(SceneObject *sceneObject, int index, uint16 
 	/*
 	//DEBUG
 	if (sceneObject->value5 == 4) {
-		printf("sceneObject->value5 = %d!!!\n", sceneObject->value5); fflush(stdout);
+		debug(4, "sceneObject->value5 = %d!!!", sceneObject->value5); fflush(stdout);
 		_system->delayMillis(5000);
 	}
 	*/

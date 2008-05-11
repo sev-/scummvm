@@ -35,11 +35,14 @@ public:
 	void paletteFadeIn();
 	void paletteFadeOut();
 
+	void putPixel(int x, int y, byte color);
+	void line(int x1, int y1, int x2, int y2, byte color);
 	void hLine(int x, int y, int x2, byte color);
 	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
 	void frameRect(int x1, int y1, int x2, int y2, byte color);
 	void filledPolygonColor(PointArray &poly, byte color);
+
 	void setPartialPalette(byte *palette, int start, int count);
 	void setFullPalette(byte *palette);
 
@@ -51,8 +54,10 @@ public:
 
 	void loadFont(const char *pakName, int index);
 	void setFontColor(byte color);
-	void drawText(int x, int y, const char *text);
+	void drawText(int x, int y, char *text);
 	int drawText3(int x, int y, char *text, byte color, int flag);
+
+	static void plotProc(int x, int y, int color, void *data);
 
 protected:
 
@@ -74,8 +79,9 @@ public:
 	Font *_font;
 
 protected:
+	// FIXME: Remove static vars
 	static int *gfxPrimitivesPolyInts;
-	static int gfxPrimitivesPolyAllocated;
+	static uint gfxPrimitivesPolyAllocated;
 
 };
 

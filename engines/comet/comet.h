@@ -64,19 +64,19 @@ class MusicPlayer;
 class CometEngine;
 
 enum {
-	kScriptWalking       = 0x01,
-	kScriptSleeping		 = 0x02,
-	kScriptAnimPlaying   = 0x04,
-	kScriptDialogRunning = 0x10,
-	kScriptPaused		 = 0x20,
-	kScriptTalking       = 0x40
+	kScriptWalking			= 0x01,
+	kScriptSleeping			= 0x02,
+	kScriptAnimPlaying		= 0x04,
+	kScriptDialogRunning	= 0x10,
+	kScriptPaused			= 0x20,
+	kScriptTalking			= 0x40
 };
 
 enum {
-	kDirectionUp        = 3,
-	kDirectionLeft      = 2,
-	kDirectionDown      = 1,
-	kDirectionRight     = 4
+	kDirectionUp		= 3,
+	kDirectionLeft		= 2,
+	kDirectionDown		= 1,
+	kDirectionRight		= 4
 };
 
 struct SceneObject {

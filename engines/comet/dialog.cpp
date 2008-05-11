@@ -83,7 +83,7 @@ void Dialog::update() {
 			_dialogSelectedItemIndex--;
 	} else if (_vm->_mouseButtons4 & 2) {
 		_vm->waitForKeys();
-		if (_dialogSelectedItemIndex < _dialogItems.size() - 1)
+		if (_dialogSelectedItemIndex < (int)_dialogItems.size() - 1)
 			_dialogSelectedItemIndex++;
 	}
 
@@ -135,7 +135,7 @@ void Dialog::drawTextBubbles() {
  	else
  		color1 = _vm->_sceneObjects[0].color;
 
-	for (int i = 0; i < _dialogItems.size(); i++) {
+	for (int i = 0; i < (int)_dialogItems.size(); i++) {
 
 		color2 = color1;
 
@@ -183,4 +183,4 @@ byte *Dialog::getChoiceScriptIp() {
 	return _dialogItems[_dialogSelectedItemIndex].scriptIp;
 }
 
-}
+} // End of namespace Comet
