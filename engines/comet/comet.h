@@ -191,6 +191,7 @@ private:
 //protected:
 // Everything is public during the transition phase to more object-oriented design
 public:
+	Common::RandomSource _rnd;
 
 	Screen *_screen;
 	Dialog *_dialog;

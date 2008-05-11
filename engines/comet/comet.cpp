@@ -34,6 +34,8 @@ enum {
 CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	Engine(syst), _gameDescription(gameDesc) {
 
+	syst->getEventManager()->registerRandomSource(_rnd, "comet");
+
 	// Setup mixer
 	if (!_mixer->isReady()) {
 		warning("Sound initialization failed.");
