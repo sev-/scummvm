@@ -160,6 +160,7 @@ int CometEngine::go() {
 
 	//TEST
 	_talkieMode = 1;
+	_textSpeed = 0;
 	//_music->playMusic(4);
 
 //#define DOINTRO
