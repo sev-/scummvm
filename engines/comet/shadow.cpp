@@ -1667,7 +1667,7 @@ void CometEngine::playVoice(int number) {
 	fflush(stdout);
 
 	/* The VOC header's first byte is '\0' instead of a 'C' so we have to work around it */
-	byte *readBuffer = new byte[size];
+	byte *readBuffer = (byte *)malloc(size);
 	_narFile->read(readBuffer, size);
 	readBuffer[0] = 'C';
 
