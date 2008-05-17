@@ -386,12 +386,17 @@ void Screen::line(int x1, int y1, int x2, int y2, byte color) {
 
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
 
+	// FIXME: We allow the rectangle to be 200 pixels hight, but only 319
+	//        pixels wide? Is that correct?
+
 	if (x1 < 0) x1 = 0;
 	else if (x1 >= 320) x1 = 319;
 	if (x2 < 0) x2 = 0;
 	else if (x2 >= 320) x2 = 319;
 	if (y1 < 0) y1 = 0;
 	else if (y1 >= 200) y1 = 199;
+	if (y2 < 0) y2 = 0;
+	else if (y2 >= 200) y2 = 199;
 
 	if (x2 < x1)
 		SWAP(x2, x1);
