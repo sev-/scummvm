@@ -529,7 +529,7 @@ int MusicPlayer::fadeMusic(int param1, int param2, int param3) {
   	int si;
   	int dx;
   	int bp;
-  	int di = 1;
+  	//int di = 1;
 
   	cx = param1;
   	si = param2;
