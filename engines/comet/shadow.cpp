@@ -97,7 +97,7 @@ int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
 }
 
 void CometEngine::drawLines() {
-	for (int i = 0; i < _linesArray.size(); i++) {
+	for (uint32 i = 0; i < _linesArray.size(); i++) {
 		if (_linesArray[i].directionIndex == 3) {
 			_screen->fillRect(_linesArray[i].x, 198, _linesArray[i].x2, 199, 120);
 			_screen->hLine(_linesArray[i].x + 1, 199, _linesArray[i].x2 - 2, 127);
@@ -347,11 +347,11 @@ void CometEngine::updateGame() {
 	*/
 
 	/* begin DEBUG rectangles */
-	for (int i = 0; i < _blockingRects.size(); i++)
+	for (uint32 i = 0; i < _blockingRects.size(); i++)
 		_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
 	_screen->fillRect(_sceneObjects[0].x - _sceneObjects[0].deltaX, _sceneObjects[0].y - _sceneObjects[0].deltaY,
 		_sceneObjects[0].x + _sceneObjects[0].deltaX, _sceneObjects[0].y, 150);
-	for (int index = 0; index < _linesArray.size(); index++) {
+	for (uint32 index = 0; index < _linesArray.size(); index++) {
 		int x3, y3, x4, y4;
 		getPortalRect(index, x3, y3, x4, y4);
 		//debug(4, "PORTAL: (%d, %d, %d, %d); direction = %d; fileNumber = %d; scriptNumber = %d", x3, y3, x4, y4, _linesArray[index].directionIndex, _linesArray[index].fileNumber, _linesArray[index].scriptNumber);
@@ -541,7 +541,7 @@ void CometEngine::drawSceneAnims() {
 	byte *va2sec00 = _staticObjects->getSubSection(0, 0) + 2;
 	byte *va2sec1 = _staticObjects->getSection(1);
 
-	for (int i = 0; i < _spriteArray.size(); i++) {
+	for (uint32 i = 0; i < _spriteArray.size(); i++) {
 
 		if (_spriteArray[i].index < 16) {
 			drawSceneAnimsSub(_spriteArray[i].index);
@@ -1245,7 +1245,7 @@ void CometEngine::initPointsArray2() {
 	int x1, y1, x2, y2, temp, tempY = 0;
 	byte *xb = _xBuffer;
 
-	for (int i = 0; i < _pointsArray.size() - 1; i++) {
+	for (uint32 i = 0; i < _pointsArray.size() - 1; i++) {
 		x1 = _pointsArray[i].x;
 		y1 = _pointsArray[i].y;
 		x2 = _pointsArray[i + 1].x;
@@ -1289,7 +1289,7 @@ void CometEngine::initPointsArray2() {
 
 int CometEngine::Points_getY_sub_8419(int x, int y) {
 	int yp = 0;
-	for (int i = 0; i < _pointsArray.size(); i++) {
+	for (uint32 i = 0; i < _pointsArray.size(); i++) {
 		yp = _pointsArray[i].y;
 		if (_pointsArray[i].x > x && yp >= y)
 			break;
@@ -1321,7 +1321,7 @@ int CometEngine::checkCollisionWithScenePortals(const Common::Rect &rect, int di
 	y = rect.top;
 	x2 = rect.right;
 
-	for (int index = 0; index < _linesArray.size(); index++) {
+	for (uint32 index = 0; index < _linesArray.size(); index++) {
 		bool flag = false;
 		if (_linesArray[index].directionIndex == direction) {
 			getPortalRect(index, x3, y3, x4, y4);
@@ -1720,7 +1720,7 @@ int CometEngine::checkLinesSub(int fileNumber, int scriptNumber) {
 }
 
 uint16 CometEngine::rectInSceneItem(const Common::Rect &rect) {
-	for (int i = 0; i < _sceneItems.size(); i++) {
+	for (uint32 i = 0; i < _sceneItems.size(); i++) {
 		if (_sceneItems[i].active) {
 			Common::Rect itemRect(_sceneItems[i].x - 8, _sceneItems[i].y - 8, _sceneItems[i].x + 8, _sceneItems[i].y + 8);
 			if (rectCompare(rect, itemRect)) {
@@ -1825,7 +1825,7 @@ int CometEngine::checkCollisionWithRoomBounds(const Common::Rect &rect, int dire
 
 int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect) {
 
-	for (int index = 0; index < _blockingRects.size(); index++) {
+	for (uint32 index = 0; index < _blockingRects.size(); index++) {
 		_blockingTestRect = _blockingRects[index];
 		if (_blockingRects[index].left != _blockingRects[index].right) {
 			if (rectCompare(_blockingTestRect, rect)) {
@@ -1968,7 +1968,7 @@ void CometEngine::handleSceneChange(int scriptNumber, int fileNumber) {
 	int x = 160, x2 = 160, y = 190, y2 = 190;
 	SceneObject *sceneObject = getSceneObject(0);
 	
-	for (int lineIndex = 0; lineIndex < _linesArray.size(); lineIndex++) {
+	for (uint32 lineIndex = 0; lineIndex < _linesArray.size(); lineIndex++) {
 		LineItem *lineItem = &_linesArray[lineIndex];
 		if (lineItem->scriptNumber == scriptNumber && lineItem->fileNumber == fileNumber) {
 			direction = directionArray[lineItem->directionIndex];
