@@ -548,7 +548,7 @@ int MusicPlayer::fadeMusic(int param1, int param2, int param3) {
 		  		//exit(1);
 			}
 			if (dx & 0x40) {
-		  		if (!_channelTable2[i].var4 & 0x40)
+		  		if (!(_channelTable2[i].var4 & 0x40))
 					_channelTable2[i].var4 |= 0x40;
 			}
 			// start all
