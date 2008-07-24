@@ -11,30 +11,29 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "common/stdafx.h"
 #include "common/util.h"
 #include "common/endian.h"
 #include "common/rect.h"
 
-#include <SDL/SDL.h>
 #undef main
 
 #include "graphics/primitives.h"
 
-#include "comet.h"
+#include "comet/comet.h"
 
-#include "anim.h"
-#include "font.h"
+#include "comet/anim.h"
+#include "comet/font.h"
 
-#include "pak.h"
-#include "script.h"
+#include "comet/pak.h"
 
 using namespace std;
 
+/*
 void *g_engine = NULL;
 void *g_system = NULL;
 
 SDL_Surface *sdl_screen;
+*/
 
 namespace Comet {
 
@@ -109,7 +108,8 @@ void drawGameMenu(int selectedItem) {
 int main(int argc, char *argv[])
 {
 
-    Comet::CometEngine *_vm = new Comet::CometEngine();
+	// FIXME
+    //Comet::CometEngine *_vm = new Comet::CometEngine();
 
 #if 0
     SDL_Init(SDL_INIT_VIDEO);
@@ -398,13 +398,16 @@ int main(int argc, char *argv[])
     fread(script, 3000, 1, scr);
     fclose(scr);
 
+	// FIXME
+	warning("Script interpreter");
+	/*
     Comet::ScriptInterpreter *_inter = new Comet::ScriptInterpreter(_vm);
 
     _inter->initialize(script);
     _inter->runScript(0);
 
     delete _inter;
-
+	*/
     system("PAUSE");
 //#endif
     
