@@ -133,7 +133,7 @@ void Screen::screenZoomEffect3x(int x, int y) {
 
 	for (int yc = 0; yc < 66; yc++) {
 
-		byte pixel;
+		byte pixel = 0;
 
 		for (int xc = 0; xc < 106; xc++) {
 			pixel = *sourceBuf++;
