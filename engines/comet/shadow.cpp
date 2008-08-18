@@ -145,8 +145,8 @@ void CometEngine::initLines(byte *data) {
 	while (count--) {
 		SceneExitItem sceneExitItem;
 		sceneExitItem.directionIndex = *data++;
-		sceneExitItem.fileNumber = *data++;
-		sceneExitItem.scriptNumber = *data++;
+		sceneExitItem.chapterNumber = *data++;
+		sceneExitItem.sceneNumber = *data++;
 		sceneExitItem.x = (*data++) * 2;
 		sceneExitItem.x2 = (*data++) * 2;
 		_sceneExits.push_back(sceneExitItem);
@@ -220,7 +220,7 @@ void CometEngine::initAndLoadGlobalData() {
 	
 	//TODO...
 
-	setFileAndScriptNumber(_startupFileNumber, _startupScriptNumber);
+	setChapterAndScene(_startupChapterNumber, _startupSceneNumber);
 	
 }
 
@@ -249,8 +249,8 @@ void CometEngine::initData() {
 	_screen->setFontColor(19);
 	resetHeroDirectionChanged();
 	
-	_currentFileNumber = 0;
-	_scriptNumber = 0;
+	_currentChapterNumber = 0;
+	_sceneNumber = 0;
 	
 	_pointsArray.clear();
 	_pointsArray.push_back(Common::Point(0, 100));
@@ -268,17 +268,17 @@ void CometEngine::initData() {
 
 }
 
-void CometEngine::setFileAndScriptNumber(int fileNumber, int scriptNumber) {
+void CometEngine::setChapterAndScene(int chapterNumber, int sceneNumber) {
 
-	_fileNumber = fileNumber;
-	_scriptNumber = scriptNumber;
+	_chapterNumber = chapterNumber;
+	_sceneNumber = sceneNumber;
 	
-	//debug(4, "CometEngine::setFileAndScriptNumber(%d, %d)", fileNumber, scriptNumber);
+	//debug(4, "CometEngine::setChapterAndScene(%d, %d)", chapterNumber, sceneNumber);
 	
 	//FIXME
-	sprintf(AName, "A%d%d.PAK", _fileNumber / 10, _fileNumber % 10);
-	sprintf(DName, "D%d%d.PAK", _fileNumber / 10, _fileNumber % 10);
-	sprintf(RName, "R%d%d.CC4", _fileNumber / 10, _fileNumber % 10);
+	sprintf(AName, "A%d%d.PAK", _chapterNumber / 10, _chapterNumber % 10);
+	sprintf(DName, "D%d%d.PAK", _chapterNumber / 10, _chapterNumber % 10);
+	sprintf(RName, "R%d%d.CC4", _chapterNumber / 10, _chapterNumber % 10);
 	
 	//debug(4, "AName = %s; DName = %s; RName = %s", AName, DName, RName);
 	
@@ -289,11 +289,11 @@ void CometEngine::updateGame() {
 	_gameLoopCounter++;
 	_textColorFlag++;
 
-	if (_fileNumber != _currentFileNumber)
-		updateFileNumber();
+	if (_chapterNumber != _currentChapterNumber)
+		updateChapterNumber();
 
-	if (_scriptNumber != _currentScriptNumber)
-		updateScriptNumber();
+	if (_sceneNumber != _currentSceneNumber)
+		updateSceneNumber();
 
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
 	
@@ -354,7 +354,7 @@ void CometEngine::updateGame() {
 	for (uint32 index = 0; index < _sceneExits.size(); index++) {
 		int x3, y3, x4, y4;
 		getSceneExitRect(index, x3, y3, x4, y4);
-		//debug(4, "PORTAL: (%d, %d, %d, %d); direction = %d; fileNumber = %d; scriptNumber = %d", x3, y3, x4, y4, _sceneExits[index].directionIndex, _sceneExits[index].fileNumber, _sceneExits[index].scriptNumber);
+		//debug(4, "PORTAL: (%d, %d, %d, %d); direction = %d; chapterNumber = %d; sceneNumber = %d", x3, y3, x4, y4, _sceneExits[index].directionIndex, _sceneExits[index].chapterNumber, _sceneExits[index].sceneNumber);
 		_screen->fillRect(x3, y3, x4, y4, 25);
 	}
 	for (int x = 0;  x < 320; x++)
@@ -374,16 +374,16 @@ void CometEngine::updateGame() {
 
 }
 
-void CometEngine::updateFileNumber() {
-	if (_fileNumber != -1) {
+void CometEngine::updateChapterNumber() {
+	if (_chapterNumber != -1) {
 		freeMarche();
 		freeMarcheAndStaticObjects();
-		setFileAndScriptNumber(_fileNumber, _scriptNumber);
-		updateScriptNumber();
+		setChapterAndScene(_chapterNumber, _sceneNumber);
+		updateSceneNumber();
 	}
 }
 
-void CometEngine::updateScriptNumber() {
+void CometEngine::updateSceneNumber() {
 
 	//TODO: mouse_4(0, 0x40);
 
@@ -396,10 +396,10 @@ void CometEngine::updateScriptNumber() {
 	} else {
 
 		resetMarcheAndStaticObjects();
-		_scriptNumber3 = _currentScriptNumber;
-		_currentScriptNumber = _scriptNumber;
-		_fileNumber3 = _currentFileNumber;
-		_currentFileNumber = _fileNumber;
+		_sceneNumber3 = _currentSceneNumber;
+		_currentSceneNumber = _sceneNumber;
+		_chapterNumber3 = _currentChapterNumber;
+		_currentChapterNumber = _chapterNumber;
 		
 		sceneObjectResetDirectionAdd(&_sceneObjects[0]);
 		
@@ -415,7 +415,7 @@ void CometEngine::updateScriptNumber() {
 
 		loadAndRunScript();
 		
-		handleSceneChange(_scriptNumber3, _fileNumber3);
+		handleSceneChange(_sceneNumber3, _chapterNumber3);
 		
 		//TODO: mouse_4(0, 0);
 		
@@ -1012,7 +1012,7 @@ void CometEngine::loadAndRunScript() {
 	int ofs;
 
 	fd.open(RName);
-	fd.seek(_currentScriptNumber * 4);
+	fd.seek(_currentSceneNumber * 4);
 	fd.read(&ofs, 4);
 	fd.seek(ofs);
 	fd.read(_scriptData, 3000);
@@ -1045,26 +1045,26 @@ void CometEngine::updateScreen() {
 
 	//TODO: seg011:0003 - seg011:004C
 	
-	if (_currentFileNumber == 9 && _currentScriptNumber == 0 && _paletteValue2 == 0) {
+	if (_currentChapterNumber == 9 && _currentSceneNumber == 0 && _paletteValue2 == 0) {
 		memcpy(_paletteBuffer, _ctuPal, 768);
 		memcpy(_ctuPal, _pali0Pal, 768);
 		memcpy(_palette, _pali0Pal, 768);
 		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 3;
-	} else if (_currentFileNumber == 9 && _currentScriptNumber == 1 && _paletteValue2 == 3) {
+	} else if (_currentChapterNumber == 9 && _currentSceneNumber == 1 && _paletteValue2 == 3) {
 		memcpy(_ctuPal, _cdintroPal, 768);
 		memcpy(_palette, _cdintroPal, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 2;
-	} else if (_currentFileNumber == 5 && _currentScriptNumber == 0 && (_paletteValue2 == 2 || _paletteValue2 == 3)) {
+	} else if (_currentChapterNumber == 5 && _currentSceneNumber == 0 && (_paletteValue2 == 2 || _paletteValue2 == 3)) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
 		_paletteValue2 = 0;
-	} else if (_currentFileNumber == 0 && _currentScriptNumber == 0 && _paletteValue2 != 0) {
+	} else if (_currentChapterNumber == 0 && _currentSceneNumber == 0 && _paletteValue2 != 0) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
 		_screen->setFullPalette(_ctuPal);
@@ -1714,15 +1714,15 @@ void CometEngine::playVoice(int number) {
 
 }
 
-int CometEngine::checkLinesSub(int fileNumber, int scriptNumber) {
+int CometEngine::checkLinesSub(int chapterNumber, int sceneNumber) {
 	
-	if (scriptNumber == -1) {
-		_fileNumber = -1;
+	if (sceneNumber == -1) {
+		_chapterNumber = -1;
 		return 0;
 	}
 	
-	_scriptNumber = scriptNumber;
-	_fileNumber = fileNumber;
+	_sceneNumber = sceneNumber;
+	_chapterNumber = chapterNumber;
 	
 	SceneObject *sceneObject = getSceneObject(0);
 	
@@ -1961,7 +1961,7 @@ uint16 CometEngine::handleCollision(SceneObject *sceneObject, int index, uint16 
 	sceneObject->linesIndex = collisionType & 0xFF;
 
 	if (index == 0 && sceneObject->value5 == 4) {
-		result = checkLinesSub(_sceneExits[sceneObject->linesIndex].fileNumber, _sceneExits[sceneObject->linesIndex].scriptNumber);
+		result = checkLinesSub(_sceneExits[sceneObject->linesIndex].chapterNumber, _sceneExits[sceneObject->linesIndex].sceneNumber);
 	}
 	
 	if (result == 0) {
@@ -1977,10 +1977,10 @@ void CometEngine::handleInventory() {
 
 }
 
-void CometEngine::handleSceneChange(int scriptNumber, int fileNumber) {
+void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 
 
-	debug(4, "###### handleSceneChange(%d, %d)", scriptNumber, fileNumber);
+	debug(4, "###### handleSceneChange(%d, %d)", sceneNumber, chapterNumber);
 
 	const int directionArray[] = {0, 3, 4, 1, 2};
 
@@ -1990,7 +1990,7 @@ void CometEngine::handleSceneChange(int scriptNumber, int fileNumber) {
 	
 	for (uint32 sceneExitIndex = 0; sceneExitIndex < _sceneExits.size(); sceneExitIndex++) {
 		SceneExitItem *sceneExitItem = &_sceneExits[sceneExitIndex];
-		if (sceneExitItem->scriptNumber == scriptNumber && sceneExitItem->fileNumber == fileNumber) {
+		if (sceneExitItem->sceneNumber == sceneNumber && sceneExitItem->chapterNumber == chapterNumber) {
 			direction = directionArray[sceneExitItem->directionIndex];
 			if (sceneObject->direction == direction) {
 				getSceneExitRect(sceneExitIndex, x, y, x2, y2);

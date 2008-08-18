@@ -364,7 +364,7 @@ void CometEngine::runScript(int scriptNumber) {
 			o1_setObjectClipY(_curScript);
 			break;
 		case 44:
-			o1_setGlobalScriptNumber(_curScript);
+			o1_setSceneNumber(_curScript);
 			break;
 		case 45:
 			o1_setAnimValues(_curScript);
@@ -412,7 +412,7 @@ void CometEngine::runScript(int scriptNumber) {
 			o1_setRandomValue(_curScript);
 			break;
 		case 80:
-			o1_setFileNumber(_curScript);
+			o1_setChapterNumber(_curScript);
 			break;
 		case 82:
 			o1_dialog(_curScript);
@@ -845,16 +845,16 @@ void CometEngine::o1_updateDirection2(Script *script) {
 
 }
 
-void CometEngine::o1_setGlobalScriptNumber(Script *script) {
+void CometEngine::o1_setSceneNumber(Script *script) {
 
-	int scriptNumber = script->loadByte();
+	int sceneNumber = script->loadByte();
 
-	debug(2, "o1_setGlobalScriptNumber(%d)", scriptNumber);
+	debug(2, "o1_setSceneNumber(%d)", sceneNumber);
 
-	if (scriptNumber == 0xFF) {
-		_scriptNumber = -1;
+	if (sceneNumber == 0xFF) {
+		_sceneNumber = -1;
 	} else {
-		_scriptNumber = scriptNumber;
+		_sceneNumber = sceneNumber;
 	}
 
 }
@@ -1129,9 +1129,9 @@ void CometEngine::o1_setRandomValue(Script *script) {
 	_scriptRandomValue = random(script->loadByte());
 }
 
-void CometEngine::o1_setFileNumber(Script *script) {
-	_fileNumber = script->loadByte();
-	debug(2, "o1_setFileNumber(%d)", _fileNumber);
+void CometEngine::o1_setChapterNumber(Script *script) {
+	_chapterNumber = script->loadByte();
+	debug(2, "o1_setChapterNumber(%d)", _chapterNumber);
 	_scriptBreakFlag = true;
 }
 

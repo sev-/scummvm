@@ -80,12 +80,12 @@ int CometEngine::go() {
 	_gameLoopCounter = 0;
 	_textColorFlag = 0;
 	
-	_fileNumber3 = -1;
-	_currentFileNumber = -1;
-	_fileNumber = 0;
-	_scriptNumber3 = -1;
-	_currentScriptNumber = -1;
-	_scriptNumber = 0;
+	_chapterNumber3 = -1;
+	_currentChapterNumber = -1;
+	_chapterNumber = 0;
+	_sceneNumber3 = -1;
+	_currentSceneNumber = -1;
+	_sceneNumber = 0;
 	memset(_marcheItems, 0, sizeof(_marcheItems));
 	memset(_sceneObjects, 0, sizeof(_sceneObjects));
 	_scriptData = NULL;
@@ -129,7 +129,7 @@ int CometEngine::go() {
 	
 	_animIndex = -1;
 
-	_scriptVars1[0] = &_scriptNumber3;
+	_scriptVars1[0] = &_sceneNumber3;
 	for (int i = 0; i < 10; i++) {
 		_scriptVars1[1 + i * 3] = &_sceneObjects[i].flag;
 		_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
@@ -138,15 +138,15 @@ int CometEngine::go() {
 	_scriptVars1[31] = &_mouseButtons4;
 	_scriptVars1[32] = &_scriptMouseFlag;
 	_scriptVars1[33] = &_scriptRandomValue;
-	_scriptVars1[34] = &_fileNumber3;
+	_scriptVars1[34] = &_chapterNumber3;
 
 	for (int i = 0; i < 17; i++)
 		_scripts[i] = new Script(this);
 
 	_talkieMode = 1;
 
-	_startupFileNumber = 9;
-	_startupScriptNumber = 0;
+	_startupChapterNumber = 9;
+	_startupSceneNumber = 0;
 
 	_narFile = NULL;
 	_narCount = 0;
@@ -183,12 +183,12 @@ int CometEngine::go() {
 			_system->delayMillis(40);
 
 		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
-			_scriptNumber++;
-			debug(4, "## New _scriptNumber = %d", _scriptNumber);
+			_sceneNumber++;
+			debug(4, "## New _sceneNumber = %d", _sceneNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
-			if (_scriptNumber > 0) {
-				debug(4, "## New _scriptNumber = %d", _scriptNumber);
-				_scriptNumber--;
+			if (_sceneNumber > 0) {
+				debug(4, "## New _sceneNumber = %d", _sceneNumber);
+				_sceneNumber--;
 			}
 		}
 
@@ -197,21 +197,21 @@ int CometEngine::go() {
 		updateGame();
 #if 1
 		//DEBUG
-		if (_fileNumber == 9 && _scriptNumber == 0) {
-			_fileNumber = 5;
-			_scriptNumber = 0;
+		if (_chapterNumber == 9 && _sceneNumber == 0) {
+			_chapterNumber = 5;
+			_sceneNumber = 0;
 		}
 #endif
 #if 0
 		//DEBUG - jump to scene
-		if (_fileNumber == 9 && _scriptNumber == 0) {
+		if (_chapterNumber == 9 && _sceneNumber == 0) {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			setFullPalette(_ctuPal);
 			_paletteValue2 = 0;
-			_fileNumber = 0;
-			_scriptNumber = 1;
-			//_scriptNumber = 11;
+			_chapterNumber = 0;
+			_sceneNumber = 1;
+			//_sceneNumber = 11;
 		}
 #endif
 	}
@@ -252,20 +252,20 @@ int CometEngine::go() {
 
 		// DEBUG
 		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
-			_scriptNumber++;
-			debug(4, "## New _scriptNumber = %d", _scriptNumber);
+			_sceneNumber++;
+			debug(4, "## New _sceneNumber = %d", _sceneNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
-			if (_scriptNumber > 0) {
-				debug(4, "## New _scriptNumber = %d", _scriptNumber);
-				_scriptNumber--;
+			if (_sceneNumber > 0) {
+				debug(4, "## New _sceneNumber = %d", _sceneNumber);
+				_sceneNumber--;
 			}
 		} if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
-			_fileNumber++;
-			_scriptNumber = 0;
+			_chapterNumber++;
+			_sceneNumber = 0;
 		} else if (_keyScancode == Common::KEYCODE_KP_DIVIDE) {
-			if (_fileNumber > 0) {
-				_fileNumber--;
-				_scriptNumber = 0;
+			if (_chapterNumber > 0) {
+				_chapterNumber--;
+				_sceneNumber = 0;
 			}
 		}
 		/* Debugging helpers ends here */
@@ -274,15 +274,15 @@ int CometEngine::go() {
 
 #if 1
 		//DEBUG - jump to scene
-		if (_fileNumber == 9 && _scriptNumber == 0) {
+		if (_chapterNumber == 9 && _sceneNumber == 0) {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
 			_paletteValue2 = 0;
-			//_fileNumber = 1;
-			_fileNumber = 0;
-			_scriptNumber = 0;
-			//_scriptNumber = 11;
+			//_chapterNumber = 1;
+			_chapterNumber = 0;
+			_sceneNumber = 0;
+			//_sceneNumber = 11;
 		}
 #endif
 	}
