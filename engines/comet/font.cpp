@@ -29,7 +29,7 @@ void Font::setColor(byte color) {
   _color = color;
 }
 
-void Font::drawText(int x, int y, byte *destBuffer, char *text) {
+void Font::drawText(int x, int y, byte *destBuffer, byte *text) {
 
 	static const byte startFlags[] = {
 		0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
@@ -70,7 +70,7 @@ void Font::drawText(int x, int y, byte *destBuffer, char *text) {
 
 }
 
-void Font::drawTextOutlined(int x, int y, byte *destBuffer, char *text, byte color2, byte color) {
+void Font::drawTextOutlined(int x, int y, byte *destBuffer, byte *text, byte color2, byte color) {
 	setColor(color);
 	drawText(x + 1, y + 1, destBuffer, text);
 	drawText(x + 1, y - 1, destBuffer, text);
@@ -84,7 +84,7 @@ void Font::drawTextOutlined(int x, int y, byte *destBuffer, char *text, byte col
 	drawText(x, y, destBuffer, text);
 }
 
-int Font::getTextWidth(char *text) {
+int Font::getTextWidth(byte *text) {
 	int textWidth = 0;
 	while (*text) {
 		uint16 charOfs = text[0] * 2;

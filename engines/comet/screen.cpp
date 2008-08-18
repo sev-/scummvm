@@ -514,11 +514,11 @@ void Screen::setFontColor(byte color) {
 	_font->setColor(color);
 }
 
-void Screen::drawText(int x, int y, char *text) {
+void Screen::drawText(int x, int y, byte *text) {
 	_font->drawText(x, y, getScreen(), text);
 }
 
-int Screen::drawText3(int x, int y, char *text, byte color, int flag) {
+int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 
 	int tw = 0, linesDrawn = 0, textX = x, textY = y;
 
@@ -549,7 +549,7 @@ int Screen::drawText3(int x, int y, char *text, byte color, int flag) {
 			textY += 8;
 		}
 
-		text += strlen(text) + 1;
+		text += strlen((char*)text) + 1;
 
 	}
 

@@ -1226,11 +1226,11 @@ void CometEngine::loadTextData(byte *textBuffer, int index, int size) {
 	decodeText(textBuffer + chunkSize, size - chunkSize, 0);
 }
 
-char *CometEngine::getTextEntry(int index, byte *textBuffer) {
-	return (char*)(textBuffer + READ_LE_UINT32(textBuffer + index * 4) + 1);
+byte *CometEngine::getTextEntry(int index, byte *textBuffer) {
+	return (byte*)(textBuffer + READ_LE_UINT32(textBuffer + index * 4) + 1);
 }
 
-void CometEngine::setText(char *text) {
+void CometEngine::setText(byte *text) {
 	
 	int counter = 0;
 
@@ -1248,7 +1248,7 @@ void CometEngine::setText(char *text) {
 			_textDuration = 100;
 		if (textWidth > _textMaxTextWidth)
 			_textMaxTextWidth = textWidth;
-		text += strlen(text) + 1;
+		text += strlen((char*)text) + 1;
 		if (textWidth != 0)
 			_textMaxTextHeight++;
 		counter++;
@@ -1278,7 +1278,7 @@ void CometEngine::resetTextValues() {
 
 void CometEngine::initPointsArray2() {
 
-	int x1, y1, x2, y2, temp, tempY = 0;
+	int x1, y1, x2, y2, errorX, errorY = 0;
 	byte *xb = _xBuffer;
 
 	for (uint32 i = 0; i < _pointsArray.size() - 1; i++) {
@@ -1289,37 +1289,37 @@ void CometEngine::initPointsArray2() {
 		x2 -= x1;
 		if (x2 != 0) {
 			y2 -= y1;
-			tempY = y1;
+			errorY = y1;
 			y1 = 1;
 			if (y2 < 0) {
 				y2 = -y2;
 				y1 = -y1;
 			}
 			if (x2 > y2) {
-				temp = x2 >> 1;
+				errorX = x2 >> 1;
 				for (int j = 0; j < x2; j++) {
-					*xb++ = tempY;
-					temp += y2;
-					if (temp >= x2) {
-						temp -= x2;
-						tempY += y1;
+					*xb++ = errorY;
+					errorX += y2;
+					if (errorX >= x2) {
+						errorX -= x2;
+						errorY += y1;
 					}
 				}
 			} else {
-				temp = y2 >> 1;
+				errorX = y2 >> 1;
 				for (int j = 0; j < y2; j++) {
-					tempY += y1;
-					temp += x2;
-					if (temp >= y2) {
-						temp -= y2;
-						*xb++ = tempY;
+					errorY += y1;
+					errorX += x2;
+					if (errorX >= y2) {
+						errorX -= y2;
+						*xb++ = errorY;
 					}
 				}
 			}
 		}
 	}
 
-	*xb++ = tempY;
+	*xb++ = errorY;
 
 }
 
