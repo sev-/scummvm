@@ -321,7 +321,7 @@ public:
 	void sceneObjectUpdate02(SceneObject *sceneObject);
 	void sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag);
 	bool sceneObjectUpdate04(int objectIndex);
-	void sceneObjectUpdate05(int y, int objectIndex);
+	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
 	void freeMarcheAndStaticObjects();
 	void resetMarcheAndStaticObjects();
 
@@ -346,7 +346,7 @@ public:
 	void initSceneBackground();
 	void initStaticObjectRects();
 	void initPoints(byte *data);
-	void initLines(byte *data);
+	void initSceneExits(byte *data);
 	void addBlockingRect(int x, int y, int x2, int y2);
 	void loadSceneBackground();
 	void loadStaticObjects();
@@ -439,12 +439,12 @@ public:
 	int *getVarPointer(int varIndex);
 	SceneObject *getScriptSceneObject();
 
-	void runScriptSub1();
-	void runScriptSub2();
-	void runScriptSub3();
-	void runScriptSub4();
-	void runScriptSub5();
-	void runScriptSub6();
+	void processScriptStatus8();
+	void processScriptSleep();
+	void processScriptWalk();
+	void processScriptAnim();
+	void processScriptDialog();
+	void processScriptTalk();
 	
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	bool rectCompare02(int objectIndex1, int objectIndex2, int x, int y);
@@ -474,7 +474,7 @@ public:
 	void o1_sceneObjectSetDirectionTo(Script *script);
 	void o1_selectObject(Script *script);
 	void o1_initPoints(Script *script);
-	void o1_initLines(Script *script);
+	void o1_initSceneExits(Script *script);
 	void o1_addSceneItem1(Script *script);
 	void o1_startScript(Script *script);
 	void o1_pauseScript(Script *script);
