@@ -11,7 +11,7 @@ namespace Comet {
 
 struct DialogItem {
 	int16 index;
-	char *text;
+	byte *text;
 	byte *scriptIp;
 };
 

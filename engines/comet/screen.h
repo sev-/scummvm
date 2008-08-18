@@ -54,8 +54,8 @@ public:
 
 	void loadFont(const char *pakName, int index);
 	void setFontColor(byte color);
-	void drawText(int x, int y, char *text);
-	int drawText3(int x, int y, char *text, byte color, int flag);
+	void drawText(int x, int y, byte *text);
+	int drawText3(int x, int y, byte *text, byte color, int flag);
 
 	static void plotProc(int x, int y, int color, void *data);
 

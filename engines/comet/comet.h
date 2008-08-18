@@ -217,7 +217,7 @@ public:
 	int _narFileIndex;
 	bool _narOkFlag;
 
-	char *_currentText, *_textNextPos;
+	byte *_currentText, *_textNextPos;
 	int _textSpeed;
 	int _textMaxTextHeight, _textMaxTextWidth, _textDuration;
 
@@ -336,8 +336,8 @@ public:
 	void decodeText(byte *text, int size, int key);
 	uint32 loadString(int index, int subIndex, byte *text);
 	void loadTextData(byte *textBuffer, int index, int size);
-	char *getTextEntry(int index, byte *textBuffer);
-	void setText(char *text);
+	byte *getTextEntry(int index, byte *textBuffer);
+	void setText(byte *text);
 	void resetTextValues();
 	void drawDialogTextBubbles();
 	void setTextEx(int index, byte *textBuffer);
