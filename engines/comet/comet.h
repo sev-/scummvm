@@ -113,8 +113,8 @@ struct MarcheItem {
 
 struct SceneExitItem {
 	int directionIndex;
-	int fileNumber;
-	int scriptNumber;
+	int chapterNumber;
+	int sceneNumber;
 	//int unused;
 	int x, x2;
 };
@@ -232,10 +232,10 @@ public:
 
 	bool _needToLoadSavegameFlag, _loadingGameFlag;
 	
-	int _startupFileNumber, _startupScriptNumber;
-	int _fileNumber, _scriptNumber;
-	int _currentFileNumber, _currentScriptNumber;
-	int _fileNumber3, _scriptNumber3;
+	int _startupChapterNumber, _startupSceneNumber;
+	int _chapterNumber, _sceneNumber;
+	int _currentChapterNumber, _currentSceneNumber;
+	int _chapterNumber3, _sceneNumber3;
 
 	Anim *_bulleVa2, *_marche0Va2, *_objectsVa2, *_cursorVa2, *_iconeVa2;
 	Anim *_staticObjects;
@@ -295,10 +295,10 @@ public:
 	
 	void skipText();
 
-	void setFileAndScriptNumber(int fileNumber, int scriptNumber);
+	void setChapterAndScene(int chapterNumber, int sceneNumber);
 	void updateGame();
-	void updateFileNumber();
-	void updateScriptNumber();
+	void updateChapterNumber();
+	void updateSceneNumber();
 	void updateSub02();
 	void updateSub03(bool flag);
 	void sceneObjectsUpdate01();
@@ -352,14 +352,14 @@ public:
 	void loadStaticObjects();
 	void drawSceneForeground();
 
-	int checkLinesSub(int fileNumber, int scriptNumber);
+	int checkLinesSub(int chapterNumber, int sceneNumber);
 
 	int checkCollisionWithRoomBounds(const Common::Rect &rect, int direction);
 	int checkCollisionWithBlockingRects(Common::Rect &rect);
 	int checkCollisionWithActors(int skipIndex, Common::Rect &rect);
 	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction);
 	
-	void handleSceneChange(int scriptNumber, int fileNumber);
+	void handleSceneChange(int sceneNumber, int chapterNumber);
 
 	uint16 rectInSceneItem(const Common::Rect &rect);
 	void drawLineOfSight();
@@ -485,7 +485,7 @@ public:
 	void o1_setItemValue5To8(Script *script);
 	void o1_setItemValue5To0(Script *script);
 	void o1_updateDirection2(Script *script);
-	void o1_setGlobalScriptNumber(Script *script);
+	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
 	void o1_setMarcheNumber(Script *script);
 	void o1_setZoomByItem(Script *script);
@@ -507,7 +507,7 @@ public:
 	void o1_setTextXY(Script *script);
 	void o1_playMusic(Script *script);
 	void o1_setRandomValue(Script *script);
-	void o1_setFileNumber(Script *script);
+	void o1_setChapterNumber(Script *script);
 	void o1_dialog(Script *script);
 	void o1_addSceneItem2(Script *script);
 	void o1_playAnim(Script *script);
