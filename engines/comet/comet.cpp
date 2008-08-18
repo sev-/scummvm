@@ -102,7 +102,7 @@ int CometEngine::go() {
 	_staticObjects = NULL;
 	_needToLoadSavegameFlag = false;
 	_loadingGameFlag = false;
- 	_linesArray.clear();
+ 	_sceneExits.clear();
 
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
@@ -182,11 +182,16 @@ int CometEngine::go() {
 		if (slow)
 			_system->delayMillis(40);
 
-		if (_keyScancode == Common::KEYCODE_KP_PLUS)
+		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
 			_scriptNumber++;
-		else if (_keyScancode == Common::KEYCODE_KP_MINUS)
-			if (_scriptNumber > 0) _scriptNumber--;
-			
+			debug(4, "## New _scriptNumber = %d", _scriptNumber);
+		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
+			if (_scriptNumber > 0) {
+				debug(4, "## New _scriptNumber = %d", _scriptNumber);
+				_scriptNumber--;
+			}
+		}
+
 		/* Debugging helpers ends here */
 		
 		updateGame();
@@ -248,8 +253,12 @@ int CometEngine::go() {
 		// DEBUG
 		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
 			_scriptNumber++;
+			debug(4, "## New _scriptNumber = %d", _scriptNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
-			if (_scriptNumber > 0) _scriptNumber--;
+			if (_scriptNumber > 0) {
+				debug(4, "## New _scriptNumber = %d", _scriptNumber);
+				_scriptNumber--;
+			}
 		} if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
 			_fileNumber++;
 			_scriptNumber = 0;
@@ -259,7 +268,6 @@ int CometEngine::go() {
 				_scriptNumber = 0;
 			}
 		}
-
 		/* Debugging helpers ends here */
 
 		updateGame();

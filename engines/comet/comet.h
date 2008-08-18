@@ -111,7 +111,7 @@ struct MarcheItem {
 	Anim *anim;
 };
 
-struct LineItem {
+struct SceneExitItem {
 	int directionIndex;
 	int fileNumber;
 	int scriptNumber;
@@ -205,7 +205,7 @@ public:
 
 	SceneObject _sceneObjects[11];
 
-	Common::Array<LineItem> _linesArray;
+	Common::Array<SceneExitItem> _sceneExits;
 	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
@@ -377,7 +377,7 @@ public:
 	int checkCollisionWithScenePortals(const Common::Rect &rect, int direction);
 	uint16 handleCollision(SceneObject *sceneObject, int index, uint16 collisionType);
 	
-	void getPortalRect(int index, int &x, int &y, int &x2, int &y2);
+	void getSceneExitRect(int index, int &x, int &y, int &x2, int &y2);
 
 	void resetHeroDirectionChanged();
 

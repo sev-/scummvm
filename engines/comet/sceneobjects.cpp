@@ -126,7 +126,7 @@ void CometEngine::sceneObjectUpdateFlag(SceneObject *sceneObject, int flag) {
 }
 
 void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
-	if ((sceneObject->walkStatus & 3) && !(sceneObject->walkStatus & 4)) {
+	if (((sceneObject->walkStatus & 3) != 0) && ((sceneObject->walkStatus & 4) == 0)) {
 		sceneObject->x3 = sceneObject->x2;
 		sceneObject->y3 = sceneObject->y2;
 		sceneObject->walkStatus |= 4;
@@ -135,19 +135,24 @@ void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
 
 bool CometEngine::sceneObjectUpdateDirection2(int objectIndex, int x, int y) {
 
+	debug(4, "CometEngine::sceneObjectUpdateDirection2() objectIndex = %d; (%d, %d)", objectIndex, x, y);
+
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	printf("SceneObject.value5 = %d\n", sceneObject->value5);
+	//printf("SceneObject.value5 = %d\n", sceneObject->value5);
 	
 	if (sceneObject->value5 != 8) {
-		printf("## SceneObject.objectIndex = %d\n", objectIndex);
+		//printf("## SceneObject.objectIndex = %d\n", objectIndex);
 		rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
 		
-	printf("CometEngine::sceneObjectUpdateDirection2()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
+	//printf("CometEngine::sceneObjectUpdateDirection2()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
 		
 	int compareFlags = comparePointXY(sceneObject->x, sceneObject->y, x, y);
-	
+
+	debug(4, "CometEngine::sceneObjectUpdateDirection2() compareFlags = %d", compareFlags);
+
+	// No need to walk since we're already there
 	if (compareFlags == 3)
 		return false;
 
@@ -160,10 +165,10 @@ bool CometEngine::sceneObjectUpdateDirection2(int objectIndex, int x, int y) {
 		if (sceneObject->walkStatus & 3) {
 			sceneObject->walkStatus ^= 3;
 		} else {
-			sceneObject->walkStatus |= (random(2) + 1);
+			sceneObject->walkStatus |= 1;//DEBUG (random(2) + 1);
 		}
 	} else {
-		sceneObject->walkStatus &= 0xFFFC;
+		sceneObject->walkStatus &= ~3;
 		sceneObject->walkStatus |= (compareFlags ^ 3);
 	}
 
