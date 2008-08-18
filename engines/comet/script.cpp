@@ -115,9 +115,9 @@ void CometEngine::runScriptSub1() {
 	Script *script = _scripts[scriptNumber];
 	
 	if ((script->status & 8) && script->scriptNumber == _curScriptNumber) {
-		script->status &= 0xF7;
+		script->status &= ~8;
 		script->scriptNumber = 0;
-		_curScript->status &= 0xF7;
+		_curScript->status &= ~8;
 		_curScript->scriptNumber = 0;
 	} else {
 		_scriptBreakFlag = true;
@@ -134,6 +134,7 @@ void CometEngine::runScriptSub2() {
 
 	if (_curScript->scriptNumber == 0) {
 		_curScript->status &= ~kScriptSleeping;
+		debug(4, "*** sleeping finished");
 	} else {
 		_scriptBreakFlag = true;
 	}
@@ -150,6 +151,7 @@ void CometEngine::runScriptSub3() {
 	if ((_curScript->object()->walkStatus & 3) == 0 || _curScript->object()->flag == 0) {
 		_curScript->status &= ~kScriptWalking;
 		sceneObjectSetAnimNumber(_curScript->object(), 0);
+		debug(4, "*** walking finished");
 	} else {
 		_scriptBreakFlag = true;
 	}
@@ -160,6 +162,7 @@ void CometEngine::runScriptSub4() {
 
 	if (_curScript->object()->animFrameIndex + 1 == _curScript->object()->animFrameCount) {
 		_curScript->status &= ~kScriptAnimPlaying;
+		debug(4, "*** anim playing finished");
 	} else {
 		_scriptBreakFlag = true;
 	}
@@ -174,6 +177,7 @@ void CometEngine::runScriptSub5() {
 		// should be encapsulated in either Script or Dialog
 		_curScript->ip = _dialog->getChoiceScriptIp();
 		_curScript->jump();
+		debug(4, "*** dialog finished");
 	} else {
  		_scriptBreakFlag = true;
  	}
@@ -197,6 +201,7 @@ void CometEngine::runScriptSub6() {
 			sceneObject->animFrameIndex = _animSubIndex;
 			_animIndex = -1;
 		}
+		debug(4, "*** talking finished");
 	} else {
 		_scriptBreakFlag = true;
 	}
