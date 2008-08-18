@@ -107,9 +107,9 @@ void CometEngine::prepareScript(int scriptNumber) {
 
 }
 
-void CometEngine::runScriptSub1() {
+void CometEngine::processScriptStatus8() {
 
-	//debug(3, "######## runScriptSub1()");
+	//debug(3, "######## processScriptStatus8()");
 
 	int scriptNumber = _curScript->scriptNumber;
 	Script *script = _scripts[scriptNumber];
@@ -125,9 +125,9 @@ void CometEngine::runScriptSub1() {
 
 }
 
-void CometEngine::runScriptSub2() {
+void CometEngine::processScriptSleep() {
 
-	//debug(3, "######## runScriptSub2()");
+	//debug(3, "######## processScriptSleep()");
 
 	if (_curScript->scriptNumber > 0)
 		_curScript->scriptNumber--;
@@ -141,11 +141,11 @@ void CometEngine::runScriptSub2() {
 
 }
 
-void CometEngine::runScriptSub3() {
+void CometEngine::processScriptWalk() {
 
-	debug(3, "######## runScriptSub3()  objectIndex = %d", _curScript->objectIndex);
+	debug(3, "######## processScriptWalk()  objectIndex = %d", _curScript->objectIndex);
 
-	debug(2, "CometEngine::runScriptSub3() walkStatus = %d; flag = %d",
+	debug(2, "CometEngine::processScriptWalk() walkStatus = %d; flag = %d",
 		_curScript->object()->walkStatus, _curScript->object()->flag);
 
 	if ((_curScript->object()->walkStatus & 3) == 0 || _curScript->object()->flag == 0) {
@@ -158,7 +158,7 @@ void CometEngine::runScriptSub3() {
 
 }
 
-void CometEngine::runScriptSub4() {
+void CometEngine::processScriptAnim() {
 
 	if (_curScript->object()->animFrameIndex + 1 == _curScript->object()->animFrameCount) {
 		_curScript->status &= ~kScriptAnimPlaying;
@@ -169,7 +169,7 @@ void CometEngine::runScriptSub4() {
 
 }
 
-void CometEngine::runScriptSub5() {
+void CometEngine::processScriptDialog() {
 
 	if (!_dialog->isRunning()) {
 		_curScript->status &= ~kScriptDialogRunning;
@@ -184,7 +184,7 @@ void CometEngine::runScriptSub5() {
 
 }
 
-void CometEngine::runScriptSub6() {
+void CometEngine::processScriptTalk() {
 
 	if (_textFlag2 == 0) {
 		_curScript->status &= ~kScriptTalking;
@@ -192,7 +192,6 @@ void CometEngine::runScriptSub6() {
 			if (_animIndex != -1)
 				_sceneObjects[_animIndex].visible = true;
 			_sceneObjects[10].flag = 0;
-			//_screenTransitionEffectFlag = true;
 			_screen->enableTransitionEffect();
 		} else if (_animIndex != -1) {
 			SceneObject *sceneObject = getSceneObject(_sceneObjectIndex);
@@ -234,22 +233,22 @@ void CometEngine::runScript(int scriptNumber) {
 		return;
 		
 	if (_curScript->status & 8)
-		runScriptSub1();
+		processScriptStatus8();
 
 	if (_curScript->status & kScriptSleeping)
-		runScriptSub2();
+		processScriptSleep();
 
 	if (_curScript->status & kScriptWalking)
-		runScriptSub3();
+		processScriptWalk();
 
 	if (_curScript->status & kScriptAnimPlaying)
-		runScriptSub4();
+		processScriptAnim();
 
 	if (_curScript->status & kScriptDialogRunning)
-		runScriptSub5();
+		processScriptDialog();
 
 	if (_curScript->status & kScriptTalking)
-		runScriptSub6();
+		processScriptTalk();
 
 	//debug(3, "%02d: _scriptBreakFlag = %d", scriptNumber, _scriptBreakFlag);
 
@@ -316,7 +315,7 @@ void CometEngine::runScript(int scriptNumber) {
 			o1_initPoints(_curScript);
 			break;
 		case 23:
-			o1_initLines(_curScript);
+			o1_initSceneExits(_curScript);
 			break;
 		case 25:
 			o1_addSceneItem1(_curScript);
@@ -729,10 +728,10 @@ void CometEngine::o1_initPoints(Script *script) {
 
 }
 
-void CometEngine::o1_initLines(Script *script) {
-	debug(2, "o1_initLines");
+void CometEngine::o1_initSceneExits(Script *script) {
+	debug(2, "o1_initSceneExits");
 
-	initLines(script->ip);
+	initSceneExits(script->ip);
 	script->ip += *script->ip * 5 + 1;
 
 }

@@ -139,7 +139,7 @@ void CometEngine::initPoints(byte *data) {
 	initPointsArray2();
 }
 
-void CometEngine::initLines(byte *data) {
+void CometEngine::initSceneExits(byte *data) {
 	byte count = *data++;
 	_sceneExits.clear();
 	while (count--) {
@@ -525,7 +525,7 @@ void CometEngine::updateStaticObjects() {
 void CometEngine::sceneObjectsUpdate03() {
 	for (int i = 0; i < 11; i++) {
 		if (_sceneObjects[i].flag != 0 && _sceneObjects[i].visible) {
-			sceneObjectUpdate05(_sceneObjects[i].y, i);
+			sceneObjectEnqueueForDrawing(_sceneObjects[i].y, i);
 		}
 	}
 }
@@ -991,7 +991,7 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 
 }
 
-void CometEngine::sceneObjectUpdate05(int y, int objectIndex) {
+void CometEngine::sceneObjectEnqueueForDrawing(int y, int objectIndex) {
 
 	uint32 index = 0;
 	for (index = 0; index < _spriteArray.size(); index++) {
