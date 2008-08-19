@@ -90,7 +90,7 @@ struct SceneObject {
 	int animFrameCount;
 	int animSubIndex2;
 	int deltaX, deltaY;
-	uint16 value5;
+	uint16 collisionType;
 	int linesIndex;
 	int value6;
 	int flag;
@@ -235,10 +235,10 @@ public:
 	int _startupChapterNumber, _startupSceneNumber;
 	int _chapterNumber, _sceneNumber;
 	int _currentChapterNumber, _currentSceneNumber;
-	int _chapterNumber3, _sceneNumber3;
+	int _prevChapterNumber, _prevSceneNumber;
 
-	Anim *_bulleVa2, *_marche0Va2, *_objectsVa2, *_cursorVa2, *_iconeVa2;
-	Anim *_staticObjects;
+	Anim *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
+	Anim *_sceneObjectsSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
 	int _gameLoopCounter;
@@ -361,7 +361,7 @@ public:
 	
 	void handleSceneChange(int sceneNumber, int chapterNumber);
 
-	uint16 rectInSceneItem(const Common::Rect &rect);
+	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
 	PointArray _pointsArray;
@@ -374,7 +374,7 @@ public:
 	
 	void sceneObjectDirection2(int index, SceneObject *sceneObject);
 	
-	int checkCollisionWithScenePortals(const Common::Rect &rect, int direction);
+	int checkCollisionWithSceneExits(const Common::Rect &rect, int direction);
 	uint16 handleCollision(SceneObject *sceneObject, int index, uint16 collisionType);
 	
 	void getSceneExitRect(int index, int &x, int &y, int &x2, int &y2);
@@ -522,15 +522,12 @@ public:
 	void o1_sample_2(Script *script);
 	void o1_sample_1(Script *script);
 
-	/* Graphics */
-	//TODO: Move to Screen class?
-
 public:
 	/* Misc */
 	//ALL FIXME
 	int _dotFlag;
 	int calcDirection(int x1, int y1, int x2, int y2);
-	void drawLines();
+	void drawSceneExits();
 
 protected:
 

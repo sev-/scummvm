@@ -41,12 +41,6 @@ void CometEngine::clearMarcheByIndex(int marcheIndex) {
 
 Anim *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
 
-	/*
-	// WTF?!
-	byte *test = (byte*)malloc(128000);
-	free(test);
-	*/
-
 	Anim *tempAnim = new Anim(this);
 	tempAnim->load(pakFilename, fileIndex);
 	return tempAnim;
@@ -56,9 +50,9 @@ Anim *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
 Anim *CometEngine::getMarcheAnim(int marcheNumber) {
 	switch (marcheNumber) {
 	case 1:
-		return _marche0Va2;
+		return _heroSprite;
 	case 2:
-		return _staticObjects;
+		return _sceneObjectsSprite;
 	//case 3: //TODO??? returns NULL var
 	default:
 		return NULL;

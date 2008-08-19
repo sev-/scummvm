@@ -80,10 +80,10 @@ int CometEngine::go() {
 	_gameLoopCounter = 0;
 	_textColorFlag = 0;
 	
-	_chapterNumber3 = -1;
+	_prevChapterNumber = -1;
 	_currentChapterNumber = -1;
 	_chapterNumber = 0;
-	_sceneNumber3 = -1;
+	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
 	memset(_marcheItems, 0, sizeof(_marcheItems));
@@ -99,7 +99,7 @@ int CometEngine::go() {
 	_flag03 = false;
 	_itemInSight = false;
 
-	_staticObjects = NULL;
+	_sceneObjectsSprite = NULL;
 	_needToLoadSavegameFlag = false;
 	_loadingGameFlag = false;
  	_sceneExits.clear();
@@ -129,7 +129,7 @@ int CometEngine::go() {
 	
 	_animIndex = -1;
 
-	_scriptVars1[0] = &_sceneNumber3;
+	_scriptVars1[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
 		_scriptVars1[1 + i * 3] = &_sceneObjects[i].flag;
 		_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
@@ -138,7 +138,7 @@ int CometEngine::go() {
 	_scriptVars1[31] = &_mouseButtons4;
 	_scriptVars1[32] = &_scriptMouseFlag;
 	_scriptVars1[33] = &_scriptRandomValue;
-	_scriptVars1[34] = &_chapterNumber3;
+	_scriptVars1[34] = &_prevChapterNumber;
 
 	for (int i = 0; i < 17; i++)
 		_scripts[i] = new Script(this);

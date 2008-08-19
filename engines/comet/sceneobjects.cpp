@@ -69,19 +69,19 @@ void CometEngine::sceneObjectResetDirectionAdd(SceneObject *sceneObject) {
 
 void CometEngine::sceneObjectCalcDirection(SceneObject *sceneObject) {
 
-	int deltaX, deltaY, direction, flags;
+	int deltaX, deltaY, direction, walkFlag;
 	
-	flags = sceneObject->walkStatus & 3;
+	walkFlag = sceneObject->walkStatus & 3;
 	deltaX = sceneObject->x2 - sceneObject->x;
 	deltaY = sceneObject->y2 - sceneObject->y;
 	direction = sceneObject->direction;
 
-	if (flags == 1 || (flags == 0 && (ABS(deltaX) > ABS(deltaY)))) {
+	if (walkFlag == 1 || (walkFlag == 0 && (ABS(deltaX) > ABS(deltaY)))) {
 		if (deltaX > 0)
 			direction = 2;
 		else if (deltaX < 0)
 			direction = 4;
-	} else if (flags == 2 || (flags == 0 && (ABS(deltaY) > ABS(deltaX)))) {
+	} else if (walkFlag == 2 || (walkFlag == 0 && (ABS(deltaY) > ABS(deltaX)))) {
 		if (deltaY > 0)
 			direction = 3;
 		else if (deltaY < 0)
@@ -139,9 +139,9 @@ bool CometEngine::sceneObjectUpdateDirection2(int objectIndex, int x, int y) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	//printf("SceneObject.value5 = %d\n", sceneObject->value5);
+	//printf("SceneObject.collisionType = %d\n", sceneObject->collisionType);
 	
-	if (sceneObject->value5 != 8) {
+	if (sceneObject->collisionType != 8) {
 		//printf("## SceneObject.objectIndex = %d\n", objectIndex);
 		rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
