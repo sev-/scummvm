@@ -818,14 +818,14 @@ void CometEngine::o1_setItemValue5To8(Script *script) {
 
 	debug(2, "o1_setItemValue5To8()");
 
-	script->object()->value5 = 8;
+	script->object()->collisionType = 8;
 }
 
 void CometEngine::o1_setItemValue5To0(Script *script) {
 
 	debug(2, "o1_setItemValue5To0()");
 
-	script->object()->value5 = 0;
+	script->object()->collisionType = 0;
 }
 
 void CometEngine::o1_updateDirection2(Script *script) {
