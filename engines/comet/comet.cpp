@@ -57,7 +57,7 @@ CometEngine::~CometEngine() {
 }
 
 
-int CometEngine::init() {
+Common::Error CometEngine::init() {
 
 	// Initialize backend
 	_system->beginGFXTransaction();
@@ -69,10 +69,10 @@ int CometEngine::init() {
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
 
-	return 0;
+	return Common::kNoError;
 }
 
-int CometEngine::go() {
+Common::Error CometEngine::go() {
 
 	Common::Event event;
 
@@ -288,7 +288,7 @@ int CometEngine::go() {
 	}
 #endif
 
-	return 0;
+	return Common::kNoError;
 }
 
 } // End of namespace Comet
