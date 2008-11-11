@@ -542,7 +542,6 @@ void CometEngine::drawSceneAnims() {
 	//TODO: setScreenRectAll();
 	
 	byte *va2sec00 = _sceneObjectsSprite->getSubSection(0, 0) + 2;
-	byte *va2sec1 = _sceneObjectsSprite->getSection(1);
 
 	for (uint32 i = 0; i < _spriteArray.size(); i++) {
 
@@ -1232,7 +1231,7 @@ byte *CometEngine::getTextEntry(int index, byte *textBuffer) {
 
 void CometEngine::setText(byte *text) {
 	
-	int counter = 0;
+	int lineCount = 0;
 
 	_currentText = text;
 
@@ -1251,8 +1250,8 @@ void CometEngine::setText(byte *text) {
 		text += strlen((char*)text) + 1;
 		if (textWidth != 0)
 			_textMaxTextHeight++;
-		counter++;
-		if (counter == 3 && *text != '*') {
+		lineCount++;
+		if (lineCount == 3 && *text != '*') {
 			_textFlag1 = true;
 			break;
 		}
@@ -1879,7 +1878,7 @@ int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect) {
 			_blockingTestRect.right = sceneObject->x + sceneObject->deltaX;
 			_blockingTestRect.bottom = sceneObject->y;
 			if (rectCompare(rect, _blockingTestRect)) {
-				return index | 0x600;
+				return 0x600 | index;
 			}
 		}
 	}
