@@ -63,7 +63,7 @@ uint16 CometEngine::getVersion() const {
 }
 
 static const PlainGameDescriptor cometGames[] = {
-	{"comet", "Shadow of the Comet game"},
+	{"comet", "Shadow of the Comet"},
 
 	{0, 0}
 };
