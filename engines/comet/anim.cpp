@@ -131,6 +131,7 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 	byte *offsets[200];
 	byte bh = 0, bl = 0;
 	byte cl = 0, dh = 0, dl = 0;
+	bool doMemset = false;
 
 	for (int i = 0; i < 200; i++)
 		offsets[i] = destBuffer + x + (y + i) * 320;
@@ -159,12 +160,17 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 			switch (cmd) {
 
 			case 0:
+			case 1:
 			case 8:
+			case 9:
 			case 22:
+			case 23:
+				doMemset = (cmd % 2 == 0) ? true : false;	// 0, 8, 22 and 1, 9, 23
 				for (int i = 0; i < 6; i++) {
 					cl = dh + (dl & 1);
 					dl >>= 1;
-					memset(offsets[line], pixel, cl);
+					if (doMemset)
+						memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
 				}
 				dh = cl;
@@ -177,18 +183,7 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 			case 57:
 				cl = dh;
 				for (int i = 0; i < 6; i++) {
-					cl -= dl & 1;
-					dl >>= 1;
-					offsets[line++] += cl;
-				}
-				dh = cl;
-				break;
-
-			case 1:
-			case 9:
-			case 23:
-				for (int i = 0; i < 6; i++) {
-					cl = dh + (dl & 1);
+					cl -= (dl & 1);
 					dl >>= 1;
 					offsets[line++] += cl;
 				}
@@ -215,7 +210,7 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 			case 42:
 				cl = dh;
 				for (int i = 0; i < 6; i++) {
-					cl += dl & 1;
+					cl += (dl & 1);
 					dl >>= 1;
 					memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
@@ -266,7 +261,7 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 			case 56:
 				cl = dh;
 				for (int i = 0; i < 6; i++) {
-					cl -= dl & 1;
+					cl -= (dl & 1);
 					dl >>= 1;
 					memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
@@ -407,46 +402,34 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 				break;
 
 			case 58:
-			case 86:
-			case 88:
-				for (int i = 0; i < 3; i++) {
-					cl = dh + (dl & 3) - 1;
-					dl >>= 2;
-					memset(offsets[line], pixel, cl);
-					offsets[line++] += cl;
-					dh = cl;
-				}
-				break;
-
 			case 59:
+			case 86:
 			case 87:
+			case 88:
 			case 89:
+				doMemset = (cmd % 2 == 0) ? true : false;	// 58, 86, 88 and 59, 87, 89
 				for (int i = 0; i < 3; i++) {
 					cl = dh + (dl & 3) - 1;
 					dl >>= 2;
+					if (doMemset)
+						memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
 					dh = cl;
 				}
 				break;
 
 			case 76:
-			case 84:
-			case 94:
-				for (int i = 0; i < 2; i++) {
-					cl = dh + (dl & 7);
-					dl >>= 3;
-					memset(offsets[line], pixel, cl);
-					offsets[line++] += cl;
-					dh = cl;
-				}
-				break;
-
 			case 77:
+			case 84:
 			case 85:
+			case 94:
 			case 95:
+				doMemset = (cmd % 2 == 0) ? true : false;	// 76, 84, 94 and 77, 85, 95
 				for (int i = 0; i < 2; i++) {
 					cl = dh + (dl & 7);
 					dl >>= 3;
+					if (doMemset)
+						memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
 					dh = cl;
 				}
@@ -468,23 +451,17 @@ void Anim::unpackRle(int x, int y, byte *rleData, byte *destBuffer) {
 				break;
 
 			case 62:
-			case 68:
-			case 90:
-				for (int i = 0; i < 2; i++) {
-					cl = dh - (dl & 7);
-					dl >>= 3;
-					memset(offsets[line], pixel, cl);
-					offsets[line++] += cl;
-					dh = cl;
-				}
-				break;
-
 			case 63:
+			case 68:
 			case 69:
+			case 90:
 			case 91:
+				doMemset = (cmd % 2 == 0) ? true : false;	// 62, 68, 90 and 63, 69, 91
 				for (int i = 0; i < 2; i++) {
 					cl = dh - (dl & 7);
 					dl >>= 3;
+					if (doMemset)
+						memset(offsets[line], pixel, cl);
 					offsets[line++] += cl;
 					dh = cl;
 				}
