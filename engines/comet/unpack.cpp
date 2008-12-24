@@ -471,6 +471,7 @@ int PAK_explode(uint8 *srcBuffer, uint8 *dstBuffer, uint32 compressedSize, uint3
 
 	bl = 7;
 	bd = (compressedSize > 200000L) ? 8 : 7; // TODO : Totalement FOIREUX, à vérifier
+	bb = 0;
 
 	if(flags & 4) {	// With literal tree--minimum match length is 3
 		bb = 9;
