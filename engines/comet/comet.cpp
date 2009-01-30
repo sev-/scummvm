@@ -45,7 +45,7 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	_mixer->setVolumeForSoundType(Audio::Mixer::kSpeechSoundType, ConfMan.getInt("speech_volume"));
 	_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, ConfMan.getInt("music_volume"));
 
-	Common::addSpecialDebugLevel(kDebugScript, "script", "Script debug level");
+	Common::addDebugChannel(kDebugScript, "script", "Script debug level");
 	
 }
 

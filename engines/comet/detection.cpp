@@ -27,7 +27,7 @@
 
 #include "base/plugins.h"
 
-#include "common/advancedDetector.h"
+#include "engines/advancedDetector.h"
 #include "common/file.h"
 
 #include "comet/comet.h"
@@ -36,7 +36,7 @@
 namespace Comet {
 
 struct CometGameDescription {
-	Common::ADGameDescription desc;
+	ADGameDescription desc;
 
 	int gameID;
 	int gameType;
@@ -81,7 +81,7 @@ static const CometGameDescription gameDescriptions[] = {
 			AD_ENTRY1("r00.cc4", "f664b9cf60c9895f6f460d9432d45d85"),
 			Common::EN_ANY,
 			Common::kPlatformPC,
-			Common::ADGF_NO_FLAGS
+			ADGF_NO_FLAGS
 		},
 		0,
 		0,
@@ -103,7 +103,7 @@ static CometGameDescription g_fallbackDesc = {
 		AD_ENTRY1(0, 0), // This should always be AD_ENTRY1(0, 0) in the fallback descriptor
 		Common::UNK_LANG,
 		Common::kPlatformPC,
-		Common::ADGF_NO_FLAGS
+		ADGF_NO_FLAGS
 	},
 	0,
 	0,
@@ -111,7 +111,7 @@ static CometGameDescription g_fallbackDesc = {
 	0,
 };
 
-static const Common::ADParams detectionParams = {
+static const ADParams detectionParams = {
 	// Pointer to ADGameDescription or its superset structure
 	(const byte *)Comet::gameDescriptions,
 	// Size of that superset structure
@@ -134,9 +134,9 @@ static const Common::ADParams detectionParams = {
 
 using namespace Comet;
 
-class CometMetaEngine : public Common::AdvancedMetaEngine {
+class CometMetaEngine : public AdvancedMetaEngine {
 public:
-	CometMetaEngine() : Common::AdvancedMetaEngine(detectionParams) {}
+	CometMetaEngine() : AdvancedMetaEngine(detectionParams) {}
 
 	virtual const char *getName() const {
 		return "Comet Engine";
@@ -146,10 +146,10 @@ public:
 		return "Shadow of the Comet";
 	}
 
-	virtual bool createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const;
+	virtual bool createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const;
 };
 
-bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const Common::ADGameDescription *desc) const {
+bool CometMetaEngine::createInstance(OSystem *syst, Engine **engine, const ADGameDescription *desc) const {
 	const Comet::CometGameDescription *gd = (const Comet::CometGameDescription *)desc;
 	if (gd) {
 		*engine = new Comet::CometEngine(syst, gd);
