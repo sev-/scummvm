@@ -1,3 +1,4 @@
+#include "common/debug.h"
 
 #include "comet/pak.h"
 
