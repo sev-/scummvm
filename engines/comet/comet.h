@@ -164,8 +164,7 @@ class CometEngine : public Engine {
 	friend class Script;
 	friend class Anim;
 protected:
-	Common::Error init();
-	Common::Error go();
+	Common::Error run();
 	void shutdown();
 	
 	bool initGame();
