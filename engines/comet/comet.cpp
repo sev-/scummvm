@@ -57,7 +57,9 @@ CometEngine::~CometEngine() {
 }
 
 
-Common::Error CometEngine::init() {
+Common::Error CometEngine::run() {
+
+	Common::Event event;
 
 	// Initialize backend
 	_system->beginGFXTransaction();
@@ -68,13 +70,6 @@ Common::Error CometEngine::init() {
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
-
-	return Common::kNoError;
-}
-
-Common::Error CometEngine::go() {
-
-	Common::Event event;
 
 	/* Init vars */
 	_gameLoopCounter = 0;
