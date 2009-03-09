@@ -26,13 +26,11 @@ Anim::Anim(CometEngine *vm) : _vm(vm), _animData(NULL) {
 }
 
 Anim::~Anim() {
-	if (_animData)
-		free(_animData);
+	free(_animData);
 }
 
 void Anim::load(const char *pakFilename, int fileIndex) {
-	if (_animData)
-		free(_animData);
+	free(_animData);
 	_animData = loadFromPak(pakFilename, fileIndex);
 }
 

@@ -260,7 +260,7 @@ public:
 	
 	int _scriptRandomValue;
 	
-	Common::Rect _blockingTestRect;
+	Common::Rect _blockingRect;
 
 	/* Audio */
 	MusicPlayer *_music;
@@ -306,7 +306,7 @@ public:
 	void sceneObjectsUpdate03();
 	void updateSceneObjectFlag();
 	void sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject);
-	void sceneObjectDirection1(int objectIndex, SceneObject *sceneObject);
+	void sceneObjectAvoidBlockingRect(int objectIndex, SceneObject *sceneObject);
 	void resetVars();
 	
 	void drawSceneAnims();
@@ -392,7 +392,7 @@ public:
 	int loadMarche(int marcheNumber, int fileIndex);
 	void freeMarcheAnims();
 	void loadAllMarche();
-	void freeMarcheEx(SceneObject *sceneObject);
+	void unloadSceneObjectSprite(SceneObject *sceneObject);
 
 	/* SceneObject */
 	void sceneObjectInit(int itemIndex, int marcheIndex);
@@ -481,8 +481,8 @@ public:
 	void o1_setVar(Script *script);
 	void o1_incVar(Script *script);
 	void o1_subVar(Script *script);
-	void o1_setItemValue5To8(Script *script);
-	void o1_setItemValue5To0(Script *script);
+	void o1_setSceneObjectCollisionTypeTo8(Script *script);
+	void o1_setSceneObjectCollisionTypeTo0(Script *script);
 	void o1_updateDirection2(Script *script);
 	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
@@ -491,7 +491,7 @@ public:
 	void o1_startDialog(Script *script);
 	void o1_waitWhilePlayerIsInRect(Script *script);
 	void o1_waitUntilPlayerIsInRect(Script *script);
-	void o1_freeMarcheEx(Script *script);
+	void o1_unloadSceneObjectSprite(Script *script);
 	void o1_setObjectClipX(Script *script);
 	void o1_setObjectClipY(Script *script);
 	void o1_orVar(Script *script);
@@ -512,7 +512,7 @@ public:
 	void o1_playAnim(Script *script);
 	void o1_sub_AD04(Script *script);
 	void o1_initSceneObject(Script *script);
-	void o1_loadMarche(Script *script);
+	void o1_loadSceneObjectSprite(Script *script);
 	void o1_setObjectVisible(Script *script);
 	void o1_paletteFadeIn(Script *script);
 	void o1_paletteFadeOut(Script *script);
