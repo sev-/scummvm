@@ -55,6 +55,7 @@ Anim *CometEngine::getMarcheAnim(int marcheNumber) {
 		return _sceneObjectsSprite;
 	//case 3: //TODO??? returns NULL var
 	default:
+		warning("CometEngine::getMarcheAnim() Invalid marcheNumber (%d)", marcheNumber);
 		return NULL;
 	}
 }
@@ -96,7 +97,7 @@ int CometEngine::loadMarche(int marcheNumber, int fileIndex) {
 
 	// Possible workaround for the memory leak bug
 	if (_marcheItems[marcheIndex].anim) {
-		warning("CometEngine::freeMarche() _marcheItems[%d].anim not NULL", marcheIndex);
+		//warning("CometEngine::freeMarche() _marcheItems[%d].anim not NULL", marcheIndex);
 		delete _marcheItems[marcheIndex].anim;
 		_marcheItems[marcheIndex].anim = NULL;
 	}
@@ -132,7 +133,7 @@ void CometEngine::loadAllMarche() {
 	}
 }
 
-void CometEngine::freeMarcheEx(SceneObject *sceneObject) {
+void CometEngine::unloadSceneObjectSprite(SceneObject *sceneObject) {
 	if (sceneObject->marcheIndex != -1) {
 		MarcheItem *marche = &_marcheItems[sceneObject->marcheIndex];
 		if (marche->anim && marche->marcheNumber == 0 && !isMarcheLoaded(sceneObject->marcheIndex)) {

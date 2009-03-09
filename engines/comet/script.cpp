@@ -338,12 +338,12 @@ void CometEngine::runScript(int scriptNumber) {
 		case 33:
 			o1_subVar(_curScript);
 			break;
-  		case 34:
-  			o1_setItemValue5To8(_curScript);
-  			break;
-  		case 35:
-  			o1_setItemValue5To0(_curScript);
-  			break;
+		case 34:
+			o1_setSceneObjectCollisionTypeTo8(_curScript);
+			break;
+		case 35:
+			o1_setSceneObjectCollisionTypeTo0(_curScript);
+			break;
 		case 36:
 			o1_updateDirection2(_curScript);
 			break;
@@ -354,7 +354,7 @@ void CometEngine::runScript(int scriptNumber) {
 			o1_waitUntilPlayerIsInRect(_curScript);
 			break;
 		case 41:
-			o1_freeMarcheEx(_curScript);
+			o1_unloadSceneObjectSprite(_curScript);
 			break;
 		case 42:
 			o1_setObjectClipX(_curScript);
@@ -376,6 +376,9 @@ void CometEngine::runScript(int scriptNumber) {
 			break;
 		case 53:
 			o1_startDialog(_curScript);
+			break;
+		case 55:
+			//o1_setNeedToFillScreenFlag(_curScript);
 			break;
 		case 56:
 			o1_orVar(_curScript);
@@ -432,7 +435,7 @@ void CometEngine::runScript(int scriptNumber) {
 			o1_initSceneObject(_curScript);
 			break;
 		case 91:
-			o1_loadMarche(_curScript);
+			o1_loadSceneObjectSprite(_curScript);
 			break;
 		case 92:
 			o1_setObjectVisible(_curScript);
@@ -814,16 +817,16 @@ void CometEngine::o1_subVar(Script *script) {
 
 }
 
-void CometEngine::o1_setItemValue5To8(Script *script) {
+void CometEngine::o1_setSceneObjectCollisionTypeTo8(Script *script) {
 
-	debug(2, "o1_setItemValue5To8()");
+	debug(2, "o1_setSceneObjectCollisionTypeTo8()");
 
 	script->object()->collisionType = 8;
 }
 
-void CometEngine::o1_setItemValue5To0(Script *script) {
+void CometEngine::o1_setSceneObjectCollisionTypeTo0(Script *script) {
 
-	debug(2, "o1_setItemValue5To0()");
+	debug(2, "o1_setSceneObjectCollisionTypeTo0()");
 
 	script->object()->collisionType = 0;
 }
@@ -932,13 +935,13 @@ void CometEngine::o1_waitUntilPlayerIsInRect(Script *script) {
 
 }
 
-void CometEngine::o1_freeMarcheEx(Script *script) {
-	debug(2, "o1_freeMarcheEx");
+void CometEngine::o1_unloadSceneObjectSprite(Script *script) {
+	debug(2, "o1_unloadSceneObjectSprite");
 
 	if (script->objectIndex != 0) {
 		script->object()->flag = 0;
 		if (script->object()->marcheIndex != -1)
-			freeMarcheEx(script->object());
+			unloadSceneObjectSprite(script->object());
 	}
 
 }
@@ -1114,7 +1117,6 @@ void CometEngine::o1_playMusic(Script *script) {
 	debug(2, "o1_playMusic(%d)", fileIndex);
 
 	if (fileIndex != 0xFF) {
-		//TODO: playMusic(fileIndex);
 		_music->playMusic(fileIndex);
 	} else {
 		//TODO: musicFadeDown();
@@ -1209,13 +1211,13 @@ void CometEngine::o1_initSceneObject(Script *script) {
 
 }
 
-void CometEngine::o1_loadMarche(Script *script) {
+void CometEngine::o1_loadSceneObjectSprite(Script *script) {
 
 	int fileIndex = script->loadByte();
 	
-	debug(2, "o1_loadMarche(%d)", fileIndex);
+	debug(2, "o1_loadSceneObjectSprite(%d)", fileIndex);
 
-	freeMarcheEx(script->object());
+	unloadSceneObjectSprite(script->object());
 	
 	script->object()->marcheIndex = loadMarche(_marcheNumber, fileIndex);
 	_marcheNumber = 0;

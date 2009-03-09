@@ -1,6 +1,7 @@
 MODULE := engines/comet
 
 MODULE_OBJS = \
+	animation.o \
 	detection.o \
 	dialog.o \
 	font.o \

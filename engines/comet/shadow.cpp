@@ -79,6 +79,7 @@ void CometEngine::calcRect01(Common::Rect &rect, int delta1, int delta2) {
 
 int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
 
+/*
 	int deltaX = (x2 - x1) / 2;
 	int deltaY = y2 - y1;
 	
@@ -92,6 +93,24 @@ int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
 			return kDirectionUp;
 		else
 			return kDirectionDown;
+	}
+*/
+
+	// New code, I think the code above is wrong...
+
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+
+	if (ABS(deltaX) / 2 > ABS(deltaY)) {
+		if (deltaX > 0)
+			return 2;
+		else
+			return 4;
+	} else {
+		if (deltaY > 0)
+			return 3;
+		else
+			return 1;
 	}
 
 }
@@ -827,33 +846,33 @@ void CometEngine::resetVars() {
 
 }
 
-void CometEngine::sceneObjectDirection1(int objectIndex, SceneObject *sceneObject) {
+void CometEngine::sceneObjectAvoidBlockingRect(int objectIndex, SceneObject *sceneObject) {
 
 	int x = sceneObject->x;
 	int y = sceneObject->y;
 
-	debug(4, "CometEngine::sceneObjectDirection1() 1) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
+	debug(4, "CometEngine::sceneObjectAvoidBlockingRect() 1) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
 	switch (sceneObject->direction) {
 	case 1:
 	case 3:
 		if (random(2) == 0) {
-			x = _blockingTestRect.left - (sceneObject->deltaX + 2);
+			x = _blockingRect.left - (sceneObject->deltaX + 2);
 		} else {
-			x = _blockingTestRect.right + (sceneObject->deltaX + 2);
+			x = _blockingRect.right + (sceneObject->deltaX + 2);
 		}
 		break;
 	case 2:
 	case 4:
 		if (random(2) == 0) {
-			y = _blockingTestRect.top - 2;
+			y = _blockingRect.top - 2;
 		} else {
-			y = _blockingTestRect.bottom + (sceneObject->deltaY + 2);
+			y = _blockingRect.bottom + (sceneObject->deltaY + 2);
 		}
 		break;
 	}
 
-	debug(4, "CometEngine::sceneObjectDirection1() 2) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
+	debug(4, "CometEngine::sceneObjectAvoidBlockingRect() 2) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
 	sceneObjectUpdateDirection2(objectIndex, x, y);
 
@@ -878,7 +897,7 @@ void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sce
 			sceneObjectUpdateFlag(sceneObject, sceneObject->flag);
 		}
 	} else {
-		sceneObjectDirection1(objectIndex, sceneObject);
+		sceneObjectAvoidBlockingRect(objectIndex, sceneObject);
 	}
 
 }
@@ -889,7 +908,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 
 	if (!flag)
 		sceneObjectUpdateDirectionTo(objectIndex, sceneObject);
-	
+
 	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2);
 	
 	debug(4, "WALK FROM (%d, %d) TO (%d, %d); comp = %d; walkStatus = %02X; walkStatus & 3 = %d", sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, comp, sceneObject->walkStatus, sceneObject->walkStatus & 3);
@@ -1377,6 +1396,8 @@ int CometEngine::checkCollisionWithSceneExits(const Common::Rect &rect, int dire
 
 void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 
+	debug(1, "rect_sub_CC94() 1) x = %d; y = %d; deltaX = %d; deltaY = %d", x, y, deltaX, deltaY);
+
 	if (x - deltaX < 0)
 		x = deltaX + 1;
 	if (x + deltaX > 319)
@@ -1390,6 +1411,8 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 		checkCollisionWithSceneExits(tempRect, 4))
 		return;
 		
+	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _xBuffer[x - deltaX], _xBuffer[x + deltaX]);
+
 	if (y - deltaY <= _xBuffer[x - deltaX])
 		y = _xBuffer[x - deltaX] + deltaY + 2;
 		
@@ -1398,6 +1421,8 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 
 	if (y > 199)
 		y = 199;
+
+	debug(1, "rect_sub_CC94() 2) x = %d; y = %d; deltaX = %d; deltaY = %d", x, y, deltaX, deltaY);
 
 }
 
@@ -1856,9 +1881,9 @@ int CometEngine::checkCollisionWithRoomBounds(const Common::Rect &rect, int dire
 int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect) {
 
 	for (uint32 index = 0; index < _blockingRects.size(); index++) {
-		_blockingTestRect = _blockingRects[index];
+		_blockingRect = _blockingRects[index];
 		if (_blockingRects[index].left != _blockingRects[index].right) {
-			if (rectCompare(_blockingTestRect, rect)) {
+			if (rectCompare(_blockingRect, rect)) {
 				return 0x300 | index;
 			}
 		}
@@ -1873,11 +1898,11 @@ int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect) {
 	for (int index = 0; index < 11; index++) {
 		SceneObject *sceneObject = getSceneObject(index);
 		if (index != skipIndex && sceneObject->flag != 0 && sceneObject->collisionType != 8) {
-			_blockingTestRect.left = sceneObject->x - sceneObject->deltaX;
-			_blockingTestRect.top = sceneObject->y - sceneObject->deltaY;
-			_blockingTestRect.right = sceneObject->x + sceneObject->deltaX;
-			_blockingTestRect.bottom = sceneObject->y;
-			if (rectCompare(rect, _blockingTestRect)) {
+			_blockingRect.left = sceneObject->x - sceneObject->deltaX;
+			_blockingRect.top = sceneObject->y - sceneObject->deltaY;
+			_blockingRect.right = sceneObject->x + sceneObject->deltaX;
+			_blockingRect.bottom = sceneObject->y;
+			if (rectCompare(rect, _blockingRect)) {
 				return 0x600 | index;
 			}
 		}
@@ -1978,7 +2003,6 @@ void CometEngine::handleInventory() {
 
 void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 
-
 	debug(4, "###### handleSceneChange(%d, %d)", sceneNumber, chapterNumber);
 
 	const int directionArray[] = {0, 3, 4, 1, 2};
@@ -2020,6 +2044,8 @@ void CometEngine::sceneObjectDirection2(int index, SceneObject *sceneObject) {
 
 	int x = sceneObject->x;
 	int y = sceneObject->y;
+
+	debug(1, "sceneObjectDirection2(%d); 1) x = %d; y = %d", index, x, y);
 	
 	switch (sceneObject->direction) {
 	case 1:
@@ -2040,6 +2066,8 @@ void CometEngine::sceneObjectDirection2(int index, SceneObject *sceneObject) {
 		break;
 	}
 	
+	debug(1, "sceneObjectDirection2(%d); 2) x = %d; y = %d", index, x, y);
+
 	sceneObjectUpdateDirection2(index, x, y);
 
 }
