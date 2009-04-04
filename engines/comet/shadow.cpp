@@ -1548,6 +1548,7 @@ void CometEngine::handleEvents() {
 				break;
 
 			case Common::EVENT_QUIT:
+				_endLoopFlag = true;
 				return;
 
 			default:
