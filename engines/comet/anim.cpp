@@ -595,7 +595,7 @@ void Anim::runSeq1(uint16 index, int x, int y) {
 
 		case 4:
 			{
-				_vm->_screen->filledPolygonColor(args, arg2);
+				// _vm->_screen->filledPolygonColor(args, arg2);
 				if (arg1 != 0xFF) {
 					args.push_back(args[0]);
 					arg2 = arg1;

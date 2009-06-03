@@ -2,9 +2,11 @@
 #define COMET_SCREEN_H
 
 #include "common/scummsys.h"
+#include "common/array.h"
 #include "common/util.h"
 
 #include "comet/comet.h"
+#include "comet/animation.h"
 
 namespace Comet {
 
@@ -12,6 +14,12 @@ enum PaletteFadeType {
 	kFadeNone,
 	kFadeIn,
 	kFadeOut
+};
+
+struct Point {
+	int16 x, y;
+	Point() : x(0), y(0) {}
+	Point(int16 px, int16 py) : x(px), y(py) {}
 };
 
 class Screen {
@@ -41,7 +49,7 @@ public:
 	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
 	void frameRect(int x1, int y1, int x2, int y2, byte color);
-	void filledPolygonColor(PointArray &poly, byte color);
+	void filledPolygonColor(Common::Array<Point> &poly, byte color);
 
 	void setPartialPalette(byte *palette, int start, int count);
 	void setFullPalette(byte *palette);
@@ -58,6 +66,11 @@ public:
 	int drawText3(int x, int y, byte *text, byte color, int flag);
 
 	static void plotProc(int x, int y, int color, void *data);
+
+	// New Animation drawing code
+	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
+	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
+	void drawAnimationElement(Animation &animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
 
 protected:
 
