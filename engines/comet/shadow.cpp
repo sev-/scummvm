@@ -202,8 +202,6 @@ void plotProc(int x, int y, int color, void *data) {
 
 void CometEngine::initAndLoadGlobalData() {
 
-	//TODO: cbFileOpenPtr = NULL;
-
 	_screen->loadFont("RES.PAK", 0);
 
 	_bubbleSprite = new Anim(this);
@@ -571,11 +569,6 @@ void CometEngine::drawSceneAnims() {
 			int index = READ_LE_UINT16(va2sec00 + 2);
 			int x = READ_LE_UINT16(va2sec00 + 4);
 			int y = READ_LE_UINT16(va2sec00 + 6);
-			/* TODO?: Seems to work fine as is
-			if (frameCount == 1) {
-			} else {
-			}
-			*/
 			_sceneObjectsSprite->runSeq1(index, x, y);
 			va2sec00 += 8;
 		}

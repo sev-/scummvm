@@ -69,6 +69,80 @@ Common::Error CometEngine::run() {
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
+
+
+	_screen = new Screen(this);
+
+
+	_ctuPal = loadFromPak("RES.PAK", 5);
+	_screen->setFullPalette(_ctuPal);
+
+	Animation *anim = new Animation();
+
+
+	const char *pakName = "D00.PAK";
+	const int pakIndex = 1;
+
+	byte *buffer = loadFromPak(pakName, pakIndex);
+	int size = getPakSize(pakName, pakIndex);
+#if 0
+	FILE *xf = fopen("dump.0", "wb");
+	fwrite(buffer, size, 1, xf);
+	fclose(xf);
+#endif
+	debug("size = %d", size);
+	Common::MemoryReadStream *stream = new Common::MemoryReadStream(buffer, size);
+	anim->load(*stream, size);
+	delete stream;
+	free(buffer);
+
+	/*
+	int x = 0, y = 50, maxHeight = 0;
+	for (int i = 0;  i < anim->_cels.size(); i++) {
+		AnimationCel *cel = anim->_cels[i];
+		if (x + cel->width > 320) {
+			x = 0;
+			y += maxHeight + 4;
+			maxHeight = 0;
+			if (y > 200)
+				break;
+		}
+		_screen->drawAnimationCelSprite(*cel, x, y);
+		x += cel->width + 4;
+		if (cel->height > maxHeight)
+			maxHeight = cel->height;
+	}
+	*/
+
+	/*
+	_screen->drawAnimationCelRle(*anim->_cels[0], 0, 0);
+	*/
+	
+	/*
+	for (int i = 0;  i < anim->_elements.size(); i++) {
+		_screen->clearScreen();
+		_screen->drawAnimationElement(*anim, i, 50, 120);
+		_system->delayMillis(200);
+		_screen->update();
+	}
+	*/
+	
+	// Scene foreground graphics
+	_screen->drawAnimationElement(*anim, 0, 0, 0);
+	
+	_screen->update();
+
+	while (1) {
+		handleEvents();
+	}
+
+	delete anim;
+
+	delete _screen;
+
+
+//#define OLD_CODE
+#ifdef OLD_CODE
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
@@ -284,6 +358,8 @@ Common::Error CometEngine::run() {
 #endif
 	}
 #endif
+
+#endif // OLD_CODE
 
 	return Common::kNoError;
 }
