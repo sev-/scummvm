@@ -70,7 +70,8 @@ public:
 	// New Animation drawing code
 	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
 	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
-	void drawAnimationElement(Animation &animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
+	void drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
+	void drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 
 protected:
 

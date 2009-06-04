@@ -1,5 +1,6 @@
 #include "comet/comet.h"
-#include "comet/anim.h"
+
+#include "comet/animation.h"
 
 namespace Comet {
 
@@ -49,11 +50,8 @@ void CometEngine::sceneObjectSetDirectionAdd(SceneObject *sceneObject, int direc
 }
 
 void CometEngine::sceneObjectSetAnimNumber(SceneObject *sceneObject, int index) {
-
 	if (sceneObject->marcheIndex != -1) {
-		byte *sec2 = _marcheItems[sceneObject->marcheIndex].anim->getSubSection(2, index);
-		//TODO: make a method in Anim that returns this?
-		sceneObject->animFrameCount = sec2[1];
+		sceneObject->animFrameCount = _marcheItems[sceneObject->marcheIndex].anim->_anims[index]->frames.size();
 	} else {
 		sceneObject->animFrameCount = 0;
 	}

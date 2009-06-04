@@ -1,6 +1,7 @@
 #include "comet/comet.h"
-#include "comet/anim.h"
 #include "comet/pak.h"
+
+#include "comet/animation.h"
 
 namespace Comet {
 
@@ -39,15 +40,29 @@ void CometEngine::clearMarcheByIndex(int marcheIndex) {
 	}
 }
 
-Anim *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
+Animation *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
 
-	Anim *tempAnim = new Anim(this);
-	tempAnim->load(pakFilename, fileIndex);
-	return tempAnim;
+	Animation *animation = new Animation();
+
+	byte *buffer = loadFromPak(pakFilename, fileIndex);
+	int size = getPakSize(pakFilename, fileIndex);
+	Common::MemoryReadStream *stream = new Common::MemoryReadStream(buffer, size);
+	animation->load(*stream, size);
+	delete stream;
+
+	char fn[256];
+	snprintf(fn, 256, "%c%06d.0", *pakFilename, fileIndex);
+	FILE *d = fopen(fn, "wb");
+	fwrite(buffer, size, 1, d);
+	fclose(d);
+
+	free(buffer);
+
+	return animation;
 
 }
 
-Anim *CometEngine::getMarcheAnim(int marcheNumber) {
+Animation *CometEngine::getMarcheAnim(int marcheNumber) {
 	switch (marcheNumber) {
 	case 1:
 		return _heroSprite;

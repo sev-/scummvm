@@ -40,7 +40,7 @@ void Animation::load(Common::SeekableReadStream &sourceS, uint dataSize) {
 	sourceS.seek(sectionOffsets[0]);
 	loadOffsets(sourceS, offsets);
 	for (uint i = 0; i < offsets.size(); i++) {
-		sourceS.seek(sectionOffsets[0] + offsets[i]);
+		sourceS.seek(sectionOffsets[0] + offsets[i] - 2);
 		AnimationElement *animationElement = loadAnimationElement(sourceS);
 		_elements.push_back(animationElement);
 	}
@@ -50,8 +50,9 @@ void Animation::load(Common::SeekableReadStream &sourceS, uint dataSize) {
 	loadOffsets(sourceS, offsets);
 	offsets.push_back(sectionOffsets[2] - sectionOffsets[1]);
 	for (uint i = 0; i < offsets.size() - 1; i++) {
-		sourceS.seek(sectionOffsets[1] + offsets[i]);
+		sourceS.seek(sectionOffsets[1] + offsets[i] - 2);
 		AnimationCel *animationCel = new AnimationCel();
+		animationCel->flags = sourceS.readUint16LE();
 		animationCel->width = sourceS.readByte() * 16;
 		animationCel->height = sourceS.readByte();
 		animationCel->dataSize = offsets[i + 1] - offsets[i] - 2;
@@ -67,7 +68,7 @@ void Animation::load(Common::SeekableReadStream &sourceS, uint dataSize) {
 	for (uint i = 0; i < offsets.size(); i++) {
 		sourceS.seek(sectionOffsets[2] + offsets[i]);
 		AnimationFrameList *animationFrameList = loadAnimationFrameList(sourceS);
-		_frames.push_back(animationFrameList);
+		_anims.push_back(animationFrameList);
 	}
 
 	// TODO: Load section 4 data
@@ -82,7 +83,7 @@ void Animation::free() {
 	for (Common::Array<AnimationCel*>::iterator iter = _cels.begin(); iter != _cels.end(); iter++)
 		delete (*iter);
 
-	for (Common::Array<AnimationFrameList*>::iterator iter = _frames.begin(); iter != _frames.end(); iter++)
+	for (Common::Array<AnimationFrameList*>::iterator iter = _anims.begin(); iter != _anims.end(); iter++)
 		delete (*iter);
 
 }
@@ -100,6 +101,8 @@ void Animation::loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &of
 
 AnimationElement *Animation::loadAnimationElement(Common::SeekableReadStream &sourceS) {
 	AnimationElement *animationElement = new AnimationElement();
+	animationElement->width = sourceS.readByte();
+	animationElement->height = sourceS.readByte();
 	animationElement->flags = sourceS.readByte();
 	byte cmdCount = sourceS.readByte();
 	debug(0, "Animation::loadAnimationElement() cmdCount = %d", cmdCount);

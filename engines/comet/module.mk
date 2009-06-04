@@ -5,7 +5,6 @@ MODULE_OBJS = \
 	detection.o \
 	dialog.o \
 	font.o \
-	anim.o \
 	comet.o \
 	script.o \
 	pak.o \
