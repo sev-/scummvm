@@ -581,7 +581,7 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 	int height = cel.height;
 	int skipX = 0;
 
-	//index ^= READ_LE_UINT16(frame - 4);
+	flags ^= (cel.flags >> 8);
 
 	y -= height;
 	y++;
@@ -1058,100 +1058,100 @@ void Screen::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 
 }
 
-void Screen::drawAnimationElement(Animation &animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
-
-	AnimationElement *element = animation._elements[elementIndex];
-	Common::Array<Point> points;
+void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
+	AnimationElement *element = animation->_elements[elementIndex];
 
 	byte flags = element->flags | (parentFlags & 0xA0);
-
-	debug("Screen::drawAnimationElement() flags = %02X", flags);
+	debug(2, "Screen::drawAnimationElement() flags = %02X", flags);
 
 	for (Common::Array<AnimationCommand*>::iterator iter = element->commands.begin(); iter != element->commands.end(); iter++) {
+		drawAnimationCommand(animation, (*iter), x, y, flags);
+	}
 
-		AnimationCommand *cmd = (*iter);
+}
 
-		debug("Screen::drawAnimationElement() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
+void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
 
-		// The commands' points need to be adjusted accoding to the flags and the x/y position
-		points.clear();
-		points.reserve(cmd->points.size() + 1);
-		for (uint i = 0; i < cmd->points.size(); i++) {
-			int16 ax = cmd->points[i].x;
-			int16 ay = cmd->points[i].y;
-			if (flags & 0x80)
-				ax = -ax;
-			if (flags & 0x20)
-				ay = -ay;
-			//debug("x = %d; y = %d", x + ax, y + ay);
-			points.push_back(Point(x + ax, y + ay));
-		}
+	debug(2, "Screen::drawAnimationCommand() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
 
-		switch (cmd->cmd) {
+	Common::Array<Point> points;
 
-		case kActElement:
-		{
-			int16 subElementIndex = (cmd->arg2 << 8) | cmd->arg1;
-			drawAnimationElement(animation, subElementIndex, points[0].x, points[0].y, flags);
-			break;
-		}
+	// The commands' points need to be adjusted accoding to the parentFlags and the x/y position
+	points.reserve(cmd->points.size() + 1);
+	for (uint i = 0; i < cmd->points.size(); i++) {
+		int16 ax = cmd->points[i].x;
+		int16 ay = cmd->points[i].y;
+		if (parentFlags & 0x80)
+			ax = -ax;
+		if (parentFlags & 0x20)
+			ay = -ay;
+		//debug("x = %d; y = %d", x + ax, y + ay);
+		points.push_back(Point(x + ax, y + ay));
+	}
 
-		case kActCelSprite:
-		{
-			int16 celIndex = ((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF;
-			int16 celX = points[0].x, celY = points[0].y;
-			if (flags & 0x80)
-				celX -= animation.getCelWidth(celIndex);
-			if (flags & 0x20)
-				celY += animation.getCelHeight(celIndex);
-			drawAnimationCelSprite(*animation._cels[celIndex], celX, celY, flags | (cmd->arg2 & 0xA0));
-			break;
-		}
+	switch (cmd->cmd) {
 
-		case kActFilledPolygon:
-		{
-			filledPolygonColor(points, cmd->arg2);
-			if (cmd->arg1 != 0xFF) {
-				points.push_back(points[0]);
-				for (uint i = 0; i < points.size() - 1; i++)
-					line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg1);
-			}
-			break;
-		}
+	case kActElement:
+	{
+		int16 subElementIndex = (cmd->arg2 << 8) | cmd->arg1;
+		drawAnimationElement(animation, subElementIndex & 0x0FFF, points[0].x, points[0].y, parentFlags | (cmd->arg2 & 0xA0));
+		break;
+	}
 
-		case kActRectangle:
-		{
-			fillRect(points[0].x, points[0].y, points[1].x, points[1].y, cmd->arg2);
-			if (cmd->arg1 != 0xFF)
-				frameRect(points[0].x, points[0].y, points[1].x, points[1].y, cmd->arg1);
-			break;
-		}
+	case kActCelSprite:
+	{
+		int16 celIndex = ((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF;
+		int16 celX = points[0].x, celY = points[0].y;
+		if (parentFlags & 0x80)
+			celX -= animation->getCelWidth(celIndex);
+		if (parentFlags & 0x20)
+			celY += animation->getCelHeight(celIndex);
+		drawAnimationCelSprite(*animation->_cels[celIndex], celX, celY, parentFlags | (cmd->arg2 & 0xA0));
+		break;
+	}
 
-		case kActPolygon:
-		{
+	case kActFilledPolygon:
+	{
+		filledPolygonColor(points, cmd->arg2);
+		if (cmd->arg1 != 0xFF) {
+			points.push_back(points[0]);
 			for (uint i = 0; i < points.size() - 1; i++)
-				line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg2);
-			break;
+				line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg1);
 		}
+		break;
+	}
 
-		case kActPixels:
-		{
-			for (uint i = 0; i < points.size(); i++)
-				putPixel(points[i].x, points[i].y, cmd->arg2);
-			break;
-		}
-		
-		case kActCelRle:
-		{
-			AnimationCel *cel = animation._cels[(cmd->arg2 << 8) | cmd->arg1];
-			drawAnimationCelRle(*cel, cmd->points[0].x, cmd->points[0].y - cel->height + 1);
-			break;
-		}
+	case kActRectangle:
+	{
+		fillRect(points[0].x, points[0].y, points[1].x, points[1].y, cmd->arg2);
+		if (cmd->arg1 != 0xFF)
+			frameRect(points[0].x, points[0].y, points[1].x, points[1].y, cmd->arg1);
+		break;
+	}
 
-		default:
-			warning("Screen::drawAnimationElement() Unknown command %d", cmd->cmd);
+	case kActPolygon:
+	{
+		for (uint i = 0; i < points.size() - 1; i++)
+			line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg2);
+		break;
+	}
 
-		}
+	case kActPixels:
+	{
+		for (uint i = 0; i < points.size(); i++)
+			putPixel(points[i].x, points[i].y, cmd->arg2);
+		break;
+	}
+
+	case kActCelRle:
+	{
+		AnimationCel *cel = animation->_cels[(cmd->arg2 << 8) | cmd->arg1];
+		drawAnimationCelRle(*cel, cmd->points[0].x, cmd->points[0].y - cel->height + 1);
+		break;
+	}
+
+	default:
+		warning("Screen::drawAnimationCommand() Unknown command %d", cmd->cmd);
 
 	}
 

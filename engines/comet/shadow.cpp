@@ -5,11 +5,11 @@
 
 #include "comet/comet.h"
 #include "comet/font.h"
-#include "comet/anim.h"
 #include "comet/pak.h"
 
 #include "comet/screen.h"
 #include "comet/dialog.h"
+#include "comet/animation.h"
 
 namespace Comet {
 
@@ -132,7 +132,7 @@ void CometEngine::initSceneBackground() {
 	
 	loadSceneBackground();
 	loadStaticObjects();
-	
+
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
 	drawSceneForeground();
 	memcpy(_sceneBackground, _screen->getScreen(), 64000);
@@ -144,7 +144,7 @@ void CometEngine::initSceneBackground() {
 	
 	if (!_loadingGameFlag)
 		initStaticObjectRects();
-	
+
 }
 
 void CometEngine::initPoints(byte *data) {
@@ -181,16 +181,16 @@ void CometEngine::loadSceneBackground() {
 }
 
 void CometEngine::loadStaticObjects() {
-	if (!_sceneObjectsSprite)
-		_sceneObjectsSprite = new Anim(this);
-	_sceneObjectsSprite->load(DName, _backgroundFileIndex + 1);
+	delete _sceneObjectsSprite;
+	
+	debug("CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
+	
+	_sceneObjectsSprite = loadMarcheData(DName, _backgroundFileIndex + 1);
 }
 
 void CometEngine::drawSceneForeground() {
-	byte *sec0 = _sceneObjectsSprite->getSubSection(0, 0);
-	if (sec0[1] != 0) {
-		_sceneObjectsSprite->runSeq1(0, 0, 0);
-	}
+	if (_sceneObjectsSprite->_elements.size() > 0)
+		_screen->drawAnimationElement(_sceneObjectsSprite, 0, 0, 0);
 }
 
 /* Graphics */
@@ -204,25 +204,17 @@ void CometEngine::initAndLoadGlobalData() {
 
 	_screen->loadFont("RES.PAK", 0);
 
-	_bubbleSprite = new Anim(this);
-	_bubbleSprite->load("RES.PAK", 1);
-
-	_heroSprite = new Anim(this);
-	_heroSprite->load("RES.PAK", 2);
-
-	_objectsVa2 = new Anim(this);
-	_objectsVa2->load("RES.PAK", 4);
+	_bubbleSprite = loadMarcheData("RES.PAK", 1);
+	_heroSprite = loadMarcheData("RES.PAK", 2);
+	_objectsVa2 = loadMarcheData("RES.PAK", 4);
 
 	_ctuPal = loadFromPak("RES.PAK", 5);
 	_flashbakPal = loadFromPak("RES.PAK", 6);
 	_cdintroPal = loadFromPak("RES.PAK", 7);
 	_pali0Pal = loadFromPak("RES.PAK", 8);
 
-	_cursorVa2 = new Anim(this);
-	_cursorVa2->load("RES.PAK", 9);
-
-	_iconeVa2 = new Anim(this);
-	_iconeVa2->load("RES.PAK", 3);
+	_cursorVa2 = loadMarcheData("RES.PAK", 9);
+	_iconeVa2 = loadMarcheData("RES.PAK", 3);
 	
 	_screen->setFontColor(0);
 
@@ -517,24 +509,15 @@ void CometEngine::updateStaticObjects() {
 
 	_spriteArray.clear();
 
-	// FIXME
 	if (!_sceneObjectsSprite)
 		return;
 
-	byte *sec00 = _sceneObjectsSprite->getSubSection(0, 0);
-	int count = sec00[1];
-
-	sec00 += 8;
-	
-	for (int i = 0; i < count; i++) {
-
+	for (uint i = 0; i < _sceneObjectsSprite->_elements[0]->commands.size(); i++) {
+		AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[i];
 		SpriteDraw temp;
-		temp.y = sec00[0];
+		temp.y = cmd->points[0].y;
 		temp.index = 16;
 		_spriteArray.push_back(temp);
-		
-		sec00 += 8;
-
 	}
 
 }
@@ -557,22 +540,19 @@ void CometEngine::drawSceneAnims() {
 	//TODO: Real stuff
 
 	//TODO: setScreenRectAll();
+
+	debug(1, "_spriteArray.size() = %d", _spriteArray.size());
 	
-	byte *va2sec00 = _sceneObjectsSprite->getSubSection(0, 0) + 2;
+	int objectCmdIndex = 0;
 
 	for (uint32 i = 0; i < _spriteArray.size(); i++) {
-
 		if (_spriteArray[i].index < 16) {
 			drawSceneAnimsSub(_spriteArray[i].index);
 		} else {
-			int frameCount = READ_LE_UINT16(va2sec00);
-			int index = READ_LE_UINT16(va2sec00 + 2);
-			int x = READ_LE_UINT16(va2sec00 + 4);
-			int y = READ_LE_UINT16(va2sec00 + 6);
-			_sceneObjectsSprite->runSeq1(index, x, y);
-			va2sec00 += 8;
+			AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[objectCmdIndex];
+			_screen->drawAnimationCommand(_sceneObjectsSprite, cmd, 0, 0);
+			objectCmdIndex++;
 		}
-		
 	}
 
 	if (_itemInSight && _sceneObjects[0].direction != 1)
@@ -586,24 +566,21 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 	
 	int x = sceneObject->x, y = sceneObject->y;
 	int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
-	
-	Anim *anim = _marcheItems[sceneObject->marcheIndex].anim;
 
-	byte *sec2 = anim->getSubSection(2, sceneObject->animIndex) + 2;
-	
+	Animation *animation = _marcheItems[sceneObject->marcheIndex].anim;
+	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
+
 	//debug(4, "setScreenRect(%d, %d, %d, %d)", sceneObject->x5, sceneObject->y5, sceneObject->x6, sceneObject->y6);
 	//TODO: setScreenRect(sceneObject->x5, sceneObject->y5, sceneObject->x6, sceneObject->y6);
 
 	if (sceneObject->directionChanged == 2) {
-		sceneObject->value4 = drawSceneObject(anim, sec2, sceneObject->animFrameIndex, sceneObject->value4,
+		sceneObject->value4 = drawSceneObject(animation, frameList, sceneObject->animFrameIndex, sceneObject->value4,
 			x, y, sceneObject->animFrameCount);
 	} else {
 		if (objectIndex == 0 && _itemInSight && sceneObject->direction == 1)
 			drawLineOfSight();
-		int index = READ_LE_UINT16(sec2 + sceneObject->animFrameIndex * 8);
-		anim->runSeq1(index, x, y);
+		_screen->drawAnimationElement(animation, frameList->frames[sceneObject->animFrameIndex]->elementIndex, x, y);
 	}
-
 
 	// DEBUG: Show object number
 	/*
@@ -617,25 +594,25 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 
 }
 
-int CometEngine::drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int value4, int x, int y, int animFrameCount) {
+int CometEngine::drawSceneObject(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount) {
 
-	int index = READ_LE_UINT16( sec2 + animFrameIndex * 8 );
-	int mulVal = READ_LE_UINT16( sec2 + animFrameIndex * 8 + 2 );
-	int gfxMode = mulVal >> 14;
-	mulVal &= 0x3FFF;
-	int lx = x, ly = y;
+	AnimationFrame *frame = frameList->frames[animFrameIndex];
 
-	byte *lsec2 = sec2;
+	int drawX = x, drawY = y;
+	int index = frame->elementIndex;
+	int mulVal = frame->flags & 0x3FFF;
+	int gfxMode = frame->flags >> 14;
+
 	for (int i = 0; i <= animFrameIndex; i++) {
-		lx += (int16)READ_LE_UINT16( lsec2 + 4 );
-		ly += (int16)READ_LE_UINT16( lsec2 + 6 );
-		lsec2 += 8;
+		drawX += frameList->frames[i]->xOffs;
+		drawY += frameList->frames[i]->yOffs;
 	}
 
-	//debug(4, "x = %d; y = %d; lx = %d; ly = %d; gfxMode = %d; mulVal = %d", x, y, lx, ly, gfxMode, mulVal);
-	
+	debug(0, "x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulVal = %d",
+		x, y, drawX, drawY, gfxMode, mulVal);
+
 	if (gfxMode == 0) {
-		anim->runSeq1(index, lx, ly);
+		_screen->drawAnimationElement(animation, index, drawX, drawY);
 #if 0
 	} else if (gfxMode == 1) {
 		//TEST ONLY
@@ -643,9 +620,7 @@ int CometEngine::drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int
 		//anim->runSeq1(index, 0, 100);
 #endif
  	} else {
- 	
 		//debug(4, "CometEngine::drawSceneObject()  gfxMode == %d not yet implemented", gfxMode);
-		
 		/*
 		// Dump Anim
 		FILE *o = fopen("gfxmode2.va2", "wb");
@@ -653,7 +628,6 @@ int CometEngine::drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int
 		fclose(o);
 		exit(0);
 		*/
-
 	}
 
 	return 0;
@@ -740,17 +714,15 @@ void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
 		if (sceneObject->marcheIndex == -1)
 			return;
 
-		byte *sec2 = _marcheItems[sceneObject->marcheIndex].anim->getSubSection(2, sceneObject->animIndex) + 2;
-		sec2 += (sceneObject->animFrameIndex * 8) + 2;
+		AnimationFrame *frame = _marcheItems[sceneObject->marcheIndex].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
-		temp1 = READ_LE_UINT16(sec2);
-		temp2 = temp1 >> 14;
-		temp1 &= 0x3FFF;
+		uint16 value = frame->flags & 0x3FFF;
+		uint16 gfxMode = frame->flags >> 14;
 
-		if (temp2 == 1) {
-			if (temp1 < 1)
-				temp1 = 1;
-			if (sceneObject->value4 >= temp1 - 1) {
+		if (gfxMode == 1) {
+			if (value < 1)
+				value = 1;
+			if (sceneObject->value4 >= value - 1) {
 				sceneObject->value4 = 0;
 				sceneObject->animFrameIndex++;
 			}
@@ -783,30 +755,27 @@ void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
 	} else {
 		sceneObject->value4 = 0;
 	}
-	
+
 }
 
 void CometEngine::sceneObjectUpdate02(SceneObject *sceneObject) {
-	
+
 	if (sceneObject->directionChanged == 1) {
 		sceneObject->directionChanged = 0;
 		sceneObjectSetAnimNumber(sceneObject, sceneObject->direction + sceneObject->directionAdd - 1);
 	} else {
 
 		if (sceneObject->animSubIndex2 == -1) {
-			uint16 temp1, temp2;
-			
-			byte *sec2 = _marcheItems[sceneObject->marcheIndex].anim->getSubSection(2, sceneObject->animIndex) + 2;
-			sec2 += (sceneObject->animFrameIndex * 8) + 2;
 
-			temp1 = READ_LE_UINT16(sec2);
-			temp2 = temp1 >> 14;
-			temp1 &= 0x3FFF;
-			
-			if (temp2 == 1) {
-				if (temp1 < 1)
-					temp1 = 1;
-				if (sceneObject->value4 >= temp1 - 1) {
+			AnimationFrame *frame = _marcheItems[sceneObject->marcheIndex].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+
+			uint16 value = frame->flags & 0x3FFF;
+			uint16 gfxMode = frame->flags >> 14;
+
+			if (gfxMode == 1) {
+				if (value < 1)
+					value = 1;
+				if (sceneObject->value4 >= value - 1) {
 					sceneObject->value4 = 0;
 					sceneObject->animFrameIndex++;
 				}
@@ -822,7 +791,6 @@ void CometEngine::sceneObjectUpdate02(SceneObject *sceneObject) {
 		}
 		
 	}
-	
 }
 
 void CometEngine::resetVars() {
@@ -949,12 +917,12 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 
 	//debug(4, "CometEngine::sceneObjectUpdate04(%d)  old: %d, %d", objectIndex, x, y);
 
-	Anim *anim = _marcheItems[sceneObject->marcheIndex].anim;
+	Animation *anim = _marcheItems[sceneObject->marcheIndex].anim;
+	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
- 	byte *sec2 = anim->getSubSection(2,	sceneObject->animIndex) + 2;
- 	int16 xAdd = (int16)READ_LE_UINT16(sec2 + sceneObject->animFrameIndex * 8 + 4);
- 	int16 yAdd = (int16)READ_LE_UINT16(sec2 + sceneObject->animFrameIndex * 8 + 6);
- 	
+ 	int16 xAdd = frame->xOffs;
+ 	int16 yAdd = frame->yOffs;
+
  	debug(4, "animFrameIndex = %d; animFrameCount = %d", sceneObject->animFrameIndex, sceneObject->animFrameCount);
  	
  	//TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd);
@@ -965,23 +933,16 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
  	y += yAdd;
  	
  	if (sceneObject->walkStatus & 3) {
-
 		debug(4, "WALKING_1 (%d, %d); %d: (%d, %d)", x, y, sceneObject->direction, sceneObject->x2, sceneObject->y2);
-
 		sceneObjectGetXY1(sceneObject, x, y);
-
 		debug(4, "WALKING_2 (%d, %d)", x, y);
-
 		//debug(4, "CometEngine::sceneObjectUpdate04(%d)  target: %d, %d", objectIndex, x, y);
 	}
 
 	if (sceneObject->collisionType != 8) {
-
 		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction);
 		debug(4, "collisionType (checkCollision) = %04X", collisionType);
-		
 		//debug(4, "collisionType = %04X", collisionType);
-		
 		if (collisionType != 0) {
 			collisionType = handleCollision(sceneObject, objectIndex, collisionType);
 			debug(4, "collisionType (handleCollision) = %04X", collisionType);
@@ -990,7 +951,6 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 		} else {
 			sceneObject->collisionType = 0;
 		}
-
 	}
 
 	debug(4, "CometEngine::sceneObjectUpdate04(%d)  new: %d, %d", objectIndex, x, y);
@@ -1175,24 +1135,24 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 
 	for (yPos = y1 + 8; y2 - 8 >= yPos; yPos += 8) {
 		for (xPos = x1 + 8; x2 - 8 > xPos; xPos += 8) {
-			_bubbleSprite->runSeq1(8, xPos, yPos);
+			_screen->drawAnimationElement(_bubbleSprite, 8, xPos, yPos);
 		}
 	}
 
 	for (xPos = x1 + 8; x2 - 8 > xPos; xPos += 8) {
-		_bubbleSprite->runSeq1(3, xPos, y1 + 8);
-		_bubbleSprite->runSeq1(4, xPos, y2);
+		_screen->drawAnimationElement(_bubbleSprite, 3, xPos, y1 + 8);
+		_screen->drawAnimationElement(_bubbleSprite, 4, xPos, y2);
 	}
 
 	for (yPos = y1 + 16; yPos < y2; yPos += 8) {
-		_bubbleSprite->runSeq1(1, x1, yPos);
-		_bubbleSprite->runSeq1(6, x2 - 16, yPos);
+		_screen->drawAnimationElement(_bubbleSprite, 1, x1, yPos);
+		_screen->drawAnimationElement(_bubbleSprite, 6, x2 - 16, yPos);
 	}
 	
-	_bubbleSprite->runSeq1(0, x1, y1 + 8);
-	_bubbleSprite->runSeq1(5, x2 - 16, y1 + 8);
-	_bubbleSprite->runSeq1(2, x1, y2);
-	_bubbleSprite->runSeq1(7, x2 - 16, y2);
+	_screen->drawAnimationElement(_bubbleSprite, 0, x1, y1 + 8);
+	_screen->drawAnimationElement(_bubbleSprite, 5, x2 - 16, y1 + 8);
+	_screen->drawAnimationElement(_bubbleSprite, 2, x1, y2);
+	_screen->drawAnimationElement(_bubbleSprite, 7, x2 - 16, y2);
 
 }
 
@@ -1929,44 +1889,24 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 
 void CometEngine::initStaticObjectRects() {
 
-	byte *sec00 = _sceneObjectsSprite->getSubSection(0, 0);
-	int rectCount = sec00[1];
-	
-	sec00 += 2;
-
 	_blockingRects.clear();
-	
-	for (int index = 0; index < rectCount; index++) {
 
-		int section = sec00[0];
-		sec00 += 2;
-		
-		int subSection = READ_LE_UINT16(sec00);
-		sec00 += 2;
-		
-		int x = READ_LE_UINT16(sec00) / 2;
-		sec00 += 2;
-		
-		int y = READ_LE_UINT16(sec00);
-		sec00 += 2;
-		
-		byte *subSec = _sceneObjectsSprite->getSubSection(section, subSection & 0x7FFF) - 2;
-		
-		int subX = subSec[0] / 2;
-
-		if (subX != 0) {
-			int blockX, blockY, blockX2, blockY2;
-			if (section == 0) {
-				blockX = x - subX;
-			} else {
-				blockX = x;
-			}
-			blockY = y - ( (((subSec[1] >> 4) & 3) + 1) << 2 ); // FIXME
-			blockX2 = x + subX;
-			blockY2 = y;
-			addBlockingRect(blockX, blockY, blockX2, blockY2);
+	for (uint i = 0; i < _sceneObjectsSprite->_elements[0]->commands.size(); i++) {
+		AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[i];
+		AnimationElement *objectElement = _sceneObjectsSprite->_elements[((cmd->arg2 << 8) | cmd->arg1) & 0x7FFF];
+		debug("%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
+			i, cmd->cmd, cmd->arg1, cmd->arg2, cmd->points[0].x, cmd->points[0].y, objectElement->width, objectElement->height);
+		if (objectElement->width / 2 > 0) {
+   			int16 blockX1, blockY1, blockX2, blockY2;
+			if (cmd->cmd == 0)
+				blockX1 = (cmd->points[0].x - objectElement->width) / 2;
+			else
+				blockX1 = cmd->points[0].x / 2;
+			blockY1 = cmd->points[0].y - ( (((objectElement->height >> 4) & 3) + 1) << 2 ); // FIXME
+			blockX2 = (cmd->points[0].x + objectElement->width) / 2;
+			blockY2 = cmd->points[0].y;
+			addBlockingRect(blockX1, blockY1, blockX2, blockY2);
 		}
-
 	}
 
 }

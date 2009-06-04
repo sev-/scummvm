@@ -14,7 +14,6 @@
 
 #include "comet/comet.h"
 #include "comet/font.h"
-#include "comet/anim.h"
 #include "comet/pak.h"
 #include "comet/music.h"
 
@@ -70,7 +69,10 @@ Common::Error CometEngine::run() {
 	_system->endGFXTransaction();
 
 
+#define OLD_CODE
+//#define TEST_CODE
 
+#ifdef TEST_CODE
 	_screen = new Screen(this);
 
 
@@ -81,7 +83,7 @@ Common::Error CometEngine::run() {
 
 
 	const char *pakName = "D00.PAK";
-	const int pakIndex = 1;
+	const int pakIndex = 3;
 
 	byte *buffer = loadFromPak(pakName, pakIndex);
 	int size = getPakSize(pakName, pakIndex);
@@ -128,7 +130,7 @@ Common::Error CometEngine::run() {
 	*/
 	
 	// Scene foreground graphics
-	_screen->drawAnimationElement(*anim, 0, 0, 0);
+	_screen->drawAnimationElement(anim, 0, 0, 0);
 	
 	_screen->update();
 
@@ -140,8 +142,8 @@ Common::Error CometEngine::run() {
 
 	delete _screen;
 
+#endif
 
-//#define OLD_CODE
 #ifdef OLD_CODE
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);

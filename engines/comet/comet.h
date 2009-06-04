@@ -63,6 +63,9 @@ class Anim;
 class MusicPlayer;
 class CometEngine;
 
+class Animation;
+class AnimationFrameList;
+
 enum {
 	kScriptWalking			= 0x01,
 	kScriptSleeping			= 0x02,
@@ -108,7 +111,7 @@ struct SceneObject {
 struct MarcheItem {
 	int marcheNumber;
 	int fileIndex;
-	Anim *anim;
+	Animation *anim;
 };
 
 struct SceneExitItem {
@@ -162,7 +165,7 @@ typedef Common::Array<Common::Point> PointArray;
 class CometEngine : public Engine {
 	// FIXME: I don't need no friends
 	friend class Script;
-	friend class Anim;
+	friend class Animation;
 protected:
 	Common::Error run();
 	void shutdown();
@@ -236,8 +239,8 @@ public:
 	int _currentChapterNumber, _currentSceneNumber;
 	int _prevChapterNumber, _prevSceneNumber;
 
-	Anim *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
-	Anim *_sceneObjectsSprite;
+	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
+	Animation *_sceneObjectsSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
 	int _gameLoopCounter;
@@ -311,7 +314,7 @@ public:
 	
 	void drawSceneAnims();
 	void drawSceneAnimsSub(int objectIndex);
-	int drawSceneObject(Anim *anim, byte *sec2, int animFrameIndex, int value4, int x, int y, int animFrameCount);
+	int drawSceneObject(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
 	
 	void updateTextDialog();
 	void updateText();
@@ -385,8 +388,8 @@ public:
 	int findFreeMarcheSlot();
 	bool isMarcheLoaded(int marcheIndex);
 	void clearMarcheByIndex(int marcheIndex);
-	Anim *loadMarcheData(const char *pakFilename, int fileIndex);
-	Anim *getMarcheAnim(int marcheNumber);
+	Animation *loadMarcheData(const char *pakFilename, int fileIndex);
+	Animation *getMarcheAnim(int marcheNumber);
 	void freeAllMarche();
 	void freeMarche();
 	int loadMarche(int marcheNumber, int fileIndex);

@@ -20,8 +20,8 @@ enum AnimationCommandType {
 	kActRectangle		= 5,
 	kActPolygon			= 6,
 	kActPixels			= 7,
-	kActPolygon1		= 8,    // unused in Comet? / Alias for kActPolygon
-	kActPolygon2		= 9,    // unused in Comet? / Alias for kActPolygon
+	kActPolygon1		= 8,	// unused in Comet? / Alias for kActPolygon
+	kActPolygon2		= 9,	// unused in Comet? / Alias for kActPolygon
 	kActCelRle			= 10
 };
 
@@ -35,13 +35,14 @@ struct AnimationCommand {
 };
 
 struct AnimationElement {
-	byte flags;
+	byte width, height, flags;
 	//byte commandCount -- stored in array
 	Common::Array<AnimationCommand*> commands;
 	~AnimationElement();
 };
 
 struct AnimationCel {
+	uint16 flags;
 	byte width, height;
 	uint16 dataSize;
 	byte *data;
@@ -72,7 +73,7 @@ public:
 	typedef Common::Array<uint32> OffsetArray;
 	Common::Array<AnimationElement*> _elements;
 	Common::Array<AnimationCel*> _cels;
-	Common::Array<AnimationFrameList*> _frames;
+	Common::Array<AnimationFrameList*> _anims;
 	// TODO: What is section 4 used for? Special palette?
 	void free();
 	void loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets);
