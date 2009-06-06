@@ -708,7 +708,7 @@ void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
 
 	if (sceneObject->animSubIndex2 == -1) {
 
-		uint16 temp1, temp2;
+		//uint16 temp1, temp2;
 
 		// FIXME: This check is not in the original, find out why it's needed here...
 		if (sceneObject->marcheIndex == -1)

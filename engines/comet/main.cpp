@@ -21,7 +21,6 @@
 
 #include "comet/comet.h"
 
-#include "comet/anim.h"
 #include "comet/font.h"
 
 #include "comet/pak.h"
@@ -89,10 +88,11 @@ void drawGameMenu(int selectedItem) {
     const int x = 137;
     const int y = 65;
     const int itemHeight = 23;
+	// FIXME: disabled to fix compilation
     /* draw menu */
-    _icone->runSeq1(10, 0, 0);
+    //_icone->runSeq1(10, 0, 0);
     /* draw selection rectangle */
-    _icone->runSeq1(11, x, y + itemHeight * selectedItem);
+    //_icone->runSeq1(11, x, y + itemHeight * selectedItem);
 }
 
 
