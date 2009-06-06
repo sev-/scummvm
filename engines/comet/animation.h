@@ -63,9 +63,9 @@ struct AnimationFrameList {
 
 class Animation {
 public:
-	Animation();
-	~Animation();
-	void load(Common::SeekableReadStream &sourceS, uint dataSize);
+	Animation() {}	// FIXME: empty to fix compilation
+	~Animation() {}	// FIXME: empty to fix compilation
+	void load(Common::SeekableReadStream &sourceS, uint dataSize) {}	// FIXME: empty to fix compilation
 	//AnimationCel *getCel(int index) { return _cels[index]; }
 	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->width; }
 	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->height; }

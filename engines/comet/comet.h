@@ -64,7 +64,7 @@ class MusicPlayer;
 class CometEngine;
 
 class Animation;
-class AnimationFrameList;
+struct AnimationFrameList;
 
 enum {
 	kScriptWalking			= 0x01,
