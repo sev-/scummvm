@@ -256,7 +256,7 @@ public:
 	Common::Array<Common::Rect> _blockingRects;
 
 	int _talkieMode;
-	bool _textFlag1, _textFlag2;
+	bool _moreText, _textActive;
 	int _textColor;
 	
 	bool _endLoopFlag;
@@ -426,7 +426,7 @@ public:
 	/* Script */
 	byte *_scriptData;
 	int *_scriptVars1[256];
-	int _scriptVars2[256], _scriptVars3[256];
+	int _scriptVars2[256], _itemStatus[256];
 	int _scriptCount;
 	Script *_scripts[17];
 	int _curScriptNumber;

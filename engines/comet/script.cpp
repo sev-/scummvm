@@ -422,6 +422,9 @@ void CometEngine::runScript(int scriptNumber) {
 		case 84:
 			o1_addSceneItem2(_curScript);
 			break;
+		case 86:
+			// TODO: op_waitForKey();
+			break;
 		case 87:
 			o1_playAnim(_curScript);
 			break;
@@ -482,7 +485,7 @@ int *CometEngine::getVarPointer(int varIndex) {
 	} else if (varIndex < 2000) {
 		return &_scriptVars2[varIndex - 1000];
 	} else {
-		return &_scriptVars3[varIndex - 2000];
+		return &_itemStatus[varIndex - 2000];
 	}
 	
 }
