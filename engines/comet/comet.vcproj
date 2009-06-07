@@ -43,7 +43,7 @@
 				AdditionalOptions="/wd4201 /wd4512 /wd4511 /wd4100 /wd4121 /wd4310 /wd4706 /wd4127 /wd4189 /wd4702 /wd4996"
 				Optimization="0"
 				AdditionalIncludeDirectories="../..;../../engines"
-				PreprocessorDefinitions="WIN32;_DEBUG;USE_ZLIB;USE_MAD;USE_VORBIS"
+				PreprocessorDefinitions="WIN32;_DEBUG;USE_ZLIB;USE_MAD;USE_VORBIS;USE_FLAC"
 				MinimalRebuild="true"
 				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
@@ -162,11 +162,11 @@
 	</References>
 	<Files>
 		<File
-			RelativePath="..\..\engines\comet\anim.cpp"
+			RelativePath="..\..\engines\comet\animation.cpp"
 			>
 		</File>
 		<File
-			RelativePath="..\..\engines\comet\anim.h"
+			RelativePath="..\..\engines\comet\animation.h"
 			>
 		</File>
 		<File
