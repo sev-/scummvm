@@ -234,7 +234,7 @@ void CometEngine::initAndLoadGlobalData() {
 }
 
 void CometEngine::loadGlobalTextData() {
-	_textFlag2 = false;
+	_textActive = false;
 	_narOkFlag = false;
 	loadTextData(_textBuffer2, 0, 1000);
 	loadTextData(_textBuffer3, 1, 2200);
@@ -253,7 +253,7 @@ void CometEngine::initData() {
 	memcpy(_palette, _ctuPal, 768);
 	
 	memset(_scriptVars2, 0, sizeof(_scriptVars2));
-	memset(_scriptVars3, 0, sizeof(_scriptVars3));
+	memset(_itemStatus, 0, sizeof(_itemStatus));
 
 	_screen->setFontColor(19);
 	resetHeroDirectionChanged();
@@ -334,7 +334,7 @@ void CometEngine::updateGame() {
 	if (_talkieMode == 0)
 		updateTextDialog();
 
-	if (_talkieMode == 1 && (_textFlag2 || _flag03))
+	if (_talkieMode == 1 && (_textActive || _flag03))
 		updateText();
 
 	if (_dialog->isRunning())
@@ -443,7 +443,7 @@ void CometEngine::updateSub02() {
 	if (sceneItemIndex != 0) {
 		SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
 		if (sceneItem->paramType == 0) {
-			_scriptVars3[sceneItem->itemIndex] = 1;
+			_itemStatus[sceneItem->itemIndex] = 1;
 			_inventoryItemIndex = sceneItem->itemIndex;
 			sceneItem->active = false;
 			setTextEx(sceneItem->itemIndex, _textBuffer3);
@@ -465,6 +465,7 @@ void CometEngine::updateSub03(bool flag) {
 	if (_mouseFlag != 15) {
 		Common::Rect rect;
 		calcRect01(rect, 0, 50);
+		//_screen->fillRect(rect.left, rect.top, rect.right, rect.bottom, 150);
 		int sceneItemIndex = findSceneItemAt(rect);
 		if (sceneItemIndex != 0) {
 			SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
@@ -473,7 +474,7 @@ void CometEngine::updateSub03(bool flag) {
 			_itemX = sceneItem->x;
 			_itemY = sceneItem->y - 6;
 
-			if (flag && (!_dialog->isRunning() || !_textFlag2)) {
+			if (flag && (!_dialog->isRunning() || !_textActive)) {
 				byte *textBuffer;
 				if (sceneItem->paramType == 0)
 					textBuffer = _textBuffer3;
@@ -591,7 +592,6 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 	_screen->drawText(x, y, temp);
 	*/
 
-
 }
 
 int CometEngine::drawSceneObject(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount) {
@@ -635,7 +635,7 @@ int CometEngine::drawSceneObject(Animation *animation, AnimationFrameList *frame
 
 void CometEngine::updateTextDialog() {
 	
-	if (_textFlag2 || _flag03)
+	if (_textActive || _flag03)
 		updateText();
 		
 	if (_dialog->isRunning())
@@ -665,8 +665,8 @@ void CometEngine::updateText() {
 	_textDuration--;
 	
 	if (_talkieMode == 0 && _textDuration <= 0) {
-		_textFlag2 = _textFlag1;
-		if (_textFlag1) {
+		_textActive = _moreText;
+		if (_moreText) {
 			setText(_textNextPos);
 		} else {
 			resetTextValues();
@@ -674,22 +674,22 @@ void CometEngine::updateText() {
 	}
 	
 	if (_talkieMode == 1 && _textDuration <= 0) {
-		_textFlag2 = _textFlag1;
-		if (_textFlag1) {
+		_textActive = _moreText;
+		if (_moreText) {
 			setText(_textNextPos);
 		} else {
 			if (!_mixer->isSoundHandleActive(_voiceHandle)) {
 				resetTextValues();
 			} else {
 				_textDuration = 2;
-				_textFlag2 = true;
+				_textActive = true;
 			}
 		}
 	}
 
 	if (_talkieMode == 2 && _textDuration <= 0) {
-		_textFlag2 = _textFlag1;
-		if (_textFlag1) {
+		_textActive = _moreText;
+		if (_moreText) {
 			setText(_textNextPos);
 		} else {
 			if (!_mixer->isSoundHandleActive(_voiceHandle)) {
@@ -707,8 +707,6 @@ void CometEngine::updateTalkAnims() {
 void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
 
 	if (sceneObject->animSubIndex2 == -1) {
-
-		//uint16 temp1, temp2;
 
 		// FIXME: This check is not in the original, find out why it's needed here...
 		if (sceneObject->marcheIndex == -1)
@@ -1069,7 +1067,7 @@ void CometEngine::textProc(int objectIndex, int narSubIndex, int color) {
 		playVoice(_narSubIndex);
 	}
 
-	_textFlag2 = true;
+	_textActive = true;
 	_textColor = color;
 
 }
@@ -1157,9 +1155,8 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 }
 
 void CometEngine::decodeText(byte *text, int size, int key) {
-	uint8 tempByte = 0x54;
 	for (int curOfs = 0; curOfs < size; curOfs++)
-		text[curOfs] = text[curOfs] - tempByte * (key + curOfs + 1);
+		text[curOfs] = text[curOfs] - 0x54 * (key + curOfs + 1);
 }
 
 uint32 CometEngine::loadString(int index, int subIndex, byte *text) {
@@ -1209,7 +1206,7 @@ void CometEngine::setText(byte *text) {
 
 	_textMaxTextHeight = 0;
 	_textMaxTextWidth = 0;
-	_textFlag1 = false;
+	_moreText = false;
 	_textDuration = 0;
 	
 	while (*text != '*') {
@@ -1224,7 +1221,7 @@ void CometEngine::setText(byte *text) {
 			_textMaxTextHeight++;
 		lineCount++;
 		if (lineCount == 3 && *text != '*') {
-			_textFlag1 = true;
+			_moreText = true;
 			break;
 		}
 	}
@@ -1244,7 +1241,7 @@ void CometEngine::setText(byte *text) {
 void CometEngine::resetTextValues() {
 	_dialog->stop();
 	_flag03 = false;
-	_textFlag2 = false;
+	_textActive = false;
 }
 
 void CometEngine::initPointsArray2() {
@@ -1577,7 +1574,7 @@ void CometEngine::handleInput() {
 void CometEngine::skipText() {
 
 	_textDuration = 1;
-	_textFlag2 = false;
+	_textActive = false;
 	
 	while (_keyScancode != Common::KEYCODE_INVALID && _keyDirection2 != 0)
 		handleEvents();
@@ -1751,7 +1748,7 @@ void CometEngine::setTextEx(int index, byte *textBuffer) {
 	_textColor = 21;
 	_narSubIndex = index;
 	setText(getTextEntry(index, textBuffer));
-	_textFlag2 = true;
+	_textActive = true;
 	_flag03 = true;
 
 }
@@ -1781,13 +1778,13 @@ void CometEngine::drawLineOfSight() {
 void CometEngine::invUseItem() {
 
 	for (int index = 0; index < 256; index++) {
-		if (_scriptVars3[index] == 2)
-			_scriptVars3[index] = 1;
+		if (_itemStatus[index] == 2)
+			_itemStatus[index] = 1;
 	}
 	
 	if (_invActiveItem != -1) {
-		if (_scriptVars3[_invActiveItem] == 1)
-			_scriptVars3[_invActiveItem] = 2;
+		if (_itemStatus[_invActiveItem] == 1)
+			_itemStatus[_invActiveItem] = 2;
 	}
 
 }
@@ -1870,17 +1867,17 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 
 	uint16 collisionType = 0;
 
-	Common::Rect rect(x - deltaX, y - deltaY, x + deltaX, y);
+	Common::Rect collisionRect(x - deltaX, y - deltaY, x + deltaX, y);
 	
-	collisionType = checkCollisionWithRoomBounds(rect, direction);
+	collisionType = checkCollisionWithRoomBounds(collisionRect, direction);
 	if (collisionType != 0) {
-		uint16 sceneExitCollision = checkCollisionWithSceneExits(rect, direction);
+		uint16 sceneExitCollision = checkCollisionWithSceneExits(collisionRect, direction);
 		if (sceneExitCollision != 0)
 			collisionType = sceneExitCollision;
 	} else {
-		collisionType = checkCollisionWithBlockingRects(rect);
+		collisionType = checkCollisionWithBlockingRects(collisionRect);
 		if (collisionType == 0)
-			collisionType = checkCollisionWithActors(index, rect);
+			collisionType = checkCollisionWithActors(index, collisionRect);
 	}
 
 	return collisionType;
