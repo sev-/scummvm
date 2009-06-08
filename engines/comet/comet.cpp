@@ -167,7 +167,7 @@ Common::Error CometEngine::run() {
 	_curScript = NULL;
 	_paletteValue2 = 0;
 	_marcheNumber = 0;
-	_textFlag2 = 0;
+	_textActive = false;
 
 	_flag03 = false;
 	_itemInSight = false;

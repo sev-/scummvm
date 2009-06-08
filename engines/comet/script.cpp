@@ -186,7 +186,7 @@ void CometEngine::processScriptDialog() {
 
 void CometEngine::processScriptTalk() {
 
-	if (_textFlag2 == 0) {
+	if (_textActive == 0) {
 		_curScript->status &= ~kScriptTalking;
 		if (_sceneObjectIndex == 10) {
 			if (_animIndex != -1)
