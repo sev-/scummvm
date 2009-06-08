@@ -1,11 +1,11 @@
 #ifndef COMET_DIALOG_H
 #define COMET_DIALOG_H
 
-#include "common/scummsys.h"
 #include "common/util.h"
 #include "common/array.h"
 
 #include "comet/comet.h"
+#include "comet/script.h"
 
 namespace Comet {
 

@@ -244,7 +244,6 @@ void CometEngine::initData() {
 
 	_sceneBackground = new byte[72000];
 	_scratchBuffer = _sceneBackground + 64000;
-	_scriptData = new byte[3000];
 	_textBuffer1 = new byte[1000];
 	_textBuffer2 = new byte[1000];
 	_textBuffer3 = new byte[2200];
@@ -313,7 +312,7 @@ void CometEngine::updateGame() {
 		updateSub02();
 
 	handleInput();
-	runAllScripts();
+	_script->runAllScripts();
 	
 	if (_needToLoadSavegameFlag)
 		return;
@@ -984,13 +983,13 @@ void CometEngine::loadAndRunScript() {
 	fd.seek(_currentSceneNumber * 4);
 	ofs = fd.readUint32LE();
 	fd.seek(ofs);
-	fd.read(_scriptData, 3000);
+	fd.read(_script->_scriptData, 3000);
 	fd.close();
 
 	if (!_loadingGameFlag) {
 		resetVars();
 		sceneObjectsResetFlags();
-		initializeScript();
+		_script->initializeScript();
 	} else {
 		//TODO: ScriptInterpreter_initializeAfterLoadGame
 	}
@@ -1087,9 +1086,6 @@ void CometEngine::textProc2(int objectIndex, int narSubIndex, int animNumber) {
 	} else {
 		_animIndex = -1;
 	}
-
-	_curScript->status |= kScriptTalking;
-	_scriptBreakFlag = true;
 
 }
 
