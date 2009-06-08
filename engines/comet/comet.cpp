@@ -148,6 +148,7 @@ Common::Error CometEngine::run() {
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
+	_script = new ScriptInterpreter(this);
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -161,10 +162,7 @@ Common::Error CometEngine::run() {
 	_sceneNumber = 0;
 	memset(_marcheItems, 0, sizeof(_marcheItems));
 	memset(_sceneObjects, 0, sizeof(_sceneObjects));
-	_scriptData = NULL;
-	_scriptCount = 0;
-	_curScriptNumber = -1;
-	_curScript = NULL;
+
 	_paletteValue2 = 0;
 	_marcheNumber = 0;
 	_textActive = false;
@@ -212,9 +210,6 @@ Common::Error CometEngine::run() {
 	_scriptVars1[32] = &_scriptMouseFlag;
 	_scriptVars1[33] = &_scriptRandomValue;
 	_scriptVars1[34] = &_prevChapterNumber;
-
-	for (int i = 0; i < 17; i++)
-		_scripts[i] = new Script(this);
 
 	_talkieMode = 1;
 

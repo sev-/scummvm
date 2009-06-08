@@ -65,15 +65,7 @@ class CometEngine;
 
 class Animation;
 struct AnimationFrameList;
-
-enum {
-	kScriptWalking			= 0x01,
-	kScriptSleeping			= 0x02,
-	kScriptAnimPlaying		= 0x04,
-	kScriptDialogRunning	= 0x10,
-	kScriptPaused			= 0x20,
-	kScriptTalking			= 0x40
-};
+class ScriptInterpreter;
 
 enum {
 	kDirectionUp		= 3,
@@ -138,28 +130,6 @@ struct SceneItem {
 	int x, y;
 };
 
-class Script {
-public:
-	byte *code;
-	byte *ip;
-	int16 objectIndex;
-	uint16 status;
-	int scriptNumber;
-	int counter;
-	int x, y, x2, y2;
-	Script(CometEngine *vm) : _vm(vm) {
-	}
-	byte loadByte();
-	int16 loadInt16();
-	void jump();
-	uint16 loadVarValue();
-	uint16 loadValue();
-	bool evalBoolOp(int value1, int value2, int boolOp);
-	SceneObject *object() const;
-private:
-	CometEngine *_vm;
-};
-
 typedef Common::Array<Common::Point> PointArray;
 
 class CometEngine : public Engine {
@@ -197,6 +167,7 @@ public:
 
 	Screen *_screen;
 	Dialog *_dialog;
+	ScriptInterpreter *_script;
 
 	byte *_sceneBackground, *_scratchBuffer;
 	byte *_textBuffer1, *_textBuffer2, *_textBuffer3;
@@ -424,105 +395,13 @@ public:
 	void calcRect01(Common::Rect &rect, int delta1, int delta2);
 
 	/* Script */
-	byte *_scriptData;
 	int *_scriptVars1[256];
 	int _scriptVars2[256], _itemStatus[256];
-	int _scriptCount;
-	Script *_scripts[17];
-	int _curScriptNumber;
-	Script *_curScript;
-	bool _scriptBreakFlag;
 	void loadAndRunScript();
-	void initializeScript();
-	void prepareScript(int scriptNumber);
-	void runScript(int scriptNumber);
-	void runAllScripts();
-	//TODO: Use something like getGlobalVar(index) and setGlobalVar(index, value) instead?
-	int *getVarPointer(int varIndex);
-	SceneObject *getScriptSceneObject();
 
-	void processScriptStatus8();
-	void processScriptSleep();
-	void processScriptWalk();
-	void processScriptAnim();
-	void processScriptDialog();
-	void processScriptTalk();
-	
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	bool rectCompare02(int objectIndex1, int objectIndex2, int x, int y);
 	bool isPlayerInRect(int x, int y, int x2, int y2);
-
-	void objectWalkToXYAbs(Script *script, bool xyFlag);
-	void objectWalkToXYRel(Script *script, bool xyFlag);
-
-	bool o1_Sub_rectCompare01(Script *script);
-	
-	void o1_addSceneItem(Script *script, int paramType);
-
-	/* Script functions */
-	void o1_sceneObjectSetDirection(Script *script);
-	void o1_jump(Script *script);
-	void o1_objectWalkToXAbs(Script *script);
-	void o1_objectWalkToYAbs(Script *script);
-	void o1_loop(Script *script);
-	void o1_objectSetPosition(Script *script);
-	void o1_sleep(Script *script);
-	void o1_if(Script *script);
-	void o1_condJump2(Script *script);
-	void o1_objectWalkToXRel(Script *script);
-	void o1_objectWalkToYRel(Script *script);
-	void o1_setMouseFlags(Script *script);
-	void o1_resetHeroDirectionChanged(Script *script);
-	void o1_sceneObjectSetDirectionTo(Script *script);
-	void o1_selectObject(Script *script);
-	void o1_initPoints(Script *script);
-	void o1_initSceneExits(Script *script);
-	void o1_addSceneItem1(Script *script);
-	void o1_startScript(Script *script);
-	void o1_pauseScript(Script *script);
-	void o1_playCutscene(Script *script);
-	void o1_setVar(Script *script);
-	void o1_incVar(Script *script);
-	void o1_subVar(Script *script);
-	void o1_setSceneObjectCollisionTypeTo8(Script *script);
-	void o1_setSceneObjectCollisionTypeTo0(Script *script);
-	void o1_updateDirection2(Script *script);
-	void o1_setSceneNumber(Script *script);
-	void o1_setAnimValues(Script *script);
-	void o1_setMarcheNumber(Script *script);
-	void o1_setZoomByItem(Script *script);
-	void o1_startDialog(Script *script);
-	void o1_waitWhilePlayerIsInRect(Script *script);
-	void o1_waitUntilPlayerIsInRect(Script *script);
-	void o1_unloadSceneObjectSprite(Script *script);
-	void o1_setObjectClipX(Script *script);
-	void o1_setObjectClipY(Script *script);
-	void o1_orVar(Script *script);
-	void o1_loadScene(Script *script);
-	void o1_sceneObjectSetAnimNumber(Script *script);
-	void o1_addBlockingRect(Script *script);
-	void o1_sub_A67F(Script *script);
-	void o1_sub_A64B(Script *script);
-	void o1_sub_A735(Script *script);
-	void o1_removeBlockingRect(Script *script);
-	void o1_setSceneObjectColor(Script *script);
-	void o1_setTextXY(Script *script);
-	void o1_playMusic(Script *script);
-	void o1_setRandomValue(Script *script);
-	void o1_setChapterNumber(Script *script);
-	void o1_dialog(Script *script);
-	void o1_addSceneItem2(Script *script);
-	void o1_playAnim(Script *script);
-	void o1_sub_AD04(Script *script);
-	void o1_initSceneObject(Script *script);
-	void o1_loadSceneObjectSprite(Script *script);
-	void o1_setObjectVisible(Script *script);
-	void o1_paletteFadeIn(Script *script);
-	void o1_paletteFadeOut(Script *script);
-	void o1_setNarFileIndex(Script *script);
-	void o1_deactivateSceneItem(Script *script);
-	void o1_sample_2(Script *script);
-	void o1_sample_1(Script *script);
 
 public:
 	/* Misc */
