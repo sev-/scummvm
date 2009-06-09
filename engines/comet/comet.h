@@ -119,10 +119,6 @@ struct SpriteDraw {
 	byte index;
 };
 
-struct RectItem {
-	int x, y, x2, y2, id;
-};
-
 struct SceneItem {
 	int itemIndex;
 	bool active;
@@ -234,8 +230,6 @@ public:
 	
 	int _scriptRandomValue;
 	
-	Common::Rect _blockingRect;
-
 	/* Audio */
 	MusicPlayer *_music;
 
@@ -279,8 +273,8 @@ public:
 	void updateStaticObjects();
 	void sceneObjectsUpdate03();
 	void updateSceneObjectFlag();
-	void sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject);
-	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject);
+	void sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
+	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
 	void resetVars();
 	
 	void drawSceneAnims();
@@ -292,8 +286,8 @@ public:
 	void updateTalkAnims();
 	void sceneObjectUpdate01(SceneObject *sceneObject);
 	void sceneObjectUpdate02(SceneObject *sceneObject);
-	void sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag);
-	bool sceneObjectUpdate04(int objectIndex);
+	void sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect);
+	bool sceneObjectUpdate04(int objectIndex, Common::Rect &obstacleRect);
 	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
 	void freeMarcheAndStaticObjects();
 	void resetMarcheAndStaticObjects();
@@ -328,9 +322,9 @@ public:
 	int checkLinesSub(int chapterNumber, int sceneNumber);
 
 	int checkCollisionWithRoomBounds(const Common::Rect &rect, int direction);
-	int checkCollisionWithBlockingRects(Common::Rect &rect);
-	int checkCollisionWithActors(int skipIndex, Common::Rect &rect);
-	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction);
+	int checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obstacleRect);
+	int checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect);
+	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
 	
 	void handleSceneChange(int sceneNumber, int chapterNumber);
 
@@ -338,7 +332,7 @@ public:
 	void drawLineOfSight();
 	
 	PointArray _pointsArray;
-	byte _xBuffer[320];
+	byte _sceneBounds[320];
 	
 	void initPointsArray2();
 	int Points_getY_sub_8419(int x, int y);

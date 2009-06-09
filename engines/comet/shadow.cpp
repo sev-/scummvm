@@ -366,7 +366,7 @@ void CometEngine::updateGame() {
 		_screen->fillRect(x3, y3, x4, y4, 25);
 	}
 	for (int x = 0;  x < 320; x++)
-		_screen->putPixel(x, _xBuffer[x], 0);
+		_screen->putPixel(x, _sceneBounds[x], 0);
 	/* end DEBUG rectangles */
 
 
@@ -498,9 +498,10 @@ void CometEngine::sceneObjectsUpdate01() {
 void CometEngine::sceneObjectsUpdate02() {
 	for (int i = 0; i < 11; i++) {
 		if (_sceneObjects[i].flag != 0) {
-			bool flag = sceneObjectUpdate04(i);
+			Common::Rect obstacleRect;
+			bool flag = sceneObjectUpdate04(i, obstacleRect);
 			if (_sceneObjects[i].walkStatus & 3)
-				sceneObjectUpdate03(&_sceneObjects[i], i, flag);
+				sceneObjectUpdate03(&_sceneObjects[i], i, flag, obstacleRect);
 		}
 	}
 }
@@ -804,7 +805,7 @@ void CometEngine::resetVars() {
 
 }
 
-void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject) {
+void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect) {
 
 	int x = sceneObject->x;
 	int y = sceneObject->y;
@@ -815,17 +816,17 @@ void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sc
 	case 1:
 	case 3:
 		if (random(2) == 0) {
-			x = _blockingRect.left - (sceneObject->deltaX + 2);
+			x = obstacleRect.left - (sceneObject->deltaX + 2);
 		} else {
-			x = _blockingRect.right + (sceneObject->deltaX + 2);
+			x = obstacleRect.right + (sceneObject->deltaX + 2);
 		}
 		break;
 	case 2:
 	case 4:
 		if (random(2) == 0) {
-			y = _blockingRect.top - 2;
+			y = obstacleRect.top - 2;
 		} else {
-			y = _blockingRect.bottom + (sceneObject->deltaY + 2);
+			y = obstacleRect.bottom + (sceneObject->deltaY + 2);
 		}
 		break;
 	}
@@ -836,7 +837,7 @@ void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sc
 
 }
 
-void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject) {
+void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect) {
 
 	debug(4, "CometEngine::sceneObjectUpdateDirectionTo() objectIndex = %d", objectIndex);
 	debug(4, "CometEngine::sceneObjectUpdateDirectionTo() sceneObject->collisionType = %d", sceneObject->collisionType);
@@ -855,17 +856,17 @@ void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sce
 			sceneObjectUpdateFlag(sceneObject, sceneObject->flag);
 		}
 	} else {
-		sceneObjectMoveAroundObstacle(objectIndex, sceneObject);
+		sceneObjectMoveAroundObstacle(objectIndex, sceneObject, obstacleRect);
 	}
 
 }
 
-void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag) {
+void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect) {
 
 	//debug(4, "CometEngine::sceneObjectUpdate03()");
 
 	if (!flag)
-		sceneObjectUpdateDirectionTo(objectIndex, sceneObject);
+		sceneObjectUpdateDirectionTo(objectIndex, sceneObject, obstacleRect);
 
 	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2);
 	
@@ -898,7 +899,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 
 }
 
-bool CometEngine::sceneObjectUpdate04(int objectIndex) {
+bool CometEngine::sceneObjectUpdate04(int objectIndex, Common::Rect &obstacleRect) {
 
 	//debug(4, "CometEngine::sceneObjectUpdate04(%d)", objectIndex);
 
@@ -937,7 +938,7 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex) {
 	}
 
 	if (sceneObject->collisionType != 8) {
-		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction);
+		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction, obstacleRect);
 		debug(4, "collisionType (checkCollision) = %04X", collisionType);
 		//debug(4, "collisionType = %04X", collisionType);
 		if (collisionType != 0) {
@@ -1243,7 +1244,7 @@ void CometEngine::resetTextValues() {
 void CometEngine::initPointsArray2() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
-	byte *xb = _xBuffer;
+	byte *xb = _sceneBounds;
 
 	for (uint32 i = 0; i < _pointsArray.size() - 1; i++) {
 		x1 = _pointsArray[i].x;
@@ -1357,13 +1358,13 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 		checkCollisionWithSceneExits(tempRect, 4))
 		return;
 		
-	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _xBuffer[x - deltaX], _xBuffer[x + deltaX]);
+	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _sceneBounds[x - deltaX], _sceneBounds[x + deltaX]);
 
-	if (y - deltaY <= _xBuffer[x - deltaX])
-		y = _xBuffer[x - deltaX] + deltaY + 2;
+	if (y - deltaY <= _sceneBounds[x - deltaX])
+		y = _sceneBounds[x - deltaX] + deltaY + 2;
 		
-	if (y - deltaY <= _xBuffer[x + deltaX])
-		y = _xBuffer[x + deltaX] + deltaY + 2;
+	if (y - deltaY <= _sceneBounds[x + deltaX])
+		y = _sceneBounds[x + deltaX] + deltaY + 2;
 
 	if (y > 199)
 		y = 199;
@@ -1590,7 +1591,7 @@ void CometEngine::getSceneExitRect(int index, int &x, int &y, int &x2, int &y2) 
 	x = sceneExitItem->x;
 	x2 = sceneExitItem->x2;
 	
-	y = _xBuffer[x];
+	y = _sceneBounds[x];
 	
 	if (x == x2) {
 		y2 = 199;
@@ -1598,7 +1599,7 @@ void CometEngine::getSceneExitRect(int index, int &x, int &y, int &x2, int &y2) 
 		y = 199;
 		y2 = 199;
 	} else {
-		y2 = _xBuffer[x2];
+		y2 = _sceneBounds[x2];
 	}
 	
 	if (y > y2)
@@ -1797,8 +1798,8 @@ int CometEngine::checkCollisionWithRoomBounds(const Common::Rect &rect, int dire
 	y = rect.top;
 	y2 = rect.bottom;
 
-	y3 = _xBuffer[x];
-	y4 = _xBuffer[x2];
+	y3 = _sceneBounds[x];
+	y4 = _sceneBounds[x2];
 	
 	switch (direction) {
 	case 1:
@@ -1825,12 +1826,12 @@ int CometEngine::checkCollisionWithRoomBounds(const Common::Rect &rect, int dire
 
 }
 
-int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect) {
+int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obstacleRect) {
 
 	for (uint32 index = 0; index < _blockingRects.size(); index++) {
-		_blockingRect = _blockingRects[index];
+		obstacleRect = _blockingRects[index];
 		if (_blockingRects[index].left != _blockingRects[index].right) {
-			if (rectCompare(_blockingRect, rect)) {
+			if (rectCompare(obstacleRect, rect)) {
 				return 0x300 | index;
 			}
 		}
@@ -1840,16 +1841,16 @@ int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect) {
 
 }
 
-int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect) {
+int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
 
 	for (int index = 0; index < 11; index++) {
 		SceneObject *sceneObject = getSceneObject(index);
 		if (index != skipIndex && sceneObject->flag != 0 && sceneObject->collisionType != 8) {
-			_blockingRect.left = sceneObject->x - sceneObject->deltaX;
-			_blockingRect.top = sceneObject->y - sceneObject->deltaY;
-			_blockingRect.right = sceneObject->x + sceneObject->deltaX;
-			_blockingRect.bottom = sceneObject->y;
-			if (rectCompare(rect, _blockingRect)) {
+			obstacleRect.left = sceneObject->x - sceneObject->deltaX;
+			obstacleRect.top = sceneObject->y - sceneObject->deltaY;
+			obstacleRect.right = sceneObject->x + sceneObject->deltaX;
+			obstacleRect.bottom = sceneObject->y;
+			if (rectCompare(rect, obstacleRect)) {
 				return 0x600 | index;
 			}
 		}
@@ -1859,7 +1860,7 @@ int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect) {
 
 }
 
-uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction) {
+uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect) {
 
 	uint16 collisionType = 0;
 
@@ -1871,9 +1872,9 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 		if (sceneExitCollision != 0)
 			collisionType = sceneExitCollision;
 	} else {
-		collisionType = checkCollisionWithBlockingRects(collisionRect);
+		collisionType = checkCollisionWithBlockingRects(collisionRect, obstacleRect);
 		if (collisionType == 0)
-			collisionType = checkCollisionWithActors(index, collisionRect);
+			collisionType = checkCollisionWithActors(index, collisionRect, obstacleRect);
 	}
 
 	return collisionType;
