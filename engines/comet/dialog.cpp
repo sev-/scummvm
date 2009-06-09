@@ -110,7 +110,7 @@ void Dialog::update() {
 	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _dialogSelectedItemIndex != -1) {
 		//DEBUG: if (_talkieMode == 1)
 		{
-			_vm->textProc2(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
+			_vm->actorSayWithAnim(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
 			//TODO: loop with updateTalkAnims()
 		}
 		_dialogRunning = false;

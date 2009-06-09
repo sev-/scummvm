@@ -321,13 +321,13 @@ void ScriptInterpreter::processScriptTalk() {
 
 	if (_vm->_textActive == 0) {
 		_curScript->status &= ~kScriptTalking;
-		if (_vm->_sceneObjectIndex == 10) {
+		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_animIndex != -1)
 				_vm->_sceneObjects[_vm->_animIndex].visible = true;
 			_vm->_sceneObjects[10].flag = 0;
 			_vm->_screen->enableTransitionEffect();
 		} else if (_vm->_animIndex != -1) {
-			SceneObject *sceneObject = _vm->getSceneObject(_vm->_sceneObjectIndex);
+			SceneObject *sceneObject = _vm->getSceneObject(_vm->_talkActorIndex);
 			_vm->sceneObjectSetAnimNumber(sceneObject, _vm->_animIndex);
 			sceneObject->animSubIndex2 = _vm->_animSubIndex2;
 			sceneObject->animFrameIndex = _vm->_animSubIndex;
@@ -1107,7 +1107,7 @@ void ScriptInterpreter::o1_dialog(Script *script) {
 
 	debug(2, "o1_dialog(%d, %d, %d)", objectIndex, narSubIndex, animNumber);
 
-	_vm->textProc2(objectIndex, narSubIndex, animNumber);
+	_vm->actorSayWithAnim(objectIndex, narSubIndex, animNumber);
 
 	_curScript->status |= kScriptTalking;
 	_scriptBreakFlag = true;
@@ -1159,7 +1159,7 @@ void ScriptInterpreter::o1_sub_AD04(Script *script) {
 	
 	_vm->_marcheNumber = 0;
 	_vm->sceneObjectSetXY(10, 0, 199);
-	_vm->textProc2(10, narSubIndex, animNumber);
+	_vm->actorSayWithAnim(10, narSubIndex, animNumber);
 	_vm->_animIndex = objectIndex;
 	_vm->_screen->enableTransitionEffect();
 

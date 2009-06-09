@@ -40,7 +40,7 @@ int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 	return flags;
 }
 
-void CometEngine::calcRect01(Common::Rect &rect, int delta1, int delta2) {
+void CometEngine::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
 
 	int x = _sceneObjects[0].x - _sceneObjects[0].deltaX - 8;
 	int y = _sceneObjects[0].y - _sceneObjects[0].deltaY - 8;
@@ -434,10 +434,10 @@ void CometEngine::updateSceneNumber() {
 void CometEngine::updateSub02() {
 	//debug(4, "CometEngine::updateSub02()");
 	
-	Common::Rect rect1;
-	calcRect01(rect1, 0, 50);
+	Common::Rect sightRect;
+	calcSightRect(sightRect, 0, 50);
 	
-	int sceneItemIndex = findSceneItemAt(rect1);
+	int sceneItemIndex = findSceneItemAt(sightRect);
 
 	if (sceneItemIndex != 0) {
 		SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
@@ -462,10 +462,10 @@ void CometEngine::updateSub03(bool flag) {
 	//debug(4, "_mouseFlag = %d", _mouseFlag);
 	
 	if (_mouseFlag != 15) {
-		Common::Rect rect;
-		calcRect01(rect, 0, 50);
+		Common::Rect sightRect;
+		calcSightRect(sightRect, 0, 50);
 		//_screen->fillRect(rect.left, rect.top, rect.right, rect.bottom, 150);
-		int sceneItemIndex = findSceneItemAt(rect);
+		int sceneItemIndex = findSceneItemAt(sightRect);
 		if (sceneItemIndex != 0) {
 			SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
 			_itemInSight = true;
@@ -646,7 +646,7 @@ void CometEngine::updateText() {
 
 	//TODO
 
-	SceneObject *sceneObject = getSceneObject(_sceneObjectIndex);
+	SceneObject *sceneObject = getSceneObject(_talkActorIndex);
 	int x, y;
 
 	if (sceneObject->textX != -1) {
@@ -804,12 +804,12 @@ void CometEngine::resetVars() {
 
 }
 
-void CometEngine::sceneObjectAvoidBlockingRect(int objectIndex, SceneObject *sceneObject) {
+void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject) {
 
 	int x = sceneObject->x;
 	int y = sceneObject->y;
 
-	debug(4, "CometEngine::sceneObjectAvoidBlockingRect() 1) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
+	debug(4, "CometEngine::sceneObjectMoveAroundObstacle() 1) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
 	switch (sceneObject->direction) {
 	case 1:
@@ -830,7 +830,7 @@ void CometEngine::sceneObjectAvoidBlockingRect(int objectIndex, SceneObject *sce
 		break;
 	}
 
-	debug(4, "CometEngine::sceneObjectAvoidBlockingRect() 2) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
+	debug(4, "CometEngine::sceneObjectMoveAroundObstacle() 2) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
 	sceneObjectUpdateDirection2(objectIndex, x, y);
 
@@ -855,7 +855,7 @@ void CometEngine::sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sce
 			sceneObjectUpdateFlag(sceneObject, sceneObject->flag);
 		}
 	} else {
-		sceneObjectAvoidBlockingRect(objectIndex, sceneObject);
+		sceneObjectMoveAroundObstacle(objectIndex, sceneObject);
 	}
 
 }
@@ -1049,9 +1049,9 @@ void CometEngine::resetHeroDirectionChanged() {
 		_sceneObjects[0].directionChanged = 0;
 }
 
-void CometEngine::textProc(int objectIndex, int narSubIndex, int color) {
+void CometEngine::actorSay(int objectIndex, int narSubIndex, int color) {
 
-	_sceneObjectIndex = objectIndex;
+	_talkActorIndex = objectIndex;
 	_narSubIndex = narSubIndex;
 	
 	WRITE_LE_UINT32(_textBuffer1, 4);
@@ -1071,11 +1071,11 @@ void CometEngine::textProc(int objectIndex, int narSubIndex, int color) {
 
 }
 
-void CometEngine::textProc2(int objectIndex, int narSubIndex, int animNumber) {
+void CometEngine::actorSayWithAnim(int objectIndex, int narSubIndex, int animNumber) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	textProc(objectIndex, narSubIndex, sceneObject->color);
+	actorSay(objectIndex, narSubIndex, sceneObject->color);
 
 	if (animNumber != 0xFF) {
 		_animIndex = sceneObject->animIndex;
@@ -1740,7 +1740,7 @@ uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
 
 void CometEngine::setTextEx(int index, byte *textBuffer) {
 
-	_sceneObjectIndex = 0;
+	_talkActorIndex = 0;
 	_textColor = 21;
 	_narSubIndex = index;
 	setText(getTextEntry(index, textBuffer));
