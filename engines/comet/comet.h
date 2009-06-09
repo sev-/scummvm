@@ -280,7 +280,7 @@ public:
 	void sceneObjectsUpdate03();
 	void updateSceneObjectFlag();
 	void sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject);
-	void sceneObjectAvoidBlockingRect(int objectIndex, SceneObject *sceneObject);
+	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject);
 	void resetVars();
 	
 	void drawSceneAnims();
@@ -383,16 +383,16 @@ public:
 	SceneObject *getSceneObject(int index);
 
 	/* Text */
-	int _sceneObjectIndex, _animIndex, _animSubIndex2, _animSubIndex, _narSubIndex;
-	void textProc(int objectIndex, int narSubIndex, int color);
-	void textProc2(int objectIndex, int narSubIndex, int animNumber);
+	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _narSubIndex;
+	void actorSay(int objectIndex, int narSubIndex, int color);
+	void actorSayWithAnim(int objectIndex, int narSubIndex, int animNumber);
 
 	/* SceneObjects */
 	void sceneObjectsResetFlags();
 
 	/* Misc */
 	int comparePointXY(int x, int y, int x2, int y2);
-	void calcRect01(Common::Rect &rect, int delta1, int delta2);
+	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 
 	/* Script */
 	int *_scriptVars1[256];
