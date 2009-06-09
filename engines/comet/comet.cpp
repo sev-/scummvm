@@ -177,12 +177,7 @@ Common::Error CometEngine::run() {
 
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
-	
-	_blockingRect.left = 0;
-	_blockingRect.right = 0;
-	_blockingRect.top = 0;
-	_blockingRect.bottom = 0;
-	
+
 	_mouseX = 0;
 	_mouseY = 0;
 	_keyScancode = Common::KEYCODE_INVALID;
