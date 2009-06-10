@@ -77,29 +77,10 @@ void CometEngine::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
 
 }
 
-int CometEngine::calcDirection(int x1, int y1, int x2, int y2) {
+int CometEngine::calcDirection(int fromX, int fromY, int toX, int toY) {
 
-/*
-	int deltaX = (x2 - x1) / 2;
-	int deltaY = y2 - y1;
-	
-	if (ABS(deltaX) <= ABS(deltaY)) {
-		if (deltaX <= 0)
-			return kDirectionLeft;
-		else
-			return kDirectionRight;
-	} else {
-		if (deltaY <= 0)
-			return kDirectionUp;
-		else
-			return kDirectionDown;
-	}
-*/
-
-	// New code, I think the code above is wrong...
-
-	int deltaX = x2 - x1;
-	int deltaY = y2 - y1;
+	int deltaX = toX - fromX;
+	int deltaY = toY - fromY;
 
 	if (ABS(deltaX) / 2 > ABS(deltaY)) {
 		if (deltaX > 0)
@@ -149,13 +130,13 @@ void CometEngine::initSceneBackground() {
 
 void CometEngine::initPoints(byte *data) {
 	byte count = *data++;
-	_pointsArray.clear();
+	_bounds.clear();
 	while (count--) {
 		int x = (*data++) * 2;
 		int y = *data++;
-		_pointsArray.push_back(Common::Point(x, y));
+		_bounds.push_back(Common::Point(x, y));
 	}
-	initPointsArray2();
+	initSceneBoundsMap();
 }
 
 void CometEngine::initSceneExits(byte *data) {
@@ -183,7 +164,7 @@ void CometEngine::loadSceneBackground() {
 void CometEngine::loadStaticObjects() {
 	delete _sceneObjectsSprite;
 	
-	debug("CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
+	debug(8, "CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
 	
 	_sceneObjectsSprite = loadMarcheData(DName, _backgroundFileIndex + 1);
 }
@@ -260,10 +241,10 @@ void CometEngine::initData() {
 	_currentChapterNumber = 0;
 	_sceneNumber = 0;
 	
-	_pointsArray.clear();
-	_pointsArray.push_back(Common::Point(0, 100));
-	_pointsArray.push_back(Common::Point(319, 100));
-	initPointsArray2();
+	_bounds.clear();
+	_bounds.push_back(Common::Point(0, 100));
+	_bounds.push_back(Common::Point(319, 100));
+	initSceneBoundsMap();
 	
 	resetVars();
 	
@@ -297,6 +278,11 @@ void CometEngine::updateGame() {
 	_gameLoopCounter++;
 	_textColorFlag++;
 
+#if 0
+	debug("_chapterNumber = %d; _currentChapterNumber = %d", _chapterNumber, _currentChapterNumber);
+	debug("_sceneNumber = %d; _currentSceneNumber = %d", _sceneNumber, _currentSceneNumber);
+#endif
+
 	if (_chapterNumber != _currentChapterNumber)
 		updateChapterNumber();
 
@@ -304,7 +290,7 @@ void CometEngine::updateGame() {
 		updateSceneNumber();
 
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
-	
+
 	if (_cmdLook)
 		updateSub03(true);
 
@@ -312,20 +298,17 @@ void CometEngine::updateGame() {
 		updateSub02();
 
 	handleInput();
-	_script->runAllScripts();
 	
+	_script->runAllScripts();
+
 	if (_needToLoadSavegameFlag)
 		return;
-		
+
 	drawSceneExits();
-	
 	sceneObjectsUpdate01();
 	sceneObjectsUpdate02();
-	
 	updateStaticObjects();
-
 	sceneObjectsUpdate03();
-
 	updateSub03(false);
 
 	drawSceneAnims();
@@ -366,7 +349,7 @@ void CometEngine::updateGame() {
 		_screen->fillRect(x3, y3, x4, y4, 25);
 	}
 	for (int x = 0;  x < 320; x++)
-		_screen->putPixel(x, _sceneBounds[x], 0);
+		_screen->putPixel(x, _boundsMap[x], 0);
 	/* end DEBUG rectangles */
 
 
@@ -490,9 +473,9 @@ void CometEngine::updateSub03(bool flag) {
 void CometEngine::sceneObjectsUpdate01() {
 	for (int i = 0; i < 10; i++) {
 		if (_sceneObjects[i].flag != 0)
-			sceneObjectUpdate02(&_sceneObjects[i]);
+			sceneObjectUpdateAnimation(&_sceneObjects[i]);
 	}
-	sceneObjectUpdate01(&_sceneObjects[10]);
+	sceneObjectUpdatePortraitAnimation(&_sceneObjects[10]);
 }
 
 void CometEngine::sceneObjectsUpdate02() {
@@ -542,7 +525,7 @@ void CometEngine::drawSceneAnims() {
 
 	//TODO: setScreenRectAll();
 
-	debug(1, "_spriteArray.size() = %d", _spriteArray.size());
+	//debug(1, "_spriteArray.size() = %d", _spriteArray.size());
 	
 	int objectCmdIndex = 0;
 
@@ -608,7 +591,7 @@ int CometEngine::drawSceneObject(Animation *animation, AnimationFrameList *frame
 		drawY += frameList->frames[i]->yOffs;
 	}
 
-	debug(0, "x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulVal = %d",
+	debug(8, "x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulVal = %d",
 		x, y, drawX, drawY, gfxMode, mulVal);
 
 	if (gfxMode == 0) {
@@ -704,7 +687,7 @@ void CometEngine::updateTalkAnims() {
 	//TODO
 }
 
-void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
+void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 
 	if (sceneObject->animSubIndex2 == -1) {
 
@@ -756,7 +739,7 @@ void CometEngine::sceneObjectUpdate01(SceneObject *sceneObject) {
 
 }
 
-void CometEngine::sceneObjectUpdate02(SceneObject *sceneObject) {
+void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 
 	if (sceneObject->directionChanged == 1) {
 		sceneObject->directionChanged = 0;
@@ -875,16 +858,12 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 	drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, 100);
 	
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
-
-		debug(4, "--1");
-	
 		if (sceneObject->walkStatus & 4) {
 			sceneObjectUpdateDirection2(objectIndex, sceneObject->x3, sceneObject->y3);
 			sceneObject->walkStatus &= ~4;
 		} else {
 			sceneObjectResetDirectionAdd(sceneObject);
 		}
-		
 	} else if ((sceneObject->walkStatus & 3) == comp) {
 		//debug(4, "--2");
 
@@ -1241,16 +1220,16 @@ void CometEngine::resetTextValues() {
 	_textActive = false;
 }
 
-void CometEngine::initPointsArray2() {
+void CometEngine::initSceneBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
-	byte *xb = _sceneBounds;
+	byte *xb = _boundsMap;
 
-	for (uint32 i = 0; i < _pointsArray.size() - 1; i++) {
-		x1 = _pointsArray[i].x;
-		y1 = _pointsArray[i].y;
-		x2 = _pointsArray[i + 1].x;
-		y2 = _pointsArray[i + 1].y;
+	for (uint32 i = 0; i < _bounds.size() - 1; i++) {
+		x1 = _bounds[i].x;
+		y1 = _bounds[i].y;
+		x2 = _bounds[i + 1].x;
+		y2 = _bounds[i + 1].y;
 		x2 -= x1;
 		if (x2 != 0) {
 			y2 -= y1;
@@ -1290,9 +1269,9 @@ void CometEngine::initPointsArray2() {
 
 int CometEngine::Points_getY_sub_8419(int x, int y) {
 	int yp = 0;
-	for (uint32 i = 0; i < _pointsArray.size(); i++) {
-		yp = _pointsArray[i].y;
-		if (_pointsArray[i].x > x && yp >= y)
+	for (uint32 i = 0; i < _bounds.size(); i++) {
+		yp = _bounds[i].y;
+		if (_bounds[i].x > x && yp >= y)
 			break;
 	}
 	if (yp >= 199)
@@ -1303,9 +1282,9 @@ int CometEngine::Points_getY_sub_8419(int x, int y) {
 
 int CometEngine::Points_getY_sub_8477(int x, int y) {
 	int yp = 0;
-	for (int i = _pointsArray.size() - 1; i >= 0; i--) {
-		yp = _pointsArray[i].y;
-		if (_pointsArray[i].x < x && yp >= y)
+	for (int i = _bounds.size() - 1; i >= 0; i--) {
+		yp = _bounds[i].y;
+		if (_bounds[i].x < x && yp >= y)
 			break;
 	}
 	if (yp >= 199)
@@ -1358,13 +1337,13 @@ void CometEngine::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 		checkCollisionWithSceneExits(tempRect, 4))
 		return;
 		
-	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _sceneBounds[x - deltaX], _sceneBounds[x + deltaX]);
+	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _boundsMap[x - deltaX], _boundsMap[x + deltaX]);
 
-	if (y - deltaY <= _sceneBounds[x - deltaX])
-		y = _sceneBounds[x - deltaX] + deltaY + 2;
+	if (y - deltaY <= _boundsMap[x - deltaX])
+		y = _boundsMap[x - deltaX] + deltaY + 2;
 		
-	if (y - deltaY <= _sceneBounds[x + deltaX])
-		y = _sceneBounds[x + deltaX] + deltaY + 2;
+	if (y - deltaY <= _boundsMap[x + deltaX])
+		y = _boundsMap[x + deltaX] + deltaY + 2;
 
 	if (y > 199)
 		y = 199;
@@ -1397,7 +1376,7 @@ bool CometEngine::rectCompare02(int objectIndex1, int objectIndex2, int x, int y
 		sceneObject2->y - y / 2,
 		sceneObject2->x + x / 2,
 		sceneObject2->y + y / 2);
-	
+
 	return rectCompare(rect1, rect2);
 
 }
@@ -1591,7 +1570,7 @@ void CometEngine::getSceneExitRect(int index, int &x, int &y, int &x2, int &y2) 
 	x = sceneExitItem->x;
 	x2 = sceneExitItem->x2;
 	
-	y = _sceneBounds[x];
+	y = _boundsMap[x];
 	
 	if (x == x2) {
 		y2 = 199;
@@ -1599,7 +1578,7 @@ void CometEngine::getSceneExitRect(int index, int &x, int &y, int &x2, int &y2) 
 		y = 199;
 		y2 = 199;
 	} else {
-		y2 = _sceneBounds[x2];
+		y2 = _boundsMap[x2];
 	}
 	
 	if (y > y2)
@@ -1798,8 +1777,8 @@ int CometEngine::checkCollisionWithRoomBounds(const Common::Rect &rect, int dire
 	y = rect.top;
 	y2 = rect.bottom;
 
-	y3 = _sceneBounds[x];
-	y4 = _sceneBounds[x2];
+	y3 = _boundsMap[x];
+	y4 = _boundsMap[x2];
 	
 	switch (direction) {
 	case 1:
@@ -1836,7 +1815,7 @@ int CometEngine::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rec
 			}
 		}
 	}
-	
+
 	return 0;
 
 }
@@ -1877,6 +1856,12 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 			collisionType = checkCollisionWithActors(index, collisionRect, obstacleRect);
 	}
 
+#if 0
+	if (collisionType != 0)
+		debug("index = %d; x = %d; y = %d; deltaX = %d; deltaY = %d, collisionType = %04X",
+			index, x, y, deltaX, deltaY, collisionType);
+#endif
+
 	return collisionType;
 
 }
@@ -1888,10 +1873,10 @@ void CometEngine::initStaticObjectRects() {
 	for (uint i = 0; i < _sceneObjectsSprite->_elements[0]->commands.size(); i++) {
 		AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[i];
 		AnimationElement *objectElement = _sceneObjectsSprite->_elements[((cmd->arg2 << 8) | cmd->arg1) & 0x7FFF];
-		debug("%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
+		debug(8, "%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
 			i, cmd->cmd, cmd->arg1, cmd->arg2, cmd->points[0].x, cmd->points[0].y, objectElement->width, objectElement->height);
 		if (objectElement->width / 2 > 0) {
-   			int16 blockX1, blockY1, blockX2, blockY2;
+			int16 blockX1, blockY1, blockX2, blockY2;
 			if (cmd->cmd == 0)
 				blockX1 = (cmd->points[0].x - objectElement->width) / 2;
 			else
@@ -1918,7 +1903,7 @@ uint16 CometEngine::handleCollision(SceneObject *sceneObject, int index, uint16 
 	
 	if (result == 0) {
 		sceneObjectSetDirectionAdd(sceneObject, 0);
-		sceneObjectUpdate02(sceneObject);
+		sceneObjectUpdateAnimation(sceneObject);
 	}
 
 	return result;
@@ -1936,7 +1921,7 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 	const int directionArray[] = {0, 3, 4, 1, 2};
 
 	int direction = 1;
-	int x = 160, x2 = 160, y = 190, y2 = 190;
+	int x1 = 160, x2 = 160, y1 = 190, y2 = 190;
 	SceneObject *sceneObject = getSceneObject(0);
 	
 	for (uint sceneExitIndex = 0; sceneExitIndex < _sceneExits.size(); sceneExitIndex++) {
@@ -1944,14 +1929,14 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 		if (sceneExitItem->sceneNumber == sceneNumber && sceneExitItem->chapterNumber == chapterNumber) {
 			direction = directionArray[sceneExitItem->directionIndex];
 			if (sceneObject->direction == direction) {
-				getSceneExitRect(sceneExitIndex, x, y, x2, y2);
+				getSceneExitRect(sceneExitIndex, x1, y1, x2, y2);
 				break;
 			}
 		}
 	}
 
-	sceneObject->x = (x2 - x) / 2 + x;
-	sceneObject->y = (y2 - y) / 2 + y;
+	sceneObject->x = (x2 - x1) / 2 + x1;
+	sceneObject->y = (y2 - y1) / 2 + y1;
 	sceneObject->direction = direction;
 	sceneObjectSetAnimNumber(sceneObject, direction - 1);
 	

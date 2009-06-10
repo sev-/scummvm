@@ -284,8 +284,8 @@ public:
 	void updateTextDialog();
 	void updateText();
 	void updateTalkAnims();
-	void sceneObjectUpdate01(SceneObject *sceneObject);
-	void sceneObjectUpdate02(SceneObject *sceneObject);
+	void sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject);
+	void sceneObjectUpdateAnimation(SceneObject *sceneObject);
 	void sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect);
 	bool sceneObjectUpdate04(int objectIndex, Common::Rect &obstacleRect);
 	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
@@ -331,10 +331,10 @@ public:
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
-	PointArray _pointsArray;
-	byte _sceneBounds[320];
+	PointArray _bounds;
+	byte _boundsMap[320];
 	
-	void initPointsArray2();
+	void initSceneBoundsMap();
 	int Points_getY_sub_8419(int x, int y);
 	int Points_getY_sub_8477(int x, int y);
 	void rect_sub_CC94(int &x, int &y, int deltaX, int deltaY);
@@ -401,7 +401,7 @@ public:
 	/* Misc */
 	//ALL FIXME
 	int _dotFlag;
-	int calcDirection(int x1, int y1, int x2, int y2);
+	int calcDirection(int fromX, int fromY, int toX, int toY);
 	void drawSceneExits();
 
 protected:
