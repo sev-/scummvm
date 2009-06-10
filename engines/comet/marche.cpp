@@ -111,11 +111,13 @@ int CometEngine::loadMarche(int marcheNumber, int fileIndex) {
 	_marcheItems[marcheIndex].fileIndex = fileIndex;
 
 	// Possible workaround for the memory leak bug
+	/*
 	if (_marcheItems[marcheIndex].anim) {
 		//warning("CometEngine::freeMarche() _marcheItems[%d].anim not NULL", marcheIndex);
 		delete _marcheItems[marcheIndex].anim;
 		_marcheItems[marcheIndex].anim = NULL;
 	}
+	*/
 
 	if (marcheNumber != 0) {
 		_marcheItems[marcheIndex].anim = getMarcheAnim(marcheNumber);

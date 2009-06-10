@@ -548,6 +548,7 @@ void ScriptInterpreter::o1_sceneObjectSetDirection(Script *script) {
 }
 
 void ScriptInterpreter::o1_break(Script *script) {
+	script->status |= kScriptPaused;
 	_scriptBreakFlag = true;
 }
 
@@ -842,6 +843,9 @@ void ScriptInterpreter::o1_setAnimValues(Script *script) {
 
 void ScriptInterpreter::o1_setMarcheNumber(Script *script) {
 	_vm->_marcheNumber = script->loadByte();
+	
+	debug(2, "o1_setMarcheNumber(%d)", _vm->_marcheNumber);
+	
 }
 
 void ScriptInterpreter::o1_setZoomByItem(Script *script) {

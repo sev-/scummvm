@@ -1062,7 +1062,7 @@ void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int1
 	AnimationElement *element = animation->_elements[elementIndex];
 
 	byte flags = element->flags | (parentFlags & 0xA0);
-	debug(2, "Screen::drawAnimationElement() flags = %02X", flags);
+	debug(8, "Screen::drawAnimationElement() flags = %02X", flags);
 
 	for (Common::Array<AnimationCommand*>::iterator iter = element->commands.begin(); iter != element->commands.end(); iter++) {
 		drawAnimationCommand(animation, (*iter), x, y, flags);
@@ -1072,7 +1072,7 @@ void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int1
 
 void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
 
-	debug(2, "Screen::drawAnimationCommand() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
+	debug(8, "Screen::drawAnimationCommand() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
 
 	Common::Array<Point> points;
 
