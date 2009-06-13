@@ -82,12 +82,12 @@ Common::Error CometEngine::run() {
 	Animation *anim = new Animation();
 
 
-	const char *pakName = "D00.PAK";
-	const int pakIndex = 3;
+	const char *pakName = "A05.PAK";
+	const int pakIndex = 0;//11;//3;//1;//4;//9;// 12 21 17
 
 	byte *buffer = loadFromPak(pakName, pakIndex);
 	int size = getPakSize(pakName, pakIndex);
-#if 0
+#if 1
 	FILE *xf = fopen("dump.0", "wb");
 	fwrite(buffer, size, 1, xf);
 	fclose(xf);
@@ -98,23 +98,43 @@ Common::Error CometEngine::run() {
 	delete stream;
 	free(buffer);
 
+	int x = 0, y = 0, maxHeight = 0;
+	
+	debug("cels = %d", anim->_cels.size());
+
 	/*
-	int x = 0, y = 50, maxHeight = 0;
 	for (int i = 0;  i < anim->_cels.size(); i++) {
 		AnimationCel *cel = anim->_cels[i];
-		if (x + cel->width > 320) {
+		if (x + cel->width >= 320) {
 			x = 0;
 			y += maxHeight + 4;
 			maxHeight = 0;
 			if (y > 200)
 				break;
 		}
-		_screen->drawAnimationCelSprite(*cel, x, y);
+		debug("%d, x = %d, y = %d, w = %d, h = %d", i, x, y, cel->width, cel->height);
+		//_screen->drawAnimationCelSprite(*cel, x, y + cel->height);
+		
+		_screen->drawAnimationCelRle(*cel, 0, 0);
+		
 		x += cel->width + 4;
 		if (cel->height > maxHeight)
 			maxHeight = cel->height;
 	}
 	*/
+
+	/*
+	for (int i = 0;  i < anim->_cels.size(); i++) {
+		AnimationCel *cel = anim->_cels[i];
+		debug("%d, w = %d, h = %d", i, x, y);
+		//_screen->drawAnimationCelRle(*cel, 0, 0);
+		//_screen->drawAnimationCelSprite(*cel, 0, 0);
+	}
+	*/
+	
+	_screen->drawAnimationElement(anim, 0, 0, 0);
+
+	debug("Done.");
 
 	/*
 	_screen->drawAnimationCelRle(*anim->_cels[0], 0, 0);
@@ -130,7 +150,7 @@ Common::Error CometEngine::run() {
 	*/
 	
 	// Scene foreground graphics
-	_screen->drawAnimationElement(anim, 0, 0, 0);
+	//_screen->drawAnimationElement(anim, 0, 0, 199);
 	
 	_screen->update();
 
@@ -214,6 +234,8 @@ Common::Error CometEngine::run() {
 	_narFile = NULL;
 	_narCount = 0;
 	_narOffsets = NULL;
+	
+	_debugRectangles = false;
 
 	initAndLoadGlobalData();
 
@@ -242,6 +264,8 @@ Common::Error CometEngine::run() {
 		static bool slow = false;
 		if (_keyScancode == Common::KEYCODE_a)
 			slow = !slow;
+		if (_keyScancode == Common::KEYCODE_r)
+			_debugRectangles = !_debugRectangles;
 		if (slow)
 			_system->delayMillis(40);
 
@@ -300,6 +324,8 @@ Common::Error CometEngine::run() {
 		static bool slow = false;
 		if (_keyScancode == Common::KEYCODE_a)
 			slow = !slow;
+		if (_keyScancode == Common::KEYCODE_r)
+			_debugRectangles = !_debugRectangles;
 		if (slow)
 			_system->delayMillis(40);
 

@@ -398,6 +398,7 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 }
 
 void ScriptInterpreter::runAllScripts() {
+	debug(2, "ScriptInterpreter::runAllScripts()");
 	// Run all scripts except the main script
 	for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++) {
 		runScript(scriptNumber);
@@ -874,8 +875,8 @@ void ScriptInterpreter::o1_waitWhilePlayerIsInRect(Script *script) {
 
 	debug(2, "o1_waitWhilePlayerIsInRect(%d, %d, %d, %d)", script->x, script->y, script->x2, script->y2);
 
-	//DEBUG
-	_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
+	if (_vm->_debugRectangles)
+		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
 
 	if (_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
 		script->ip--;
@@ -893,8 +894,8 @@ void ScriptInterpreter::o1_waitUntilPlayerIsInRect(Script *script) {
 
 	debug(2, "o1_waitUntilPlayerIsInRect(%d, %d, %d, %d)", script->x, script->y, script->x2, script->y2);
 
-	//DEBUG
-	_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
+	if (_vm->_debugRectangles)
+		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
 
 	if (!_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
 		script->ip -= 5;
@@ -916,25 +917,25 @@ void ScriptInterpreter::o1_unloadSceneObjectSprite(Script *script) {
 
 void ScriptInterpreter::o1_setObjectClipX(Script *script) {
 	
-	int x5 = script->loadByte() * 2;
-	int x6 = script->loadByte() * 2;
+	int16 clipX1 = script->loadByte() * 2;
+	int16 clipX2 = script->loadByte() * 2;
 
-	debug(2, "o1_setObjectClipX(%d, %d)", x5, x6);
+	debug(2, "o1_setObjectClipX(%d, %d)", clipX1, clipX2);
 	
-	script->object()->x5 = x5;
-	script->object()->x6 = x6;
+	script->object()->clipX1 = clipX1;
+	script->object()->clipX2 = clipX2;
 
 }
 
 void ScriptInterpreter::o1_setObjectClipY(Script *script) {
 
-	int y5 = script->loadByte();
-	int y6 = script->loadByte();
+	int16 clipY1 = script->loadByte();
+	int16 clipY2 = script->loadByte();
 
-	debug(2, "o1_setObjectClipY(%d, %d)", y5, y6);
+	debug(2, "o1_setObjectClipY(%d, %d)", clipY1, clipY2);
 
-	script->object()->y5 = y5;
-	script->object()->y6 = y6;
+	script->object()->clipY1 = clipY1;
+	script->object()->clipY2 = clipY2;
 
 }
 
@@ -960,14 +961,14 @@ void ScriptInterpreter::o1_loadScene(Script *script) {
 
 void ScriptInterpreter::o1_addBlockingRect(Script *script) {
 
-	int x = script->loadByte();
-	int y = script->loadByte();
+	int x1 = script->loadByte();
+	int y1 = script->loadByte();
 	int x2 = script->loadByte();
 	int y2 = script->loadByte();
 
-	debug(2, "o1_addBlockingRect(%d,%d,%d,%d)", x, y, x2, y2);
+	debug(2, "o1_addBlockingRect(%d,%d,%d,%d)", x1, y1, x2, y2);
 
-	_vm->addBlockingRect(x, y, x2, y2);
+	_vm->addBlockingRect(x1, y1, x2, y2);
 
 }
 
@@ -1010,9 +1011,9 @@ bool ScriptInterpreter::o1_Sub_rectCompare01(Script *script) {
 	script->y = script->loadByte();
 	script->x2 = script->loadByte() * 2;
 	script->y2 = script->loadByte();
-	
-	//DEBUG
-	_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 50);
+
+	if (_vm->_debugRectangles)
+		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 50);
 	
 	Common::Rect rect1(script->x, script->y, script->x2, script->y2);
 	Common::Rect rect2(

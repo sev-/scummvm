@@ -43,7 +43,7 @@ struct AnimationElement {
 
 struct AnimationCel {
 	uint16 flags;
-	byte width, height;
+	uint16 width, height;
 	uint16 dataSize;
 	byte *data;
 };
