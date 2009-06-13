@@ -42,6 +42,8 @@ void CometEngine::clearMarcheByIndex(int marcheIndex) {
 
 Animation *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
 
+	debug(0, "CometEngine::loadMarcheData([%s], %d)", pakFilename, fileIndex);
+
 	Animation *animation = new Animation();
 
 	byte *buffer = loadFromPak(pakFilename, fileIndex);
@@ -57,6 +59,8 @@ Animation *CometEngine::loadMarcheData(const char *pakFilename, int fileIndex) {
 	fclose(d);
 
 	free(buffer);
+
+	debug(0, "CometEngine::loadMarcheData([%s], %d) ok", pakFilename, fileIndex);
 
 	return animation;
 
@@ -111,13 +115,13 @@ int CometEngine::loadMarche(int marcheNumber, int fileIndex) {
 	_marcheItems[marcheIndex].fileIndex = fileIndex;
 
 	// Possible workaround for the memory leak bug
-	/*
-	if (_marcheItems[marcheIndex].anim) {
+	#if 0
+	if (/*_marcheItems[marcheIndex].marcheNumber == 0 && */_marcheItems[marcheIndex].anim) {
 		//warning("CometEngine::freeMarche() _marcheItems[%d].anim not NULL", marcheIndex);
 		delete _marcheItems[marcheIndex].anim;
 		_marcheItems[marcheIndex].anim = NULL;
 	}
-	*/
+	#endif
 
 	if (marcheNumber != 0) {
 		_marcheItems[marcheIndex].anim = getMarcheAnim(marcheNumber);

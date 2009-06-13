@@ -105,7 +105,7 @@ AnimationElement *Animation::loadAnimationElement(Common::SeekableReadStream &so
 	animationElement->height = sourceS.readByte();
 	animationElement->flags = sourceS.readByte();
 	byte cmdCount = sourceS.readByte();
-	debug(8, "Animation::loadAnimationElement() cmdCount = %d", cmdCount);
+	debug(8, "Animation::loadAnimationElement() cmdCount = %d; flags = %02X", cmdCount, animationElement->flags);
 	while (cmdCount--) {
 		AnimationCommand *animationCommand = loadAnimationCommand(sourceS, animationElement->flags & 0x10);
 		animationElement->commands.push_back(animationCommand);

@@ -73,6 +73,8 @@ public:
 	void drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
 	void drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 
+	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
+
 protected:
 
 	CometEngine *_vm;
@@ -85,6 +87,8 @@ protected:
 	PaletteFadeType _fadeType;
 	int _fadeValue;
 	bool _palFlag;
+	
+	int _clipX1, _clipY1, _clipX2, _clipY2;
 
 	//byte *_paletteBuffer;
 

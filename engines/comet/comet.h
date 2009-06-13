@@ -95,7 +95,7 @@ struct SceneObject {
 	uint16 walkStatus;
 	int x2, y2;
 	int x3, y3;
-	int x5, x6, y5, y6;
+	int16 clipX1, clipY1, clipX2, clipY2;
 	bool visible;
 	int value8;
 };
@@ -160,6 +160,8 @@ private:
 // Everything is public during the transition phase to more object-oriented design
 public:
 	Common::RandomSource _rnd;
+
+	bool _debugRectangles;
 
 	Screen *_screen;
 	Dialog *_dialog;

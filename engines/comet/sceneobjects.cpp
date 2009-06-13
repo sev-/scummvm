@@ -21,8 +21,10 @@ void CometEngine::sceneObjectInit(int itemIndex, int marcheIndex) {
 	sceneObject->deltaX = 4;
 	sceneObject->deltaY = 2;
 	sceneObject->flag2 = 0;
-	sceneObject->x6 = 319;
-	sceneObject->y6 = 199;
+	sceneObject->clipX1 = 0;
+	sceneObject->clipY1 = 0;
+	sceneObject->clipX2 = 319;
+	sceneObject->clipY2 = 199;
 	sceneObject->visible = true;
 	sceneObject->textX = -1;
 	sceneObject->textY = -1;

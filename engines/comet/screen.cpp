@@ -22,6 +22,8 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 
 	_workScreen = new byte[64320];
 	_font = new Font();
+	
+	setClipRect(0, 0, 319, 199);
 
 }
 
@@ -572,8 +574,6 @@ void Screen::plotProc(int x, int y, int color, void *data) {
 
 void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
 
-	// TODO: Implement support for flipped sprites (here and in the Animation class)
-
 	byte *frameData = cel.data;
 
 	int width = cel.width;
@@ -583,14 +583,15 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 
 	flags ^= (cel.flags >> 8);
 
+	// TODO: More clipping
 	y -= height;
 	y++;
 
-	if (x + width >= 320)
-		width = 320 - x;
+	if (x + width >= _clipX2)
+		width = _clipX2 - x;
 
-	if (y + height >= 200)
-		height = 200 - y;
+	if (y + height >= _clipY2)
+		height = _clipY2 - y;
 
 	if (y < 0) {
 		if (y + height - 1 < 0)
@@ -613,7 +614,7 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 		x = 0;
 	}
 
-	if (x >= 320 || y >= 200)
+	if (x >= _clipX2 || y >= _clipY2)
 		return;
 
 	byte *screenDestPtr = _workScreen + x + (y * 320);
@@ -1085,7 +1086,6 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 			ax = -ax;
 		if (parentFlags & 0x20)
 			ay = -ay;
-		//debug("x = %d; y = %d", x + ax, y + ay);
 		points.push_back(Point(x + ax, y + ay));
 	}
 
@@ -1146,7 +1146,7 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 	case kActCelRle:
 	{
 		AnimationCel *cel = animation->_cels[(cmd->arg2 << 8) | cmd->arg1];
-		drawAnimationCelRle(*cel, cmd->points[0].x, cmd->points[0].y - cel->height + 1);
+		drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->height + 1);
 		break;
 	}
 
@@ -1155,6 +1155,14 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 
 	}
 
+}
+
+void Screen::setClipRect(int clipX1, int clipY1, int clipX2, int clipY2) {
+	// The clipping rect is only used in drawAnimationCelSprite
+	_clipX1 = clipX1;
+	_clipY1 = clipY1;
+	_clipX2 = clipX2;
+	_clipY2 = clipY2;
 }
 
 } // End of namespace Comet
