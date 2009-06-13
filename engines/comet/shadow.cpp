@@ -874,7 +874,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
 		if (sceneObject->walkStatus & 4) {
-			//sceneObjectUpdateDirection2(objectIndex, sceneObject->x3, sceneObject->y3);
+			sceneObjectUpdateDirection2(objectIndex, sceneObject->x3, sceneObject->y3);
 			sceneObject->walkStatus &= ~4;
 		} else {
 			sceneObjectResetDirectionAdd(sceneObject);
