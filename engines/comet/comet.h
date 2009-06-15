@@ -66,6 +66,7 @@ class CometEngine;
 class Animation;
 struct AnimationFrameList;
 class ScriptInterpreter;
+class Scene;
 
 enum {
 	kDirectionUp		= 3,
@@ -111,7 +112,7 @@ struct SceneExitItem {
 	int chapterNumber;
 	int sceneNumber;
 	//int unused;
-	int x, x2;
+	int x1, x2;
 };
 
 struct SpriteDraw {
@@ -166,6 +167,7 @@ public:
 	Screen *_screen;
 	Dialog *_dialog;
 	ScriptInterpreter *_script;
+	Scene *_scene;
 
 	byte *_sceneBackground, *_scratchBuffer;
 	byte *_textBuffer1, *_textBuffer2, *_textBuffer3;
@@ -176,7 +178,6 @@ public:
 
 	SceneObject _sceneObjects[11];
 
-	Common::Array<SceneExitItem> _sceneExits;
 	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
@@ -197,6 +198,7 @@ public:
 	int _keyDirection, _keyDirection2;
 	int _mouseButtons4, _mouseButtons5;
 	int _mouseX, _mouseY;
+	bool _mouseLeft;
 	int _mouseCursor2;
 	int _mouseFlag;
 	int _scriptMouseFlag;
@@ -221,8 +223,6 @@ public:
 	bool _flag03, _itemInSight;
 
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
-
-	Common::Array<Common::Rect> _blockingRects;
 
 	int _talkieMode;
 	bool _moreText, _textActive;
@@ -268,8 +268,8 @@ public:
 	void updateGame();
 	void updateChapterNumber();
 	void updateSceneNumber();
-	void updateSub02();
-	void updateSub03(bool flag);
+	void getItemInSight();
+	void lookAtItemInSight(bool flag);
 	void sceneObjectsUpdate01();
 	void sceneObjectsUpdate02();
 	void updateStaticObjects();
@@ -314,17 +314,12 @@ public:
 	/* Scene */
 	void initSceneBackground();
 	void initStaticObjectRects();
-	void initPoints(byte *data);
-	void initSceneExits(byte *data);
-	void addBlockingRect(int x, int y, int x2, int y2);
 	void loadSceneBackground();
 	void loadStaticObjects();
 	void drawSceneForeground();
 
 	int checkLinesSub(int chapterNumber, int sceneNumber);
 
-	int checkCollisionWithRoomBounds(const Common::Rect &rect, int direction);
-	int checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obstacleRect);
 	int checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect);
 	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
 	
@@ -333,21 +328,10 @@ public:
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
-	PointArray _bounds;
-	byte _boundsMap[320];
-	
-	void initSceneBoundsMap();
-	int Points_getY_sub_8419(int x, int y);
-	int Points_getY_sub_8477(int x, int y);
-	void rect_sub_CC94(int &x, int &y, int deltaX, int deltaY);
-	
 	void sceneObjectDirection2(int index, SceneObject *sceneObject);
 	
-	int checkCollisionWithSceneExits(const Common::Rect &rect, int direction);
 	uint16 handleCollision(SceneObject *sceneObject, int index, uint16 collisionType);
 	
-	void getSceneExitRect(int index, int &x, int &y, int &x2, int &y2);
-
 	void resetHeroDirectionChanged();
 
 	/* Marche */

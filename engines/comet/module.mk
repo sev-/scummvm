@@ -15,6 +15,7 @@ MODULE_OBJS = \
 	shadow.o \
 	music.o \
 	sound.o \
+	scene.o
 
 # This module can be built as a plugin
 ifdef BUILD_PLUGINS

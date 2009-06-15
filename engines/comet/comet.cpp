@@ -19,8 +19,8 @@
 
 #include "comet/screen.h"
 #include "comet/dialog.h"
-
 #include "comet/animation.h"
+#include "comet/scene.h"
 
 namespace Comet {
 
@@ -169,6 +169,7 @@ Common::Error CometEngine::run() {
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
 	_script = new ScriptInterpreter(this);
+	_scene = new Scene(this);
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -193,7 +194,7 @@ Common::Error CometEngine::run() {
 	_sceneObjectsSprite = NULL;
 	_needToLoadSavegameFlag = false;
 	_loadingGameFlag = false;
- 	_sceneExits.clear();
+ 	//_sceneExits.clear();
 
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
@@ -338,6 +339,15 @@ Common::Error CometEngine::run() {
 	  		_cmdGet = true;
 		else if (_keyScancode == Common::KEYCODE_l)
 	  		_cmdLook = true;
+		else if (_keyScancode == Common::KEYCODE_i) {
+			// Inventory test code
+			for (int i = 0; i < 255; i++) {
+				//debug("item[%03d] = %d", i, _itemStatus[i]);
+				if (_itemStatus[i] == 1) {
+					debug("item[%03d] = [%s]", i, getTextEntry(i, _textBuffer3));
+				}
+			}
+		}
 
 		// DEBUG
 		if (_keyScancode == Common::KEYCODE_KP_PLUS) {

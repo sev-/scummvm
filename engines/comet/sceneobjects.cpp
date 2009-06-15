@@ -1,6 +1,7 @@
 #include "comet/comet.h"
 
 #include "comet/animation.h"
+#include "comet/scene.h"
 
 namespace Comet {
 
@@ -143,7 +144,7 @@ bool CometEngine::sceneObjectUpdateDirection2(int objectIndex, int x, int y) {
 	
 	if (sceneObject->collisionType != 8) {
 		//printf("## SceneObject.objectIndex = %d\n", objectIndex);
-		rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
+		_scene->rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
 		
 	//printf("CometEngine::sceneObjectUpdateDirection2()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
