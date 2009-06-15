@@ -3,6 +3,7 @@
 #include "comet/screen.h"
 #include "comet/script.h"
 #include "comet/dialog.h"
+#include "comet/scene.h"
 
 namespace Comet {
 
@@ -693,7 +694,7 @@ void ScriptInterpreter::o1_selectObject(Script *script) {
 void ScriptInterpreter::o1_initPoints(Script *script) {
 	debug(2, "o1_initPoints");
 
-	_vm->initPoints(script->ip);
+	_vm->_scene->initPoints(script->ip);
 	script->ip += *script->ip * 2 + 1;
 
 }
@@ -701,7 +702,7 @@ void ScriptInterpreter::o1_initPoints(Script *script) {
 void ScriptInterpreter::o1_initSceneExits(Script *script) {
 	debug(2, "o1_initSceneExits");
 
-	_vm->initSceneExits(script->ip);
+	_vm->_scene->initSceneExits(script->ip);
 	script->ip += *script->ip * 5 + 1;
 
 }
@@ -968,7 +969,7 @@ void ScriptInterpreter::o1_addBlockingRect(Script *script) {
 
 	debug(2, "o1_addBlockingRect(%d,%d,%d,%d)", x1, y1, x2, y2);
 
-	_vm->addBlockingRect(x1, y1, x2, y2);
+	_vm->_scene->addBlockingRect(x1, y1, x2, y2);
 
 }
 
@@ -1049,14 +1050,9 @@ void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 
 	int x = script->loadByte() * 2;
 	int y = script->loadByte();
-	
-	for (int i = _vm->_blockingRects.size() - 1; i >= 0; i--) {
-		if (_vm->_blockingRects[i].left == x && _vm->_blockingRects[i].top == y) {
-			_vm->_blockingRects.remove_at(i);
-			break;
-		}
-	}
 
+	_vm->_scene->removeBlockingRect(x, y);
+	
 }
 
 void ScriptInterpreter::o1_setSceneObjectColor(Script *script) {
