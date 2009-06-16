@@ -225,7 +225,7 @@ void CometEngine::initData() {
 
 	sceneObjectInit(0, loadMarche(1, 0));
 
-	sceneObjectSetXY(0, 160, 190);
+	sceneObjectSetPosition(0, 160, 190);
 	_sceneObjects[0].flag = 99;
 
 }
@@ -275,7 +275,7 @@ void CometEngine::updateGame() {
 	/*
 	// Test for mouse-based walking, it even works somewhat
 	if (_mouseLeft) {
-		sceneObjectUpdateDirection2(0, _mouseX, _mouseY);
+		sceneObjectWalkTo(0, _mouseX, _mouseY);
 	}
 	*/
 	
@@ -543,7 +543,7 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 	Animation *animation = _marcheItems[sceneObject->marcheIndex].anim;
 	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
 
-	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2, sceneObject->clipY2);
+	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2 + 1, sceneObject->clipY2 + 1);
 
 	if (sceneObject->directionChanged == 2) {
 		sceneObject->value4 = drawSceneObject(animation, frameList, sceneObject->animFrameIndex, sceneObject->value4,
@@ -554,7 +554,7 @@ void CometEngine::drawSceneAnimsSub(int objectIndex) {
 		_screen->drawAnimationElement(animation, frameList->frames[sceneObject->animFrameIndex]->elementIndex, x, y);
 	}
 
-	_screen->setClipRect(0, 0, 319, 199);
+	_screen->setClipRect(0, 0, 320, 200);
 
 	// DEBUG: Show object number
 	/*
@@ -806,7 +806,7 @@ void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sc
 
 	debug(4, "CometEngine::sceneObjectMoveAroundObstacle() 2) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
-	sceneObjectUpdateDirection2(objectIndex, x, y);
+	sceneObjectWalkTo(objectIndex, x, y);
 
 }
 
@@ -852,7 +852,7 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
 		if (sceneObject->walkStatus & 4) {
-			sceneObjectUpdateDirection2(objectIndex, sceneObject->x3, sceneObject->y3);
+			sceneObjectWalkTo(objectIndex, sceneObject->x3, sceneObject->y3);
 			sceneObject->walkStatus &= ~4;
 		} else {
 			sceneObjectResetDirectionAdd(sceneObject);
@@ -1048,7 +1048,7 @@ void CometEngine::actorSayWithAnim(int objectIndex, int narSubIndex, int animNum
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	actorSay(objectIndex, narSubIndex, sceneObject->color);
+	actorSay(objectIndex, narSubIndex, sceneObject->textColor);
 
 	if (animNumber != 0xFF) {
 		_animIndex = sceneObject->animIndex;
@@ -1533,11 +1533,11 @@ int CometEngine::checkLinesSub(int chapterNumber, int sceneNumber) {
 		if (sceneObject->direction == 2) {
 			sceneObject->clipX1 = 0;
 			sceneObject->clipX2 = x2;
-			sceneObjectUpdateDirection2(0, 319, sceneObject->y);
+			sceneObjectWalkTo(0, 319, sceneObject->y);
 		} else if (sceneObject->direction == 4) {
 			sceneObject->clipX1 = x1;
 			sceneObject->clipX2 = 319;
-			sceneObjectUpdateDirection2(0, 0, sceneObject->y);
+			sceneObjectWalkTo(0, 0, sceneObject->y);
 		}
 		
 		sceneObject->walkStatus &= ~4;
@@ -1770,7 +1770,7 @@ void CometEngine::sceneObjectDirection2(int index, SceneObject *sceneObject) {
 	
 	debug(1, "sceneObjectDirection2(%d); 2) x = %d; y = %d", index, x, y);
 
-	sceneObjectUpdateDirection2(index, x, y);
+	sceneObjectWalkTo(index, x, y);
 
 }
 

@@ -23,7 +23,7 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 	_workScreen = new byte[64320];
 	_font = new Font();
 	
-	setClipRect(0, 0, 319, 199);
+	setClipRect(0, 0, 320, 200);
 
 }
 

@@ -81,7 +81,7 @@ public:
 	Script *_scripts[17];
 	int _curScriptNumber;
 	Script *_curScript;
-	bool _scriptBreakFlag;
+	bool _yield;
 
 	Common::Array<ScriptOpcode*> _opcodes;
 	Common::Array<Common::String> _opcodeNames;
@@ -143,7 +143,7 @@ public:
 	void o1_subVar(Script *script);
 	void o1_setSceneObjectCollisionTypeTo8(Script *script);
 	void o1_setSceneObjectCollisionTypeTo0(Script *script);
-	void o1_updateDirection2(Script *script);
+	void o1_objectWalkTo(Script *script);
 	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
 	void o1_setMarcheNumber(Script *script);
@@ -162,7 +162,7 @@ public:
 	void o1_sub_A64B(Script *script);
 	void o1_sub_A735(Script *script);
 	void o1_removeBlockingRect(Script *script);
-	void o1_setSceneObjectColor(Script *script);
+	void o1_objectSetTextColor(Script *script);
 	void o1_setTextXY(Script *script);
 	void o1_playMusic(Script *script);
 	void o1_setRandomValue(Script *script);

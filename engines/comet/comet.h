@@ -90,7 +90,7 @@ struct SceneObject {
 	int linesIndex;
 	int value6;
 	int flag;
-	int color;
+	int textColor;
 	int value7;
 	int textX, textY;
 	uint16 walkStatus;
@@ -356,10 +356,10 @@ public:
 	void sceneObjectResetDirectionAdd(SceneObject *sceneObject);
 	void sceneObjectCalcDirection(SceneObject *sceneObject);
 	void sceneObjectGetXY1(SceneObject *sceneObject, int &x, int &y);
-	void sceneObjectSetXY(int index, int x, int y);
+	void sceneObjectSetPosition(int index, int x, int y);
 	void sceneObjectUpdateFlag(SceneObject *sceneObject, int flag);
 	void sceneObjectUpdateXYFlags(SceneObject *sceneObject);
-	bool sceneObjectUpdateDirection2(int objectIndex, int x, int y);
+	bool sceneObjectWalkTo(int objectIndex, int x, int y);
 	SceneObject *getSceneObject(int index);
 
 	/* Text */
