@@ -130,17 +130,17 @@ void Dialog::drawTextBubbles() {
 	x = _dialogTextX;
 	y = _dialogTextY;
 
-	if (_vm->_sceneObjects[0].color == 25)
+	if (_vm->_sceneObjects[0].textColor == 25)
 		color1 = 22;
  	else
- 		color1 = _vm->_sceneObjects[0].color;
+ 		color1 = _vm->_sceneObjects[0].textColor;
 
 	for (int i = 0; i < (int)_dialogItems.size(); i++) {
 
 		color2 = color1;
 
 		if (i == _dialogSelectedItemIndex) {
-			if (_vm->_sceneObjects[0].color == 25) {
+			if (_vm->_sceneObjects[0].textColor == 25) {
 				color2 = _dialogTextColor;
 				_dialogTextColor += _dialogTextColorInc;
 				if (_dialogTextColor > 25) {
@@ -151,7 +151,7 @@ void Dialog::drawTextBubbles() {
 					_dialogTextColorInc = 1;
 				}
 			} else if (_vm->_textColorFlag & 1) {
-				color2 = _vm->_sceneObjects[0].color;
+				color2 = _vm->_sceneObjects[0].textColor;
 			} else {
 				color2 = 159;
 			}

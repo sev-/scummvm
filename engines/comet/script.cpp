@@ -126,7 +126,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_setSceneObjectCollisionTypeTo8);
 	// 35
 	RegisterOpcode(o1_setSceneObjectCollisionTypeTo0);
-	RegisterOpcode(o1_updateDirection2);
+	RegisterOpcode(o1_objectWalkTo);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_waitWhilePlayerIsInRect);
@@ -165,7 +165,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_sub_A735);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_removeBlockingRect);
-	RegisterOpcode(o1_setSceneObjectColor);
+	RegisterOpcode(o1_objectSetTextColor);
 	// 70
 	RegisterOpcode(o1_setTextXY);
 	RegisterOpcode(o1_nop);//TODO
@@ -254,7 +254,7 @@ void ScriptInterpreter::processScriptStatus8() {
 		_curScript->status &= ~8;
 		_curScript->scriptNumber = 0;
 	} else {
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -270,7 +270,7 @@ void ScriptInterpreter::processScriptSleep() {
 		_curScript->status &= ~kScriptSleeping;
 		debug(4, "*** sleeping finished");
 	} else {
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -287,7 +287,7 @@ void ScriptInterpreter::processScriptWalk() {
 		_vm->sceneObjectSetAnimNumber(_curScript->object(), 0);
 		debug(4, "*** walking finished");
 	} else {
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -298,7 +298,7 @@ void ScriptInterpreter::processScriptAnim() {
 		_curScript->status &= ~kScriptAnimPlaying;
 		debug(4, "*** anim playing finished");
 	} else {
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -313,7 +313,7 @@ void ScriptInterpreter::processScriptDialog() {
 		_curScript->jump();
 		debug(4, "*** dialog finished");
 	} else {
- 		_scriptBreakFlag = true;
+ 		_yield = true;
  	}
 
 }
@@ -336,7 +336,7 @@ void ScriptInterpreter::processScriptTalk() {
 		}
 		debug(4, "*** talking finished");
 	} else {
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 	
 }
@@ -348,7 +348,7 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 	_curScriptNumber = scriptNumber;
 	_curScript = _scripts[scriptNumber];
 
-	_scriptBreakFlag = false;
+	_yield = false;
 
 	if (_curScript->status & kScriptWalking)
 		debug(2, "kScriptWalking %d", scriptNumber);
@@ -384,7 +384,7 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 	if (_curScript->status & kScriptTalking)
 		processScriptTalk();
 
-	while (!_scriptBreakFlag) {
+	while (!_yield) {
 		byte opcode = *_curScript->ip++;
 
 		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(_curScript->ip - _curScript->code), opcode);
@@ -468,14 +468,14 @@ void ScriptInterpreter::objectWalkToXYAbs(Script *script, bool xyFlag) {
 
 	debug(3, "objectWalkToXYAbs()  object: %d; old: %d, %d; new: %d, %d", script->objectIndex, script->object()->x, script->object()->y, x, y);
 
-	if (_vm->sceneObjectUpdateDirection2(script->objectIndex, x, y)) {
+	if (_vm->sceneObjectWalkTo(script->objectIndex, x, y)) {
 		if (!xyFlag) {
 			script->object()->walkStatus |= 8;
 		} else {
 			script->object()->walkStatus |= 0x10;
 		}
 		script->status |= kScriptWalking;
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 	
 }
@@ -497,14 +497,14 @@ void ScriptInterpreter::objectWalkToXYRel(Script *script, bool xyFlag) {
 
 	debug(3, "objectWalkToXYRel()  object: %d; old: %d, %d; new: %d, %d", script->objectIndex, script->object()->x, script->object()->y, x, y);
 
-	if (_vm->sceneObjectUpdateDirection2(script->objectIndex, x, y)) {
+	if (_vm->sceneObjectWalkTo(script->objectIndex, x, y)) {
 		if (!xyFlag) {
 			script->object()->walkStatus |= 8;
 		} else {
 			script->object()->walkStatus |= 0x10;
 		}
 		script->status |= kScriptWalking;
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -551,7 +551,7 @@ void ScriptInterpreter::o1_sceneObjectSetDirection(Script *script) {
 
 void ScriptInterpreter::o1_break(Script *script) {
 	script->status |= kScriptPaused;
-	_scriptBreakFlag = true;
+	_yield = true;
 }
 
 void ScriptInterpreter::o1_jump(Script *script) {
@@ -596,7 +596,7 @@ void ScriptInterpreter::o1_objectSetPosition(Script *script) {
 
 	debug(2, "o1_objectSetPosition(%d, %d)", x, y);
 
-	_vm->sceneObjectSetXY(script->objectIndex, x, y);
+	_vm->sceneObjectSetPosition(script->objectIndex, x, y);
 
 }
 
@@ -608,7 +608,7 @@ void ScriptInterpreter::o1_sleep(Script *script) {
 
 	script->scriptNumber = sleepCount;
 	script->status |= kScriptSleeping;
-	_scriptBreakFlag = true;
+	_yield = true;
 	
 }
 
@@ -799,18 +799,18 @@ void ScriptInterpreter::o1_setSceneObjectCollisionTypeTo0(Script *script) {
 	script->object()->collisionType = 0;
 }
 
-void ScriptInterpreter::o1_updateDirection2(Script *script) {
+void ScriptInterpreter::o1_objectWalkTo(Script *script) {
 
 	int x = script->loadByte() * 2;
 	int y = script->loadByte();
 
-	debug(2, "o1_updateDirection2(%d, %d)", x, y);
+	debug(2, "o1_walkTo(%d, %d)", x, y);
 	
 	script->object()->directionChanged = 0;
 	
-	if (_vm->sceneObjectUpdateDirection2(script->objectIndex, x, y)) {
+	if (_vm->sceneObjectWalkTo(script->objectIndex, x, y)) {
 		script->status |= kScriptWalking;
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -866,7 +866,7 @@ void ScriptInterpreter::o1_startDialog(Script *script) {
 	_vm->_dialog->run(script);
 
 	script->status |= kScriptDialogRunning;
-	_scriptBreakFlag = true;
+	_yield = true;
 
 	//TODO: waitForKey();
 	
@@ -881,7 +881,7 @@ void ScriptInterpreter::o1_waitWhilePlayerIsInRect(Script *script) {
 
 	if (_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
 		script->ip--;
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -900,7 +900,7 @@ void ScriptInterpreter::o1_waitUntilPlayerIsInRect(Script *script) {
 
 	if (!_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
 		script->ip -= 5;
-		_scriptBreakFlag = true;
+		_yield = true;
 	}
 
 }
@@ -1055,10 +1055,10 @@ void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 	
 }
 
-void ScriptInterpreter::o1_setSceneObjectColor(Script *script) {
-	debug(2, "o1_setSceneObjectColor");
+void ScriptInterpreter::o1_objectSetTextColor(Script *script) {
+	debug(2, "o1_objectSetTextColor");
 
-	script->object()->color = script->loadByte();
+	script->object()->textColor = script->loadByte();
 	
 }
 
@@ -1097,7 +1097,7 @@ void ScriptInterpreter::o1_setRandomValue(Script *script) {
 void ScriptInterpreter::o1_setChapterNumber(Script *script) {
 	_vm->_chapterNumber = script->loadByte();
 	debug(2, "o1_setChapterNumber(%d)", _vm->_chapterNumber);
-	_scriptBreakFlag = true;
+	_yield = true;
 }
 
 void ScriptInterpreter::o1_dialog(Script *script) {
@@ -1111,7 +1111,7 @@ void ScriptInterpreter::o1_dialog(Script *script) {
 	_vm->actorSayWithAnim(objectIndex, narSubIndex, animNumber);
 
 	_curScript->status |= kScriptTalking;
-	_scriptBreakFlag = true;
+	_yield = true;
 
 }
 
@@ -1124,7 +1124,7 @@ void ScriptInterpreter::o1_playAnim(Script *script) {
 
 	o1_sceneObjectSetAnimNumber(script);
 	script->status |= kScriptAnimPlaying;
-	_scriptBreakFlag = true;
+	_yield = true;
 
 }
 
@@ -1155,17 +1155,17 @@ void ScriptInterpreter::o1_sub_AD04(Script *script) {
 	if (objectIndex != -1) {
 		_vm->_sceneObjects[10].textX = 0;
 		_vm->_sceneObjects[10].textY = 160;
-		_vm->_sceneObjects[10].color = getSceneObject(objectIndex)->color;
+		_vm->_sceneObjects[10].textColor = getSceneObject(objectIndex)->textColor;
 	}
 	
 	_vm->_marcheNumber = 0;
-	_vm->sceneObjectSetXY(10, 0, 199);
+	_vm->sceneObjectSetPosition(10, 0, 199);
 	_vm->actorSayWithAnim(10, narSubIndex, animNumber);
 	_vm->_animIndex = objectIndex;
 	_vm->_screen->enableTransitionEffect();
 
 	_curScript->status |= kScriptTalking;
-	_scriptBreakFlag = true;
+	_yield = true;
 
 }
 
