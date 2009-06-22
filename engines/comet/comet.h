@@ -42,6 +42,7 @@
 #include "engines/engine.h"
 
 //#include "comet/music.h"
+#include "comet/text.h"
 
 namespace Comet {
 
@@ -170,7 +171,10 @@ public:
 	Scene *_scene;
 
 	byte *_sceneBackground, *_scratchBuffer;
-	byte *_textBuffer1, *_textBuffer2, *_textBuffer3;
+
+	TextReader *_textReader;
+	TextStrings *_textBuffer2, *_textBuffer3; // TODO: Better names
+
 	byte *_palette;
 
 	MarcheItem _marcheItems[20];
@@ -303,13 +307,11 @@ public:
 
 	void drawBubble(int x1, int y1, int x2, int y2);
 	void decodeText(byte *text, int size, int key);
-	uint32 loadString(int index, int subIndex, byte *text);
-	void loadTextData(byte *textBuffer, int index, int size);
 	byte *getTextEntry(int index, byte *textBuffer);
 	void setText(byte *text);
 	void resetTextValues();
 	void drawDialogTextBubbles();
-	void setTextEx(int index, byte *textBuffer);
+	void setTextEx(int index, byte *text);
 
 	/* Scene */
 	void initSceneBackground();

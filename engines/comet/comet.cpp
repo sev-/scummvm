@@ -21,6 +21,7 @@
 #include "comet/dialog.h"
 #include "comet/animation.h"
 #include "comet/scene.h"
+#include "comet/text.h"
 
 namespace Comet {
 
@@ -68,6 +69,22 @@ Common::Error CometEngine::run() {
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
+#if 0
+	TextReader t;
+	t.open("E.CC4");
+    TextStrings *s = t.loadTextStrings(0);
+	debug("%s", s->getString(0));
+    delete s;
+	const byte *x;
+	x = t.getString(2, 1);
+	debug("x = %s", (char*)x);
+	x = t.getString(2, 2);
+	debug("x = %s", (char*)x);
+	x = t.getString(3, 1);
+	debug("x = %s", (char*)x);
+	t.close();
+    return Common::kNoError;
+#endif
 
 #define OLD_CODE
 //#define TEST_CODE
@@ -165,11 +182,14 @@ Common::Error CometEngine::run() {
 #endif
 
 #ifdef OLD_CODE
+	// TODO: delete stuff at engine shutdown
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
 	_script = new ScriptInterpreter(this);
 	_scene = new Scene(this);
+	_textReader = new TextReader();
+	_textReader->open("E.CC4"); // TODO: Use language-specific filename
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -344,7 +364,7 @@ Common::Error CometEngine::run() {
 			for (int i = 0; i < 255; i++) {
 				//debug("item[%03d] = %d", i, _itemStatus[i]);
 				if (_itemStatus[i] == 1) {
-					debug("item[%03d] = [%s]", i, getTextEntry(i, _textBuffer3));
+					//debug("item[%03d] = [%s]", i, getTextEntry(i, _textBuffer3));
 				}
 			}
 		}

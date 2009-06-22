@@ -189,17 +189,14 @@ void CometEngine::initAndLoadGlobalData() {
 void CometEngine::loadGlobalTextData() {
 	_textActive = false;
 	_narOkFlag = false;
-	loadTextData(_textBuffer2, 0, 1000);
-	loadTextData(_textBuffer3, 1, 2200);
+	_textBuffer2 = _textReader->loadTextStrings(0);
+	_textBuffer3 = _textReader->loadTextStrings(1);
 }
 
 void CometEngine::initData() {
 
 	_sceneBackground = new byte[72000];
 	_scratchBuffer = _sceneBackground + 64000;
-	_textBuffer1 = new byte[1000];
-	_textBuffer2 = new byte[1000];
-	_textBuffer3 = new byte[2200];
 	_palette = new byte[768];
 
 	memcpy(_palette, _ctuPal, 768);
@@ -417,9 +414,9 @@ void CometEngine::getItemInSight() {
 			_itemStatus[sceneItem->itemIndex] = 1;
 			_inventoryItemIndex = sceneItem->itemIndex;
 			sceneItem->active = false;
-			setTextEx(sceneItem->itemIndex, _textBuffer3);
+			setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
 		} else {
-			setTextEx(4, _textBuffer2);
+			setTextEx(4, _textBuffer3->getString(4));
 		}
 	}
 	
@@ -427,11 +424,7 @@ void CometEngine::getItemInSight() {
 
 void CometEngine::lookAtItemInSight(bool flag) {
 
-	//debug(4, "TODO CometEngine::lookAtItemInSight(%d)", flag);
-	
 	_itemInSight = false;
-	
-	//debug(4, "_mouseFlag = %d", _mouseFlag);
 	
 	if (_mouseFlag != 15) {
 		Common::Rect sightRect;
@@ -447,11 +440,14 @@ void CometEngine::lookAtItemInSight(bool flag) {
 
 			if (flag && (!_dialog->isRunning() || !_textActive)) {
 				byte *textBuffer;
-				if (sceneItem->paramType == 0)
-					textBuffer = _textBuffer3;
-				else
-					textBuffer = _textBuffer1;
-				setTextEx(sceneItem->itemIndex, textBuffer);
+				if (sceneItem->paramType == 0) {
+					setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
+				} else {
+					warning("sceneItem->paramType != 0; sceneItem->itemIndex = %d", sceneItem->itemIndex);
+					// TODO: Remove this:
+					// setTextEx(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
+					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
+				}
 			}
 		}
 	}
@@ -1027,12 +1023,8 @@ void CometEngine::actorSay(int objectIndex, int narSubIndex, int color) {
 	_talkActorIndex = objectIndex;
 	_narSubIndex = narSubIndex;
 	
-	WRITE_LE_UINT32(_textBuffer1, 4);
-	
-	loadString(_narFileIndex + 3, _narSubIndex, _textBuffer1 + 4);
-	
 	if (_talkieMode == 0 || _talkieMode == 1) {
-		setText(getTextEntry(0, _textBuffer1));
+		setText(_textReader->getString(_narFileIndex + 3, _narSubIndex));
 	}
 
 	if (_talkieMode == 2 || _talkieMode == 1) {
@@ -1126,41 +1118,6 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 void CometEngine::decodeText(byte *text, int size, int key) {
 	for (int curOfs = 0; curOfs < size; curOfs++)
 		text[curOfs] = text[curOfs] - 0x54 * (key + curOfs + 1);
-}
-
-uint32 CometEngine::loadString(int index, int subIndex, byte *text) {
-	Common::File fd;
-	uint32 blockOffset, subBlockStartOffset, subBlockSize;
-	uint32 subBlockOffset, subBlockNextOffset;
-	//TODO: Use the language-specific CC4-file
-	fd.open("E.CC4");
-	fd.seek(index * 4);
-	blockOffset = fd.readUint32LE();
-	fd.seek(blockOffset);
-	subBlockStartOffset = fd.readUint32LE();
-	fd.seek(blockOffset + subIndex * 4);
-	subBlockOffset = fd.readUint32LE();
-	subBlockNextOffset = fd.readUint32LE();
-	fd.seek(blockOffset + subBlockOffset);
-	subBlockSize = subBlockNextOffset - subBlockOffset + 1;
-	fd.read(text, subBlockSize);
-	fd.close();
-	decodeText((byte*)text, subBlockSize, subBlockOffset - subBlockStartOffset);
-	return subBlockSize;
-}
-
-void CometEngine::loadTextData(byte *textBuffer, int index, int size) {
-	Common::File fd;
-	uint32 ofs, chunkSize;
-	//TODO: Use the language-specific CC4-file
-	fd.open("E.CC4");
-	fd.seek(index * 4);
-	ofs = fd.readUint32LE();
-	fd.seek(ofs);
-	fd.read(textBuffer, size);
-	fd.close();
-	chunkSize = READ_LE_UINT32(textBuffer);
-	decodeText(textBuffer + chunkSize, size - chunkSize, 0);
 }
 
 byte *CometEngine::getTextEntry(int index, byte *textBuffer) {
@@ -1560,12 +1517,12 @@ uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
 	return 0;
 }
 
-void CometEngine::setTextEx(int index, byte *textBuffer) {
+void CometEngine::setTextEx(int index, byte *text) {
 
 	_talkActorIndex = 0;
 	_textColor = 21;
 	_narSubIndex = index;
-	setText(getTextEntry(index, textBuffer));
+	setText(text);
 	_textActive = true;
 	_flag03 = true;
 
