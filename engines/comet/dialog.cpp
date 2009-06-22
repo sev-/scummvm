@@ -23,19 +23,16 @@ Dialog::~Dialog() {
 
 void Dialog::run(Script *script) {
 
-	int dialogItemCount, textOfs;
-	byte *textBuffer;
+	int dialogItemCount;
 
 	_vm->resetTextValues();
 
 	_dialogTextSubIndex = script->loadInt16();
 
-	textOfs = 0x1C;
-	textBuffer = _vm->_textBuffer1;
-	WRITE_LE_UINT32(textBuffer, textOfs);
+	debug("_dialogTextSubIndex = %d", _dialogTextSubIndex);
 
 	if (_dialogTextSubIndex != -1) {
-		textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_textBuffer1 + textOfs);
+		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_tempTextBuffer + textOfs);
 	}
 
 	_dialogTextX = script->loadByte() * 2;
@@ -44,13 +41,12 @@ void Dialog::run(Script *script) {
 	dialogItemCount = script->loadByte();
 
 	_dialogItems.clear();
+	_dialogItems.reserve(dialogItemCount);
 
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
 		dialogItem.index = script->loadInt16();
-  		WRITE_LE_UINT32(textBuffer + (index + 1) * 4, textOfs);
-  		textOfs += _vm->loadString(_vm->_narFileIndex + 3, dialogItem.index, _vm->_textBuffer1 + textOfs );
-  		dialogItem.text = _vm->getTextEntry(index + 1, _vm->_textBuffer1);
+  		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
   		dialogItem.scriptIp = script->ip;
   		script->ip += 2;
 		_dialogItems.push_back(dialogItem);
@@ -135,7 +131,7 @@ void Dialog::drawTextBubbles() {
  	else
  		color1 = _vm->_sceneObjects[0].textColor;
 
-	for (int i = 0; i < (int)_dialogItems.size(); i++) {
+	for (uint i = 0; i < _dialogItems.size(); i++) {
 
 		color2 = color1;
 
