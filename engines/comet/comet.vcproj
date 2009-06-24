@@ -222,6 +222,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\engines\comet\scene.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\engines\comet\scene.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\engines\comet\sceneobjects.cpp"
 			>
 		</File>
@@ -238,6 +246,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\engines\comet\script.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\engines\comet\shadow.cpp"
 			>
 		</File>
@@ -247,6 +259,14 @@
 		</File>
 		<File
 			RelativePath="..\..\engines\comet\sound.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\engines\comet\text.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\engines\comet\text.h"
 			>
 		</File>
 		<File

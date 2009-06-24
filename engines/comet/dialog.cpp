@@ -135,7 +135,7 @@ void Dialog::drawTextBubbles() {
 
 		color2 = color1;
 
-		if (i == _dialogSelectedItemIndex) {
+		if (i == (uint)_dialogSelectedItemIndex) {
 			if (_vm->_sceneObjects[0].textColor == 25) {
 				color2 = _dialogTextColor;
 				_dialogTextColor += _dialogTextColorInc;
