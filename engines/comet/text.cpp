@@ -40,6 +40,7 @@ void TextStrings::loadString(uint stringIndex, byte *buffer) {
 }
 
 TextReader::TextReader() {
+	_cachedTextStrings = 0;
 }
 
 TextReader::~TextReader() {
