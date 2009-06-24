@@ -439,7 +439,7 @@ void CometEngine::lookAtItemInSight(bool flag) {
 			_itemY = sceneItem->y - 6;
 
 			if (flag && (!_dialog->isRunning() || !_textActive)) {
-				byte *textBuffer;
+				//byte *textBuffer;
 				if (sceneItem->paramType == 0) {
 					setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
 				} else {
