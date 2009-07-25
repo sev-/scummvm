@@ -161,7 +161,7 @@ private:
 //protected:
 // Everything is public during the transition phase to more object-oriented design
 public:
-	Common::RandomSource _rnd;
+	Common::RandomSource *_rnd;
 
 	bool _debugRectangles;
 

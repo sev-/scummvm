@@ -1056,7 +1056,7 @@ void CometEngine::actorSayWithAnim(int objectIndex, int narSubIndex, int animNum
 
 int CometEngine::random(int maxValue) {
 	if (maxValue >= 2)
-		return _rnd.getRandomNumber(maxValue - 1);
+		return _rnd->getRandomNumber(maxValue - 1);
 	else
 		return 0;
 }
