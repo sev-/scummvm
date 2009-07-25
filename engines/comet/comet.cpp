@@ -4,10 +4,12 @@
 
 
 #include "common/scummsys.h"
-
-#include "base/plugins.h"
+#include "common/EventRecorder.h"
 #include "common/keyboard.h"
 #include "common/config-manager.h"
+
+#include "base/plugins.h"
+
 #include "sound/mididrv.h"
 #include "sound/audiostream.h"
 #include "sound/mixer.h"
@@ -36,7 +38,8 @@ enum {
 CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	Engine(syst), _gameDescription(gameDesc) {
 
-	syst->getEventManager()->registerRandomSource(_rnd, "comet");
+	_rnd = new Common::RandomSource();
+	g_eventRec.registerRandomSource(*_rnd, "comet");
 
 	// Setup mixer
 	if (!_mixer->isReady()) {
@@ -53,6 +56,7 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 
 
 CometEngine::~CometEngine() {
+	delete _rnd;
 	delete _music;
 	delete _screen;
 	delete _dialog;
