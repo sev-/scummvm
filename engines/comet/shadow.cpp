@@ -1115,15 +1115,6 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 
 }
 
-void CometEngine::decodeText(byte *text, int size, int key) {
-	for (int curOfs = 0; curOfs < size; curOfs++)
-		text[curOfs] = text[curOfs] - 0x54 * (key + curOfs + 1);
-}
-
-byte *CometEngine::getTextEntry(int index, byte *textBuffer) {
-	return (byte*)(textBuffer + READ_LE_UINT32(textBuffer + index * 4) + 1);
-}
-
 void CometEngine::setText(byte *text) {
 	
 	int lineCount = 0;

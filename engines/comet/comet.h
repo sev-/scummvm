@@ -306,8 +306,6 @@ public:
 	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
 
 	void drawBubble(int x1, int y1, int x2, int y2);
-	void decodeText(byte *text, int size, int key);
-	byte *getTextEntry(int index, byte *textBuffer);
 	void setText(byte *text);
 	void resetTextValues();
 	void drawDialogTextBubbles();
