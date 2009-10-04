@@ -382,7 +382,7 @@ void Screen::vLine(int x, int y, int y2, byte color) {
 
 }
 
-void Screen::line(int x1, int y1, int x2, int y2, byte color) {
+void Screen::drawLine(int x1, int y1, int x2, int y2, byte color) {
 	Graphics::drawLine(x1, y1, x2, y2, color, Screen::plotProc, (void*)this);
 }
 
@@ -1116,7 +1116,7 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 		if (cmd->arg1 != 0xFF) {
 			points.push_back(points[0]);
 			for (uint i = 0; i < points.size() - 1; i++)
-				line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg1);
+				drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg1);
 		}
 		break;
 	}
@@ -1132,7 +1132,7 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 	case kActPolygon:
 	{
 		for (uint i = 0; i < points.size() - 1; i++)
-			line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg2);
+			drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg2);
 		break;
 	}
 
