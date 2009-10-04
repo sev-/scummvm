@@ -81,34 +81,16 @@ static const CometGameDescription gameDescriptions[] = {
 			AD_ENTRY1("r00.cc4", "f664b9cf60c9895f6f460d9432d45d85"),
 			Common::EN_ANY,
 			Common::kPlatformPC,
-			ADGF_NO_FLAGS
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
 		},
 		0,
 		0,
 		0,
-		0,
+		0
 	},
 
 	{ AD_TABLE_END_MARKER, 0, 0, 0, 0 }
-};
-
-/**
- * The fallback game descriptor used by the Comet engine's fallbackDetector.
- * Contents of this struct are to be overwritten by the fallbackDetector.
- */
-static CometGameDescription g_fallbackDesc = {
-	{
-		"", // Not used by the fallback descriptor, it uses the EncapsulatedADGameDesc's gameid
-		"", // Not used by the fallback descriptor, it uses the EncapsulatedADGameDesc's extra
-		AD_ENTRY1(0, 0), // This should always be AD_ENTRY1(0, 0) in the fallback descriptor
-		Common::UNK_LANG,
-		Common::kPlatformPC,
-		ADGF_NO_FLAGS
-	},
-	0,
-	0,
-	0,
-	0,
 };
 
 static const ADParams detectionParams = {
@@ -127,7 +109,9 @@ static const ADParams detectionParams = {
 	// List of files for file-based fallback detection (optional)
 	0,
 	// Flags
-	0
+	0,
+	// GUI options
+	Common::GUIO_NONE
 };
 
 } // End of namespace Comet

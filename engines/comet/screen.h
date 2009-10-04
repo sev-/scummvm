@@ -44,7 +44,7 @@ public:
 	void paletteFadeOut();
 
 	void putPixel(int x, int y, byte color);
-	void line(int x1, int y1, int x2, int y2, byte color);
+	void drawLine(int x1, int y1, int x2, int y2, byte color);
 	void hLine(int x, int y, int x2, byte color);
 	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
