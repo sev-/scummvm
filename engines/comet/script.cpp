@@ -9,11 +9,11 @@ namespace Comet {
 
 /* Script */
 
-byte Script::loadByte() {
+byte Script::readByte() {
 	return *ip++;
 }
 
-int16 Script::loadInt16() {
+int16 Script::readInt16() {
 	int16 value = (int16)READ_LE_UINT16(ip);
 	ip += 2;
 	return value;
@@ -30,20 +30,20 @@ void Script::jump() {
 }
 
 uint16 Script::loadVarValue() {
-	int varIndex = loadInt16();
+	int varIndex = readInt16();
 	int value = *_inter->getVarPointer(varIndex);
 	return value;
 }
 
 uint16 Script::loadValue() {
-	byte type = loadByte();
+	byte type = readByte();
 	switch (type) {
 	case 11:
 		return loadVarValue();
 	case 12:
-		return loadByte();
+		return readByte();
 	default:
-		return loadInt16();
+		return readInt16();
 	}
 }
 
@@ -99,7 +99,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_condJump2);
+	RegisterOpcode(o1_ifHeroInZone);
 	// 15
 	RegisterOpcode(o1_objectWalkToXRel);
 	RegisterOpcode(o1_objectWalkToYRel);
@@ -156,19 +156,19 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);//TODO
 	// 60
 	RegisterOpcode(o1_addBlockingRect);
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_sub_A67F);
-	RegisterOpcode(o1_sub_A64B);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_ifSpeak);//TODO
+	RegisterOpcode(o1_ifSpeakTo);
+	RegisterOpcode(o1_ifSpeakZone);
+	RegisterOpcode(o1_ifLook);
 	// 65
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_sub_A735);
+	RegisterOpcode(o1_ifLookAt);
+	RegisterOpcode(o1_ifLookZone);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_removeBlockingRect);
 	RegisterOpcode(o1_objectSetTextColor);
 	// 70
 	RegisterOpcode(o1_setTextXY);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_resetCounterJump);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
@@ -387,10 +387,15 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 	while (!_yield) {
 		byte opcode = *_curScript->ip++;
 
+		/* DEBUG: So that o1_nop can print the opcode
+			This will be removed again once all opcodes are implemented.
+		*/
+		_curScript->debugOpcode = opcode;
+
 		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(_curScript->ip - _curScript->code), opcode);
 
 		if (opcode >= _opcodes.size())
-			error("CometEngine::runScript() Unknown opcode %d", opcode);
+			error("CometEngine::runScript() Invalid opcode %d", opcode);
 			
 		(*_opcodes[opcode])(_curScript);
 
@@ -454,7 +459,7 @@ SceneObject *ScriptInterpreter::getSceneObject(int index) {
 void ScriptInterpreter::objectWalkToXYAbs(Script *script, bool xyFlag) {
 	
 	int x, y;
-	int newValue = script->loadByte();
+	int newValue = script->readByte();
 	
 	script->object()->directionChanged = 0;
 
@@ -483,7 +488,7 @@ void ScriptInterpreter::objectWalkToXYAbs(Script *script, bool xyFlag) {
 void ScriptInterpreter::objectWalkToXYRel(Script *script, bool xyFlag) {
 
 	int x, y;
-	int delta = script->loadByte();
+	int delta = script->readByte();
 	
 	script->object()->directionChanged = 0;
 
@@ -515,13 +520,13 @@ void ScriptInterpreter::o1_addSceneItem(Script *script, int paramType) {
 	int itemIndex, x, y;
 	
 	if (paramType == 0) {
-		itemIndex = script->loadByte();
+		itemIndex = script->readByte();
 	} else {
-		itemIndex = script->loadInt16();
+		itemIndex = script->readInt16();
 	}
 	
-	x = script->loadByte() * 2;
-	y = script->loadByte();
+	x = script->readByte() * 2;
+	y = script->readByte();
 	
 	debug(2, "o1_addSceneItem(%d, %d, %d)", itemIndex, x, y);
 	
@@ -538,12 +543,13 @@ void ScriptInterpreter::o1_addSceneItem(Script *script, int paramType) {
 /* Script functions */
 
 void ScriptInterpreter::o1_nop(Script *script) {
+	debug("Unimplemented opcode %02X", script->debugOpcode);
 }
 
 void ScriptInterpreter::o1_sceneObjectSetDirection(Script *script) {
 	debug(2, "o1_sceneObjectSetDirection");
 
-	int direction = script->loadByte();
+	int direction = script->readByte();
 	script->object()->directionChanged = 0;
 	_vm->sceneObjectSetDirection(script->object(), direction);
 
@@ -591,8 +597,8 @@ void ScriptInterpreter::o1_loop(Script *script) {
 
 void ScriptInterpreter::o1_objectSetPosition(Script *script) {
 
-	int x = script->loadByte() * 2;
-	int y = script->loadByte();
+	int x = script->readByte() * 2;
+	int y = script->readByte();
 
 	debug(2, "o1_objectSetPosition(%d, %d)", x, y);
 
@@ -602,7 +608,7 @@ void ScriptInterpreter::o1_objectSetPosition(Script *script) {
 
 void ScriptInterpreter::o1_sleep(Script *script) {
 
-	int sleepCount = script->loadByte();
+	int sleepCount = script->readByte();
 
 	debug(2, "o1_sleep(%d)", sleepCount);
 
@@ -615,7 +621,7 @@ void ScriptInterpreter::o1_sleep(Script *script) {
 void ScriptInterpreter::o1_if(Script *script) {
 
 	uint16 value1 = script->loadVarValue();
-	byte boolOp = script->loadByte();
+	byte boolOp = script->readByte();
 	uint16 value2 = script->loadValue();
 
 	const char* boolOps[] = {"==", "!=", ">", ">=", "<", "<=", "&", "|"};
@@ -628,8 +634,8 @@ void ScriptInterpreter::o1_if(Script *script) {
 
 }
 
-void ScriptInterpreter::o1_condJump2(Script *script) {
-	if (!o1_Sub_rectCompare01(script)) {
+void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
+	if (!isHeroInZone(script)) {
 		script->jump();
 	} else {
 		script->ip += 2;
@@ -650,7 +656,7 @@ void ScriptInterpreter::o1_objectWalkToYRel(Script *script) {
 
 void ScriptInterpreter::o1_setMouseFlags(Script *script) {
 
-	int flagIndex = script->loadByte();
+	int flagIndex = script->readByte();
 	
 	debug(2, "o1_setMouseFlags(%d)", flagIndex);
 
@@ -683,7 +689,7 @@ void ScriptInterpreter::o1_sceneObjectSetDirectionTo(Script *script) {
 
 void ScriptInterpreter::o1_selectObject(Script *script) {
 
-	int objectIndex = script->loadByte();
+	int objectIndex = script->readByte();
 	
 	debug(2, "o1_selectObject(%d)", objectIndex);
 	
@@ -713,7 +719,7 @@ void ScriptInterpreter::o1_addSceneItem1(Script *script) {
 
 void ScriptInterpreter::o1_startScript(Script *script) {
 
-	int scriptNumber = script->loadByte();
+	int scriptNumber = script->readByte();
 
 	debug(2, "o1_startScript(%d)", scriptNumber);
 
@@ -726,7 +732,7 @@ void ScriptInterpreter::o1_startScript(Script *script) {
 
 void ScriptInterpreter::o1_pauseScript(Script *script) {
 
-	int scriptNumber = script->loadByte();
+	int scriptNumber = script->readByte();
 
 	debug(2, "o1_pauseScript(%d)", scriptNumber);
 
@@ -736,11 +742,11 @@ void ScriptInterpreter::o1_pauseScript(Script *script) {
 
 void ScriptInterpreter::o1_playCutscene(Script *script) {
 
-	int fileIndex = script->loadByte();
-	int indexSubStart = script->loadByte();
-	int index = script->loadInt16();
-	int counterMax = script->loadByte();
-	int cutsceneCounter2 = script->loadByte();
+	int fileIndex = script->readByte();
+	int indexSubStart = script->readByte();
+	int index = script->readInt16();
+	int counterMax = script->readByte();
+	int cutsceneCounter2 = script->readByte();
 	
 	//TODO
 	//playCutscene( fileIndex, indexSubStart, index, counterMax, cutsceneCounter2, script->ip );
@@ -751,7 +757,7 @@ void ScriptInterpreter::o1_playCutscene(Script *script) {
 
 void ScriptInterpreter::o1_setVar(Script *script) {
 
-	int varIndex = script->loadInt16();
+	int varIndex = script->readInt16();
 	int value = script->loadValue();
 
 	debug(2, "o1_setVar(%d, %d)", varIndex, value);
@@ -763,7 +769,7 @@ void ScriptInterpreter::o1_setVar(Script *script) {
 
 void ScriptInterpreter::o1_incVar(Script *script) {
 
-	int varIndex = script->loadInt16();
+	int varIndex = script->readInt16();
 	int value = script->loadValue();
 
 	debug(2, "o1_incVar(%d, %d)", varIndex, value);
@@ -775,7 +781,7 @@ void ScriptInterpreter::o1_incVar(Script *script) {
 
 void ScriptInterpreter::o1_subVar(Script *script) {
 
-	int varIndex = script->loadInt16();
+	int varIndex = script->readInt16();
 	int value = script->loadValue();
 
 	debug(2, "o1_subVar(%d, %d)", varIndex, value);
@@ -801,8 +807,8 @@ void ScriptInterpreter::o1_setSceneObjectCollisionTypeTo0(Script *script) {
 
 void ScriptInterpreter::o1_objectWalkTo(Script *script) {
 
-	int x = script->loadByte() * 2;
-	int y = script->loadByte();
+	int x = script->readByte() * 2;
+	int y = script->readByte();
 
 	debug(2, "o1_walkTo(%d, %d)", x, y);
 	
@@ -817,7 +823,7 @@ void ScriptInterpreter::o1_objectWalkTo(Script *script) {
 
 void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 
-	int sceneNumber = script->loadByte();
+	int sceneNumber = script->readByte();
 
 	debug(2, "o1_setSceneNumber(%d)", sceneNumber);
 
@@ -831,8 +837,8 @@ void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 
 void ScriptInterpreter::o1_setAnimValues(Script *script) {
 
-	int animIndex = script->loadByte();
-	int animFrameIndex = script->loadByte();
+	int animIndex = script->readByte();
+	int animFrameIndex = script->readByte();
 
 	debug(2, "o1_setAnimValues(%d, %d)", animIndex, animFrameIndex);
 
@@ -844,7 +850,7 @@ void ScriptInterpreter::o1_setAnimValues(Script *script) {
 }
 
 void ScriptInterpreter::o1_setMarcheNumber(Script *script) {
-	_vm->_marcheNumber = script->loadByte();
+	_vm->_marcheNumber = script->readByte();
 	
 	debug(2, "o1_setMarcheNumber(%d)", _vm->_marcheNumber);
 	
@@ -852,8 +858,8 @@ void ScriptInterpreter::o1_setMarcheNumber(Script *script) {
 
 void ScriptInterpreter::o1_setZoomByItem(Script *script) {
 
-	int objectIndex = script->loadByte();
-	int zoomFactor = script->loadByte();
+	int objectIndex = script->readByte();
+	int zoomFactor = script->readByte();
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
@@ -888,10 +894,10 @@ void ScriptInterpreter::o1_waitWhilePlayerIsInRect(Script *script) {
 
 void ScriptInterpreter::o1_waitUntilPlayerIsInRect(Script *script) {
 
-	script->x = script->loadByte() * 2;
-	script->y = script->loadByte();
-	script->x2 = script->loadByte() * 2;
-	script->y2 = script->loadByte();
+	script->x = script->readByte() * 2;
+	script->y = script->readByte();
+	script->x2 = script->readByte() * 2;
+	script->y2 = script->readByte();
 
 	debug(2, "o1_waitUntilPlayerIsInRect(%d, %d, %d, %d)", script->x, script->y, script->x2, script->y2);
 
@@ -918,8 +924,8 @@ void ScriptInterpreter::o1_unloadSceneObjectSprite(Script *script) {
 
 void ScriptInterpreter::o1_setObjectClipX(Script *script) {
 	
-	int16 clipX1 = script->loadByte() * 2;
-	int16 clipX2 = script->loadByte() * 2;
+	int16 clipX1 = script->readByte() * 2;
+	int16 clipX2 = script->readByte() * 2;
 
 	debug(2, "o1_setObjectClipX(%d, %d)", clipX1, clipX2);
 	
@@ -930,8 +936,8 @@ void ScriptInterpreter::o1_setObjectClipX(Script *script) {
 
 void ScriptInterpreter::o1_setObjectClipY(Script *script) {
 
-	int16 clipY1 = script->loadByte();
-	int16 clipY2 = script->loadByte();
+	int16 clipY1 = script->readByte();
+	int16 clipY2 = script->readByte();
 
 	debug(2, "o1_setObjectClipY(%d, %d)", clipY1, clipY2);
 
@@ -943,7 +949,7 @@ void ScriptInterpreter::o1_setObjectClipY(Script *script) {
 void ScriptInterpreter::o1_orVar(Script *script) {
 	debug(2, "o1_orVar");
 
-	int varIndex = script->loadInt16();
+	int varIndex = script->readInt16();
 	int value = script->loadValue();
 	int *varPtr = getVarPointer(varIndex);
 	*varPtr |= value;
@@ -952,7 +958,7 @@ void ScriptInterpreter::o1_orVar(Script *script) {
 
 void ScriptInterpreter::o1_loadScene(Script *script) {
 
-	_vm->_backgroundFileIndex = script->loadByte() * 2;
+	_vm->_backgroundFileIndex = script->readByte() * 2;
 
 	debug(2, "o1_loadScene(%d)", _vm->_backgroundFileIndex);
 
@@ -962,10 +968,10 @@ void ScriptInterpreter::o1_loadScene(Script *script) {
 
 void ScriptInterpreter::o1_addBlockingRect(Script *script) {
 
-	int x1 = script->loadByte();
-	int y1 = script->loadByte();
-	int x2 = script->loadByte();
-	int y2 = script->loadByte();
+	int x1 = script->readByte();
+	int y1 = script->readByte();
+	int x2 = script->readByte();
+	int y2 = script->readByte();
 
 	debug(2, "o1_addBlockingRect(%d,%d,%d,%d)", x1, y1, x2, y2);
 
@@ -973,25 +979,28 @@ void ScriptInterpreter::o1_addBlockingRect(Script *script) {
 
 }
 
-void ScriptInterpreter::o1_sub_A67F(Script *script) {
+void ScriptInterpreter::o1_ifSpeak(Script *script) {
+	if (_vm->_cmdTalk) {
+		script->ip += 2;
+		_vm->_cmdTalk = false;
+	} else {
+		script->jump();
+	}
+}
 
-	int objectIndex = script->loadByte();
-
+void ScriptInterpreter::o1_ifSpeakTo(Script *script) {
+	int objectIndex = script->readByte();
 	if (_vm->_cmdTalk && _vm->rectCompare02(0, objectIndex, 40, 40)) {
 		script->ip += 2;
 		_vm->_cmdTalk = false;
 	} else {
 		script->jump();
 	}
-
 }
 
-void ScriptInterpreter::o1_sub_A64B(Script *script) {
-
-	debug(2, "o1_sub_A64B()");
-
+void ScriptInterpreter::o1_ifSpeakZone(Script *script) {
 	if (_vm->_cmdTalk) {
-		if (o1_Sub_rectCompare01(script)) {
+		if (isHeroInZone(script)) {
 			script->ip += 2;
 			_vm->_cmdTalk = false;
 		} else {
@@ -1001,17 +1010,16 @@ void ScriptInterpreter::o1_sub_A64B(Script *script) {
 		script->ip += 4;
 		script->jump();
 	}
-
 }
 
-bool ScriptInterpreter::o1_Sub_rectCompare01(Script *script) {
+bool ScriptInterpreter::isHeroInZone(Script *script) {
 
 	SceneObject *sceneObject = getSceneObject(0);
 
-	script->x = script->loadByte() * 2;
-	script->y = script->loadByte();
-	script->x2 = script->loadByte() * 2;
-	script->y2 = script->loadByte();
+	script->x = script->readByte() * 2;
+	script->y = script->readByte();
+	script->x2 = script->readByte() * 2;
+	script->y2 = script->readByte();
 
 	if (_vm->_debugRectangles)
 		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 50);
@@ -1027,13 +1035,29 @@ bool ScriptInterpreter::o1_Sub_rectCompare01(Script *script) {
 
 }
 
-void ScriptInterpreter::o1_sub_A735(Script *script) {
-	// LOOK AT handler
-
-	debug(2, "o1_sub_A735()");
-
+void ScriptInterpreter::o1_ifLook(Script *script) {
 	if (_vm->_cmdLook) {
-		if (o1_Sub_rectCompare01(script)) {
+		script->ip += 2;
+		_vm->_cmdLook = false;
+	} else {
+		script->jump();
+	}
+}
+
+void ScriptInterpreter::o1_ifLookAt(Script *script) {
+	int objectIndex = script->readByte();
+	if (_vm->_cmdLook && _vm->rectCompare02(0, objectIndex, 40, 40)) {
+		script->ip += 2;
+		_vm->_cmdLook = false;
+	} else {
+		script->jump();
+	}
+}
+
+void ScriptInterpreter::o1_ifLookZone(Script *script) {
+	// LOOK AT handler
+	if (_vm->_cmdLook) {
+		if (isHeroInZone(script)) {
 			script->ip += 2;
 			_vm->_cmdLook = false;
 		} else {
@@ -1043,13 +1067,12 @@ void ScriptInterpreter::o1_sub_A735(Script *script) {
 		script->ip += 4;
 		script->jump();
 	}
-
 }
 
 void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 
-	int x = script->loadByte() * 2;
-	int y = script->loadByte();
+	int x = script->readByte() * 2;
+	int y = script->readByte();
 
 	_vm->_scene->removeBlockingRect(x, y);
 	
@@ -1058,14 +1081,14 @@ void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 void ScriptInterpreter::o1_objectSetTextColor(Script *script) {
 	debug(2, "o1_objectSetTextColor");
 
-	script->object()->textColor = script->loadByte();
+	script->object()->textColor = script->readByte();
 	
 }
 
 void ScriptInterpreter::o1_setTextXY(Script *script) {
 
-	int textX = script->loadByte() * 2;
-	int textY = script->loadByte();
+	int textX = script->readByte() * 2;
+	int textY = script->readByte();
 
 	debug(2, "o1_setTextXY(%d, %d)", textX, textY);
 
@@ -1074,9 +1097,14 @@ void ScriptInterpreter::o1_setTextXY(Script *script) {
 	
 }
 
+void ScriptInterpreter::o1_resetCounterJump(Script *script) {
+	script->counter = 0;
+	script->jump();
+}
+
 void ScriptInterpreter::o1_playMusic(Script *script) {
 
-	int fileIndex = script->loadByte();
+	int fileIndex = script->readByte();
 
 	debug(2, "o1_playMusic(%d)", fileIndex);
 
@@ -1091,20 +1119,20 @@ void ScriptInterpreter::o1_playMusic(Script *script) {
 
 void ScriptInterpreter::o1_setRandomValue(Script *script) {
 	debug(2, "o1_setRandomValue()");
-	_vm->_scriptRandomValue = _vm->random(script->loadByte());
+	_vm->_scriptRandomValue = _vm->random(script->readByte());
 }
 
 void ScriptInterpreter::o1_setChapterNumber(Script *script) {
-	_vm->_chapterNumber = script->loadByte();
+	_vm->_chapterNumber = script->readByte();
 	debug(2, "o1_setChapterNumber(%d)", _vm->_chapterNumber);
 	_yield = true;
 }
 
 void ScriptInterpreter::o1_dialog(Script *script) {
 
-	int objectIndex = script->loadByte();
-	int narSubIndex = script->loadInt16();
-	int animNumber = script->loadByte();
+	int objectIndex = script->readByte();
+	int narSubIndex = script->readInt16();
+	int animNumber = script->readByte();
 
 	debug(2, "o1_dialog(%d, %d, %d)", objectIndex, narSubIndex, animNumber);
 
@@ -1130,7 +1158,7 @@ void ScriptInterpreter::o1_playAnim(Script *script) {
 
 void ScriptInterpreter::o1_sceneObjectSetAnimNumber(Script *script) {
 
-	int animIndex = script->loadByte();
+	int animIndex = script->readByte();
 
 	debug(2, "o1_sceneObjectSetAnimNumber(%d)", animIndex);
 
@@ -1141,10 +1169,10 @@ void ScriptInterpreter::o1_sceneObjectSetAnimNumber(Script *script) {
 
 void ScriptInterpreter::o1_sub_AD04(Script *script) {
 
-	int objectIndex = script->loadByte();
-	int narSubIndex = script->loadInt16();
-	int animNumber = script->loadByte();
-	int fileIndex = script->loadByte();
+	int objectIndex = script->readByte();
+	int narSubIndex = script->readInt16();
+	int animNumber = script->readByte();
+	int fileIndex = script->readByte();
 	
 	debug(2, "o1_sub_AD04(%d, %d, %d, %d)", objectIndex, narSubIndex, animNumber, fileIndex);
 	//_system->delayMillis(5000);
@@ -1182,7 +1210,7 @@ void ScriptInterpreter::o1_initSceneObject(Script *script) {
 
 void ScriptInterpreter::o1_loadSceneObjectSprite(Script *script) {
 
-	int fileIndex = script->loadByte();
+	int fileIndex = script->readByte();
 	
 	debug(2, "o1_loadSceneObjectSprite(%d)", fileIndex);
 
@@ -1194,20 +1222,20 @@ void ScriptInterpreter::o1_loadSceneObjectSprite(Script *script) {
 }
 
 void ScriptInterpreter::o1_setObjectVisible(Script *script) {
-	int visible = script->loadByte();
+	int visible = script->readByte();
 	debug(2, "o1_setObjectVisible(%d)", visible);
 	script->object()->visible = visible;
 }
 
 void ScriptInterpreter::o1_paletteFadeIn(Script *script) {
-	int paletteValue = script->loadByte();
+	int paletteValue = script->readByte();
 	debug(2, "o1_paletteFadeIn(%d)", paletteValue);
 	_vm->_screen->setFadeType(kFadeIn);
 	_vm->_screen->setFadeValue(paletteValue);
 }
 
 void ScriptInterpreter::o1_paletteFadeOut(Script *script) {
-	int paletteValue = script->loadByte();
+	int paletteValue = script->readByte();
 	debug(2, "o1_paletteFadeOut(%d)", paletteValue);
 	_vm->_screen->setFadeType(kFadeOut);
 	_vm->_screen->setFadeValue(paletteValue);
@@ -1215,7 +1243,7 @@ void ScriptInterpreter::o1_paletteFadeOut(Script *script) {
 
 void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 
-	_vm->_narFileIndex = script->loadByte();
+	_vm->_narFileIndex = script->readByte();
 
 	debug(2, "o1_setNarFileIndex(%d)", _vm->_narFileIndex);
 
@@ -1225,7 +1253,7 @@ void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 
 void ScriptInterpreter::o1_deactivateSceneItem(Script *script) {
 
-	int itemIndex = script->loadByte();
+	int itemIndex = script->readByte();
 
 	uint index = 0;
 	while (index < _vm->_sceneItems.size()) {
@@ -1241,7 +1269,7 @@ void ScriptInterpreter::o1_deactivateSceneItem(Script *script) {
 void ScriptInterpreter::o1_sample_2(Script *script) {
 	debug(2, "o1_sample_2");
 
-	int narFileIndex = script->loadByte();
+	int narFileIndex = script->readByte();
 	
 	//TODO: seg010:074A
 	
@@ -1250,8 +1278,8 @@ void ScriptInterpreter::o1_sample_2(Script *script) {
 void ScriptInterpreter::o1_sample_1(Script *script) {
 	debug(2, "o1_sample_1");
 
-	int narFileIndex = script->loadByte();
-	int value = script->loadByte();
+	int narFileIndex = script->readByte();
+	int value = script->readByte();
 	
 	//TODO
 
