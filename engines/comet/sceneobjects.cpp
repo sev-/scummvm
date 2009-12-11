@@ -73,8 +73,8 @@ void CometEngine::sceneObjectCalcDirection(SceneObject *sceneObject) {
 	int deltaX, deltaY, direction, walkFlag;
 	
 	walkFlag = sceneObject->walkStatus & 3;
-	deltaX = sceneObject->x2 - sceneObject->x;
-	deltaY = sceneObject->y2 - sceneObject->y;
+	deltaX = sceneObject->walkDestX - sceneObject->x;
+	deltaY = sceneObject->walkDestY - sceneObject->y;
 	direction = sceneObject->direction;
 
 	if (walkFlag == 1 || (walkFlag == 0 && (ABS(deltaX) > ABS(deltaY)))) {
@@ -96,20 +96,20 @@ void CometEngine::sceneObjectCalcDirection(SceneObject *sceneObject) {
 void CometEngine::sceneObjectGetXY1(SceneObject *sceneObject, int &x, int &y) {
 	switch (sceneObject->direction) {
 	case 1:
-		if (sceneObject->y2 > y)
-			y = sceneObject->y2;
+		if (sceneObject->walkDestY > y)
+			y = sceneObject->walkDestY;
 		break;
 	case 2:
-		if (sceneObject->x2 < x)
-			x = sceneObject->x2;
+		if (sceneObject->walkDestX < x)
+			x = sceneObject->walkDestX;
 		break;
 	case 3:
-		if (sceneObject->y2 < y)
-			y = sceneObject->y2;
+		if (sceneObject->walkDestY < y)
+			y = sceneObject->walkDestY;
 		break;
 	case 4:
-		if (sceneObject->x2 > x)
-			x = sceneObject->x2;
+		if (sceneObject->walkDestX > x)
+			x = sceneObject->walkDestX;
 		break;
 	}
 }
@@ -128,8 +128,8 @@ void CometEngine::sceneObjectUpdateFlag(SceneObject *sceneObject, int flag) {
 
 void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
 	if (((sceneObject->walkStatus & 3) != 0) && ((sceneObject->walkStatus & 4) == 0)) {
-		sceneObject->x3 = sceneObject->x2;
-		sceneObject->y3 = sceneObject->y2;
+		sceneObject->x3 = sceneObject->walkDestX;
+		sceneObject->y3 = sceneObject->walkDestY;
 		sceneObject->walkStatus |= 4;
 	}
 }
@@ -159,8 +159,8 @@ bool CometEngine::sceneObjectWalkTo(int objectIndex, int x, int y) {
 
 	sceneObjectUpdateXYFlags(sceneObject);
 
-	sceneObject->x2 = x;
-	sceneObject->y2 = y;
+	sceneObject->walkDestX = x;
+	sceneObject->walkDestY = y;
 
 	if (compareFlags == 0) {
 		if (sceneObject->walkStatus & 3) {

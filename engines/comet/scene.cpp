@@ -222,7 +222,7 @@ void Scene::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 void Scene::initSceneBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
-	byte *xb = _boundsMap;
+	byte *boundsMapPtr = _boundsMap;
 
 	for (uint32 i = 0; i < _bounds.size() - 1; i++) {
 		x1 = _bounds[i].x;
@@ -241,7 +241,7 @@ void Scene::initSceneBoundsMap() {
 			if (x2 > y2) {
 				errorX = x2 >> 1;
 				for (int j = 0; j < x2; j++) {
-					*xb++ = errorY;
+					*boundsMapPtr++ = errorY;
 					errorX += y2;
 					if (errorX >= x2) {
 						errorX -= x2;
@@ -255,14 +255,14 @@ void Scene::initSceneBoundsMap() {
 					errorX += x2;
 					if (errorX >= y2) {
 						errorX -= y2;
-						*xb++ = errorY;
+						*boundsMapPtr++ = errorY;
 					}
 				}
 			}
 		}
 	}
 
-	*xb++ = errorY;
+	*boundsMapPtr++ = errorY;
 
 }
 
