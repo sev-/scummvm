@@ -45,15 +45,15 @@ class Script {
 public:
 	byte *code;
 	byte *ip;
+	byte debugOpcode;
 	int16 objectIndex;
 	uint16 status;
 	int scriptNumber;
 	int counter;
 	int x, y, x2, y2;
-	Script(ScriptInterpreter *inter) : _inter(inter) {
-	}
-	byte loadByte();
-	int16 loadInt16();
+	Script(ScriptInterpreter *inter) : _inter(inter) {}
+	byte readByte();
+	int16 readInt16();
 	void jump();
 	uint16 loadVarValue();
 	uint16 loadValue();
@@ -110,7 +110,7 @@ public:
 	void objectWalkToXYAbs(Script *script, bool xyFlag);
 	void objectWalkToXYRel(Script *script, bool xyFlag);
 
-	bool o1_Sub_rectCompare01(Script *script);
+	bool isHeroInZone(Script *script);
 	void o1_addSceneItem(Script *script, int paramType);
 
 	/* Script functions */
@@ -125,7 +125,7 @@ public:
 	void o1_objectSetPosition(Script *script);
 	void o1_sleep(Script *script);
 	void o1_if(Script *script);
-	void o1_condJump2(Script *script);
+	void o1_ifHeroInZone(Script *script);
 	void o1_objectWalkToXRel(Script *script);
 	void o1_objectWalkToYRel(Script *script);
 	void o1_setMouseFlags(Script *script);
@@ -158,12 +158,16 @@ public:
 	void o1_loadScene(Script *script);
 	void o1_sceneObjectSetAnimNumber(Script *script);
 	void o1_addBlockingRect(Script *script);
-	void o1_sub_A67F(Script *script);
-	void o1_sub_A64B(Script *script);
-	void o1_sub_A735(Script *script);
+	void o1_ifSpeak(Script *script);
+	void o1_ifSpeakTo(Script *script);
+	void o1_ifSpeakZone(Script *script);
+	void o1_ifLook(Script *script);
+	void o1_ifLookAt(Script *script);
+	void o1_ifLookZone(Script *script);
 	void o1_removeBlockingRect(Script *script);
 	void o1_objectSetTextColor(Script *script);
 	void o1_setTextXY(Script *script);
+	void o1_resetCounterJump(Script *script);
 	void o1_playMusic(Script *script);
 	void o1_setRandomValue(Script *script);
 	void o1_setChapterNumber(Script *script);

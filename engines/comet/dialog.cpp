@@ -27,7 +27,7 @@ void Dialog::run(Script *script) {
 
 	_vm->resetTextValues();
 
-	_dialogTextSubIndex = script->loadInt16();
+	_dialogTextSubIndex = script->readInt16();
 
 	debug("_dialogTextSubIndex = %d", _dialogTextSubIndex);
 
@@ -35,17 +35,17 @@ void Dialog::run(Script *script) {
 		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_tempTextBuffer + textOfs);
 	}
 
-	_dialogTextX = script->loadByte() * 2;
-	_dialogTextY = script->loadByte();
+	_dialogTextX = script->readByte() * 2;
+	_dialogTextY = script->readByte();
 
-	dialogItemCount = script->loadByte();
+	dialogItemCount = script->readByte();
 
 	_dialogItems.clear();
 	_dialogItems.reserve(dialogItemCount);
 
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
-		dialogItem.index = script->loadInt16();
+		dialogItem.index = script->readInt16();
   		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
   		dialogItem.scriptIp = script->ip;
   		script->ip += 2;
