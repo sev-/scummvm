@@ -95,7 +95,7 @@ struct SceneObject {
 	int value7;
 	int textX, textY;
 	uint16 walkStatus;
-	int x2, y2;
+	int walkDestX, walkDestY;
 	int x3, y3;
 	int16 clipX1, clipY1, clipX2, clipY2;
 	bool visible;

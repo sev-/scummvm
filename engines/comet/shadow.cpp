@@ -368,7 +368,7 @@ void CometEngine::updateSceneNumber() {
 		((_sceneObjects[0].direction == 2 && _sceneObjects[0].x < 319) ||
 		(_sceneObjects[0].direction == 4 && _sceneObjects[0].x > 0))) {
 
-		_sceneObjects[0].y = _sceneObjects[0].y2;
+		_sceneObjects[0].y = _sceneObjects[0].walkDestY;
 
 	} else {
 
@@ -837,13 +837,13 @@ void CometEngine::sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex,
 	if (!flag)
 		sceneObjectUpdateDirectionTo(objectIndex, sceneObject, obstacleRect);
 
-	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2);
+	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY);
 	
-	debug(4, "WALK FROM (%d, %d) TO (%d, %d); comp = %d; walkStatus = %02X; walkStatus & 3 = %d", sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, comp, sceneObject->walkStatus, sceneObject->walkStatus & 3);
+	debug(4, "WALK FROM (%d, %d) TO (%d, %d); comp = %d; walkStatus = %02X; walkStatus & 3 = %d", sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY, comp, sceneObject->walkStatus, sceneObject->walkStatus & 3);
 	
 	if (_debugRectangles) {
-		_screen->fillRect(sceneObject->x2 - 6, sceneObject->y2 - 6, sceneObject->x2 + 6, sceneObject->y2 + 6, 220);
-		drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->x2, sceneObject->y2, 100);
+		_screen->fillRect(sceneObject->walkDestX - 6, sceneObject->walkDestY - 6, sceneObject->walkDestX + 6, sceneObject->walkDestY + 6, 220);
+		drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY, 100);
 	}
 
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
@@ -899,7 +899,7 @@ bool CometEngine::sceneObjectUpdate04(int objectIndex, Common::Rect &obstacleRec
  	y += yAdd;
  	
  	if (sceneObject->walkStatus & 3) {
-		debug(4, "WALKING_1 (%d, %d); %d: (%d, %d)", x, y, sceneObject->direction, sceneObject->x2, sceneObject->y2);
+		debug(4, "WALKING_1 (%d, %d); %d: (%d, %d)", x, y, sceneObject->direction, sceneObject->walkDestX, sceneObject->walkDestY);
 		sceneObjectGetXY1(sceneObject, x, y);
 		debug(4, "WALKING_2 (%d, %d)", x, y);
 		//debug(4, "CometEngine::sceneObjectUpdate04(%d)  target: %d, %d", objectIndex, x, y);
@@ -1342,8 +1342,8 @@ void CometEngine::handleInput() {
 
 	int directionAdd = sceneObject->directionAdd;
 
-	sceneObject->x2 = sceneObject->x;
-	sceneObject->y2 = sceneObject->y;
+	sceneObject->walkDestX = sceneObject->x;
+	sceneObject->walkDestY = sceneObject->y;
 	
 	if (directionAdd == 4)
 		directionAdd = 0;
@@ -1700,16 +1700,16 @@ void CometEngine::sceneObjectDirection2(int index, SceneObject *sceneObject) {
 	switch (sceneObject->direction) {
 	case 1:
 	case 3:
-		x = sceneObject->x2;
+		x = sceneObject->walkDestX;
 		break;
 	case 2:
-		if (sceneObject->y2 <= sceneObject->y) {
+		if (sceneObject->walkDestY <= sceneObject->y) {
 			y = _scene->Points_getY_sub_8419(x + sceneObject->deltaX, y - sceneObject->deltaY) +
 				sceneObject->deltaY + 2;
 		}
 		break;
 	case 4:
-		if (sceneObject->y2 <= sceneObject->y) {
+		if (sceneObject->walkDestY <= sceneObject->y) {
 			y = _scene->Points_getY_sub_8477(x - sceneObject->deltaX, y - sceneObject->deltaY) +
 				sceneObject->deltaY + 1;
 		}
