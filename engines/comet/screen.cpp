@@ -80,8 +80,8 @@ void Screen::setFadeType(PaletteFadeType fadeType) {
 	_fadeType = fadeType;
 }
 
-void Screen::setFadeValue(int fadeValue) {
-	_fadeValue = fadeValue;
+void Screen::setFadeStep(int fadeStep) {
+	_fadeStep = fadeStep;
 }
 
 void Screen::screenZoomEffect2x(int x, int y) {
@@ -281,7 +281,7 @@ void Screen::paletteFadeIn() {
 		buildPalette(_vm->_ctuPal, _vm->_palette, value);
 		setFullPalette(_vm->_palette);
 		_vm->_system->updateScreen();
-		value += _fadeValue;
+		value += _fadeStep;
 		_vm->_system->delayMillis(10);
 	}
 
@@ -305,7 +305,7 @@ void Screen::paletteFadeOut() {
 		buildPalette(_vm->_ctuPal, _vm->_palette, value);
 		setFullPalette(_vm->_palette);
 		_vm->_system->updateScreen();
-		value -= _fadeValue;
+		value -= _fadeStep;
 		_vm->_system->delayMillis(10);
 	}
 

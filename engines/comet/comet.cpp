@@ -155,8 +155,6 @@ Common::Error CometEngine::run() {
 	
 	_screen->drawAnimationElement(anim, 0, 0, 0);
 
-	debug("Done.");
-
 	/*
 	_screen->drawAnimationCelRle(*anim->_cels[0], 0, 0);
 	*/

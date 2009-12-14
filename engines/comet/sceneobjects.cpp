@@ -63,7 +63,7 @@ void CometEngine::sceneObjectSetAnimNumber(SceneObject *sceneObject, int index) 
 	sceneObject->animSubIndex2 = -1;
 }
 
-void CometEngine::sceneObjectResetDirectionAdd(SceneObject *sceneObject) {
+void CometEngine::sceneObjectStopWalking(SceneObject *sceneObject) {
 	sceneObject->walkStatus = 0;
 	sceneObjectSetDirectionAdd(sceneObject, 0);
 }
@@ -122,7 +122,7 @@ void CometEngine::sceneObjectSetPosition(int index, int x, int y) {
 	sceneObject->walkStatus = 0;
 }
 
-void CometEngine::sceneObjectUpdateFlag(SceneObject *sceneObject, int flag) {
+void CometEngine::sceneObjectUpdateLife(SceneObject *sceneObject, int flag) {
 	sceneObject->life = MAX(0, sceneObject->life - flag);
 }
 
@@ -134,9 +134,9 @@ void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
 	}
 }
 
-bool CometEngine::sceneObjectWalkTo(int objectIndex, int x, int y) {
+bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 
-	debug(4, "CometEngine::sceneObjectWalkTo() objectIndex = %d; (%d, %d)", objectIndex, x, y);
+	debug(4, "CometEngine::sceneObjectStartWalking() objectIndex = %d; (%d, %d)", objectIndex, x, y);
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
@@ -147,11 +147,11 @@ bool CometEngine::sceneObjectWalkTo(int objectIndex, int x, int y) {
 		_scene->rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
 		
-	//printf("CometEngine::sceneObjectWalkTo()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
+	//printf("CometEngine::sceneObjectStartWalking()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
 		
 	int compareFlags = comparePointXY(sceneObject->x, sceneObject->y, x, y);
 
-	debug(4, "CometEngine::sceneObjectWalkTo() compareFlags = %d", compareFlags);
+	debug(4, "CometEngine::sceneObjectStartWalking() compareFlags = %d", compareFlags);
 
 	// No need to walk since we're already there
 	if (compareFlags == 3)
