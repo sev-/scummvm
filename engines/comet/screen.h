@@ -32,7 +32,7 @@ public:
 	void enableTransitionEffect();
 	void setZoom(int zoomFactor, int x, int y);
 	void setFadeType(PaletteFadeType fadeType);
-	void setFadeValue(int fadeValue);
+	void setFadeStep(int fadeStep);
 
 	void screenZoomEffect2x(int x, int y);
 	void screenZoomEffect3x(int x, int y);
@@ -85,7 +85,7 @@ protected:
 	int _zoomFactor, _zoomX, _zoomY;
 	
 	PaletteFadeType _fadeType;
-	int _fadeValue;
+	int _fadeStep;
 	bool _palFlag;
 	
 	int _clipX1, _clipY1, _clipX2, _clipY2;
