@@ -279,10 +279,10 @@ void ScriptInterpreter::processScriptWalk() {
 
 	debug(3, "######## processScriptWalk()  objectIndex = %d", _curScript->objectIndex);
 
-	debug(2, "CometEngine::processScriptWalk() walkStatus = %d; flag = %d",
-		_curScript->object()->walkStatus, _curScript->object()->flag);
+	debug(2, "CometEngine::processScriptWalk() walkStatus = %d; life = %d",
+		_curScript->object()->walkStatus, _curScript->object()->life);
 
-	if ((_curScript->object()->walkStatus & 3) == 0 || _curScript->object()->flag == 0) {
+	if ((_curScript->object()->walkStatus & 3) == 0 || _curScript->object()->life == 0) {
 		_curScript->status &= ~kScriptWalking;
 		_vm->sceneObjectSetAnimNumber(_curScript->object(), 0);
 		debug(4, "*** walking finished");
@@ -325,7 +325,7 @@ void ScriptInterpreter::processScriptTalk() {
 		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_animIndex != -1)
 				_vm->_sceneObjects[_vm->_animIndex].visible = true;
-			_vm->_sceneObjects[10].flag = 0;
+			_vm->_sceneObjects[10].life = 0;
 			_vm->_screen->enableTransitionEffect();
 		} else if (_vm->_animIndex != -1) {
 			SceneObject *sceneObject = _vm->getSceneObject(_vm->_talkActorIndex);
@@ -915,7 +915,7 @@ void ScriptInterpreter::o1_unloadSceneObjectSprite(Script *script) {
 	debug(2, "o1_unloadSceneObjectSprite");
 
 	if (script->objectIndex != 0) {
-		script->object()->flag = 0;
+		script->object()->life = 0;
 		if (script->object()->marcheIndex != -1)
 			_vm->unloadSceneObjectSprite(script->object());
 	}

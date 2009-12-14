@@ -34,7 +34,7 @@ void CometEngine::sceneObjectInit(int itemIndex, int marcheIndex) {
 	if (itemIndex == 0)
 		sceneObject->textColor = 21;
 	else
-		sceneObject->flag = 10;
+		sceneObject->life = 10;
 
 }
 
@@ -123,7 +123,7 @@ void CometEngine::sceneObjectSetPosition(int index, int x, int y) {
 }
 
 void CometEngine::sceneObjectUpdateFlag(SceneObject *sceneObject, int flag) {
-	sceneObject->flag = MAX(0, sceneObject->flag - flag);
+	sceneObject->life = MAX(0, sceneObject->life - flag);
 }
 
 void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
@@ -188,7 +188,7 @@ SceneObject *CometEngine::getSceneObject(int index) {
 
 void CometEngine::sceneObjectsResetFlags() {
 	for (int i = 1; i < 11; i++) {
-		_sceneObjects[i].flag = 0;
+		_sceneObjects[i].life = 0;
 	}
 }
 

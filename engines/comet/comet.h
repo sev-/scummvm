@@ -90,7 +90,7 @@ struct SceneObject {
 	uint16 collisionType;
 	int linesIndex;
 	int value6;
-	int flag;
+	int life;
 	int textColor;
 	int value7;
 	int textX, textY;
@@ -274,10 +274,10 @@ public:
 	void updateSceneNumber();
 	void getItemInSight();
 	void lookAtItemInSight(bool flag);
-	void sceneObjectsUpdate01();
-	void sceneObjectsUpdate02();
+	void sceneObjectsUpdateAnimations();
+	void sceneObjectsUpdateMovement();
 	void updateStaticObjects();
-	void sceneObjectsUpdate03();
+	void sceneObjectsEnqueueForDrawing();
 	void updateSceneObjectFlag();
 	void sceneObjectUpdateDirectionTo(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
 	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
@@ -292,8 +292,8 @@ public:
 	void updateTalkAnims();
 	void sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject);
 	void sceneObjectUpdateAnimation(SceneObject *sceneObject);
-	void sceneObjectUpdate03(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect);
-	bool sceneObjectUpdate04(int objectIndex, Common::Rect &obstacleRect);
+	void sceneObjectUpdateWalking(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect);
+	bool sceneObjectUpdatePosition(int objectIndex, Common::Rect &obstacleRect);
 	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
 	void freeMarcheAndStaticObjects();
 	void resetMarcheAndStaticObjects();
@@ -328,9 +328,9 @@ public:
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
-	void sceneObjectDirection2(int index, SceneObject *sceneObject);
+	void sceneObjectMoveAroundBounds(int index, SceneObject *sceneObject);
 	
-	uint16 handleCollision(SceneObject *sceneObject, int index, uint16 collisionType);
+	uint16 updateCollision(SceneObject *sceneObject, int index, uint16 collisionType);
 	
 	void resetHeroDirectionChanged();
 
