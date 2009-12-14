@@ -76,9 +76,9 @@ Common::Error CometEngine::run() {
 #if 0
 	TextReader t;
 	t.open("E.CC4");
-    TextStrings *s = t.loadTextStrings(0);
+	TextStrings *s = t.loadTextStrings(0);
 	debug("%s", s->getString(0));
-    delete s;
+	delete s;
 	const byte *x;
 	x = t.getString(2, 1);
 	debug("x = %s", (char*)x);
@@ -87,7 +87,7 @@ Common::Error CometEngine::run() {
 	x = t.getString(3, 1);
 	debug("x = %s", (char*)x);
 	t.close();
-    return Common::kNoError;
+	return Common::kNoError;
 #endif
 
 #define OLD_CODE
@@ -242,7 +242,7 @@ Common::Error CometEngine::run() {
 
 	_scriptVars1[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
-		_scriptVars1[1 + i * 3] = &_sceneObjects[i].flag;
+		_scriptVars1[1 + i * 3] = &_sceneObjects[i].life;
 		_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
 		_scriptVars1[3 + i * 3] = &_sceneObjects[i].y;
 	}

@@ -25,7 +25,7 @@ int CometEngine::findFreeMarcheSlot() {
 
 bool CometEngine::isMarcheLoaded(int marcheIndex) {
 	for (int i = 0; i < 11; i++) {
-		if (_sceneObjects[i].marcheIndex == marcheIndex && _sceneObjects[i].flag != 0)
+		if (_sceneObjects[i].marcheIndex == marcheIndex && _sceneObjects[i].life != 0)
 			return true;
 	}
 	return false;
@@ -35,7 +35,7 @@ void CometEngine::clearMarcheByIndex(int marcheIndex) {
 	for (int i = 1; i < 11; i++) {
 		if (_sceneObjects[i].marcheIndex == marcheIndex) {
 			_sceneObjects[i].marcheIndex = -1;
-			_sceneObjects[i].flag = 0;
+			_sceneObjects[i].life = 0;
 		}
 	}
 }

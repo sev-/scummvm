@@ -69,8 +69,8 @@ public:
 
 	void getSceneExitRect(int index, int &x1, int &y1, int &x2, int &y2);
 
-	int Points_getY_sub_8419(int x, int y);
-	int Points_getY_sub_8477(int x, int y);
+	int findBoundsRight(int x, int y);
+	int findBoundsLeft(int x, int y);
 	void rect_sub_CC94(int &x, int &y, int deltaX, int deltaY);
 
 //protected:

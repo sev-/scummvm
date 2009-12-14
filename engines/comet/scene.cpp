@@ -161,7 +161,7 @@ void Scene::getSceneExitRect(int index, int &x1, int &y1, int &x2, int &y2) {
 
 }
 
-int Scene::Points_getY_sub_8419(int x, int y) {
+int Scene::findBoundsRight(int x, int y) {
 	int yp = 0;
 	for (uint32 i = 0; i < _bounds.size(); i++) {
 		yp = _bounds[i].y;
@@ -174,7 +174,7 @@ int Scene::Points_getY_sub_8419(int x, int y) {
 		return yp;
 }
 
-int Scene::Points_getY_sub_8477(int x, int y) {
+int Scene::findBoundsLeft(int x, int y) {
 	int yp = 0;
 	for (int i = _bounds.size() - 1; i >= 0; i--) {
 		yp = _bounds[i].y;
