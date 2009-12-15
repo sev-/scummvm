@@ -71,6 +71,9 @@ static const PlainGameDescriptor cometGames[] = {
 
 namespace Comet {
 
+using Common::GUIO_NONE;
+using Common::GUIO_NOSPEECH;
+
 static const CometGameDescription gameDescriptions[] = {
 
 	{
