@@ -263,8 +263,8 @@ public:
 	void handleInput();
 	void handleKeyInput();
 	
-	void handleInventory();
-	void drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int animFrameCounter);
+	int handleInventory();
+	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
 	
 	void invUseItem();
 	
