@@ -1542,7 +1542,7 @@ void CometEngine::drawLineOfSight() {
 
 void CometEngine::invUseItem() {
 
-	for (int index = 0; index < 256; index++) {
+	for (uint index = 0; index < 256; index++) {
 		if (_itemStatus[index] == 2)
 			_itemStatus[index] = 1;
 	}
@@ -1646,19 +1646,30 @@ uint16 CometEngine::updateCollision(SceneObject *sceneObject, int index, uint16 
 
 }
 
-void CometEngine::handleInventory() {
+int CometEngine::handleInventory() {
 
 	Common::Array<uint16> items;
-	int firstItem = 0, currentItem = 0, maxItemsOnScreen = 10;
-	int animFrameCounter = 0, result = 0;
+	uint firstItem = 0, currentItem = 0, maxItemsOnScreen = 10, animFrameCounter = 0;
+	int result = 0;
 
+	/*
 	// DEBUG
 	for (uint16 i = 1; i < 20; i++)
 		items.push_back(i);
+	*/
 		
 	waitForKeys();
 		
-	// TODO: Build items array and set up variables
+	// Build items array and set up variables
+	for (int i = 0; i < 256; i++) {
+		if (_itemStatus[i] >= 1) {
+			items.push_back(i);
+			if (i == _invActiveItem) {
+				firstItem = items.size() < 5 ? 0 : items.size() - 5;
+				currentItem = items.size();
+			}
+		}
+	}
 
 	while (!result) {
 	
@@ -1692,7 +1703,19 @@ void CometEngine::handleInventory() {
 			break;
 		}
 		case Common::KEYCODE_ESCAPE:
-			result = -1;
+			result = 2;
+			break;
+		case Common::KEYCODE_RETURN:
+		case Common::KEYCODE_u:
+			for (uint i = 0; i < 255; i++) {
+				if (_itemStatus[i] == 2)
+					_itemStatus[i] = 1;
+			}
+			_invActiveItem = items[currentItem];
+			// Return just selects, U actually uses the item
+			if (_keyScancode == Common::KEYCODE_u)
+				_itemStatus[_invActiveItem] = 2;
+			result = 1;
 			break;
 		default:
 			break;
@@ -1702,12 +1725,17 @@ void CometEngine::handleInventory() {
 		handleEvents();
 		_system->delayMillis(20); // TODO: Adjust or use fps counter
 	}
+	
+	result = 2 - result;
 
+	// TODO...
+
+	return result;
 }
 
-void CometEngine::drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int animFrameCounter) {
+void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
 
-	int xadd = 74, yadd = 64, itemHeight = 12, maxItemsOnScreen = 10;
+	uint xadd = 74, yadd = 64, itemHeight = 12, maxItemsOnScreen = 10;
 
 	_screen->drawAnimationElement(_iconeVa2, 16, 0, 0);
 
@@ -1717,7 +1745,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, int firstItem, int
 	if (firstItem + maxItemsOnScreen < items.size())
 		_screen->drawAnimationElement(_iconeVa2, 53, 0, 0);
 
-	for (int i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
+	for (uint i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
 		byte *itemName = _textBuffer3->getString(firstItem + i);
 		int x = xadd + 21, y = yadd + itemHeight * i;
 		_screen->setFontColor(120);
