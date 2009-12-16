@@ -361,14 +361,17 @@ Common::Error CometEngine::run() {
 	  		_cmdGet = true;
 		else if (_keyScancode == Common::KEYCODE_l)
 	  		_cmdLook = true;
-		else if (_keyScancode == Common::KEYCODE_i) {
+		else if (_keyScancode == Common::KEYCODE_o) {
+
 			// Inventory test code
 			for (int i = 0; i < 255; i++) {
-				//debug("item[%03d] = %d", i, _itemStatus[i]);
 				if (_itemStatus[i] == 1) {
-					//debug("item[%03d] = [%s]", i, getTextEntry(i, _textBuffer3));
+					debug("item[%03d] = [%s]", i, _textBuffer3->getString(i));
 				}
 			}
+			
+			handleInventory();
+			
 		}
 
 		// DEBUG

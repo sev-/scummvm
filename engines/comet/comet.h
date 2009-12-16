@@ -222,6 +222,7 @@ public:
 	
 	bool _cmdLook, _cmdGet, _cmdTalk;
 	int _invActiveItem;
+	byte _invSelectionColor;
 
 	int _textColorFlag;
 	bool _flag03, _itemInSight;
@@ -263,6 +264,7 @@ public:
 	void handleKeyInput();
 	
 	void handleInventory();
+	void drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int unk);
 	
 	void invUseItem();
 	
