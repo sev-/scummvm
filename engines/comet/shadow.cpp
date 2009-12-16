@@ -1648,6 +1648,53 @@ uint16 CometEngine::updateCollision(SceneObject *sceneObject, int index, uint16 
 
 void CometEngine::handleInventory() {
 
+	Common::Array<uint16> items;
+	int firstItem = 0, currentItem = 0, unk = 0;
+
+	for (uint16 i = 1; i < 20; i++)
+		items.push_back(i);
+
+	drawInventory(items, firstItem, currentItem, unk);
+
+	_system->delayMillis(5000);
+
+}
+
+void CometEngine::drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int unk) {
+
+	int xadd = 74, yadd = 64, itemHeight = 12, maxItemsOnScreen = 10;
+
+	_screen->drawAnimationElement(_iconeVa2, 16, 0, 0);
+
+	if (firstItem > 0)
+		_screen->drawAnimationElement(_iconeVa2, 52, 0, 0);
+
+	if (firstItem + maxItemsOnScreen < items.size())
+		_screen->drawAnimationElement(_iconeVa2, 53, 0, 0);
+
+	for (int i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
+		byte *itemName = _textBuffer3->getString(firstItem + i);
+		int x = xadd + 21, y = yadd + itemHeight * i;
+		_screen->setFontColor(120);
+		_screen->drawText(x, y, itemName);
+		_screen->setFontColor(119);
+		_screen->drawText(x + 1, y + 1, itemName);
+		x = xadd;
+		y = yadd +  + itemHeight * i - 3;
+		// TODO: Implement and use drawIcon instead
+		_screen->drawAnimationElement(_objectsVa2, _objectsVa2->_anims[firstItem + i]->frames[0]->elementIndex, x, y);
+	}
+	
+	if (items.size() > 0) {
+		int x = xadd + 16, y = yadd + (currentItem - firstItem) * itemHeight - 1;
+		_screen->frameRect(x, y, 253, y + itemHeight - 1, _invSelectionColor);
+		_invSelectionColor++;
+		if (_invSelectionColor >= 96)
+			_invSelectionColor = 80;
+	}
+
+	_screen->update();
+
 }
 
 void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
