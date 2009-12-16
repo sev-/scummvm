@@ -1299,7 +1299,7 @@ void CometEngine::handleEvents() {
 }
 
 void CometEngine::waitForKeys() {
-	while (_keyScancode != Common::KEYCODE_INVALID && _keyDirection != 0) {
+	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0) {
 		handleEvents();
 	}
 }
@@ -1649,18 +1649,63 @@ uint16 CometEngine::updateCollision(SceneObject *sceneObject, int index, uint16 
 void CometEngine::handleInventory() {
 
 	Common::Array<uint16> items;
-	int firstItem = 0, currentItem = 0, unk = 0;
+	int firstItem = 0, currentItem = 0, maxItemsOnScreen = 10;
+	int animFrameCounter = 0, result = 0;
 
+	// DEBUG
 	for (uint16 i = 1; i < 20; i++)
 		items.push_back(i);
+		
+	waitForKeys();
+		
+	// TODO: Build items array and set up variables
 
-	drawInventory(items, firstItem, currentItem, unk);
+	while (!result) {
+	
+		// TODO: Check mouse rectangles
+	
+		drawInventory(items, firstItem, currentItem, animFrameCounter++);
 
-	_system->delayMillis(5000);
+		// TODO: Handle mouse rectangles
+		
+		switch (_keyScancode) {
+		case Common::KEYCODE_DOWN:
+		{
+			if ((currentItem - firstItem + 1 < maxItemsOnScreen) && (currentItem + 1 < items.size())) {
+				// TODO: Check mouse rectangle
+				currentItem++;
+			} else if (firstItem + maxItemsOnScreen < items.size()) {
+				firstItem++;
+				currentItem++;
+			}
+			break;
+		}
+		case Common::KEYCODE_UP:
+		{
+			if (currentItem > firstItem) {
+				// TODO: Check mouse rectangle
+				currentItem--;
+			} else if (firstItem > 0) {
+				firstItem--;
+				currentItem--;
+			}
+			break;
+		}
+		case Common::KEYCODE_ESCAPE:
+			result = -1;
+			break;
+		default:
+			break;
+		}
+		
+  		waitForKeys();
+		handleEvents();
+		_system->delayMillis(20); // TODO: Adjust or use fps counter
+	}
 
 }
 
-void CometEngine::drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int unk) {
+void CometEngine::drawInventory(Common::Array<uint16> &items, int firstItem, int currentItem, int animFrameCounter) {
 
 	int xadd = 74, yadd = 64, itemHeight = 12, maxItemsOnScreen = 10;
 
