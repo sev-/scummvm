@@ -264,8 +264,11 @@ public:
 	
 	int handleInventory();
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
-	
 	void invUseItem();
+	int handleReadBook();
+	void drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor);
+	void bookTurnPage(bool turnDirection);
+	void bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex);
 	
 	void skipText();
 
