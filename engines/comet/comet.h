@@ -96,7 +96,7 @@ struct SceneObject {
 	int textX, textY;
 	uint16 walkStatus;
 	int walkDestX, walkDestY;
-	int x3, y3;
+	int savedWalkDestX, savedWalkDestY;
 	int16 clipX1, clipY1, clipX2, clipY2;
 	bool visible;
 	int value8;
@@ -284,8 +284,8 @@ public:
 	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
 	void resetVars();
 	
-	void drawSceneAnims();
-	void drawSceneAnimsSub(int objectIndex);
+	void drawSprites();
+	void drawActor(int objectIndex);
 	int drawSceneObject(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
 	
 	void updateTextDialog();
@@ -356,10 +356,10 @@ public:
 	void sceneObjectSetAnimNumber(SceneObject *sceneObject, int index);
 	void sceneObjectStopWalking(SceneObject *sceneObject);
 	void sceneObjectCalcDirection(SceneObject *sceneObject);
-	void sceneObjectGetXY1(SceneObject *sceneObject, int &x, int &y);
+	void sceneObjectGetNextWalkDestXY(SceneObject *sceneObject, int &x, int &y);
 	void sceneObjectSetPosition(int index, int x, int y);
 	void sceneObjectUpdateLife(SceneObject *sceneObject, int flag);
-	void sceneObjectUpdateXYFlags(SceneObject *sceneObject);
+	void sceneObjectSaveWalkDestXY(SceneObject *sceneObject);
 	bool sceneObjectStartWalking(int objectIndex, int x, int y);
 	SceneObject *getSceneObject(int index);
 
@@ -377,12 +377,12 @@ public:
 
 	/* Script */
 	int *_systemVars[256];
-	int _scriptVars2[256], _itemStatus[256];
+	int _scriptVars[256], _itemStatus[256];
 	void loadAndRunScript();
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
-	bool rectCompare02(int objectIndex1, int objectIndex2, int x, int y);
-	bool isPlayerInRect(int x, int y, int x2, int y2);
+	bool isActorNearActor(int objectIndex1, int objectIndex2, int x, int y);
+	bool isPlayerInZone(int x, int y, int x2, int y2);
 
 public:
 	/* Misc */

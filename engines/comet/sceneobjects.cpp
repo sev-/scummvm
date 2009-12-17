@@ -93,7 +93,7 @@ void CometEngine::sceneObjectCalcDirection(SceneObject *sceneObject) {
 
 }
 
-void CometEngine::sceneObjectGetXY1(SceneObject *sceneObject, int &x, int &y) {
+void CometEngine::sceneObjectGetNextWalkDestXY(SceneObject *sceneObject, int &x, int &y) {
 	switch (sceneObject->direction) {
 	case 1:
 		if (sceneObject->walkDestY > y)
@@ -126,10 +126,10 @@ void CometEngine::sceneObjectUpdateLife(SceneObject *sceneObject, int flag) {
 	sceneObject->life = MAX(0, sceneObject->life - flag);
 }
 
-void CometEngine::sceneObjectUpdateXYFlags(SceneObject *sceneObject) {
+void CometEngine::sceneObjectSaveWalkDestXY(SceneObject *sceneObject) {
 	if (((sceneObject->walkStatus & 3) != 0) && ((sceneObject->walkStatus & 4) == 0)) {
-		sceneObject->x3 = sceneObject->walkDestX;
-		sceneObject->y3 = sceneObject->walkDestY;
+		sceneObject->savedWalkDestX = sceneObject->walkDestX;
+		sceneObject->savedWalkDestY = sceneObject->walkDestY;
 		sceneObject->walkStatus |= 4;
 	}
 }
@@ -140,14 +140,9 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	//printf("SceneObject.collisionType = %d\n", sceneObject->collisionType);
-	
 	if (sceneObject->collisionType != 8) {
-		//printf("## SceneObject.objectIndex = %d\n", objectIndex);
-		_scene->rect_sub_CC94(x, y, sceneObject->deltaX, sceneObject->deltaY);
+		_scene->filterWalkDestXY(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
-		
-	//printf("CometEngine::sceneObjectStartWalking()  sceneObject->x = %d, sceneObject->y = %d, x = %d, y = %d\n", sceneObject->x, sceneObject->y, x, y); fflush(stdout);
 		
 	int compareFlags = comparePointXY(sceneObject->x, sceneObject->y, x, y);
 
@@ -157,7 +152,7 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 	if (compareFlags == 3)
 		return false;
 
-	sceneObjectUpdateXYFlags(sceneObject);
+	sceneObjectSaveWalkDestXY(sceneObject);
 
 	sceneObject->walkDestX = x;
 	sceneObject->walkDestY = y;

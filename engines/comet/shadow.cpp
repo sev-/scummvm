@@ -201,7 +201,7 @@ void CometEngine::initData() {
 
 	memcpy(_palette, _ctuPal, 768);
 	
-	memset(_scriptVars2, 0, sizeof(_scriptVars2));
+	memset(_scriptVars, 0, sizeof(_scriptVars));
 	memset(_itemStatus, 0, sizeof(_itemStatus));
 
 	_screen->setFontColor(19);
@@ -289,7 +289,7 @@ void CometEngine::updateGame() {
 	sceneObjectsEnqueueForDrawing();
 	lookAtItemInSight(false);
 
-	drawSceneAnims();
+	drawSprites();
 
 	debug(1, "CometEngine::updateGame() #2");
 	if (_talkieMode == 0)
@@ -312,7 +312,7 @@ void CometEngine::updateGame() {
 	updateTalkAnims();
 	
 	/*TODO:
-	if (_scriptVars2[11] < 100 && _scriptVars2[10] == 1)
+	if (_scriptVars[11] < 100 && _scriptVars[10] == 1)
 		drawTextIllsmouth();
 	*/
 	if (_debugRectangles) {
@@ -505,7 +505,7 @@ void CometEngine::updateHeroLife() {
 	}
 }
 
-void CometEngine::drawSceneAnims() {
+void CometEngine::drawSprites() {
 	//TODO: Real stuff
 
 	//TODO: setScreenRectAll();
@@ -516,7 +516,7 @@ void CometEngine::drawSceneAnims() {
 
 	for (uint32 i = 0; i < _spriteArray.size(); i++) {
 		if (_spriteArray[i].index < 16) {
-			drawSceneAnimsSub(_spriteArray[i].index);
+			drawActor(_spriteArray[i].index);
 		} else {
 			AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[objectCmdIndex];
 			_screen->drawAnimationCommand(_sceneObjectsSprite, cmd, 0, 0);
@@ -529,7 +529,7 @@ void CometEngine::drawSceneAnims() {
 	
 }
 
-void CometEngine::drawSceneAnimsSub(int objectIndex) {
+void CometEngine::drawActor(int objectIndex) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
@@ -847,7 +847,7 @@ void CometEngine::sceneObjectUpdateWalking(SceneObject *sceneObject, int objectI
 
 	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
 		if (sceneObject->walkStatus & 4) {
-			sceneObjectStartWalking(objectIndex, sceneObject->x3, sceneObject->y3);
+			sceneObjectStartWalking(objectIndex, sceneObject->savedWalkDestX, sceneObject->savedWalkDestY);
 			sceneObject->walkStatus &= ~4;
 		} else {
 			sceneObjectStopWalking(sceneObject);
@@ -880,8 +880,6 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
 
-	//debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
-
 	Animation *anim = _marcheItems[sceneObject->marcheIndex].anim;
 	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
@@ -890,7 +888,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
  	debug(4, "animFrameIndex = %d; animFrameCount = %d", sceneObject->animFrameIndex, sceneObject->animFrameCount);
  	
- 	//TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd);
+ 	//TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
 
  	debug(4, "xAdd = %d; yAdd = %d", xAdd, yAdd);
 
@@ -898,10 +896,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
  	y += yAdd;
  	
  	if (sceneObject->walkStatus & 3) {
-		debug(4, "WALKING_1 (%d, %d); %d: (%d, %d)", x, y, sceneObject->direction, sceneObject->walkDestX, sceneObject->walkDestY);
-		sceneObjectGetXY1(sceneObject, x, y);
-		debug(4, "WALKING_2 (%d, %d)", x, y);
-		//debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  target: %d, %d", objectIndex, x, y);
+		sceneObjectGetNextWalkDestXY(sceneObject, x, y);
 	}
 
 	if (sceneObject->collisionType != 8) {
@@ -1166,7 +1161,7 @@ bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rec
 
 }
 
-bool CometEngine::rectCompare02(int objectIndex1, int objectIndex2, int x, int y) {
+bool CometEngine::isActorNearActor(int objectIndex1, int objectIndex2, int x, int y) {
 
 	SceneObject *sceneObject1, *sceneObject2;
 
@@ -1189,7 +1184,7 @@ bool CometEngine::rectCompare02(int objectIndex1, int objectIndex2, int x, int y
 
 }
 
-bool CometEngine::isPlayerInRect(int x, int y, int x2, int y2) {
+bool CometEngine::isPlayerInZone(int x, int y, int x2, int y2) {
 
 	Common::Rect rect1(x, y, x2, y2);
 	Common::Rect rect2(
