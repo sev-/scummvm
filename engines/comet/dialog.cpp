@@ -9,7 +9,7 @@ namespace Comet {
 
 Dialog::Dialog(CometEngine *vm) : _vm(vm) {
 
-	_dialogTextSubIndex = 0;
+	_dialogIntroTextIndex = 0;
 	_dialogTextX = 0;
 	_dialogTextY = 0;
 	_dialogTextColor = 79;
@@ -27,12 +27,12 @@ void Dialog::run(Script *script) {
 
 	_vm->resetTextValues();
 
-	_dialogTextSubIndex = script->readInt16();
+	_dialogIntroTextIndex = script->readInt16();
 
-	debug("_dialogTextSubIndex = %d", _dialogTextSubIndex);
+	debug("_dialogIntroTextIndex = %d", _dialogIntroTextIndex);
 
-	if (_dialogTextSubIndex != -1) {
-		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogTextSubIndex, _vm->_tempTextBuffer + textOfs);
+	if (_dialogIntroTextIndex != -1) {
+		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogIntroTextIndex, _vm->_tempTextBuffer + textOfs);
 	}
 
 	_dialogTextX = script->readByte() * 2;
@@ -52,8 +52,8 @@ void Dialog::run(Script *script) {
 		_dialogItems.push_back(dialogItem);
 	}
 
-	if (_dialogItems[0].index == _dialogTextSubIndex)
-		_dialogTextSubIndex = -1;
+	if (_dialogItems[0].index == _dialogIntroTextIndex)
+		_dialogIntroTextIndex = -1;
 
 	_dialogSelectedItemIndex2 = -1;
 	_dialogSelectedItemIndex = 0;
@@ -106,7 +106,7 @@ void Dialog::update() {
 	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _dialogSelectedItemIndex != -1) {
 		//DEBUG: if (_talkieMode == 1)
 		{
-			_vm->actorSayWithAnim(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
+			_vm->actorTalkWithAnim(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
 			//TODO: loop with updateTalkAnims()
 		}
 		_dialogRunning = false;
