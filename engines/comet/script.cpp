@@ -416,8 +416,8 @@ void ScriptInterpreter::runAllScripts() {
 int *ScriptInterpreter::getVarPointer(int varIndex) {
 
 	if (varIndex < 1000) {
-		assert(_vm->_scriptVars1[varIndex]);
-		return _vm->_scriptVars1[varIndex];
+		assert(_vm->_systemVars[varIndex]);
+		return _vm->_systemVars[varIndex];
 	} else if (varIndex < 2000) {
 		return &_vm->_scriptVars2[varIndex - 1000];
 	} else {

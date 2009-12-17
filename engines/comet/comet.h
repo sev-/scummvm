@@ -112,7 +112,6 @@ struct SceneExitItem {
 	int directionIndex;
 	int chapterNumber;
 	int sceneNumber;
-	//int unused;
 	int x1, x2;
 };
 
@@ -377,7 +376,7 @@ public:
 	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 
 	/* Script */
-	int *_scriptVars1[256];
+	int *_systemVars[256];
 	int _scriptVars2[256], _itemStatus[256];
 	void loadAndRunScript();
 
