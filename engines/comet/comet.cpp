@@ -238,16 +238,16 @@ Common::Error CometEngine::run() {
 	
 	_animIndex = -1;
 
-	_scriptVars1[0] = &_prevSceneNumber;
+	_systemVars[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
-		_scriptVars1[1 + i * 3] = &_sceneObjects[i].life;
-		_scriptVars1[2 + i * 3] = &_sceneObjects[i].x;
-		_scriptVars1[3 + i * 3] = &_sceneObjects[i].y;
+		_systemVars[1 + i * 3] = &_sceneObjects[i].life;
+		_systemVars[2 + i * 3] = &_sceneObjects[i].x;
+		_systemVars[3 + i * 3] = &_sceneObjects[i].y;
 	}
-	_scriptVars1[31] = &_mouseButtons4;
-	_scriptVars1[32] = &_scriptMouseFlag;
-	_scriptVars1[33] = &_scriptRandomValue;
-	_scriptVars1[34] = &_prevChapterNumber;
+	_systemVars[31] = &_mouseButtons4;
+	_systemVars[32] = &_scriptMouseFlag;
+	_systemVars[33] = &_scriptRandomValue;
+	_systemVars[34] = &_prevChapterNumber;
 
 	_talkieMode = 1;
 
