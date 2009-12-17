@@ -419,7 +419,7 @@ int *ScriptInterpreter::getVarPointer(int varIndex) {
 		assert(_vm->_systemVars[varIndex]);
 		return _vm->_systemVars[varIndex];
 	} else if (varIndex < 2000) {
-		return &_vm->_scriptVars2[varIndex - 1000];
+		return &_vm->_scriptVars[varIndex - 1000];
 	} else {
 		return &_vm->_itemStatus[varIndex - 2000];
 	}
@@ -870,14 +870,10 @@ void ScriptInterpreter::o1_setZoomByItem(Script *script) {
 }
 
 void ScriptInterpreter::o1_startDialog(Script *script) {
-
 	_vm->_dialog->run(script);
-
+	_vm->waitForKeys();
 	script->status |= kScriptDialogRunning;
 	_yield = true;
-
-	//TODO: waitForKey();
-	
 }
 
 void ScriptInterpreter::o1_waitUntilHeroExitZone(Script *script) {
@@ -887,7 +883,7 @@ void ScriptInterpreter::o1_waitUntilHeroExitZone(Script *script) {
 	if (_vm->_debugRectangles)
 		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
 
-	if (_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
+	if (_vm->isPlayerInZone(script->x, script->y, script->x2, script->y2)) {
 		script->ip--;
 		_yield = true;
 	}
@@ -906,7 +902,7 @@ void ScriptInterpreter::o1_waitUntilHeroEnterZone(Script *script) {
 	if (_vm->_debugRectangles)
 		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
 
-	if (!_vm->isPlayerInRect(script->x, script->y, script->x2, script->y2)) {
+	if (!_vm->isPlayerInZone(script->x, script->y, script->x2, script->y2)) {
 		script->ip -= 5;
 		_yield = true;
 	}
@@ -992,7 +988,7 @@ void ScriptInterpreter::o1_ifSpeak(Script *script) {
 
 void ScriptInterpreter::o1_ifSpeakTo(Script *script) {
 	int objectIndex = script->readByte();
-	if (_vm->_cmdTalk && _vm->rectCompare02(0, objectIndex, 40, 40)) {
+	if (_vm->_cmdTalk && _vm->isActorNearActor(0, objectIndex, 40, 40)) {
 		script->ip += 2;
 		_vm->_cmdTalk = false;
 	} else {
@@ -1048,7 +1044,7 @@ void ScriptInterpreter::o1_ifLook(Script *script) {
 
 void ScriptInterpreter::o1_ifLookAt(Script *script) {
 	int objectIndex = script->readByte();
-	if (_vm->_cmdLook && _vm->rectCompare02(0, objectIndex, 40, 40)) {
+	if (_vm->_cmdLook && _vm->isActorNearActor(0, objectIndex, 40, 40)) {
 		script->ip += 2;
 		_vm->_cmdLook = false;
 	} else {

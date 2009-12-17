@@ -187,9 +187,7 @@ int Scene::findBoundsLeft(int x, int y) {
 		return yp;
 }
 
-void Scene::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
-
-	debug(1, "rect_sub_CC94() 1) x = %d; y = %d; deltaX = %d; deltaY = %d", x, y, deltaX, deltaY);
+void Scene::filterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 
 	if (x - deltaX < 0)
 		x = deltaX + 1;
@@ -204,8 +202,6 @@ void Scene::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 		checkCollisionWithExits(tempRect, 4))
 		return;
 
-	debug(1, "rect_sub_CC94() 1b) x1 = %d; x2 = %d", _boundsMap[x - deltaX], _boundsMap[x + deltaX]);
-
 	if (y - deltaY <= _boundsMap[x - deltaX])
 		y = _boundsMap[x - deltaX] + deltaY + 2;
 
@@ -214,8 +210,6 @@ void Scene::rect_sub_CC94(int &x, int &y, int deltaX, int deltaY) {
 
 	if (y > 199)
 		y = 199;
-
-	debug(1, "rect_sub_CC94() 2) x = %d; y = %d; deltaX = %d; deltaY = %d", x, y, deltaX, deltaY);
 
 }
 

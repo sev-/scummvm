@@ -71,7 +71,7 @@ public:
 
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
-	void rect_sub_CC94(int &x, int &y, int deltaX, int deltaY);
+	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 
 //protected:
 public: // while still in progress
