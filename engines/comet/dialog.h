@@ -36,7 +36,7 @@ protected:
 	CometEngine *_vm;
 
 	int _dialogSelectedItemIndex, _dialogSelectedItemIndex2;
-	int _dialogTextSubIndex, _dialogTextX, _dialogTextY;
+	int _dialogIntroTextIndex, _dialogTextX, _dialogTextY;
 	byte _dialogTextColor;
 	int _dialogTextColorInc;
 	bool _dialogRunning;

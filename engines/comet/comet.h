@@ -364,9 +364,9 @@ public:
 	SceneObject *getSceneObject(int index);
 
 	/* Text */
-	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _narSubIndex;
-	void actorSay(int objectIndex, int narSubIndex, int color);
-	void actorSayWithAnim(int objectIndex, int narSubIndex, int animNumber);
+	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _talkTextIndex;
+	void actorTalk(int objectIndex, int talkTextIndex, int color);
+	void actorTalkWithAnim(int objectIndex, int talkTextIndex, int animNumber);
 
 	/* SceneObjects */
 	void sceneObjectsResetFlags();

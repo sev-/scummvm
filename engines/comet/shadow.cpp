@@ -831,14 +831,10 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 
 void CometEngine::sceneObjectUpdateWalking(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect) {
 
-	//debug(4, "CometEngine::sceneObjectUpdateWalking()");
-
 	if (!flag)
 		sceneObjectHandleCollision(objectIndex, sceneObject, obstacleRect);
 
 	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY);
-	
-	debug(4, "WALK FROM (%d, %d) TO (%d, %d); comp = %d; walkStatus = %02X; walkStatus & 3 = %d", sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY, comp, sceneObject->walkStatus, sceneObject->walkStatus & 3);
 	
 	if (_debugRectangles) {
 		_screen->fillRect(sceneObject->walkDestX - 6, sceneObject->walkDestY - 6, sceneObject->walkDestX + 6, sceneObject->walkDestY + 6, 220);
@@ -853,14 +849,7 @@ void CometEngine::sceneObjectUpdateWalking(SceneObject *sceneObject, int objectI
 			sceneObjectStopWalking(sceneObject);
 		}
 	} else if ((sceneObject->walkStatus & 3) == comp) {
-		//debug(4, "--2");
-
-		debug(4, "Old walkStatus = %02X", sceneObject->walkStatus);
-
 		sceneObject->walkStatus ^= 3;
-		
-		debug(4, "New walkStatus = %02X", sceneObject->walkStatus);
-		
 		sceneObjectCalcDirection(sceneObject);
 	}
 
@@ -888,7 +877,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
  	debug(4, "animFrameIndex = %d; animFrameCount = %d", sceneObject->animFrameIndex, sceneObject->animFrameCount);
  	
- 	//TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
+ 	// TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
 
  	debug(4, "xAdd = %d; yAdd = %d", xAdd, yAdd);
 
@@ -902,10 +891,9 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 	if (sceneObject->collisionType != 8) {
 		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction, obstacleRect);
 		debug(4, "collisionType (checkCollision) = %04X", collisionType);
-		//debug(4, "collisionType = %04X", collisionType);
 		if (collisionType != 0) {
 			collisionType = updateCollision(sceneObject, objectIndex, collisionType);
-			debug(4, "collisionType (handleCollision) = %04X", collisionType);
+			debug(4, "collisionType (updateCollision) = %04X", collisionType);
 			if (collisionType == 0)
 				return false;
 		} else {
@@ -1012,17 +1000,17 @@ void CometEngine::resetHeroDirectionChanged() {
 		_sceneObjects[0].directionChanged = 0;
 }
 
-void CometEngine::actorSay(int objectIndex, int narSubIndex, int color) {
+void CometEngine::actorTalk(int objectIndex, int talkTextIndex, int color) {
 
 	_talkActorIndex = objectIndex;
-	_narSubIndex = narSubIndex;
+	_talkTextIndex = talkTextIndex;
 	
 	if (_talkieMode == 0 || _talkieMode == 1) {
-		setText(_textReader->getString(_narFileIndex + 3, _narSubIndex));
+		setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
 	}
 
 	if (_talkieMode == 2 || _talkieMode == 1) {
-		playVoice(_narSubIndex);
+		playVoice(_talkTextIndex);
 	}
 
 	_textActive = true;
@@ -1030,11 +1018,11 @@ void CometEngine::actorSay(int objectIndex, int narSubIndex, int color) {
 
 }
 
-void CometEngine::actorSayWithAnim(int objectIndex, int narSubIndex, int animNumber) {
+void CometEngine::actorTalkWithAnim(int objectIndex, int talkTextIndex, int animNumber) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	actorSay(objectIndex, narSubIndex, sceneObject->textColor);
+	actorTalk(objectIndex, talkTextIndex, sceneObject->textColor);
 
 	if (animNumber != 0xFF) {
 		_animIndex = sceneObject->animIndex;
@@ -1506,7 +1494,7 @@ void CometEngine::setTextEx(int index, byte *text) {
 
 	_talkActorIndex = 0;
 	_textColor = 21;
-	_narSubIndex = index;
+	_talkTextIndex = index;
 	setText(text);
 	_textActive = true;
 	_flag03 = true;

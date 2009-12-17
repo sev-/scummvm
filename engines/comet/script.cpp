@@ -1129,12 +1129,12 @@ void ScriptInterpreter::o1_setChapterNumber(Script *script) {
 void ScriptInterpreter::o1_actorTalk(Script *script) {
 
 	int objectIndex = script->readByte();
-	int narSubIndex = script->readInt16();
+	int talkTextIndex = script->readInt16();
 	int animNumber = script->readByte();
 
-	debug(2, "o1_actorTalk(%d, %d, %d)", objectIndex, narSubIndex, animNumber);
+	debug(2, "o1_actorTalk(%d, %d, %d)", objectIndex, talkTextIndex, animNumber);
 
-	_vm->actorSayWithAnim(objectIndex, narSubIndex, animNumber);
+	_vm->actorTalkWithAnim(objectIndex, talkTextIndex, animNumber);
 
 	_curScript->status |= kScriptTalking;
 	_yield = true;
@@ -1168,11 +1168,11 @@ void ScriptInterpreter::o1_sceneObjectSetAnimNumber(Script *script) {
 void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 
 	int objectIndex = script->readByte();
-	int narSubIndex = script->readInt16();
+	int talkTextIndex = script->readInt16();
 	int animNumber = script->readByte();
 	int fileIndex = script->readByte();
 	
-	debug(2, "o1_actorTalkPortrait(%d, %d, %d, %d)", objectIndex, narSubIndex, animNumber, fileIndex);
+	debug(2, "o1_actorTalkPortrait(%d, %d, %d, %d)", objectIndex, talkTextIndex, animNumber, fileIndex);
 	//_system->delayMillis(5000);
 
 	int marcheIndex = _vm->loadMarche(_vm->_marcheNumber, fileIndex);
@@ -1186,7 +1186,7 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	
 	_vm->_marcheNumber = 0;
 	_vm->sceneObjectSetPosition(10, 0, 199);
-	_vm->actorSayWithAnim(10, narSubIndex, animNumber);
+	_vm->actorTalkWithAnim(10, talkTextIndex, animNumber);
 	_vm->_animIndex = objectIndex;
 	_vm->_screen->enableTransitionEffect();
 
