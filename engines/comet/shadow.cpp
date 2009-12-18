@@ -1538,6 +1538,29 @@ void CometEngine::invUseItem() {
 
 }
 
+void CometEngine::invCheckActiveItem() {
+
+	/* If the currently selected item was disabled, scan for the preceeding item
+		and set it as selected item. */
+	if (_invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0) {
+		if (_invActiveItem >= 1) {
+			for (_invActiveItem = _invActiveItem - 1; _invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0;
+				_invActiveItem--) {
+			}
+		} else {
+			_invActiveItem = -1;
+		}
+	}
+
+	/* Check if the player wants to read the notebook */
+	if (_itemStatus[0] == 2) {
+		handleReadBook();
+		_itemStatus[0] = 1;
+	}
+
+
+}
+
 int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
 
 	for (int index = 0; index < 11; index++) {
@@ -1697,8 +1720,10 @@ int CometEngine::handleInventory() {
 			}
 			_invActiveItem = items[currentItem];
 			// Return just selects, U actually uses the item
-			if (_keyScancode == Common::KEYCODE_u)
+			if (_keyScancode == Common::KEYCODE_u) {
+				debug("Use item #%d", _invActiveItem);
 				_itemStatus[_invActiveItem] = 2;
+			}
 			result = 1;
 			break;
 		default:
