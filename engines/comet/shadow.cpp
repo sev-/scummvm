@@ -1045,6 +1045,7 @@ int CometEngine::random(int maxValue) {
 
 void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 
+	int xPos, yPos;
 	int height = (y2 - y1 + 8) / 8 * 8 - (y2 - y1);
 	
 	x2 += (x2 - x1 + 8) / 8 * 8 - (x2 - x1);
@@ -1072,8 +1073,6 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 		y1 = y2 - height;
 	}
 	
-	int xPos, yPos;
-
 	for (yPos = y1 + 8; y2 - 8 >= yPos; yPos += 8) {
 		for (xPos = x1 + 8; x2 - 8 > xPos; xPos += 8) {
 			_screen->drawAnimationElement(_bubbleSprite, 8, xPos, yPos);
@@ -1118,8 +1117,7 @@ void CometEngine::setText(byte *text) {
 		text += strlen((char*)text) + 1;
 		if (textWidth != 0)
 			_textMaxTextHeight++;
-		lineCount++;
-		if (lineCount == 3 && *text != '*') {
+		if (++lineCount == 3 && *text != '*') {
 			_moreText = true;
 			break;
 		}
@@ -1341,13 +1339,9 @@ void CometEngine::handleInput() {
 }
 
 void CometEngine::skipText() {
-
 	_textDuration = 1;
 	_textActive = false;
-	
-	while (_keyScancode != Common::KEYCODE_INVALID && _keyDirection2 != 0)
-		handleEvents();
-
+	waitForKeys();
 }
 
 void CometEngine::handleKeyInput() {
@@ -1370,14 +1364,15 @@ void CometEngine::openVoiceFile(int index) {
 	snprintf(narFilename, 16, "D%02d.NAR", index);
 	
 	_narFile = new Common::File();
-	_narFile->open(narFilename);
-	
-	if (!_narFile->isOpen()) {
-		debug(4, "CometEngine::openVoiceFile()  Could not open %s", narFilename);
-		return;
-	}
-	
+
+	if (!_narFile->open(narFilename))
+		error("CometEngine::openVoiceFile()  Could not open %s", narFilename);
+
+	// TODO: Better don't read the offsets at all, only in playVoice
 	_narCount = _narFile->readUint32LE() / 4;
+	while (!_narFile->eos() && _narCount == 0) {
+		_narCount = _narFile->readUint32LE() / 4;
+	}
 	
 	_narOffsets = new uint32[_narCount + 1];
  	_narFile->seek(0);
@@ -1391,8 +1386,9 @@ void CometEngine::openVoiceFile(int index) {
 	
 void CometEngine::playVoice(int number) {
 
-	if (_mixer->isSoundHandleActive(_voiceHandle))
-		_mixer->stopHandle(_voiceHandle);
+	stopVoice();
+
+	debug("playVoice() number = %d; _narCount = %d", number, _narCount);
 
 	if (!_narOffsets || number >= _narCount)
 		return;
@@ -1433,6 +1429,11 @@ void CometEngine::playVoice(int number) {
 	byte *buffer = Audio::loadVOCFromStream(vocStream, size, rate);
 	_mixer->playRaw(Audio::Mixer::kSpeechSoundType, &_voiceHandle, buffer, size, rate, Audio::Mixer::FLAG_AUTOFREE | Audio::Mixer::FLAG_UNSIGNED);
 
+}
+
+void CometEngine::stopVoice() {
+	if (_mixer->isSoundHandleActive(_voiceHandle))
+		_mixer->stopHandle(_voiceHandle);
 }
 
 int CometEngine::checkLinesSub(int chapterNumber, int sceneNumber) {
@@ -1755,7 +1756,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 
 int CometEngine::handleReadBook() {
 
-	int pageNumber, pageCount, result = 0;
+	int pageNumber, pageCount, talkPageNumber = -1, result = 0;
 
 	// TODO: Use values from script
 	pageNumber = 4;
@@ -1763,14 +1764,23 @@ int CometEngine::handleReadBook() {
 
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
-	// TODO: Set speech file
+	// Set speech file
+	openVoiceFile(7);
 
 	while (!result) {
 
 		drawBookPage(pageNumber, pageCount, 64);
 
 		do {
-			// TODO: Play page speech
+			// Play page speech
+			if (talkPageNumber != pageNumber) {
+				if (pageNumber > 0) {
+					playVoice(pageNumber);
+				} else {
+					stopVoice();
+				}
+				talkPageNumber = pageNumber;
+			}
 			// TODO: Check mouse rectangles
 			handleEvents();
 			_system->delayMillis(20); // TODO: Adjust or use fps counter
@@ -1809,6 +1819,12 @@ int CometEngine::handleReadBook() {
 
 	}
 
+	waitForKeys();
+	stopVoice();
+ 	_textActive = false;
+
+	openVoiceFile(_narFileIndex);
+
 	result = 2 - result;
 	
 	return result;
@@ -1818,7 +1834,7 @@ int CometEngine::handleReadBook() {
 void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
 
 	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
-	Common::String pageNumberString;
+	char pageNumberString[10];
 	int pageNumberStringWidth;
 
 	byte *pageText = _textReader->getString(2, pageTextIndex);
@@ -1829,13 +1845,13 @@ void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fon
 		
 	_screen->setFontColor(58);
 
-	pageNumberString = Common::String::printf("- %d -", pageTextIndex * 2 + 1);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString.c_str());
-	_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString.c_str());
+	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 1);
+	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
+	_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
-	pageNumberString = Common::String::printf("- %d -", pageTextIndex * 2 + 2);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString.c_str());
-	_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString.c_str());
+ 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
+	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
+	_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
 	_screen->setFontColor(fontColor);
 	
