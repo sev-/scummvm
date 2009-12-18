@@ -305,6 +305,7 @@ Common::Error CometEngine::run() {
 		/* Debugging helpers ends here */
 		
 		updateGame();
+
 #if 1
 		//DEBUG
 		if (_chapterNumber == 9 && _sceneNumber == 0) {
@@ -395,6 +396,7 @@ Common::Error CometEngine::run() {
 		/* Debugging helpers ends here */
 
 		updateGame();
+		invCheckActiveItem();
 
 #if 1
 		//DEBUG - jump to scene
