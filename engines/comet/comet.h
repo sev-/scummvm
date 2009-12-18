@@ -252,6 +252,7 @@ public:
 
 	void openVoiceFile(int index);
 	void playVoice(int number);
+	void stopVoice();
 
 	void initAndLoadGlobalData();
 	void loadGlobalTextData();
