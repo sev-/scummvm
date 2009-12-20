@@ -964,6 +964,11 @@ void CometEngine::updateScreen() {
 
 	//TODO: seg011:0003 - seg011:004C
 	
+	if (_clearScreenRequest) {
+		_screen->clearScreen();
+		_clearScreenRequest = false;
+	}
+	
 	if (_currentChapterNumber == 9 && _currentSceneNumber == 0 && _paletteValue2 == 0) {
 		memcpy(_paletteBuffer, _ctuPal, 768);
 		memcpy(_ctuPal, _pali0Pal, 768);
@@ -1673,7 +1678,7 @@ int CometEngine::handleInventory() {
 			items.push_back(i);
 			if (i == _invActiveItem) {
 				firstItem = items.size() < 5 ? 0 : items.size() - 5;
-				currentItem = items.size();
+				currentItem = items.size() - 1;
 			}
 		}
 	}
@@ -1755,7 +1760,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 		_screen->drawAnimationElement(_iconeVa2, 53, 0, 0);
 
 	for (uint i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
-		byte *itemName = _textBuffer3->getString(firstItem + i);
+		byte *itemName = _textBuffer3->getString(items[firstItem + i]);
 		int x = xadd + 21, y = yadd + itemHeight * i;
 		_screen->setFontColor(120);
 		_screen->drawText(x, y, itemName);
@@ -1764,7 +1769,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 		x = xadd;
 		y = yadd +  + itemHeight * i - 3;
 		// TODO: Implement and use drawIcon instead
-		_screen->drawAnimationElement(_objectsVa2, _objectsVa2->_anims[firstItem + i]->frames[0]->elementIndex, x, y);
+		_screen->drawAnimationElement(_objectsVa2, _objectsVa2->_anims[items[firstItem + i]]->frames[0]->elementIndex, x, y);
 	}
 	
 	if (items.size() > 0) {

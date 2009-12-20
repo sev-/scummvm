@@ -161,6 +161,7 @@ public:
 	void o1_sceneObjectDelete(Script *script);
 	void o1_setObjectClipX(Script *script);
 	void o1_setObjectClipY(Script *script);
+	void o1_clearScreen(Script *script);
 	void o1_orVar(Script *script);
 	void o1_andVar(Script *script);
 	void o1_loadScene(Script *script);
