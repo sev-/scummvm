@@ -213,6 +213,24 @@ void Scene::filterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 
 }
 
+void Scene::superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
+
+	if (x - deltaX < 0)
+		x = deltaX + 1;
+	if (x + deltaX > 319)
+		x = 319 - deltaX - 1;
+
+	if (y - deltaY <= _boundsMap[x - deltaX])
+		y = _boundsMap[x - deltaX] + deltaY + 2;
+
+	if (y - deltaY <= _boundsMap[x + deltaX])
+		y = _boundsMap[x + deltaX] + deltaY + 2;
+
+	if (y > 199)
+		y = 199;
+
+}
+
 void Scene::initSceneBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;

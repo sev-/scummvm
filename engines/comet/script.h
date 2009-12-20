@@ -124,11 +124,13 @@ public:
 	void o1_objectWalkToY(Script *script);
 	void o1_loop(Script *script);
 	void o1_objectSetPosition(Script *script);
+	void o1_synchronize(Script *script);
 	void o1_sleep(Script *script);
 	void o1_if(Script *script);
 	void o1_ifHeroInZone(Script *script);
 	void o1_objectWalkToXRel(Script *script);
 	void o1_objectWalkToYRel(Script *script);
+	void o1_objectWalkToXYRel(Script *script);
 	void o1_blockInput(Script *script);
 	void o1_unblockInput(Script *script);
 	void o1_sceneObjectSetDirectionToHero(Script *script);
@@ -138,6 +140,7 @@ public:
 	void o1_addSceneObject(Script *script);
 	void o1_startScript(Script *script);
 	void o1_stopScript(Script *script);
+	void o1_startMultipleScripts(Script *script);
 	void o1_playCutscene(Script *script);
 	void o1_setVar(Script *script);
 	void o1_incVar(Script *script);
@@ -145,9 +148,12 @@ public:
 	void o1_sceneObjectDisableCollisions(Script *script);
 	void o1_sceneObjectEnableCollisions(Script *script);
 	void o1_objectWalkTo(Script *script);
+	void o1_setPaletteBrightness(Script *script);
 	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
 	void o1_setMarcheNumber(Script *script);
+	void o1_heroIncPositionY(Script *script);
+	void o1_setZoom(Script *script);
 	void o1_setZoomByItem(Script *script);
 	void o1_startDialog(Script *script);
 	void o1_waitUntilHeroExitZone(Script *script);
@@ -156,6 +162,7 @@ public:
 	void o1_setObjectClipX(Script *script);
 	void o1_setObjectClipY(Script *script);
 	void o1_orVar(Script *script);
+	void o1_andVar(Script *script);
 	void o1_loadScene(Script *script);
 	void o1_sceneObjectSetAnimNumber(Script *script);
 	void o1_addBlockingRect(Script *script);
@@ -173,6 +180,7 @@ public:
 	void o1_setRandomValue(Script *script);
 	void o1_setChapterNumber(Script *script);
 	void o1_actorTalk(Script *script);
+	void o1_loadSavegame(Script *script);
 	void o1_addSceneItem2(Script *script);
 	void o1_playAnim(Script *script);
 	void o1_actorTalkPortrait(Script *script);

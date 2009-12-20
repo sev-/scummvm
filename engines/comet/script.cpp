@@ -80,8 +80,6 @@ typedef Common::Functor1Mem<Script*, void, ScriptInterpreter> ScriptOpcodeF;
 	_opcodes.push_back(new ScriptOpcodeF(this, &ScriptInterpreter::x));  \
 	_opcodeNames.push_back(#x);
 void ScriptInterpreter::setupOpcodes() {
-	// TODO
-	
 	// 0
 	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_sceneObjectSetDirection);
@@ -92,7 +90,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_objectWalkToY);
 	RegisterOpcode(o1_loop);
 	RegisterOpcode(o1_objectSetPosition);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_synchronize);
 	RegisterOpcode(o1_sleep);
 	// 10
 	RegisterOpcode(o1_if);
@@ -103,7 +101,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 15
 	RegisterOpcode(o1_objectWalkToXRel);
 	RegisterOpcode(o1_objectWalkToYRel);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_objectWalkToXYRel);
 	RegisterOpcode(o1_blockInput);
 	RegisterOpcode(o1_unblockInput);
 	// 20
@@ -117,7 +115,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_startScript);
 	RegisterOpcode(o1_stopScript);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_startMultipleScripts);
 	// 30
 	RegisterOpcode(o1_playCutscene);
 	RegisterOpcode(o1_setVar);
@@ -127,8 +125,8 @@ void ScriptInterpreter::setupOpcodes() {
 	// 35
 	RegisterOpcode(o1_sceneObjectEnableCollisions);
 	RegisterOpcode(o1_objectWalkTo);
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
+	RegisterOpcode(o1_setPaletteBrightness);
 	RegisterOpcode(o1_waitUntilHeroExitZone);
 	// 40
 	RegisterOpcode(o1_waitUntilHeroEnterZone);
@@ -138,22 +136,22 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_setSceneNumber);
 	// 45
 	RegisterOpcode(o1_setAnimValues);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setMarcheNumber);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_heroIncPositionY);
 	RegisterOpcode(o1_nop);
 	// 50
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
+	RegisterOpcode(o1_setZoom);
 	RegisterOpcode(o1_setZoomByItem);
 	RegisterOpcode(o1_startDialog);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	// 55
 	RegisterOpcode(o1_nop);//TODO o1_setNeedToFillScreenFlag(_curScript);
 	RegisterOpcode(o1_orVar);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_andVar);
 	RegisterOpcode(o1_loadScene);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	// 60
 	RegisterOpcode(o1_addBlockingRect);
 	RegisterOpcode(o1_ifSpeak);
@@ -168,25 +166,25 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_objectSetTextColor);
 	// 70
 	RegisterOpcode(o1_setTextXY);
+	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_breakLoop);
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	// 75
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop);
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_playMusic);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setRandomValue);
 	// 80
 	RegisterOpcode(o1_setChapterNumber);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_actorTalk);
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_addSceneItem2);
+	RegisterOpcode(o1_loadSavegame);
+	RegisterOpcode(o1_addSceneItem2); // Unused in Comet CD
 	// 85
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);// TODO: op_waitForKey();
+	RegisterOpcode(o1_nop); // Unused in Comet CD
+	RegisterOpcode(o1_nop);// TODO: o1_waitForKey();
 	RegisterOpcode(o1_playAnim);
 	RegisterOpcode(o1_sceneObjectSetAnimNumber);
 	RegisterOpcode(o1_actorTalkPortrait);
@@ -608,6 +606,12 @@ void ScriptInterpreter::o1_objectSetPosition(Script *script) {
 
 }
 
+void ScriptInterpreter::o1_synchronize(Script *script) {
+	script->scriptNumber = script->readByte();
+	script->status |= kScriptSynchronize;
+	_yield = true;
+}
+
 void ScriptInterpreter::o1_sleep(Script *script) {
 
 	int sleepCount = script->readByte();
@@ -654,6 +658,26 @@ void ScriptInterpreter::o1_objectWalkToYRel(Script *script) {
 	debug(2, "o1_objectWalkToYRel()");
 
 	objectWalkToXYRel(script, true);
+}
+
+void ScriptInterpreter::o1_objectWalkToXYRel(Script *script) {
+	debug(2, "o1_objectWalkToXYRel()");
+
+	SceneObject *playerObject = getSceneObject(0);
+	SceneObject *sceneObject = script->object();
+	int deltaX = script->readByte();
+	int deltaY = script->readByte();
+	int x = playerObject->x + deltaX;
+	int y = playerObject->y + deltaY;
+
+	sceneObject->directionChanged = 0;
+	_vm->_scene->superFilterWalkDestXY(x, y, sceneObject->deltaX, sceneObject->deltaY);
+	sceneObject->walkStatus = 0;
+	if (_vm->sceneObjectStartWalking(script->objectIndex, x, y)) {
+		script->status |= kScriptWalking;
+		_yield = true;
+	}
+
 }
 
 void ScriptInterpreter::o1_blockInput(Script *script) {
@@ -742,6 +766,14 @@ void ScriptInterpreter::o1_stopScript(Script *script) {
 
 }
 
+void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
+	int scriptNumber;
+	while ((scriptNumber = script->readByte()) != 0xFF) {
+		prepareScript(scriptNumber);
+		_scripts[scriptNumber]->status &= ~kScriptPaused;
+	}
+}
+
 void ScriptInterpreter::o1_playCutscene(Script *script) {
 
 	int fileIndex = script->readByte();
@@ -823,6 +855,12 @@ void ScriptInterpreter::o1_objectWalkTo(Script *script) {
 
 }
 
+void ScriptInterpreter::o1_setPaletteBrightness(Script *script) {
+	_vm->_paletteBrightness = script->readByte();
+	_vm->_screen->buildPalette(_vm->_ctuPal, _vm->_palette, _vm->_paletteBrightness);
+	_vm->_screen->setFullPalette(_vm->_palette);
+}
+
 void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 
 	int sceneNumber = script->readByte();
@@ -856,6 +894,21 @@ void ScriptInterpreter::o1_setMarcheNumber(Script *script) {
 	
 	debug(2, "o1_setMarcheNumber(%d)", _vm->_marcheNumber);
 	
+}
+
+void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
+	SceneObject *playerObject = getSceneObject(0);
+	_vm->sceneObjectSetPosition(script->objectIndex, playerObject->x, playerObject->y + 1);
+}
+
+void ScriptInterpreter::o1_setZoom(Script *script) {
+
+	int zoomX = script->readByte() * 2;
+	int zoomY = script->readByte();
+	int zoomFactor = script->readByte();
+
+	_vm->_screen->setZoom(zoomFactor, zoomX, zoomY);
+
 }
 
 void ScriptInterpreter::o1_setZoomByItem(Script *script) {
@@ -945,13 +998,17 @@ void ScriptInterpreter::o1_setObjectClipY(Script *script) {
 }
 
 void ScriptInterpreter::o1_orVar(Script *script) {
-	debug(2, "o1_orVar");
-
 	int varIndex = script->readInt16();
 	int value = script->loadValue();
 	int *varPtr = getVarPointer(varIndex);
 	*varPtr |= value;
-	
+}
+
+void ScriptInterpreter::o1_andVar(Script *script) {
+	int varIndex = script->readInt16();
+	int value = script->loadValue();
+	int *varPtr = getVarPointer(varIndex);
+	*varPtr &= value;
 }
 
 void ScriptInterpreter::o1_loadScene(Script *script) {
@@ -1139,6 +1196,11 @@ void ScriptInterpreter::o1_actorTalk(Script *script) {
 	_curScript->status |= kScriptTalking;
 	_yield = true;
 
+}
+
+void ScriptInterpreter::o1_loadSavegame(Script *script) {
+	_vm->_needToLoadSavegameFlag = true;
+	_yield = true;
 }
 
 void ScriptInterpreter::o1_addSceneItem2(Script *script) {

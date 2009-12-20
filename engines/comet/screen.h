@@ -32,6 +32,7 @@ public:
 	void enableTransitionEffect();
 	void setZoom(int zoomFactor, int x, int y);
 	void setFadeType(PaletteFadeType fadeType);
+	PaletteFadeType getFadeType() const { return _fadeType; }
 	void setFadeStep(int fadeStep);
 
 	void screenZoomEffect2x(int x, int y);

@@ -72,6 +72,7 @@ public:
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
+	void superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 
 //protected:
 public: // while still in progress
