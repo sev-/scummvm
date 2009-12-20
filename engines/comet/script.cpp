@@ -147,7 +147,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_startDialog);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	// 55
-	RegisterOpcode(o1_nop);//TODO o1_setNeedToFillScreenFlag(_curScript);
+	RegisterOpcode(o1_clearScreen);
 	RegisterOpcode(o1_orVar);
 	RegisterOpcode(o1_andVar);
 	RegisterOpcode(o1_loadScene);
@@ -995,6 +995,10 @@ void ScriptInterpreter::o1_setObjectClipY(Script *script) {
 	script->object()->clipY1 = clipY1;
 	script->object()->clipY2 = clipY2;
 
+}
+
+void ScriptInterpreter::o1_clearScreen(Script *script) {
+	_vm->_clearScreenRequest = true;
 }
 
 void ScriptInterpreter::o1_orVar(Script *script) {

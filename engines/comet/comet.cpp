@@ -206,6 +206,8 @@ Common::Error CometEngine::run() {
 	memset(_marcheItems, 0, sizeof(_marcheItems));
 	memset(_sceneObjects, 0, sizeof(_sceneObjects));
 
+	_clearScreenRequest = false;
+
 	_paletteValue2 = 0;
 	_marcheNumber = 0;
 	_textActive = false;
@@ -378,19 +380,21 @@ Common::Error CometEngine::run() {
 		// DEBUG
 		if (_keyScancode == Common::KEYCODE_KP_PLUS) {
 			_sceneNumber++;
-			debug(4, "## New _sceneNumber = %d", _sceneNumber);
+			debug("## New _sceneNumber = %d", _sceneNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_MINUS) {
 			if (_sceneNumber > 0) {
-				debug(4, "## New _sceneNumber = %d", _sceneNumber);
+				debug("## New _sceneNumber = %d", _sceneNumber);
 				_sceneNumber--;
 			}
 		} if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
 			_chapterNumber++;
 			_sceneNumber = 0;
+			debug("## New _chapterNumber = %d", _chapterNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_DIVIDE) {
 			if (_chapterNumber > 0) {
 				_chapterNumber--;
 				_sceneNumber = 0;
+				debug("## New _chapterNumber = %d", _chapterNumber);
 			}
 		}
 		/* Debugging helpers ends here */

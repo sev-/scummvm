@@ -187,6 +187,7 @@ public:
 	int _paletteValue2;
 	byte *_paletteBuffer;
 	int _paletteBrightness;
+	bool _clearScreenRequest;
 
 	int _backgroundFileIndex;
 
