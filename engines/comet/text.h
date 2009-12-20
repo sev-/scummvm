@@ -17,8 +17,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- * $URL: https://www.switchlink.se/svn/comet/scene.h $
- * $Id: comet.h 46 2009-06-07 14:17:12Z johndoe $
+ * $URL$
+ * $Id$
  *
  */
 
