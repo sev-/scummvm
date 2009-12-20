@@ -275,7 +275,7 @@ void CometEngine::updateGame() {
 		sceneObjectStartWalking(0, _mouseX, _mouseY);
 	}
 	*/
-	
+
 	_script->runAllScripts();
 
 	if (_needToLoadSavegameFlag)
@@ -493,7 +493,7 @@ void CometEngine::updateStaticObjects() {
 
 void CometEngine::sceneObjectsEnqueueForDrawing() {
 	for (int i = 0; i < 11; i++) {
-		if (_sceneObjects[i].life != 0 && _sceneObjects[i].visible) {
+		if (_sceneObjects[i].visible && _sceneObjects[i].life > 0) {
 			sceneObjectEnqueueForDrawing(_sceneObjects[i].y, i);
 		}
 	}
@@ -534,7 +534,7 @@ void CometEngine::drawActor(int objectIndex) {
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
 	int x = sceneObject->x, y = sceneObject->y;
-	int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
+	//int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
 
 	Animation *animation = _marcheItems[sceneObject->marcheIndex].anim;
 	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
@@ -763,7 +763,7 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 void CometEngine::resetVars() {
 
 	//TODO: scDisableRectFlag();
-	//TODO: _palValue = 255;
+	_paletteBrightness = 255;
 	//TODO: g_sp_byte_1 = 0;
 	_cmdGet = false;
 	_cmdLook = false;
@@ -1960,12 +1960,10 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 	
 	loadSceneBackground();
 	
-	/* TODO
-	if (_paletteMode == 0) {
-		buildPalette(_ctuPal, _palette, _palValue);
+	if (_screen->getFadeType() == kFadeNone) {
+		_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
 		_screen->setFullPalette(_palette);
 	}
-	*/
 
 }
 

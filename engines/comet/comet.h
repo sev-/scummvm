@@ -186,6 +186,7 @@ public:
 
 	int _paletteValue2;
 	byte *_paletteBuffer;
+	int _paletteBrightness;
 
 	int _backgroundFileIndex;
 
