@@ -813,7 +813,7 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 
 	if (sceneObject->collisionType == 1 || sceneObject->collisionType == 2) {
 		// TODO
-		//debug(4, "CometEngine::sceneObjectHandleCollision()");
+		debug("sceneObjectMoveAroundBounds");
 		sceneObjectMoveAroundBounds(objectIndex, sceneObject);
 	} else if (sceneObject->collisionType == 6 && sceneObject->value6 == 6 && sceneObject->linesIndex == 0) {
 		// TODO
@@ -824,6 +824,7 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 			sceneObjectUpdateLife(sceneObject, sceneObject->life);
 		}
 	} else {
+		debug("sceneObjectMoveAroundObstacle");
 		sceneObjectMoveAroundObstacle(objectIndex, sceneObject, obstacleRect);
 	}
 
@@ -1204,9 +1205,7 @@ void CometEngine::handleEvents() {
 		switch (event.type) {
 
 			case Common::EVENT_KEYDOWN:
-
 				waitForKeyRelease = false;
-
 				switch (event.kbd.keycode) {
 				case Common::KEYCODE_UP:
 					_keyDirection = 1;
@@ -1228,9 +1227,7 @@ void CometEngine::handleEvents() {
 				break;
 
 			case Common::EVENT_KEYUP:
-
 				waitForKeyRelease = false;
-
 				switch (event.kbd.keycode) {
 				case Common::KEYCODE_UP:
 					_keyDirection &= ~1;
@@ -1346,7 +1343,7 @@ void CometEngine::handleInput() {
 void CometEngine::skipText() {
 	_textDuration = 1;
 	_textActive = false;
-	waitForKeys();
+	//waitForKeys();
 }
 
 void CometEngine::handleKeyInput() {
@@ -1975,7 +1972,7 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 void CometEngine::sceneObjectMoveAroundBounds(int index, SceneObject *sceneObject) {
 
 	int x = sceneObject->x;
-	int y = sceneObject->y;
+	int y = sceneObject->walkDestY;
 
 	debug(1, "sceneObjectMoveAroundBounds(%d); 1) x = %d; y = %d", index, x, y);
 	

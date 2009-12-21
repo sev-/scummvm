@@ -161,7 +161,7 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 		if (sceneObject->walkStatus & 3) {
 			sceneObject->walkStatus ^= 3;
 		} else {
-			sceneObject->walkStatus |= 1;//DEBUG (random(2) + 1);
+			sceneObject->walkStatus |= (random(2) + 1);
 		}
 	} else {
 		sceneObject->walkStatus &= ~3;

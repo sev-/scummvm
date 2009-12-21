@@ -173,6 +173,7 @@ public:
 	void o1_ifLook(Script *script);
 	void o1_ifLookAt(Script *script);
 	void o1_ifLookZone(Script *script);
+	void o1_addBeam(Script *script);
 	void o1_removeBlockingRect(Script *script);
 	void o1_objectSetTextColor(Script *script);
 	void o1_setTextXY(Script *script);
