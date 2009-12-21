@@ -161,7 +161,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 65
 	RegisterOpcode(o1_ifLookAt);
 	RegisterOpcode(o1_ifLookZone);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_addBeam);//TODO
 	RegisterOpcode(o1_removeBlockingRect);
 	RegisterOpcode(o1_objectSetTextColor);
 	// 70
@@ -1128,32 +1128,31 @@ void ScriptInterpreter::o1_ifLookZone(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
+void ScriptInterpreter::o1_addBeam(Script *script) {
+	int x1 = script->readByte() * 2;
+	int y1 = script->readByte();
+	int x2 = script->readByte() * 2;
+	int y2 = script->readByte();
+	// TODO: Actually add the line
+}
 
+void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 	int x = script->readByte() * 2;
 	int y = script->readByte();
-
 	_vm->_scene->removeBlockingRect(x, y);
-	
 }
 
 void ScriptInterpreter::o1_objectSetTextColor(Script *script) {
 	debug(2, "o1_objectSetTextColor");
-
 	script->object()->textColor = script->readByte();
-	
 }
 
 void ScriptInterpreter::o1_setTextXY(Script *script) {
-
 	int textX = script->readByte() * 2;
 	int textY = script->readByte();
-
 	debug(2, "o1_setTextXY(%d, %d)", textX, textY);
-
 	script->object()->textX = textX;
 	script->object()->textY = textY;
-	
 }
 
 void ScriptInterpreter::o1_breakLoop(Script *script) {
@@ -1162,18 +1161,14 @@ void ScriptInterpreter::o1_breakLoop(Script *script) {
 }
 
 void ScriptInterpreter::o1_playMusic(Script *script) {
-
 	int fileIndex = script->readByte();
-
 	debug(2, "o1_playMusic(%d)", fileIndex);
-
 	if (fileIndex != 0xFF) {
 		_vm->_music->playMusic(fileIndex);
 	} else {
 		//TODO: musicFadeDown();
 		_vm->_music->stopMusic();
 	}
-
 }
 
 void ScriptInterpreter::o1_setRandomValue(Script *script) {
