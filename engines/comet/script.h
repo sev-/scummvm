@@ -49,6 +49,7 @@ public:
 	byte debugOpcode;
 	int16 objectIndex;
 	uint16 status;
+	uint16 resumeIp; // FIXME: Remove this hacky thing
 	int scriptNumber;
 	int counter;
 	int x, y, x2, y2;
@@ -90,11 +91,12 @@ public:
 	void setupOpcodes();
 
 	void initializeScript();
+	void initializeScriptAfterLoadGame();
 	void prepareScript(int scriptNumber);
 	void runScript(int scriptNumber);
 	void runAllScripts();
 	//TODO: Use something like getGlobalVar(index) and setGlobalVar(index, value) instead?
-	int *getVarPointer(int varIndex);
+	int16 *getVarPointer(int varIndex);
 
 	bool evalBoolOp(int value1, int value2, int boolOp);
 

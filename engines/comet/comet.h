@@ -77,29 +77,28 @@ enum {
 };
 
 struct SceneObject {
-	int x, y;
-	int directionAdd, directionChanged, direction;
-	int flag2;
-	int marcheIndex;
-	int animIndex;
-	int animFrameIndex;
-	int value4;
-	int animFrameCount;
-	int animSubIndex2;
-	int deltaX, deltaY;
+	int16 x, y;
+	int16 directionAdd, directionChanged, direction;
+	byte flag2;
+	int16 marcheIndex;
+	int16 animIndex;
+	int16 animFrameIndex;
+	int16 value4;
+	int16 animFrameCount;
+	int16 animSubIndex2;
+	int16 deltaX, deltaY;
 	uint16 collisionType;
-	int linesIndex;
-	int value6;
-	int life;
-	int textColor;
-	int value7;
-	int textX, textY;
+	int16 linesIndex;
+	byte value6;
+	int16 life;
+	byte textColor;
+	byte value7;
+	int16 textX, textY;
 	uint16 walkStatus;
-	int walkDestX, walkDestY;
-	int savedWalkDestX, savedWalkDestY;
+	int16 walkDestX, walkDestY;
+	int16 savedWalkDestX, savedWalkDestY;
 	int16 clipX1, clipY1, clipX2, clipY2;
 	bool visible;
-	int value8;
 };
 
 struct MarcheItem {
@@ -201,19 +200,19 @@ public:
 	/* Input related */
 	Common::KeyCode _keyScancode;
 	int _keyDirection, _keyDirection2;
-	int _mouseButtons4, _mouseButtons5;
+	int16 _mouseButtons4, _mouseButtons5;
 	int _mouseX, _mouseY;
 	bool _mouseLeft;
 	int _mouseCursor2;
 	int _mouseFlag;
-	int _scriptMouseFlag;
+	int16 _scriptMouseFlag;
 
-	bool _needToLoadSavegameFlag, _loadingGameFlag;
+	bool _needToLoadSavegameFlag;
 	
-	int _startupChapterNumber, _startupSceneNumber;
-	int _chapterNumber, _sceneNumber;
-	int _currentChapterNumber, _currentSceneNumber;
-	int _prevChapterNumber, _prevSceneNumber;
+	int16 _startupChapterNumber, _startupSceneNumber;
+	int16 _chapterNumber, _sceneNumber;
+	int16 _currentChapterNumber, _currentSceneNumber;
+	int16 _prevChapterNumber, _prevSceneNumber;
 
 	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
 	Animation *_sceneObjectsSprite;
@@ -236,7 +235,7 @@ public:
 	
 	bool _endLoopFlag;
 	
-	int _scriptRandomValue;
+	int16 _scriptRandomValue;
 	
 	/* Audio */
 	MusicPlayer *_music;
@@ -308,7 +307,7 @@ public:
 
 	void updateScreen();
 
-	int random(int maxValue);
+	int16 random(int maxValue);
 	
 	/* Graphics */
 	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
@@ -320,7 +319,7 @@ public:
 	void setTextEx(int index, byte *text);
 
 	/* Scene */
-	void initSceneBackground();
+	void initSceneBackground(bool loadingGame = false);
 	void initStaticObjectRects();
 	void loadSceneBackground();
 	void loadStaticObjects();
@@ -383,13 +382,41 @@ public:
 	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 
 	/* Script */
-	int *_systemVars[256];
-	int _scriptVars[256], _itemStatus[256];
-	void loadAndRunScript();
+	int16 *_systemVars[256];
+	int16 _scriptVars[256], _itemStatus[256];
+	void loadAndRunScript(bool loadingGame = false);
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	bool isActorNearActor(int objectIndex1, int objectIndex2, int x, int y);
 	bool isPlayerInZone(int x, int y, int x2, int y2);
+
+	/* Save/load */
+
+	enum kReadSaveHeaderError {
+		kRSHENoError = 0,
+		kRSHEInvalidType = 1,
+		kRSHEInvalidVersion = 2,
+		kRSHEIoError = 3
+	};
+
+	struct SaveHeader {
+		Common::String description;
+		uint32 version;
+		byte gameID;
+		uint32 flags;
+		Graphics::Surface *thumbnail;
+	};
+
+	bool _isSaveAllowed;
+	bool canLoadGameStateCurrently() { return _isSaveAllowed; }
+	bool canSaveGameStateCurrently() { return _isSaveAllowed; }
+	Common::Error loadGameState(int slot);
+	Common::Error saveGameState(int slot, const char *description);
+	void savegame(const char *filename, const char *description);
+	void loadgame(const char *filename);
+	const char *getSavegameFilename(int num);
+	static Common::String getSavegameFilename(const Common::String &target, int num);
+	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
 
 public:
 	/* Misc */

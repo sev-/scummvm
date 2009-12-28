@@ -31,8 +31,7 @@ void Script::jump() {
 
 uint16 Script::loadVarValue() {
 	int varIndex = readInt16();
-	int value = *_inter->getVarPointer(varIndex);
-	return value;
+	return *_inter->getVarPointer(varIndex);
 }
 
 uint16 Script::loadValue() {
@@ -224,6 +223,19 @@ void ScriptInterpreter::initializeScript() {
 
 }
 
+void ScriptInterpreter::initializeScriptAfterLoadGame() {
+
+	debug(2, "CometEngine::initializeScriptAfterLoadGame()  _scriptCount = %d", _scriptCount);
+
+	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++) {
+		Script *script = _scripts[scriptNumber];
+		uint16 ofs = READ_LE_UINT16(_scriptData + scriptNumber * 2);
+		script->code = _scriptData + ofs;
+		script->ip = script->code + script->resumeIp;
+	}
+
+}
+
 void ScriptInterpreter::prepareScript(int scriptNumber) {
 
 	Script *script = _scripts[scriptNumber];
@@ -411,7 +423,7 @@ void ScriptInterpreter::runAllScripts() {
 	}
 }
 
-int *ScriptInterpreter::getVarPointer(int varIndex) {
+int16 *ScriptInterpreter::getVarPointer(int varIndex) {
 
 	if (varIndex < 1000) {
 		assert(_vm->_systemVars[varIndex]);
@@ -796,7 +808,7 @@ void ScriptInterpreter::o1_setVar(Script *script) {
 
 	debug(2, "o1_setVar(%d, %d)", varIndex, value);
 
-	int *varPtr = getVarPointer(varIndex);
+	int16 *varPtr = getVarPointer(varIndex);
 	*varPtr = value;
 	
 }
@@ -808,7 +820,7 @@ void ScriptInterpreter::o1_incVar(Script *script) {
 
 	debug(2, "o1_incVar(%d, %d)", varIndex, value);
 
-	int *varPtr = getVarPointer(varIndex);
+	int16 *varPtr = getVarPointer(varIndex);
 	*varPtr += value;
 
 }
@@ -820,7 +832,7 @@ void ScriptInterpreter::o1_subVar(Script *script) {
 
 	debug(2, "o1_subVar(%d, %d)", varIndex, value);
 
-	int *varPtr = getVarPointer(varIndex);
+	int16 *varPtr = getVarPointer(varIndex);
 	*varPtr -= value;
 
 }
@@ -1004,14 +1016,14 @@ void ScriptInterpreter::o1_clearScreen(Script *script) {
 void ScriptInterpreter::o1_orVar(Script *script) {
 	int varIndex = script->readInt16();
 	int value = script->loadValue();
-	int *varPtr = getVarPointer(varIndex);
+	int16 *varPtr = getVarPointer(varIndex);
 	*varPtr |= value;
 }
 
 void ScriptInterpreter::o1_andVar(Script *script) {
 	int varIndex = script->readInt16();
 	int value = script->loadValue();
-	int *varPtr = getVarPointer(varIndex);
+	int16 *varPtr = getVarPointer(varIndex);
 	*varPtr &= value;
 }
 
