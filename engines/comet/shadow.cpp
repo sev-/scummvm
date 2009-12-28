@@ -108,7 +108,7 @@ void CometEngine::drawSceneExits() {
 
 /* Scene */
 
-void CometEngine::initSceneBackground() {
+void CometEngine::initSceneBackground(bool loadingGame) {
 	
 	_screen->clearScreen();
 	
@@ -124,7 +124,7 @@ void CometEngine::initSceneBackground() {
 		screen_c_1();
 	*/
 	
-	if (!_loadingGameFlag)
+	if (!loadingGame)
 		initStaticObjectRects();
 
 }
@@ -281,7 +281,6 @@ void CometEngine::updateGame() {
 	if (_needToLoadSavegameFlag)
 		return;
 
-	debug(1, "CometEngine::updateGame() #1");
 	drawSceneExits();
 	sceneObjectsUpdateAnimations();
 	sceneObjectsUpdateMovement();
@@ -291,7 +290,6 @@ void CometEngine::updateGame() {
 
 	drawSprites();
 
-	debug(1, "CometEngine::updateGame() #2");
 	if (_talkieMode == 0)
 		updateTextDialog();
 
@@ -926,7 +924,7 @@ void CometEngine::sceneObjectEnqueueForDrawing(int y, int objectIndex) {
 
 }
 
-void CometEngine::loadAndRunScript() {
+void CometEngine::loadAndRunScript(bool loadingGame) {
 
 	Common::File fd;
 	uint32 ofs;
@@ -938,12 +936,12 @@ void CometEngine::loadAndRunScript() {
 	fd.read(_script->_scriptData, 3000);
 	fd.close();
 
-	if (!_loadingGameFlag) {
+	if (!loadingGame) {
 		resetVars();
 		sceneObjectsResetFlags();
 		_script->initializeScript();
 	} else {
-		//TODO: ScriptInterpreter_initializeAfterLoadGame
+		_script->initializeScriptAfterLoadGame();
 	}
 
 }
@@ -1042,7 +1040,7 @@ void CometEngine::actorTalkWithAnim(int objectIndex, int talkTextIndex, int anim
 
 }
 
-int CometEngine::random(int maxValue) {
+int16 CometEngine::random(int maxValue) {
 	if (maxValue >= 2)
 		return _rnd->getRandomNumber(maxValue - 1);
 	else
@@ -1107,6 +1105,8 @@ void CometEngine::setText(byte *text) {
 	int lineCount = 0;
 
 	_currentText = text;
+	
+	debug("_currentText = %s", _currentText);
 
 	_textMaxTextHeight = 0;
 	_textMaxTextWidth = 0;
@@ -1160,32 +1160,32 @@ bool CometEngine::isActorNearActor(int objectIndex1, int objectIndex2, int x, in
 	sceneObject1 = getSceneObject(objectIndex1);
 	sceneObject2 = getSceneObject(objectIndex2);
 
-	Common::Rect rect1(
+	Common::Rect actorRect1(
 		sceneObject1->x - sceneObject1->deltaX,
 		sceneObject1->y - sceneObject1->deltaY,
 		sceneObject1->x + sceneObject1->deltaX,
 		sceneObject1->y);
 
-	Common::Rect rect2(
+	Common::Rect actorRect2(
 		sceneObject2->x - x / 2,
 		sceneObject2->y - y / 2,
 		sceneObject2->x + x / 2,
 		sceneObject2->y + y / 2);
 
-	return rectCompare(rect1, rect2);
+	return rectCompare(actorRect1, actorRect2);
 
 }
 
 bool CometEngine::isPlayerInZone(int x, int y, int x2, int y2) {
 
-	Common::Rect rect1(x, y, x2, y2);
-	Common::Rect rect2(
+	Common::Rect zoneRect(x, y, x2, y2);
+	Common::Rect playerRect(
 		_sceneObjects[0].x - _sceneObjects[0].deltaX,
 		_sceneObjects[0].y - _sceneObjects[0].deltaY,
 		_sceneObjects[0].x + _sceneObjects[0].deltaX,
 		_sceneObjects[0].y);
 	
-	return rectCompare(rect1, rect2);
+	return rectCompare(zoneRect, playerRect);
 
 }
 

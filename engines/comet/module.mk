@@ -12,6 +12,7 @@ MODULE_OBJS = \
 	sceneobjects.o \
 	screen.o \
 	marche.o \
+	saveload.o \
 	shadow.o \
 	music.o \
 	sound.o \

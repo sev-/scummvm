@@ -145,8 +145,9 @@ void CometEngine::freeMarcheAnims() {
 
 void CometEngine::loadAllMarche() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].marcheNumber == 0 && _marcheItems[i].anim != NULL) {
-			delete _marcheItems[i].anim; // CHECKME: Workaround for memory/freezing bug
+		// In original but odd: if (_marcheItems[i].marcheNumber == 0 && _marcheItems[i].anim != NULL) {
+		if (_marcheItems[i].marcheNumber == 0 && _marcheItems[i].fileIndex != -1) {
+			delete _marcheItems[i].anim;
 			_marcheItems[i].anim = loadMarcheData(AName, _marcheItems[i].fileIndex);
 		} else {
 			_marcheItems[i].anim = getMarcheAnim(_marcheItems[i].marcheNumber);

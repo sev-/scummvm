@@ -37,7 +37,6 @@ struct SceneExitItem {
 	int directionIndex;
 	int chapterNumber;
 	int sceneNumber;
-	//int unused;
 	int x1, x2;
 };
 #endif

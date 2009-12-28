@@ -217,7 +217,6 @@ Common::Error CometEngine::run() {
 
 	_sceneObjectsSprite = NULL;
 	_needToLoadSavegameFlag = false;
-	_loadingGameFlag = false;
  	//_sceneExits.clear();
 
 	_portraitTalkCounter = 0;
@@ -375,6 +374,17 @@ Common::Error CometEngine::run() {
 		} else if (_keyScancode == Common::KEYCODE_b) {
 			// DEBUG only
 			handleReadBook();
+		}
+
+		switch (_keyScancode) {
+		case Common::KEYCODE_F7:
+			savegame("comet.000", "Quicksave");
+			break;
+		case Common::KEYCODE_F9:
+			loadgame("comet.000");
+			break;
+		default:
+			break;
 		}
 
 		// DEBUG

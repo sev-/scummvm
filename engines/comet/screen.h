@@ -76,7 +76,7 @@ public:
 
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
 
-protected:
+//protected:
 
 	CometEngine *_vm;
 
