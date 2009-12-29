@@ -80,7 +80,7 @@ struct SceneObject {
 	int16 x, y;
 	int16 directionAdd, directionChanged, direction;
 	byte flag2;
-	int16 marcheIndex;
+	int16 animationSlot;
 	int16 animIndex;
 	int16 animFrameIndex;
 	int16 value4;
@@ -101,9 +101,9 @@ struct SceneObject {
 	bool visible;
 };
 
-struct MarcheItem {
-	int marcheNumber;
-	int fileIndex;
+struct AnimationSlot {
+	int16 animationType;
+	int16 fileIndex;
 	Animation *anim;
 };
 
@@ -175,8 +175,8 @@ public:
 
 	byte *_palette;
 
-	MarcheItem _marcheItems[20];
-	int _marcheNumber;
+	AnimationSlot _marcheItems[20];
+	int16 _animationType;
 
 	SceneObject _sceneObjects[11];
 
@@ -342,21 +342,21 @@ public:
 	void resetHeroDirectionChanged();
 
 	/* Marche */
-	int findMarcheItem(int marcheNumber, int fileIndex);
-	int findFreeMarcheSlot();
-	bool isMarcheLoaded(int marcheIndex);
-	void clearMarcheByIndex(int marcheIndex);
-	Animation *loadMarcheData(const char *pakFilename, int fileIndex);
-	Animation *getMarcheAnim(int marcheNumber);
-	void freeAllMarche();
+	int findAnimationSlot(int16 animationType, int16 fileIndex);
+	int findFreeAnimationSlot();
+	bool isAnimationSlotUsed(int16 animationSlot);
+	void clearMarcheByIndex(int16 animationSlot);
+	Animation *loadAnimationResource(const char *pakFilename, int fileIndex);
+	Animation *getGlobalAnimationResource(int16 animationType);
+	void purgeUnusedAnimationSlots();
 	void freeMarche();
-	int loadMarche(int marcheNumber, int fileIndex);
+	int getAnimationResource(int16 animationType, int16 fileIndex);
 	void freeMarcheAnims();
 	void loadAllMarche();
 	void unloadSceneObjectSprite(SceneObject *sceneObject);
 
 	/* SceneObject */
-	void sceneObjectInit(int itemIndex, int marcheIndex);
+	void sceneObjectInit(int itemIndex, int16 animationSlot);
 	void sceneObjectSetDirection(SceneObject *sceneObject, int direction);
 	void sceneObjectSetDirectionAdd(SceneObject *sceneObject, int directionAdd);
 	void sceneObjectSetAnimNumber(SceneObject *sceneObject, int index);

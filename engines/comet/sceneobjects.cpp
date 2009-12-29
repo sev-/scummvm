@@ -7,7 +7,7 @@ namespace Comet {
 
 /* SceneObject */
 
-void CometEngine::sceneObjectInit(int itemIndex, int marcheIndex) {
+void CometEngine::sceneObjectInit(int itemIndex, int16 animationSlot) {
 
 	SceneObject *sceneObject = &_sceneObjects[itemIndex];
 	
@@ -17,7 +17,7 @@ void CometEngine::sceneObjectInit(int itemIndex, int marcheIndex) {
 	sceneObject->direction = 1;
 	sceneObjectSetDirectionAdd(sceneObject, 0);
 	sceneObjectSetAnimNumber(sceneObject, 0);
-	sceneObject->marcheIndex = marcheIndex;
+	sceneObject->animationSlot = animationSlot;
 	
 	sceneObject->deltaX = 4;
 	sceneObject->deltaY = 2;
@@ -53,8 +53,8 @@ void CometEngine::sceneObjectSetDirectionAdd(SceneObject *sceneObject, int direc
 }
 
 void CometEngine::sceneObjectSetAnimNumber(SceneObject *sceneObject, int index) {
-	if (sceneObject->marcheIndex != -1) {
-		sceneObject->animFrameCount = _marcheItems[sceneObject->marcheIndex].anim->_anims[index]->frames.size();
+	if (sceneObject->animationSlot != -1) {
+		sceneObject->animFrameCount = _marcheItems[sceneObject->animationSlot].anim->_anims[index]->frames.size();
 	} else {
 		sceneObject->animFrameCount = 0;
 	}

@@ -153,7 +153,7 @@ public:
 	void o1_setPaletteBrightness(Script *script);
 	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
-	void o1_setMarcheNumber(Script *script);
+	void o1_setAnimationType(Script *script);
 	void o1_heroIncPositionY(Script *script);
 	void o1_setZoom(Script *script);
 	void o1_setZoomByItem(Script *script);

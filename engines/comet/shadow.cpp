@@ -138,7 +138,7 @@ void CometEngine::loadStaticObjects() {
 	
 	debug(8, "CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
 	
-	_sceneObjectsSprite = loadMarcheData(DName, _backgroundFileIndex + 1);
+	_sceneObjectsSprite = loadAnimationResource(DName, _backgroundFileIndex + 1);
 }
 
 void CometEngine::drawSceneForeground() {
@@ -157,17 +157,17 @@ void CometEngine::initAndLoadGlobalData() {
 
 	_screen->loadFont("RES.PAK", 0);
 
-	_bubbleSprite = loadMarcheData("RES.PAK", 1);
-	_heroSprite = loadMarcheData("RES.PAK", 2);
-	_objectsVa2 = loadMarcheData("RES.PAK", 4);
+	_bubbleSprite = loadAnimationResource("RES.PAK", 1);
+	_heroSprite = loadAnimationResource("RES.PAK", 2);
+	_objectsVa2 = loadAnimationResource("RES.PAK", 4);
 
 	_ctuPal = loadFromPak("RES.PAK", 5);
 	_flashbakPal = loadFromPak("RES.PAK", 6);
 	_cdintroPal = loadFromPak("RES.PAK", 7);
 	_pali0Pal = loadFromPak("RES.PAK", 8);
 
-	_cursorVa2 = loadMarcheData("RES.PAK", 9);
-	_iconeVa2 = loadMarcheData("RES.PAK", 3);
+	_cursorVa2 = loadAnimationResource("RES.PAK", 9);
+	_iconeVa2 = loadAnimationResource("RES.PAK", 3);
 	
 	_screen->setFontColor(0);
 
@@ -220,7 +220,7 @@ void CometEngine::initData() {
 	
 	sceneObjectsResetFlags();
 
-	sceneObjectInit(0, loadMarche(1, 0));
+	sceneObjectInit(0, getAnimationResource(1, 0));
 
 	sceneObjectSetPosition(0, 160, 190);
 	_sceneObjects[0].life = 99;
@@ -534,7 +534,7 @@ void CometEngine::drawActor(int objectIndex) {
 	int x = sceneObject->x, y = sceneObject->y;
 	//int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
 
-	Animation *animation = _marcheItems[sceneObject->marcheIndex].anim;
+	Animation *animation = _marcheItems[sceneObject->animationSlot].anim;
 	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
 
 	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2 + 1, sceneObject->clipY2 + 1);
@@ -676,10 +676,10 @@ void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 	if (sceneObject->animSubIndex2 == -1) {
 
 		// FIXME: This check is not in the original, find out why it's needed here...
-		if (sceneObject->marcheIndex == -1)
+		if (sceneObject->animationSlot == -1)
 			return;
 
-		AnimationFrame *frame = _marcheItems[sceneObject->marcheIndex].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+		AnimationFrame *frame = _marcheItems[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 		uint16 value = frame->flags & 0x3FFF;
 		uint16 gfxMode = frame->flags >> 14;
@@ -732,7 +732,7 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 
 		if (sceneObject->animSubIndex2 == -1) {
 
-			AnimationFrame *frame = _marcheItems[sceneObject->marcheIndex].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+			AnimationFrame *frame = _marcheItems[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 			uint16 value = frame->flags & 0x3FFF;
 			uint16 gfxMode = frame->flags >> 14;
@@ -868,7 +868,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
 
-	Animation *anim = _marcheItems[sceneObject->marcheIndex].anim;
+	Animation *anim = _marcheItems[sceneObject->animationSlot].anim;
 	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;
@@ -1106,8 +1106,6 @@ void CometEngine::setText(byte *text) {
 
 	_currentText = text;
 	
-	debug("_currentText = %s", _currentText);
-
 	_textMaxTextHeight = 0;
 	_textMaxTextWidth = 0;
 	_moreText = false;
@@ -1390,7 +1388,7 @@ void CometEngine::playVoice(int number) {
 
 	stopVoice();
 
-	debug("playVoice() number = %d; _narCount = %d", number, _narCount);
+	//debug("playVoice() number = %d; _narCount = %d", number, _narCount);
 
 	if (!_narOffsets || number >= _narCount)
 		return;
@@ -1723,7 +1721,7 @@ int CometEngine::handleInventory() {
 			_invActiveItem = items[currentItem];
 			// Return just selects, U actually uses the item
 			if (_keyScancode == Common::KEYCODE_u) {
-				debug("Use item #%d", _invActiveItem);
+				//debug("Use item #%d", _invActiveItem);
 				_itemStatus[_invActiveItem] = 2;
 			}
 			result = 1;

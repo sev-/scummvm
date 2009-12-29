@@ -136,7 +136,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 45
 	RegisterOpcode(o1_setAnimValues);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
-	RegisterOpcode(o1_setMarcheNumber);
+	RegisterOpcode(o1_setAnimationType);
 	RegisterOpcode(o1_heroIncPositionY);
 	RegisterOpcode(o1_nop);
 	// 50
@@ -901,11 +901,9 @@ void ScriptInterpreter::o1_setAnimValues(Script *script) {
 	
 }
 
-void ScriptInterpreter::o1_setMarcheNumber(Script *script) {
-	_vm->_marcheNumber = script->readByte();
-	
-	debug(2, "o1_setMarcheNumber(%d)", _vm->_marcheNumber);
-	
+void ScriptInterpreter::o1_setAnimationType(Script *script) {
+	_vm->_animationType = script->readByte();
+	debug(2, "o1_setAnimationType(%d)", _vm->_animationType);
 }
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
@@ -979,7 +977,7 @@ void ScriptInterpreter::o1_sceneObjectDelete(Script *script) {
 
 	if (script->objectIndex != 0) {
 		script->object()->life = 0;
-		if (script->object()->marcheIndex != -1)
+		if (script->object()->animationSlot != -1)
 			_vm->unloadSceneObjectSprite(script->object());
 	}
 
@@ -1248,8 +1246,8 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	debug(2, "o1_actorTalkPortrait(%d, %d, %d, %d)", objectIndex, talkTextIndex, animNumber, fileIndex);
 	//_system->delayMillis(5000);
 
-	int marcheIndex = _vm->loadMarche(_vm->_marcheNumber, fileIndex);
-	_vm->sceneObjectInit(10, marcheIndex);
+	int16 animationSlot = _vm->getAnimationResource(_vm->_animationType, fileIndex);
+	_vm->sceneObjectInit(10, animationSlot);
 	
 	if (objectIndex != -1) {
 		_vm->_sceneObjects[10].textX = 0;
@@ -1257,7 +1255,7 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 		_vm->_sceneObjects[10].textColor = getSceneObject(objectIndex)->textColor;
 	}
 	
-	_vm->_marcheNumber = 0;
+	_vm->_animationType = 0;
 	_vm->sceneObjectSetPosition(10, 0, 199);
 	_vm->actorTalkWithAnim(10, talkTextIndex, animNumber);
 	_vm->_animIndex = objectIndex;
@@ -1287,8 +1285,8 @@ void ScriptInterpreter::o1_loadSceneObjectSprite(Script *script) {
 
 	_vm->unloadSceneObjectSprite(script->object());
 	
-	script->object()->marcheIndex = _vm->loadMarche(_vm->_marcheNumber, fileIndex);
-	_vm->_marcheNumber = 0;
+	script->object()->animationSlot = _vm->getAnimationResource(_vm->_animationType, fileIndex);
+	_vm->_animationType = 0;
 	
 }
 

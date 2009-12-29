@@ -156,7 +156,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(sceneObject.directionChanged);
 		out->writeUint16LE(sceneObject.direction);
 		out->writeByte(sceneObject.flag2);
-		out->writeUint16LE(sceneObject.marcheIndex);
+		out->writeUint16LE(sceneObject.animationSlot);
 		out->writeUint16LE(sceneObject.animIndex);
 		out->writeUint16LE(sceneObject.animFrameIndex);
 		out->writeUint16LE(sceneObject.value4);
@@ -185,8 +185,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 	
 	for (int i = 0; i < ARRAYSIZE(_marcheItems); i++) {
-		const MarcheItem &marcheItem = _marcheItems[i];
-		out->writeUint16LE(marcheItem.marcheNumber);
+		const AnimationSlot &marcheItem = _marcheItems[i];
+		out->writeUint16LE(marcheItem.animationType);
 		out->writeUint16LE(marcheItem.fileIndex);
 	}
 	
@@ -306,7 +306,7 @@ void CometEngine::loadgame(const char *filename) {
 		sceneObject.directionChanged = in->readUint16LE();
 		sceneObject.direction = in->readUint16LE();
 		sceneObject.flag2 = in->readByte();
-		sceneObject.marcheIndex = in->readUint16LE();
+		sceneObject.animationSlot = in->readUint16LE();
 		sceneObject.animIndex = in->readUint16LE();
 		sceneObject.animFrameIndex = in->readUint16LE();
 		sceneObject.value4 = in->readUint16LE();
@@ -335,9 +335,10 @@ void CometEngine::loadgame(const char *filename) {
 	}
 
 	for (int i = 0; i < ARRAYSIZE(_marcheItems); i++) {
-		MarcheItem &marcheItem = _marcheItems[i];
-		marcheItem.marcheNumber = in->readUint16LE();
-		marcheItem.fileIndex = in->readUint16LE();
+		AnimationSlot &marcheItem = _marcheItems[i];
+		marcheItem.animationType = in->readUint16LE();
+		marcheItem.fileIndex = (int16)in->readUint16LE();
+		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem.animationType, marcheItem.fileIndex);
 		marcheItem.anim = NULL;
 	}
 
