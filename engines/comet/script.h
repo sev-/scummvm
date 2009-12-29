@@ -197,7 +197,8 @@ public:
 	void o1_deactivateSceneItem(Script *script);
 	void o1_sample_2(Script *script);
 	void o1_sample_1(Script *script);
-
+	void o1_setRedPalette(Script *script);
+	
 };
 
 } // End of namespace Comet

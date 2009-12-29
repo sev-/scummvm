@@ -253,6 +253,8 @@ void CometEngine::updateGame() {
 	debug(0, "_sceneNumber = %d; _currentSceneNumber = %d", _sceneNumber, _currentSceneNumber);
 #endif
 
+	debug(1, "CometEngine::updateGame() #0");
+
 	if (_chapterNumber != _currentChapterNumber)
 		updateChapterNumber();
 
@@ -267,6 +269,8 @@ void CometEngine::updateGame() {
 	if (_cmdGet)
 		getItemInSight();
 
+	debug(1, "CometEngine::updateGame() #1");
+
 	handleInput();
 	
 	/*
@@ -276,19 +280,31 @@ void CometEngine::updateGame() {
 	}
 	*/
 
+	debug(1, "CometEngine::updateGame() #2");
+
 	_script->runAllScripts();
 
 	if (_needToLoadSavegameFlag)
 		return;
 
+	debug(1, "CometEngine::updateGame() #3.1");
 	drawSceneExits();
+	debug(1, "CometEngine::updateGame() #3.2");
 	sceneObjectsUpdateAnimations();
+	debug(1, "CometEngine::updateGame() #3.3");
 	sceneObjectsUpdateMovement();
+	debug(1, "CometEngine::updateGame() #3.4");
 	updateStaticObjects();
+	debug(1, "CometEngine::updateGame() #3.5");
 	sceneObjectsEnqueueForDrawing();
+	debug(1, "CometEngine::updateGame() #3.6");
 	lookAtItemInSight(false);
 
+	debug(1, "CometEngine::updateGame() #4");
+
 	drawSprites();
+
+	debug(1, "CometEngine::updateGame() #5");
 
 	if (_talkieMode == 0)
 		updateTextDialog();
@@ -315,7 +331,7 @@ void CometEngine::updateGame() {
 	*/
 	if (_debugRectangles) {
 	#if 0
-		debug(1, "CometEngine::updateGame() #3");
+		debug(1, "CometEngine::updateGame() #A");
 		/* begin DEBUG rectangles */
 		for (uint32 i = 0; i < _blockingRects.size(); i++)
 			_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
@@ -333,7 +349,7 @@ void CometEngine::updateGame() {
 	#endif
 	}
 
-	debug(1, "CometEngine::updateGame() #4");
+	debug(1, "CometEngine::updateGame() #9");
 
 	updateScreen();
 	
@@ -731,6 +747,11 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 	} else {
 
 		if (sceneObject->animSubIndex2 == -1) {
+
+			/* NOTE: After watching the ritual the players' frame number is out-of-bounds.
+				I don't know yet why this happens, but setting it to 0 at least avoids a crash. */
+			if (sceneObject->animFrameIndex >= _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames.size())
+				sceneObject->animFrameIndex = 0;
 
 			AnimationFrame *frame = _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 

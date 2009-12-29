@@ -103,7 +103,7 @@ int CometEngine::getAnimationResource(int16 animationType, int16 fileIndex) {
 
 	if (animationType != 0) {
 		_animationSlots[animationSlot].anim = getGlobalAnimationResource(animationType);
-	} else if (_animationSlots[animationSlot].anim == NULL) {
+	} else if (!_animationSlots[animationSlot].anim) {
 		_animationSlots[animationSlot].anim = loadAnimationResource(AName, fileIndex);
 	}
 

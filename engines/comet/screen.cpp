@@ -269,6 +269,18 @@ void Screen::buildPalette(byte *sourcePal, byte *destPal, int value) {
 		destPal[i] = (sourcePal[i] * value) >> 8;
 }
 
+void Screen::buildRedPalette(byte *sourcePal, byte *destPal, int value) {
+	byte *src = sourcePal;
+	for (int i = 0; i < 256; i++) {
+		byte r = *src++;
+		byte g = *src++;
+		byte b = *src++;
+		*destPal++ = ((r + g + b + 100) / 4 - r) * value / 16 + r;
+		*destPal++ = g * (16 - value) / 16;
+		*destPal++ = b * (16 - value) / 16;
+	}
+}
+
 void Screen::paletteFadeIn() {
 
 	buildPalette(_vm->_ctuPal, _vm->_palette, 0);
