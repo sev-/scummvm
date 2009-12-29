@@ -349,10 +349,10 @@ public:
 	Animation *loadAnimationResource(const char *pakFilename, int fileIndex);
 	Animation *getGlobalAnimationResource(int16 animationType);
 	void purgeUnusedAnimationSlots();
-	void freeMarche();
+	void purgeAnimationSlots();
 	int getAnimationResource(int16 animationType, int16 fileIndex);
-	void freeMarcheAnims();
-	void loadAllMarche();
+	void refreshAnimationSlots();
+	void restoreAnimationSlots();
 	void unloadSceneObjectSprite(SceneObject *sceneObject);
 
 	/* SceneObject */
