@@ -41,6 +41,7 @@ public:
 	void screenTransitionEffect();
 
 	void buildPalette(byte *sourcePal, byte *destPal, int value);
+	void buildRedPalette(byte *sourcePal, byte *destPal, int value);
 	void paletteFadeIn();
 	void paletteFadeOut();
 

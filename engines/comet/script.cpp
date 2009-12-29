@@ -201,7 +201,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_sample_2);
 	// 100
 	RegisterOpcode(o1_sample_1);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_setRedPalette);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
@@ -869,6 +869,7 @@ void ScriptInterpreter::o1_objectWalkTo(Script *script) {
 
 void ScriptInterpreter::o1_setPaletteBrightness(Script *script) {
 	_vm->_paletteBrightness = script->readByte();
+	debug("o1_setPaletteBrightness(%d)", _vm->_paletteBrightness);
 	_vm->_screen->buildPalette(_vm->_ctuPal, _vm->_palette, _vm->_paletteBrightness);
 	_vm->_screen->setFullPalette(_vm->_palette);
 }
@@ -1337,22 +1338,23 @@ void ScriptInterpreter::o1_deactivateSceneItem(Script *script) {
 
 void ScriptInterpreter::o1_sample_2(Script *script) {
 	debug(2, "o1_sample_2");
-
 	int narFileIndex = script->readByte();
-	
 	//TODO: seg010:074A
-	
 }
 
 void ScriptInterpreter::o1_sample_1(Script *script) {
 	debug(2, "o1_sample_1");
-
 	int narFileIndex = script->readByte();
 	int value = script->readByte();
-	
 	//TODO
+}
 
-
+void ScriptInterpreter::o1_setRedPalette(Script *script) {
+	int value = script->readByte();
+	debug(2, "o1_setRedPalette(%d)", value);
+	// TODO: Remember "redness" value
+	_vm->_screen->buildRedPalette(_vm->_ctuPal, _vm->_palette, value);
+	_vm->_screen->setFullPalette(_vm->_palette);
 }
 
 } // End of namespace Comet
