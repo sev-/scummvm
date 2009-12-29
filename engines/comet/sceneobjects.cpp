@@ -54,7 +54,7 @@ void CometEngine::sceneObjectSetDirectionAdd(SceneObject *sceneObject, int direc
 
 void CometEngine::sceneObjectSetAnimNumber(SceneObject *sceneObject, int index) {
 	if (sceneObject->animationSlot != -1) {
-		sceneObject->animFrameCount = _marcheItems[sceneObject->animationSlot].anim->_anims[index]->frames.size();
+		sceneObject->animFrameCount = _animationSlots[sceneObject->animationSlot].anim->_anims[index]->frames.size();
 	} else {
 		sceneObject->animFrameCount = 0;
 	}

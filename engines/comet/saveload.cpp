@@ -184,8 +184,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeByte(sceneObject.visible ? 1 : 0);
 	}
 	
-	for (int i = 0; i < ARRAYSIZE(_marcheItems); i++) {
-		const AnimationSlot &marcheItem = _marcheItems[i];
+	for (int i = 0; i < ARRAYSIZE(_animationSlots); i++) {
+		const AnimationSlot &marcheItem = _animationSlots[i];
 		out->writeUint16LE(marcheItem.animationType);
 		out->writeUint16LE(marcheItem.fileIndex);
 	}
@@ -334,8 +334,8 @@ void CometEngine::loadgame(const char *filename) {
 		sceneObject.visible = in->readByte() != 0;
 	}
 
-	for (int i = 0; i < ARRAYSIZE(_marcheItems); i++) {
-		AnimationSlot &marcheItem = _marcheItems[i];
+	for (int i = 0; i < ARRAYSIZE(_animationSlots); i++) {
+		AnimationSlot &marcheItem = _animationSlots[i];
 		marcheItem.animationType = in->readUint16LE();
 		marcheItem.fileIndex = (int16)in->readUint16LE();
 		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem.animationType, marcheItem.fileIndex);
