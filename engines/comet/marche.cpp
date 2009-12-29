@@ -41,31 +41,16 @@ void CometEngine::clearMarcheByIndex(int16 animationSlot) {
 }
 
 Animation *CometEngine::loadAnimationResource(const char *pakFilename, int fileIndex) {
-
 	debug(0, "CometEngine::loadAnimationResource([%s], %d)", pakFilename, fileIndex);
-
 	Animation *animation = new Animation();
-
 	byte *buffer = loadFromPak(pakFilename, fileIndex);
 	int size = getPakSize(pakFilename, fileIndex);
 	Common::MemoryReadStream *stream = new Common::MemoryReadStream(buffer, size);
 	animation->load(*stream, size);
 	delete stream;
-
-	/*
-	char fn[256];
-	snprintf(fn, 256, "%c%06d.0", *pakFilename, fileIndex);
-	FILE *d = fopen(fn, "wb");
-	fwrite(buffer, size, 1, d);
-	fclose(d);
-	*/
-
 	free(buffer);
-
 	debug(0, "CometEngine::loadAnimationResource([%s], %d) ok", pakFilename, fileIndex);
-
 	return animation;
-
 }
 
 Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
@@ -74,7 +59,7 @@ Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
 		return _heroSprite;
 	case 2:
 		return _sceneObjectsSprite;
-	//case 3: //TODO??? returns NULL var
+	//case 3: //TODO??? returns NULL var (maybe used in Eternam?)
 	default:
 		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
 		return NULL;
@@ -91,7 +76,7 @@ void CometEngine::purgeUnusedAnimationSlots() {
 	}
 }
 
-void CometEngine::freeMarche() {
+void CometEngine::purgeAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _sceneObjects[0].animationSlot != i) {
 			clearMarcheByIndex(i);
@@ -116,15 +101,6 @@ int CometEngine::getAnimationResource(int16 animationType, int16 fileIndex) {
 	_animationSlots[animationSlot].animationType = animationType;
 	_animationSlots[animationSlot].fileIndex = fileIndex;
 
-	// Possible workaround for the memory leak bug
-	#if 0
-	if (/*_animationSlots[animationSlot].animationType == 0 && */_animationSlots[animationSlot].anim) {
-		//warning("CometEngine::freeMarche() _animationSlots[%d].anim not NULL", animationSlot);
-		delete _animationSlots[animationSlot].anim;
-		_animationSlots[animationSlot].anim = NULL;
-	}
-	#endif
-
 	if (animationType != 0) {
 		_animationSlots[animationSlot].anim = getGlobalAnimationResource(animationType);
 	} else if (_animationSlots[animationSlot].anim == NULL) {
@@ -135,17 +111,17 @@ int CometEngine::getAnimationResource(int16 animationType, int16 fileIndex) {
 
 }
 
-void CometEngine::freeMarcheAnims() {
+void CometEngine::refreshAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0) {
 			delete _animationSlots[i].anim;
 			_animationSlots[i].anim = NULL;
 		}
 	}
-	loadAllMarche();
+	restoreAnimationSlots();
 }
 
-void CometEngine::loadAllMarche() {
+void CometEngine::restoreAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
 		if (_animationSlots[i].fileIndex != -1) {
 			if (_animationSlots[i].animationType == 0) {

@@ -250,7 +250,7 @@ void CometEngine::loadgame(const char *filename) {
 
 	int count;
 	
-	freeMarche();
+	purgeAnimationSlots();
 	
 	_chapterNumber = in->readUint16LE();
 	_currentChapterNumber = in->readUint16LE();
@@ -382,7 +382,7 @@ void CometEngine::loadgame(const char *filename) {
 	setChapterAndScene(_currentChapterNumber, _currentSceneNumber);
 	loadAndRunScript(true);
 	initSceneBackground(true);
-	loadAllMarche();
+	restoreAnimationSlots();
 	_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
 	_screen->setFullPalette(_palette);
 

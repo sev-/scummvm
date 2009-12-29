@@ -351,7 +351,7 @@ void CometEngine::updateGame() {
 
 void CometEngine::updateChapterNumber() {
 	if (_chapterNumber != -1) {
-		freeMarche();
+		purgeAnimationSlots();
 		freeMarcheAndStaticObjects();
 		setChapterAndScene(_chapterNumber, _sceneNumber);
 		updateSceneNumber();
@@ -947,7 +947,7 @@ void CometEngine::loadAndRunScript(bool loadingGame) {
 }
 
 void CometEngine::freeMarcheAndStaticObjects() {
-	freeMarche();
+	purgeAnimationSlots();
 	if (_sceneObjectsSprite) {
 		delete _sceneObjectsSprite;
 		_sceneObjectsSprite = NULL;
