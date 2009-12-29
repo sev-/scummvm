@@ -7,7 +7,7 @@ namespace Comet {
 
 int CometEngine::findAnimationSlot(int16 animationType, int16 fileIndex) {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].animationType == animationType && _marcheItems[i].fileIndex == fileIndex) {
+		if (_animationSlots[i].animationType == animationType && _animationSlots[i].fileIndex == fileIndex) {
 			return i;
 		}
 	}
@@ -16,7 +16,7 @@ int CometEngine::findAnimationSlot(int16 animationType, int16 fileIndex) {
 
 int CometEngine::findFreeAnimationSlot() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].anim == NULL) {
+		if (_animationSlots[i].anim == NULL) {
 			return i;
 		}
 	}
@@ -83,20 +83,20 @@ Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
 
 void CometEngine::purgeUnusedAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].anim && _marcheItems[i].animationType == 0 && !isAnimationSlotUsed(i)) {
+		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && !isAnimationSlotUsed(i)) {
 			clearMarcheByIndex(i);
-			delete _marcheItems[i].anim;
-			_marcheItems[i].anim = NULL;
+			delete _animationSlots[i].anim;
+			_animationSlots[i].anim = NULL;
 		}
 	}
 }
 
 void CometEngine::freeMarche() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].anim && _marcheItems[i].animationType == 0 && _sceneObjects[0].animationSlot != i) {
+		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _sceneObjects[0].animationSlot != i) {
 			clearMarcheByIndex(i);
-			delete _marcheItems[i].anim;
-			_marcheItems[i].anim = NULL;
+			delete _animationSlots[i].anim;
+			_animationSlots[i].anim = NULL;
 		}
 	}
 }
@@ -113,22 +113,22 @@ int CometEngine::getAnimationResource(int16 animationType, int16 fileIndex) {
 		}
 	}
 
-	_marcheItems[animationSlot].animationType = animationType;
-	_marcheItems[animationSlot].fileIndex = fileIndex;
+	_animationSlots[animationSlot].animationType = animationType;
+	_animationSlots[animationSlot].fileIndex = fileIndex;
 
 	// Possible workaround for the memory leak bug
 	#if 0
-	if (/*_marcheItems[animationSlot].animationType == 0 && */_marcheItems[animationSlot].anim) {
-		//warning("CometEngine::freeMarche() _marcheItems[%d].anim not NULL", animationSlot);
-		delete _marcheItems[animationSlot].anim;
-		_marcheItems[animationSlot].anim = NULL;
+	if (/*_animationSlots[animationSlot].animationType == 0 && */_animationSlots[animationSlot].anim) {
+		//warning("CometEngine::freeMarche() _animationSlots[%d].anim not NULL", animationSlot);
+		delete _animationSlots[animationSlot].anim;
+		_animationSlots[animationSlot].anim = NULL;
 	}
 	#endif
 
 	if (animationType != 0) {
-		_marcheItems[animationSlot].anim = getGlobalAnimationResource(animationType);
-	} else if (_marcheItems[animationSlot].anim == NULL) {
-		_marcheItems[animationSlot].anim = loadAnimationResource(AName, fileIndex);
+		_animationSlots[animationSlot].anim = getGlobalAnimationResource(animationType);
+	} else if (_animationSlots[animationSlot].anim == NULL) {
+		_animationSlots[animationSlot].anim = loadAnimationResource(AName, fileIndex);
 	}
 
 	return animationSlot;
@@ -137,9 +137,9 @@ int CometEngine::getAnimationResource(int16 animationType, int16 fileIndex) {
 
 void CometEngine::freeMarcheAnims() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].anim && _marcheItems[i].animationType == 0) {
-			delete _marcheItems[i].anim;
-			_marcheItems[i].anim = NULL;
+		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0) {
+			delete _animationSlots[i].anim;
+			_animationSlots[i].anim = NULL;
 		}
 	}
 	loadAllMarche();
@@ -147,22 +147,22 @@ void CometEngine::freeMarcheAnims() {
 
 void CometEngine::loadAllMarche() {
 	for (int i = 0; i < 20; i++) {
-		if (_marcheItems[i].fileIndex != -1) {
-			if (_marcheItems[i].animationType == 0) {
-				delete _marcheItems[i].anim;
-				_marcheItems[i].anim = loadAnimationResource(AName, _marcheItems[i].fileIndex);
+		if (_animationSlots[i].fileIndex != -1) {
+			if (_animationSlots[i].animationType == 0) {
+				delete _animationSlots[i].anim;
+				_animationSlots[i].anim = loadAnimationResource(AName, _animationSlots[i].fileIndex);
 			} else {
-				_marcheItems[i].anim = getGlobalAnimationResource(_marcheItems[i].animationType);
+				_animationSlots[i].anim = getGlobalAnimationResource(_animationSlots[i].animationType);
 			}
 		} else {
-			_marcheItems[i].anim = NULL;
+			_animationSlots[i].anim = NULL;
 		}
 	}
 }
 
 void CometEngine::unloadSceneObjectSprite(SceneObject *sceneObject) {
 	if (sceneObject->animationSlot != -1) {
-		AnimationSlot *marche = &_marcheItems[sceneObject->animationSlot];
+		AnimationSlot *marche = &_animationSlots[sceneObject->animationSlot];
 		if (marche->anim && marche->animationType == 0 && !isAnimationSlotUsed(sceneObject->animationSlot)) {
 			clearMarcheByIndex(sceneObject->animationSlot);
 			delete marche->anim;

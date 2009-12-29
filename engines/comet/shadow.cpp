@@ -534,7 +534,7 @@ void CometEngine::drawActor(int objectIndex) {
 	int x = sceneObject->x, y = sceneObject->y;
 	//int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
 
-	Animation *animation = _marcheItems[sceneObject->animationSlot].anim;
+	Animation *animation = _animationSlots[sceneObject->animationSlot].anim;
 	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
 
 	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2 + 1, sceneObject->clipY2 + 1);
@@ -679,7 +679,7 @@ void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 		if (sceneObject->animationSlot == -1)
 			return;
 
-		AnimationFrame *frame = _marcheItems[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+		AnimationFrame *frame = _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 		uint16 value = frame->flags & 0x3FFF;
 		uint16 gfxMode = frame->flags >> 14;
@@ -732,7 +732,7 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 
 		if (sceneObject->animSubIndex2 == -1) {
 
-			AnimationFrame *frame = _marcheItems[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+			AnimationFrame *frame = _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 			uint16 value = frame->flags & 0x3FFF;
 			uint16 gfxMode = frame->flags >> 14;
@@ -868,7 +868,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
 
-	Animation *anim = _marcheItems[sceneObject->animationSlot].anim;
+	Animation *anim = _animationSlots[sceneObject->animationSlot].anim;
 	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;

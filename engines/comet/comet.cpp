@@ -203,7 +203,7 @@ Common::Error CometEngine::run() {
 	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
-	memset(_marcheItems, 0, sizeof(_marcheItems));
+	memset(_animationSlots, 0, sizeof(_animationSlots));
 	memset(_sceneObjects, 0, sizeof(_sceneObjects));
 
 	_clearScreenRequest = false;

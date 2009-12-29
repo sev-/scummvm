@@ -175,7 +175,7 @@ public:
 
 	byte *_palette;
 
-	AnimationSlot _marcheItems[20];
+	AnimationSlot _animationSlots[20];
 	int16 _animationType;
 
 	SceneObject _sceneObjects[11];
