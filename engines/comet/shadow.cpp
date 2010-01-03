@@ -10,6 +10,7 @@
 #include "comet/screen.h"
 #include "comet/dialog.h"
 #include "comet/animation.h"
+#include "comet/animationmgr.h"
 #include "comet/scene.h"
 
 namespace Comet {
@@ -138,7 +139,7 @@ void CometEngine::loadStaticObjects() {
 	
 	debug(8, "CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
 	
-	_sceneObjectsSprite = loadAnimationResource(DName, _backgroundFileIndex + 1);
+	_sceneObjectsSprite = _animationMan->loadAnimationResource(DName, _backgroundFileIndex + 1);
 }
 
 void CometEngine::drawSceneForeground() {
@@ -157,17 +158,17 @@ void CometEngine::initAndLoadGlobalData() {
 
 	_screen->loadFont("RES.PAK", 0);
 
-	_bubbleSprite = loadAnimationResource("RES.PAK", 1);
-	_heroSprite = loadAnimationResource("RES.PAK", 2);
-	_objectsVa2 = loadAnimationResource("RES.PAK", 4);
+	_bubbleSprite = _animationMan->loadAnimationResource("RES.PAK", 1);
+	_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
+	_objectsVa2 = _animationMan->loadAnimationResource("RES.PAK", 4);
 
 	_ctuPal = loadFromPak("RES.PAK", 5);
 	_flashbakPal = loadFromPak("RES.PAK", 6);
 	_cdintroPal = loadFromPak("RES.PAK", 7);
 	_pali0Pal = loadFromPak("RES.PAK", 8);
 
-	_cursorVa2 = loadAnimationResource("RES.PAK", 9);
-	_iconeVa2 = loadAnimationResource("RES.PAK", 3);
+	_cursorVa2 = _animationMan->loadAnimationResource("RES.PAK", 9);
+	_iconeVa2 = _animationMan->loadAnimationResource("RES.PAK", 3);
 	
 	_screen->setFontColor(0);
 
@@ -205,7 +206,7 @@ void CometEngine::initData() {
 	memset(_itemStatus, 0, sizeof(_itemStatus));
 
 	_screen->setFontColor(19);
-	resetHeroDirectionChanged();
+	unblockInput();
 	
 	_currentChapterNumber = 0;
 	_sceneNumber = 0;
@@ -220,7 +221,7 @@ void CometEngine::initData() {
 	
 	sceneObjectsResetFlags();
 
-	sceneObjectInit(0, getAnimationResource(1, 0));
+	sceneObjectInit(0, _animationMan->getAnimationResource(1, 0));
 
 	sceneObjectSetPosition(0, 160, 190);
 	_sceneObjects[0].life = 99;
@@ -367,7 +368,7 @@ void CometEngine::updateGame() {
 
 void CometEngine::updateChapterNumber() {
 	if (_chapterNumber != -1) {
-		purgeAnimationSlots();
+		_animationMan->purgeAnimationSlots();
 		freeMarcheAndStaticObjects();
 		setChapterAndScene(_chapterNumber, _sceneNumber);
 		updateSceneNumber();
@@ -440,7 +441,7 @@ void CometEngine::lookAtItemInSight(bool flag) {
 
 	_itemInSight = false;
 	
-	if (_mouseFlag != 15) {
+	if (_blockedInput != 15) {
 		Common::Rect sightRect;
 		calcSightRect(sightRect, 0, 50);
 		//_screen->fillRect(rect.left, rect.top, rect.right, rect.bottom, 150);
@@ -550,7 +551,14 @@ void CometEngine::drawActor(int objectIndex) {
 	int x = sceneObject->x, y = sceneObject->y;
 	//int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
 
-	Animation *animation = _animationSlots[sceneObject->animationSlot].anim;
+	Animation *animation = _animationMan->getAnimation(sceneObject->animationSlot);
+	
+	/* NOTE: Yet another workaround for a crash (see sceneObjectUpdateAnimation). */
+	if (sceneObject->animIndex >= (int)animation->_anims.size()) {
+		error("here: animIndex = %d; _anims = %d", sceneObject->animIndex, animation->_anims.size());
+		return;
+	}
+
 	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
 
 	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2 + 1, sceneObject->clipY2 + 1);
@@ -695,7 +703,7 @@ void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 		if (sceneObject->animationSlot == -1)
 			return;
 
-		AnimationFrame *frame = _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+		AnimationFrame *frame = _animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 		uint16 value = frame->flags & 0x3FFF;
 		uint16 gfxMode = frame->flags >> 14;
@@ -748,12 +756,16 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 
 		if (sceneObject->animSubIndex2 == -1) {
 
+			/* NOTE: See note below, but here we bail out. */
+			if (sceneObject->animIndex >= (int)_animationMan->getAnimation(sceneObject->animationSlot)->_anims.size())
+				return;
+
 			/* NOTE: After watching the ritual the players' frame number is out-of-bounds.
 				I don't know yet why this happens, but setting it to 0 at least avoids a crash. */
-			if (sceneObject->animFrameIndex >= _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames.size())
+			if (sceneObject->animFrameIndex >= (int)_animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames.size())
 				sceneObject->animFrameIndex = 0;
 
-			AnimationFrame *frame = _animationSlots[sceneObject->animationSlot].anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+			AnimationFrame *frame = _animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
 			uint16 value = frame->flags & 0x3FFF;
 			uint16 gfxMode = frame->flags >> 14;
@@ -788,7 +800,7 @@ void CometEngine::resetVars() {
 	_cmdLook = false;
 	_cmdTalk = false;
  	//_sceneExits.clear();
-	_mouseFlag = 0;
+	_blockedInput = 0;
 	_sceneItems.clear();
 
 }
@@ -832,7 +844,6 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 
 	if (sceneObject->collisionType == 1 || sceneObject->collisionType == 2) {
 		// TODO
-		debug("sceneObjectMoveAroundBounds");
 		sceneObjectMoveAroundBounds(objectIndex, sceneObject);
 	} else if (sceneObject->collisionType == 6 && sceneObject->value6 == 6 && sceneObject->linesIndex == 0) {
 		// TODO
@@ -843,7 +854,6 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 			sceneObjectUpdateLife(sceneObject, sceneObject->life);
 		}
 	} else {
-		debug("sceneObjectMoveAroundObstacle");
 		sceneObjectMoveAroundObstacle(objectIndex, sceneObject, obstacleRect);
 	}
 
@@ -889,7 +899,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
 
-	Animation *anim = _animationSlots[sceneObject->animationSlot].anim;
+	Animation *anim = _animationMan->getAnimation(sceneObject->animationSlot);
 	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;
@@ -968,7 +978,7 @@ void CometEngine::loadAndRunScript(bool loadingGame) {
 }
 
 void CometEngine::freeMarcheAndStaticObjects() {
-	purgeAnimationSlots();
+	_animationMan->purgeAnimationSlots();
 	if (_sceneObjectsSprite) {
 		delete _sceneObjectsSprite;
 		_sceneObjectsSprite = NULL;
@@ -1019,8 +1029,8 @@ void CometEngine::updateScreen() {
 
 }
 
-void CometEngine::resetHeroDirectionChanged() {
-	_mouseFlag = false;
+void CometEngine::unblockInput() {
+	_blockedInput = 0;
 	if (_sceneObjects[0].directionChanged == 2)
 		_sceneObjects[0].directionChanged = 0;
 }
@@ -1323,7 +1333,7 @@ void CometEngine::handleInput() {
 	
 	// TODO: seg009:212C...skip_mouse
 	
-	if ((_mouseFlag & _mouseButtons4) || _dialog->isRunning()) {
+	if ((_blockedInput & _mouseButtons4) || _dialog->isRunning()) {
 		_mouseCursor2 = 0;
 		_mouseButtons5 = 0;
 	} else {
@@ -1349,7 +1359,7 @@ void CometEngine::handleInput() {
 	if (directionAdd == 4)
 		directionAdd = 0;
 		
-	if (sceneObject->direction == _mouseCursor2 && !(_mouseFlag & _mouseButtons4))
+	if (sceneObject->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
 		directionAdd = 4;
 		
 	int direction = mouseDirectionTable[sceneObject->direction * 5 + _mouseCursor2];

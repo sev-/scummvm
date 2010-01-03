@@ -19,10 +19,11 @@
 #include "comet/pak.h"
 #include "comet/music.h"
 
-#include "comet/screen.h"
-#include "comet/dialog.h"
 #include "comet/animation.h"
+#include "comet/animationmgr.h"
+#include "comet/dialog.h"
 #include "comet/scene.h"
+#include "comet/screen.h"
 #include "comet/text.h"
 
 namespace Comet {
@@ -73,115 +74,8 @@ Common::Error CometEngine::run() {
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
 
-#if 0
-	TextReader t;
-	t.open("E.CC4");
-	TextStrings *s = t.loadTextStrings(0);
-	debug("%s", s->getString(0));
-	delete s;
-	const byte *x;
-	x = t.getString(2, 1);
-	debug("x = %s", (char*)x);
-	x = t.getString(2, 2);
-	debug("x = %s", (char*)x);
-	x = t.getString(3, 1);
-	debug("x = %s", (char*)x);
-	t.close();
-	return Common::kNoError;
-#endif
-
 #define OLD_CODE
 //#define TEST_CODE
-
-#ifdef TEST_CODE
-	_screen = new Screen(this);
-
-
-	_ctuPal = loadFromPak("RES.PAK", 5);
-	_screen->setFullPalette(_ctuPal);
-
-	Animation *anim = new Animation();
-
-
-	const char *pakName = "A05.PAK";
-	const int pakIndex = 0;//11;//3;//1;//4;//9;// 12 21 17
-
-	byte *buffer = loadFromPak(pakName, pakIndex);
-	int size = getPakSize(pakName, pakIndex);
-#if 1
-	FILE *xf = fopen("dump.0", "wb");
-	fwrite(buffer, size, 1, xf);
-	fclose(xf);
-#endif
-	debug("size = %d", size);
-	Common::MemoryReadStream *stream = new Common::MemoryReadStream(buffer, size);
-	anim->load(*stream, size);
-	delete stream;
-	free(buffer);
-
-	int x = 0, y = 0, maxHeight = 0;
-	
-	debug("cels = %d", anim->_cels.size());
-
-	/*
-	for (int i = 0;  i < anim->_cels.size(); i++) {
-		AnimationCel *cel = anim->_cels[i];
-		if (x + cel->width >= 320) {
-			x = 0;
-			y += maxHeight + 4;
-			maxHeight = 0;
-			if (y > 200)
-				break;
-		}
-		debug("%d, x = %d, y = %d, w = %d, h = %d", i, x, y, cel->width, cel->height);
-		//_screen->drawAnimationCelSprite(*cel, x, y + cel->height);
-		
-		_screen->drawAnimationCelRle(*cel, 0, 0);
-		
-		x += cel->width + 4;
-		if (cel->height > maxHeight)
-			maxHeight = cel->height;
-	}
-	*/
-
-	/*
-	for (int i = 0;  i < anim->_cels.size(); i++) {
-		AnimationCel *cel = anim->_cels[i];
-		debug("%d, w = %d, h = %d", i, x, y);
-		//_screen->drawAnimationCelRle(*cel, 0, 0);
-		//_screen->drawAnimationCelSprite(*cel, 0, 0);
-	}
-	*/
-	
-	_screen->drawAnimationElement(anim, 0, 0, 0);
-
-	/*
-	_screen->drawAnimationCelRle(*anim->_cels[0], 0, 0);
-	*/
-	
-	/*
-	for (int i = 0;  i < anim->_elements.size(); i++) {
-		_screen->clearScreen();
-		_screen->drawAnimationElement(*anim, i, 50, 120);
-		_system->delayMillis(200);
-		_screen->update();
-	}
-	*/
-	
-	// Scene foreground graphics
-	//_screen->drawAnimationElement(anim, 0, 0, 199);
-	
-	_screen->update();
-
-	while (1) {
-		handleEvents();
-	}
-
-	delete anim;
-
-	delete _screen;
-
-#endif
 
 #ifdef OLD_CODE
 	// TODO: delete stuff at engine shutdown
@@ -190,6 +84,7 @@ Common::Error CometEngine::run() {
 	_dialog = new Dialog(this);
 	_script = new ScriptInterpreter(this);
 	_scene = new Scene(this);
+	_animationMan = new AnimationManager(this);
 	_textReader = new TextReader();
 	_textReader->open("E.CC4"); // TODO: Use language-specific filename
 
@@ -203,7 +98,6 @@ Common::Error CometEngine::run() {
 	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
-	memset(_animationSlots, 0, sizeof(_animationSlots));
 	memset(_sceneObjects, 0, sizeof(_sceneObjects));
 
 	_clearScreenRequest = false;

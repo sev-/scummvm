@@ -37,6 +37,7 @@
 #include "sound/mixer.h"
 
 #include "comet/comet.h"
+#include "comet/animationmgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/script.h"
@@ -184,8 +185,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeByte(sceneObject.visible ? 1 : 0);
 	}
 	
-	for (int i = 0; i < ARRAYSIZE(_animationSlots); i++) {
-		const AnimationSlot &marcheItem = _animationSlots[i];
+	for (int i = 0; i < ARRAYSIZE(_animationMan->_animationSlots); i++) {
+		const AnimationSlot &marcheItem = _animationMan->_animationSlots[i];
 		out->writeUint16LE(marcheItem.animationType);
 		out->writeUint16LE(marcheItem.fileIndex);
 	}
@@ -250,7 +251,7 @@ void CometEngine::loadgame(const char *filename) {
 
 	int count;
 	
-	purgeAnimationSlots();
+	_animationMan->purgeAnimationSlots();
 	
 	_chapterNumber = in->readUint16LE();
 	_currentChapterNumber = in->readUint16LE();
@@ -334,8 +335,8 @@ void CometEngine::loadgame(const char *filename) {
 		sceneObject.visible = in->readByte() != 0;
 	}
 
-	for (int i = 0; i < ARRAYSIZE(_animationSlots); i++) {
-		AnimationSlot &marcheItem = _animationSlots[i];
+	for (int i = 0; i < ARRAYSIZE(_animationMan->_animationSlots); i++) {
+		AnimationSlot &marcheItem = _animationMan->_animationSlots[i];
 		marcheItem.animationType = in->readUint16LE();
 		marcheItem.fileIndex = (int16)in->readUint16LE();
 		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem.animationType, marcheItem.fileIndex);
@@ -382,7 +383,7 @@ void CometEngine::loadgame(const char *filename) {
 	setChapterAndScene(_currentChapterNumber, _currentSceneNumber);
 	loadAndRunScript(true);
 	initSceneBackground(true);
-	restoreAnimationSlots();
+	_animationMan->restoreAnimationSlots();
 	_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
 	_screen->setFullPalette(_palette);
 

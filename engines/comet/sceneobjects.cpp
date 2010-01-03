@@ -1,6 +1,7 @@
 #include "comet/comet.h"
 
 #include "comet/animation.h"
+#include "comet/animationmgr.h"
 #include "comet/scene.h"
 
 namespace Comet {
@@ -54,13 +55,17 @@ void CometEngine::sceneObjectSetDirectionAdd(SceneObject *sceneObject, int direc
 
 void CometEngine::sceneObjectSetAnimNumber(SceneObject *sceneObject, int index) {
 	if (sceneObject->animationSlot != -1) {
-		sceneObject->animFrameCount = _animationSlots[sceneObject->animationSlot].anim->_anims[index]->frames.size();
+		sceneObject->animFrameCount = _animationMan->getAnimation(sceneObject->animationSlot)->_anims[index]->frames.size();
 	} else {
 		sceneObject->animFrameCount = 0;
 	}
 	sceneObject->animFrameIndex = 0;
 	sceneObject->animIndex = index;
 	sceneObject->animSubIndex2 = -1;
+	
+	debug(5, "sceneObjectSetAnimNumber() animIndex = %d; animFrameIndex = %d; animFrameCount = %d",
+		sceneObject->animIndex, sceneObject->animFrameIndex, sceneObject->animFrameCount);
+	
 }
 
 void CometEngine::sceneObjectStopWalking(SceneObject *sceneObject) {
