@@ -1,5 +1,5 @@
-#ifndef COMET_ANIMATION_H
-#define COMET_ANIMATION_H
+#ifndef COMET_ANIMATIONMGR_H
+#define COMET_ANIMATIONMGR_H
 
 #include "common/scummsys.h"
 #include "common/array.h"
@@ -11,7 +11,7 @@
 
 namespace Comet {
 
-const int kAnimationSlotCount = 20;
+const uint kAnimationSlotCount = 20;
 
 enum {
 	kAnimationTypeLocal = 0,
@@ -19,12 +19,33 @@ enum {
 	kAnimationTypeScene	= 2
 };
 
+#if 0
+struct AnimationSlot {
+	int16 animationType;
+	int16 fileIndex;
+	Animation *anim;
+};
+#endif
+
 class AnimationManager {
 public:
-	AnimationManager();
+	AnimationManager(CometEngine *vm);
 	~AnimationManager();
-protected:
-    AnimationSlot _animationSlots[kAnimationSlotCount];
+	Animation *loadAnimationResource(const char *pakFilename, int fileIndex);
+	void purgeUnusedAnimationSlots();
+	void purgeAnimationSlots();
+	int getAnimationResource(int16 animationType, int16 fileIndex);
+	void refreshAnimationSlots();
+	void restoreAnimationSlots();
+	AnimationSlot *getAnimationSlot(uint index) { return &_animationSlots[index]; }
+	Animation *getAnimation(uint index) { return _animationSlots[index].anim; }
+	void saveState(Common::WriteStream *out);
+	void loadState(Common::ReadStream *in);
+//protected: again temporary...
+	CometEngine *_vm;
+	AnimationSlot _animationSlots[kAnimationSlotCount];
+	int findAnimationSlot(int16 animationType, int16 fileIndex);
+	int findFreeAnimationSlot();
 };
 
 } // End of namespace Comet

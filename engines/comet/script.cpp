@@ -4,6 +4,7 @@
 #include "comet/script.h"
 #include "comet/dialog.h"
 #include "comet/scene.h"
+#include "comet/animationmgr.h"
 
 namespace Comet {
 
@@ -700,11 +701,11 @@ void ScriptInterpreter::o1_blockInput(Script *script) {
 
 	if (flagIndex == 0) {
 		_vm->_mouseCursor2 = 0;
-		_vm->_mouseFlag = 15;
+		_vm->_blockedInput = 15;
 		_vm->sceneObjectStopWalking(getSceneObject(0));
 	} else {
 		const int constFlagsArray[5] = {0, 1, 8, 2, 4};
-		_vm->_mouseFlag |= constFlagsArray[flagIndex];
+		_vm->_blockedInput |= constFlagsArray[flagIndex];
 	}
 	
 }
@@ -712,7 +713,7 @@ void ScriptInterpreter::o1_blockInput(Script *script) {
 void ScriptInterpreter::o1_unblockInput(Script *script) {
 	debug(2, "o1_unblockInput()");
 	
-	_vm->resetHeroDirectionChanged();
+	_vm->unblockInput();
 }
 
 void ScriptInterpreter::o1_sceneObjectSetDirectionToHero(Script *script) {
@@ -1247,7 +1248,7 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	debug(2, "o1_actorTalkPortrait(%d, %d, %d, %d)", objectIndex, talkTextIndex, animNumber, fileIndex);
 	//_system->delayMillis(5000);
 
-	int16 animationSlot = _vm->getAnimationResource(_vm->_animationType, fileIndex);
+	int16 animationSlot = _vm->_animationMan->getAnimationResource(_vm->_animationType, fileIndex);
 	_vm->sceneObjectInit(10, animationSlot);
 	
 	if (objectIndex != -1) {
@@ -1286,7 +1287,7 @@ void ScriptInterpreter::o1_loadSceneObjectSprite(Script *script) {
 
 	_vm->unloadSceneObjectSprite(script->object());
 	
-	script->object()->animationSlot = _vm->getAnimationResource(_vm->_animationType, fileIndex);
+	script->object()->animationSlot = _vm->_animationMan->getAnimationResource(_vm->_animationType, fileIndex);
 	_vm->_animationType = 0;
 	
 }

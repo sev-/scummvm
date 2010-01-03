@@ -65,6 +65,7 @@ class MusicPlayer;
 class CometEngine;
 
 class Animation;
+class AnimationManager;
 struct AnimationFrameList;
 class ScriptInterpreter;
 class Scene;
@@ -167,6 +168,7 @@ public:
 	Dialog *_dialog;
 	ScriptInterpreter *_script;
 	Scene *_scene;
+	AnimationManager *_animationMan;
 
 	byte *_sceneBackground, *_scratchBuffer;
 
@@ -175,7 +177,6 @@ public:
 
 	byte *_palette;
 
-	AnimationSlot _animationSlots[20];
 	int16 _animationType;
 
 	SceneObject _sceneObjects[11];
@@ -204,7 +205,7 @@ public:
 	int _mouseX, _mouseY;
 	bool _mouseLeft;
 	int _mouseCursor2;
-	int _mouseFlag;
+	int _blockedInput;
 	int16 _scriptMouseFlag;
 
 	bool _needToLoadSavegameFlag;
@@ -339,20 +340,12 @@ public:
 	
 	uint16 updateCollision(SceneObject *sceneObject, int index, uint16 collisionType);
 	
-	void resetHeroDirectionChanged();
+	void unblockInput();
 
 	/* Marche */
-	int findAnimationSlot(int16 animationType, int16 fileIndex);
-	int findFreeAnimationSlot();
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearMarcheByIndex(int16 animationSlot);
-	Animation *loadAnimationResource(const char *pakFilename, int fileIndex);
 	Animation *getGlobalAnimationResource(int16 animationType);
-	void purgeUnusedAnimationSlots();
-	void purgeAnimationSlots();
-	int getAnimationResource(int16 animationType, int16 fileIndex);
-	void refreshAnimationSlots();
-	void restoreAnimationSlots();
 	void unloadSceneObjectSprite(SceneObject *sceneObject);
 
 	/* SceneObject */
@@ -431,10 +424,6 @@ private:
 };
 
 void plotProc(int x, int y, int color, void *data = NULL);
-
-// FIXME: remove global
-//extern CometEngine *_vm;
-
 
 } // End of namespace Comet
 
