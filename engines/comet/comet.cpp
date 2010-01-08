@@ -102,7 +102,7 @@ Common::Error CometEngine::run() {
 
 	_clearScreenRequest = false;
 
-	_paletteValue2 = 0;
+	_introPaletteState = 0;
 	_animationType = 0;
 	_textActive = false;
 
@@ -214,7 +214,7 @@ Common::Error CometEngine::run() {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			setFullPalette(_ctuPal);
-			_paletteValue2 = 0;
+			_introPaletteState = 0;
 			_chapterNumber = 0;
 			_sceneNumber = 1;
 			//_sceneNumber = 11;
@@ -314,7 +314,7 @@ Common::Error CometEngine::run() {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
-			_paletteValue2 = 0;
+			_introPaletteState = 0;
 			//_chapterNumber = 1;
 			_chapterNumber = 0;
 			_sceneNumber = 0;

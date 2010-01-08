@@ -89,7 +89,7 @@ struct SceneObject {
 	int16 animSubIndex2;
 	int16 deltaX, deltaY;
 	uint16 collisionType;
-	int16 linesIndex;
+	int16 collisionIndex;
 	byte value6;
 	int16 life;
 	byte textColor;
@@ -184,7 +184,7 @@ public:
 	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
-	int _paletteValue2;
+	int _introPaletteState;
 	byte *_paletteBuffer;
 	int _paletteBrightness;
 	bool _clearScreenRequest;
@@ -326,7 +326,7 @@ public:
 	void loadStaticObjects();
 	void drawSceneForeground();
 
-	int checkLinesSub(int chapterNumber, int sceneNumber);
+	int handleLeftRightSceneExitCollision(int chapterNumber, int sceneNumber);
 
 	int checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect);
 	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
@@ -338,7 +338,7 @@ public:
 	
 	void sceneObjectMoveAroundBounds(int index, SceneObject *sceneObject);
 	
-	uint16 updateCollision(SceneObject *sceneObject, int index, uint16 collisionType);
+	uint16 updateCollision(SceneObject *sceneObject, int objectIndex, uint16 collisionType);
 	
 	void unblockInput();
 

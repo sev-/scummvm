@@ -166,7 +166,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(sceneObject.deltaX);
 		out->writeUint16LE(sceneObject.deltaY);
 		out->writeUint16LE(sceneObject.collisionType);
-		out->writeUint16LE(sceneObject.linesIndex);
+		out->writeUint16LE(sceneObject.collisionIndex);
 		out->writeByte(sceneObject.value6);
 		out->writeUint16LE(sceneObject.life);
 		out->writeByte(sceneObject.textColor);
@@ -316,7 +316,7 @@ void CometEngine::loadgame(const char *filename) {
 		sceneObject.deltaX = in->readUint16LE();
 		sceneObject.deltaY = in->readUint16LE();
 		sceneObject.collisionType = in->readUint16LE();
-		sceneObject.linesIndex = in->readUint16LE();
+		sceneObject.collisionIndex = in->readUint16LE();
 		sceneObject.value6 = in->readByte();
 		sceneObject.life = in->readUint16LE();
 		sceneObject.textColor = in->readByte();

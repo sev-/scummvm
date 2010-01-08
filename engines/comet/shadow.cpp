@@ -452,9 +452,7 @@ void CometEngine::lookAtItemInSight(bool flag) {
 			_itemDirection = _sceneObjects[0].direction;
 			_itemX = sceneItem->x;
 			_itemY = sceneItem->y - 6;
-
 			if (flag && (!_dialog->isRunning() || !_textActive)) {
-				//byte *textBuffer;
 				if (sceneItem->paramType == 0) {
 					setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
 				} else {
@@ -845,7 +843,7 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 	if (sceneObject->collisionType == 1 || sceneObject->collisionType == 2) {
 		// TODO
 		sceneObjectMoveAroundBounds(objectIndex, sceneObject);
-	} else if (sceneObject->collisionType == 6 && sceneObject->value6 == 6 && sceneObject->linesIndex == 0) {
+	} else if (sceneObject->collisionType == 6 && sceneObject->value6 == 6 && sceneObject->collisionIndex == 0) {
 		// TODO
 		//debug(4, "CometEngine::sceneObjectHandleCollision()");
 		sceneObject->value6 = 0;
@@ -999,30 +997,30 @@ void CometEngine::updateScreen() {
 		_clearScreenRequest = false;
 	}
 	
-	if (_currentChapterNumber == 9 && _currentSceneNumber == 0 && _paletteValue2 == 0) {
+	if (_currentChapterNumber == 9 && _currentSceneNumber == 0 && _introPaletteState == 0) {
 		memcpy(_paletteBuffer, _ctuPal, 768);
 		memcpy(_ctuPal, _pali0Pal, 768);
 		memcpy(_palette, _pali0Pal, 768);
 		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_paletteValue2 = 3;
-	} else if (_currentChapterNumber == 9 && _currentSceneNumber == 1 && _paletteValue2 == 3) {
+		_introPaletteState = 3;
+	} else if (_currentChapterNumber == 9 && _currentSceneNumber == 1 && _introPaletteState == 3) {
 		memcpy(_ctuPal, _cdintroPal, 768);
 		memcpy(_palette, _cdintroPal, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_paletteValue2 = 2;
-	} else if (_currentChapterNumber == 5 && _currentSceneNumber == 0 && (_paletteValue2 == 2 || _paletteValue2 == 3)) {
+		_introPaletteState = 2;
+	} else if (_currentChapterNumber == 5 && _currentSceneNumber == 0 && (_introPaletteState == 2 || _introPaletteState == 3)) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_paletteValue2 = 0;
-	} else if (_currentChapterNumber == 0 && _currentSceneNumber == 0 && _paletteValue2 != 0) {
+		_introPaletteState = 0;
+	} else if (_currentChapterNumber == 0 && _currentSceneNumber == 0 && _introPaletteState != 0) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
 		_screen->setFullPalette(_ctuPal);
-		_paletteValue2 = 0;
+		_introPaletteState = 0;
 	}
 
 	_screen->update();
@@ -1467,7 +1465,7 @@ void CometEngine::stopVoice() {
 		_mixer->stopHandle(_voiceHandle);
 }
 
-int CometEngine::checkLinesSub(int chapterNumber, int sceneNumber) {
+int CometEngine::handleLeftRightSceneExitCollision(int chapterNumber, int sceneNumber) {
 	
 	if (sceneNumber == -1) {
 		_chapterNumber = -1;
@@ -1485,7 +1483,7 @@ int CometEngine::checkLinesSub(int chapterNumber, int sceneNumber) {
 
 		sceneObject->value6 = 4;
 
-		_scene->getSceneExitRect(sceneObject->linesIndex, x1, y1, x2, y2);
+		_scene->getSceneExitRect(sceneObject->collisionIndex, x1, y1, x2, y2);
 		if (x2 == 318)
 			x2 = 319;
 
@@ -1662,17 +1660,17 @@ void CometEngine::initStaticObjectRects() {
 
 }
 
-uint16 CometEngine::updateCollision(SceneObject *sceneObject, int index, uint16 collisionType) {
+uint16 CometEngine::updateCollision(SceneObject *sceneObject, int objectIndex, uint16 collisionType) {
 
 	int result = 0;
 	
 	sceneObject->collisionType = (collisionType >> 8) & 0xFF;
-	sceneObject->linesIndex = collisionType & 0xFF;
+	sceneObject->collisionIndex = collisionType & 0xFF;
 
-	if (index == 0 && sceneObject->collisionType == 4) {
+	if (objectIndex == 0 && sceneObject->collisionType == 4) {
 		int chapterNumber, sceneNumber;
-		_scene->getSceneExitLink(sceneObject->linesIndex, chapterNumber, sceneNumber);
-		result = checkLinesSub(chapterNumber, sceneNumber);
+		_scene->getSceneExitLink(sceneObject->collisionIndex, chapterNumber, sceneNumber);
+		result = handleLeftRightSceneExitCollision(chapterNumber, sceneNumber);
 	}
 	
 	if (result == 0) {
