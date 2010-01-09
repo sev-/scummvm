@@ -396,7 +396,7 @@ void CometEngine::updateSceneNumber() {
 		sceneObjectStopWalking(&_sceneObjects[0]);
 		
 		_sceneObjects[0].visible = true;
-		_sceneObjects[0].collisionType = 0;
+		_sceneObjects[0].collisionType = kCollisionNone;
 		_sceneObjects[0].value6 = 0;
 		_sceneObjects[0].clipX1 = 0;
 		_sceneObjects[0].clipY1 = 0;
@@ -840,10 +840,10 @@ void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *scene
 	debug(4, "CometEngine::sceneObjectHandleCollision() objectIndex = %d", objectIndex);
 	debug(4, "CometEngine::sceneObjectHandleCollision() sceneObject->collisionType = %d", sceneObject->collisionType);
 
-	if (sceneObject->collisionType == 1 || sceneObject->collisionType == 2) {
+	if (sceneObject->collisionType == kCollisionBounds || sceneObject->collisionType == kCollisionBoundsOff) {
 		// TODO
 		sceneObjectMoveAroundBounds(objectIndex, sceneObject);
-	} else if (sceneObject->collisionType == 6 && sceneObject->value6 == 6 && sceneObject->collisionIndex == 0) {
+	} else if (sceneObject->collisionType == kCollisionActor && sceneObject->value6 == 6 && sceneObject->collisionIndex == 0) {
 		// TODO
 		//debug(4, "CometEngine::sceneObjectHandleCollision()");
 		sceneObject->value6 = 0;
@@ -916,7 +916,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 		sceneObjectGetNextWalkDestXY(sceneObject, x, y);
 	}
 
-	if (sceneObject->collisionType != 8) {
+	if (sceneObject->collisionType != kCollisionDisabled) {
 		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction, obstacleRect);
 		debug(4, "collisionType (checkCollision) = %04X", collisionType);
 		if (collisionType != 0) {
@@ -925,7 +925,7 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 			if (collisionType == 0)
 				return false;
 		} else {
-			sceneObject->collisionType = 0;
+			sceneObject->collisionType = kCollisionNone;
 		}
 	}
 
@@ -1488,7 +1488,7 @@ int CometEngine::handleLeftRightSceneExitCollision(int chapterNumber, int sceneN
 			x2 = 319;
 
 		// Disable collision checks
-		sceneObject->collisionType = 8;
+		sceneObject->collisionType = kCollisionDisabled;
 
 		if (sceneObject->direction == 2) {
 			sceneObject->clipX1 = 0;
@@ -1594,7 +1594,7 @@ int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Com
 
 	for (int index = 0; index < 11; index++) {
 		SceneObject *sceneObject = getSceneObject(index);
-		if (index != skipIndex && sceneObject->life != 0 && sceneObject->collisionType != 8) {
+		if (index != skipIndex && sceneObject->life != 0 && sceneObject->collisionType != kCollisionDisabled) {
 			obstacleRect.left = sceneObject->x - sceneObject->deltaX;
 			obstacleRect.top = sceneObject->y - sceneObject->deltaY;
 			obstacleRect.right = sceneObject->x + sceneObject->deltaX;
@@ -1667,7 +1667,7 @@ uint16 CometEngine::updateCollision(SceneObject *sceneObject, int objectIndex, u
 	sceneObject->collisionType = (collisionType >> 8) & 0xFF;
 	sceneObject->collisionIndex = collisionType & 0xFF;
 
-	if (objectIndex == 0 && sceneObject->collisionType == 4) {
+	if (objectIndex == 0 && sceneObject->collisionType == kCollisionSceneExit) {
 		int chapterNumber, sceneNumber;
 		_scene->getSceneExitLink(sceneObject->collisionIndex, chapterNumber, sceneNumber);
 		result = handleLeftRightSceneExitCollision(chapterNumber, sceneNumber);

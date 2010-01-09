@@ -77,6 +77,17 @@ enum {
 	kDirectionRight		= 4
 };
 
+enum {
+	kCollisionNone		= 0,
+	kCollisionBounds	= 1,
+	kCollisionBoundsOff	= 2,
+	kCollisionBlocking	= 3,
+	kCollisionSceneExit	= 4,
+	kCollisionSceneItem	= 5,
+	kCollisionActor		= 6,
+	kCollisionDisabled	= 8
+};
+
 struct SceneObject {
 	int16 x, y;
 	int16 directionAdd, directionChanged, direction;

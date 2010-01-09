@@ -145,7 +145,7 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 
 	SceneObject *sceneObject = getSceneObject(objectIndex);
 	
-	if (sceneObject->collisionType != 8) {
+	if (sceneObject->collisionType != kCollisionDisabled) {
 		_scene->filterWalkDestXY(x, y, sceneObject->deltaX, sceneObject->deltaY);
 	}
 		
