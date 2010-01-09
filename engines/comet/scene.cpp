@@ -168,10 +168,7 @@ int Scene::findBoundsRight(int x, int y) {
 		if (_bounds[i].x > x && yp >= y)
 			break;
 	}
-	if (yp >= 199)
-		return 190;
-	else
-		return yp;
+	return (yp >= 199) ? 190 : yp;
 }
 
 int Scene::findBoundsLeft(int x, int y) {
@@ -181,10 +178,7 @@ int Scene::findBoundsLeft(int x, int y) {
 		if (_bounds[i].x < x && yp >= y)
 			break;
 	}
-	if (yp >= 199)
-		return 190;
-	else
-		return yp;
+	return (yp >= 199) ? 190 : yp;
 }
 
 void Scene::filterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
