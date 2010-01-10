@@ -789,10 +789,10 @@ void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
 
 void ScriptInterpreter::o1_playCutscene(Script *script) {
 
-	int fileIndex = script->readByte();
-	int indexSubStart = script->readByte();
-	int index = script->readInt16();
-	int counterMax = script->readByte();
+	/*int fileIndex = */script->readByte();
+	/*int indexSubStart = */script->readByte();
+	/*int index = */script->readInt16();
+	/*int counterMax = */script->readByte();
 	int cutsceneCounter2 = script->readByte();
 	
 	//TODO
@@ -1141,10 +1141,10 @@ void ScriptInterpreter::o1_ifLookZone(Script *script) {
 }
 
 void ScriptInterpreter::o1_addBeam(Script *script) {
-	int x1 = script->readByte() * 2;
-	int y1 = script->readByte();
-	int x2 = script->readByte() * 2;
-	int y2 = script->readByte();
+	script->readByte(); //int x1 = script->readByte() * 2;
+	script->readByte(); //int y1 = script->readByte();
+	script->readByte(); //int x2 = script->readByte() * 2;
+	script->readByte(); //int y2 = script->readByte();
 	// TODO: Actually add the line
 }
 
@@ -1339,14 +1339,14 @@ void ScriptInterpreter::o1_deactivateSceneItem(Script *script) {
 
 void ScriptInterpreter::o1_sample_2(Script *script) {
 	debug(2, "o1_sample_2");
-	int narFileIndex = script->readByte();
+	/*int narFileIndex = */script->readByte();
 	//TODO: seg010:074A
 }
 
 void ScriptInterpreter::o1_sample_1(Script *script) {
 	debug(2, "o1_sample_1");
-	int narFileIndex = script->readByte();
-	int value = script->readByte();
+	/*int narFileIndex = */script->readByte();
+	/*int value = */script->readByte();
 	//TODO
 }
 
