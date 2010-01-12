@@ -95,7 +95,7 @@ uint8 smallTable[] = { 0x10, 8, 4, 2, 1 };
 MusicPlayer::MusicPlayer(CometEngine *vm) : _vm(vm) {
 
 	_rate = _vm->_mixer->getOutputRate();
-	_opl = makeAdlibOPL(_rate);
+	_opl = makeAdLibOPL(_rate);
 	_ended = false;
 	_playing = false;
 
