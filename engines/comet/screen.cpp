@@ -258,7 +258,7 @@ void Screen::screenTransitionEffect() {
 		_vm->_system->delayMillis(40);
 	}
 
-	delete vgaScreen;
+	delete[] vgaScreen;
 
 	_transitionEffect = false;
 
