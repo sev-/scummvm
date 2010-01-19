@@ -1,3 +1,5 @@
+#include "sound/audiostream.h"
+#include "sound/raw.h"
 #include "sound/voc.h"
 #include "common/stream.h"
 #include "graphics/surface.h"
@@ -1436,7 +1438,7 @@ void CometEngine::playVoice(int number) {
 
 	_narFile->seek(_narOffsets[number]);
 
-	int size, rate;
+	int size;
 	
 	if (_narOffsets[number + 1] <= _narOffsets[number]) {
 		debug(4, "CometEngine::playVoice(%d)  Offset error", number);
@@ -1455,9 +1457,8 @@ void CometEngine::playVoice(int number) {
 
 	Common::MemoryReadStream vocStream(readBuffer, size, DisposeAfterUse::YES);
 
-	byte *buffer = Audio::loadVOCFromStream(vocStream, size, rate);
-	_mixer->playRaw(Audio::Mixer::kSpeechSoundType, &_voiceHandle, buffer, size, DisposeAfterUse::YES, rate, Audio::Mixer::FLAG_UNSIGNED);
-
+	Audio::AudioStream *stream = Audio::makeVOCStream(vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
+	_mixer->playInputStream(Audio::Mixer::kSpeechSoundType, &_voiceHandle, stream);
 }
 
 void CometEngine::stopVoice() {
