@@ -1456,7 +1456,7 @@ void CometEngine::playVoice(int number) {
 	Common::MemoryReadStream vocStream(readBuffer, size, DisposeAfterUse::YES);
 
 	byte *buffer = Audio::loadVOCFromStream(vocStream, size, rate);
-	_mixer->playRaw(Audio::Mixer::kSpeechSoundType, &_voiceHandle, buffer, size, rate, Audio::Mixer::FLAG_AUTOFREE | Audio::Mixer::FLAG_UNSIGNED);
+	_mixer->playRaw(Audio::Mixer::kSpeechSoundType, &_voiceHandle, buffer, size, DisposeAfterUse::YES, rate, Audio::Mixer::FLAG_UNSIGNED);
 
 }
 
