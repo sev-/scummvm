@@ -91,7 +91,7 @@ void Screen::screenZoomEffect2x(int x, int y) {
 	if (y - 80 < 0) y = 0;
 	if (y > 99) y = 99;
 
-	byte *vgaScreen = (byte*)malloc(64000);
+	byte *vgaScreen = new byte[64000];
 	byte *sourceBuf = _workScreen + x + (y * 320);
 	byte *destBuf = vgaScreen;
 
@@ -129,7 +129,7 @@ void Screen::screenZoomEffect3x(int x, int y) {
 	if (y - 50 < 0) y = 0;
 	if (y > 133) y = 133;
 
-	byte *vgaScreen = (byte*)malloc(64000);
+	byte *vgaScreen = new byte[64000];
 	byte *sourceBuf = _workScreen + x + (y * 320);
 	byte *destBuf = vgaScreen;
 
@@ -188,7 +188,7 @@ void Screen::screenZoomEffect4x(int x, int y) {
 	if (y - 44 < 0) y = 0;
 	if (y > 149) y = 149;
 
-	byte *vgaScreen = (byte*)malloc(64000);
+	byte *vgaScreen = new byte[64000];
 	byte *sourceBuf = _workScreen + x + (y * 320);
 	byte *destBuf = vgaScreen;
 
