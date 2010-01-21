@@ -602,23 +602,12 @@ int CometEngine::drawSceneObject(Animation *animation, AnimationFrameList *frame
 	debug(8, "x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulVal = %d",
 		x, y, drawX, drawY, gfxMode, mulVal);
 
-	if (gfxMode == 0) {
+	switch (gfxMode) {
+	case 0:
 		_screen->drawAnimationElement(animation, index, drawX, drawY);
-#if 0
-	} else if (gfxMode == 1) {
-		//TEST ONLY
-		//anim->runSeq1(index, lx, ly);
-		//anim->runSeq1(index, 0, 100);
-#endif
- 	} else {
-		//debug(4, "CometEngine::drawSceneObject()  gfxMode == %d not yet implemented", gfxMode);
-		/*
-		// Dump Anim
-		FILE *o = fopen("gfxmode2.va2", "wb");
-		fwrite(anim->_animData, 2000, 1, o);
-		fclose(o);
-		exit(0);
-		*/
+		break;
+	default:
+		debug("CometEngine::drawSceneObject() gfxMode == %d not yet implemented", gfxMode);
 	}
 
 	return 0;
