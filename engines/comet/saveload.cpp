@@ -119,7 +119,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint32LE(_gameLoopCounter);
 
 	out->writeByte(_scene->_sceneExits.size());
-	for (Common::Array<SceneExitItem>::iterator iter = _scene->_sceneExits.begin(); iter != _scene->_sceneExits.end(); iter++) {
+	for (Common::Array<SceneExitItem>::iterator iter = _scene->_sceneExits.begin(); iter != _scene->_sceneExits.end(); ++iter) {
 		const SceneExitItem &sceneExit = *iter;
 		out->writeUint16LE(sceneExit.directionIndex);
 		out->writeUint16LE(sceneExit.chapterNumber);
@@ -143,7 +143,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 	
 	out->writeByte(_scene->_bounds.size());
-	for (PointArray::iterator iter = _scene->_bounds.begin(); iter != _scene->_bounds.end(); iter++) {
+	for (PointArray::iterator iter = _scene->_bounds.begin(); iter != _scene->_bounds.end(); ++iter) {
 		const Common::Point &bound = *iter;
 		out->writeUint16LE(bound.x);
 		out->writeUint16LE(bound.y);
@@ -192,7 +192,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 	
 	out->writeByte(_sceneItems.size());
-	for (Common::Array<SceneItem>::iterator iter = _sceneItems.begin(); iter != _sceneItems.end(); iter++) {
+	for (Common::Array<SceneItem>::iterator iter = _sceneItems.begin(); iter != _sceneItems.end(); ++iter) {
 		const SceneItem &sceneItem = *iter;
 		out->writeUint16LE(sceneItem.itemIndex);
 		out->writeByte(sceneItem.active ? 1 : 0);
@@ -202,7 +202,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 
 	out->writeByte(_scene->_blockingRects.size());
-	for (Common::Array<Common::Rect>::iterator iter = _scene->_blockingRects.begin(); iter != _scene->_blockingRects.end(); iter++) {
+	for (Common::Array<Common::Rect>::iterator iter = _scene->_blockingRects.begin(); iter != _scene->_blockingRects.end(); ++iter) {
 		const Common::Rect &blockingRect = *iter;
 		out->writeUint16LE(blockingRect.left);
 		out->writeUint16LE(blockingRect.top);

@@ -1377,8 +1377,7 @@ void CometEngine::openVoiceFile(int index) {
 		delete _narFile;
 	}
 	
-	if (_narOffsets)
-		delete[] _narOffsets;
+	delete[] _narOffsets;
 		
 	char narFilename[16];
 	snprintf(narFilename, 16, "D%02d.NAR", index);

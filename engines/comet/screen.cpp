@@ -1077,7 +1077,7 @@ void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int1
 	byte flags = element->flags | (parentFlags & 0xA0);
 	debug(8, "Screen::drawAnimationElement() flags = %02X", flags);
 
-	for (Common::Array<AnimationCommand*>::iterator iter = element->commands.begin(); iter != element->commands.end(); iter++) {
+	for (Common::Array<AnimationCommand*>::iterator iter = element->commands.begin(); iter != element->commands.end(); ++iter) {
 		drawAnimationCommand(animation, (*iter), x, y, flags);
 	}
 
