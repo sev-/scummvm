@@ -1,6 +1,6 @@
 #include "sound/audiostream.h"
-#include "sound/raw.h"
-#include "sound/voc.h"
+#include "sound/decoders/raw.h"
+#include "sound/decoders/voc.h"
 #include "common/stream.h"
 #include "graphics/surface.h"
 #include "graphics/primitives.h"
