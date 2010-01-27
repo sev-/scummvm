@@ -8,13 +8,11 @@ Font::Font() : _fontData(NULL) {
 }
 
 Font::~Font() {
-	if (_fontData)
-		free(_fontData);
+	free(_fontData);
 }
 
 void Font::load(const char *pakFilename, int fileIndex) {
-	if (_fontData)
-		free(_fontData);
+	free(_fontData);
 	_fontData = loadFromPak(pakFilename, fileIndex);
 	uint16 skipChars = _fontData[0] * 2;
 	_charHeight = _fontData[2];
@@ -26,7 +24,7 @@ void Font::load(const char *pakFilename, int fileIndex) {
 }
 
 void Font::setColor(byte color) {
-  _color = color;
+	_color = color;
 }
 
 void Font::drawText(int x, int y, byte *destBuffer, byte *text) {

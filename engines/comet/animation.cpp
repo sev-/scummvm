@@ -9,12 +9,12 @@
 namespace Comet {
 
 AnimationElement::~AnimationElement() {
-	for (Common::Array<AnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
+	for (Common::Array<AnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
 		delete (*iter);
 }
 
 AnimationFrameList::~AnimationFrameList() {
-	for (Common::Array<AnimationFrame*>::iterator iter = frames.begin(); iter != frames.end(); iter++)
+	for (Common::Array<AnimationFrame*>::iterator iter = frames.begin(); iter != frames.end(); ++iter)
 		delete (*iter);
 }
 
@@ -77,13 +77,13 @@ void Animation::load(Common::SeekableReadStream &sourceS, uint dataSize) {
 
 void Animation::free() {
 
-	for (Common::Array<AnimationElement*>::iterator iter = _elements.begin(); iter != _elements.end(); iter++)
+	for (Common::Array<AnimationElement*>::iterator iter = _elements.begin(); iter != _elements.end(); ++iter)
 		delete (*iter);
 
-	for (Common::Array<AnimationCel*>::iterator iter = _cels.begin(); iter != _cels.end(); iter++)
+	for (Common::Array<AnimationCel*>::iterator iter = _cels.begin(); iter != _cels.end(); ++iter)
 		delete (*iter);
 
-	for (Common::Array<AnimationFrameList*>::iterator iter = _anims.begin(); iter != _anims.end(); iter++)
+	for (Common::Array<AnimationFrameList*>::iterator iter = _anims.begin(); iter != _anims.end(); ++iter)
 		delete (*iter);
 
 }
