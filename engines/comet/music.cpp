@@ -119,7 +119,7 @@ MusicPlayer::MusicPlayer(CometEngine *vm) : _vm(vm) {
 		createDefaultChannel(i);
   	}
 
-	_vm->_mixer->playInputStream(Audio::Mixer::kMusicSoundType, &_handle,
+	_vm->_mixer->playStream(Audio::Mixer::kMusicSoundType, &_handle,
 			this, -1, 255, 0, DisposeAfterUse::NO, true);
 
   	musicStart();

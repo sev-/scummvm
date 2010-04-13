@@ -1446,7 +1446,7 @@ void CometEngine::playVoice(int number) {
 	Common::MemoryReadStream vocStream(readBuffer, size, DisposeAfterUse::YES);
 
 	Audio::AudioStream *stream = Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
-	_mixer->playInputStream(Audio::Mixer::kSpeechSoundType, &_voiceHandle, stream);
+	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_voiceHandle, stream);
 }
 
 void CometEngine::stopVoice() {
