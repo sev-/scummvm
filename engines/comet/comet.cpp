@@ -4,9 +4,12 @@
 
 
 #include "common/scummsys.h"
+#include "common/debug-channels.h"
 #include "common/EventRecorder.h"
 #include "common/keyboard.h"
 #include "common/config-manager.h"
+
+#include "engines/util.h"
 
 #include "base/plugins.h"
 
