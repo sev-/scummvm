@@ -8,7 +8,7 @@ namespace Comet {
 
 /* Actor */
 
-void CometEngine::sceneObjectInit(int itemIndex, int16 animationSlot) {
+void CometEngine::actorInit(int itemIndex, int16 animationSlot) {
 
 	Actor *actor = &_actors[itemIndex];
 	
@@ -16,8 +16,8 @@ void CometEngine::sceneObjectInit(int itemIndex, int16 animationSlot) {
 
 	actor->directionAdd = 4;
 	actor->direction = 1;
-	sceneObjectSetDirectionAdd(actor, 0);
-	sceneObjectSetAnimNumber(actor, 0);
+	actorSetDirectionAdd(actor, 0);
+	actorSetAnimNumber(actor, 0);
 	actor->animationSlot = animationSlot;
 	
 	actor->deltaX = 4;
@@ -39,21 +39,21 @@ void CometEngine::sceneObjectInit(int itemIndex, int16 animationSlot) {
 
 }
 
-void CometEngine::sceneObjectSetDirection(Actor *actor, int direction) {
+void CometEngine::actorSetDirection(Actor *actor, int direction) {
 	if (actor->direction != direction && direction != 0 && actor->directionChanged != 2) {
 		actor->direction = direction;
 		actor->directionChanged = 1;
 	}
 }
 
-void CometEngine::sceneObjectSetDirectionAdd(Actor *actor, int directionAdd) {
+void CometEngine::actorSetDirectionAdd(Actor *actor, int directionAdd) {
 	if (actor->directionAdd != directionAdd && actor->directionChanged != 2) {
 		actor->directionAdd = directionAdd;
 		actor->directionChanged = 1;
 	}
 }
 
-void CometEngine::sceneObjectSetAnimNumber(Actor *actor, int index) {
+void CometEngine::actorSetAnimNumber(Actor *actor, int index) {
 	if (actor->animationSlot != -1) {
 		actor->animFrameCount = _animationMan->getAnimation(actor->animationSlot)->_anims[index]->frames.size();
 	} else {
@@ -63,17 +63,17 @@ void CometEngine::sceneObjectSetAnimNumber(Actor *actor, int index) {
 	actor->animIndex = index;
 	actor->animSubIndex2 = -1;
 	
-	debug(5, "sceneObjectSetAnimNumber() animIndex = %d; animFrameIndex = %d; animFrameCount = %d",
+	debug(5, "actorSetAnimNumber() animIndex = %d; animFrameIndex = %d; animFrameCount = %d",
 		actor->animIndex, actor->animFrameIndex, actor->animFrameCount);
 	
 }
 
-void CometEngine::sceneObjectStopWalking(Actor *actor) {
+void CometEngine::actorStopWalking(Actor *actor) {
 	actor->walkStatus = 0;
-	sceneObjectSetDirectionAdd(actor, 0);
+	actorSetDirectionAdd(actor, 0);
 }
 
-void CometEngine::sceneObjectCalcDirection(Actor *actor) {
+void CometEngine::actorCalcDirection(Actor *actor) {
 
 	int deltaX, deltaY, direction, walkFlag;
 	
@@ -94,11 +94,11 @@ void CometEngine::sceneObjectCalcDirection(Actor *actor) {
 			direction = 1;
 	}
 
-	sceneObjectSetDirection(actor, direction);
+	actorSetDirection(actor, direction);
 
 }
 
-void CometEngine::sceneObjectGetNextWalkDestXY(Actor *actor, int &x, int &y) {
+void CometEngine::actorGetNextWalkDestXY(Actor *actor, int &x, int &y) {
 	switch (actor->direction) {
 	case 1:
 		if (actor->walkDestY > y)
@@ -119,7 +119,7 @@ void CometEngine::sceneObjectGetNextWalkDestXY(Actor *actor, int &x, int &y) {
 	}
 }
 
-void CometEngine::sceneObjectSetPosition(int index, int x, int y) {
+void CometEngine::actorSetPosition(int index, int x, int y) {
 	Actor *actor = getActor(index);
 	actor->x = x;
 	actor->y = y;
@@ -127,11 +127,11 @@ void CometEngine::sceneObjectSetPosition(int index, int x, int y) {
 	actor->walkStatus = 0;
 }
 
-void CometEngine::sceneObjectUpdateLife(Actor *actor, int flag) {
+void CometEngine::actorUpdateLife(Actor *actor, int flag) {
 	actor->life = MAX(0, actor->life - flag);
 }
 
-void CometEngine::sceneObjectSaveWalkDestXY(Actor *actor) {
+void CometEngine::actorSaveWalkDestXY(Actor *actor) {
 	if (((actor->walkStatus & 3) != 0) && ((actor->walkStatus & 4) == 0)) {
 		actor->savedWalkDestX = actor->walkDestX;
 		actor->savedWalkDestY = actor->walkDestY;
@@ -139,9 +139,9 @@ void CometEngine::sceneObjectSaveWalkDestXY(Actor *actor) {
 	}
 }
 
-bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
+bool CometEngine::actorStartWalking(int objectIndex, int x, int y) {
 
-	debug(4, "CometEngine::sceneObjectStartWalking() objectIndex = %d; (%d, %d)", objectIndex, x, y);
+	debug(4, "CometEngine::actorStartWalking() objectIndex = %d; (%d, %d)", objectIndex, x, y);
 
 	Actor *actor = getActor(objectIndex);
 	
@@ -151,13 +151,13 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 		
 	int compareFlags = comparePointXY(actor->x, actor->y, x, y);
 
-	debug(4, "CometEngine::sceneObjectStartWalking() compareFlags = %d", compareFlags);
+	debug(4, "CometEngine::actorStartWalking() compareFlags = %d", compareFlags);
 
 	// No need to walk since we're already there
 	if (compareFlags == 3)
 		return false;
 
-	sceneObjectSaveWalkDestXY(actor);
+	actorSaveWalkDestXY(actor);
 
 	actor->walkDestX = x;
 	actor->walkDestY = y;
@@ -173,8 +173,8 @@ bool CometEngine::sceneObjectStartWalking(int objectIndex, int x, int y) {
 		actor->walkStatus |= (compareFlags ^ 3);
 	}
 
- 	sceneObjectSetDirectionAdd(actor, 4);
- 	sceneObjectCalcDirection(actor);
+ 	actorSetDirectionAdd(actor, 4);
+ 	actorCalcDirection(actor);
 
 	return true;
 
@@ -186,7 +186,7 @@ Actor *CometEngine::getActor(int index) {
 
 /* SceneObjects */
 
-void CometEngine::sceneObjectsResetFlags() {
+void CometEngine::resetActorsLife() {
 	for (int i = 1; i < 11; i++) {
 		_actors[i].life = 0;
 	}
