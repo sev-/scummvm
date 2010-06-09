@@ -59,7 +59,7 @@ public:
 	void jump();
 	uint16 loadVarValue();
 	uint16 loadValue();
-	SceneObject *object() const;
+	Actor *actor() const;
 private:
 	ScriptInterpreter *_inter;
 };
@@ -100,8 +100,8 @@ public:
 
 	bool evalBoolOp(int value1, int value2, int boolOp);
 
-	SceneObject *getScriptSceneObject();
-	SceneObject *getSceneObject(int index);
+	Actor *getScriptActor();
+	Actor *getActor(int index);
 
 	void processScriptSynchronize();
 	void processScriptSleep();

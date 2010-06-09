@@ -101,7 +101,7 @@ Common::Error CometEngine::run() {
 	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
-	memset(_sceneObjects, 0, sizeof(_sceneObjects));
+	memset(_actors, 0, sizeof(_actors));
 
 	_clearScreenRequest = false;
 
@@ -138,9 +138,9 @@ Common::Error CometEngine::run() {
 
 	_systemVars[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
-		_systemVars[1 + i * 3] = &_sceneObjects[i].life;
-		_systemVars[2 + i * 3] = &_sceneObjects[i].x;
-		_systemVars[3 + i * 3] = &_sceneObjects[i].y;
+		_systemVars[1 + i * 3] = &_actors[i].life;
+		_systemVars[2 + i * 3] = &_actors[i].x;
+		_systemVars[3 + i * 3] = &_actors[i].y;
 	}
 	_systemVars[31] = &_mouseButtons4;
 	_systemVars[32] = &_scriptMouseFlag;

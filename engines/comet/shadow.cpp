@@ -46,12 +46,12 @@ int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 
 void CometEngine::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
 
-	int x = _sceneObjects[0].x - _sceneObjects[0].deltaX - 8;
-	int y = _sceneObjects[0].y - _sceneObjects[0].deltaY - 8;
-	int x2 = _sceneObjects[0].x + _sceneObjects[0].deltaX + 8;
-	int y2 = _sceneObjects[0].y + 8;
+	int x = _actors[0].x - _actors[0].deltaX - 8;
+	int y = _actors[0].y - _actors[0].deltaY - 8;
+	int x2 = _actors[0].x + _actors[0].deltaX + 8;
+	int y2 = _actors[0].y + 8;
 
-	switch (_sceneObjects[0].direction) {
+	switch (_actors[0].direction) {
 	case 1:
 		y -= delta2;
 		y2 -= 20;
@@ -226,7 +226,7 @@ void CometEngine::initData() {
 	sceneObjectInit(0, _animationMan->getAnimationResource(1, 0));
 
 	sceneObjectSetPosition(0, 160, 190);
-	_sceneObjects[0].life = 99;
+	_actors[0].life = 99;
 
 }
 
@@ -338,8 +338,8 @@ void CometEngine::updateGame() {
 		/* begin DEBUG rectangles */
 		for (uint32 i = 0; i < _blockingRects.size(); i++)
 			_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
-		_screen->fillRect(_sceneObjects[0].x - _sceneObjects[0].deltaX, _sceneObjects[0].y - _sceneObjects[0].deltaY,
-			_sceneObjects[0].x + _sceneObjects[0].deltaX, _sceneObjects[0].y, 150);
+		_screen->fillRect(_actors[0].x - _actors[0].deltaX, _actors[0].y - _actors[0].deltaY,
+			_actors[0].x + _actors[0].deltaX, _actors[0].y, 150);
 		for (uint32 index = 0; index < _sceneExits.size(); index++) {
 			int x3, y3, x4, y4;
 			getSceneExitRect(index, x3, y3, x4, y4);
@@ -381,11 +381,11 @@ void CometEngine::updateSceneNumber() {
 
 	//TODO: mouse_4(0, 0x40);
 
-	if (_sceneObjects[0].walkStatus != 0 &&
-		((_sceneObjects[0].direction == 2 && _sceneObjects[0].x < 319) ||
-		(_sceneObjects[0].direction == 4 && _sceneObjects[0].x > 0))) {
+	if (_actors[0].walkStatus != 0 &&
+		((_actors[0].direction == 2 && _actors[0].x < 319) ||
+		(_actors[0].direction == 4 && _actors[0].x > 0))) {
 
-		_sceneObjects[0].y = _sceneObjects[0].walkDestY;
+		_actors[0].y = _actors[0].walkDestY;
 
 	} else {
 
@@ -395,15 +395,15 @@ void CometEngine::updateSceneNumber() {
 		_prevChapterNumber = _currentChapterNumber;
 		_currentChapterNumber = _chapterNumber;
 		
-		sceneObjectStopWalking(&_sceneObjects[0]);
+		sceneObjectStopWalking(&_actors[0]);
 		
-		_sceneObjects[0].visible = true;
-		_sceneObjects[0].collisionType = kCollisionNone;
-		_sceneObjects[0].value6 = 0;
-		_sceneObjects[0].clipX1 = 0;
-		_sceneObjects[0].clipY1 = 0;
-		_sceneObjects[0].clipX2 = 319;
-		_sceneObjects[0].clipY2 = 199;
+		_actors[0].visible = true;
+		_actors[0].collisionType = kCollisionNone;
+		_actors[0].value6 = 0;
+		_actors[0].clipX1 = 0;
+		_actors[0].clipY1 = 0;
+		_actors[0].clipX2 = 319;
+		_actors[0].clipY2 = 199;
 
 		// TODO: _palFlag = false;
 
@@ -451,7 +451,7 @@ void CometEngine::lookAtItemInSight(bool flag) {
 		if (sceneItemIndex != 0) {
 			SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
 			_itemInSight = true;
-			_itemDirection = _sceneObjects[0].direction;
+			_itemDirection = _actors[0].direction;
 			_itemX = sceneItem->x;
 			_itemY = sceneItem->y - 6;
 			if (flag && (!_dialog->isRunning() || !_textActive)) {
@@ -472,19 +472,19 @@ void CometEngine::lookAtItemInSight(bool flag) {
 
 void CometEngine::sceneObjectsUpdateAnimations() {
 	for (int i = 0; i < 10; i++) {
-		if (_sceneObjects[i].life != 0)
-			sceneObjectUpdateAnimation(&_sceneObjects[i]);
+		if (_actors[i].life != 0)
+			sceneObjectUpdateAnimation(&_actors[i]);
 	}
-	sceneObjectUpdatePortraitAnimation(&_sceneObjects[10]);
+	sceneObjectUpdatePortraitAnimation(&_actors[10]);
 }
 
 void CometEngine::sceneObjectsUpdateMovement() {
 	for (int i = 0; i < 11; i++) {
-		if (_sceneObjects[i].life != 0) {
+		if (_actors[i].life != 0) {
 			Common::Rect obstacleRect;
 			bool flag = sceneObjectUpdatePosition(i, obstacleRect);
-			if (_sceneObjects[i].walkStatus & 3)
-				sceneObjectUpdateWalking(&_sceneObjects[i], i, flag, obstacleRect);
+			if (_actors[i].walkStatus & 3)
+				sceneObjectUpdateWalking(&_actors[i], i, flag, obstacleRect);
 		}
 	}
 }
@@ -508,15 +508,15 @@ void CometEngine::updateStaticObjects() {
 
 void CometEngine::sceneObjectsEnqueueForDrawing() {
 	for (int i = 0; i < 11; i++) {
-		if (_sceneObjects[i].visible && _sceneObjects[i].life > 0) {
-			sceneObjectEnqueueForDrawing(_sceneObjects[i].y, i);
+		if (_actors[i].visible && _actors[i].life > 0) {
+			sceneObjectEnqueueForDrawing(_actors[i].y, i);
 		}
 	}
 }
 
 void CometEngine::updateHeroLife() {
-	if (_sceneObjects[0].life > 0 && _sceneObjects[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0) {
-		_sceneObjects[0].life++;
+	if (_actors[0].life > 0 && _actors[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0) {
+		_actors[0].life++;
 	}
 }
 
@@ -539,37 +539,37 @@ void CometEngine::drawSprites() {
 		}
 	}
 
-	if (_itemInSight && _sceneObjects[0].direction != 1)
+	if (_itemInSight && _actors[0].direction != 1)
 		drawLineOfSight();
 	
 }
 
 void CometEngine::drawActor(int objectIndex) {
 
-	SceneObject *sceneObject = getSceneObject(objectIndex);
+	Actor *actor = getActor(objectIndex);
 	
-	int x = sceneObject->x, y = sceneObject->y;
-	//int deltaX = sceneObject->deltaX, deltaY = sceneObject->deltaY;
+	int x = actor->x, y = actor->y;
+	//int deltaX = actor->deltaX, deltaY = actor->deltaY;
 
-	Animation *animation = _animationMan->getAnimation(sceneObject->animationSlot);
+	Animation *animation = _animationMan->getAnimation(actor->animationSlot);
 	
 	/* NOTE: Yet another workaround for a crash (see sceneObjectUpdateAnimation). */
-	if (sceneObject->animIndex >= (int)animation->_anims.size()) {
-		error("here: animIndex = %d; _anims = %d", sceneObject->animIndex, animation->_anims.size());
+	if (actor->animIndex >= (int)animation->_anims.size()) {
+		error("here: animIndex = %d; _anims = %d", actor->animIndex, animation->_anims.size());
 		return;
 	}
 
-	AnimationFrameList *frameList = animation->_anims[sceneObject->animIndex];
+	AnimationFrameList *frameList = animation->_anims[actor->animIndex];
 
-	_screen->setClipRect(sceneObject->clipX1, sceneObject->clipY1, sceneObject->clipX2 + 1, sceneObject->clipY2 + 1);
+	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
 
-	if (sceneObject->directionChanged == 2) {
-		sceneObject->value4 = drawSceneObject(animation, frameList, sceneObject->animFrameIndex, sceneObject->value4,
-			x, y, sceneObject->animFrameCount);
+	if (actor->directionChanged == 2) {
+		actor->value4 = drawSceneObject(animation, frameList, actor->animFrameIndex, actor->value4,
+			x, y, actor->animFrameCount);
 	} else {
-		if (objectIndex == 0 && _itemInSight && sceneObject->direction == 1)
+		if (objectIndex == 0 && _itemInSight && actor->direction == 1)
 			drawLineOfSight();
-		_screen->drawAnimationElement(animation, frameList->frames[sceneObject->animFrameIndex]->elementIndex, x, y);
+		_screen->drawAnimationElement(animation, frameList->frames[actor->animFrameIndex]->elementIndex, x, y);
 	}
 
 	_screen->setClipRect(0, 0, 320, 200);
@@ -627,15 +627,15 @@ void CometEngine::updateText() {
 
 	//TODO
 
-	SceneObject *sceneObject = getSceneObject(_talkActorIndex);
+	Actor *actor = getActor(_talkActorIndex);
 	int x, y;
 
-	if (sceneObject->textX != -1) {
-		x = sceneObject->textX;
-		y = sceneObject->textY;
+	if (actor->textX != -1) {
+		x = actor->textX;
+		y = actor->textY;
 	} else {
-		x = sceneObject->x;
-		y = sceneObject->y - _textMaxTextHeight - 50;
+		x = actor->x;
+		y = actor->y - _textMaxTextHeight - 50;
 	}
 
 	drawBubble(x - _textMaxTextWidth - 4, y - 4, x + _textMaxTextWidth + 4, y + _textMaxTextHeight);
@@ -684,15 +684,15 @@ void CometEngine::updateTalkAnims() {
 	//TODO
 }
 
-void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
+void CometEngine::sceneObjectUpdatePortraitAnimation(Actor *actor) {
 
-	if (sceneObject->animSubIndex2 == -1) {
+	if (actor->animSubIndex2 == -1) {
 
 		// FIXME: This check is not in the original, find out why it's needed here...
-		if (sceneObject->animationSlot == -1)
+		if (actor->animationSlot == -1)
 			return;
 
-		AnimationFrame *frame = _animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+		AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
 		uint16 value = frame->flags & 0x3FFF;
 		uint16 gfxMode = frame->flags >> 14;
@@ -700,17 +700,17 @@ void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 		if (gfxMode == 1) {
 			if (value < 1)
 				value = 1;
-			if (sceneObject->value4 >= value - 1) {
-				sceneObject->value4 = 0;
-				sceneObject->animFrameIndex++;
+			if (actor->value4 >= value - 1) {
+				actor->value4 = 0;
+				actor->animFrameIndex++;
 			}
 		} else {
-			sceneObject->animFrameIndex++;
+			actor->animFrameIndex++;
 		}
 
-		if (sceneObject->animFrameIndex >= sceneObject->animFrameCount) {
-			sceneObject->animFrameIndex = 0;
-			if (sceneObject->animIndex < 4) {
+		if (actor->animFrameIndex >= actor->animFrameCount) {
+			actor->animFrameIndex = 0;
+			if (actor->animIndex < 4) {
 				if (_portraitTalkCounter == 0) {
 					if (_talkieMode == 0) {
 						_portraitTalkAnimNumber = random(4);
@@ -726,35 +726,35 @@ void CometEngine::sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject) {
 					if (((_talkieMode == 1 || _talkieMode == 2) && _portraitTalkCounter == 1) || _portraitTalkCounter == 10)
 						_portraitTalkCounter = 0;
 				}
-				sceneObjectSetAnimNumber(sceneObject, _portraitTalkAnimNumber);
+				sceneObjectSetAnimNumber(actor, _portraitTalkAnimNumber);
 			}
 		}
 
 	} else {
-		sceneObject->value4 = 0;
+		actor->value4 = 0;
 	}
 
 }
 
-void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
+void CometEngine::sceneObjectUpdateAnimation(Actor *actor) {
 
-	if (sceneObject->directionChanged == 1) {
-		sceneObject->directionChanged = 0;
-		sceneObjectSetAnimNumber(sceneObject, sceneObject->direction + sceneObject->directionAdd - 1);
+	if (actor->directionChanged == 1) {
+		actor->directionChanged = 0;
+		sceneObjectSetAnimNumber(actor, actor->direction + actor->directionAdd - 1);
 	} else {
 
-		if (sceneObject->animSubIndex2 == -1) {
+		if (actor->animSubIndex2 == -1) {
 
 			/* NOTE: See note below, but here we bail out. */
-			if (sceneObject->animIndex >= (int)_animationMan->getAnimation(sceneObject->animationSlot)->_anims.size())
+			if (actor->animIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims.size())
 				return;
 
 			/* NOTE: After watching the ritual the players' frame number is out-of-bounds.
 				I don't know yet why this happens, but setting it to 0 at least avoids a crash. */
-			if (sceneObject->animFrameIndex >= (int)_animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames.size())
-				sceneObject->animFrameIndex = 0;
+			if (actor->animFrameIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames.size())
+				actor->animFrameIndex = 0;
 
-			AnimationFrame *frame = _animationMan->getAnimation(sceneObject->animationSlot)->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+			AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
 			uint16 value = frame->flags & 0x3FFF;
 			uint16 gfxMode = frame->flags >> 14;
@@ -762,19 +762,19 @@ void CometEngine::sceneObjectUpdateAnimation(SceneObject *sceneObject) {
 			if (gfxMode == 1) {
 				if (value < 1)
 					value = 1;
-				if (sceneObject->value4 >= value - 1) {
-					sceneObject->value4 = 0;
-					sceneObject->animFrameIndex++;
+				if (actor->value4 >= value - 1) {
+					actor->value4 = 0;
+					actor->animFrameIndex++;
 				}
 			} else {
-				sceneObject->animFrameIndex++;
+				actor->animFrameIndex++;
 			}
 			
-			if (sceneObject->animFrameIndex >= sceneObject->animFrameCount)
-				sceneObject->animFrameIndex = 0;
+			if (actor->animFrameIndex >= actor->animFrameCount)
+				actor->animFrameIndex = 0;
 
 		} else {
-			sceneObject->value4 = 0;
+			actor->value4 = 0;
 		}
 		
 	}
@@ -794,20 +794,20 @@ void CometEngine::resetVars() {
 
 }
 
-void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect) {
+void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, Actor *actor, Common::Rect &obstacleRect) {
 
-	int x = sceneObject->x;
-	int y = sceneObject->y;
+	int x = actor->x;
+	int y = actor->y;
 
 	debug(4, "CometEngine::sceneObjectMoveAroundObstacle() 1) objectIndex = %d; x = %d; y = %d", objectIndex, x, y);
 
-	switch (sceneObject->direction) {
+	switch (actor->direction) {
 	case 1:
 	case 3:
 		if (random(2) == 0) {
-			x = obstacleRect.left - (sceneObject->deltaX + 2);
+			x = obstacleRect.left - (actor->deltaX + 2);
 		} else {
-			x = obstacleRect.right + (sceneObject->deltaX + 2);
+			x = obstacleRect.right + (actor->deltaX + 2);
 		}
 		break;
 	case 2:
@@ -815,7 +815,7 @@ void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sc
 		if (random(2) == 0) {
 			y = obstacleRect.top - 2;
 		} else {
-			y = obstacleRect.bottom + (sceneObject->deltaY + 2);
+			y = obstacleRect.bottom + (actor->deltaY + 2);
 		}
 		break;
 	}
@@ -826,50 +826,50 @@ void CometEngine::sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sc
 
 }
 
-void CometEngine::sceneObjectHandleCollision(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect) {
+void CometEngine::sceneObjectHandleCollision(int objectIndex, Actor *actor, Common::Rect &obstacleRect) {
 
 	debug(4, "CometEngine::sceneObjectHandleCollision() objectIndex = %d", objectIndex);
-	debug(4, "CometEngine::sceneObjectHandleCollision() sceneObject->collisionType = %d", sceneObject->collisionType);
+	debug(4, "CometEngine::sceneObjectHandleCollision() actor->collisionType = %d", actor->collisionType);
 
-	if (sceneObject->collisionType == kCollisionBounds || sceneObject->collisionType == kCollisionBoundsOff) {
+	if (actor->collisionType == kCollisionBounds || actor->collisionType == kCollisionBoundsOff) {
 		// TODO
-		sceneObjectMoveAroundBounds(objectIndex, sceneObject);
-	} else if (sceneObject->collisionType == kCollisionActor && sceneObject->value6 == 6 && sceneObject->collisionIndex == 0) {
+		sceneObjectMoveAroundBounds(objectIndex, actor);
+	} else if (actor->collisionType == kCollisionActor && actor->value6 == 6 && actor->collisionIndex == 0) {
 		// TODO
 		//debug(4, "CometEngine::sceneObjectHandleCollision()");
-		sceneObject->value6 = 0;
-		sceneObjectStopWalking(sceneObject);
-		if (sceneObject->flag2 == 1) {
-			sceneObjectUpdateLife(sceneObject, sceneObject->life);
+		actor->value6 = 0;
+		sceneObjectStopWalking(actor);
+		if (actor->flag2 == 1) {
+			sceneObjectUpdateLife(actor, actor->life);
 		}
 	} else {
-		sceneObjectMoveAroundObstacle(objectIndex, sceneObject, obstacleRect);
+		sceneObjectMoveAroundObstacle(objectIndex, actor, obstacleRect);
 	}
 
 }
 
-void CometEngine::sceneObjectUpdateWalking(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect) {
+void CometEngine::sceneObjectUpdateWalking(Actor *actor, int objectIndex, bool flag, Common::Rect &obstacleRect) {
 
 	if (!flag)
-		sceneObjectHandleCollision(objectIndex, sceneObject, obstacleRect);
+		sceneObjectHandleCollision(objectIndex, actor, obstacleRect);
 
-	int comp = comparePointXY(sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY);
+	int comp = comparePointXY(actor->x, actor->y, actor->walkDestX, actor->walkDestY);
 	
 	if (_debugRectangles) {
-		_screen->fillRect(sceneObject->walkDestX - 6, sceneObject->walkDestY - 6, sceneObject->walkDestX + 6, sceneObject->walkDestY + 6, 220);
-		drawDottedLine(sceneObject->x, sceneObject->y, sceneObject->walkDestX, sceneObject->walkDestY, 100);
+		_screen->fillRect(actor->walkDestX - 6, actor->walkDestY - 6, actor->walkDestX + 6, actor->walkDestY + 6, 220);
+		drawDottedLine(actor->x, actor->y, actor->walkDestX, actor->walkDestY, 100);
 	}
 
-	if (comp == 3 || ((sceneObject->walkStatus & 8) && (comp == 1)) || ((sceneObject->walkStatus & 0x10) && (comp == 2))) {
-		if (sceneObject->walkStatus & 4) {
-			sceneObjectStartWalking(objectIndex, sceneObject->savedWalkDestX, sceneObject->savedWalkDestY);
-			sceneObject->walkStatus &= ~4;
+	if (comp == 3 || ((actor->walkStatus & 8) && (comp == 1)) || ((actor->walkStatus & 0x10) && (comp == 2))) {
+		if (actor->walkStatus & 4) {
+			sceneObjectStartWalking(objectIndex, actor->savedWalkDestX, actor->savedWalkDestY);
+			actor->walkStatus &= ~4;
 		} else {
-			sceneObjectStopWalking(sceneObject);
+			sceneObjectStopWalking(actor);
 		}
-	} else if ((sceneObject->walkStatus & 3) == comp) {
-		sceneObject->walkStatus ^= 3;
-		sceneObjectCalcDirection(sceneObject);
+	} else if ((actor->walkStatus & 3) == comp) {
+		actor->walkStatus ^= 3;
+		sceneObjectCalcDirection(actor);
 	}
 
 }
@@ -878,52 +878,52 @@ bool CometEngine::sceneObjectUpdatePosition(int objectIndex, Common::Rect &obsta
 
 	//debug(4, "CometEngine::sceneObjectUpdatePosition(%d)", objectIndex);
 
-	SceneObject *sceneObject = getSceneObject(objectIndex);
+	Actor *actor = getActor(objectIndex);
 
-	if (sceneObject->directionAdd != 4)
+	if (actor->directionAdd != 4)
 		return false;
 
-	int x = sceneObject->x;
-	int y = sceneObject->y;
+	int x = actor->x;
+	int y = actor->y;
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  old: %d, %d", objectIndex, x, y);
 
-	Animation *anim = _animationMan->getAnimation(sceneObject->animationSlot);
-	AnimationFrame *frame = anim->_anims[sceneObject->animIndex]->frames[sceneObject->animFrameIndex];
+	Animation *anim = _animationMan->getAnimation(actor->animationSlot);
+	AnimationFrame *frame = anim->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;
  	int16 yAdd = frame->yOffs;
 
- 	debug(4, "animFrameIndex = %d; animFrameCount = %d", sceneObject->animFrameIndex, sceneObject->animFrameCount);
+ 	debug(4, "animFrameIndex = %d; animFrameCount = %d", actor->animFrameIndex, actor->animFrameCount);
  	
- 	// TODO: SceneObject_sub_8243(sceneObject->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
+ 	// TODO: SceneObject_sub_8243(actor->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
 
  	debug(4, "xAdd = %d; yAdd = %d", xAdd, yAdd);
 
  	x += xAdd;
  	y += yAdd;
  	
- 	if (sceneObject->walkStatus & 3) {
-		sceneObjectGetNextWalkDestXY(sceneObject, x, y);
+ 	if (actor->walkStatus & 3) {
+		sceneObjectGetNextWalkDestXY(actor, x, y);
 	}
 
-	if (sceneObject->collisionType != kCollisionDisabled) {
-		uint16 collisionType = checkCollision(objectIndex, x, y, sceneObject->deltaX, sceneObject->deltaY, sceneObject->direction, obstacleRect);
+	if (actor->collisionType != kCollisionDisabled) {
+		uint16 collisionType = checkCollision(objectIndex, x, y, actor->deltaX, actor->deltaY, actor->direction, obstacleRect);
 		debug(4, "collisionType (checkCollision) = %04X", collisionType);
 		if (collisionType != 0) {
-			collisionType = updateCollision(sceneObject, objectIndex, collisionType);
+			collisionType = updateCollision(actor, objectIndex, collisionType);
 			debug(4, "collisionType (updateCollision) = %04X", collisionType);
 			if (collisionType == 0)
 				return false;
 		} else {
-			sceneObject->collisionType = kCollisionNone;
+			actor->collisionType = kCollisionNone;
 		}
 	}
 
 	debug(4, "CometEngine::sceneObjectUpdatePosition(%d)  new: %d, %d", objectIndex, x, y);
 
-	sceneObject->x = x;
-	sceneObject->y = y;
+	actor->x = x;
+	actor->y = y;
 
 	return true;
 
@@ -1020,8 +1020,8 @@ void CometEngine::updateScreen() {
 
 void CometEngine::unblockInput() {
 	_blockedInput = 0;
-	if (_sceneObjects[0].directionChanged == 2)
-		_sceneObjects[0].directionChanged = 0;
+	if (_actors[0].directionChanged == 2)
+		_actors[0].directionChanged = 0;
 }
 
 void CometEngine::actorTalk(int objectIndex, int talkTextIndex, int color) {
@@ -1044,16 +1044,16 @@ void CometEngine::actorTalk(int objectIndex, int talkTextIndex, int color) {
 
 void CometEngine::actorTalkWithAnim(int objectIndex, int talkTextIndex, int animNumber) {
 
-	SceneObject *sceneObject = getSceneObject(objectIndex);
+	Actor *actor = getActor(objectIndex);
 	
-	actorTalk(objectIndex, talkTextIndex, sceneObject->textColor);
+	actorTalk(objectIndex, talkTextIndex, actor->textColor);
 
 	if (animNumber != 0xFF) {
-		_animIndex = sceneObject->animIndex;
-		_animSubIndex2 = sceneObject->animSubIndex2;
-		_animSubIndex = sceneObject->animFrameIndex;
-		sceneObjectSetAnimNumber(sceneObject, animNumber);
-		sceneObject->directionChanged = 2;
+		_animIndex = actor->animIndex;
+		_animSubIndex2 = actor->animSubIndex2;
+		_animSubIndex = actor->animFrameIndex;
+		sceneObjectSetAnimNumber(actor, animNumber);
+		actor->directionChanged = 2;
 	} else {
 		_animIndex = -1;
 	}
@@ -1173,22 +1173,18 @@ bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rec
 
 bool CometEngine::isActorNearActor(int objectIndex1, int objectIndex2, int x, int y) {
 
-	SceneObject *sceneObject1, *sceneObject2;
+	Actor *actor1, *actor2;
 
-	sceneObject1 = getSceneObject(objectIndex1);
-	sceneObject2 = getSceneObject(objectIndex2);
+	actor1 = getActor(objectIndex1);
+	actor2 = getActor(objectIndex2);
 
 	Common::Rect actorRect1(
-		sceneObject1->x - sceneObject1->deltaX,
-		sceneObject1->y - sceneObject1->deltaY,
-		sceneObject1->x + sceneObject1->deltaX,
-		sceneObject1->y);
+		actor1->x - actor1->deltaX, actor1->y - actor1->deltaY,
+		actor1->x + actor1->deltaX, actor1->y);
 
 	Common::Rect actorRect2(
-		sceneObject2->x - x / 2,
-		sceneObject2->y - y / 2,
-		sceneObject2->x + x / 2,
-		sceneObject2->y + y / 2);
+		actor2->x - x / 2, actor2->y - y / 2,
+		actor2->x + x / 2, actor2->y + y / 2);
 
 	return rectCompare(actorRect1, actorRect2);
 
@@ -1198,10 +1194,10 @@ bool CometEngine::isPlayerInZone(int x, int y, int x2, int y2) {
 
 	Common::Rect zoneRect(x, y, x2, y2);
 	Common::Rect playerRect(
-		_sceneObjects[0].x - _sceneObjects[0].deltaX,
-		_sceneObjects[0].y - _sceneObjects[0].deltaY,
-		_sceneObjects[0].x + _sceneObjects[0].deltaX,
-		_sceneObjects[0].y);
+		_actors[0].x - _actors[0].deltaX,
+		_actors[0].y - _actors[0].deltaY,
+		_actors[0].x + _actors[0].deltaX,
+		_actors[0].y);
 	
 	return rectCompare(zoneRect, playerRect);
 
@@ -1315,7 +1311,7 @@ void CometEngine::handleInput() {
 		0, 0, 0, 0, 0, 0, 1, 2, 2, 4, 0, 1, 2, 3, 3, 0, 4, 2, 3, 4, 0, 1, 3, 3, 4, 0
 	};
 
-	SceneObject *sceneObject = getSceneObject(0);
+	Actor *actor = getActor(0);
 	
 	_mouseButtons4 = _keyDirection;
 	_mouseCursor2 = mouseCursorArray[_mouseButtons4 & 0x0F];
@@ -1332,29 +1328,29 @@ void CometEngine::handleInput() {
 	//FIXME
 	_scriptMouseFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseButtons5 & 0x80) || (_keyDirection2 != 0);
 
-	if (sceneObject->walkStatus & 3)
+	if (actor->walkStatus & 3)
 		return;
 		
-	if (_dialog->isRunning() && sceneObject->directionAdd != 0) {
-		sceneObjectStopWalking(sceneObject);
+	if (_dialog->isRunning() && actor->directionAdd != 0) {
+		sceneObjectStopWalking(actor);
 		return;
 	}
 
-	int directionAdd = sceneObject->directionAdd;
+	int directionAdd = actor->directionAdd;
 
-	sceneObject->walkDestX = sceneObject->x;
-	sceneObject->walkDestY = sceneObject->y;
+	actor->walkDestX = actor->x;
+	actor->walkDestY = actor->y;
 	
 	if (directionAdd == 4)
 		directionAdd = 0;
 		
-	if (sceneObject->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
+	if (actor->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
 		directionAdd = 4;
 		
-	int direction = mouseDirectionTable[sceneObject->direction * 5 + _mouseCursor2];
+	int direction = mouseDirectionTable[actor->direction * 5 + _mouseCursor2];
 	
-	sceneObjectSetDirection(sceneObject, direction);
-	sceneObjectSetDirectionAdd(sceneObject, directionAdd);
+	sceneObjectSetDirection(actor, direction);
+	sceneObjectSetDirectionAdd(actor, directionAdd);
 	
 }
 
@@ -1464,32 +1460,32 @@ int CometEngine::handleLeftRightSceneExitCollision(int chapterNumber, int sceneN
 	_sceneNumber = sceneNumber;
 	_chapterNumber = chapterNumber;
 	
-	SceneObject *sceneObject = getSceneObject(0);
+	Actor *actor = getActor(0);
 	
-	if (sceneObject->direction != 1 && sceneObject->direction != 3) {
+	if (actor->direction != 1 && actor->direction != 3) {
 	
 		int x1, y1, x2, y2;
 
-		sceneObject->value6 = 4;
+		actor->value6 = 4;
 
-		_scene->getSceneExitRect(sceneObject->collisionIndex, x1, y1, x2, y2);
+		_scene->getSceneExitRect(actor->collisionIndex, x1, y1, x2, y2);
 		if (x2 == 318)
 			x2 = 319;
 
 		// Disable collision checks
-		sceneObject->collisionType = kCollisionDisabled;
+		actor->collisionType = kCollisionDisabled;
 
-		if (sceneObject->direction == 2) {
-			sceneObject->clipX1 = 0;
-			sceneObject->clipX2 = x2;
-			sceneObjectStartWalking(0, 319, sceneObject->y);
-		} else if (sceneObject->direction == 4) {
-			sceneObject->clipX1 = x1;
-			sceneObject->clipX2 = 319;
-			sceneObjectStartWalking(0, 0, sceneObject->y);
+		if (actor->direction == 2) {
+			actor->clipX1 = 0;
+			actor->clipX2 = x2;
+			sceneObjectStartWalking(0, 319, actor->y);
+		} else if (actor->direction == 4) {
+			actor->clipX1 = x1;
+			actor->clipX2 = 319;
+			sceneObjectStartWalking(0, 0, actor->y);
 		}
 		
-		sceneObject->walkStatus &= ~4;
+		actor->walkStatus &= ~4;
 		
 	}
 	
@@ -1522,8 +1518,8 @@ void CometEngine::setTextEx(int index, byte *text) {
 
 void CometEngine::drawLineOfSight() {
 	if (_itemInSight) {
-		int x = _sceneObjects[0].x;
-		int y = _sceneObjects[0].y - 35;
+		int x = _actors[0].x;
+		int y = _actors[0].y - 35;
 		switch (_itemDirection) {
 		case 1:
 			y--;
@@ -1582,12 +1578,12 @@ void CometEngine::invCheckActiveItem() {
 int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
 
 	for (int index = 0; index < 11; index++) {
-		SceneObject *sceneObject = getSceneObject(index);
-		if (index != skipIndex && sceneObject->life != 0 && sceneObject->collisionType != kCollisionDisabled) {
-			obstacleRect.left = sceneObject->x - sceneObject->deltaX;
-			obstacleRect.top = sceneObject->y - sceneObject->deltaY;
-			obstacleRect.right = sceneObject->x + sceneObject->deltaX;
-			obstacleRect.bottom = sceneObject->y;
+		Actor *actor = getActor(index);
+		if (index != skipIndex && actor->life != 0 && actor->collisionType != kCollisionDisabled) {
+			obstacleRect.left = actor->x - actor->deltaX;
+			obstacleRect.top = actor->y - actor->deltaY;
+			obstacleRect.right = actor->x + actor->deltaX;
+			obstacleRect.bottom = actor->y;
 			if (rectCompare(rect, obstacleRect)) {
 				return 0x600 | index;
 			}
@@ -1649,22 +1645,22 @@ void CometEngine::initStaticObjectRects() {
 
 }
 
-uint16 CometEngine::updateCollision(SceneObject *sceneObject, int objectIndex, uint16 collisionType) {
+uint16 CometEngine::updateCollision(Actor *actor, int objectIndex, uint16 collisionType) {
 
 	int result = 0;
 	
-	sceneObject->collisionType = (collisionType >> 8) & 0xFF;
-	sceneObject->collisionIndex = collisionType & 0xFF;
+	actor->collisionType = (collisionType >> 8) & 0xFF;
+	actor->collisionIndex = collisionType & 0xFF;
 
-	if (objectIndex == 0 && sceneObject->collisionType == kCollisionSceneExit) {
+	if (objectIndex == 0 && actor->collisionType == kCollisionSceneExit) {
 		int chapterNumber, sceneNumber;
-		_scene->getSceneExitLink(sceneObject->collisionIndex, chapterNumber, sceneNumber);
+		_scene->getSceneExitLink(actor->collisionIndex, chapterNumber, sceneNumber);
 		result = handleLeftRightSceneExitCollision(chapterNumber, sceneNumber);
 	}
 	
 	if (result == 0) {
-		sceneObjectSetDirectionAdd(sceneObject, 0);
-		sceneObjectUpdateAnimation(sceneObject);
+		sceneObjectSetDirectionAdd(actor, 0);
+		sceneObjectUpdateAnimation(actor);
 	}
 
 	return result;
@@ -1956,23 +1952,23 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 
 	int direction = 1;
 	int x1 = 160, x2 = 160, y1 = 190, y2 = 190;
-	SceneObject *sceneObject = getSceneObject(0);
+	Actor *actor = getActor(0);
 	
 	for (uint sceneExitIndex = 0; sceneExitIndex < _scene->_sceneExits.size(); sceneExitIndex++) {
 		SceneExitItem *sceneExitItem = &_scene->_sceneExits[sceneExitIndex];
 		if (sceneExitItem->sceneNumber == sceneNumber && sceneExitItem->chapterNumber == chapterNumber) {
 			direction = directionArray[sceneExitItem->directionIndex];
-			if (sceneObject->direction == direction) {
+			if (actor->direction == direction) {
 				_scene->getSceneExitRect(sceneExitIndex, x1, y1, x2, y2);
 				break;
 			}
 		}
 	}
 
-	sceneObject->x = (x2 - x1) / 2 + x1;
-	sceneObject->y = (y2 - y1) / 2 + y1;
-	sceneObject->direction = direction;
-	sceneObjectSetAnimNumber(sceneObject, direction - 1);
+	actor->x = (x2 - x1) / 2 + x1;
+	actor->y = (y2 - y1) / 2 + y1;
+	actor->direction = direction;
+	sceneObjectSetAnimNumber(actor, direction - 1);
 	
 	// TODO: scene change effects
 	
@@ -1985,28 +1981,28 @@ void CometEngine::handleSceneChange(int sceneNumber, int chapterNumber) {
 
 }
 
-void CometEngine::sceneObjectMoveAroundBounds(int index, SceneObject *sceneObject) {
+void CometEngine::sceneObjectMoveAroundBounds(int index, Actor *actor) {
 
-	int x = sceneObject->x;
-	int y = sceneObject->walkDestY;
+	int x = actor->x;
+	int y = actor->walkDestY;
 
 	debug(1, "sceneObjectMoveAroundBounds(%d); 1) x = %d; y = %d", index, x, y);
 	
-	switch (sceneObject->direction) {
+	switch (actor->direction) {
 	case 1:
 	case 3:
-		x = sceneObject->walkDestX;
+		x = actor->walkDestX;
 		break;
 	case 2:
-		if (sceneObject->walkDestY <= sceneObject->y) {
-			y = _scene->findBoundsRight(x + sceneObject->deltaX, y - sceneObject->deltaY) +
-				sceneObject->deltaY + 2;
+		if (actor->walkDestY <= actor->y) {
+			y = _scene->findBoundsRight(x + actor->deltaX, y - actor->deltaY) +
+				actor->deltaY + 2;
 		}
 		break;
 	case 4:
-		if (sceneObject->walkDestY <= sceneObject->y) {
-			y = _scene->findBoundsLeft(x - sceneObject->deltaX, y - sceneObject->deltaY) +
-				sceneObject->deltaY + 1;
+		if (actor->walkDestY <= actor->y) {
+			y = _scene->findBoundsLeft(x - actor->deltaX, y - actor->deltaY) +
+				actor->deltaY + 1;
 		}
 		break;
 	}

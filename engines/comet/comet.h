@@ -88,7 +88,7 @@ enum {
 	kCollisionDisabled	= 8
 };
 
-struct SceneObject {
+struct Actor {
 	int16 x, y;
 	int16 directionAdd, directionChanged, direction;
 	byte flag2;
@@ -190,7 +190,7 @@ public:
 
 	int16 _animationType;
 
-	SceneObject _sceneObjects[11];
+	Actor _actors[11];
 
 	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
@@ -298,8 +298,8 @@ public:
 	void updateStaticObjects();
 	void sceneObjectsEnqueueForDrawing();
 	void updateHeroLife();
-	void sceneObjectHandleCollision(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
-	void sceneObjectMoveAroundObstacle(int objectIndex, SceneObject *sceneObject, Common::Rect &obstacleRect);
+	void sceneObjectHandleCollision(int objectIndex, Actor *actor, Common::Rect &obstacleRect);
+	void sceneObjectMoveAroundObstacle(int objectIndex, Actor *actor, Common::Rect &obstacleRect);
 	void resetVars();
 	
 	void drawSprites();
@@ -309,9 +309,9 @@ public:
 	void updateTextDialog();
 	void updateText();
 	void updateTalkAnims();
-	void sceneObjectUpdatePortraitAnimation(SceneObject *sceneObject);
-	void sceneObjectUpdateAnimation(SceneObject *sceneObject);
-	void sceneObjectUpdateWalking(SceneObject *sceneObject, int objectIndex, bool flag, Common::Rect &obstacleRect);
+	void sceneObjectUpdatePortraitAnimation(Actor *actor);
+	void sceneObjectUpdateAnimation(Actor *actor);
+	void sceneObjectUpdateWalking(Actor *actor, int objectIndex, bool flag, Common::Rect &obstacleRect);
 	bool sceneObjectUpdatePosition(int objectIndex, Common::Rect &obstacleRect);
 	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
 	void freeMarcheAndStaticObjects();
@@ -347,9 +347,9 @@ public:
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
-	void sceneObjectMoveAroundBounds(int index, SceneObject *sceneObject);
+	void sceneObjectMoveAroundBounds(int index, Actor *actor);
 	
-	uint16 updateCollision(SceneObject *sceneObject, int objectIndex, uint16 collisionType);
+	uint16 updateCollision(Actor *actor, int objectIndex, uint16 collisionType);
 	
 	void unblockInput();
 
@@ -357,21 +357,21 @@ public:
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearMarcheByIndex(int16 animationSlot);
 	Animation *getGlobalAnimationResource(int16 animationType);
-	void unloadSceneObjectSprite(SceneObject *sceneObject);
+	void unloadSceneObjectSprite(Actor *actor);
 
 	/* SceneObject */
 	void sceneObjectInit(int itemIndex, int16 animationSlot);
-	void sceneObjectSetDirection(SceneObject *sceneObject, int direction);
-	void sceneObjectSetDirectionAdd(SceneObject *sceneObject, int directionAdd);
-	void sceneObjectSetAnimNumber(SceneObject *sceneObject, int index);
-	void sceneObjectStopWalking(SceneObject *sceneObject);
-	void sceneObjectCalcDirection(SceneObject *sceneObject);
-	void sceneObjectGetNextWalkDestXY(SceneObject *sceneObject, int &x, int &y);
+	void sceneObjectSetDirection(Actor *actor, int direction);
+	void sceneObjectSetDirectionAdd(Actor *actor, int directionAdd);
+	void sceneObjectSetAnimNumber(Actor *actor, int index);
+	void sceneObjectStopWalking(Actor *actor);
+	void sceneObjectCalcDirection(Actor *actor);
+	void sceneObjectGetNextWalkDestXY(Actor *actor, int &x, int &y);
 	void sceneObjectSetPosition(int index, int x, int y);
-	void sceneObjectUpdateLife(SceneObject *sceneObject, int flag);
-	void sceneObjectSaveWalkDestXY(SceneObject *sceneObject);
+	void sceneObjectUpdateLife(Actor *actor, int flag);
+	void sceneObjectSaveWalkDestXY(Actor *actor);
 	bool sceneObjectStartWalking(int objectIndex, int x, int y);
-	SceneObject *getSceneObject(int index);
+	Actor *getActor(int index);
 
 	/* Text */
 	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _talkTextIndex;
