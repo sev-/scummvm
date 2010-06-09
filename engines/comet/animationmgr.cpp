@@ -51,7 +51,7 @@ void AnimationManager::purgeUnusedAnimationSlots() {
 
 void AnimationManager::purgeAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
-		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _vm->_sceneObjects[0].animationSlot != i) {
+		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _vm->_actors[0].animationSlot != i) {
 			_vm->clearMarcheByIndex(i);
 			delete _animationSlots[i].anim;
 			_animationSlots[i].anim = NULL;

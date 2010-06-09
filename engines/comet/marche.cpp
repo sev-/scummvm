@@ -8,7 +8,7 @@ namespace Comet {
 
 bool CometEngine::isAnimationSlotUsed(int16 animationSlot) {
 	for (int i = 0; i < 11; i++) {
-		if (_sceneObjects[i].animationSlot == animationSlot && _sceneObjects[i].life != 0)
+		if (_actors[i].animationSlot == animationSlot && _actors[i].life != 0)
 			return true;
 	}
 	return false;
@@ -16,9 +16,9 @@ bool CometEngine::isAnimationSlotUsed(int16 animationSlot) {
 
 void CometEngine::clearMarcheByIndex(int16 animationSlot) {
 	for (int i = 1; i < 11; i++) {
-		if (_sceneObjects[i].animationSlot == animationSlot) {
-			_sceneObjects[i].animationSlot = -1;
-			_sceneObjects[i].life = 0;
+		if (_actors[i].animationSlot == animationSlot) {
+			_actors[i].animationSlot = -1;
+			_actors[i].life = 0;
 		}
 	}
 }
@@ -36,11 +36,11 @@ Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	}
 }
 
-void CometEngine::unloadSceneObjectSprite(SceneObject *sceneObject) {
-	if (sceneObject->animationSlot != -1) {
-		AnimationSlot *animationSlot = _animationMan->getAnimationSlot(sceneObject->animationSlot);
-		if (animationSlot->anim && animationSlot->animationType == 0 && !isAnimationSlotUsed(sceneObject->animationSlot)) {
-			clearMarcheByIndex(sceneObject->animationSlot);
+void CometEngine::unloadSceneObjectSprite(Actor *actor) {
+	if (actor->animationSlot != -1) {
+		AnimationSlot *animationSlot = _animationMan->getAnimationSlot(actor->animationSlot);
+		if (animationSlot->anim && animationSlot->animationType == 0 && !isAnimationSlotUsed(actor->animationSlot)) {
+			clearMarcheByIndex(actor->animationSlot);
 			delete animationSlot->anim;
 			animationSlot->anim = NULL;
 		}
