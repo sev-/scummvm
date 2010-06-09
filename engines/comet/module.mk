@@ -1,6 +1,7 @@
 MODULE := engines/comet
 
 MODULE_OBJS = \
+	actor.o \
 	animation.o \
 	animationmgr.o \
 	detection.o \
@@ -10,7 +11,6 @@ MODULE_OBJS = \
 	script.o \
 	pak.o \
 	unpack.o \
-	sceneobjects.o \
 	screen.o \
 	marche.o \
 	saveload.o \
