@@ -293,27 +293,27 @@ public:
 	void updateSceneNumber();
 	void getItemInSight();
 	void lookAtItemInSight(bool flag);
-	void sceneObjectsUpdateAnimations();
-	void sceneObjectsUpdateMovement();
+	void updateActorAnimations();
+	void updateActorMovement();
 	void updateStaticObjects();
-	void sceneObjectsEnqueueForDrawing();
+	void enqueueActorsForDrawing();
 	void updateHeroLife();
-	void sceneObjectHandleCollision(int objectIndex, Actor *actor, Common::Rect &obstacleRect);
-	void sceneObjectMoveAroundObstacle(int objectIndex, Actor *actor, Common::Rect &obstacleRect);
+	void handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
+	void moveActorAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void resetVars();
 	
 	void drawSprites();
-	void drawActor(int objectIndex);
-	int drawSceneObject(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
+	void drawActor(int actorIndex);
+	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
 	
 	void updateTextDialog();
 	void updateText();
 	void updateTalkAnims();
-	void sceneObjectUpdatePortraitAnimation(Actor *actor);
-	void sceneObjectUpdateAnimation(Actor *actor);
-	void sceneObjectUpdateWalking(Actor *actor, int objectIndex, bool flag, Common::Rect &obstacleRect);
-	bool sceneObjectUpdatePosition(int objectIndex, Common::Rect &obstacleRect);
-	void sceneObjectEnqueueForDrawing(int y, int objectIndex);
+	void updatePortraitAnimation(Actor *actor);
+	void updateActorAnimation(Actor *actor);
+	void actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect);
+	bool updateActorPosition(int actorIndex, Common::Rect &obstacleRect);
+	void enqueueActorForDrawing(int y, int actorIndex);
 	void freeMarcheAndStaticObjects();
 	void resetMarcheAndStaticObjects();
 
@@ -347,9 +347,9 @@ public:
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
-	void sceneObjectMoveAroundBounds(int index, Actor *actor);
+	void moveActorAroundBounds(int index, Actor *actor);
 	
-	uint16 updateCollision(Actor *actor, int objectIndex, uint16 collisionType);
+	uint16 updateCollision(Actor *actor, int actorIndex, uint16 collisionType);
 	
 	void unblockInput();
 
@@ -357,29 +357,29 @@ public:
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearMarcheByIndex(int16 animationSlot);
 	Animation *getGlobalAnimationResource(int16 animationType);
-	void unloadSceneObjectSprite(Actor *actor);
+	void unloadActorSprite(Actor *actor);
 
-	/* SceneObject */
-	void sceneObjectInit(int itemIndex, int16 animationSlot);
-	void sceneObjectSetDirection(Actor *actor, int direction);
-	void sceneObjectSetDirectionAdd(Actor *actor, int directionAdd);
-	void sceneObjectSetAnimNumber(Actor *actor, int index);
-	void sceneObjectStopWalking(Actor *actor);
-	void sceneObjectCalcDirection(Actor *actor);
-	void sceneObjectGetNextWalkDestXY(Actor *actor, int &x, int &y);
-	void sceneObjectSetPosition(int index, int x, int y);
-	void sceneObjectUpdateLife(Actor *actor, int flag);
-	void sceneObjectSaveWalkDestXY(Actor *actor);
-	bool sceneObjectStartWalking(int objectIndex, int x, int y);
+	/* Actor */
+	void actorInit(int itemIndex, int16 animationSlot);
+	void actorSetDirection(Actor *actor, int direction);
+	void actorSetDirectionAdd(Actor *actor, int directionAdd);
+	void actorSetAnimNumber(Actor *actor, int index);
+	void actorStopWalking(Actor *actor);
+	void actorCalcDirection(Actor *actor);
+	void actorGetNextWalkDestXY(Actor *actor, int &x, int &y);
+	void actorSetPosition(int index, int x, int y);
+	void actorUpdateLife(Actor *actor, int flag);
+	void actorSaveWalkDestXY(Actor *actor);
+	bool actorStartWalking(int actorIndex, int x, int y);
 	Actor *getActor(int index);
 
 	/* Text */
 	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _talkTextIndex;
-	void actorTalk(int objectIndex, int talkTextIndex, int color);
-	void actorTalkWithAnim(int objectIndex, int talkTextIndex, int animNumber);
+	void actorTalk(int actorIndex, int talkTextIndex, int color);
+	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 
 	/* SceneObjects */
-	void sceneObjectsResetFlags();
+	void resetActorsLife();
 
 	/* Misc */
 	int comparePointXY(int x, int y, int x2, int y2);
@@ -391,7 +391,7 @@ public:
 	void loadAndRunScript(bool loadingGame = false);
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
-	bool isActorNearActor(int objectIndex1, int objectIndex2, int x, int y);
+	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x, int y, int x2, int y2);
 
 	/* Save/load */

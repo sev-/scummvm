@@ -47,7 +47,7 @@ public:
 	byte *code;
 	byte *ip;
 	byte debugOpcode;
-	int16 objectIndex;
+	int16 actorIndex;
 	uint16 status;
 	uint16 resumeIp; // FIXME: Remove this hacky thing
 	int scriptNumber;

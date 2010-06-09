@@ -132,7 +132,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	for (int i = 0; i < _script->_scriptCount; i++) {
 		const Script &script = *_script->_scripts[i];
 		out->writeUint16LE(script.ip - script.code);
-		out->writeByte(script.objectIndex);
+		out->writeByte(script.actorIndex);
 		out->writeUint16LE(script.status);
 		out->writeUint16LE(script.scriptNumber);
 		out->writeUint16LE(script.counter);
@@ -280,7 +280,7 @@ void CometEngine::loadgame(const char *filename) {
 	for (int i = 0; i < _script->_scriptCount; i++) {
 		Script &script = *_script->_scripts[i];
 		script.resumeIp = in->readUint16LE();
-		script.objectIndex = in->readByte();
+		script.actorIndex = in->readByte();
 		script.status = in->readUint16LE();
 		script.scriptNumber = in->readUint16LE();
 		script.counter = in->readUint16LE();

@@ -36,7 +36,7 @@ Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	}
 }
 
-void CometEngine::unloadSceneObjectSprite(Actor *actor) {
+void CometEngine::unloadActorSprite(Actor *actor) {
 	if (actor->animationSlot != -1) {
 		AnimationSlot *animationSlot = _animationMan->getAnimationSlot(actor->animationSlot);
 		if (animationSlot->anim && animationSlot->animationType == 0 && !isAnimationSlotUsed(actor->animationSlot)) {
