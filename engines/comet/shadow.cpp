@@ -555,12 +555,13 @@ void CometEngine::drawActor(int actorIndex) {
 	
 	/* NOTE: Yet another workaround for a crash (see updateActorAnimation). */
 	if (actor->animIndex >= (int)animation->_anims.size()) {
-		error("here: animIndex = %d; _anims = %d", actor->animIndex, animation->_anims.size());
-		return;
+		actor->animIndex = 0;
+		actor->animFrameIndex = 0;
+		actor->animFrameCount = animation->_anims[0]->frames.size();
 	}
 
 	AnimationFrameList *frameList = animation->_anims[actor->animIndex];
-
+	
 	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
 
 	if (actor->directionChanged == 2) {
