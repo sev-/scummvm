@@ -1,6 +1,3 @@
-#include "sound/audiostream.h"
-#include "sound/decoders/raw.h"
-#include "sound/decoders/voc.h"
 #include "common/stream.h"
 #include "graphics/surface.h"
 #include "graphics/primitives.h"
@@ -101,10 +98,10 @@ int CometEngine::calcDirection(int fromX, int fromY, int toX, int toY) {
 }
 
 void CometEngine::drawSceneExits() {
-	for (uint32 i = 0; i < _scene->_sceneExits.size(); i++) {
-		if (_scene->_sceneExits[i].directionIndex == 3) {
-			_screen->fillRect(_scene->_sceneExits[i].x1, 198, _scene->_sceneExits[i].x2, 199, 120);
-			_screen->hLine(_scene->_sceneExits[i].x1 + 1, 199, _scene->_sceneExits[i].x2 - 2, 127);
+	for (uint32 i = 0; i < _scene->_exits.size(); i++) {
+		if (_scene->_exits[i].directionIndex == 3) {
+			_screen->fillRect(_scene->_exits[i].x1, 198, _scene->_exits[i].x2, 199, 120);
+			_screen->hLine(_scene->_exits[i].x1 + 1, 199, _scene->_exits[i].x2 - 2, 127);
 		}
 	}
 }
@@ -170,7 +167,7 @@ void CometEngine::initAndLoadGlobalData() {
 	_pali0Pal = loadFromPak("RES.PAK", 8);
 
 	_cursorVa2 = _animationMan->loadAnimationResource("RES.PAK", 9);
-	_iconeVa2 = _animationMan->loadAnimationResource("RES.PAK", 3);
+	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
 	
 	_screen->setFontColor(0);
 
@@ -340,10 +337,10 @@ void CometEngine::updateGame() {
 			_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
 		_screen->fillRect(_actors[0].x - _actors[0].deltaX, _actors[0].y - _actors[0].deltaY,
 			_actors[0].x + _actors[0].deltaX, _actors[0].y, 150);
-		for (uint32 index = 0; index < _sceneExits.size(); index++) {
+		for (uint32 index = 0; index < _exits.size(); index++) {
 			int x3, y3, x4, y4;
-			getSceneExitRect(index, x3, y3, x4, y4);
-			//debug(4, "SCENE EXIT: (%d, %d, %d, %d); direction = %d; moduleNumber = %d; sceneNumber = %d", x3, y3, x4, y4, _sceneExits[index].directionIndex, _sceneExits[index].moduleNumber, _sceneExits[index].sceneNumber);
+			getExitRect(index, x3, y3, x4, y4);
+			//debug(4, "SCENE EXIT: (%d, %d, %d, %d); direction = %d; moduleNumber = %d; sceneNumber = %d", x3, y3, x4, y4, _exits[index].directionIndex, _exits[index].moduleNumber, _exits[index].sceneNumber);
 			_screen->fillRect(x3, y3, x4, y4, 25);
 		}
 		for (int x = 0;  x < 320; x++)
@@ -685,102 +682,6 @@ void CometEngine::updateTalkAnims() {
 	//TODO
 }
 
-void CometEngine::updatePortraitAnimation(Actor *actor) {
-
-	if (actor->animSubIndex2 == -1) {
-
-		// FIXME: This check is not in the original, find out why it's needed here...
-		if (actor->animationSlot == -1)
-			return;
-
-		AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
-
-		uint16 value = frame->flags & 0x3FFF;
-		uint16 gfxMode = frame->flags >> 14;
-
-		if (gfxMode == 1) {
-			if (value < 1)
-				value = 1;
-			if (actor->value4 >= value - 1) {
-				actor->value4 = 0;
-				actor->animFrameIndex++;
-			}
-		} else {
-			actor->animFrameIndex++;
-		}
-
-		if (actor->animFrameIndex >= actor->animFrameCount) {
-			actor->animFrameIndex = 0;
-			if (actor->animIndex < 4) {
-				if (_portraitTalkCounter == 0) {
-					if (_talkieMode == 0) {
-						_portraitTalkAnimNumber = random(4);
-						if (_portraitTalkAnimNumber == 0)
-							_portraitTalkCounter = 1;
-					} else {
-						_portraitTalkAnimNumber = random(3);
-						if (!_narOkFlag)
-					  		_portraitTalkAnimNumber = 0;
-					}
-				} else {
-					_portraitTalkCounter++;
-					if (((_talkieMode == 1 || _talkieMode == 2) && _portraitTalkCounter == 1) || _portraitTalkCounter == 10)
-						_portraitTalkCounter = 0;
-				}
-				actorSetAnimNumber(actor, _portraitTalkAnimNumber);
-			}
-		}
-
-	} else {
-		actor->value4 = 0;
-	}
-
-}
-
-void CometEngine::updateActorAnimation(Actor *actor) {
-
-	if (actor->directionChanged == 1) {
-		actor->directionChanged = 0;
-		actorSetAnimNumber(actor, actor->direction + actor->directionAdd - 1);
-	} else {
-
-		if (actor->animSubIndex2 == -1) {
-
-			/* NOTE: See note below, but here we bail out. */
-			if (actor->animIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims.size())
-				return;
-
-			/* NOTE: After watching the ritual the players' frame number is out-of-bounds.
-				I don't know yet why this happens, but setting it to 0 at least avoids a crash. */
-			if (actor->animFrameIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames.size())
-				actor->animFrameIndex = 0;
-
-			AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
-
-			uint16 value = frame->flags & 0x3FFF;
-			uint16 gfxMode = frame->flags >> 14;
-
-			if (gfxMode == 1) {
-				if (value < 1)
-					value = 1;
-				if (actor->value4 >= value - 1) {
-					actor->value4 = 0;
-					actor->animFrameIndex++;
-				}
-			} else {
-				actor->animFrameIndex++;
-			}
-			
-			if (actor->animFrameIndex >= actor->animFrameCount)
-				actor->animFrameIndex = 0;
-
-		} else {
-			actor->value4 = 0;
-		}
-		
-	}
-}
-
 void CometEngine::resetVars() {
 
 	//TODO: scDisableRectFlag();
@@ -789,144 +690,9 @@ void CometEngine::resetVars() {
 	_cmdGet = false;
 	_cmdLook = false;
 	_cmdTalk = false;
- 	//_sceneExits.clear();
+ 	//_exits.clear();
 	_blockedInput = 0;
 	_sceneItems.clear();
-
-}
-
-void CometEngine::actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect) {
-
-	int x = actor->x;
-	int y = actor->y;
-
-	debug(4, "CometEngine::actorMoveAroundObstacle() 1) actorIndex = %d; x = %d; y = %d", actorIndex, x, y);
-
-	switch (actor->direction) {
-	case 1:
-	case 3:
-		if (random(2) == 0) {
-			x = obstacleRect.left - (actor->deltaX + 2);
-		} else {
-			x = obstacleRect.right + (actor->deltaX + 2);
-		}
-		break;
-	case 2:
-	case 4:
-		if (random(2) == 0) {
-			y = obstacleRect.top - 2;
-		} else {
-			y = obstacleRect.bottom + (actor->deltaY + 2);
-		}
-		break;
-	}
-
-	debug(4, "CometEngine::actorMoveAroundObstacle() 2) actorIndex = %d; x = %d; y = %d", actorIndex, x, y);
-
-	actorStartWalking(actorIndex, x, y);
-
-}
-
-void CometEngine::handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect) {
-
-	debug(4, "CometEngine::handleActorCollision() actorIndex = %d", actorIndex);
-	debug(4, "CometEngine::handleActorCollision() actor->collisionType = %d", actor->collisionType);
-
-	if (actor->collisionType == kCollisionBounds || actor->collisionType == kCollisionBoundsOff) {
-		// TODO
-		moveActorAroundBounds(actorIndex, actor);
-	} else if (actor->collisionType == kCollisionActor && actor->value6 == 6 && actor->collisionIndex == 0) {
-		// TODO
-		//debug(4, "CometEngine::handleActorCollision()");
-		actor->value6 = 0;
-		actorStopWalking(actor);
-		if (actor->flag2 == 1) {
-			actorUpdateLife(actor, actor->life);
-		}
-	} else {
-		actorMoveAroundObstacle(actorIndex, actor, obstacleRect);
-	}
-
-}
-
-void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect) {
-
-	if (!flag)
-		handleActorCollision(actorIndex, actor, obstacleRect);
-
-	int comp = comparePointXY(actor->x, actor->y, actor->walkDestX, actor->walkDestY);
-	
-	if (_debugRectangles) {
-		_screen->fillRect(actor->walkDestX - 6, actor->walkDestY - 6, actor->walkDestX + 6, actor->walkDestY + 6, 220);
-		drawDottedLine(actor->x, actor->y, actor->walkDestX, actor->walkDestY, 100);
-	}
-
-	if (comp == 3 || ((actor->walkStatus & 8) && (comp == 1)) || ((actor->walkStatus & 0x10) && (comp == 2))) {
-		if (actor->walkStatus & 4) {
-			actorStartWalking(actorIndex, actor->savedWalkDestX, actor->savedWalkDestY);
-			actor->walkStatus &= ~4;
-		} else {
-			actorStopWalking(actor);
-		}
-	} else if ((actor->walkStatus & 3) == comp) {
-		actor->walkStatus ^= 3;
-		actorCalcDirection(actor);
-	}
-
-}
-
-bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect) {
-
-	//debug(4, "CometEngine::updateActorPosition(%d)", actorIndex);
-
-	Actor *actor = getActor(actorIndex);
-
-	if (actor->directionAdd != 4)
-		return false;
-
-	int newX = actor->x;
-	int newY = actor->y;
-
-	//debug(4, "CometEngine::updateActorPosition(%d)  old: %d, %d", actorIndex, newX, newY);
-
-	Animation *anim = _animationMan->getAnimation(actor->animationSlot);
-	AnimationFrame *frame = anim->_anims[actor->animIndex]->frames[actor->animFrameIndex];
-
- 	int16 xAdd = frame->xOffs;
- 	int16 yAdd = frame->yOffs;
-
- 	//debug(4, "animFrameIndex = %d; animFrameCount = %d", actor->animFrameIndex, actor->animFrameCount);
- 	
- 	// TODO: SceneObject_sub_8243(actor->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
-
- 	//debug(4, "xAdd = %d; yAdd = %d", xAdd, yAdd);
-
- 	newX += xAdd;
- 	newY += yAdd;
- 	
- 	if (actor->walkStatus & 3) {
-		actorGetNextWalkDestXY(actor, newX, newY);
-	}
-
-	if (actor->collisionType != kCollisionDisabled) {
-		uint16 collisionType = checkCollision(actorIndex, newX, newY, actor->deltaX, actor->deltaY, actor->direction, obstacleRect);
-		debug(4, "collisionType (checkCollision) = %04X", collisionType);
-		if (collisionType != 0) {
-			collisionType = updateCollision(actor, actorIndex, collisionType);
-			debug(4, "collisionType (updateCollision) = %04X", collisionType);
-			if (collisionType == 0)
-				return false;
-		} else {
-			actor->collisionType = kCollisionNone;
-		}
-	}
-
-	//debug(4, "CometEngine::updateActorPosition(%d)  new: %d, %d", actorIndex, newX, newY);
-
-	actor->x = newX;
-	actor->y = newY;
-
-	return true;
 
 }
 
@@ -1023,42 +789,6 @@ void CometEngine::unblockInput() {
 	_blockedInput = 0;
 	if (_actors[0].directionChanged == 2)
 		_actors[0].directionChanged = 0;
-}
-
-void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
-
-	_talkActorIndex = actorIndex;
-	_talkTextIndex = talkTextIndex;
-	
-	if (_talkieMode == 0 || _talkieMode == 1) {
-		setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
-	}
-
-	if (_talkieMode == 2 || _talkieMode == 1) {
-		playVoice(_talkTextIndex);
-	}
-
-	_textActive = true;
-	_textColor = color;
-
-}
-
-void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber) {
-
-	Actor *actor = getActor(actorIndex);
-	
-	actorTalk(actorIndex, talkTextIndex, actor->textColor);
-
-	if (animNumber != 0xFF) {
-		_animIndex = actor->animIndex;
-		_animSubIndex2 = actor->animSubIndex2;
-		_animSubIndex = actor->animFrameIndex;
-		actorSetAnimNumber(actor, animNumber);
-		actor->directionChanged = 2;
-	} else {
-		_animIndex = -1;
-	}
-
 }
 
 int16 CometEngine::random(int maxValue) {
@@ -1169,36 +899,6 @@ void CometEngine::resetTextValues() {
 bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rect2) {
 
 	return ( rect1.left <= rect2.right && rect1.top <= rect2.bottom && rect1.right >= rect2.left && rect1.bottom >= rect2.top );
-
-}
-
-bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
-
-	Actor *actor1 = getActor(actorIndex1);
-	Actor *actor2 = getActor(actorIndex2);
-
-	Common::Rect actorRect1(
-		actor1->x - actor1->deltaX, actor1->y - actor1->deltaY,
-		actor1->x + actor1->deltaX, actor1->y);
-
-	Common::Rect actorRect2(
-		actor2->x - x / 2, actor2->y - y / 2,
-		actor2->x + x / 2, actor2->y + y / 2);
-
-	return rectCompare(actorRect1, actorRect2);
-
-}
-
-bool CometEngine::isPlayerInZone(int x1, int y1, int x2, int y2) {
-
-	Actor *mainActor = getActor(0);
-
-	Common::Rect zoneRect(x1, y1, x2, y2);
-	Common::Rect playerRect(
-		mainActor->x - mainActor->deltaX, mainActor->y - mainActor->deltaY,
-		mainActor->x + mainActor->deltaX, mainActor->y);
-	
-	return rectCompare(zoneRect, playerRect);
 
 }
 
@@ -1365,90 +1065,6 @@ void CometEngine::handleKeyInput() {
 
 }
 
-void CometEngine::openVoiceFile(int index) {
-
-	if (_narFile) {
-		_narFile->close();
-		delete _narFile;
-	}
-	
-	delete[] _narOffsets;
-		
-	char narFilename[16];
-	snprintf(narFilename, 16, "D%02d.NAR", index);
-	
-	_narFile = new Common::File();
-
-	if (!_narFile->open(narFilename))
-		error("CometEngine::openVoiceFile()  Could not open %s", narFilename);
-
-	// TODO: Better don't read the offsets at all, only in playVoice
-	_narCount = _narFile->readUint32LE() / 4;
-	while (!_narFile->eos() && _narCount == 0) {
-		_narCount = _narFile->readUint32LE() / 4;
-	}
-	
-	_narOffsets = new uint32[_narCount + 1];
- 	_narFile->seek(0);
-
-	for (int i = 0; i < _narCount; i++)
-		_narOffsets[i] = _narFile->readUint32LE();
-		
-	_narOffsets[_narCount] = _narFile->size();
-
-}
-	
-void CometEngine::playVoice(int number) {
-
-	stopVoice();
-
-	//debug("playVoice() number = %d; _narCount = %d", number, _narCount);
-
-	if (!_narOffsets || number >= _narCount)
-		return;
-
-	//debug(4, "CometEngine::playVoice(): number = %d; count = %d", number, _narCount);
-		
-	if (number + 1 >= _narCount) {
-		debug(4, "CometEngine::playVoice(%d)  Voice number error from debugging rooms", number);
-		return;
-	}
-
-	if (_narOffsets[number] == 0)
-		return;
-
-	//debug(4, "CometEngine::playVoice(): offset = %08X", _narOffsets[number]);
-
-	_narFile->seek(_narOffsets[number]);
-
-	int size;
-	
-	if (_narOffsets[number + 1] <= _narOffsets[number]) {
-		debug(4, "CometEngine::playVoice(%d)  Offset error", number);
-		return;
-	}
-	
-	size = _narOffsets[number + 1] - _narOffsets[number];
-
-	//debug(4, "CometEngine::playVoice() size = %d", size);
-
-
-	/* The VOC header's first byte is '\0' instead of a 'C' so we have to work around it */
-	byte *readBuffer = (byte *)malloc(size);
-	_narFile->read(readBuffer, size);
-	readBuffer[0] = 'C';
-
-	Common::MemoryReadStream vocStream(readBuffer, size, DisposeAfterUse::YES);
-
-	Audio::AudioStream *stream = Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
-	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_voiceHandle, stream);
-}
-
-void CometEngine::stopVoice() {
-	if (_mixer->isSoundHandleActive(_voiceHandle))
-		_mixer->stopHandle(_voiceHandle);
-}
-
 int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber) {
 	
 	if (sceneNumber == -1) {
@@ -1467,7 +1083,7 @@ int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNu
 
 		mainActor->value6 = 4;
 
-		_scene->getSceneExitRect(mainActor->collisionIndex, x1, y1, x2, y2);
+		_scene->getExitRect(mainActor->collisionIndex, x1, y1, x2, y2);
 		if (x2 == 318)
 			x2 = 319;
 
@@ -1535,43 +1151,6 @@ void CometEngine::drawLineOfSight() {
 		}
 		drawDottedLine(x, y, _itemX + random(3) - 1, _itemY + random(3) - 1, 7);
 	}
-}
-
-void CometEngine::invUseItem() {
-
-	for (uint index = 0; index < 256; index++) {
-		if (_itemStatus[index] == 2)
-			_itemStatus[index] = 1;
-	}
-	
-	if (_invActiveItem != -1) {
-		if (_itemStatus[_invActiveItem] == 1)
-			_itemStatus[_invActiveItem] = 2;
-	}
-
-}
-
-void CometEngine::invCheckActiveItem() {
-
-	/* If the currently selected item was disabled, scan for the preceeding item
-		and set it as selected item. */
-	if (_invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0) {
-		if (_invActiveItem >= 1) {
-			for (_invActiveItem = _invActiveItem - 1; _invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0;
-				_invActiveItem--) {
-			}
-		} else {
-			_invActiveItem = -1;
-		}
-	}
-
-	/* Check if the player wants to read the notebook */
-	if (_itemStatus[0] == 2) {
-		handleReadBook();
-		_itemStatus[0] = 1;
-	}
-
-
 }
 
 int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
@@ -1653,7 +1232,7 @@ uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisi
 
 	if (actorIndex == 0 && actor->collisionType == kCollisionSceneExit) {
 		int moduleNumber, sceneNumber;
-		_scene->getSceneExitLink(actor->collisionIndex, moduleNumber, sceneNumber);
+		_scene->getExitLink(actor->collisionIndex, moduleNumber, sceneNumber);
 		result = handleLeftRightSceneExitCollision(moduleNumber, sceneNumber);
 	}
 	
@@ -1666,283 +1245,6 @@ uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisi
 
 }
 
-int CometEngine::handleInventory() {
-
-	Common::Array<uint16> items;
-	uint firstItem = 0, currentItem = 0, maxItemsOnScreen = 10, animFrameCounter = 0;
-	int result = 0;
-
-	/*
-	// DEBUG
-	for (uint16 i = 1; i < 20; i++)
-		items.push_back(i);
-	*/
-		
-	waitForKeys();
-		
-	// Build items array and set up variables
-	for (int i = 0; i < 256; i++) {
-		if (_itemStatus[i] >= 1) {
-			items.push_back(i);
-			if (i == _invActiveItem) {
-				firstItem = items.size() < 5 ? 0 : items.size() - 5;
-				currentItem = items.size() - 1;
-			}
-		}
-	}
-
-	while (!result) {
-	
-		// TODO: Check mouse rectangles
-	
-		drawInventory(items, firstItem, currentItem, animFrameCounter++);
-
-		// TODO: Handle mouse rectangles
-		
-		switch (_keyScancode) {
-		case Common::KEYCODE_DOWN:
-		{
-			if ((currentItem - firstItem + 1 < maxItemsOnScreen) && (currentItem + 1 < items.size())) {
-				// TODO: Check mouse rectangle
-				currentItem++;
-			} else if (firstItem + maxItemsOnScreen < items.size()) {
-				firstItem++;
-				currentItem++;
-			}
-			break;
-		}
-		case Common::KEYCODE_UP:
-		{
-			if (currentItem > firstItem) {
-				// TODO: Check mouse rectangle
-				currentItem--;
-			} else if (firstItem > 0) {
-				firstItem--;
-				currentItem--;
-			}
-			break;
-		}
-		case Common::KEYCODE_ESCAPE:
-			result = 2;
-			break;
-		case Common::KEYCODE_RETURN:
-		case Common::KEYCODE_u:
-			for (uint i = 0; i < 255; i++) {
-				if (_itemStatus[i] == 2)
-					_itemStatus[i] = 1;
-			}
-			_invActiveItem = items[currentItem];
-			// Return just selects, U actually uses the item
-			if (_keyScancode == Common::KEYCODE_u) {
-				//debug("Use item #%d", _invActiveItem);
-				_itemStatus[_invActiveItem] = 2;
-			}
-			result = 1;
-			break;
-		default:
-			break;
-		}
-		
-  		waitForKeys();
-		handleEvents();
-		_system->delayMillis(20); // TODO: Adjust or use fps counter
-	}
-	
-	result = 2 - result;
-
-	// TODO...
-
-	return result;
-}
-
-void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
-
-	uint xadd = 74, yadd = 64, itemHeight = 12, maxItemsOnScreen = 10;
-
-	_screen->drawAnimationElement(_iconeVa2, 16, 0, 0);
-
-	if (firstItem > 0)
-		_screen->drawAnimationElement(_iconeVa2, 53, 0, 0);
-
-	if (firstItem + maxItemsOnScreen < items.size())
-		_screen->drawAnimationElement(_iconeVa2, 52, 0, 0);
-
-	for (uint i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
-		byte *itemName = _textBuffer3->getString(items[firstItem + i]);
-		int x = xadd + 21, y = yadd + itemHeight * i;
-		_screen->setFontColor(120);
-		_screen->drawText(x, y, itemName);
-		_screen->setFontColor(119);
-		_screen->drawText(x + 1, y + 1, itemName);
-		x = xadd;
-		y = yadd +  + itemHeight * i - 3;
-		// TODO: Implement and use drawIcon instead
-		_screen->drawAnimationElement(_objectsVa2, _objectsVa2->_anims[items[firstItem + i]]->frames[0]->elementIndex, x, y);
-	}
-	
-	if (items.size() > 0) {
-		int x = xadd + 16, y = yadd + (currentItem - firstItem) * itemHeight - 1;
-		_screen->frameRect(x, y, 253, y + itemHeight - 1, _invSelectionColor);
-		_invSelectionColor++;
-		if (_invSelectionColor >= 96)
-			_invSelectionColor = 80;
-	}
-
-	_screen->update();
-
-}
-
-int CometEngine::handleReadBook() {
-
-	int pageNumber, pageCount, talkPageNumber = -1, result = 0;
-
-	// TODO: Use values from script
-	pageNumber = 4;
-	pageCount = 14;
-
-	bookTurnPageTextEffect(false, pageNumber, pageCount);
-
-	// Set speech file
-	openVoiceFile(7);
-
-	while (!result) {
-
-		drawBookPage(pageNumber, pageCount, 64);
-
-		do {
-			// Play page speech
-			if (talkPageNumber != pageNumber) {
-				if (pageNumber > 0) {
-					playVoice(pageNumber);
-				} else {
-					stopVoice();
-				}
-				talkPageNumber = pageNumber;
-			}
-			// TODO: Check mouse rectangles
-			handleEvents();
-			_system->delayMillis(20); // TODO: Adjust or use fps counter
-		} while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0);
-		
-		// TODO: Handle mouse rectangles
-		
-		switch (_keyScancode) {
-		case Common::KEYCODE_RETURN:
-			result = 1;
-			break;
-		case Common::KEYCODE_ESCAPE:
-			result = 2;
-			break;
-		case Common::KEYCODE_LEFT:
-			if (pageNumber > 0) {
-				bookTurnPageTextEffect(true, pageNumber, pageCount);
-				bookTurnPage(false);
-				pageNumber--;
-				bookTurnPageTextEffect(false, pageNumber, pageCount);
-			}
-			break;
-		case Common::KEYCODE_RIGHT:
-			if (pageNumber < pageCount) {
-				bookTurnPageTextEffect(true, pageNumber, pageCount);
-				bookTurnPage(true);
-				pageNumber++;
-				bookTurnPageTextEffect(false, pageNumber, pageCount);
-			}
-			break;
-		default:
-			break;
-		}
-
-  		waitForKeys();
-
-	}
-
-	waitForKeys();
-	stopVoice();
- 	_textActive = false;
-
-	openVoiceFile(_narFileIndex);
-
-	result = 2 - result;
-	
-	return result;
-
-}
-
-void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
-
-	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
-	char pageNumberString[10];
-	int pageNumberStringWidth;
-
-	byte *pageText = _textReader->getString(2, pageTextIndex);
-	
-	_screen->drawAnimationElement(_iconeVa2, 30, 0, 0);
-	if (pageTextIndex < pageTextMaxIndex)
-		_screen->drawAnimationElement(_iconeVa2, 37, 0, 0);
-		
-	_screen->setFontColor(58);
-
-	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 1);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
-	_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
-	
- 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
-	_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
-	
-	_screen->setFontColor(fontColor);
-	
-	while (*pageText != 0 && *pageText != '*') {
-		x = xadd + (106 - _screen->_font->getTextWidth(pageText)) / 2;
-		if (x < 0)
-			x = 0;
-		_screen->drawText(x, yadd + lineNumber * 10, pageText);
-		if (++lineNumber == 13) {
-			xadd += 115;
-			yadd -= 130;
-		}
-		while (*pageText != 0 && *pageText != '*')
-			pageText++;
-		pageText++;
-	}
-
-}
-
-void CometEngine::bookTurnPage(bool turnDirection) {
-	if (turnDirection) {
-		for (uint i = 38; i < 49; i++) {
-			_screen->drawAnimationElement(_iconeVa2, 30, 0, 0);
-			_screen->drawAnimationElement(_iconeVa2, i, 0, 0);
-			_screen->update();
-			_system->delayMillis(40); // TODO
-		}
-	} else {
-		for (uint i = 49; i > 38; i--) {
-			_screen->drawAnimationElement(_iconeVa2, 30, 0, 0);
-			_screen->drawAnimationElement(_iconeVa2, i, 0, 0);
-			_screen->update();
-			_system->delayMillis(40); // TODO
-		}
-	}
-}
-
-void CometEngine::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
-	if (turnDirection) {
-		for (byte fontColor = 64; fontColor < 72; fontColor++) {
-			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_screen->update();
-			_system->delayMillis(40); // TODO
-		}
-	} else {
-		for (byte fontColor = 72; fontColor > 64; fontColor--) {
-			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_screen->update();
-			_system->delayMillis(40); // TODO
-		}
-	}
-}
-
 void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 
 	debug(4, "###### handleSceneChange(%d, %d)", sceneNumber, moduleNumber);
@@ -1953,12 +1255,12 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 	int x1 = 160, x2 = 160, y1 = 190, y2 = 190;
 	Actor *actor = getActor(0);
 	
-	for (uint sceneExitIndex = 0; sceneExitIndex < _scene->_sceneExits.size(); sceneExitIndex++) {
-		SceneExitItem *sceneExitItem = &_scene->_sceneExits[sceneExitIndex];
+	for (uint sceneExitIndex = 0; sceneExitIndex < _scene->_exits.size(); sceneExitIndex++) {
+		SceneExitItem *sceneExitItem = &_scene->_exits[sceneExitIndex];
 		if (sceneExitItem->sceneNumber == sceneNumber && sceneExitItem->moduleNumber == moduleNumber) {
 			direction = directionArray[sceneExitItem->directionIndex];
 			if (actor->direction == direction) {
-				_scene->getSceneExitRect(sceneExitIndex, x1, y1, x2, y2);
+				_scene->getExitRect(sceneExitIndex, x1, y1, x2, y2);
 				break;
 			}
 		}
@@ -1977,38 +1279,6 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 		_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
 		_screen->setFullPalette(_palette);
 	}
-
-}
-
-void CometEngine::moveActorAroundBounds(int index, Actor *actor) {
-
-	int x = actor->x;
-	int y = actor->walkDestY;
-
-	debug(1, "moveActorAroundBounds(%d); 1) x = %d; y = %d", index, x, y);
-	
-	switch (actor->direction) {
-	case 1:
-	case 3:
-		x = actor->walkDestX;
-		break;
-	case 2:
-		if (actor->walkDestY <= actor->y) {
-			y = _scene->findBoundsRight(x + actor->deltaX, y - actor->deltaY) +
-				actor->deltaY + 2;
-		}
-		break;
-	case 4:
-		if (actor->walkDestY <= actor->y) {
-			y = _scene->findBoundsLeft(x - actor->deltaX, y - actor->deltaY) +
-				actor->deltaY + 1;
-		}
-		break;
-	}
-	
-	debug(1, "moveActorAroundBounds(%d); 2) x = %d; y = %d", index, x, y);
-
-	actorStartWalking(index, x, y);
 
 }
 

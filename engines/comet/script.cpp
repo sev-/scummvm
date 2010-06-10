@@ -690,12 +690,12 @@ void ScriptInterpreter::o1_selectActor(Script *script) {
 }
 
 void ScriptInterpreter::o1_initSceneBounds(Script *script) {
-	_vm->_scene->initPoints(script->ip);
+	_vm->_scene->initBounds(script->ip);
 	script->ip += *script->ip * 2 + 1;
 }
 
 void ScriptInterpreter::o1_initSceneExits(Script *script) {
-	_vm->_scene->initSceneExits(script->ip);
+	_vm->_scene->initExits(script->ip);
 	script->ip += *script->ip * 5 + 1;
 }
 

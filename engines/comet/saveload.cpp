@@ -118,8 +118,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint16LE(_narFileIndex);
 	out->writeUint32LE(_gameLoopCounter);
 
-	out->writeByte(_scene->_sceneExits.size());
-	for (Common::Array<SceneExitItem>::iterator iter = _scene->_sceneExits.begin(); iter != _scene->_sceneExits.end(); ++iter) {
+	out->writeByte(_scene->_exits.size());
+	for (Common::Array<SceneExitItem>::iterator iter = _scene->_exits.begin(); iter != _scene->_exits.end(); ++iter) {
 		const SceneExitItem &sceneExit = *iter;
 		out->writeUint16LE(sceneExit.directionIndex);
 		out->writeUint16LE(sceneExit.moduleNumber);
@@ -264,7 +264,7 @@ void CometEngine::loadgame(const char *filename) {
 	_narFileIndex = in->readUint16LE();
 	_gameLoopCounter = in->readUint32LE();
 
-	_scene->_sceneExits.clear();
+	_scene->_exits.clear();
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		SceneExitItem sceneExit;
@@ -273,7 +273,7 @@ void CometEngine::loadgame(const char *filename) {
 		sceneExit.sceneNumber = in->readUint16LE();
 		sceneExit.x1 = in->readUint16LE();
 		sceneExit.x2 = in->readUint16LE();
-		_scene->_sceneExits.push_back(sceneExit);
+		_scene->_exits.push_back(sceneExit);
 	}
 
 	_script->_scriptCount = in->readByte();

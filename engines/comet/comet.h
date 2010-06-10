@@ -226,7 +226,7 @@ public:
 	int16 _currentModuleNumber, _currentSceneNumber;
 	int16 _prevModuleNumber, _prevSceneNumber;
 
-	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
+	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconSprite;
 	Animation *_sceneObjectsSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 

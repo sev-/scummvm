@@ -4,6 +4,7 @@ MODULE_OBJS = \
 	actor.o \
 	animation.o \
 	animationmgr.o \
+	book.o \
 	detection.o \
 	dialog.o \
 	font.o \
@@ -12,9 +13,11 @@ MODULE_OBJS = \
 	pak.o \
 	unpack.o \
 	screen.o \
+	speech.o \
 	marche.o \
 	saveload.o \
 	shadow.o \
+	inventory.o \
 	music.o \
 	sound.o \
 	scene.o \
