@@ -82,14 +82,14 @@ typedef Common::Functor1Mem<Script*, void, ScriptInterpreter> ScriptOpcodeF;
 void ScriptInterpreter::setupOpcodes() {
 	// 0
 	RegisterOpcode(o1_nop);
-	RegisterOpcode(o1_sceneObjectSetDirection);
+	RegisterOpcode(o1_actorSetDirection);
 	RegisterOpcode(o1_break);
 	RegisterOpcode(o1_jump);
-	RegisterOpcode(o1_objectWalkToX);
+	RegisterOpcode(o1_actorWalkToX);
 	// 5
-	RegisterOpcode(o1_objectWalkToY);
+	RegisterOpcode(o1_actorWalkToY);
 	RegisterOpcode(o1_loop);
-	RegisterOpcode(o1_objectSetPosition);
+	RegisterOpcode(o1_actorSetPosition);
 	RegisterOpcode(o1_synchronize);
 	RegisterOpcode(o1_sleep);
 	// 10
@@ -99,14 +99,14 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_ifHeroInZone);
 	// 15
-	RegisterOpcode(o1_objectWalkToXRel);
-	RegisterOpcode(o1_objectWalkToYRel);
-	RegisterOpcode(o1_objectWalkToXYRel);
+	RegisterOpcode(o1_actorWalkToXRel);
+	RegisterOpcode(o1_actorWalkToYRel);
+	RegisterOpcode(o1_actorWalkToXYRel);
 	RegisterOpcode(o1_blockInput);
 	RegisterOpcode(o1_unblockInput);
 	// 20
-	RegisterOpcode(o1_sceneObjectSetDirectionToHero);
-	RegisterOpcode(o1_selectObject);
+	RegisterOpcode(o1_actorSetDirectionToHero);
+	RegisterOpcode(o1_selectActor);
 	RegisterOpcode(o1_initSceneBounds);
 	RegisterOpcode(o1_initSceneExits);
 	RegisterOpcode(o1_nop);
@@ -121,18 +121,18 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_setVar);
 	RegisterOpcode(o1_incVar);
 	RegisterOpcode(o1_subVar);
-	RegisterOpcode(o1_sceneObjectDisableCollisions);
+	RegisterOpcode(o1_actorDisableCollisions);
 	// 35
-	RegisterOpcode(o1_sceneObjectEnableCollisions);
-	RegisterOpcode(o1_objectWalkTo);
+	RegisterOpcode(o1_actorEnableCollisions);
+	RegisterOpcode(o1_actorWalkTo);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setPaletteBrightness);
 	RegisterOpcode(o1_waitUntilHeroExitZone);
 	// 40
 	RegisterOpcode(o1_waitUntilHeroEnterZone);
-	RegisterOpcode(o1_sceneObjectDelete);
-	RegisterOpcode(o1_setObjectClipX);
-	RegisterOpcode(o1_setObjectClipY);
+	RegisterOpcode(o1_actorDelete);
+	RegisterOpcode(o1_actorSetClipX);
+	RegisterOpcode(o1_actorSetClipY);
 	RegisterOpcode(o1_setSceneNumber);
 	// 45
 	RegisterOpcode(o1_setAnimValues);
@@ -163,7 +163,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_ifLookZone);
 	RegisterOpcode(o1_addBeam);//TODO
 	RegisterOpcode(o1_removeBlockingRect);
-	RegisterOpcode(o1_objectSetTextColor);
+	RegisterOpcode(o1_actorSetTextColor);
 	// 70
 	RegisterOpcode(o1_setTextXY);
 	RegisterOpcode(o1_nop);
@@ -186,12 +186,12 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_nop);// TODO: o1_waitForKey();
 	RegisterOpcode(o1_playAnim);
-	RegisterOpcode(o1_sceneObjectSetAnimNumber);
+	RegisterOpcode(o1_actorSetAnimNumber);
 	RegisterOpcode(o1_actorTalkPortrait);
 	// 90
-	RegisterOpcode(o1_initSceneObject);
-	RegisterOpcode(o1_loadSceneObjectSprite);
-	RegisterOpcode(o1_setObjectVisible);
+	RegisterOpcode(o1_initActor);
+	RegisterOpcode(o1_loadActorSprite);
+	RegisterOpcode(o1_setActorVisible);
 	RegisterOpcode(o1_paletteFadeIn);
 	RegisterOpcode(o1_paletteFadeOut);
 	// 95
@@ -471,7 +471,7 @@ Actor *ScriptInterpreter::getActor(int index) {
 	return _vm->getActor(index);
 }
 
-void ScriptInterpreter::objectWalkToXY(Script *script, bool xyFlag) {
+void ScriptInterpreter::actorWalkToXY(Script *script, bool xyFlag) {
 	
 	int x, y;
 	int newValue = script->readByte();
@@ -486,7 +486,7 @@ void ScriptInterpreter::objectWalkToXY(Script *script, bool xyFlag) {
 		y = newValue;
 	}
 
-	debug(3, "objectWalkToXY()  object: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
+	debug(3, "actorWalkToXY()  actor: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
 
 	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
 		if (!xyFlag) {
@@ -500,7 +500,7 @@ void ScriptInterpreter::objectWalkToXY(Script *script, bool xyFlag) {
 	
 }
 
-void ScriptInterpreter::objectWalkToXYRel(Script *script, bool xyFlag) {
+void ScriptInterpreter::actorWalkToXYRel(Script *script, bool xyFlag) {
 
 	int x, y;
 	int delta = script->readByte();
@@ -515,7 +515,7 @@ void ScriptInterpreter::objectWalkToXYRel(Script *script, bool xyFlag) {
 		y = _vm->_actors[0].y + delta;
 	}
 
-	debug(3, "objectWalkToXYRel()  object: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
+	debug(3, "actorWalkToXYRel()  actor: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
 
 	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
 		if (!xyFlag) {
@@ -561,8 +561,8 @@ void ScriptInterpreter::o1_nop(Script *script) {
 	debug("Unimplemented opcode %02X", script->debugOpcode);
 }
 
-void ScriptInterpreter::o1_sceneObjectSetDirection(Script *script) {
-	debug(2, "o1_sceneObjectSetDirection");
+void ScriptInterpreter::o1_actorSetDirection(Script *script) {
+	debug(2, "o1_actorSetDirection");
 
 	int direction = script->readByte();
 	script->actor()->directionChanged = 0;
@@ -579,12 +579,12 @@ void ScriptInterpreter::o1_jump(Script *script) {
 	script->jump();
 }
 
-void ScriptInterpreter::o1_objectWalkToX(Script *script) {
-	objectWalkToXY(script, false);
+void ScriptInterpreter::o1_actorWalkToX(Script *script) {
+	actorWalkToXY(script, false);
 }
 
-void ScriptInterpreter::o1_objectWalkToY(Script *script) {
-	objectWalkToXY(script, true);
+void ScriptInterpreter::o1_actorWalkToY(Script *script) {
+	actorWalkToXY(script, true);
 }
 
 void ScriptInterpreter::o1_loop(Script *script) {
@@ -598,7 +598,7 @@ void ScriptInterpreter::o1_loop(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_objectSetPosition(Script *script) {
+void ScriptInterpreter::o1_actorSetPosition(Script *script) {
 	ARG_BYTEX(x);
 	ARG_BYTE(y);
 	_vm->actorSetPosition(script->actorIndex, x, y);
@@ -637,21 +637,21 @@ void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_objectWalkToXRel(Script *script) {
-	objectWalkToXYRel(script, false);
+void ScriptInterpreter::o1_actorWalkToXRel(Script *script) {
+	actorWalkToXYRel(script, false);
 }
 
-void ScriptInterpreter::o1_objectWalkToYRel(Script *script) {
-	objectWalkToXYRel(script, true);
+void ScriptInterpreter::o1_actorWalkToYRel(Script *script) {
+	actorWalkToXYRel(script, true);
 }
 
-void ScriptInterpreter::o1_objectWalkToXYRel(Script *script) {
+void ScriptInterpreter::o1_actorWalkToXYRel(Script *script) {
 	ARG_BYTE(deltaX);
 	ARG_BYTE(deltaY);
-	Actor *playerObject = getActor(0);
+	Actor *player = getActor(0);
 	Actor *actor = script->actor();
-	int x = playerObject->x + deltaX;
-	int y = playerObject->y + deltaY;
+	int x = player->x + deltaX;
+	int y = player->y + deltaY;
 	actor->directionChanged = 0;
 	_vm->_scene->superFilterWalkDestXY(x, y, actor->deltaX, actor->deltaY);
 	actor->walkStatus = 0;
@@ -677,14 +677,14 @@ void ScriptInterpreter::o1_unblockInput(Script *script) {
 	_vm->unblockInput();
 }
 
-void ScriptInterpreter::o1_sceneObjectSetDirectionToHero(Script *script) {
-	Actor *playerObject = getActor(0);
-	int direction = _vm->calcDirection( script->actor()->x, script->actor()->y, playerObject->x, playerObject->y );
+void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
+	Actor *mainActor = getActor(0);
+	int direction = _vm->calcDirection(script->actor()->x, script->actor()->y, mainActor->x, mainActor->y);
 	script->actor()->directionChanged = 0;
 	_vm->actorSetDirection(script->actor(), direction);
 }
 
-void ScriptInterpreter::o1_selectObject(Script *script) {
+void ScriptInterpreter::o1_selectActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	script->actorIndex = actorIndex;
 }
@@ -760,15 +760,15 @@ void ScriptInterpreter::o1_subVar(Script *script) {
 	*varPtr -= value;
 }
 
-void ScriptInterpreter::o1_sceneObjectDisableCollisions(Script *script) {
+void ScriptInterpreter::o1_actorDisableCollisions(Script *script) {
 	script->actor()->collisionType = 8;
 }
 
-void ScriptInterpreter::o1_sceneObjectEnableCollisions(Script *script) {
+void ScriptInterpreter::o1_actorEnableCollisions(Script *script) {
 	script->actor()->collisionType = 0;
 }
 
-void ScriptInterpreter::o1_objectWalkTo(Script *script) {
+void ScriptInterpreter::o1_actorWalkTo(Script *script) {
 	ARG_BYTEX(x);
 	ARG_BYTE(y);
 	script->actor()->directionChanged = 0;
@@ -809,8 +809,8 @@ void ScriptInterpreter::o1_setAnimationType(Script *script) {
 }
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
-	Actor *playerObject = getActor(0);
-	_vm->actorSetPosition(script->actorIndex, playerObject->x, playerObject->y + 1);
+	Actor *player = getActor(0);
+	_vm->actorSetPosition(script->actorIndex, player->x, player->y + 1);
 }
 
 void ScriptInterpreter::o1_setZoom(Script *script) {
@@ -860,7 +860,7 @@ void ScriptInterpreter::o1_waitUntilHeroEnterZone(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_sceneObjectDelete(Script *script) {
+void ScriptInterpreter::o1_actorDelete(Script *script) {
 	if (script->actorIndex != 0) {
 		script->actor()->life = 0;
 		if (script->actor()->animationSlot != -1)
@@ -868,14 +868,14 @@ void ScriptInterpreter::o1_sceneObjectDelete(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_setObjectClipX(Script *script) {
+void ScriptInterpreter::o1_actorSetClipX(Script *script) {
 	ARG_BYTEX(clipX1);
 	ARG_BYTEX(clipX2);
 	script->actor()->clipX1 = clipX1;
 	script->actor()->clipX2 = clipX2;
 }
 
-void ScriptInterpreter::o1_setObjectClipY(Script *script) {
+void ScriptInterpreter::o1_actorSetClipY(Script *script) {
 	ARG_BYTE(clipY1);
 	ARG_BYTE(clipY2);
 	script->actor()->clipY1 = clipY1;
@@ -1010,12 +1010,12 @@ void ScriptInterpreter::o1_addBeam(Script *script) {
 }
 
 void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
-	ARG_BYTEX(x);
+	ARG_BYTE(x);
 	ARG_BYTE(y);
 	_vm->_scene->removeBlockingRect(x, y);
 }
 
-void ScriptInterpreter::o1_objectSetTextColor(Script *script) {
+void ScriptInterpreter::o1_actorSetTextColor(Script *script) {
 	script->actor()->textColor = script->readByte();
 }
 
@@ -1072,13 +1072,13 @@ void ScriptInterpreter::o1_addSceneItem2(Script *script) {
 }
 
 void ScriptInterpreter::o1_playAnim(Script *script) {
-	o1_sceneObjectSetAnimNumber(script);
+	o1_actorSetAnimNumber(script);
 	script->status |= kScriptAnimPlaying;
 	_yield = true;
 
 }
 
-void ScriptInterpreter::o1_sceneObjectSetAnimNumber(Script *script) {
+void ScriptInterpreter::o1_actorSetAnimNumber(Script *script) {
 	ARG_BYTE(animIndex);
 	_vm->actorSetAnimNumber(script->actor(), animIndex);
 	script->actor()->directionChanged = 2;
@@ -1106,21 +1106,21 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	_yield = true;
 }
 
-void ScriptInterpreter::o1_initSceneObject(Script *script) {
-	o1_selectObject(script);
+void ScriptInterpreter::o1_initActor(Script *script) {
+	o1_selectActor(script);
 	if (script->actorIndex != 0) {
 		_vm->actorInit(script->actorIndex, -1);
 	}
 }
 
-void ScriptInterpreter::o1_loadSceneObjectSprite(Script *script) {
+void ScriptInterpreter::o1_loadActorSprite(Script *script) {
 	ARG_BYTE(fileIndex);
 	_vm->unloadActorSprite(script->actor());
 	script->actor()->animationSlot = _vm->_animationMan->getAnimationResource(_vm->_animationType, fileIndex);
 	_vm->_animationType = 0;
 }
 
-void ScriptInterpreter::o1_setObjectVisible(Script *script) {
+void ScriptInterpreter::o1_setActorVisible(Script *script) {
 	ARG_BYTE(visible);
 	script->actor()->visible = visible;
 }
