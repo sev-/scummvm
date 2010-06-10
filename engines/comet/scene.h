@@ -54,10 +54,10 @@ public:
 	void drawSceneForeground();
 */
 
-	void initPoints(byte *data);
+	void initBounds(byte *data);
 
-	void initSceneExits(byte *data);
-	void getSceneExitLink(int index, int &chapterNumber, int &sceneNumber);
+	void initExits(byte *data);
+	void getExitLink(int index, int &chapterNumber, int &sceneNumber);
 
 	void addBlockingRect(int x1, int y1, int x2, int y2);
 	void removeBlockingRect(int x, int y);
@@ -66,7 +66,7 @@ public:
 	int checkCollisionWithExits(const Common::Rect &collisionRect, int direction);
 	int checkCollisionWithBlockingRects(Common::Rect &collisionRect, Common::Rect &obstacleRect);
 
-	void getSceneExitRect(int index, int &x1, int &y1, int &x2, int &y2);
+	void getExitRect(int index, int &x1, int &y1, int &x2, int &y2);
 
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
@@ -78,12 +78,12 @@ public: // while still in progress
 	CometEngine *_vm;
 
 	Common::Array<Common::Rect> _blockingRects;
-	Common::Array<SceneExitItem> _sceneExits;
+	Common::Array<SceneExitItem> _exits;
 	Animation *_sceneObjectsSprite;
 	PointArray _bounds;
 	byte _boundsMap[320];
 	
-	void initSceneBoundsMap();
+	void initBoundsMap();
 	
 };
 

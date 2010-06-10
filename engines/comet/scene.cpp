@@ -12,7 +12,7 @@ Scene::Scene(CometEngine *vm) : _vm(vm) {
 Scene::~Scene() {
 }
 
-void Scene::initPoints(byte *data) {
+void Scene::initBounds(byte *data) {
 	byte count = *data++;
 	_bounds.clear();
 	while (count--) {
@@ -20,12 +20,12 @@ void Scene::initPoints(byte *data) {
 		int y = *data++;
 		_bounds.push_back(Common::Point(x, y));
 	}
-	initSceneBoundsMap();
+	initBoundsMap();
 }
 
-void Scene::initSceneExits(byte *data) {
+void Scene::initExits(byte *data) {
 	byte count = *data++;
-	_sceneExits.clear();
+	_exits.clear();
 	while (count--) {
 		SceneExitItem sceneExitItem;
 		sceneExitItem.directionIndex = data[0];
@@ -34,13 +34,13 @@ void Scene::initSceneExits(byte *data) {
 		sceneExitItem.x1 = data[3] * 2;
 		sceneExitItem.x2 = data[4] * 2;
 		data += 5;
-		_sceneExits.push_back(sceneExitItem);
+		_exits.push_back(sceneExitItem);
 	}
 }
 
-void Scene::getSceneExitLink(int index, int &moduleNumber, int &sceneNumber) {
-	moduleNumber = _sceneExits[index].moduleNumber;
-	sceneNumber = _sceneExits[index].sceneNumber;
+void Scene::getExitLink(int index, int &moduleNumber, int &sceneNumber) {
+	moduleNumber = _exits[index].moduleNumber;
+	sceneNumber = _exits[index].sceneNumber;
 }
 
 void Scene::addBlockingRect(int x1, int y1, int x2, int y2) {
@@ -104,10 +104,10 @@ int Scene::checkCollisionWithExits(const Common::Rect &rect, int direction) {
 	y = rect.top;
 	x2 = rect.right;
 
-	for (uint32 index = 0; index < _sceneExits.size(); index++) {
+	for (uint32 index = 0; index < _exits.size(); index++) {
 		bool flag = false;
-		if (_sceneExits[index].directionIndex == direction) {
-			getSceneExitRect(index, x3, y3, x4, y4);
+		if (_exits[index].directionIndex == direction) {
+			getExitRect(index, x3, y3, x4, y4);
 			if (direction == 1 || direction == 3) {
 				flag = (x >= x3) && (x2 <= x4);
 			} else if (direction == 2) {
@@ -138,18 +138,18 @@ int Scene::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obs
 
 }
 
-void Scene::getSceneExitRect(int index, int &x1, int &y1, int &x2, int &y2) {
+void Scene::getExitRect(int index, int &x1, int &y1, int &x2, int &y2) {
 
-	SceneExitItem *sceneExitItem = &_sceneExits[index];
+	SceneExitItem *exitItem = &_exits[index];
 
-	x1 = sceneExitItem->x1;
-	x2 = sceneExitItem->x2;
+	x1 = exitItem->x1;
+	x2 = exitItem->x2;
 
 	y1 = _boundsMap[x1];
 
 	if (x1 == x2) {
 		y2 = 199;
-	} else if (sceneExitItem->directionIndex == 3) {
+	} else if (exitItem->directionIndex == 3) {
 		y1 = 199;
 		y2 = 199;
 	} else {
@@ -225,7 +225,7 @@ void Scene::superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 
 }
 
-void Scene::initSceneBoundsMap() {
+void Scene::initBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
 	byte *boundsMapPtr = _boundsMap;
@@ -271,6 +271,5 @@ void Scene::initSceneBoundsMap() {
 	*boundsMapPtr++ = errorY;
 
 }
-
 
 } // End of namespace Comet
