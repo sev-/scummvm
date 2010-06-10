@@ -182,7 +182,7 @@ public:
 	void o1_breakLoop(Script *script);
 	void o1_playMusic(Script *script);
 	void o1_setRandomValue(Script *script);
-	void o1_setChapterNumber(Script *script);
+	void o1_gotoModule(Script *script);
 	void o1_actorTalk(Script *script);
 	void o1_loadSavegame(Script *script);
 	void o1_addSceneItem2(Script *script);

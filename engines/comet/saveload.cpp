@@ -107,9 +107,9 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	// Save...
 	/* TODO: This will need some refactoring so that each class saves its own stuff. */
 	
-	out->writeUint16LE(_chapterNumber);
-	out->writeUint16LE(_currentChapterNumber);
-	out->writeUint16LE(_prevChapterNumber);
+	out->writeUint16LE(_moduleNumber);
+	out->writeUint16LE(_currentModuleNumber);
+	out->writeUint16LE(_prevModuleNumber);
 	out->writeUint16LE(_sceneNumber);
 	out->writeUint16LE(_currentSceneNumber);
 	out->writeUint16LE(_prevSceneNumber);
@@ -122,7 +122,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	for (Common::Array<SceneExitItem>::iterator iter = _scene->_sceneExits.begin(); iter != _scene->_sceneExits.end(); ++iter) {
 		const SceneExitItem &sceneExit = *iter;
 		out->writeUint16LE(sceneExit.directionIndex);
-		out->writeUint16LE(sceneExit.chapterNumber);
+		out->writeUint16LE(sceneExit.moduleNumber);
 		out->writeUint16LE(sceneExit.sceneNumber);
 		out->writeUint16LE(sceneExit.x1);
 		out->writeUint16LE(sceneExit.x2);
@@ -253,9 +253,9 @@ void CometEngine::loadgame(const char *filename) {
 	
 	_animationMan->purgeAnimationSlots();
 	
-	_chapterNumber = in->readUint16LE();
-	_currentChapterNumber = in->readUint16LE();
-	_prevChapterNumber = in->readUint16LE();
+	_moduleNumber = in->readUint16LE();
+	_currentModuleNumber = in->readUint16LE();
+	_prevModuleNumber = in->readUint16LE();
 	_sceneNumber = in->readUint16LE();
 	_currentSceneNumber = in->readUint16LE();
 	_prevSceneNumber = in->readUint16LE();
@@ -269,7 +269,7 @@ void CometEngine::loadgame(const char *filename) {
 	for (int i = 0; i < count; i++) {
 		SceneExitItem sceneExit;
 		sceneExit.directionIndex = in->readUint16LE();
-		sceneExit.chapterNumber = in->readUint16LE();
+		sceneExit.moduleNumber = in->readUint16LE();
 		sceneExit.sceneNumber = in->readUint16LE();
 		sceneExit.x1 = in->readUint16LE();
 		sceneExit.x2 = in->readUint16LE();
@@ -380,7 +380,7 @@ void CometEngine::loadgame(const char *filename) {
 
 	delete in;
 	
-	setChapterAndScene(_currentChapterNumber, _currentSceneNumber);
+	setModuleAndScene(_currentModuleNumber, _currentSceneNumber);
 	loadAndRunScript(true);
 	initSceneBackground(true);
 	_animationMan->restoreAnimationSlots();

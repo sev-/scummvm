@@ -95,9 +95,9 @@ Common::Error CometEngine::run() {
 	_gameLoopCounter = 0;
 	_textColorFlag = 0;
 	
-	_prevChapterNumber = -1;
-	_currentChapterNumber = -1;
-	_chapterNumber = 0;
+	_prevModuleNumber = -1;
+	_currentModuleNumber = -1;
+	_moduleNumber = 0;
 	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
@@ -145,11 +145,11 @@ Common::Error CometEngine::run() {
 	_systemVars[31] = &_mouseButtons4;
 	_systemVars[32] = &_scriptMouseFlag;
 	_systemVars[33] = &_scriptRandomValue;
-	_systemVars[34] = &_prevChapterNumber;
+	_systemVars[34] = &_prevModuleNumber;
 
 	_talkieMode = 1;
 
-	_startupChapterNumber = 9;
+	_startupModuleNumber = 9;
 	_startupSceneNumber = 0;
 
 	_narFile = NULL;
@@ -206,19 +206,19 @@ Common::Error CometEngine::run() {
 
 #if 1
 		//DEBUG
-		if (_chapterNumber == 9 && _sceneNumber == 0) {
-			_chapterNumber = 5;
+		if (_moduleNumber == 9 && _sceneNumber == 0) {
+			_moduleNumber = 5;
 			_sceneNumber = 0;
 		}
 #endif
 #if 0
 		//DEBUG - jump to scene
-		if (_chapterNumber == 9 && _sceneNumber == 0) {
+		if (_moduleNumber == 9 && _sceneNumber == 0) {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			setFullPalette(_ctuPal);
 			_introPaletteState = 0;
-			_chapterNumber = 0;
+			_moduleNumber = 0;
 			_sceneNumber = 1;
 			//_sceneNumber = 11;
 		}
@@ -296,14 +296,14 @@ Common::Error CometEngine::run() {
 				_sceneNumber--;
 			}
 		} if (_keyScancode == Common::KEYCODE_KP_MULTIPLY) {
-			_chapterNumber++;
+			_moduleNumber++;
 			_sceneNumber = 0;
-			debug("## New _chapterNumber = %d", _chapterNumber);
+			debug("## New _moduleNumber = %d", _moduleNumber);
 		} else if (_keyScancode == Common::KEYCODE_KP_DIVIDE) {
-			if (_chapterNumber > 0) {
-				_chapterNumber--;
+			if (_moduleNumber > 0) {
+				_moduleNumber--;
 				_sceneNumber = 0;
-				debug("## New _chapterNumber = %d", _chapterNumber);
+				debug("## New _moduleNumber = %d", _moduleNumber);
 			}
 		}
 		/* Debugging helpers ends here */
@@ -313,13 +313,13 @@ Common::Error CometEngine::run() {
 
 #if 1
 		//DEBUG - jump to scene
-		if (_chapterNumber == 9 && _sceneNumber == 0) {
+		if (_moduleNumber == 9 && _sceneNumber == 0) {
 			memcpy(_ctuPal, _paletteBuffer, 768);
 			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
 			_introPaletteState = 0;
-			//_chapterNumber = 1;
-			_chapterNumber = 0;
+			//_moduleNumber = 1;
+			_moduleNumber = 0;
 			_sceneNumber = 0;
 			//_sceneNumber = 11;
 		}

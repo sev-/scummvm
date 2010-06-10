@@ -177,7 +177,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setRandomValue);
 	// 80
-	RegisterOpcode(o1_setChapterNumber);
+	RegisterOpcode(o1_gotoModule);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_actorTalk);
 	RegisterOpcode(o1_loadSavegame);
@@ -1046,9 +1046,9 @@ void ScriptInterpreter::o1_setRandomValue(Script *script) {
 	_vm->_scriptRandomValue = _vm->random(maxValue);
 }
 
-void ScriptInterpreter::o1_setChapterNumber(Script *script) {
-	ARG_BYTE(chapterNumber);
-	_vm->_chapterNumber = chapterNumber;
+void ScriptInterpreter::o1_gotoModule(Script *script) {
+	ARG_BYTE(moduleNumber);
+	_vm->_moduleNumber = moduleNumber;
 	_yield = true;
 }
 
