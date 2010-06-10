@@ -29,7 +29,7 @@ void Scene::initSceneExits(byte *data) {
 	while (count--) {
 		SceneExitItem sceneExitItem;
 		sceneExitItem.directionIndex = data[0];
-		sceneExitItem.chapterNumber = data[1];
+		sceneExitItem.moduleNumber = data[1];
 		sceneExitItem.sceneNumber = data[2];
 		sceneExitItem.x1 = data[3] * 2;
 		sceneExitItem.x2 = data[4] * 2;
@@ -38,8 +38,8 @@ void Scene::initSceneExits(byte *data) {
 	}
 }
 
-void Scene::getSceneExitLink(int index, int &chapterNumber, int &sceneNumber) {
-	chapterNumber = _sceneExits[index].chapterNumber;
+void Scene::getSceneExitLink(int index, int &moduleNumber, int &sceneNumber) {
+	moduleNumber = _sceneExits[index].moduleNumber;
 	sceneNumber = _sceneExits[index].sceneNumber;
 }
 

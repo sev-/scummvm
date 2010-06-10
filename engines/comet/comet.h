@@ -121,7 +121,7 @@ struct AnimationSlot {
 
 struct SceneExitItem {
 	int directionIndex;
-	int chapterNumber;
+	int moduleNumber;
 	int sceneNumber;
 	int x1, x2;
 };
@@ -221,10 +221,10 @@ public:
 
 	bool _needToLoadSavegameFlag;
 	
-	int16 _startupChapterNumber, _startupSceneNumber;
-	int16 _chapterNumber, _sceneNumber;
-	int16 _currentChapterNumber, _currentSceneNumber;
-	int16 _prevChapterNumber, _prevSceneNumber;
+	int16 _startupModuleNumber, _startupSceneNumber;
+	int16 _moduleNumber, _sceneNumber;
+	int16 _currentModuleNumber, _currentSceneNumber;
+	int16 _prevModuleNumber, _prevSceneNumber;
 
 	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconeVa2;
 	Animation *_sceneObjectsSprite;
@@ -287,9 +287,9 @@ public:
 	
 	void skipText();
 
-	void setChapterAndScene(int chapterNumber, int sceneNumber);
+	void setModuleAndScene(int moduleNumber, int sceneNumber);
 	void updateGame();
-	void updateChapterNumber();
+	void updateModuleNumber();
 	void updateSceneNumber();
 	void getItemInSight();
 	void lookAtItemInSight(bool flag);
@@ -299,7 +299,7 @@ public:
 	void enqueueActorsForDrawing();
 	void updateHeroLife();
 	void handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
-	void moveActorAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
+	void actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void resetVars();
 	
 	void drawSprites();
@@ -337,12 +337,12 @@ public:
 	void loadStaticObjects();
 	void drawSceneForeground();
 
-	int handleLeftRightSceneExitCollision(int chapterNumber, int sceneNumber);
+	int handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber);
 
 	int checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect);
 	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
 	
-	void handleSceneChange(int sceneNumber, int chapterNumber);
+	void handleSceneChange(int sceneNumber, int moduleNumber);
 
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
@@ -392,7 +392,7 @@ public:
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
-	bool isPlayerInZone(int x, int y, int x2, int y2);
+	bool isPlayerInZone(int x1, int y1, int x2, int y2);
 
 	/* Save/load */
 
