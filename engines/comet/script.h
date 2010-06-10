@@ -110,8 +110,8 @@ public:
 	void processScriptDialog();
 	void processScriptTalk();
 	
-	void objectWalkToXY(Script *script, bool xyFlag);
-	void objectWalkToXYRel(Script *script, bool xyFlag);
+	void actorWalkToXY(Script *script, bool xyFlag);
+	void actorWalkToXYRel(Script *script, bool xyFlag);
 
 	bool isHeroInZone(Script *script);
 	void o1_addSceneItem(Script *script, int paramType);
@@ -119,24 +119,24 @@ public:
 	/* Script functions */
 
 	void o1_nop(Script *script);
-	void o1_sceneObjectSetDirection(Script *script);
+	void o1_actorSetDirection(Script *script);
 	void o1_break(Script *script);
 	void o1_jump(Script *script);
-	void o1_objectWalkToX(Script *script);
-	void o1_objectWalkToY(Script *script);
+	void o1_actorWalkToX(Script *script);
+	void o1_actorWalkToY(Script *script);
 	void o1_loop(Script *script);
-	void o1_objectSetPosition(Script *script);
+	void o1_actorSetPosition(Script *script);
 	void o1_synchronize(Script *script);
 	void o1_sleep(Script *script);
 	void o1_if(Script *script);
 	void o1_ifHeroInZone(Script *script);
-	void o1_objectWalkToXRel(Script *script);
-	void o1_objectWalkToYRel(Script *script);
-	void o1_objectWalkToXYRel(Script *script);
+	void o1_actorWalkToXRel(Script *script);
+	void o1_actorWalkToYRel(Script *script);
+	void o1_actorWalkToXYRel(Script *script);
 	void o1_blockInput(Script *script);
 	void o1_unblockInput(Script *script);
-	void o1_sceneObjectSetDirectionToHero(Script *script);
-	void o1_selectObject(Script *script);
+	void o1_actorSetDirectionToHero(Script *script);
+	void o1_selectActor(Script *script);
 	void o1_initSceneBounds(Script *script);
 	void o1_initSceneExits(Script *script);
 	void o1_addSceneObject(Script *script);
@@ -147,9 +147,9 @@ public:
 	void o1_setVar(Script *script);
 	void o1_incVar(Script *script);
 	void o1_subVar(Script *script);
-	void o1_sceneObjectDisableCollisions(Script *script);
-	void o1_sceneObjectEnableCollisions(Script *script);
-	void o1_objectWalkTo(Script *script);
+	void o1_actorDisableCollisions(Script *script);
+	void o1_actorEnableCollisions(Script *script);
+	void o1_actorWalkTo(Script *script);
 	void o1_setPaletteBrightness(Script *script);
 	void o1_setSceneNumber(Script *script);
 	void o1_setAnimValues(Script *script);
@@ -160,14 +160,14 @@ public:
 	void o1_startDialog(Script *script);
 	void o1_waitUntilHeroExitZone(Script *script);
 	void o1_waitUntilHeroEnterZone(Script *script);
-	void o1_sceneObjectDelete(Script *script);
-	void o1_setObjectClipX(Script *script);
-	void o1_setObjectClipY(Script *script);
+	void o1_actorDelete(Script *script);
+	void o1_actorSetClipX(Script *script);
+	void o1_actorSetClipY(Script *script);
 	void o1_clearScreen(Script *script);
 	void o1_orVar(Script *script);
 	void o1_andVar(Script *script);
 	void o1_loadScene(Script *script);
-	void o1_sceneObjectSetAnimNumber(Script *script);
+	void o1_actorSetAnimNumber(Script *script);
 	void o1_addBlockingRect(Script *script);
 	void o1_ifSpeak(Script *script);
 	void o1_ifSpeakTo(Script *script);
@@ -177,7 +177,7 @@ public:
 	void o1_ifLookZone(Script *script);
 	void o1_addBeam(Script *script);
 	void o1_removeBlockingRect(Script *script);
-	void o1_objectSetTextColor(Script *script);
+	void o1_actorSetTextColor(Script *script);
 	void o1_setTextXY(Script *script);
 	void o1_breakLoop(Script *script);
 	void o1_playMusic(Script *script);
@@ -188,9 +188,9 @@ public:
 	void o1_addSceneItem2(Script *script);
 	void o1_playAnim(Script *script);
 	void o1_actorTalkPortrait(Script *script);
-	void o1_initSceneObject(Script *script);
-	void o1_loadSceneObjectSprite(Script *script);
-	void o1_setObjectVisible(Script *script);
+	void o1_initActor(Script *script);
+	void o1_loadActorSprite(Script *script);
+	void o1_setActorVisible(Script *script);
 	void o1_paletteFadeIn(Script *script);
 	void o1_paletteFadeOut(Script *script);
 	void o1_setNarFileIndex(Script *script);
