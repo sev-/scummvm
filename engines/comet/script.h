@@ -178,7 +178,7 @@ public:
 	void o1_addBeam(Script *script);
 	void o1_removeBlockingRect(Script *script);
 	void o1_actorSetTextColor(Script *script);
-	void o1_setTextXY(Script *script);
+	void o1_actorSetTextPosition(Script *script);
 	void o1_breakLoop(Script *script);
 	void o1_playMusic(Script *script);
 	void o1_setRandomValue(Script *script);

@@ -165,7 +165,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_removeBlockingRect);
 	RegisterOpcode(o1_actorSetTextColor);
 	// 70
-	RegisterOpcode(o1_setTextXY);
+	RegisterOpcode(o1_actorSetTextPosition);
 	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_breakLoop);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
@@ -1019,7 +1019,7 @@ void ScriptInterpreter::o1_actorSetTextColor(Script *script) {
 	script->actor()->textColor = script->readByte();
 }
 
-void ScriptInterpreter::o1_setTextXY(Script *script) {
+void ScriptInterpreter::o1_actorSetTextPosition(Script *script) {
 	ARG_BYTEX(textX);
 	ARG_BYTE(textY);
 	script->actor()->textX = textX;
