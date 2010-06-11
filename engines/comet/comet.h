@@ -305,6 +305,7 @@ public:
 	void drawSprites();
 	void drawActor(int actorIndex);
 	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
+	void drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 	
 	void updateTextDialog();
 	void updateText();
@@ -355,7 +356,7 @@ public:
 
 	/* Marche */
 	bool isAnimationSlotUsed(int16 animationSlot);
-	void clearMarcheByIndex(int16 animationSlot);
+	void clearAnimationSlotByIndex(int16 animationSlot);
 	Animation *getGlobalAnimationResource(int16 animationType);
 	void unloadActorSprite(Actor *actor);
 

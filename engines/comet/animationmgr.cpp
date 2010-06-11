@@ -42,7 +42,7 @@ Animation *AnimationManager::loadAnimationResource(const char *pakFilename, int 
 void AnimationManager::purgeUnusedAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && !_vm->isAnimationSlotUsed(i)) {
-			_vm->clearMarcheByIndex(i);
+			_vm->clearAnimationSlotByIndex(i);
 			delete _animationSlots[i].anim;
 			_animationSlots[i].anim = NULL;
 		}
@@ -52,7 +52,7 @@ void AnimationManager::purgeUnusedAnimationSlots() {
 void AnimationManager::purgeAnimationSlots() {
 	for (int i = 0; i < 20; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _vm->_actors[0].animationSlot != i) {
-			_vm->clearMarcheByIndex(i);
+			_vm->clearAnimationSlotByIndex(i);
 			delete _animationSlots[i].anim;
 			_animationSlots[i].anim = NULL;
 		}

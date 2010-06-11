@@ -9,12 +9,6 @@ int CometEngine::handleInventory() {
 	uint firstItem = 0, currentItem = 0, maxItemsOnScreen = 10, animFrameCounter = 0;
 	int result = 0;
 
-	/*
-	// DEBUG
-	for (uint16 i = 1; i < 20; i++)
-		items.push_back(i);
-	*/
-		
 	waitForKeys();
 		
 	// Build items array and set up variables
@@ -113,8 +107,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 		_screen->drawText(x + 1, y + 1, itemName);
 		x = xadd;
 		y = yadd +  + itemHeight * i - 3;
-		// TODO: Implement and use drawIcon instead
-		_screen->drawAnimationElement(_objectsVa2, _objectsVa2->_anims[items[firstItem + i]]->frames[0]->elementIndex, x, y);
+		drawAnimatedIcon(_objectsVa2, items[firstItem + i], x, y, animFrameCounter);
 	}
 	
 	if (items.size() > 0) {
@@ -162,7 +155,6 @@ void CometEngine::invCheckActiveItem() {
 		handleReadBook();
 		_itemStatus[0] = 1;
 	}
-
 
 }
 

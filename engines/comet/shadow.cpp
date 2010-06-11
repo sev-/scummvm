@@ -611,6 +611,19 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 	return 0;
 }
 
+void CometEngine::drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
+	AnimationFrameList *frameList = animation->_anims[frameListIndex];
+	uint frameIndex = 0;
+	if (frameList->frames.size() > 1) {
+		frameIndex = animFrameCounter % frameList->frames.size();
+		for (uint i = 0; i <= frameIndex; i++) {
+			x += frameList->frames[i]->xOffs;
+			y += frameList->frames[i]->yOffs;
+		}
+	}
+	_screen->drawAnimationElement(animation, frameList->frames[frameIndex]->elementIndex, x, y);
+}
+
 void CometEngine::updateTextDialog() {
 	
 	if (_textActive || _flag03)
