@@ -6,7 +6,7 @@ namespace Comet {
 
 int CometEngine::handleReadBook() {
 
-	int pageNumber, pageCount, talkPageNumber = -1, result = 0;
+	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1, result = 0;
 
 	// TODO: Use values from script
 	pageNumber = 4;
@@ -17,9 +17,12 @@ int CometEngine::handleReadBook() {
 	// Set speech file
 	openVoiceFile(7);
 
-	while (!result) {
+	while (!result /*TODO:check for quit*/) {
 
-		drawBookPage(pageNumber, pageCount, 64);
+    	if (currPageNumber != pageNumber) {
+			drawBookPage(pageNumber, pageCount, 64);
+			currPageNumber = pageNumber;
+		}
 
 		do {
 			// Play page speech
@@ -34,7 +37,7 @@ int CometEngine::handleReadBook() {
 			// TODO: Check mouse rectangles
 			handleEvents();
 			_system->delayMillis(20); // TODO: Adjust or use fps counter
-		} while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0);
+		} while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0/*TODO:check for quit*/);
 		
 		// TODO: Handle mouse rectangles
 		

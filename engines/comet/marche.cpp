@@ -14,7 +14,7 @@ bool CometEngine::isAnimationSlotUsed(int16 animationSlot) {
 	return false;
 }
 
-void CometEngine::clearMarcheByIndex(int16 animationSlot) {
+void CometEngine::clearAnimationSlotByIndex(int16 animationSlot) {
 	for (int i = 1; i < 11; i++) {
 		if (_actors[i].animationSlot == animationSlot) {
 			_actors[i].animationSlot = -1;
@@ -40,7 +40,7 @@ void CometEngine::unloadActorSprite(Actor *actor) {
 	if (actor->animationSlot != -1) {
 		AnimationSlot *animationSlot = _animationMan->getAnimationSlot(actor->animationSlot);
 		if (animationSlot->anim && animationSlot->animationType == 0 && !isAnimationSlotUsed(actor->animationSlot)) {
-			clearMarcheByIndex(actor->animationSlot);
+			clearAnimationSlotByIndex(actor->animationSlot);
 			delete animationSlot->anim;
 			animationSlot->anim = NULL;
 		}
