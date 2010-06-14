@@ -67,6 +67,7 @@ public:
 	int checkCollisionWithBlockingRects(Common::Rect &collisionRect, Common::Rect &obstacleRect);
 
 	void getExitRect(int index, int &x1, int &y1, int &x2, int &y2);
+	void findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection);
 
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);

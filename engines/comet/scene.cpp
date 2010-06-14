@@ -161,6 +161,29 @@ void Scene::getExitRect(int index, int &x1, int &y1, int &x2, int &y2) {
 
 }
 
+void Scene::findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection) {
+
+	static const int directionArray[] = {0, 3, 4, 1, 2};
+
+	outDirection = 1;
+	x1 = 160;
+	x2 = 160;
+	y1 = 190;
+	y2 = 190;
+	
+	for (uint exitIndex = 0; exitIndex < _exits.size(); exitIndex++) {
+		SceneExitItem *exitItem = &_exits[exitIndex];
+		if (exitItem->sceneNumber == sceneNumber && exitItem->moduleNumber == moduleNumber) {
+			outDirection = directionArray[exitItem->directionIndex];
+			if (direction == outDirection) {
+				getExitRect(exitIndex, x1, y1, x2, y2);
+				break;
+			}
+		}
+	}
+
+}
+
 int Scene::findBoundsRight(int x, int y) {
 	int yp = 0;
 	for (uint32 i = 0; i < _bounds.size(); i++) {
