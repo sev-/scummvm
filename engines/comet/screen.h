@@ -34,11 +34,13 @@ public:
 	void setFadeType(PaletteFadeType fadeType);
 	PaletteFadeType getFadeType() const { return _fadeType; }
 	void setFadeStep(int fadeStep);
+	int getZoomFactor() const { return _zoomFactor; }
 
 	void screenZoomEffect2x(int x, int y);
 	void screenZoomEffect3x(int x, int y);
 	void screenZoomEffect4x(int x, int y);
 	void screenTransitionEffect();
+	void screenScrollEffect(byte *newScreen, int scrollDirection);
 
 	void buildPalette(byte *sourcePal, byte *destPal, int value);
 	void buildRedPalette(byte *sourcePal, byte *destPal, int value);

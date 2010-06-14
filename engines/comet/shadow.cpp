@@ -1262,22 +1262,10 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 
 	debug(4, "###### handleSceneChange(%d, %d)", sceneNumber, moduleNumber);
 
-	const int directionArray[] = {0, 3, 4, 1, 2};
-
-	int direction = 1;
-	int x1 = 160, x2 = 160, y1 = 190, y2 = 190;
 	Actor *actor = getActor(0);
-	
-	for (uint sceneExitIndex = 0; sceneExitIndex < _scene->_exits.size(); sceneExitIndex++) {
-		SceneExitItem *sceneExitItem = &_scene->_exits[sceneExitIndex];
-		if (sceneExitItem->sceneNumber == sceneNumber && sceneExitItem->moduleNumber == moduleNumber) {
-			direction = directionArray[sceneExitItem->directionIndex];
-			if (actor->direction == direction) {
-				_scene->getExitRect(sceneExitIndex, x1, y1, x2, y2);
-				break;
-			}
-		}
-	}
+	int direction, x1, x2, y1, y2;
+
+	_scene->findExitRect(sceneNumber, moduleNumber, actor->direction, x1, y1, x2, y2, direction);
 
 	actor->x = (x2 - x1) / 2 + x1;
 	actor->y = (y2 - y1) / 2 + y1;
@@ -1285,9 +1273,24 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 	actorSetAnimNumber(actor, direction - 1);
 	
 	// TODO: scene change effects
-	
-	loadSceneBackground();
-	
+	if (_screen->getZoomFactor() == 0) {
+		if (direction == 1 || direction == 3) {
+			_screen->enableTransitionEffect();
+		} else {
+			memcpy(_screen->getScreen(), _sceneBackground, 320 * 200);		
+			updateStaticObjects();
+			enqueueActorsForDrawing();
+			drawSprites();
+			memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
+			if (direction == 2) {
+				_screen->screenScrollEffect(_sceneBackground, -1);
+			} else if (direction == 4) {
+				_screen->screenScrollEffect(_sceneBackground, 1);
+			} 		
+			loadSceneBackground();
+		}
+	}
+
 	if (_screen->getFadeType() == kFadeNone) {
 		_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
 		_screen->setFullPalette(_palette);

@@ -264,6 +264,36 @@ void Screen::screenTransitionEffect() {
 
 }
 
+void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
+
+	const int kScrollStripWidth = 40;
+
+	Graphics::Surface *screen = _vm->_system->lockScreen();
+	memcpy(_workScreen, screen->pixels, 320 * 200);
+	_vm->_system->unlockScreen();
+
+	int copyOfs = 0;
+	
+	while (copyOfs < 320) {
+		if (scrollDirection < 0) {
+			for (int y = 0; y < 200; y++) {
+				memcpy(&_workScreen[y * 320], &_workScreen[y * 320 + kScrollStripWidth], 320 - kScrollStripWidth);
+				memcpy(&_workScreen[y * 320 + 320 - kScrollStripWidth], &newScreen[y * 320 + copyOfs], kScrollStripWidth);
+			}
+		} else {
+			for (int y = 0; y < 200; y++) {
+				memcpy(&_workScreen[y * 320 + kScrollStripWidth], &_workScreen[y * 320], 320 - kScrollStripWidth);
+				memcpy(&_workScreen[y * 320], &newScreen[y * 320 + (320 - kScrollStripWidth - copyOfs)], kScrollStripWidth);
+			}
+		}
+		_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
+		_vm->_system->updateScreen();
+		_vm->_system->delayMillis(40); // TODO
+		copyOfs += kScrollStripWidth;
+	}
+
+}
+
 void Screen::buildPalette(byte *sourcePal, byte *destPal, int value) {
 	for (int i = 0; i < 768; i++)
 		destPal[i] = (sourcePal[i] * value) >> 8;
