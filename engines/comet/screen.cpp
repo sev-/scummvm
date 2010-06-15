@@ -638,7 +638,7 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 	if (y < _clipY1) {
 		if (y + height - 1 < _clipY1)
 			return;
-		height -= -y;
+		height -= _clipY1 - y;
 		while (y < _clipY1) {
 			// Skip the clipped RLE-compressed line
 			byte chunks = *frameData++;
