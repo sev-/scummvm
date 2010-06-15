@@ -114,7 +114,9 @@ static const ADParams detectionParams = {
 	// Flags
 	0,
 	// GUI options
-	Common::GUIO_NONE
+	Common::GUIO_NONE,
+	// Maximum directory depth
+	1
 };
 
 } // End of namespace Comet
