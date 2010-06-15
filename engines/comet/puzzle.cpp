@@ -221,11 +221,11 @@ void CometEngine::puzzleMoveTileColumn(int columnIndex, int direction) {
 	if (direction < 0) {
 		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			//_screen->setClipY(60, 156);//TODO: Clipping bug, crashes!
+			_screen->setClipY(60, 156);
 			for (int rowIndex = 1; rowIndex <= 5; rowIndex++) {
 				puzzleDrawTile(columnIndex, rowIndex, 0, -yOffs);				
 			}
-			//_screen->setClipY(0, 199);//s.a.
+			_screen->setClipY(0, 199);
 			puzzleDrawFinger();
 			_screen->update();
 			_system->delayMillis(40); // TODO
@@ -237,11 +237,11 @@ void CometEngine::puzzleMoveTileColumn(int columnIndex, int direction) {
 	} else {
 		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			//_screen->setClipY(60, 156);//TODO: Clipping bug, crashes!
+			_screen->setClipY(60, 156);
 			for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
 				puzzleDrawTile(columnIndex, rowIndex, 0, yOffs);				
 			}
-			//_screen->setClipY(0, 199);//s.a.
+			_screen->setClipY(0, 199);
 			puzzleDrawFinger();
 			_screen->update();
 			_system->delayMillis(40); // TODO
