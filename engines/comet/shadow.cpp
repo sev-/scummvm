@@ -915,6 +915,14 @@ bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rec
 
 }
 
+int CometEngine::findRect(const RectItem *rects, int x, int y, int count, int defaultId) {
+	for (int i = 0; i < count; i++) {
+		if (x > rects[i].x && x < rects[i].x2 && y > rects[i].y && y < rects[i].y2)
+			return rects[i].id;
+	}
+	return defaultId;
+}
+
 void CometEngine::handleEvents() {
 
 	Common::Event event;
@@ -979,17 +987,19 @@ void CometEngine::handleEvents() {
 				break;
 
 			case Common::EVENT_LBUTTONDOWN:
-				_mouseLeft = true;
+				_leftButton = true;
 				break;
 
 			case Common::EVENT_LBUTTONUP:
-				_mouseLeft = false;
+				_leftButton = false;
 				break;
 
 			case Common::EVENT_RBUTTONDOWN:
+				_rightButton = true;
 				break;
 
 			case Common::EVENT_RBUTTONUP:
+				_rightButton = false;
 				break;
 
 			case Common::EVENT_QUIT:
@@ -1272,7 +1282,7 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 	actor->direction = direction;
 	actorSetAnimNumber(actor, direction - 1);
 	
-	// TODO: scene change effects
+	// Scene change effects
 	if (_screen->getZoomFactor() == 0) {
 		if (direction == 1 || direction == 3) {
 			_screen->enableTransitionEffect();

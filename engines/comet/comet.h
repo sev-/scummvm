@@ -138,6 +138,10 @@ struct SceneItem {
 	int x, y;
 };
 
+struct RectItem {
+	int x, y, x2, y2, id;
+};
+
 typedef Common::Array<Common::Point> PointArray;
 
 class CometEngine : public Engine {
@@ -214,7 +218,7 @@ public:
 	int _keyDirection, _keyDirection2;
 	int16 _mouseButtons4, _mouseButtons5;
 	int _mouseX, _mouseY;
-	bool _mouseLeft;
+	bool _leftButton, _rightButton;
 	int _mouseCursor2;
 	int _blockedInput;
 	int16 _scriptMouseFlag;
@@ -392,6 +396,9 @@ public:
 	void loadAndRunScript(bool loadingGame = false);
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
+	
+	int findRect(const RectItem *rects, int x, int y, int count, int defaultId);
+	
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x1, int y1, int x2, int y2);
 
@@ -422,6 +429,20 @@ public:
 	const char *getSavegameFilename(int num);
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
+
+	/* Puzzle */
+	uint16 _puzzleTiles[6][6];
+	Animation *_puzzleSprite;
+	int _puzzleTableRow, _puzzleTableColumn;
+	int _puzzleCursorX, _puzzleCursorY;
+	 
+	int runPuzzle();
+	void puzzleDrawFinger();
+	void puzzleDrawField();
+	void puzzleDrawTile(int columnIndex, int rowIndex, int xOffs, int yOffs);
+	void puzzleMoveTileColumn(int columnIndex, int direction);
+	void puzzleMoveTileRow(int rowIndex, int direction);
+	bool puzzleTestIsSolved();
 
 public:
 	/* Misc */

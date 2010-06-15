@@ -11,6 +11,7 @@ MODULE_OBJS = \
 	comet.o \
 	script.o \
 	pak.o \
+	puzzle.o \
 	unpack.o \
 	screen.o \
 	speech.o \
