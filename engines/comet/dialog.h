@@ -15,10 +15,6 @@ struct DialogItem {
 	byte *scriptIp;
 };
 
-struct RectItem {
-	int x, y, x2, y2, id;
-};
-
 class Dialog {
 public:
 

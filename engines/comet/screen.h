@@ -78,6 +78,8 @@ public:
 	void drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
+	void setClipX(int clipX1, int clipX2);
+	void setClipY(int clipY1, int clipY2);
 
 //protected:
 

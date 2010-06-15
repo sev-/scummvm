@@ -127,6 +127,8 @@ Common::Error CometEngine::run() {
 	_mouseButtons4 = 0;
 	_mouseButtons5 = 0;
 	_scriptMouseFlag = false;
+	_leftButton = false;
+	_rightButton = false;
 	
 	_cmdLook = false;
 	_cmdGet = false;
@@ -228,12 +230,12 @@ Common::Error CometEngine::run() {
 
 #endif
 
+	// Test the puzzle
+	_screen->setFullPalette(_ctuPal);
+	runPuzzle();
 
 
-
-
-
-#if 1
+#if 0
 	/* Hacked together main loop */
 	_endLoopFlag = false;
 	while (!_endLoopFlag) {

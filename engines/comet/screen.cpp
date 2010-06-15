@@ -1207,4 +1207,14 @@ void Screen::setClipRect(int clipX1, int clipY1, int clipX2, int clipY2) {
 	_clipY2 = clipY2;
 }
 
+void Screen::setClipX(int clipX1, int clipX2) {
+	_clipX1 = clipX1;
+	_clipX2 = clipX2;
+}
+
+void Screen::setClipY(int clipY1, int clipY2) {
+	_clipY1 = clipY1;
+	_clipY2 = clipY2;
+}
+
 } // End of namespace Comet
