@@ -116,7 +116,9 @@ static const ADParams detectionParams = {
 	// GUI options
 	Common::GUIO_NONE,
 	// Maximum directory depth
-	1
+	1,
+	// List of directory globs
+	0
 };
 
 } // End of namespace Comet
