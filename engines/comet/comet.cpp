@@ -58,14 +58,12 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	
 }
 
-
 CometEngine::~CometEngine() {
 	delete _rnd;
 	delete _music;
 	delete _screen;
 	delete _dialog;
 }
-
 
 Common::Error CometEngine::run() {
 
@@ -76,6 +74,17 @@ Common::Error CometEngine::run() {
 		initCommonGFX(false);
 		_system->initSize(320, 200);
 	_system->endGFXTransaction();
+
+#if 0
+	{
+		int size = getPakSize("A00.PAK", 12);
+		byte *buf = loadFromPak("A00.PAK", 12);
+		FILE *x = fopen("SEAGULLS.VA2", "wb");
+		fwrite(buf, size, 1, x);
+		fclose(x);
+	}
+
+#endif
 
 #define OLD_CODE
 //#define TEST_CODE
@@ -230,12 +239,22 @@ Common::Error CometEngine::run() {
 
 #endif
 
+#if 0
 	// Test the puzzle
 	_screen->setFullPalette(_ctuPal);
 	runPuzzle();
-
+#endif
 
 #if 0
+	Animation *anim1 = _animationMan->loadAnimationResource("A00.PAK", 12);
+	AnimationElement *elem1 = anim1->_elements[0];
+	AnimationElement *elem2 = anim1->_elements[1];
+	InterpolatedAnimationElement interElem;
+	buildInterpolatedAnimationElement(elem1, elem2, &interElem);
+	delete anim1;
+#endif	
+
+#if 1
 	/* Hacked together main loop */
 	_endLoopFlag = false;
 	while (!_endLoopFlag) {

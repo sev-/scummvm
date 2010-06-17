@@ -8,9 +8,9 @@ int CometEngine::handleReadBook() {
 
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1, result = 0;
 
-	// TODO: Use values from script
-	pageNumber = 4;
-	pageCount = 14;
+	// Use values from script; this is the most current diary entry
+	pageNumber = _scriptVars[1];
+	pageCount = _scriptVars[1];
 
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
@@ -19,7 +19,7 @@ int CometEngine::handleReadBook() {
 
 	while (!result /*TODO:check for quit*/) {
 
-    	if (currPageNumber != pageNumber) {
+		if (currPageNumber != pageNumber) {
 			drawBookPage(pageNumber, pageCount, 64);
 			currPageNumber = pageNumber;
 		}
@@ -78,9 +78,7 @@ int CometEngine::handleReadBook() {
 
 	openVoiceFile(_narFileIndex);
 
-	result = 2 - result;
-	
-	return result;
+	return 2 - result;
 
 }
 

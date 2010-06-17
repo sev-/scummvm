@@ -1119,7 +1119,7 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 
 	Common::Array<Point> points;
 
-	// The commands' points need to be adjusted accoding to the parentFlags and the x/y position
+	// The commands' points need to be adjusted according to the parentFlags and the x/y position
 	points.reserve(cmd->points.size() + 1);
 	for (uint i = 0; i < cmd->points.size(); i++) {
 		int16 ax = cmd->points[i].x;
@@ -1196,6 +1196,194 @@ void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, i
 		warning("Screen::drawAnimationCommand() Unknown command %d", cmd->cmd);
 
 	}
+
+}
+
+void Screen::drawInterpolatedAnimationElement(InterpolatedAnimationElement *interElem, int16 x, int16 y, int mulValue) {
+	for (Common::Array<InterpolatedAnimationCommand*>::iterator iter = interElem->commands.begin(); iter != interElem->commands.end(); ++iter) {
+		InterpolatedAnimationCommand *interCmd = *iter;
+		byte color1, color2;
+		// TODO: int limit = (mul_val * cmdCount) / 256;
+		color1 = interCmd->_aarg1;
+		color2 = interCmd->_aarg2;
+		drawInterpolatedAnimationCommand(interCmd, x, y, mulValue, color1, color2);
+	}
+}
+
+void Screen::drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *interCmd, int16 x, int16 y, int mulValue, byte color1, byte color2) {
+
+	debug(8, "Screen::drawInterpolatedAnimationCommand() cmd = %d; points = %d", interCmd->_cmd, interCmd->_points.size());
+
+	Common::Array<Point> points;
+
+	//int limit = (mul_val * cmdCount) / 256;
+
+	// The commands' points need to be adjusted according to the x/y position
+	points.reserve(interCmd->_points.size() + 1);
+	for (uint pointIndex = 0; pointIndex < interCmd->_points.size(); pointIndex += 2) {
+		int x1, y1;
+		Point *pt1 = &interCmd->_points[pointIndex + 0];
+		Point *pt2 = &interCmd->_points[pointIndex + 1];
+		x1 = x + pt1->x + ((pt2->x - pt1->x) * mulValue) / 256;
+		y1 = y + pt1->y + ((pt2->y - pt1->y) * mulValue) / 256;
+		points.push_back(Point(x1, y1));
+	}
+
+	switch (interCmd->_cmd) {
+
+	case kActElement:
+	{
+		// CHECKME: Is this used somewhere?
+		//int16 subElementIndex = (cmd->arg2 << 8) | cmd->arg1;
+		//drawAnimationElement(animation, subElementIndex & 0x0FFF, points[0].x, points[0].y, 0);
+		warning("Screen::drawInterpolatedAnimationCommand() kActElement not supported here");
+		break;
+	}
+
+	case kActCelSprite:
+	{
+		warning("Screen::drawInterpolatedAnimationCommand() kActCelSprite not supported here");
+		break;
+	}
+
+	case kActFilledPolygon:
+	{
+		filledPolygonColor(points, color2);
+		if (color1 != 0xFF) {
+			points.push_back(points[0]);
+			for (uint i = 0; i < points.size() - 1; i++)
+				drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, color1);
+		}
+		break;
+	}
+
+	case kActRectangle:
+	{
+		fillRect(points[0].x, points[0].y, points[1].x, points[1].y, color2);
+		if (color1 != 0xFF)
+			frameRect(points[0].x, points[0].y, points[1].x, points[1].y, color1);
+		break;
+	}
+
+	case kActPolygon:
+	{
+		for (uint i = 0; i < points.size() - 1; i++)
+			drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, color2);
+		break;
+	}
+
+	case kActPixels:
+	{
+		for (uint i = 0; i < points.size(); i++)
+			putPixel(points[i].x, points[i].y, color2);
+		break;
+	}
+
+	case kActCelRle:
+	{
+		warning("Screen::drawInterpolatedAnimationCommand() kActCelRle not supported here");
+		break;
+	}
+
+	default:
+		warning("Screen::drawAnimationCommand() Unknown command %d", interCmd->_cmd);
+
+	}
+
+}
+
+void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, AnimationElement *elem2, 
+	InterpolatedAnimationElement *interElem) {
+
+	uint minCmdCount, maxCmdCount;
+	uint minPointsCount, maxPointsCount;
+
+	minCmdCount = MIN(elem1->commands.size(), elem2->commands.size());
+	maxCmdCount = MAX(elem1->commands.size(), elem2->commands.size());
+
+	for (uint cmdIndex = 0; cmdIndex < maxCmdCount; cmdIndex++) {
+
+		AnimationCommand *cmd1, *cmd2;
+		InterpolatedAnimationCommand *interCmd;
+
+		if (cmdIndex < elem1->commands.size())
+			cmd1 = elem1->commands[cmdIndex];
+		
+		if (cmdIndex < elem2->commands.size())
+			cmd2 = elem2->commands[cmdIndex];
+
+		minPointsCount = MIN(cmd1->points.size(), cmd2->points.size());
+		maxPointsCount = MAX(cmd1->points.size(), cmd2->points.size());
+
+		if (cmdIndex < minCmdCount) {
+			if (cmd1->cmd == cmd2->cmd) {
+				interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
+					cmd1->arg1, cmd1->arg2, cmd2->arg1, cmd2->arg2);
+				interCmd->_points.reserve(maxPointsCount * 2);
+				for (uint currPointIndex = 0; currPointIndex < maxPointsCount; currPointIndex++) {
+					if (currPointIndex < minPointsCount) {
+						interCmd->_points.push_back(cmd1->points[currPointIndex]);
+						interCmd->_points.push_back(cmd2->points[currPointIndex]);
+					} else if (minPointsCount == cmd1->points.size()) {
+						interCmd->_points.push_back(cmd1->points[cmd1->points.size() - 1]);
+						interCmd->_points.push_back(cmd2->points[currPointIndex]);
+					} else {
+						interCmd->_points.push_back(cmd1->points[currPointIndex]);
+						interCmd->_points.push_back(cmd2->points[cmd2->points.size() - 1]);
+					}
+				}
+				interElem->commands.push_back(interCmd);
+			} else {
+				interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
+					cmd1->arg1, cmd1->arg2, cmd2->arg1, cmd2->arg2);
+				interCmd->_points.reserve(cmd1->points.size() * 2);
+				for (uint currPointIndex = 0; currPointIndex < cmd1->points.size(); currPointIndex++) {
+					interCmd->_points.push_back(cmd1->points[currPointIndex]);
+					interCmd->_points.push_back(cmd2->points[0]);
+				}
+				interElem->commands.push_back(interCmd);
+				interCmd = new InterpolatedAnimationCommand(cmd2->cmd, 
+					cmd2->arg1, cmd2->arg2, cmd2->arg1, cmd2->arg2);
+				interCmd->_points.reserve(cmd2->points.size() * 2);
+				for (uint currPointIndex = 0; currPointIndex < cmd2->points.size(); currPointIndex++) {
+					interCmd->_points.push_back(cmd1->points[0]);
+					interCmd->_points.push_back(cmd2->points[currPointIndex]);
+				}
+				interElem->commands.push_back(interCmd);
+			}
+		} else if (minCmdCount = elem1->commands.size()) {
+			interCmd = new InterpolatedAnimationCommand(cmd2->cmd, 
+				cmd2->arg1, cmd2->arg2, cmd2->arg1, cmd2->arg2);
+			interCmd->_points.reserve(cmd2->points.size() * 2);
+			for (uint currPointIndex = 0; currPointIndex < cmd2->points.size(); currPointIndex++) {
+				interCmd->_points.push_back(cmd2->points[0]);
+				interCmd->_points.push_back(cmd2->points[currPointIndex]);
+			}
+			interElem->commands.push_back(interCmd);
+		} else {
+			interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
+				cmd1->arg1, cmd1->arg2, cmd1->arg1, cmd1->arg2);
+			interCmd->_points.reserve(cmd1->points.size() * 2);
+			for (uint currPointIndex = 0; currPointIndex < cmd1->points.size(); currPointIndex++) {
+				interCmd->_points.push_back(cmd1->points[currPointIndex]);
+				interCmd->_points.push_back(cmd1->points[0]);
+			}
+			interElem->commands.push_back(interCmd);
+		}
+	    
+	}
+
+#if 0
+	// DEBUG: Dump the points
+	debug("cmdCount = %d", interElem->commands.size());
+	for (uint cmdIndex = 0; cmdIndex < interElem->commands.size(); cmdIndex++) {
+		InterpolatedAnimationCommand *interCmd = interElem->commands[cmdIndex];
+		debug("cmd = %d; pointsCount = %d", interCmd->_cmd, interCmd->_points.size());
+		for (uint ptIndex = 0; ptIndex < interCmd->_points.size(); ptIndex++) {
+			debug("--> %d; %d", interCmd->_points[ptIndex].x, interCmd->_points[ptIndex].y);
+		}
+	}
+#endif
 
 }
 
