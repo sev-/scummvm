@@ -1351,7 +1351,7 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 				}
 				interElem->commands.push_back(interCmd);
 			}
-		} else if (minCmdCount = elem1->commands.size()) {
+		} else if (minCmdCount == elem1->commands.size()) {
 			interCmd = new InterpolatedAnimationCommand(cmd2->cmd, 
 				cmd2->arg1, cmd2->arg2, cmd2->arg1, cmd2->arg2);
 			interCmd->_points.reserve(cmd2->points.size() * 2);
