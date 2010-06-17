@@ -625,7 +625,7 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, mulValue);
 		
 		value4++;
-		if (value4 >= frame->flags & 0x3FFF)
+		if (value4 >= (frame->flags & 0x3FFF))
 			value4 = 0;
 			
 		result = value4;			
