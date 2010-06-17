@@ -18,6 +18,15 @@ AnimationFrameList::~AnimationFrameList() {
 		delete (*iter);
 }
 
+InterpolatedAnimationCommand::InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2)
+	: _cmd(cmd), _aarg1(aarg1), _aarg2(aarg2), _barg1(barg1), _barg2(barg2) {
+}
+
+InterpolatedAnimationElement::~InterpolatedAnimationElement() {
+	for (Common::Array<InterpolatedAnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
+		delete (*iter);
+}
+
 Animation::Animation() {
 }
 

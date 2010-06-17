@@ -29,14 +29,12 @@ struct Point;
 
 struct AnimationCommand {
 	byte cmd;
-	//byte pointsCount -- stored in array
 	byte arg1, arg2;
 	Common::Array<Point> points;
 };
 
 struct AnimationElement {
 	byte width, height, flags;
-	//byte commandCount -- stored in array
 	Common::Array<AnimationCommand*> commands;
 	~AnimationElement();
 };
@@ -56,9 +54,20 @@ struct AnimationFrame {
 
 struct AnimationFrameList {
 	byte priority;
-	//byte frameCount -- stored in array
 	Common::Array<AnimationFrame*> frames;
 	~AnimationFrameList();
+};
+
+struct InterpolatedAnimationCommand {
+	byte _cmd;
+	byte _aarg1, _aarg2, _barg1, _barg2;
+	Common::Array<Point> _points;
+	InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2);
+};
+
+struct InterpolatedAnimationElement {
+	Common::Array<InterpolatedAnimationCommand*> commands;
+	~InterpolatedAnimationElement();
 };
 
 class Animation {

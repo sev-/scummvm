@@ -589,26 +589,54 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 
 	int drawX = x, drawY = y;
 	int index = frame->elementIndex;
-	int mulVal = frame->flags & 0x3FFF;
+	int mulValue = frame->flags & 0x3FFF;
 	int gfxMode = frame->flags >> 14;
+	int result = 0;
 
 	for (int i = 0; i <= animFrameIndex; i++) {
 		drawX += frameList->frames[i]->xOffs;
 		drawY += frameList->frames[i]->yOffs;
 	}
 
-	debug(8, "x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulVal = %d",
-		x, y, drawX, drawY, gfxMode, mulVal);
+	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulValue = %d",
+		gfxMode, x, y, drawX, drawY, gfxMode, mulValue);
 
 	switch (gfxMode) {
 	case 0:
 		_screen->drawAnimationElement(animation, index, drawX, drawY);
 		break;
+	case 1:
+	{
+		int nextFrameIndex;
+		if (animFrameIndex + 1 < animFrameIndex) {
+			nextFrameIndex = animFrameIndex + 1;
+		} else {
+			nextFrameIndex = animFrameIndex;
+		}
+		AnimationFrame *nextFrame = frameList->frames[nextFrameIndex];
+		InterpolatedAnimationElement interElem;
+		AnimationElement *elem1 = animation->_elements[frame->elementIndex];
+		AnimationElement *elem2 = animation->_elements[nextFrame->elementIndex];
+	
+		if (mulValue == 0)
+			mulValue = 1;
+	
+		_screen->buildInterpolatedAnimationElement(elem1, elem2, &interElem);
+		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, mulValue);
+		
+		value4++;
+		if (value4 >= frame->flags & 0x3FFF)
+			value4 = 0;
+			
+		result = value4;			
+
+		break;		
+	}				
 	default:
 		debug("CometEngine::drawActorAnimation() gfxMode == %d not yet implemented", gfxMode);
 	}
 
-	return 0;
+	return result;
 }
 
 void CometEngine::drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {

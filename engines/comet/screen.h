@@ -76,6 +76,10 @@ public:
 	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
 	void drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
 	void drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
+	void drawInterpolatedAnimationElement(InterpolatedAnimationElement *interElem, int16 x, int16 y, int mulValue);
+	void drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *interCmd, int16 x, int16 y, int mulValue, byte color1, byte color2);
+	void buildInterpolatedAnimationElement(AnimationElement *elem1, AnimationElement *elem2,
+		InterpolatedAnimationElement *interElem);
 
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
 	void setClipX(int clipX1, int clipX2);
