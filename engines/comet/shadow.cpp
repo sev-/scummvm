@@ -1,4 +1,7 @@
 #include "common/stream.h"
+#include "sound/audiostream.h"
+#include "sound/decoders/raw.h"
+#include "sound/decoders/voc.h"
 #include "graphics/surface.h"
 #include "graphics/primitives.h"
 
@@ -6,11 +9,12 @@
 #include "comet/font.h"
 #include "comet/pak.h"
 
-#include "comet/screen.h"
-#include "comet/dialog.h"
 #include "comet/animation.h"
 #include "comet/animationmgr.h"
+#include "comet/dialog.h"
+#include "comet/music.h"
 #include "comet/scene.h"
+#include "comet/screen.h"
 
 namespace Comet {
 
@@ -539,7 +543,7 @@ void CometEngine::drawActor(int actorIndex) {
 	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
 
 	if (actor->directionChanged == 2) {
-		actor->value4 = drawActorAnimation(animation, frameList, actor->animFrameIndex, actor->value4,
+		actor->interpolationStep = drawActorAnimation(animation, frameList, actor->animFrameIndex, actor->interpolationStep,
 			x, y, actor->animFrameCount);
 	} else {
 		if (actorIndex == 0 && _itemInSight && actor->direction == 1)
@@ -560,13 +564,13 @@ void CometEngine::drawActor(int actorIndex) {
 
 }
 
-int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount) {
+int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int interpolationStep, int x, int y, int animFrameCount) {
 
 	AnimationFrame *frame = frameList->frames[animFrameIndex];
 
 	int drawX = x, drawY = y;
 	int index = frame->elementIndex;
-	int mulValue = frame->flags & 0x3FFF;
+	int maxInterpolationStep = frame->flags & 0x3FFF;
 	int gfxMode = frame->flags >> 14;
 	int result = 0;
 
@@ -575,8 +579,8 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 		drawY += frameList->frames[i]->yOffs;
 	}
 
-	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; mulValue = %d",
-		gfxMode, x, y, drawX, drawY, gfxMode, mulValue);
+	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
+		gfxMode, x, y, drawX, drawY, gfxMode, maxInterpolationStep);
 
 	switch (gfxMode) {
 	case 0:
@@ -595,17 +599,17 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 		AnimationElement *elem1 = animation->_elements[frame->elementIndex];
 		AnimationElement *elem2 = animation->_elements[nextFrame->elementIndex];
 	
-		if (mulValue == 0)
-			mulValue = 1;
+		if (maxInterpolationStep == 0)
+			maxInterpolationStep = 1;
 	
 		_screen->buildInterpolatedAnimationElement(elem1, elem2, &interElem);
-		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, mulValue);
+		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, maxInterpolationStep);
 		
-		value4++;
-		if (value4 >= (frame->flags & 0x3FFF))
-			value4 = 0;
+		interpolationStep++;
+		if (interpolationStep >= maxInterpolationStep)
+			interpolationStep = 0;
 			
-		result = value4;			
+		result = interpolationStep;			
 
 		break;		
 	}				
@@ -674,7 +678,7 @@ void CometEngine::updateText() {
 		if (_moreText) {
 			setText(_textNextPos);
 		} else {
-			if (!_mixer->isSoundHandleActive(_voiceHandle)) {
+			if (!_mixer->isSoundHandleActive(_sampleHandle)) {
 				resetTextValues();
 			} else {
 				_textDuration = 2;
@@ -688,7 +692,7 @@ void CometEngine::updateText() {
 		if (_moreText) {
 			setText(_textNextPos);
 		} else {
-			if (!_mixer->isSoundHandleActive(_voiceHandle)) {
+			if (!_mixer->isSoundHandleActive(_sampleHandle)) {
 				resetTextValues();
 			}
 		}
@@ -801,6 +805,17 @@ void CometEngine::updateScreen() {
 
 	_screen->update();
 
+}
+
+void CometEngine::blockInput(int flagIndex) {
+	if (flagIndex == 0) {
+		_mouseCursor2 = 0;
+		_blockedInput = 15;
+		actorStopWalking(getActor(0));
+	} else {
+		static const int constFlagsArray[5] = {0, 1, 8, 2, 4};
+		_blockedInput |= constFlagsArray[flagIndex];
+	}
 }
 
 void CometEngine::unblockInput() {
@@ -1136,6 +1151,27 @@ int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNu
 	
 }
 
+void CometEngine::addSceneItem(int itemIndex, int x, int y, int paramType) {
+	SceneItem sceneItem;
+	sceneItem.itemIndex = itemIndex;
+	sceneItem.active = true;
+	sceneItem.paramType = paramType;
+	sceneItem.x = x;
+	sceneItem.y = y;
+	_sceneItems.push_back(sceneItem);
+}
+
+void CometEngine::removeSceneItem(int itemIndex) {
+	uint index = 0;
+	while (index < _sceneItems.size()) {
+		if (_sceneItems[index].itemIndex == itemIndex) {
+			_sceneItems.remove_at(index);
+		} else {
+			index++;
+		}
+	}
+}
+
 uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
 	for (uint i = 0; i < _sceneItems.size(); i++) {
 		if (_sceneItems[i].active) {
@@ -1307,4 +1343,34 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 
 }
 
+void CometEngine::playMusic(int musicIndex) {
+	if (musicIndex != 255) {
+		//TODO_vm->_music->playMusic(musicIndex);
+	} else {
+		//TODO: musicFadeDown();
+		_music->stopMusic();
+	}
+}
+
+void CometEngine::playSample(int sampleIndex, int loopCount) {
+	// The sample files are plain Voc files without a modified header
+	debug("playSample(%d, %d)", sampleIndex, loopCount);
+	if (sampleIndex == 255) {
+		if (_mixer->isSoundHandleActive(_sampleHandle))
+			_mixer->stopHandle(_sampleHandle);
+	} else if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+		int sampleSize = getPakSize("SMP.PAK", sampleIndex);
+		byte *sampleBuffer = (byte*)malloc(sampleSize);
+		loadPakToPtr("SMP.PAK", sampleIndex, sampleBuffer);
+		Common::MemoryReadStream vocReadStream(sampleBuffer, sampleSize, DisposeAfterUse::YES);
+		Audio::AudioStream *audioStream;
+		if (loopCount > 1) {
+			audioStream = makeLoopingAudioStream(Audio::makeVOCStream(&vocReadStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES), loopCount);
+		} else {
+			audioStream = Audio::makeVOCStream(&vocReadStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
+		}
+		_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, audioStream);
+	}
+}
+	
 } // End of namespace Comet

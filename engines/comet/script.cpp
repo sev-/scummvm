@@ -1,10 +1,11 @@
 #include "comet/comet.h"
-#include "comet/music.h"
 #include "comet/screen.h"
 #include "comet/script.h"
 #include "comet/dialog.h"
 #include "comet/scene.h"
 #include "comet/animationmgr.h"
+
+#include "comet/pak.h"
 
 namespace Comet {
 
@@ -143,7 +144,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 50
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setZoom);
-	RegisterOpcode(o1_setZoomByItem);
+	RegisterOpcode(o1_setZoomByActor);
 	RegisterOpcode(o1_startDialog);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	// 55
@@ -198,10 +199,10 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_setNarFileIndex);
 	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_deactivateSceneItem);
-	RegisterOpcode(o1_sample_2);
+	RegisterOpcode(o1_removeSceneItem);
+	RegisterOpcode(o1_playSample);
 	// 100
-	RegisterOpcode(o1_sample_1);
+	RegisterOpcode(o1_playSampleLooping);
 	RegisterOpcode(o1_setRedPalette);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
@@ -248,7 +249,7 @@ void ScriptInterpreter::prepareScript(int scriptNumber) {
 	script->actorIndex = 0;
 	script->status = kScriptPaused;
 	script->scriptNumber = 0;
-	script->counter = 0;
+	script->loopCounter = 0;
 
 }
 
@@ -529,32 +530,6 @@ void ScriptInterpreter::actorWalkToXYRel(Script *script, bool xyFlag) {
 
 }
 
-// TODO: Decouple from Script
-void ScriptInterpreter::o1_addSceneItem(Script *script, int paramType) {
-
-	int itemIndex, x, y;
-	
-	if (paramType == 0) {
-		itemIndex = script->readByte();
-	} else {
-		itemIndex = script->readInt16();
-	}
-	
-	x = script->readByte() * 2;
-	y = script->readByte();
-	
-	debug(2, "o1_addSceneItem(%d, %d, %d)", itemIndex, x, y);
-	
-	SceneItem sceneItem;
-	sceneItem.itemIndex = itemIndex;
-	sceneItem.active = true;
-	sceneItem.paramType = paramType;
-	sceneItem.x = x;
-	sceneItem.y = y;
-	_vm->_sceneItems.push_back(sceneItem);
-
-}
-
 /* Script functions */
 
 void ScriptInterpreter::o1_nop(Script *script) {
@@ -589,11 +564,11 @@ void ScriptInterpreter::o1_actorWalkToY(Script *script) {
 
 void ScriptInterpreter::o1_loop(Script *script) {
 	byte loopCount = script->ip[2];
-	script->counter++;
-	if (script->counter < loopCount) {
+	script->loopCounter++;
+	if (script->loopCounter < loopCount) {
 		script->jump();
 	} else {
-		script->counter = 0;
+		script->loopCounter = 0;
 		script->ip += 3;
 	}
 }
@@ -663,14 +638,7 @@ void ScriptInterpreter::o1_actorWalkToXYRel(Script *script) {
 
 void ScriptInterpreter::o1_blockInput(Script *script) {
 	ARG_BYTE(flagIndex);
-	if (flagIndex == 0) {
-		_vm->_mouseCursor2 = 0;
-		_vm->_blockedInput = 15;
-		_vm->actorStopWalking(getActor(0));
-	} else {
-		const int constFlagsArray[5] = {0, 1, 8, 2, 4};
-		_vm->_blockedInput |= constFlagsArray[flagIndex];
-	}
+	_vm->blockInput(flagIndex);
 }
 
 void ScriptInterpreter::o1_unblockInput(Script *script) {
@@ -700,7 +668,10 @@ void ScriptInterpreter::o1_initSceneExits(Script *script) {
 }
 
 void ScriptInterpreter::o1_addSceneObject(Script *script) {
-	o1_addSceneItem(script, 0);
+	ARG_BYTE(itemIndex);
+	ARG_BYTEX(x);
+	ARG_BYTE(y);
+	_vm->addSceneItem(itemIndex, x, y, 0);
 }
 
 void ScriptInterpreter::o1_startScript(Script *script) {
@@ -718,7 +689,7 @@ void ScriptInterpreter::o1_stopScript(Script *script) {
 
 void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
 	int scriptNumber;
-	while ((scriptNumber = script->readByte()) != 0xFF) {
+	while ((scriptNumber = script->readByte()) != 255) {
 		prepareScript(scriptNumber);
 		_scripts[scriptNumber]->status &= ~kScriptPaused;
 	}
@@ -787,7 +758,7 @@ void ScriptInterpreter::o1_setPaletteBrightness(Script *script) {
 
 void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 	ARG_BYTE(sceneNumber);
-	if (sceneNumber == 0xFF) {
+	if (sceneNumber == 255) {
 		_vm->_sceneNumber = -1;
 	} else {
 		_vm->_sceneNumber = sceneNumber;
@@ -820,7 +791,7 @@ void ScriptInterpreter::o1_setZoom(Script *script) {
 	_vm->_screen->setZoom(zoomFactor, zoomX, zoomY);
 }
 
-void ScriptInterpreter::o1_setZoomByItem(Script *script) {
+void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_BYTE(zoomFactor);
 	Actor *actor = getActor(actorIndex);
@@ -836,8 +807,8 @@ void ScriptInterpreter::o1_startDialog(Script *script) {
 
 void ScriptInterpreter::o1_waitUntilHeroExitZone(Script *script) {
 	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 60);
-	if (_vm->isPlayerInZone(script->x, script->y, script->x2, script->y2)) {
+		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 60);
+	if (_vm->isPlayerInZone(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2)) {
 		script->ip--;
 		_yield = true;
 	}
@@ -848,13 +819,13 @@ void ScriptInterpreter::o1_waitUntilHeroEnterZone(Script *script) {
 	ARG_BYTE(zoneY1);
 	ARG_BYTEX(zoneX2);
 	ARG_BYTE(zoneY2);
-	script->x = zoneX1;
-	script->y = zoneY1;
-	script->x2 = zoneX2;
-	script->y2 = zoneY2;
+	script->zoneX1 = zoneX1;
+	script->zoneY1 = zoneY1;
+	script->zoneX2 = zoneX2;
+	script->zoneY2 = zoneY2;
 	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 70);
-	if (!_vm->isPlayerInZone(script->x, script->y, script->x2, script->y2)) {
+		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 70);
+	if (!_vm->isPlayerInZone(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2)) {
 		script->ip -= 5;
 		_yield = true;
 	}
@@ -952,14 +923,14 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 	ARG_BYTE(zoneY1);
 	ARG_BYTEX(zoneX2);
 	ARG_BYTE(zoneY2);
-	script->x = zoneX1;
-	script->y = zoneY1;
-	script->x2 = zoneX2;
-	script->y2 = zoneY2;
+	script->zoneX1 = zoneX1;
+	script->zoneY1 = zoneY1;
+	script->zoneX2 = zoneX2;
+	script->zoneY2 = zoneY2;
 	Actor *actor = getActor(0);
 	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->x, script->y, script->x2, script->y2, 50);
-	Common::Rect rect1(script->x, script->y, script->x2, script->y2);
+		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 50);
+	Common::Rect rect1(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2);
 	Common::Rect rect2(
 		actor->x - actor->deltaX,
 		actor->y - actor->deltaY,
@@ -1027,18 +998,13 @@ void ScriptInterpreter::o1_actorSetTextPosition(Script *script) {
 }
 
 void ScriptInterpreter::o1_breakLoop(Script *script) {
-	script->counter = 0;
+	script->loopCounter = 0;
 	script->jump();
 }
 
 void ScriptInterpreter::o1_playMusic(Script *script) {
-	ARG_BYTE(fileIndex);
-	if (fileIndex != 0xFF) {
-		//TODO_vm->_music->playMusic(fileIndex);
-	} else {
-		//TODO: musicFadeDown();
-		_vm->_music->stopMusic();
-	}
+	ARG_BYTE(musicIndex);
+	_vm->playMusic(musicIndex);
 }
 
 void ScriptInterpreter::o1_setRandomValue(Script *script) {
@@ -1068,7 +1034,10 @@ void ScriptInterpreter::o1_loadSavegame(Script *script) {
 }
 
 void ScriptInterpreter::o1_addSceneItem2(Script *script) {
-	o1_addSceneItem(script, 1);
+	ARG_BYTE(itemIndex);
+	ARG_INT16(x);
+	ARG_BYTE(y);
+	_vm->addSceneItem(itemIndex, x, y, 1);
 }
 
 void ScriptInterpreter::o1_playAnim(Script *script) {
@@ -1082,7 +1051,6 @@ void ScriptInterpreter::o1_actorSetAnimNumber(Script *script) {
 	ARG_BYTE(animIndex);
 	_vm->actorSetAnimNumber(script->actor(), animIndex);
 	script->actor()->directionChanged = 2;
-
 }
 
 void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
@@ -1143,35 +1111,27 @@ void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 	_vm->openVoiceFile(_vm->_narFileIndex);
 }
 
-void ScriptInterpreter::o1_deactivateSceneItem(Script *script) {
+void ScriptInterpreter::o1_removeSceneItem(Script *script) {
 	ARG_BYTE(itemIndex);
-	uint index = 0;
-	while (index < _vm->_sceneItems.size()) {
-		if (_vm->_sceneItems[index].itemIndex == itemIndex) {
-			_vm->_sceneItems.remove_at(index);
-		} else {
-			index++;
-		}
-	}
+	_vm->removeSceneItem(itemIndex);
 }
 
-void ScriptInterpreter::o1_sample_2(Script *script) {
-	debug(2, "o1_sample_2");
-	/*int narFileIndex = */script->readByte();
-	//TODO: seg010:074A
+void ScriptInterpreter::o1_playSample(Script *script) {
+	ARG_BYTE(sampleIndex);
+	_vm->playSample(sampleIndex, 1);
 }
 
-void ScriptInterpreter::o1_sample_1(Script *script) {
-	debug(2, "o1_sample_1");
-	/*int narFileIndex = */script->readByte();
-	/*int value = */script->readByte();
-	//TODO
+void ScriptInterpreter::o1_playSampleLooping(Script *script) {
+	// CHECKME: It's just a guess that this plays looping samples
+	ARG_BYTE(sampleIndex);
+	ARG_BYTE(loopCount);
+	_vm->playSample(sampleIndex, loopCount);
 }
 
 void ScriptInterpreter::o1_setRedPalette(Script *script) {
-	ARG_BYTE(value);
+	ARG_BYTE(paletteRedness);
 	// TODO: Remember "redness" value
-	_vm->_screen->buildRedPalette(_vm->_ctuPal, _vm->_palette, value);
+	_vm->_screen->buildRedPalette(_vm->_ctuPal, _vm->_palette, paletteRedness);
 	_vm->_screen->setFullPalette(_vm->_palette);
 }
 

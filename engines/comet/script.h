@@ -51,8 +51,8 @@ public:
 	uint16 status;
 	uint16 resumeIp; // FIXME: Remove this hacky thing
 	int scriptNumber;
-	int counter;
-	int x, y, x2, y2;
+	int loopCounter;
+	int zoneX1, zoneY1, zoneX2, zoneY2;
 	Script(ScriptInterpreter *inter) : _inter(inter) {}
 	byte readByte();
 	int16 readInt16();
@@ -114,7 +114,6 @@ public:
 	void actorWalkToXYRel(Script *script, bool xyFlag);
 
 	bool isHeroInZone(Script *script);
-	void o1_addSceneItem(Script *script, int paramType);
 
 	/* Script functions */
 
@@ -156,7 +155,7 @@ public:
 	void o1_setAnimationType(Script *script);
 	void o1_heroIncPositionY(Script *script);
 	void o1_setZoom(Script *script);
-	void o1_setZoomByItem(Script *script);
+	void o1_setZoomByActor(Script *script);
 	void o1_startDialog(Script *script);
 	void o1_waitUntilHeroExitZone(Script *script);
 	void o1_waitUntilHeroEnterZone(Script *script);
@@ -194,9 +193,9 @@ public:
 	void o1_paletteFadeIn(Script *script);
 	void o1_paletteFadeOut(Script *script);
 	void o1_setNarFileIndex(Script *script);
-	void o1_deactivateSceneItem(Script *script);
-	void o1_sample_2(Script *script);
-	void o1_sample_1(Script *script);
+	void o1_removeSceneItem(Script *script);
+	void o1_playSample(Script *script);
+	void o1_playSampleLooping(Script *script);
 	void o1_setRedPalette(Script *script);
 	
 };

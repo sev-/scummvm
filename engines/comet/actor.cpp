@@ -434,8 +434,8 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 		if (gfxMode == 1) {
 			if (value < 1)
 				value = 1;
-			if (actor->value4 >= value - 1) {
-				actor->value4 = 0;
+			if (actor->interpolationStep >= value - 1) {
+				actor->interpolationStep = 0;
 				actor->animFrameIndex++;
 			}
 		} else {
@@ -465,7 +465,7 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 		}
 
 	} else {
-		actor->value4 = 0;
+		actor->interpolationStep = 0;
 	}
 
 }
@@ -490,14 +490,14 @@ void CometEngine::updateActorAnimation(Actor *actor) {
 
 			AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
-			uint16 value = frame->flags & 0x3FFF;
+			uint16 maxInterpolationStep = frame->flags & 0x3FFF;
 			uint16 gfxMode = frame->flags >> 14;
 
 			if (gfxMode == 1) {
-				if (value < 1)
-					value = 1;
-				if (actor->value4 >= value - 1) {
-					actor->value4 = 0;
+				if (maxInterpolationStep < 1)
+					maxInterpolationStep = 1;
+				if (actor->interpolationStep >= maxInterpolationStep - 1) {
+					actor->interpolationStep = 0;
 					actor->animFrameIndex++;
 				}
 			} else {
@@ -508,7 +508,7 @@ void CometEngine::updateActorAnimation(Actor *actor) {
 				actor->animFrameIndex = 0;
 
 		} else {
-			actor->value4 = 0;
+			actor->interpolationStep = 0;
 		}
 		
 	}

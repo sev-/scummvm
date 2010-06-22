@@ -97,7 +97,7 @@ struct Actor {
 	int16 animationSlot;
 	int16 animIndex;
 	int16 animFrameIndex;
-	int16 value4;
+	int16 interpolationStep;
 	int16 animFrameCount;
 	int16 animSubIndex2;
 	int16 deltaX, deltaY;
@@ -267,7 +267,7 @@ public:
 	Common::File *_narFile;
 	int _narCount;
 	uint32 *_narOffsets;
-	Audio::SoundHandle _voiceHandle;
+	Audio::SoundHandle _sampleHandle;
 
 	void openVoiceFile(int index);
 	void playVoice(int number);
@@ -310,7 +310,7 @@ public:
 	
 	void drawSprites();
 	void drawActor(int actorIndex);
-	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int value4, int x, int y, int animFrameCount);
+	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int interpolationStep, int x, int y, int animFrameCount);
 	void drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 	
 	void updateTextDialog();
@@ -351,6 +351,8 @@ public:
 	
 	void handleSceneChange(int sceneNumber, int moduleNumber);
 
+	void addSceneItem(int itemIndex, int x, int y, int paramType);
+	void removeSceneItem(int itemIndex);
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
@@ -358,6 +360,7 @@ public:
 	
 	uint16 updateCollision(Actor *actor, int actorIndex, uint16 collisionType);
 	
+	void blockInput(int flagIndex);
 	void unblockInput();
 
 	/* Marche */
@@ -448,6 +451,9 @@ public:
 
 	void updateMap();
 	void handleMap();
+
+	void playMusic(int musicNumber);
+	void playSample(int sampleNumber, int loopCount);
 
 public:
 	/* Misc */

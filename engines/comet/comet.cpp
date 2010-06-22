@@ -245,7 +245,7 @@ Common::Error CometEngine::run() {
 	runPuzzle();
 #endif
 
-#if 1
+#if 0
 	_scriptVars[2] = 0xFFFF;
 	_scriptVars[3] = 0;
 	_scriptVars[4] = 1;

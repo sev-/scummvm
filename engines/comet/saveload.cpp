@@ -135,11 +135,11 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeByte(script.actorIndex);
 		out->writeUint16LE(script.status);
 		out->writeUint16LE(script.scriptNumber);
-		out->writeUint16LE(script.counter);
-		out->writeUint16LE(script.x);
-		out->writeUint16LE(script.y);
-		out->writeUint16LE(script.x2);
-		out->writeUint16LE(script.y2);
+		out->writeUint16LE(script.loopCounter);
+		out->writeUint16LE(script.zoneX1);
+		out->writeUint16LE(script.zoneY1);
+		out->writeUint16LE(script.zoneX2);
+		out->writeUint16LE(script.zoneY2);
 	}
 	
 	out->writeByte(_scene->_bounds.size());
@@ -160,7 +160,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(actor.animationSlot);
 		out->writeUint16LE(actor.animIndex);
 		out->writeUint16LE(actor.animFrameIndex);
-		out->writeUint16LE(actor.value4);
+		out->writeUint16LE(actor.interpolationStep);
 		out->writeUint16LE(actor.animFrameCount);
 		out->writeUint16LE(actor.animSubIndex2);
 		out->writeUint16LE(actor.deltaX);
@@ -283,11 +283,11 @@ void CometEngine::loadgame(const char *filename) {
 		script.actorIndex = in->readByte();
 		script.status = in->readUint16LE();
 		script.scriptNumber = in->readUint16LE();
-		script.counter = in->readUint16LE();
-		script.x = in->readUint16LE();
-		script.y = in->readUint16LE();
-		script.x2 = in->readUint16LE();
-		script.y2 = in->readUint16LE();
+		script.loopCounter = in->readUint16LE();
+		script.zoneX1 = in->readUint16LE();
+		script.zoneY1 = in->readUint16LE();
+		script.zoneX2 = in->readUint16LE();
+		script.zoneY2 = in->readUint16LE();
 	}
 
 	_scene->_bounds.clear();
@@ -310,7 +310,7 @@ void CometEngine::loadgame(const char *filename) {
 		actor.animationSlot = in->readUint16LE();
 		actor.animIndex = in->readUint16LE();
 		actor.animFrameIndex = in->readUint16LE();
-		actor.value4 = in->readUint16LE();
+		actor.interpolationStep = in->readUint16LE();
 		actor.animFrameCount = in->readUint16LE();
 		actor.animSubIndex2 = in->readUint16LE();
 		actor.deltaX = in->readUint16LE();
