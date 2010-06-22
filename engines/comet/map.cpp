@@ -29,7 +29,7 @@ void CometEngine::updateMap() {
 		{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
 	};
 	
-	int result = 0;
+	int mapStatus = 0;
 	// TODO: Use Common::Rect
 	int16 mapRectX1 = 64, mapRectX2 = 269;
 	int16 mapRectY1 = 65, mapRectY2 = 187;
@@ -52,9 +52,9 @@ void CometEngine::updateMap() {
 	waitForKeys();
 
 	// seg002:344D	
-	while (result == 0) {
+	while (mapStatus == 0) {
 
-		bool textShowing = false;
+		int16 currMapItemIndex, selectedMapItemIndex;
 
 		handleEvents();
 
@@ -100,64 +100,57 @@ void CometEngine::updateMap() {
 		_screen->drawAnimationElement(_iconSprite, 50, 0, 0);
 		
 		if (_keyScancode == Common::KEYCODE_ESCAPE || _rightButton) {
-			result = 1;
+			mapStatus = 1;
 		}
 				
 		// seg002:3572
-		for (int16 mapItemIndex = 0; mapItemIndex < 10; mapItemIndex++) {
 
-			int16 bitMask = 1 << mapItemIndex;
+		currMapItemIndex = -1;	
+		selectedMapItemIndex = -1;
+
+		for (int16 mapItemIndex = 0; mapItemIndex < 10; mapItemIndex++) {
 			const MapRect &mapRect = mapRects[mapItemIndex];
-			
-			if ((sceneBitMaskStatus & bitMask) && 
+			if ((sceneBitMaskStatus & (1 << mapItemIndex)) && 
 				cursorX >= mapRect.x1 && cursorX <= mapRect.x2 && 
 				cursorY >= mapRect.y1 && cursorY <= mapRect.y2) {
-		
-				// seg002:3636
-				
-				int16 textXAdjust = 0;
-				byte *locationName = _textReader->getString(2, 40 + mapItemIndex);
-				int textWidth = _screen->_font->getTextWidth(locationName);
-				
-				if (cursorX - 2 + textWidth >= 283) {
-					textXAdjust = cursorX + textWidth - 285;
-				}
-
-				_screen->drawTextOutlined(cursorX - 2 - textXAdjust, cursorY - 6, locationName, 119, 120);				
-				
-				textShowing = true;
-
-				if (_keyScancode == Common::KEYCODE_RETURN || _leftButton) {
-					// seg002:36DA
-					const MapExit &mapExit = mapExits[mapItemIndex];
-					_moduleNumber = mapExit.moduleNumber;
-					_sceneNumber = mapExit.sceneNumber;
-					if (sceneStatus1 == 1) {
-						_moduleNumber += 6;
-					} else {
-						_sceneNumber += (sceneStatus2 - 1) * 30;
-					}
-					if ((locationNumber == 7 || locationNumber == 8) &&
-						_scriptVars[5] == 2 && _scriptVars[6] == 0 &&
-						mapItemIndex != 6 && mapItemIndex != 7 && mapItemIndex != 4) {
-						_sceneNumber += 36;
-					}
-					result = 2;
-				}
-				
+				currMapItemIndex = mapItemIndex;
+				break;
 			}
-		
 		}
-	
-		if (!textShowing) {
+		
+		if (currMapItemIndex != -1) {
+			byte *locationName = _textReader->getString(2, 40 + currMapItemIndex);
+			_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _screen->_font->getTextWidth(locationName)), 
+				cursorY - 6, locationName, 119, 120);
+			if (_keyScancode == Common::KEYCODE_RETURN || _leftButton) {
+				selectedMapItemIndex = currMapItemIndex;
+			}
+		} else {
 			_screen->drawAnimationElement(_iconSprite, 51, cursorX, cursorY);
+		}
+
+		if (selectedMapItemIndex != -1) {
+			// seg002:36DA
+			const MapExit &mapExit = mapExits[selectedMapItemIndex];
+			_moduleNumber = mapExit.moduleNumber;
+			_sceneNumber = mapExit.sceneNumber;
+			if (sceneStatus1 == 1) {
+				_moduleNumber += 6;
+			} else {
+				_sceneNumber += (sceneStatus2 - 1) * 30;
+			}
+			if ((locationNumber == 7 || locationNumber == 8) &&
+				_scriptVars[5] == 2 && _scriptVars[6] == 0 &&
+				selectedMapItemIndex != 6 && selectedMapItemIndex != 7 && selectedMapItemIndex != 4) {
+				_sceneNumber += 36;
+			}
+			mapStatus = 2;
+			debug("moduleNumber: %d; sceneNumber: %d", _moduleNumber, _sceneNumber);
 		}
 
 		_screen->update();
 		_system->delayMillis(40); // TODO
 
-		// _textReader->getString(2, 40 + locationIndex);		
-	
 	}
 	
 	waitForKeys();
