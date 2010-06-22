@@ -568,6 +568,10 @@ void Screen::drawText(int x, int y, byte *text) {
 	_font->drawText(x, y, getScreen(), text);
 }
 
+void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2) {
+	_font->drawTextOutlined(x, y, getScreen(), text, color1, color2);
+}
+
 int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 
 	int tw = 0, linesDrawn = 0, textX = x, textY = y;
@@ -1370,7 +1374,7 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 			}
 			interElem->commands.push_back(interCmd);
 		}
-	    
+		
 	}
 
 #if 0

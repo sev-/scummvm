@@ -118,7 +118,7 @@ Common::Error CometEngine::run() {
 	_animationType = 0;
 	_textActive = false;
 
-	_flag03 = false;
+	_textBubbleActive = false;
 	_itemInSight = false;
 
 	_sceneObjectsSprite = NULL;
@@ -243,6 +243,14 @@ Common::Error CometEngine::run() {
 	// Test the puzzle
 	_screen->setFullPalette(_ctuPal);
 	runPuzzle();
+#endif
+
+#if 1
+	_scriptVars[2] = 0xFFFF;
+	_scriptVars[3] = 0;
+	_scriptVars[4] = 1;
+	_screen->setFullPalette(_ctuPal);
+	updateMap();
 #endif
 
 #if 0
