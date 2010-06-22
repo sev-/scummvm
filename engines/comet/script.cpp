@@ -1034,7 +1034,7 @@ void ScriptInterpreter::o1_breakLoop(Script *script) {
 void ScriptInterpreter::o1_playMusic(Script *script) {
 	ARG_BYTE(fileIndex);
 	if (fileIndex != 0xFF) {
-		_vm->_music->playMusic(fileIndex);
+		//TODO_vm->_music->playMusic(fileIndex);
 	} else {
 		//TODO: musicFadeDown();
 		_vm->_music->stopMusic();
