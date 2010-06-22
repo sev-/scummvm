@@ -81,12 +81,12 @@ void CometEngine::playVoice(int number) {
 	Common::MemoryReadStream vocStream(readBuffer, size, DisposeAfterUse::YES);
 
 	Audio::AudioStream *stream = Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
-	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_voiceHandle, stream);
+	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, stream);
 }
 
 void CometEngine::stopVoice() {
-	if (_mixer->isSoundHandleActive(_voiceHandle))
-		_mixer->stopHandle(_voiceHandle);
+	if (_mixer->isSoundHandleActive(_sampleHandle))
+		_mixer->stopHandle(_sampleHandle);
 }
 
 } // End of namespace Comet
