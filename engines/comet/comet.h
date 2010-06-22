@@ -187,7 +187,7 @@ public:
 	Scene *_scene;
 	AnimationManager *_animationMan;
 
-	byte *_sceneBackground, *_scratchBuffer;
+	byte *_sceneBackground;
 
 	TextReader *_textReader;
 	TextStrings *_textBuffer2, *_textBuffer3; // TODO: Better names
@@ -243,13 +243,13 @@ public:
 	byte _invSelectionColor;
 
 	int _textColorFlag;
-	bool _flag03, _itemInSight;
+	bool _textBubbleActive, _itemInSight;
 
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
 
 	int _talkieMode;
 	bool _moreText, _textActive;
-	int _textColor;
+	byte _talkTextColor;
 	
 	bool _endLoopFlag;
 	
@@ -335,7 +335,7 @@ public:
 	void setText(byte *text);
 	void resetTextValues();
 	void drawDialogTextBubbles();
-	void setTextEx(int index, byte *text);
+	void showTextBubble(int index, byte *text);
 
 	/* Scene */
 	void initSceneBackground(bool loadingGame = false);
@@ -346,7 +346,7 @@ public:
 
 	int handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber);
 
-	int checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect);
+	uint16 checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect);
 	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
 	
 	void handleSceneChange(int sceneNumber, int moduleNumber);
@@ -445,6 +445,9 @@ public:
 	void puzzleMoveTileColumn(int columnIndex, int direction);
 	void puzzleMoveTileRow(int rowIndex, int direction);
 	bool puzzleTestIsSolved();
+
+	void updateMap();
+	void handleMap();
 
 public:
 	/* Misc */

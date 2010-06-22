@@ -196,7 +196,6 @@ void CometEngine::loadGlobalTextData() {
 void CometEngine::initData() {
 
 	_sceneBackground = new byte[72000];
-	_scratchBuffer = _sceneBackground + 64000;
 	_palette = new byte[768];
 
 	memcpy(_palette, _ctuPal, 768);
@@ -253,8 +252,6 @@ void CometEngine::updateGame() {
 	debug(0, "_sceneNumber = %d; _currentSceneNumber = %d", _sceneNumber, _currentSceneNumber);
 #endif
 
-	debug(1, "CometEngine::updateGame() #0");
-
 	if (_moduleNumber != _currentModuleNumber)
 		updateModuleNumber();
 
@@ -269,8 +266,6 @@ void CometEngine::updateGame() {
 	if (_cmdGet)
 		getItemInSight();
 
-	debug(1, "CometEngine::updateGame() #1");
-
 	handleInput();
 	
 	/*
@@ -280,36 +275,24 @@ void CometEngine::updateGame() {
 	}
 	*/
 
-	debug(1, "CometEngine::updateGame() #2");
-
 	_script->runAllScripts();
 
 	if (_needToLoadSavegameFlag)
 		return;
 
-	debug(1, "CometEngine::updateGame() #3.1");
 	drawSceneExits();
-	debug(1, "CometEngine::updateGame() #3.2");
 	updateActorAnimations();
-	debug(1, "CometEngine::updateGame() #3.3");
 	updateActorMovement();
-	debug(1, "CometEngine::updateGame() #3.4");
 	updateStaticObjects();
-	debug(1, "CometEngine::updateGame() #3.5");
 	enqueueActorsForDrawing();
-	debug(1, "CometEngine::updateGame() #3.6");
 	lookAtItemInSight(false);
 
-	debug(1, "CometEngine::updateGame() #4");
-
 	drawSprites();
-
-	debug(1, "CometEngine::updateGame() #5");
 
 	if (_talkieMode == 0)
 		updateTextDialog();
 
-	if (_talkieMode == 1 && (_textActive || _flag03))
+	if (_talkieMode == 1 && (_textActive || _textBubbleActive))
 		updateText();
 
 	if (_dialog->isRunning())
@@ -317,7 +300,7 @@ void CometEngine::updateGame() {
 
 	updateTalkAnims();
 
-	if (_talkieMode == 2 || _flag03)
+	if (_talkieMode == 2 || _textBubbleActive)
 		updateText();
 
 	if (_dialog->isRunning())
@@ -349,8 +332,6 @@ void CometEngine::updateGame() {
 	#endif
 	}
 
-	debug(1, "CometEngine::updateGame() #9");
-
 	updateScreen();
 	
 	updateHeroLife();
@@ -360,8 +341,6 @@ void CometEngine::updateGame() {
 	_cmdTalk = false;
 	_cmdGet = false;
 	_cmdLook = false;
-
-	debug(1, "CometEngine::updateGame() #################################################################");
 
 }
 
@@ -428,9 +407,9 @@ void CometEngine::getItemInSight() {
 			_itemStatus[sceneItem->itemIndex] = 1;
 			_inventoryItemIndex = sceneItem->itemIndex;
 			sceneItem->active = false;
-			setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
+			showTextBubble(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
 		} else {
-			setTextEx(4, _textBuffer3->getString(4));
+			showTextBubble(4, _textBuffer3->getString(4));
 		}
 	}
 	
@@ -453,11 +432,11 @@ void CometEngine::lookAtItemInSight(bool flag) {
 			_itemY = sceneItem->y - 6;
 			if (flag && (!_dialog->isRunning() || !_textActive)) {
 				if (sceneItem->paramType == 0) {
-					setTextEx(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
+					showTextBubble(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
 				} else {
 					warning("sceneItem->paramType != 0; sceneItem->itemIndex = %d", sceneItem->itemIndex);
 					// TODO: Remove this:
-					// setTextEx(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
+					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
 				}
 			}
@@ -522,8 +501,6 @@ void CometEngine::drawSprites() {
 
 	//TODO: setScreenRectAll();
 
-	//debug(1, "_spriteArray.size() = %d", _spriteArray.size());
-	
 	int objectCmdIndex = 0;
 
 	for (uint32 i = 0; i < _spriteArray.size(); i++) {
@@ -654,7 +631,7 @@ void CometEngine::drawAnimatedIcon(Animation *animation, uint frameListIndex, in
 
 void CometEngine::updateTextDialog() {
 	
-	if (_textActive || _flag03)
+	if (_textActive || _textBubbleActive)
 		updateText();
 		
 	if (_dialog->isRunning())
@@ -679,7 +656,7 @@ void CometEngine::updateText() {
 
 	drawBubble(x - _textMaxTextWidth - 4, y - 4, x + _textMaxTextWidth + 4, y + _textMaxTextHeight);
 
-	_screen->drawText3(x + 1, y, _currentText, _textColor, 0);
+	_screen->drawText3(x + 1, y, _currentText, _talkTextColor, 0);
 	
 	_textDuration--;
 	
@@ -933,7 +910,7 @@ void CometEngine::setText(byte *text) {
 
 void CometEngine::resetTextValues() {
 	_dialog->stop();
-	_flag03 = false;
+	_textBubbleActive = false;
 	_textActive = false;
 }
 
@@ -1171,14 +1148,14 @@ uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
 	return 0;
 }
 
-void CometEngine::setTextEx(int index, byte *text) {
+void CometEngine::showTextBubble(int index, byte *text) {
 
 	_talkActorIndex = 0;
-	_textColor = 21;
+	_talkTextColor = 21;
 	_talkTextIndex = index;
 	setText(text);
 	_textActive = true;
-	_flag03 = true;
+	_textBubbleActive = true;
 
 }
 
@@ -1204,11 +1181,11 @@ void CometEngine::drawLineOfSight() {
 	}
 }
 
-int CometEngine::checkCollisionWithActors(int skipIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
+uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
 
 	for (int index = 0; index < 11; index++) {
 		Actor *actor = getActor(index);
-		if (index != skipIndex && actor->life != 0 && actor->collisionType != kCollisionDisabled) {
+		if (index != selfActorIndex && actor->life != 0 && actor->collisionType != kCollisionDisabled) {
 			obstacleRect.left = actor->x - actor->deltaX;
 			obstacleRect.top = actor->y - actor->deltaY;
 			obstacleRect.right = actor->x + actor->deltaX;
@@ -1240,12 +1217,6 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 			collisionType = checkCollisionWithActors(index, collisionRect, obstacleRect);
 	}
 
-#if 0
-	if (collisionType != 0)
-		debug(0, "index = %d; x = %d; y = %d; deltaX = %d; deltaY = %d, collisionType = %04X",
-			index, x, y, deltaX, deltaY, collisionType);
-#endif
-
 	return collisionType;
 
 }
@@ -1265,7 +1236,7 @@ void CometEngine::initStaticObjectRects() {
 				blockX1 = (cmd->points[0].x - objectElement->width) / 2;
 			else
 				blockX1 = cmd->points[0].x / 2;
-			blockY1 = cmd->points[0].y - ( (((objectElement->height >> 4) & 3) + 1) << 2 ); // FIXME
+			blockY1 = cmd->points[0].y - (objectElement->height / 16 % 4 * 4 + 4);
 			blockX2 = (cmd->points[0].x + objectElement->width) / 2;
 			blockY2 = cmd->points[0].y;
 			_scene->addBlockingRect(blockX1, blockY1, blockX2, blockY2);

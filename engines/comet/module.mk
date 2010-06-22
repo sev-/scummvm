@@ -19,6 +19,7 @@ MODULE_OBJS = \
 	saveload.o \
 	shadow.o \
 	inventory.o \
+	map.o \
 	music.o \
 	sound.o \
 	scene.o \

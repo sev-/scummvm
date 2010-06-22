@@ -67,6 +67,7 @@ public:
 	void loadFont(const char *pakName, int index);
 	void setFontColor(byte color);
 	void drawText(int x, int y, byte *text);
+	void drawTextOutlined(int x, int y, byte *text, byte color1, byte color2);
 	int drawText3(int x, int y, byte *text, byte color, int flag);
 
 	static void plotProc(int x, int y, int color, void *data);

@@ -334,7 +334,7 @@ void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
 	}
 
 	_textActive = true;
-	_textColor = color;
+	_talkTextColor = color;
 
 }
 
