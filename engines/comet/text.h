@@ -31,10 +31,11 @@ namespace Comet {
 
 class TextStrings {
 public:
-    TextStrings(Common::File *fd, uint32 size);
-    ~TextStrings();
+	TextStrings(Common::File *fd, uint32 size);
+	~TextStrings();
 	byte *getString(uint stringIndex);
 	void loadString(uint stringIndex, byte *buffer);
+	uint count() const { return _stringCount; }
 protected:
 	byte *_data;
 	uint _stringCount;

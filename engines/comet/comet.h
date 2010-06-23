@@ -90,6 +90,10 @@ enum {
 	kCollisionDisabled	= 8
 };
 
+#define COLLISION(type, index) ((type << 8) | (index))
+#define COLLISION_TYPE(collision) ((collision >> 8) & 0xFF)
+#define COLLISION_INDEX(collision) (collision & 0xFF)
+
 struct Actor {
 	int16 x, y;
 	int16 directionAdd, directionChanged, direction;
@@ -190,7 +194,7 @@ public:
 	byte *_sceneBackground;
 
 	TextReader *_textReader;
-	TextStrings *_textBuffer2, *_textBuffer3; // TODO: Better names
+	TextStrings *_globalStrings, *_inventoryItemNames;
 
 	byte *_palette;
 
@@ -232,7 +236,7 @@ public:
 	int16 _currentModuleNumber, _currentSceneNumber;
 	int16 _prevModuleNumber, _prevSceneNumber;
 
-	Animation *_bubbleSprite, *_heroSprite, *_objectsVa2, *_cursorVa2, *_iconSprite;
+	Animation *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
 	Animation *_sceneObjectsSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
@@ -298,7 +302,7 @@ public:
 	void updateModuleNumber();
 	void updateSceneNumber();
 	void getItemInSight();
-	void lookAtItemInSight(bool flag);
+	void lookAtItemInSight(bool showText);
 	void updateActorAnimations();
 	void updateActorMovement();
 	void updateStaticObjects();
