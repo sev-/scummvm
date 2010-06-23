@@ -49,6 +49,7 @@ public:
 
 	void putPixel(int x, int y, byte color);
 	void drawLine(int x1, int y1, int x2, int y2, byte color);
+	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
 	void hLine(int x, int y, int x2, byte color);
 	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
@@ -71,6 +72,7 @@ public:
 	int drawText3(int x, int y, byte *text, byte color, int flag);
 
 	static void plotProc(int x, int y, int color, void *data);
+	static void dottedPlotProc(int x, int y, int color, void *data);
 
 	// New Animation drawing code
 	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
@@ -100,6 +102,8 @@ public:
 	bool _palFlag;
 	
 	int _clipX1, _clipY1, _clipX2, _clipY2;
+
+	int _dotFlag;
 
 	//byte *_paletteBuffer;
 

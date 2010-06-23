@@ -63,9 +63,9 @@ public:
 	void addBlockingRect(int x1, int y1, int x2, int y2);
 	void removeBlockingRect(int x, int y);
 
-	int checkCollisionWithBounds(const Common::Rect &collisionRect, int direction);
-	int checkCollisionWithExits(const Common::Rect &collisionRect, int direction);
-	int checkCollisionWithBlockingRects(Common::Rect &collisionRect, Common::Rect &obstacleRect);
+	uint16 checkCollisionWithBounds(const Common::Rect &collisionRect, int direction);
+	uint16 checkCollisionWithExits(const Common::Rect &collisionRect, int direction);
+	uint16 checkCollisionWithBlockingRects(Common::Rect &collisionRect, Common::Rect &obstacleRect);
 
 	void getExitRect(int index, int &x1, int &y1, int &x2, int &y2);
 	void findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection);

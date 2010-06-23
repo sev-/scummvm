@@ -154,7 +154,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(actor.x);
 		out->writeUint16LE(actor.y);
 		out->writeUint16LE(actor.directionAdd);
-		out->writeUint16LE(actor.directionChanged);
+		out->writeUint16LE(actor.status);
 		out->writeUint16LE(actor.direction);
 		out->writeByte(actor.flag2);
 		out->writeUint16LE(actor.animationSlot);
@@ -304,7 +304,7 @@ void CometEngine::loadgame(const char *filename) {
 		actor.x = in->readUint16LE();
 		actor.y = in->readUint16LE();
 		actor.directionAdd = in->readUint16LE();
-		actor.directionChanged = in->readUint16LE();
+		actor.status = in->readUint16LE();
 		actor.direction = in->readUint16LE();
 		actor.flag2 = in->readByte();
 		actor.animationSlot = in->readUint16LE();
