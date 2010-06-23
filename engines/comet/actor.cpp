@@ -41,16 +41,16 @@ void CometEngine::actorInit(int itemIndex, int16 animationSlot) {
 }
 
 void CometEngine::actorSetDirection(Actor *actor, int direction) {
-	if (actor->direction != direction && direction != 0 && actor->directionChanged != 2) {
+	if (actor->direction != direction && direction != 0 && actor->status != 2) {
 		actor->direction = direction;
-		actor->directionChanged = 1;
+		actor->status = 1;
 	}
 }
 
 void CometEngine::actorSetDirectionAdd(Actor *actor, int directionAdd) {
-	if (actor->directionAdd != directionAdd && actor->directionChanged != 2) {
+	if (actor->directionAdd != directionAdd && actor->status != 2) {
 		actor->directionAdd = directionAdd;
-		actor->directionChanged = 1;
+		actor->status = 1;
 	}
 }
 
@@ -100,24 +100,14 @@ void CometEngine::actorCalcDirection(Actor *actor) {
 }
 
 void CometEngine::actorGetNextWalkDestXY(Actor *actor, int &x, int &y) {
-	switch (actor->direction) {
-	case 1:
-		if (actor->walkDestY > y)
-			y = actor->walkDestY;
-		break;
-	case 2:
-		if (actor->walkDestX < x)
-			x = actor->walkDestX;
-		break;
-	case 3:
-		if (actor->walkDestY < y)
-			y = actor->walkDestY;
-		break;
-	case 4:
-		if (actor->walkDestX > x)
-			x = actor->walkDestX;
-		break;
-	}
+	if (actor->direction == 1 && actor->walkDestY > y)
+		y = actor->walkDestY;
+	else if (actor->direction == 2 && actor->walkDestX < x)	
+		x = actor->walkDestX;
+	else if (actor->direction == 3 && actor->walkDestY < y)	
+		y = actor->walkDestY;
+	else if (actor->direction == 4 && actor->walkDestX > x)	
+		x = actor->walkDestX;
 }
 
 void CometEngine::actorSetPosition(int index, int x, int y) {
@@ -248,7 +238,7 @@ void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Co
 	
 	if (_debugRectangles) {
 		_screen->fillRect(actor->walkDestX - 6, actor->walkDestY - 6, actor->walkDestX + 6, actor->walkDestY + 6, 220);
-		drawDottedLine(actor->x, actor->y, actor->walkDestX, actor->walkDestY, 100);
+		_screen->drawDottedLine(actor->x, actor->y, actor->walkDestX, actor->walkDestY, 100);
 	}
 
 	if (comp == 3 || ((actor->walkStatus & 8) && (comp == 1)) || ((actor->walkStatus & 0x10) && (comp == 2))) {
@@ -332,17 +322,33 @@ void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animN
 	
 	actorTalk(actorIndex, talkTextIndex, actor->textColor);
 
-	if (animNumber != 0xFF) {
+	if (animNumber != 255) {
 		_animIndex = actor->animIndex;
 		_animSubIndex2 = actor->animSubIndex2;
 		_animSubIndex = actor->animFrameIndex;
 		actorSetAnimNumber(actor, animNumber);
-		actor->directionChanged = 2;
+		actor->status = 2;
 	} else {
 		_animIndex = -1;
 	}
 
 }
+
+void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex) {
+	int16 animationSlot = _animationMan->getAnimationResource(_animationType, fileIndex);
+	actorInit(10, animationSlot);
+	if (actorIndex != -1) {
+		_actors[10].textX = 0;
+		_actors[10].textY = 160;
+		_actors[10].textColor = getActor(actorIndex)->textColor;
+	}
+	_animationType = 0;
+	actorSetPosition(10, 0, 199);
+	actorTalkWithAnim(10, talkTextIndex, animNumber);
+	_animIndex = actorIndex;
+	_screen->enableTransitionEffect();
+}
+
 
 bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
 
@@ -460,8 +466,8 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 
 void CometEngine::updateActorAnimation(Actor *actor) {
 
-	if (actor->directionChanged == 1) {
-		actor->directionChanged = 0;
+	if (actor->status == 1) {
+		actor->status = 0;
 		actorSetAnimNumber(actor, actor->direction + actor->directionAdd - 1);
 	} else {
 

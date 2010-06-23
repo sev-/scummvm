@@ -96,7 +96,8 @@ enum {
 
 struct Actor {
 	int16 x, y;
-	int16 directionAdd, directionChanged, direction;
+	int16 directionAdd, direction;
+	int16 status;
 	byte flag2;
 	int16 animationSlot;
 	int16 animIndex;
@@ -286,6 +287,8 @@ public:
 	void handleInput();
 	void handleKeyInput();
 	
+	void drawTextIllsmouth();
+	
 	int handleInventory();
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
 	void invUseItem();
@@ -332,9 +335,6 @@ public:
 
 	int16 random(int maxValue);
 	
-	/* Graphics */
-	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
-
 	void drawBubble(int x1, int y1, int x2, int y2);
 	void setText(byte *text);
 	void resetTextValues();
@@ -391,6 +391,7 @@ public:
 	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _talkTextIndex;
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
+	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
 
 	/* SceneObjects */
 	void resetActorsLife();
@@ -462,7 +463,6 @@ public:
 public:
 	/* Misc */
 	//ALL FIXME
-	int _dotFlag;
 	int calcDirection(int fromX, int fromY, int toX, int toY);
 	void drawSceneExits();
 

@@ -20,22 +20,6 @@ namespace Comet {
 
 // TODO: Move a lot of stuff to own classes
 
-void drawDottedLinePlotProc(int x, int y, int color, void *data = NULL) {
-	// FIXME: Fix this messy stuff
-	CometEngine *engine = (CometEngine*)data;
-	if (x >= 0 && x < 320 && y >= 0 && y < 200) {
-		engine->_dotFlag++;
-		if (engine->_dotFlag & 2)
-			engine->_screen->getScreen()[x + y * 320] = color;
-	}
-}
-
-void CometEngine::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
-	// FIXME: (see drawDottedLinePlotProc above)
-	_dotFlag = 1;
-	Graphics::drawLine(x1, y1, x2, y2, color, drawDottedLinePlotProc, (void*)this);
-}
-
 int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 	int flags = 0;
 	if (x == x2)
@@ -287,8 +271,11 @@ void CometEngine::updateGame() {
 	drawSceneExits();
 	updateActorAnimations();
 	updateActorMovement();
+
+	_spriteArray.clear();
 	updateStaticObjects();
 	enqueueActorsForDrawing();
+
 	lookAtItemInSight(false);
 
 	drawSprites();
@@ -312,10 +299,9 @@ void CometEngine::updateGame() {
 		
 	updateTalkAnims();
 	
-	/*TODO:
 	if (_scriptVars[11] < 100 && _scriptVars[10] == 1)
 		drawTextIllsmouth();
-	*/
+
 	if (_debugRectangles) {
 	#if 0
 		debug(1, "CometEngine::updateGame() #A");
@@ -472,8 +458,6 @@ void CometEngine::updateActorMovement() {
 
 void CometEngine::updateStaticObjects() {
 
-	_spriteArray.clear();
-
 	if (!_sceneObjectsSprite)
 		return;
 
@@ -543,7 +527,7 @@ void CometEngine::drawActor(int actorIndex) {
 	
 	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
 
-	if (actor->directionChanged == 2) {
+	if (actor->status == 2) {
 		actor->interpolationStep = drawActorAnimation(animation, frameList, actor->animFrameIndex, actor->interpolationStep,
 			x, y, actor->animFrameCount);
 	} else {
@@ -815,8 +799,8 @@ void CometEngine::blockInput(int flagIndex) {
 
 void CometEngine::unblockInput() {
 	_blockedInput = 0;
-	if (_actors[0].directionChanged == 2)
-		_actors[0].directionChanged = 0;
+	if (_actors[0].status == 2)
+		_actors[0].status = 0;
 }
 
 int16 CometEngine::random(int maxValue) {
@@ -1208,12 +1192,11 @@ void CometEngine::drawLineOfSight() {
 			x -= 5;
 			break;
 		}
-		drawDottedLine(x, y, _itemX + random(3) - 1, _itemY + random(3) - 1, 7);
+		_screen->drawDottedLine(x, y, _itemX + random(3) - 1, _itemY + random(3) - 1, 7);
 	}
 }
 
 uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
-
 	for (int index = 0; index < 11; index++) {
 		Actor *actor = getActor(index);
 		if (index != selfActorIndex && actor->life != 0 && actor->collisionType != kCollisionDisabled) {
@@ -1226,9 +1209,7 @@ uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &r
 			}
 		}
 	}
-	
 	return 0;
-
 }
 
 uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect) {
@@ -1366,6 +1347,12 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 		}
 		_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, audioStream);
 	}
+}
+
+void CometEngine::drawTextIllsmouth() {
+	byte *text = _textReader->getString(2, 36);
+	_screen->drawTextOutlined((320 - _screen->_font->getTextWidth(text)) / 2, 180, text, 7, 0); 
+	_scriptVars[11]++;
 }
 	
 } // End of namespace Comet

@@ -428,6 +428,11 @@ void Screen::drawLine(int x1, int y1, int x2, int y2, byte color) {
 	Graphics::drawLine(x1, y1, x2, y2, color, Screen::plotProc, (void*)this);
 }
 
+void Screen::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
+	_dotFlag = 1;
+	Graphics::drawLine(x1, y1, x2, y2, color, Screen::dottedPlotProc, (void*)this);
+}
+
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
 
 	// FIXME: We allow the rectangle to be 200 pixels hight, but only 319
@@ -614,6 +619,15 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 void Screen::plotProc(int x, int y, int color, void *data) {
 	Screen *screen = (Screen*)data;
 	screen->putPixel(x, y, color);
+}
+
+void Screen::dottedPlotProc(int x, int y, int color, void *data = NULL) {
+	Screen *screen = (Screen*)data;
+	if (x >= 0 && x < 320 && y >= 0 && y < 200) {
+		screen->_dotFlag++;
+		if (screen->_dotFlag & 2)
+			screen->getScreen()[x + y * 320] = color;
+	}
 }
 
 // New Animation drawing code

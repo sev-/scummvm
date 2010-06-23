@@ -60,86 +60,40 @@ void Scene::removeBlockingRect(int x, int y) {
 	}
 }
 
-int Scene::checkCollisionWithBounds(const Common::Rect &rect, int direction) {
-
-	int x, y, x2, y2, y3, y4, result;
-
-	result = 0;
-
-	x = CLIP<int>(rect.left, 0, 319);
-	x2 = CLIP<int>(rect.right, 0, 319);
-
-	y = rect.top;
-	y2 = rect.bottom;
-
-	y3 = _boundsMap[x];
-	y4 = _boundsMap[x2];
-
-	switch (direction) {
-	case 1:
-		if (y <= y3 || y <= y4)
-			result = COLLISION(kCollisionBounds, 0);
-		break;
-	case 2:
-		if (y4 >= y || x2 == 319)
-			result = COLLISION(kCollisionBounds, 0);
-		break;
-	case 4:
-		if (y3 >= y || x == 0)
-			result = COLLISION(kCollisionBounds, 0);
-		break;
-	default:
-		// Nothing
-		break;
-	}
-
-	if (y2 > 199)
+uint16 Scene::checkCollisionWithBounds(const Common::Rect &rect, int direction) {
+	uint16 result = 0;
+	int x1 = CLIP<int>(rect.left, 0, 319);
+	int x2 = CLIP<int>(rect.right, 0, 319);
+	if (rect.bottom > 199)
 		result = COLLISION(kCollisionBoundsOff, 0);
-
+	else if ((direction == 1 && (rect.top <= _boundsMap[x1] || rect.top <= _boundsMap[x2])) ||
+		(direction == 2 && (_boundsMap[x2] >= rect.top || x2 == 319)) ||
+		(direction == 4 && (_boundsMap[x1] >= rect.top || x1 == 0)))
+		result = COLLISION(kCollisionBounds, 0);
 	return result;
-
 }
 
-int Scene::checkCollisionWithExits(const Common::Rect &rect, int direction) {
-
-	int x, y, x2, x3, y3, x4, y4;
-
-	x = rect.left;
-	y = rect.top;
-	x2 = rect.right;
-
-	for (uint32 index = 0; index < _exits.size(); index++) {
-		bool flag = false;
+uint16 Scene::checkCollisionWithExits(const Common::Rect &rect, int direction) {
+	for (uint index = 0; index < _exits.size(); index++) {
 		if (_exits[index].directionIndex == direction) {
-			getExitRect(index, x3, y3, x4, y4);
-			if (direction == 1 || direction == 3) {
-				flag = (x >= x3) && (x2 <= x4);
-			} else if (direction == 2) {
-				flag = (y >= y3) && (y <= y4) && (x2 >= x3);
-			} else if (direction == 4) {
-				flag = (y >= y3) && (y <= y4) && (x <= x4);
-			}
-			if (flag)
+			int exitX1, exitY1, exitX2, exitY2;
+			getExitRect(index, exitX1, exitY1, exitX2, exitY2);
+			if (((direction == 1 || direction == 3) && rect.left >= exitX1 && rect.right <= exitX2) ||
+				(direction == 2 && rect.top >= exitY1 && rect.top <= exitY2 && rect.right >= exitX1) ||
+				(direction == 4 && rect.top >= exitY1 && rect.top <= exitY2 && rect.left <= exitX2))
 				return COLLISION(kCollisionSceneExit, index);
 		}
 	}
-
 	return 0;
 }
 
-int Scene::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obstacleRect) {
-
-	for (uint32 index = 0; index < _blockingRects.size(); index++) {
+uint16 Scene::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obstacleRect) {
+	for (uint index = 0; index < _blockingRects.size(); index++) {
 		obstacleRect = _blockingRects[index];
-		if (_blockingRects[index].left != _blockingRects[index].right) {
-			if (_vm->rectCompare(obstacleRect, rect)) {
-				return COLLISION(kCollisionBlocking, index);
-			}
-		}
+		if (_blockingRects[index].left != _blockingRects[index].right && _vm->rectCompare(obstacleRect, rect))
+			return COLLISION(kCollisionBlocking, index);
 	}
-
 	return 0;
-
 }
 
 void Scene::getExitRect(int index, int &x1, int &y1, int &x2, int &y2) {
@@ -190,7 +144,7 @@ void Scene::findExitRect(int sceneNumber, int moduleNumber, int direction, int &
 
 int Scene::findBoundsRight(int x, int y) {
 	int yp = 0;
-	for (uint32 i = 0; i < _bounds.size(); i++) {
+	for (uint i = 0; i < _bounds.size(); i++) {
 		yp = _bounds[i].y;
 		if (_bounds[i].x > x && yp >= y)
 			break;
@@ -257,7 +211,7 @@ void Scene::initBoundsMap() {
 	int x1, y1, x2, y2, errorX, errorY = 0;
 	byte *boundsMapPtr = _boundsMap;
 
-	for (uint32 i = 0; i < _bounds.size() - 1; i++) {
+	for (uint i = 0; i < _bounds.size() - 1; i++) {
 		x1 = _bounds[i].x;
 		y1 = _bounds[i].y;
 		x2 = _bounds[i + 1].x;
