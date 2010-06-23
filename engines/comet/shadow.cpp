@@ -47,36 +47,36 @@ int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 
 void CometEngine::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
 
-	int x = _actors[0].x - _actors[0].deltaX - 8;
-	int y = _actors[0].y - _actors[0].deltaY - 8;
+	int x1 = _actors[0].x - _actors[0].deltaX - 8;
+	int y1 = _actors[0].y - _actors[0].deltaY - 8;
 	int x2 = _actors[0].x + _actors[0].deltaX + 8;
 	int y2 = _actors[0].y + 8;
 
 	switch (_actors[0].direction) {
 	case 1:
-		y -= delta2;
+		y1 -= delta2;
 		y2 -= 20;
-		x -= delta1;
+		x1 -= delta1;
 		x2 += delta1;
 		break;
 	case 2:
 		x2 += delta2;
-		x += 25;
-		y -= 32;
+		x1 += 25;
+		y1 -= 32;
 		break;
 	case 3:
 		y2 += delta2;
-		y += 20;
+		y1 += 20;
 		break;
 	case 4:
-		x -= delta2;
+		x1 -= delta2;
 		x2 -= 25;
-		y -= 32;
+		y1 -= 32;
 		break;
 	}
 
-	rect.left = MAX(x, 0);
-	rect.top = MAX(y, 0);
+	rect.left = MAX(x1, 0);
+	rect.top = MAX(y1, 0);
 	rect.right = MIN(x2, 319);
 	rect.bottom = MIN(y2, 199);
 
@@ -712,7 +712,7 @@ void CometEngine::resetVars() {
 	_cmdGet = false;
 	_cmdLook = false;
 	_cmdTalk = false;
- 	//_exits.clear();
+ 	_scene->clearExits();
 	_blockedInput = 0;
 	_sceneItems.clear();
 

@@ -57,6 +57,7 @@ public:
 	void initBounds(byte *data);
 
 	void initExits(byte *data);
+	void clearExits();
 	void getExitLink(int index, int &chapterNumber, int &sceneNumber);
 
 	void addBlockingRect(int x1, int y1, int x2, int y2);

@@ -38,6 +38,10 @@ void Scene::initExits(byte *data) {
 	}
 }
 
+void Scene::clearExits() {
+	_exits.clear();
+}
+
 void Scene::getExitLink(int index, int &moduleNumber, int &sceneNumber) {
 	moduleNumber = _exits[index].moduleNumber;
 	sceneNumber = _exits[index].sceneNumber;
