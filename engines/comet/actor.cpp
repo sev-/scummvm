@@ -267,8 +267,6 @@ void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Co
 
 bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect) {
 
-	//debug(4, "CometEngine::updateActorPosition(%d)", actorIndex);
-
 	Actor *actor = getActor(actorIndex);
 
 	if (actor->directionAdd != 4)
@@ -277,19 +275,13 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 	int newX = actor->x;
 	int newY = actor->y;
 
-	//debug(4, "CometEngine::updateActorPosition(%d)  old: %d, %d", actorIndex, newX, newY);
-
 	Animation *anim = _animationMan->getAnimation(actor->animationSlot);
 	AnimationFrame *frame = anim->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;
  	int16 yAdd = frame->yOffs;
 
- 	//debug(4, "animFrameIndex = %d; animFrameCount = %d", actor->animFrameIndex, actor->animFrameCount);
- 	
  	// TODO: SceneObject_sub_8243(actor->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
-
- 	//debug(4, "xAdd = %d; yAdd = %d", xAdd, yAdd);
 
  	newX += xAdd;
  	newY += yAdd;
@@ -300,18 +292,14 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 
 	if (actor->collisionType != kCollisionDisabled) {
 		uint16 collisionType = checkCollision(actorIndex, newX, newY, actor->deltaX, actor->deltaY, actor->direction, obstacleRect);
-		debug(4, "collisionType (checkCollision) = %04X", collisionType);
 		if (collisionType != 0) {
 			collisionType = updateCollision(actor, actorIndex, collisionType);
-			debug(4, "collisionType (updateCollision) = %04X", collisionType);
 			if (collisionType == 0)
 				return false;
 		} else {
 			actor->collisionType = kCollisionNone;
 		}
 	}
-
-	//debug(4, "CometEngine::updateActorPosition(%d)  new: %d, %d", actorIndex, newX, newY);
 
 	actor->x = newX;
 	actor->y = newY;

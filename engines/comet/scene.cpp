@@ -78,15 +78,15 @@ int Scene::checkCollisionWithBounds(const Common::Rect &rect, int direction) {
 	switch (direction) {
 	case 1:
 		if (y <= y3 || y <= y4)
-			result = 0x100;
+			result = COLLISION(kCollisionBounds, 0);
 		break;
 	case 2:
 		if (y4 >= y || x2 == 319)
-			result = 0x100;
+			result = COLLISION(kCollisionBounds, 0);
 		break;
 	case 4:
 		if (y3 >= y || x == 0)
-			result = 0x100;
+			result = COLLISION(kCollisionBounds, 0);
 		break;
 	default:
 		// Nothing
@@ -94,7 +94,7 @@ int Scene::checkCollisionWithBounds(const Common::Rect &rect, int direction) {
 	}
 
 	if (y2 > 199)
-		result = 0x200;
+		result = COLLISION(kCollisionBoundsOff, 0);
 
 	return result;
 
@@ -120,7 +120,7 @@ int Scene::checkCollisionWithExits(const Common::Rect &rect, int direction) {
 				flag = (y >= y3) && (y <= y4) && (x <= x4);
 			}
 			if (flag)
-				return 0x400 | index;
+				return COLLISION(kCollisionSceneExit, index);
 		}
 	}
 
@@ -133,7 +133,7 @@ int Scene::checkCollisionWithBlockingRects(Common::Rect &rect, Common::Rect &obs
 		obstacleRect = _blockingRects[index];
 		if (_blockingRects[index].left != _blockingRects[index].right) {
 			if (_vm->rectCompare(obstacleRect, rect)) {
-				return 0x300 | index;
+				return COLLISION(kCollisionBlocking, index);
 			}
 		}
 	}

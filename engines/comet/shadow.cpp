@@ -163,14 +163,14 @@ void CometEngine::initAndLoadGlobalData() {
 
 	_bubbleSprite = _animationMan->loadAnimationResource("RES.PAK", 1);
 	_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
-	_objectsVa2 = _animationMan->loadAnimationResource("RES.PAK", 4);
+	_inventoryItemSprites = _animationMan->loadAnimationResource("RES.PAK", 4);
 
 	_ctuPal = loadFromPak("RES.PAK", 5);
 	_flashbakPal = loadFromPak("RES.PAK", 6);
 	_cdintroPal = loadFromPak("RES.PAK", 7);
 	_pali0Pal = loadFromPak("RES.PAK", 8);
 
-	_cursorVa2 = _animationMan->loadAnimationResource("RES.PAK", 9);
+	_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
 	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
 	
 	_screen->setFontColor(0);
@@ -193,8 +193,8 @@ void CometEngine::initAndLoadGlobalData() {
 void CometEngine::loadGlobalTextData() {
 	_textActive = false;
 	_narOkFlag = false;
-	_textBuffer2 = _textReader->loadTextStrings(0);
-	_textBuffer3 = _textReader->loadTextStrings(1);
+	_globalStrings = _textReader->loadTextStrings(0);
+	_inventoryItemNames = _textReader->loadTextStrings(1);
 }
 
 void CometEngine::initData() {
@@ -272,12 +272,12 @@ void CometEngine::updateGame() {
 
 	handleInput();
 	
-	/*
+#if 0	
 	// Test for mouse-based walking, it even works somewhat
-	if (_mouseLeft) {
+	if (_leftButton) {
 		actorStartWalking(0, _mouseX, _mouseY);
 	}
-	*/
+#endif
 
 	_script->runAllScripts();
 
@@ -360,12 +360,13 @@ void CometEngine::updateModuleNumber() {
 void CometEngine::updateSceneNumber() {
 
 	//TODO: mouse_4(0, 0x40);
+	Actor *mainActor = getActor(0);
 
-	if (_actors[0].walkStatus != 0 &&
-		((_actors[0].direction == 2 && _actors[0].x < 319) ||
-		(_actors[0].direction == 4 && _actors[0].x > 0))) {
+	if (mainActor->walkStatus != 0 &&
+		((mainActor->direction == 2 && mainActor->x < 319) ||
+		(mainActor->direction == 4 && mainActor->x > 0))) {
 
-		_actors[0].y = _actors[0].walkDestY;
+		mainActor->y = mainActor->walkDestY;
 
 	} else {
 
@@ -375,15 +376,15 @@ void CometEngine::updateSceneNumber() {
 		_prevModuleNumber = _currentModuleNumber;
 		_currentModuleNumber = _moduleNumber;
 		
-		actorStopWalking(&_actors[0]);
+		actorStopWalking(mainActor);
 		
-		_actors[0].visible = true;
-		_actors[0].collisionType = kCollisionNone;
-		_actors[0].value6 = 0;
-		_actors[0].clipX1 = 0;
-		_actors[0].clipY1 = 0;
-		_actors[0].clipX2 = 319;
-		_actors[0].clipY2 = 199;
+		mainActor->visible = true;
+		mainActor->collisionType = kCollisionNone;
+		mainActor->value6 = 0;
+		mainActor->clipX1 = 0;
+		mainActor->clipY1 = 0;
+		mainActor->clipX2 = 319;
+		mainActor->clipY2 = 199;
 
 		// TODO: _palFlag = false;
 
@@ -411,15 +412,15 @@ void CometEngine::getItemInSight() {
 			_itemStatus[sceneItem->itemIndex] = 1;
 			_inventoryItemIndex = sceneItem->itemIndex;
 			sceneItem->active = false;
-			showTextBubble(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
+			showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex));
 		} else {
-			showTextBubble(4, _textBuffer3->getString(4));
+			showTextBubble(4, _inventoryItemNames->getString(4));
 		}
 	}
 	
 }
 
-void CometEngine::lookAtItemInSight(bool flag) {
+void CometEngine::lookAtItemInSight(bool showText) {
 
 	_itemInSight = false;
 	
@@ -434,9 +435,9 @@ void CometEngine::lookAtItemInSight(bool flag) {
 			_itemDirection = _actors[0].direction;
 			_itemX = sceneItem->x;
 			_itemY = sceneItem->y - 6;
-			if (flag && (!_dialog->isRunning() || !_textActive)) {
+			if (showText && (!_dialog->isRunning() || !_textActive)) {
 				if (sceneItem->paramType == 0) {
-					showTextBubble(sceneItem->itemIndex, _textBuffer3->getString(sceneItem->itemIndex));
+					showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex));
 				} else {
 					warning("sceneItem->paramType != 0; sceneItem->itemIndex = %d", sceneItem->itemIndex);
 					// TODO: Remove this:
@@ -553,14 +554,12 @@ void CometEngine::drawActor(int actorIndex) {
 
 	_screen->setClipRect(0, 0, 320, 200);
 
-	// DEBUG: Show object number
-	/*
+#if 0
+	// DEBUG: Show actor number
 	char temp[16];
 	snprintf(temp, 16, "%d", actorIndex);
-	x = CLIP(x, 16, 320 - 16);
-	y = CLIP(y, 16, 200 - 16);
-	_screen->drawText(x, y, temp);
-	*/
+	_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (byte*)temp);
+#endif
 
 }
 
@@ -588,22 +587,16 @@ int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *fr
 		break;
 	case 1:
 	{
-		int nextFrameIndex;
-		if (animFrameIndex + 1 < animFrameIndex) {
-			nextFrameIndex = animFrameIndex + 1;
-		} else {
+		int nextFrameIndex = animFrameIndex + 1;
+		if (nextFrameIndex >= animFrameCount)
 			nextFrameIndex = animFrameIndex;
-		}
 		AnimationFrame *nextFrame = frameList->frames[nextFrameIndex];
 		InterpolatedAnimationElement interElem;
 		AnimationElement *elem1 = animation->_elements[frame->elementIndex];
 		AnimationElement *elem2 = animation->_elements[nextFrame->elementIndex];
 	
-		if (maxInterpolationStep == 0)
-			maxInterpolationStep = 1;
-	
 		_screen->buildInterpolatedAnimationElement(elem1, elem2, &interElem);
-		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, maxInterpolationStep);
+		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, maxInterpolationStep == 0 ? 1 : maxInterpolationStep);
 		
 		interpolationStep++;
 		if (interpolationStep >= maxInterpolationStep)
@@ -648,21 +641,23 @@ void CometEngine::updateText() {
 	//TODO
 
 	Actor *actor = getActor(_talkActorIndex);
-	int x, y;
+	int textX, textY;
 
 	if (actor->textX != -1) {
-		x = actor->textX;
-		y = actor->textY;
+		textX = actor->textX;
+		textY = actor->textY;
 	} else {
-		x = actor->x;
-		y = actor->y - _textMaxTextHeight - 50;
+		textX = actor->x;
+		textY = actor->y - _textMaxTextHeight - 50;
 	}
 
-	drawBubble(x - _textMaxTextWidth - 4, y - 4, x + _textMaxTextWidth + 4, y + _textMaxTextHeight);
+	drawBubble(textX - _textMaxTextWidth - 4, textY - 4, textX + _textMaxTextWidth + 4, textY + _textMaxTextHeight);
 
-	_screen->drawText3(x + 1, y, _currentText, _talkTextColor, 0);
+	_screen->drawText3(textX + 1, textY, _currentText, _talkTextColor, 0);
 	
 	_textDuration--;
+
+	// TODO: Merge _talkieMode handling code
 	
 	if (_talkieMode == 0 && _textDuration <= 0) {
 		_textActive = _moreText;
@@ -1177,7 +1172,7 @@ uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
 		if (_sceneItems[i].active) {
 			Common::Rect itemRect(_sceneItems[i].x - 8, _sceneItems[i].y - 8, _sceneItems[i].x + 8, _sceneItems[i].y + 8);
 			if (rectCompare(rect, itemRect)) {
-				return 0x500 | i;
+				return COLLISION(kCollisionSceneItem, i);
 			}
 		}
 	}
@@ -1227,7 +1222,7 @@ uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &r
 			obstacleRect.right = actor->x + actor->deltaX;
 			obstacleRect.bottom = actor->y;
 			if (rectCompare(rect, obstacleRect)) {
-				return 0x600 | index;
+				return COLLISION(kCollisionActor, index);
 			}
 		}
 	}
@@ -1285,8 +1280,8 @@ uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisi
 
 	int result = 0;
 	
-	actor->collisionType = (collisionType >> 8) & 0xFF;
-	actor->collisionIndex = collisionType & 0xFF;
+	actor->collisionType = COLLISION_TYPE(collisionType);
+	actor->collisionIndex = COLLISION_INDEX(collisionType);
 
 	if (actorIndex == 0 && actor->collisionType == kCollisionSceneExit) {
 		int moduleNumber, sceneNumber;
@@ -1354,7 +1349,7 @@ void CometEngine::playMusic(int musicIndex) {
 
 void CometEngine::playSample(int sampleIndex, int loopCount) {
 	// The sample files are plain Voc files without a modified header
-	debug("playSample(%d, %d)", sampleIndex, loopCount);
+	debug(2, "playSample(%d, %d)", sampleIndex, loopCount);
 	if (sampleIndex == 255) {
 		if (_mixer->isSoundHandleActive(_sampleHandle))
 			_mixer->stopHandle(_sampleHandle);

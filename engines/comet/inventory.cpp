@@ -7,7 +7,7 @@ int CometEngine::handleInventory() {
 
 	Common::Array<uint16> items;
 	uint firstItem = 0, currentItem = 0, maxItemsOnScreen = 10, animFrameCounter = 0;
-	int result = 0;
+	int inventoryStatus = 0;
 
 	waitForKeys();
 		
@@ -22,7 +22,7 @@ int CometEngine::handleInventory() {
 		}
 	}
 
-	while (!result) {
+	while (!inventoryStatus) {
 	
 		// TODO: Check mouse rectangles
 	
@@ -54,7 +54,7 @@ int CometEngine::handleInventory() {
 			break;
 		}
 		case Common::KEYCODE_ESCAPE:
-			result = 2;
+			inventoryStatus = 2;
 			break;
 		case Common::KEYCODE_RETURN:
 		case Common::KEYCODE_u:
@@ -68,7 +68,7 @@ int CometEngine::handleInventory() {
 				//debug("Use item #%d", _invActiveItem);
 				_itemStatus[_invActiveItem] = 2;
 			}
-			result = 1;
+			inventoryStatus = 1;
 			break;
 		default:
 			break;
@@ -79,11 +79,9 @@ int CometEngine::handleInventory() {
 		_system->delayMillis(20); // TODO: Adjust or use fps counter
 	}
 	
-	result = 2 - result;
-
 	// TODO...
 
-	return result;
+	return 2 - inventoryStatus;;
 }
 
 void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
@@ -99,7 +97,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 		_screen->drawAnimationElement(_iconSprite, 52, 0, 0);
 
 	for (uint i = 0; (i < maxItemsOnScreen) && (firstItem + i < items.size()); i++) {
-		byte *itemName = _textBuffer3->getString(items[firstItem + i]);
+		byte *itemName = _inventoryItemNames->getString(items[firstItem + i]);
 		int x = xadd + 21, y = yadd + itemHeight * i;
 		_screen->setFontColor(120);
 		_screen->drawText(x, y, itemName);
@@ -107,7 +105,7 @@ void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, ui
 		_screen->drawText(x + 1, y + 1, itemName);
 		x = xadd;
 		y = yadd +  + itemHeight * i - 3;
-		drawAnimatedIcon(_objectsVa2, items[firstItem + i], x, y, animFrameCounter);
+		drawAnimatedIcon(_inventoryItemSprites, items[firstItem + i], x, y, animFrameCounter);
 	}
 	
 	if (items.size() > 0) {
