@@ -254,6 +254,13 @@ Common::Error CometEngine::run() {
 #endif
 
 #if 0
+	static byte soundFramesData[] = {3, 3, 0};
+	_screen->setFullPalette(_ctuPal);
+	strcpy(AName, "A00.PAK");
+	playCutscene(38, 0, 32000, 3, 1, soundFramesData);
+#endif
+
+#if 0
 	Animation *anim1 = _animationMan->loadAnimationResource("A00.PAK", 12);
 	AnimationElement *elem1 = anim1->_elements[0];
 	AnimationElement *elem2 = anim1->_elements[1];
