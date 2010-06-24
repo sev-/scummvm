@@ -101,10 +101,10 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	_screen->clearScreen();
 	
 	loadSceneBackground();
-	loadStaticObjects();
+	loadSceneDecoration();
 
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
-	drawSceneForeground();
+	drawSceneDecoration();
 	memcpy(_sceneBackground, _screen->getScreen(), 64000);
 
 	/*TODO
@@ -113,7 +113,7 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	*/
 	
 	if (!loadingGame)
-		initStaticObjectRects();
+		initSceneDecorationBlockingRects();
 
 }
 
@@ -121,25 +121,24 @@ void CometEngine::loadSceneBackground() {
 	loadPakToPtr(DName, _backgroundFileIndex, _sceneBackground);
 }
 
-void CometEngine::loadStaticObjects() {
-	delete _sceneObjectsSprite;
-	
-	debug(8, "CometEngine::loadStaticObjects() DName = %s; index = %d", DName, _backgroundFileIndex + 1);
-	
-	_sceneObjectsSprite = _animationMan->loadAnimationResource(DName, _backgroundFileIndex + 1);
+void CometEngine::loadSceneDecoration() {
+	delete _sceneDecorationSprite;
+	_sceneDecorationSprite = _animationMan->loadAnimationResource(DName, _backgroundFileIndex + 1);
 }
 
-void CometEngine::drawSceneForeground() {
-	if (_sceneObjectsSprite->_elements.size() > 0)
-		_screen->drawAnimationElement(_sceneObjectsSprite, 0, 0, 0);
+void CometEngine::drawSceneDecoration() {
+	if (_sceneDecorationSprite->_elements.size() > 0)
+		_screen->drawAnimationElement(_sceneDecorationSprite, 0, 0, 0);
 }
 
 /* Graphics */
 
+#if 0
 void plotProc(int x, int y, int color, void *data) {
 	if (x >= 0 && x < 320 && y >= 0 && y < 200)
 		((byte*)data)[x + y * 320] = color;
 }
+#endif
 
 void CometEngine::initAndLoadGlobalData() {
 
@@ -272,13 +271,11 @@ void CometEngine::updateGame() {
 	updateActorAnimations();
 	updateActorMovement();
 
-	_spriteArray.clear();
-	updateStaticObjects();
-	enqueueActorsForDrawing();
-
+	buildSpriteDrawQueue();
+	
 	lookAtItemInSight(false);
 
-	drawSprites();
+	drawSpriteQueue();
 
 	if (_talkieMode == 0)
 		updateTextDialog();
@@ -456,19 +453,30 @@ void CometEngine::updateActorMovement() {
 	}
 }
 
-void CometEngine::updateStaticObjects() {
+void CometEngine::buildSpriteDrawQueue() {
+	_spriteDrawQueue.clear();
+	_spriteDrawQueue.reserve(16);
+	enqueueSceneDecorationForDrawing();
+	enqueueActorsForDrawing();
+}
 
-	if (!_sceneObjectsSprite)
-		return;
+void CometEngine::addToSpriteDrawQueue(int y, int actorIndex, int insertIndex) {
+	SpriteDraw spriteDraw;
+	spriteDraw.y = y;
+	spriteDraw.index = actorIndex;
+	if (insertIndex >= 0)
+		_spriteDrawQueue.insert_at(insertIndex, spriteDraw);
+	else
+		_spriteDrawQueue.push_back(spriteDraw);
+}
 
-	for (uint i = 0; i < _sceneObjectsSprite->_elements[0]->commands.size(); i++) {
-		AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[i];
-		SpriteDraw temp;
-		temp.y = cmd->points[0].y;
-		temp.index = 16;
-		_spriteArray.push_back(temp);
+void CometEngine::enqueueSceneDecorationForDrawing() {
+	if (_sceneDecorationSprite) {
+		AnimationElement *elem = _sceneDecorationSprite->_elements[0];
+		for (uint i = 0; i < elem->commands.size(); i++) {
+			addToSpriteDrawQueue(elem->commands[i]->points[0].y, 16, -1);
+		}
 	}
-
 }
 
 void CometEngine::enqueueActorsForDrawing() {
@@ -479,25 +487,34 @@ void CometEngine::enqueueActorsForDrawing() {
 	}
 }
 
+void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
+	uint insertIndex = 0;
+	for (insertIndex = 0; insertIndex < _spriteDrawQueue.size(); insertIndex++) {
+		if (_spriteDrawQueue[insertIndex].y > y)
+			break;
+	}
+	addToSpriteDrawQueue(y, actorIndex, insertIndex);
+}
+
 void CometEngine::updateHeroLife() {
 	if (_actors[0].life > 0 && _actors[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0) {
 		_actors[0].life++;
 	}
 }
 
-void CometEngine::drawSprites() {
+void CometEngine::drawSpriteQueue() {
 	//TODO: Real stuff
 
 	//TODO: setScreenRectAll();
 
 	int objectCmdIndex = 0;
 
-	for (uint32 i = 0; i < _spriteArray.size(); i++) {
-		if (_spriteArray[i].index < 16) {
-			drawActor(_spriteArray[i].index);
+	for (uint32 i = 0; i < _spriteDrawQueue.size(); i++) {
+		if (_spriteDrawQueue[i].index < 16) {
+			drawActor(_spriteDrawQueue[i].index);
 		} else {
-			AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[objectCmdIndex];
-			_screen->drawAnimationCommand(_sceneObjectsSprite, cmd, 0, 0);
+			AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->commands[objectCmdIndex];
+			_screen->drawAnimationCommand(_sceneDecorationSprite, cmd, 0, 0);
 			objectCmdIndex++;
 		}
 	}
@@ -697,21 +714,6 @@ void CometEngine::resetVars() {
 
 }
 
-void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
-
-	uint32 index = 0;
-	for (index = 0; index < _spriteArray.size(); index++) {
-		if (_spriteArray[index].y > y)
-			break;
-	}
-
-	SpriteDraw temp;
-	temp.y = y;
-	temp.index = actorIndex;
-	_spriteArray.insert_at(index, temp);
-
-}
-
 void CometEngine::loadAndRunScript(bool loadingGame) {
 
 	Common::File fd;
@@ -736,9 +738,9 @@ void CometEngine::loadAndRunScript(bool loadingGame) {
 
 void CometEngine::freeMarcheAndStaticObjects() {
 	_animationMan->purgeAnimationSlots();
-	if (_sceneObjectsSprite) {
-		delete _sceneObjectsSprite;
-		_sceneObjectsSprite = NULL;
+	if (_sceneDecorationSprite) {
+		delete _sceneDecorationSprite;
+		_sceneDecorationSprite = NULL;
 	}
 }
 
@@ -1233,13 +1235,13 @@ uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int delt
 
 }
 
-void CometEngine::initStaticObjectRects() {
+void CometEngine::initSceneDecorationBlockingRects() {
 
 	_scene->_blockingRects.clear();
 
-	for (uint i = 0; i < _sceneObjectsSprite->_elements[0]->commands.size(); i++) {
-		AnimationCommand *cmd = _sceneObjectsSprite->_elements[0]->commands[i];
-		AnimationElement *objectElement = _sceneObjectsSprite->_elements[((cmd->arg2 << 8) | cmd->arg1) & 0x7FFF];
+	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->commands.size(); i++) {
+		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->commands[i];
+		AnimationElement *objectElement = _sceneDecorationSprite->_elements[((cmd->arg2 << 8) | cmd->arg1) & 0x7FFF];
 		debug(8, "%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
 			i, cmd->cmd, cmd->arg1, cmd->arg2, cmd->points[0].x, cmd->points[0].y, objectElement->width, objectElement->height);
 		if (objectElement->width / 2 > 0) {
@@ -1298,10 +1300,9 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 		if (direction == 1 || direction == 3) {
 			_screen->enableTransitionEffect();
 		} else {
-			memcpy(_screen->getScreen(), _sceneBackground, 320 * 200);		
-			updateStaticObjects();
-			enqueueActorsForDrawing();
-			drawSprites();
+			memcpy(_screen->getScreen(), _sceneBackground, 320 * 200);
+			buildSpriteDrawQueue();		
+			drawSpriteQueue();
 			memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
 			if (direction == 2) {
 				_screen->screenScrollEffect(_sceneBackground, -1);

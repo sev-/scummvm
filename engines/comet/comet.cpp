@@ -121,7 +121,7 @@ Common::Error CometEngine::run() {
 	_textBubbleActive = false;
 	_itemInSight = false;
 
-	_sceneObjectsSprite = NULL;
+	_sceneDecorationSprite = NULL;
 	_needToLoadSavegameFlag = false;
  	//_sceneExits.clear();
 

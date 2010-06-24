@@ -28,7 +28,7 @@ Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	case 1:
 		return _heroSprite;
 	case 2:
-		return _sceneObjectsSprite;
+		return _sceneDecorationSprite;
 	//case 3: //TODO??? returns NULL var (maybe used in Eternam?)
 	default:
 		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
