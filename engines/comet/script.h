@@ -198,6 +198,7 @@ public:
 	void o1_playSample(Script *script);
 	void o1_playSampleLooping(Script *script);
 	void o1_setRedPalette(Script *script);
+	void o1_setWhitePalette(Script *script);
 	
 };
 
