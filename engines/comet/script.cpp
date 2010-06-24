@@ -198,7 +198,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 95
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_setNarFileIndex);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_ifNearActor);//TODO
 	RegisterOpcode(o1_removeSceneItem);
 	RegisterOpcode(o1_playSample);
 	// 100
@@ -968,11 +968,11 @@ void ScriptInterpreter::o1_ifLookZone(Script *script) {
 }
 
 void ScriptInterpreter::o1_addBeam(Script *script) {
-	script->readByte(); //int x1 = script->readByte() * 2;
-	script->readByte(); //int y1 = script->readByte();
-	script->readByte(); //int x2 = script->readByte() * 2;
-	script->readByte(); //int y2 = script->readByte();
-	// TODO: Actually add the line
+	ARG_BYTEX(x1);
+	ARG_BYTE(y1);
+	ARG_BYTEX(x2);
+	ARG_BYTE(y2);
+	_vm->addBeam(x1, y1, x2, y2);
 }
 
 void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
@@ -1093,6 +1093,17 @@ void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 	ARG_BYTE(narFileIndex);
 	_vm->_narFileIndex = narFileIndex;
 	_vm->openVoiceFile(_vm->_narFileIndex);
+}
+
+void ScriptInterpreter::o1_ifNearActor(Script *script) {
+	ARG_BYTE(actorIndex);
+	ARG_BYTE(deltaX);
+	ARG_BYTE(deltaY);
+	if (_vm->isActorNearActor(0, actorIndex, deltaX, deltaY)) {
+		script->ip += 2;
+	} else {
+		script->jump();
+	}
 }
 
 void ScriptInterpreter::o1_removeSceneItem(Script *script) {
