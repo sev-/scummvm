@@ -360,6 +360,14 @@ void Screen::paletteFadeOut() {
 
 }
 
+void Screen::setWhitePalette(int value) {
+	for (int i = 0; i < 768; i++) {
+		_vm->_palette[i] = _vm->_ctuPal[i] + (256 - _vm->_ctuPal[i]) / 16 * value;
+	}
+	setFullPalette(_vm->_palette);
+	_vm->_system->updateScreen();
+}
+
 void Screen::setPartialPalette(byte *palette, int start, int count) {
 	byte colors[1024];
 	for (int i = start; i < count; i++) {

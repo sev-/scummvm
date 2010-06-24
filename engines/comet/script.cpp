@@ -204,7 +204,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 100
 	RegisterOpcode(o1_playSampleLooping);
 	RegisterOpcode(o1_setRedPalette);
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_setWhitePalette);//TODO
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 
@@ -1129,5 +1129,11 @@ void ScriptInterpreter::o1_setRedPalette(Script *script) {
 	_vm->_screen->buildRedPalette(_vm->_ctuPal, _vm->_palette, paletteRedness);
 	_vm->_screen->setFullPalette(_vm->_palette);
 }
+
+void ScriptInterpreter::o1_setWhitePalette(Script *script) {
+	ARG_BYTE(value);
+	_vm->_screen->setWhitePalette(value);
+}
+
 
 } // End of namespace Comet

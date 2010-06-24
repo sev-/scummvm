@@ -46,6 +46,7 @@ public:
 	void buildRedPalette(byte *sourcePal, byte *destPal, int value);
 	void paletteFadeIn();
 	void paletteFadeOut();
+	void setWhitePalette(int value);
 
 	void putPixel(int x, int y, byte color);
 	void drawLine(int x1, int y1, int x2, int y2, byte color);
