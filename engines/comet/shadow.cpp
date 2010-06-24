@@ -753,6 +753,9 @@ void CometEngine::updateScreen() {
 
 	//TODO: seg011:0003 - seg011:004C
 	
+	if (_beams.size() > 0)
+		drawBeams();
+	
 	if (_clearScreenRequest) {
 		_screen->clearScreen();
 		_clearScreenRequest = false;
@@ -1458,6 +1461,36 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	loadSceneBackground();
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
 	
+}
+
+void CometEngine::addBeam(int x1, int y1, int x2, int y2) {
+	Beam beam;
+	beam.x1 = x1;
+	beam.y1 = y1;
+	beam.x2 = x2;
+	beam.y2 = y2;
+	_beams.push_back(beam);
+}
+
+void CometEngine::drawBeam(int x1, int y1, int x2, int y2) {
+	int currX1 = x1, currY1 = y1, currX2, currY2;
+	for (int i = 1; i <= 10; i++) {
+		byte color = random(7) + 144;
+		currX2 = random(8) + (x2 - x1) * i / 10 + x1 - 2;
+		currY2 = random(8) + (y2 - y1) * i / 10 + y1 - 2;
+		_screen->drawLine(currX1, currY1, currX2, currY2, color);
+		currX1 = currX2;
+		currY1 = currY2;
+	}
+}
+
+void CometEngine::drawBeams() {
+	for (uint i = 0; i < _beams.size(); i++) {
+		Beam *beam = &_beams[i];
+		drawBeam(beam->x1, beam->y1, beam->x2, beam->y2);
+	}
+	_beams.clear();
+	// TODO: beamColor stuff, unused in Comet CD
 }
 	
 } // End of namespace Comet

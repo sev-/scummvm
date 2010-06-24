@@ -166,6 +166,11 @@ Common::Error CometEngine::run() {
 	_narFile = NULL;
 	_narCount = 0;
 	_narOffsets = NULL;
+
+	/* Unused in Comet CD
+	_beamColor = 112;
+	_beamColorIncr = 1;
+	*/
 	
 	_debugRectangles = false;
 
@@ -346,10 +351,17 @@ Common::Error CometEngine::run() {
 			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
 			_introPaletteState = 0;
-			//_moduleNumber = 1;
+#if 0			
 			_moduleNumber = 0;
 			_sceneNumber = 0;
-			//_sceneNumber = 11;
+#endif			
+#if 1
+			// Test the "beam-room"
+			_scriptVars[116] = 1;
+			_scriptVars[139] = 1;
+			_moduleNumber = 7;
+			_sceneNumber = 4;
+#endif			
 		}
 #endif
 	}

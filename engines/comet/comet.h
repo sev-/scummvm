@@ -149,6 +149,10 @@ struct RectItem {
 	int x, y, x2, y2, id;
 };
 
+struct Beam {
+	int x1, y1, x2, y2;
+};
+
 typedef Common::Array<Common::Point> PointArray;
 
 class CometEngine : public Engine {
@@ -462,6 +466,17 @@ public:
 	void playSample(int sampleNumber, int loopCount);
 	
 	void playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData);
+
+
+	Common::Array<Beam> _beams;
+	/* Unused in Comet CD
+	byte _beamColor;
+	int _beamColorIncr;
+	*/
+
+	void addBeam(int x1, int y1, int x2, int y2);
+	void drawBeam(int x1, int y1, int x2, int y2);
+	void drawBeams();
 
 public:
 	/* Misc */

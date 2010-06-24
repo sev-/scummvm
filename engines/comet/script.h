@@ -193,6 +193,7 @@ public:
 	void o1_paletteFadeIn(Script *script);
 	void o1_paletteFadeOut(Script *script);
 	void o1_setNarFileIndex(Script *script);
+	void o1_ifNearActor(Script *script);
 	void o1_removeSceneItem(Script *script);
 	void o1_playSample(Script *script);
 	void o1_playSampleLooping(Script *script);
