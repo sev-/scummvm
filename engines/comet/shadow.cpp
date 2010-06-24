@@ -1355,5 +1355,109 @@ void CometEngine::drawTextIllsmouth() {
 	_screen->drawTextOutlined((320 - _screen->_font->getTextWidth(text)) / 2, 180, text, 7, 0); 
 	_scriptVars[11]++;
 }
+
+void CometEngine::playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData) {
+	
+	debug("playCutscene(%d, %d, %d, %d, %d)", fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount);
+
+	int palStatus = 0;
+	Animation *cutsceneSprite;
+	AnimationFrameList *frameList;
+	int animFrameCount;
+	
+	// TODO: __snd_stopSample
+	// TODO: narStopSpeech
+	skipText();
+	
+	cutsceneSprite = _animationMan->loadAnimationResource(AName, fileIndex);
+	frameList = cutsceneSprite->_anims[frameListIndex];
+	animFrameCount = frameList->frames.size();
+	
+	if (backgroundIndex == 0) {
+		_screen->clearScreen();
+	} else if (backgroundIndex < 0) {
+		_screen->drawAnimationElement(cutsceneSprite, -backgroundIndex, 0, 0);
+	} else if (backgroundIndex < 32000) {
+		_screen->drawAnimationElement(_sceneDecorationSprite, backgroundIndex, 0, 0);
+	} else if (backgroundIndex == 32000) {
+		// TODO: Grab vga screen to work screen
+	}
+	
+	memcpy(_sceneBackground, _screen->getScreen(), 64000);
+
+	if (soundFramesCount > 0) {
+		int sampleIndex = soundFramesData[0];
+		debug("  sampleIndex = %d", sampleIndex);
+		// TODO: Load the sample
+	}
+	
+	for (int loopIndex = 0; loopIndex < loopCount; loopIndex++) {
+	
+		byte *workSoundFramesData = soundFramesData;
+		int workSoundFramesCount = soundFramesCount;
+		int animFrameIndex, animSoundFrameIndex, interpolationStep = 0;
+		
+		if (soundFramesCount > 0) {
+			workSoundFramesData++;
+			animSoundFrameIndex = *workSoundFramesData++;
+			workSoundFramesData++;
+		}
+		
+		animFrameIndex = 0;
+		while (animFrameIndex < animFrameCount) {
+		
+			handleEvents();
+		
+			memcpy(_screen->getScreen(), _sceneBackground, 64000);
+
+			interpolationStep = drawActorAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
+						
+			updateTextDialog();
+			
+			if (palStatus == 1) {
+				// TODO: Set the anim palette
+				palStatus = 2;
+			}										
+
+			_screen->update();
+			_system->delayMillis(40); // TODO
+						
+			if (workSoundFramesCount > 0 && animFrameIndex == animSoundFrameIndex) {
+				// TODO: Play the anim sound
+				workSoundFramesCount--;
+				if (workSoundFramesCount > 0) {
+					// TODO: Load the next sample; unused in Comet CD (only max. one sample per cutscene)
+				}
+			}						
+
+			// TODO: checkForPauseGame();
+			if (_keyScancode == Common::KEYCODE_ESCAPE) {
+				// TODO: yesNoDialog();
+			} else if (_keyScancode == Common::KEYCODE_RETURN) {
+				animFrameIndex = animFrameCount;
+				loopIndex = loopCount;
+				if (_textActive)
+					skipText();
+			}
+			
+			if (interpolationStep == 0)		
+				animFrameIndex++;
+		}
+			
+	}
+	
+	delete cutsceneSprite;
+
+	if (palStatus > 0) {
+		_screen->setFullPalette(_palette);
+	}
+	
+	if (_textActive)
+		resetTextValues();
+
+	loadSceneBackground();
+	memcpy(_screen->getScreen(), _sceneBackground, 64000);
+	
+}
 	
 } // End of namespace Comet

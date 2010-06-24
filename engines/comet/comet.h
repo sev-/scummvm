@@ -460,6 +460,8 @@ public:
 
 	void playMusic(int musicNumber);
 	void playSample(int sampleNumber, int loopCount);
+	
+	void playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData);
 
 public:
 	/* Misc */

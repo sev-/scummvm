@@ -696,18 +696,13 @@ void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
 }
 
 void ScriptInterpreter::o1_playCutscene(Script *script) {
-
-	/*int fileIndex = */script->readByte();
-	/*int indexSubStart = */script->readByte();
-	/*int index = */script->readInt16();
-	/*int counterMax = */script->readByte();
-	int cutsceneCounter2 = script->readByte();
-	
-	//TODO
-	//playCutscene( fileIndex, indexSubStart, index, counterMax, cutsceneCounter2, script->ip );
-	
-	script->ip += cutsceneCounter2 * 3;
-
+	ARG_BYTE(fileIndex);
+	ARG_BYTE(frameListIndex);
+	ARG_INT16(backgroundIndex);
+	ARG_BYTE(loopCount);
+	ARG_BYTE(soundFramesCount);
+	_vm->playCutscene(fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount, script->ip);
+	script->ip += soundFramesCount * 3;
 }
 
 void ScriptInterpreter::o1_setVar(Script *script) {
