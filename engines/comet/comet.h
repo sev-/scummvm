@@ -238,7 +238,7 @@ public:
 	int16 _prevModuleNumber, _prevSceneNumber;
 
 	Animation *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
-	Animation *_sceneObjectsSprite;
+	Animation *_sceneDecorationSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
 	int _gameLoopCounter;
@@ -264,7 +264,7 @@ public:
 	MusicPlayer *_music;
 
 	/* Sprite array */
-	Common::Array<SpriteDraw> _spriteArray;
+	Common::Array<SpriteDraw> _spriteDrawQueue;
 
 	/* Filenames */
 	char AName[16], DName[16], RName[16];
@@ -308,14 +308,17 @@ public:
 	void lookAtItemInSight(bool showText);
 	void updateActorAnimations();
 	void updateActorMovement();
-	void updateStaticObjects();
+	void buildSpriteDrawQueue();
+	void addToSpriteDrawQueue(int y, int actorIndex, int insertIndex);
+	void enqueueSceneDecorationForDrawing();
 	void enqueueActorsForDrawing();
+	void enqueueActorForDrawing(int y, int actorIndex);
 	void updateHeroLife();
 	void handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void resetVars();
 	
-	void drawSprites();
+	void drawSpriteQueue();
 	void drawActor(int actorIndex);
 	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int interpolationStep, int x, int y, int animFrameCount);
 	void drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
@@ -327,7 +330,6 @@ public:
 	void updateActorAnimation(Actor *actor);
 	void actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect);
 	bool updateActorPosition(int actorIndex, Common::Rect &obstacleRect);
-	void enqueueActorForDrawing(int y, int actorIndex);
 	void freeMarcheAndStaticObjects();
 	void resetMarcheAndStaticObjects();
 
@@ -343,10 +345,10 @@ public:
 
 	/* Scene */
 	void initSceneBackground(bool loadingGame = false);
-	void initStaticObjectRects();
+	void initSceneDecorationBlockingRects();
 	void loadSceneBackground();
-	void loadStaticObjects();
-	void drawSceneForeground();
+	void loadSceneDecoration();
+	void drawSceneDecoration();
 
 	int handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber);
 
@@ -393,7 +395,6 @@ public:
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
 
-	/* SceneObjects */
 	void resetActorsLife();
 
 	/* Misc */
