@@ -459,24 +459,34 @@ public:
 	void puzzleMoveTileRow(int rowIndex, int direction);
 	bool puzzleTestIsSolved();
 
-	void updateMap();
-	void handleMap();
+	int updateMap();
+	int handleMap();
 
 	void playMusic(int musicNumber);
 	void playSample(int sampleNumber, int loopCount);
 	
 	void playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData);
 
-
+	/* Beams */
 	Common::Array<Beam> _beams;
 	/* Unused in Comet CD
 	byte _beamColor;
 	int _beamColorIncr;
 	*/
-
 	void addBeam(int x1, int y1, int x2, int y2);
 	void drawBeam(int x1, int y1, int x2, int y2);
 	void drawBeams();
+	
+	int _menuStatus;
+
+	/* Control bar */
+	int _commandBarSelectedItem;
+	void drawCommandBar(int selectedItem, int animFrameCounter);
+	void handleCommandBar();
+	
+	/* Disk menu */
+	int _diskMenuSelectedItem;
+	void drawDiskMenu(int selectedItem);
 
 public:
 	/* Misc */

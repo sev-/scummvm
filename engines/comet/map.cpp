@@ -6,7 +6,7 @@
 
 namespace Comet {
 
-void CometEngine::updateMap() {
+int CometEngine::updateMap() {
 
 	static const Common::Point mapPoints[] = {
 		Common::Point(248, 126), Common::Point(226, 126), Common::Point(224, 150), Common::Point(204, 156),
@@ -155,9 +155,15 @@ void CometEngine::updateMap() {
 	
 	waitForKeys();
 
+	return 1;
 }
 
-void CometEngine::handleMap() {
+int CometEngine::handleMap() {
+
+	// TODO: Proper implementation
+
+	return updateMap();
+
 }
 
 } // End of namespace Comet
