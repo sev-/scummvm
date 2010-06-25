@@ -21,23 +21,23 @@ public:
 	Dialog(CometEngine *vm);
 	~Dialog();
 
-	void run(Script *script);
+	void start(Script *script);
 	void stop();
 	void update();
-	bool isRunning() const { return _dialogRunning; }
+	bool isRunning() const { return _isRunning; }
 	byte *getChoiceScriptIp();
 	
 protected:
 
 	CometEngine *_vm;
 
-	int _dialogSelectedItemIndex, _dialogSelectedItemIndex2;
-	int _dialogIntroTextIndex, _dialogTextX, _dialogTextY;
-	byte _dialogTextColor;
-	int _dialogTextColorInc;
-	bool _dialogRunning;
-	Common::Array<DialogItem> _dialogItems;
-	Common::Array<RectItem> _dialogRects;
+	int _selectedItemIndex, _selectedItemIndex2;
+	int _introTextIndex, _textX, _textY;
+	byte _textColor;
+	int _textColorInc;
+	bool _isRunning;
+	Common::Array<DialogItem> _items;
+	Common::Array<GuiRectangle> _itemRectangles;
 
 	void drawTextBubbles();
 	

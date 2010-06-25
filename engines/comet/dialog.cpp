@@ -9,39 +9,39 @@ namespace Comet {
 
 Dialog::Dialog(CometEngine *vm) : _vm(vm) {
 
-	_dialogIntroTextIndex = 0;
-	_dialogTextX = 0;
-	_dialogTextY = 0;
-	_dialogTextColor = 79;
-	_dialogTextColorInc = -1;
-	_dialogRunning = false;
+	_introTextIndex = 0;
+	_textX = 0;
+	_textY = 0;
+	_textColor = 79;
+	_textColorInc = -1;
+	_isRunning = false;
 
 }
 
 Dialog::~Dialog() {
 }
 
-void Dialog::run(Script *script) {
+void Dialog::start(Script *script) {
 
 	int dialogItemCount;
 
 	_vm->resetTextValues();
 
-	_dialogIntroTextIndex = script->readInt16();
+	_introTextIndex = script->readInt16();
 
-	debug("_dialogIntroTextIndex = %d", _dialogIntroTextIndex);
+	debug("_introTextIndex = %d", _introTextIndex);
 
-	if (_dialogIntroTextIndex != -1) {
-		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _dialogIntroTextIndex, _vm->_tempTextBuffer + textOfs);
+	if (_introTextIndex != -1) {
+		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _introTextIndex, _vm->_tempTextBuffer + textOfs);
 	}
 
-	_dialogTextX = script->readByte() * 2;
-	_dialogTextY = script->readByte();
+	_textX = script->readByte() * 2;
+	_textY = script->readByte();
 
 	dialogItemCount = script->readByte();
 
-	_dialogItems.clear();
-	_dialogItems.reserve(dialogItemCount);
+	_items.clear();
+	_items.reserve(dialogItemCount);
 
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
@@ -49,49 +49,49 @@ void Dialog::run(Script *script) {
   		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
   		dialogItem.scriptIp = script->ip;
   		script->ip += 2;
-		_dialogItems.push_back(dialogItem);
+		_items.push_back(dialogItem);
 	}
 
-	if (_dialogItems[0].index == _dialogIntroTextIndex)
-		_dialogIntroTextIndex = -1;
+	if (_items[0].index == _introTextIndex)
+		_introTextIndex = -1;
 
-	_dialogSelectedItemIndex2 = -1;
-	_dialogSelectedItemIndex = 0;
-	_dialogRunning = true;
+	_selectedItemIndex2 = -1;
+	_selectedItemIndex = 0;
+	_isRunning = true;
 
 	drawTextBubbles();
 
 }
 
 void Dialog::stop() {
-	_dialogRunning = false;
+	_isRunning = false;
 }
 
 void Dialog::update() {
 
 	int oldDialogSelectedItemIndex;
 
-	oldDialogSelectedItemIndex = _dialogSelectedItemIndex;
+	oldDialogSelectedItemIndex = _selectedItemIndex;
 
 	if (_vm->_mouseButtons4 & 1) {
 		_vm->waitForKeys();
-		if (_dialogSelectedItemIndex > 0)
-			_dialogSelectedItemIndex--;
+		if (_selectedItemIndex > 0)
+			_selectedItemIndex--;
 	} else if (_vm->_mouseButtons4 & 2) {
 		_vm->waitForKeys();
-		if (_dialogSelectedItemIndex < (int)_dialogItems.size() - 1)
-			_dialogSelectedItemIndex++;
+		if (_selectedItemIndex < (int)_items.size() - 1)
+			_selectedItemIndex++;
 	}
 
-	if (oldDialogSelectedItemIndex == _dialogSelectedItemIndex) {
+	if (oldDialogSelectedItemIndex == _selectedItemIndex) {
 		// TODO: Handle selection by mouse
 	} else {
 		// TODO: Move mouse cursor to center of selected dialog item
 	}
 
-	if (oldDialogSelectedItemIndex != _dialogSelectedItemIndex) {
+	if (oldDialogSelectedItemIndex != _selectedItemIndex) {
 		// Reset the text color
-		_dialogTextColor = 79;
+		_textColor = 79;
 	}
 
 	drawTextBubbles();
@@ -103,13 +103,13 @@ void Dialog::update() {
 	//printf("Dialog(2)::_keyScancode = %d\n", _keyScancode);
 
 	// TODO: Check for mouseclick later, too
-	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _dialogSelectedItemIndex != -1) {
+	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _selectedItemIndex != -1) {
 		//DEBUG: if (_talkieMode == 1)
 		{
-			_vm->actorTalkWithAnim(0, _dialogItems[_dialogSelectedItemIndex].index, 0);
+			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			//TODO: loop with updateTalkAnims()
 		}
-		_dialogRunning = false;
+		_isRunning = false;
 	}
 
 }
@@ -121,30 +121,30 @@ void Dialog::drawTextBubbles() {
 
 	//TODO: Before...
 
-	_dialogRects.clear();
+	_itemRectangles.clear();
 
-	x = _dialogTextX;
-	y = _dialogTextY;
+	x = _textX;
+	y = _textY;
 
 	if (_vm->_actors[0].textColor == 25)
 		color1 = 22;
  	else
  		color1 = _vm->_actors[0].textColor;
 
-	for (uint i = 0; i < _dialogItems.size(); i++) {
+	for (uint i = 0; i < _items.size(); i++) {
 
 		color2 = color1;
 
-		if (i == (uint)_dialogSelectedItemIndex) {
+		if (i == (uint)_selectedItemIndex) {
 			if (_vm->_actors[0].textColor == 25) {
-				color2 = _dialogTextColor;
-				_dialogTextColor += _dialogTextColorInc;
-				if (_dialogTextColor > 25) {
-					_dialogTextColor = 25;
-					_dialogTextColorInc = -1;
-				} else if (_dialogTextColor < 22) {
-					_dialogTextColor = 22;
-					_dialogTextColorInc = 1;
+				color2 = _textColor;
+				_textColor += _textColorInc;
+				if (_textColor > 25) {
+					_textColor = 25;
+					_textColorInc = -1;
+				} else if (_textColor < 22) {
+					_textColor = 22;
+					_textColorInc = 1;
 				}
 			} else if (_vm->_textColorFlag & 1) {
 				color2 = _vm->_actors[0].textColor;
@@ -153,19 +153,19 @@ void Dialog::drawTextBubbles() {
 			}
 		}
 
-		_vm->setText(_dialogItems[i].text);
+		_vm->setText(_items[i].text);
 
 		_vm->drawBubble(x - 4, y - 4, x + _vm->_textMaxTextWidth * 2 + 4, y + _vm->_textMaxTextHeight);
 
-		y = _vm->_screen->drawText3(x, y, _dialogItems[i].text, color2, 1);
+		y = _vm->_screen->drawText3(x, y, _items[i].text, color2, 1);
 
-		RectItem rect;
+		GuiRectangle rect;
 		rect.x = x - 4;
 		rect.y = y - 4 - _vm->_textMaxTextHeight;
 		rect.x2 = x + _vm->_textMaxTextWidth * 2 + 4;
 		rect.y2 = y;
 		rect.id = i;
-		_dialogRects.push_back(rect);
+		_itemRectangles.push_back(rect);
 
 		y += 8;
 
@@ -176,7 +176,7 @@ void Dialog::drawTextBubbles() {
 }
 
 byte *Dialog::getChoiceScriptIp() {
-	return _dialogItems[_dialogSelectedItemIndex].scriptIp;
+	return _items[_selectedItemIndex].scriptIp;
 }
 
 } // End of namespace Comet

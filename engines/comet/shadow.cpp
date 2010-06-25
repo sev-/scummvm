@@ -369,7 +369,7 @@ void CometEngine::updateSceneNumber() {
 		mainActor->clipX2 = 319;
 		mainActor->clipY2 = 199;
 
-		// TODO: _palFlag = false;
+		_screen->_palFlag = false;
 
 		loadAndRunScript();
 		
@@ -919,7 +919,7 @@ bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rec
 
 }
 
-int CometEngine::findRect(const RectItem *rects, int x, int y, int count, int defaultId) {
+int CometEngine::findRect(const GuiRectangle *rects, int x, int y, int count, int defaultId) {
 	for (int i = 0; i < count; i++) {
 		if (x > rects[i].x && x < rects[i].x2 && y > rects[i].y && y < rects[i].y2)
 			return rects[i].id;
@@ -1084,6 +1084,7 @@ void CometEngine::skipText() {
 	_textDuration = 1;
 	_textActive = false;
 	//waitForKeys();
+	stopVoice();
 }
 
 void CometEngine::handleKeyInput() {
@@ -1574,7 +1575,7 @@ void CometEngine::handleCommandBar() {
 	const int kCBAMap		= 5;
 	const int kCBAMenu		= 6;
 
-	static const RectItem commandBarRects[] = {
+	static const GuiRectangle commandBarRects[] = {
 		{  6, 4,  41, 34, kCBAVerbTalk}, 
 		{ 51, 4,  86, 34, kCBAVerbGet}, 
 		{ 96, 4, 131, 34, kCBAUseItem},

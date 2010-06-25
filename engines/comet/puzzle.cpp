@@ -26,7 +26,7 @@ int CometEngine::runPuzzle() {
 		{0, 3, 7, 9,14, 0},
 		{0, 0, 0, 0, 0, 0}};
 #endif
-	static const RectItem puzzleTileRects[] = {
+	static const GuiRectangle puzzleTileRects[] = {
 		{118, 44, 142, 59, 0},
 		{143, 44, 167, 59, 1},
 		{168, 44, 192, 59, 2},
