@@ -13,7 +13,7 @@ int CometEngine::handleInventory() {
 	const int kIAExit		= -6;
 	const uint kMaxItemsOnScreen = 10;
 
-	static const RectItem inventorySlotRects[] = {
+	static const GuiRectangle inventorySlotRects[] = {
 		{160, 182, 170, 190, kIADown},
 		{160,  53, 170,  61, kIAUp},
 		{ 74,  62, 253,  73,  0},

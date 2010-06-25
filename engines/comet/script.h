@@ -110,9 +110,6 @@ public:
 	void processScriptDialog();
 	void processScriptTalk();
 	
-	void actorWalkToXY(Script *script, bool xyFlag);
-	void actorWalkToXYRel(Script *script, bool xyFlag);
-
 	bool isHeroInZone(Script *script);
 
 	/* Script functions */
@@ -129,9 +126,9 @@ public:
 	void o1_sleep(Script *script);
 	void o1_if(Script *script);
 	void o1_ifHeroInZone(Script *script);
-	void o1_actorWalkToXRel(Script *script);
-	void o1_actorWalkToYRel(Script *script);
-	void o1_actorWalkToXYRel(Script *script);
+	void o1_actorWalkToMainActorX(Script *script);
+	void o1_actorWalkToMainActorY(Script *script);
+	void o1_actorWalkToMainActorXY(Script *script);
 	void o1_blockInput(Script *script);
 	void o1_unblockInput(Script *script);
 	void o1_actorSetDirectionToHero(Script *script);

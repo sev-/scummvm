@@ -317,7 +317,12 @@ Common::Error CometEngine::run() {
 		}
 		*/
 		
-		handleKeyInput();
+
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
+			handleKeyInput();
+		} else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
+			skipText();
+		}
 
 		switch (_keyScancode) {
 		case Common::KEYCODE_F7:

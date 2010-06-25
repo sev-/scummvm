@@ -145,7 +145,7 @@ struct SceneItem {
 	int x, y;
 };
 
-struct RectItem {
+struct GuiRectangle {
 	int x, y, x2, y2, id;
 };
 
@@ -412,7 +412,7 @@ public:
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	
-	int findRect(const RectItem *rects, int x, int y, int count, int defaultId);
+	int findRect(const GuiRectangle *rects, int x, int y, int count, int defaultId);
 	
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x1, int y1, int x2, int y2);

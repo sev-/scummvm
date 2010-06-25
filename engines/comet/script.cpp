@@ -100,9 +100,9 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);
 	RegisterOpcode(o1_ifHeroInZone);
 	// 15
-	RegisterOpcode(o1_actorWalkToXRel);
-	RegisterOpcode(o1_actorWalkToYRel);
-	RegisterOpcode(o1_actorWalkToXYRel);
+	RegisterOpcode(o1_actorWalkToMainActorX);
+	RegisterOpcode(o1_actorWalkToMainActorY);
+	RegisterOpcode(o1_actorWalkToMainActorXY);
 	RegisterOpcode(o1_blockInput);
 	RegisterOpcode(o1_unblockInput);
 	// 20
@@ -472,64 +472,6 @@ Actor *ScriptInterpreter::getActor(int index) {
 	return _vm->getActor(index);
 }
 
-void ScriptInterpreter::actorWalkToXY(Script *script, bool xyFlag) {
-	
-	int x, y;
-	int newValue = script->readByte();
-	
-	script->actor()->status = 0;
-
-	if (!xyFlag) {
-		x = newValue * 2;
-		y = script->actor()->y;
-	} else {
-		x = script->actor()->x;
-		y = newValue;
-	}
-
-	debug(3, "actorWalkToXY()  actor: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
-
-	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
-		if (!xyFlag) {
-			script->actor()->walkStatus |= 8;
-		} else {
-			script->actor()->walkStatus |= 0x10;
-		}
-		script->status |= kScriptWalking;
-		_yield = true;
-	}
-	
-}
-
-void ScriptInterpreter::actorWalkToXYRel(Script *script, bool xyFlag) {
-
-	int x, y;
-	int delta = script->readByte();
-	
-	script->actor()->status = 0;
-
-	if (!xyFlag) {
-		x = _vm->_actors[0].x + delta;
-		y = script->actor()->y;
-	} else {
-		x = script->actor()->x;
-		y = _vm->_actors[0].y + delta;
-	}
-
-	debug(3, "actorWalkToXYRel()  actor: %d; old: %d, %d; new: %d, %d", script->actorIndex, script->actor()->x, script->actor()->y, x, y);
-
-	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
-		if (!xyFlag) {
-			script->actor()->walkStatus |= 8;
-		} else {
-			script->actor()->walkStatus |= 0x10;
-		}
-		script->status |= kScriptWalking;
-		_yield = true;
-	}
-
-}
-
 /* Script functions */
 
 void ScriptInterpreter::o1_nop(Script *script) {
@@ -555,11 +497,23 @@ void ScriptInterpreter::o1_jump(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorWalkToX(Script *script) {
-	actorWalkToXY(script, false);
+	ARG_BYTEX(newX);
+	script->actor()->status = 0;
+	if (_vm->actorStartWalking(script->actorIndex, newX, script->actor()->y)) {
+		script->actor()->walkStatus |= 8;
+		script->status |= kScriptWalking;
+		_yield = true;
+	}
 }
 
 void ScriptInterpreter::o1_actorWalkToY(Script *script) {
-	actorWalkToXY(script, true);
+	ARG_BYTE(newY);
+	script->actor()->status = 0;
+	if (_vm->actorStartWalking(script->actorIndex, script->actor()->x, newY)) {
+		script->actor()->walkStatus |= 0x10;
+		script->status |= kScriptWalking;
+		_yield = true;
+	}
 }
 
 void ScriptInterpreter::o1_loop(Script *script) {
@@ -612,21 +566,33 @@ void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_actorWalkToXRel(Script *script) {
-	actorWalkToXYRel(script, false);
+void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
+	ARG_BYTE(delta);
+	script->actor()->status = 0;
+	if (_vm->actorStartWalking(script->actorIndex, _vm->_actors[0].x + delta, script->actor()->y)) {
+		script->actor()->walkStatus |= 8;
+		script->status |= kScriptWalking;
+		_yield = true;
+	}
 }
 
-void ScriptInterpreter::o1_actorWalkToYRel(Script *script) {
-	actorWalkToXYRel(script, true);
+void ScriptInterpreter::o1_actorWalkToMainActorY(Script *script) {
+	ARG_BYTE(delta);
+	script->actor()->status = 0;
+	if (_vm->actorStartWalking(script->actorIndex, script->actor()->x, _vm->_actors[0].y + delta)) {
+		script->actor()->walkStatus |= 0x10;
+		script->status |= kScriptWalking;
+		_yield = true;
+	}
 }
 
-void ScriptInterpreter::o1_actorWalkToXYRel(Script *script) {
+void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 	ARG_BYTE(deltaX);
 	ARG_BYTE(deltaY);
-	Actor *player = getActor(0);
+	Actor *mainActor = getActor(0);
 	Actor *actor = script->actor();
-	int x = player->x + deltaX;
-	int y = player->y + deltaY;
+	int x = mainActor->x + deltaX;
+	int y = mainActor->y + deltaY;
 	actor->status = 0;
 	_vm->_scene->superFilterWalkDestXY(x, y, actor->deltaX, actor->deltaY);
 	actor->walkStatus = 0;
@@ -775,8 +741,8 @@ void ScriptInterpreter::o1_setAnimationType(Script *script) {
 }
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
-	Actor *player = getActor(0);
-	_vm->actorSetPosition(script->actorIndex, player->x, player->y + 1);
+	Actor *mainActor = getActor(0);
+	_vm->actorSetPosition(script->actorIndex, mainActor->x, mainActor->y + 1);
 }
 
 void ScriptInterpreter::o1_setZoom(Script *script) {
@@ -794,15 +760,13 @@ void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 }
 
 void ScriptInterpreter::o1_startDialog(Script *script) {
-	_vm->_dialog->run(script);
+	_vm->_dialog->start(script);
 	_vm->waitForKeys();
 	script->status |= kScriptDialogRunning;
 	_yield = true;
 }
 
 void ScriptInterpreter::o1_waitUntilHeroExitZone(Script *script) {
-	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 60);
 	if (_vm->isPlayerInZone(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2)) {
 		script->ip--;
 		_yield = true;
@@ -818,8 +782,6 @@ void ScriptInterpreter::o1_waitUntilHeroEnterZone(Script *script) {
 	script->zoneY1 = zoneY1;
 	script->zoneX2 = zoneX2;
 	script->zoneY2 = zoneY2;
-	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 70);
 	if (!_vm->isPlayerInZone(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2)) {
 		script->ip -= 5;
 		_yield = true;
@@ -922,15 +884,13 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 	script->zoneY1 = zoneY1;
 	script->zoneX2 = zoneX2;
 	script->zoneY2 = zoneY2;
-	Actor *actor = getActor(0);
-	if (_vm->_debugRectangles)
-		_vm->_screen->fillRect(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2, 50);
+	Actor *mainActor = getActor(0);
 	Common::Rect rect1(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2);
 	Common::Rect rect2(
-		actor->x - actor->deltaX,
-		actor->y - actor->deltaY,
-		actor->x + actor->deltaX,
-		actor->y);
+		mainActor->x - mainActor->deltaX,
+		mainActor->y - mainActor->deltaY,
+		mainActor->x + mainActor->deltaX,
+		mainActor->y);
 	return _vm->rectCompare(rect1, rect2);
 }
 
