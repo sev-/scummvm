@@ -266,6 +266,11 @@ Common::Error CometEngine::run() {
 #endif
 
 #if 0
+	_screen->setFullPalette(_ctuPal);
+	handleCommandBar();
+#endif
+
+#if 0
 	Animation *anim1 = _animationMan->loadAnimationResource("A00.PAK", 12);
 	AnimationElement *elem1 = anim1->_elements[0];
 	AnimationElement *elem2 = anim1->_elements[1];
@@ -292,6 +297,7 @@ Common::Error CometEngine::run() {
 		if (slow)
 			_system->delayMillis(40);
 
+		/*
 		if (_keyScancode == Common::KEYCODE_RETURN)
 			skipText();
 
@@ -307,6 +313,9 @@ Common::Error CometEngine::run() {
 			// DEBUG only
 			handleReadBook();
 		}
+		*/
+		
+		handleKeyInput();
 
 		switch (_keyScancode) {
 		case Common::KEYCODE_F7:
@@ -351,11 +360,11 @@ Common::Error CometEngine::run() {
 			memcpy(_palette, _paletteBuffer, 768);
 			_screen->setFullPalette(_ctuPal);
 			_introPaletteState = 0;
-#if 0			
+#if 1			
 			_moduleNumber = 0;
 			_sceneNumber = 0;
 #endif			
-#if 1
+#if 0
 			// Test the "beam-room"
 			_scriptVars[116] = 1;
 			_scriptVars[139] = 1;

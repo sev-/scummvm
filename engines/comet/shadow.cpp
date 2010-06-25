@@ -1022,7 +1022,7 @@ void CometEngine::handleEvents() {
 }
 
 void CometEngine::waitForKeys() {
-	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0) {
+	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) {
 		handleEvents();
 	}
 }
@@ -1088,7 +1088,53 @@ void CometEngine::skipText() {
 
 void CometEngine::handleKeyInput() {
 
-	//TODO
+	switch (_keyScancode) {
+	case Common::KEYCODE_t:
+		_cmdTalk = true;
+		waitForKeys();
+		break;
+	case Common::KEYCODE_g:
+		_cmdGet = true;
+		waitForKeys();
+		break;
+	case Common::KEYCODE_l:
+		_cmdLook = true;
+		waitForKeys();
+		break;
+	case Common::KEYCODE_o:
+		handleInventory();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_u:
+		invUseItem();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_d:
+		// TODO: handleDiskMenu();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_m:
+		handleMap();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_i:
+		handleReadBook();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_p:
+		// TODO: checkForPauseGame();
+		waitForKeys();
+		break;
+	case Common::KEYCODE_RETURN:
+		skipText();
+		waitForKeys();
+		break;
+	default:
+		if (Common::KEYCODE_TAB == _keyScancode || _rightButton) {
+			handleCommandBar();
+		}
+		break;			
+	}
 
 }
 
@@ -1492,5 +1538,207 @@ void CometEngine::drawBeams() {
 	_beams.clear();
 	// TODO: beamColor stuff, unused in Comet CD
 }
+
+/* Control bar */
+
+void CometEngine::drawCommandBar(int selectedItem, int animFrameCounter) {
+
+	const int x = 196;
+	const int y = 14;
+
+	_screen->drawAnimationElement(_iconSprite, 0, 0, 0);
+	_screen->drawAnimationElement(_iconSprite, selectedItem + 1, 0, 0);
+
+	if (_invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0) {
+		_invActiveItem = -1;
+		for (int inventoryItem = 0; inventoryItem <= 255 && _invActiveItem == -1; inventoryItem++) {
+			if (_itemStatus[inventoryItem] > 0)
+				_invActiveItem = inventoryItem;
+		}
+	}	
+
+	if (_invActiveItem >= 0)
+		drawAnimatedIcon(_inventoryItemSprites, _invActiveItem, x, y, animFrameCounter);
 	
+}
+
+void CometEngine::handleCommandBar() {
+
+	const int kCBANone		= -1;
+	const int kCBAExit		= -2;
+	const int kCBAVerbTalk	= 0;
+	const int kCBAVerbGet	= 1;
+	const int kCBAUseItem	= 2;
+	const int kCBAVerbLook	= 3;
+	const int kCBAInventory	= 4;
+	const int kCBAMap		= 5;
+	const int kCBAMenu		= 6;
+
+	static const RectItem commandBarRects[] = {
+		{  6, 4,  41, 34, kCBAVerbTalk}, 
+		{ 51, 4,  86, 34, kCBAVerbGet}, 
+		{ 96, 4, 131, 34, kCBAUseItem},
+		{141, 4, 176, 34, kCBAVerbLook}, 
+		{186, 4, 221, 34, kCBAInventory}, 
+		{231, 4, 266, 34, kCBAMap},
+		{276, 4, 311, 34, kCBAMenu}};
+	const int commandBarItemCount = 6; // Intentionally doesn't match actual count!
+
+	int commandBarStatus = 0;
+	int animFrameCounter = 0;
+	
+	_menuStatus++;
+	
+	waitForKeys();
+
+	// TODO: copyScreens(vgaScreen, _sceneBackground);
+	// TODO: copyScreens(vgaScreen, _workScreen);
+	// TODO: setMouseCursor(1, 0);
+
+	_commandBarSelectedItem = kCBANone;
+
+	while (commandBarStatus == 0) {
+		int mouseSelectedItem, commandBarAction = kCBANone;
+	
+		mouseSelectedItem = findRect(commandBarRects, _mouseX, _mouseY, commandBarItemCount + 1, -1);
+		if (mouseSelectedItem != -1)
+			_commandBarSelectedItem = mouseSelectedItem;
+			
+		drawCommandBar(_commandBarSelectedItem,	animFrameCounter++);		
+		_screen->update();
+		_system->delayMillis(40); // TODO
+
+		handleEvents();
+
+		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
+			continue;
+
+		if (_rightButton) {
+			commandBarAction = kCBAExit;
+		} else if (_leftButton && _commandBarSelectedItem != -1) {
+			commandBarAction = _commandBarSelectedItem;
+		}
+		
+		switch (_keyScancode) {
+		case Common::KEYCODE_RIGHT:
+			if (_commandBarSelectedItem == commandBarItemCount) {
+				if (mouseSelectedItem == _commandBarSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_commandBarSelectedItem = 0;
+			} else {
+				if (mouseSelectedItem == _commandBarSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_commandBarSelectedItem++;
+			}
+			break;
+		case Common::KEYCODE_LEFT:
+			if (_commandBarSelectedItem == 0) {
+				if (mouseSelectedItem == _commandBarSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_commandBarSelectedItem = commandBarItemCount;
+			} else {
+				if (mouseSelectedItem == _commandBarSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_commandBarSelectedItem--;
+			}
+			break;
+		case Common::KEYCODE_ESCAPE:
+		case Common::KEYCODE_TAB:
+			commandBarAction = kCBAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			commandBarAction = _commandBarSelectedItem;
+			break;			
+		case Common::KEYCODE_t:
+			commandBarAction = kCBAVerbTalk;
+			break;
+		case Common::KEYCODE_g:
+			commandBarAction = kCBAVerbGet;
+			break;
+		case Common::KEYCODE_l:
+			commandBarAction = kCBAVerbLook;
+			break;
+		case Common::KEYCODE_o:
+			commandBarAction = kCBAInventory;
+			break;
+		case Common::KEYCODE_u:
+			commandBarAction = kCBAUseItem;
+			break;
+		case Common::KEYCODE_d:
+			commandBarAction = kCBAMenu;
+			break;
+		case Common::KEYCODE_m:
+			commandBarAction = kCBAMap;
+			break;
+		default:
+			break;			
+		}
+		
+		if (commandBarAction >= 0) {
+			drawCommandBar(commandBarAction, animFrameCounter);		
+			_screen->update();
+		}
+		
+		switch (commandBarAction) {
+		case kCBANone:
+			break;
+		case kCBAExit:
+			commandBarStatus = 2;
+			break;
+		case kCBAVerbTalk:
+			_cmdTalk = true;
+			commandBarStatus = 1;
+			break;
+		case kCBAVerbGet:
+			_cmdGet = true;
+			commandBarStatus = 1;
+			break;
+		case kCBAVerbLook:
+			_cmdLook = true;
+			commandBarStatus = 1;
+			break;
+		case kCBAUseItem:
+			invUseItem();
+			commandBarStatus = 1;
+			break;
+		case kCBAInventory:
+			commandBarStatus = handleInventory();
+			break;
+		case kCBAMap:
+			commandBarStatus = handleMap();
+			break;
+		case kCBAMenu:
+			// TODO: Disk menu
+			break;
+		}								
+
+		waitForKeys();
+	
+	}
+
+	waitForKeys();
+
+	_menuStatus--;
+
+	loadSceneBackground();
+
+}
+	
+/* Disk menu */
+
+void CometEngine::drawDiskMenu(int selectedItem) {
+
+	const int x = 137;
+	const int y = 65;
+	const int itemHeight = 23;
+
+	_screen->drawAnimationElement(_iconSprite, 10, x, y);
+	_screen->drawAnimationElement(_iconSprite, 11, x, y + selectedItem * itemHeight);
+
+}
+
 } // End of namespace Comet
