@@ -217,7 +217,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->write(_scene->_boundsMap, 320);
 	
 	for (int i = 0; i < 256; i++)
-		out->writeUint16LE(_itemStatus[i]);
+		out->writeUint16LE(_inventoryItemStatus[i]);
 
 	for (int i = 0; i < 256; i++)
 		out->writeUint16LE(_scriptVars[i]);
@@ -373,7 +373,7 @@ void CometEngine::loadgame(const char *filename) {
 	in->read(_scene->_boundsMap, 320);
 
 	for (int i = 0; i < 256; i++)
-		_itemStatus[i] = in->readUint16LE();
+		_inventoryItemStatus[i] = in->readUint16LE();
 
 	for (int i = 0; i < 256; i++)
 		_scriptVars[i] = in->readUint16LE();

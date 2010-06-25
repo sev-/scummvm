@@ -248,7 +248,7 @@ public:
 	int _gameLoopCounter;
 	
 	bool _cmdLook, _cmdGet, _cmdTalk;
-	int _invActiveItem;
+	int _currentInventoryItem;
 	byte _invSelectionColor;
 
 	int _textColorFlag;
@@ -295,8 +295,8 @@ public:
 	
 	int handleInventory();
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
-	void invUseItem();
-	void invCheckActiveItem();
+	void useCurrentInventoryItem();
+	void checkCurrentInventoryItem();
 	int handleReadBook();
 	void drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor);
 	void bookTurnPage(bool turnDirection);
@@ -407,7 +407,7 @@ public:
 
 	/* Script */
 	int16 *_systemVars[256];
-	int16 _scriptVars[256], _itemStatus[256];
+	int16 _scriptVars[256], _inventoryItemStatus[256];
 	void loadAndRunScript(bool loadingGame = false);
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);

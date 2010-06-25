@@ -435,7 +435,7 @@ int16 *ScriptInterpreter::getVarPointer(int varIndex) {
 	} else if (varIndex < 2000) {
 		return &_vm->_scriptVars[varIndex - 1000];
 	} else {
-		return &_vm->_itemStatus[varIndex - 2000];
+		return &_vm->_inventoryItemStatus[varIndex - 2000];
 	}
 	
 }

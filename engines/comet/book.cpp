@@ -6,7 +6,8 @@ namespace Comet {
 
 int CometEngine::handleReadBook() {
 
-	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1, result = 0;
+	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
+	int bookStatus = 0;
 
 	// Use values from script; this is the most current diary entry
 	pageNumber = _scriptVars[1];
@@ -17,7 +18,7 @@ int CometEngine::handleReadBook() {
 	// Set speech file
 	openVoiceFile(7);
 
-	while (!result /*TODO:check for quit*/) {
+	while (bookStatus == 0/*TODO:check for quit*/) {
 
 		if (currPageNumber != pageNumber) {
 			drawBookPage(pageNumber, pageCount, 64);
@@ -43,10 +44,10 @@ int CometEngine::handleReadBook() {
 		
 		switch (_keyScancode) {
 		case Common::KEYCODE_RETURN:
-			result = 1;
+			bookStatus = 1;
 			break;
 		case Common::KEYCODE_ESCAPE:
-			result = 2;
+			bookStatus = 2;
 			break;
 		case Common::KEYCODE_LEFT:
 			if (pageNumber > 0) {
@@ -78,7 +79,7 @@ int CometEngine::handleReadBook() {
 
 	openVoiceFile(_narFileIndex);
 
-	return 2 - result;
+	return 2 - bookStatus;
 
 }
 
@@ -107,9 +108,7 @@ void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fon
 	_screen->setFontColor(fontColor);
 	
 	while (*pageText != 0 && *pageText != '*') {
-		x = xadd + (106 - _screen->_font->getTextWidth(pageText)) / 2;
-		if (x < 0)
-			x = 0;
+		x = MAX(xadd + (106 - _screen->_font->getTextWidth(pageText)) / 2, 0);
 		_screen->drawText(x, yadd + lineNumber * 10, pageText);
 		if (++lineNumber == 13) {
 			xadd += 115;
