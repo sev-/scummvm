@@ -188,7 +188,7 @@ void CometEngine::initData() {
 	memcpy(_palette, _ctuPal, 768);
 	
 	memset(_scriptVars, 0, sizeof(_scriptVars));
-	memset(_itemStatus, 0, sizeof(_itemStatus));
+	memset(_inventoryItemStatus, 0, sizeof(_inventoryItemStatus));
 
 	_screen->setFontColor(19);
 	unblockInput();
@@ -392,7 +392,7 @@ void CometEngine::getItemInSight() {
 	if (sceneItemIndex != 0) {
 		SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
 		if (sceneItem->paramType == 0) {
-			_itemStatus[sceneItem->itemIndex] = 1;
+			_inventoryItemStatus[sceneItem->itemIndex] = 1;
 			_inventoryItemIndex = sceneItem->itemIndex;
 			sceneItem->active = false;
 			showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex));
@@ -1106,7 +1106,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_u:
-		invUseItem();
+		useCurrentInventoryItem();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
@@ -1549,16 +1549,16 @@ void CometEngine::drawCommandBar(int selectedItem, int animFrameCounter) {
 	_screen->drawAnimationElement(_iconSprite, 0, 0, 0);
 	_screen->drawAnimationElement(_iconSprite, selectedItem + 1, 0, 0);
 
-	if (_invActiveItem >= 0 && _itemStatus[_invActiveItem] == 0) {
-		_invActiveItem = -1;
-		for (int inventoryItem = 0; inventoryItem <= 255 && _invActiveItem == -1; inventoryItem++) {
-			if (_itemStatus[inventoryItem] > 0)
-				_invActiveItem = inventoryItem;
+	if (_currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0) {
+		_currentInventoryItem = -1;
+		for (int inventoryItem = 0; inventoryItem <= 255 && _currentInventoryItem == -1; inventoryItem++) {
+			if (_inventoryItemStatus[inventoryItem] > 0)
+				_currentInventoryItem = inventoryItem;
 		}
 	}	
 
-	if (_invActiveItem >= 0)
-		drawAnimatedIcon(_inventoryItemSprites, _invActiveItem, x, y, animFrameCounter);
+	if (_currentInventoryItem >= 0)
+		drawAnimatedIcon(_inventoryItemSprites, _currentInventoryItem, x, y, animFrameCounter);
 	
 }
 
@@ -1600,8 +1600,8 @@ void CometEngine::handleCommandBar() {
 	while (commandBarStatus == 0) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
 	
-		mouseSelectedItem = findRect(commandBarRects, _mouseX, _mouseY, commandBarItemCount + 1, -1);
-		if (mouseSelectedItem != -1)
+		mouseSelectedItem = findRect(commandBarRects, _mouseX, _mouseY, commandBarItemCount + 1, kCBANone);
+		if (mouseSelectedItem != kCBANone)
 			_commandBarSelectedItem = mouseSelectedItem;
 			
 		drawCommandBar(_commandBarSelectedItem,	animFrameCounter++);		
@@ -1615,7 +1615,7 @@ void CometEngine::handleCommandBar() {
 
 		if (_rightButton) {
 			commandBarAction = kCBAExit;
-		} else if (_leftButton && _commandBarSelectedItem != -1) {
+		} else if (_leftButton && _commandBarSelectedItem != kCBANone) {
 			commandBarAction = _commandBarSelectedItem;
 		}
 		
@@ -1702,7 +1702,7 @@ void CometEngine::handleCommandBar() {
 			commandBarStatus = 1;
 			break;
 		case kCBAUseItem:
-			invUseItem();
+			useCurrentInventoryItem();
 			commandBarStatus = 1;
 			break;
 		case kCBAInventory:

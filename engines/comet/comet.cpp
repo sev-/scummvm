@@ -143,7 +143,7 @@ Common::Error CometEngine::run() {
 	_cmdGet = false;
 	_cmdTalk = false;
 	
-	_invActiveItem = -1;
+	_currentInventoryItem = -1;
 	
 	_animIndex = -1;
 
@@ -184,6 +184,8 @@ Common::Error CometEngine::run() {
 	_talkieMode = 1;
 	_textSpeed = 0;
 	//_music->playMusic(4);
+
+	_system->showMouse(true);
 
 //#define DOINTRO
 
@@ -351,7 +353,7 @@ Common::Error CometEngine::run() {
 		/* Debugging helpers ends here */
 
 		updateGame();
-		invCheckActiveItem();
+		checkCurrentInventoryItem();
 
 #if 1
 		//DEBUG - jump to scene
