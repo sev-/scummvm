@@ -113,7 +113,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_nop);
 	// 25
 	RegisterOpcode(o1_addSceneObject);
-	RegisterOpcode(o1_nop);
+	RegisterOpcode(o1_endIntroLoop);
 	RegisterOpcode(o1_startScript);
 	RegisterOpcode(o1_stopScript);
 	RegisterOpcode(o1_startMultipleScripts);
@@ -640,6 +640,10 @@ void ScriptInterpreter::o1_addSceneObject(Script *script) {
 	_vm->addSceneItem(itemIndex, x, y, 0);
 }
 
+void ScriptInterpreter::o1_endIntroLoop(Script *script) {
+	_vm->_endIntroLoop = true;
+}
+
 void ScriptInterpreter::o1_startScript(Script *script) {
 	ARG_BYTE(scriptNumber);
 	if (scriptNumber < _scriptCount) {
@@ -984,7 +988,7 @@ void ScriptInterpreter::o1_actorTalk(Script *script) {
 }
 
 void ScriptInterpreter::o1_loadSavegame(Script *script) {
-	_vm->_needToLoadSavegameFlag = true;
+	_vm->_loadgameRequested = true;
 	_yield = true;
 }
 

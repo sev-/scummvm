@@ -136,6 +136,7 @@ public:
 	void o1_initSceneBounds(Script *script);
 	void o1_initSceneExits(Script *script);
 	void o1_addSceneObject(Script *script);
+	void o1_endIntroLoop(Script *script);
 	void o1_startScript(Script *script);
 	void o1_stopScript(Script *script);
 	void o1_startMultipleScripts(Script *script);
