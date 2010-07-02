@@ -264,7 +264,7 @@ void CometEngine::updateGame() {
 
 	_script->runAllScripts();
 
-	if (_needToLoadSavegameFlag)
+	if (_loadgameRequested)
 		return;
 
 	drawSceneExits();
@@ -301,7 +301,6 @@ void CometEngine::updateGame() {
 
 	if (_debugRectangles) {
 	#if 0
-		debug(1, "CometEngine::updateGame() #A");
 		/* begin DEBUG rectangles */
 		for (uint32 i = 0; i < _blockingRects.size(); i++)
 			_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
@@ -323,7 +322,7 @@ void CometEngine::updateGame() {
 	
 	updateHeroLife();
 	
-	_needToLoadSavegameFlag = false;
+	_loadgameRequested = false;
 	
 	_cmdTalk = false;
 	_cmdGet = false;
@@ -711,30 +710,30 @@ void CometEngine::updateScreen() {
 		_clearScreenRequest = false;
 	}
 	
-	if (_currentModuleNumber == 9 && _currentSceneNumber == 0 && _introPaletteState == 0) {
+	if (_currentModuleNumber == 9 && _currentSceneNumber == 0 && _paletteStatus == 0) {
 		memcpy(_paletteBuffer, _ctuPal, 768);
 		memcpy(_ctuPal, _pali0Pal, 768);
 		memcpy(_palette, _pali0Pal, 768);
 		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_introPaletteState = 3;
-	} else if (_currentModuleNumber == 9 && _currentSceneNumber == 1 && _introPaletteState == 3) {
+		_paletteStatus = 3;
+	} else if (_currentModuleNumber == 9 && _currentSceneNumber == 1 && _paletteStatus == 3) {
 		memcpy(_ctuPal, _cdintroPal, 768);
 		memcpy(_palette, _cdintroPal, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_introPaletteState = 2;
-	} else if (_currentModuleNumber == 5 && _currentSceneNumber == 0 && (_introPaletteState == 2 || _introPaletteState == 3)) {
+		_paletteStatus = 2;
+	} else if (_currentModuleNumber == 5 && _currentSceneNumber == 0 && (_paletteStatus == 2 || _paletteStatus == 3)) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
   		_screen->clearScreen();
 		_screen->setFullPalette(_ctuPal);
-		_introPaletteState = 0;
-	} else if (_currentModuleNumber == 0 && _currentSceneNumber == 0 && _introPaletteState != 0) {
+		_paletteStatus = 0;
+	} else if (_currentModuleNumber == 0 && _currentSceneNumber == 0 && _paletteStatus != 0) {
 		memcpy(_ctuPal, _paletteBuffer, 768);
 		memcpy(_palette, _paletteBuffer, 768);
 		_screen->setFullPalette(_ctuPal);
-		_introPaletteState = 0;
+		_paletteStatus = 0;
 	}
 
 	_screen->update();
@@ -1832,6 +1831,146 @@ int CometEngine::handleDiskMenu() {
 	loadSceneBackground();
 
 	return 0;
+}
+
+void CometEngine::initSystemVars() {
+	_systemVars[0] = &_prevSceneNumber;
+	for (int i = 0; i < 10; i++) {
+		_systemVars[1 + i * 3] = &_actors[i].life;
+		_systemVars[2 + i * 3] = &_actors[i].x;
+		_systemVars[3 + i * 3] = &_actors[i].y;
+	}
+	_systemVars[31] = &_mouseButtons4;
+	_systemVars[32] = &_scriptMouseFlag;
+	_systemVars[33] = &_scriptRandomValue;
+	_systemVars[34] = &_prevModuleNumber;
+}
+
+void CometEngine::introMainLoop() {
+
+	_endIntroLoop = false;
+
+	while (!_endIntroLoop /*TODO:Check for quit*/) {
+		handleEvents();
+		
+		switch (_keyScancode) {
+		case Common::KEYCODE_ESCAPE:
+			_endIntroLoop = true;
+			break;
+		case Common::KEYCODE_RETURN	:
+			skipText();
+			break;
+		case Common::KEYCODE_p:
+			// TODO: checkForPauseGame();
+			break;
+		default:			
+			break;
+		}
+
+		if (_currentSceneNumber == 0 && _currentModuleNumber == 0)
+			_endIntroLoop = true;
+
+		updateGame();
+		_system->delayMillis(40);//TODO
+
+	}
+
+}
+
+void CometEngine::gameMainLoop() {
+
+	/* Hacked together main loop */
+	_endLoopFlag = false;
+	while (!_endLoopFlag) {
+		handleEvents();
+
+#if 0
+		// Test the "beam-room"
+		_scriptVars[116] = 1;
+		_scriptVars[139] = 1;
+		_moduleNumber = 7;
+		_sceneNumber = 4;
+#endif			
+
+		if (_currentModuleNumber == 7 && _currentSceneNumber == 1 && _paletteStatus == 0) {
+			memcpy(_paletteBuffer, _ctuPal, 768);
+			memcpy(_ctuPal, _flashbakPal, 768);
+			memcpy(_palette, _flashbakPal, 768);
+			_screen->clearScreen();
+			_screen->setFullPalette(_ctuPal);
+			_paletteStatus = 1;
+		} else if (_currentModuleNumber == 2 && _currentSceneNumber == 22 && _paletteStatus == 1) {
+			memcpy(_ctuPal, _paletteBuffer, 768);
+			memcpy(_palette, _paletteBuffer, 768);
+			_screen->clearScreen();
+			_screen->setFullPalette(_ctuPal);
+			_paletteStatus = 0;
+		}
+		
+		if (_scriptVars[9] == 1) {
+			// TODO: Copy vga screen to scene background
+			_scriptVars[9] = runPuzzle();
+			loadSceneBackground();
+		}
+		
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
+			handleKeyInput();
+		} else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
+			skipText();
+		}
+
+		// Debugging keys
+		switch (_keyScancode) {
+		case Common::KEYCODE_r:
+			_debugRectangles = !_debugRectangles;
+			break;
+		case Common::KEYCODE_F7:
+			savegame("comet.000", "Quicksave");
+			break;
+		case Common::KEYCODE_F9:
+			loadgame("comet.000");
+			break;
+		case Common::KEYCODE_KP_PLUS:
+			_sceneNumber++;
+			debug("## New _sceneNumber = %d", _sceneNumber);
+			break;						
+		case Common::KEYCODE_KP_MINUS:
+			if (_sceneNumber > 0) {
+				debug("## New _sceneNumber = %d", _sceneNumber);
+				_sceneNumber--;
+			}
+			break;						
+		case Common::KEYCODE_KP_MULTIPLY:
+			_moduleNumber++;
+			_sceneNumber = 0;
+			debug("## New _moduleNumber = %d", _moduleNumber);
+			break;						
+		case Common::KEYCODE_KP_DIVIDE:
+			if (_moduleNumber > 0) {
+				_moduleNumber--;
+				_sceneNumber = 0;
+				debug("## New _moduleNumber = %d", _moduleNumber);
+			}
+			break;						
+		default:
+			break;
+		}
+
+		updateGame();
+		_system->delayMillis(40);//TODO
+
+		if (_loadgameRequested) {
+			/* TODO:
+				while (savegame_load() == 0);
+				savegame_load
+			*/
+			_loadgameRequested = false;
+		}
+
+		checkCurrentInventoryItem();
+
+	}
+	
 }
 
 } // End of namespace Comet

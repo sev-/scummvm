@@ -210,7 +210,7 @@ public:
 	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
-	int _introPaletteState;
+	int _paletteStatus;
 	byte *_paletteBuffer;
 	int _paletteBrightness;
 	bool _clearScreenRequest;
@@ -234,7 +234,7 @@ public:
 	int _blockedInput;
 	int16 _scriptMouseFlag;
 
-	bool _needToLoadSavegameFlag;
+	bool _loadgameRequested;
 	
 	int16 _startupModuleNumber, _startupSceneNumber;
 	int16 _moduleNumber, _sceneNumber;
@@ -246,6 +246,7 @@ public:
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
 	int _gameLoopCounter;
+	bool _endIntroLoop;
 	
 	bool _cmdLook, _cmdGet, _cmdTalk;
 	int _currentInventoryItem;
@@ -487,6 +488,11 @@ public:
 	int _diskMenuSelectedItem;
 	void drawDiskMenu(int selectedItem);
 	int handleDiskMenu();
+
+	void initSystemVars();
+
+	void introMainLoop();
+	void gameMainLoop();
 
 public:
 	/* Misc */
