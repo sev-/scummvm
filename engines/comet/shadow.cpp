@@ -545,7 +545,7 @@ void CometEngine::drawActor(int actorIndex) {
 	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
 
 	if (actor->status == 2) {
-		actor->interpolationStep = drawActorAnimation(animation, frameList, actor->animFrameIndex, actor->interpolationStep,
+		actor->interpolationStep = _screen->drawAnimation(animation, frameList, actor->animFrameIndex, actor->interpolationStep,
 			x, y, actor->animFrameCount);
 	} else {
 		if (actorIndex == 0 && _itemInSight && actor->direction == 1)
@@ -562,56 +562,6 @@ void CometEngine::drawActor(int actorIndex) {
 	_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (byte*)temp);
 #endif
 
-}
-
-int CometEngine::drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int interpolationStep, int x, int y, int animFrameCount) {
-
-	AnimationFrame *frame = frameList->frames[animFrameIndex];
-
-	int drawX = x, drawY = y;
-	int index = frame->elementIndex;
-	int maxInterpolationStep = frame->flags & 0x3FFF;
-	int gfxMode = frame->flags >> 14;
-	int result = 0;
-
-	for (int i = 0; i <= animFrameIndex; i++) {
-		drawX += frameList->frames[i]->xOffs;
-		drawY += frameList->frames[i]->yOffs;
-	}
-
-	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
-		gfxMode, x, y, drawX, drawY, gfxMode, maxInterpolationStep);
-
-	switch (gfxMode) {
-	case 0:
-		_screen->drawAnimationElement(animation, index, drawX, drawY);
-		break;
-	case 1:
-	{
-		int nextFrameIndex = animFrameIndex + 1;
-		if (nextFrameIndex >= animFrameCount)
-			nextFrameIndex = animFrameIndex;
-		AnimationFrame *nextFrame = frameList->frames[nextFrameIndex];
-		InterpolatedAnimationElement interElem;
-		AnimationElement *elem1 = animation->_elements[frame->elementIndex];
-		AnimationElement *elem2 = animation->_elements[nextFrame->elementIndex];
-	
-		_screen->buildInterpolatedAnimationElement(elem1, elem2, &interElem);
-		_screen->drawInterpolatedAnimationElement(&interElem, drawX, drawY, maxInterpolationStep == 0 ? 1 : maxInterpolationStep);
-		
-		interpolationStep++;
-		if (interpolationStep >= maxInterpolationStep)
-			interpolationStep = 0;
-			
-		result = interpolationStep;			
-
-		break;		
-	}				
-	default:
-		debug("CometEngine::drawActorAnimation() gfxMode == %d not yet implemented", gfxMode);
-	}
-
-	return result;
 }
 
 void CometEngine::drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
@@ -1460,7 +1410,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		
 			memcpy(_screen->getScreen(), _sceneBackground, 64000);
 
-			interpolationStep = drawActorAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
+			interpolationStep = _screen->drawAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
 						
 			updateTextDialog();
 			
@@ -1737,9 +1687,151 @@ void CometEngine::drawDiskMenu(int selectedItem) {
 	const int y = 65;
 	const int itemHeight = 23;
 
-	_screen->drawAnimationElement(_iconSprite, 10, x, y);
+	_screen->drawAnimationElement(_iconSprite, 10, 0, 0);
 	_screen->drawAnimationElement(_iconSprite, 11, x, y + selectedItem * itemHeight);
 
+}
+
+int CometEngine::handleDiskMenu() {
+	
+	const int kDMANone		= -1;
+	const int kDMAExit		= -2;
+	const int kDMASave		= 0;
+	const int kDMALoad		= 1;
+	const int kDMAOptions	= 2;
+	const int kDMAQuit		= 3;
+
+	static const GuiRectangle diskMenuRects[] = {
+		{136,  64, 184,  80, kDMASave},
+		{136,  87, 184, 103, kDMALoad},
+		{136, 110, 184, 126, kDMAOptions},
+		{136, 133, 184, 149, kDMAQuit}};		
+
+	int diskMenuStatus = 0;
+	
+	_menuStatus++;
+	
+	waitForKeys();
+
+	// TODO
+
+	_diskMenuSelectedItem = kDMASave;
+
+	while (diskMenuStatus == 0) {
+		int mouseSelectedItem, diskMenuAction = kDMANone;
+	
+		mouseSelectedItem = findRect(diskMenuRects, _mouseX, _mouseY, 4, kDMANone);
+		if (mouseSelectedItem != kDMANone)
+			_diskMenuSelectedItem = mouseSelectedItem;
+			
+		drawDiskMenu(_diskMenuSelectedItem);		
+		_screen->update();
+		_system->delayMillis(40); // TODO
+
+		handleEvents();
+
+		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
+			continue;
+
+		if (_rightButton) {
+			diskMenuAction = kDMAExit;
+		} else if (_leftButton && _diskMenuSelectedItem != kDMANone) {
+			diskMenuAction = _diskMenuSelectedItem;
+		}
+		
+		switch (_keyScancode) {
+		case Common::KEYCODE_DOWN:
+			if (_diskMenuSelectedItem == 3) {
+				if (mouseSelectedItem == _diskMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_diskMenuSelectedItem = 0;
+			} else {
+				if (mouseSelectedItem == _diskMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_diskMenuSelectedItem++;
+			}
+			break;
+		case Common::KEYCODE_UP:
+			if (_diskMenuSelectedItem == 0) {
+				if (mouseSelectedItem == _diskMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_diskMenuSelectedItem = 3;
+			} else {
+				if (mouseSelectedItem == _diskMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_diskMenuSelectedItem--;
+			}
+			break;
+		case Common::KEYCODE_ESCAPE:
+			diskMenuAction = kDMAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			diskMenuAction = _diskMenuSelectedItem;
+			break;			
+		case Common::KEYCODE_s:
+			diskMenuAction = kDMASave;
+			break;
+		case Common::KEYCODE_l:
+			diskMenuAction = kDMALoad;
+			break;
+		case Common::KEYCODE_t:
+			diskMenuAction = kDMAOptions;
+			break;
+		case Common::KEYCODE_x:
+			diskMenuAction = kDMAQuit;
+			break;
+		default:
+			break;			
+		}
+		
+		if (diskMenuAction >= 0) {
+			drawDiskMenu(_diskMenuSelectedItem);		
+			_screen->update();
+		}
+		
+		switch (diskMenuAction) {
+		case kDMANone:
+			break;
+		case kDMAExit:
+			diskMenuStatus = 2;
+			break;
+		case kDMASave:
+			// TODO
+			debug("disk menu: save game");
+			diskMenuStatus = 0;
+			break;
+		case kDMALoad:
+			// TODO
+			debug("disk menu: load game");
+			diskMenuStatus = 0;
+			break;
+		case kDMAOptions:
+			// TODO
+			debug("disk menu: options");
+			diskMenuStatus = 0;
+			break;
+		case kDMAQuit:
+			// TODO
+			debug("disk menu: quit");
+			diskMenuStatus = 0;
+			break;
+		}								
+
+		waitForKeys();
+	
+	}
+
+	waitForKeys();
+
+	_menuStatus--;
+
+	loadSceneBackground();
+
+	return 0;
 }
 
 } // End of namespace Comet

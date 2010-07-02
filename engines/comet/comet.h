@@ -324,7 +324,6 @@ public:
 	
 	void drawSpriteQueue();
 	void drawActor(int actorIndex);
-	int drawActorAnimation(Animation *animation, AnimationFrameList *frameList, int animFrameIndex, int interpolationStep, int x, int y, int animFrameCount);
 	void drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 	
 	void updateTextDialog();
@@ -487,6 +486,7 @@ public:
 	/* Disk menu */
 	int _diskMenuSelectedItem;
 	void drawDiskMenu(int selectedItem);
+	int handleDiskMenu();
 
 public:
 	/* Misc */
