@@ -107,7 +107,7 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	drawSceneDecoration();
 	memcpy(_sceneBackground, _screen->getScreen(), 64000);
 
-	/*TODO
+	/* TODO: Unused in Comet CD
 	if (screenCopyFlag != 0)
 		screen_c_1();
 	*/
@@ -132,13 +132,6 @@ void CometEngine::drawSceneDecoration() {
 }
 
 /* Graphics */
-
-#if 0
-void plotProc(int x, int y, int color, void *data) {
-	if (x >= 0 && x < 320 && y >= 0 && y < 200)
-		((byte*)data)[x + y * 320] = color;
-}
-#endif
 
 void CometEngine::initAndLoadGlobalData() {
 
@@ -234,11 +227,6 @@ void CometEngine::updateGame() {
 	_gameLoopCounter++;
 	_textColorFlag++;
 
-#if 0
-	debug(0, "_moduleNumber = %d; _currentModuleNumber = %d", _moduleNumber, _currentModuleNumber);
-	debug(0, "_sceneNumber = %d; _currentSceneNumber = %d", _sceneNumber, _currentSceneNumber);
-#endif
-
 	if (_moduleNumber != _currentModuleNumber)
 		updateModuleNumber();
 
@@ -255,13 +243,6 @@ void CometEngine::updateGame() {
 
 	handleInput();
 	
-#if 0	
-	// Test for mouse-based walking, it even works somewhat
-	if (_leftButton) {
-		actorStartWalking(0, _mouseX, _mouseY);
-	}
-#endif
-
 	_script->runAllScripts();
 
 	if (_loadgameRequested)
@@ -280,7 +261,7 @@ void CometEngine::updateGame() {
 	if (_talkieMode == 0)
 		updateTextDialog();
 
-	if (_talkieMode == 1 && (_textActive || _textBubbleActive))
+	if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 || _textBubbleActive))
 		updateText();
 
 	if (_dialog->isRunning())
@@ -288,35 +269,8 @@ void CometEngine::updateGame() {
 
 	updateTalkAnims();
 
-	if (_talkieMode == 2 || _textBubbleActive)
-		updateText();
-
-	if (_dialog->isRunning())
-		_dialog->update();
-		
-	updateTalkAnims();
-	
 	if (_scriptVars[11] < 100 && _scriptVars[10] == 1)
 		drawTextIllsmouth();
-
-	if (_debugRectangles) {
-	#if 0
-		/* begin DEBUG rectangles */
-		for (uint32 i = 0; i < _blockingRects.size(); i++)
-			_screen->fillRect(_blockingRects[i].left, _blockingRects[i].top, _blockingRects[i].right, _blockingRects[i].bottom, 120);
-		_screen->fillRect(_actors[0].x - _actors[0].deltaX, _actors[0].y - _actors[0].deltaY,
-			_actors[0].x + _actors[0].deltaX, _actors[0].y, 150);
-		for (uint32 index = 0; index < _exits.size(); index++) {
-			int x3, y3, x4, y4;
-			getExitRect(index, x3, y3, x4, y4);
-			//debug(4, "SCENE EXIT: (%d, %d, %d, %d); direction = %d; moduleNumber = %d; sceneNumber = %d", x3, y3, x4, y4, _exits[index].directionIndex, _exits[index].moduleNumber, _exits[index].sceneNumber);
-			_screen->fillRect(x3, y3, x4, y4, 25);
-		}
-		for (int x = 0;  x < 320; x++)
-			_screen->putPixel(x, _boundsMap[x], 0);
-		/* end DEBUG rectangles */
-	#endif
-	}
 
 	updateScreen();
 	
