@@ -272,6 +272,11 @@ Common::Error CometEngine::run() {
 	handleCommandBar();
 #endif
 
+#if 1
+	_screen->setFullPalette(_ctuPal);
+	handleDiskMenu();
+#endif
+
 #if 0
 	Animation *anim1 = _animationMan->loadAnimationResource("A00.PAK", 12);
 	AnimationElement *elem1 = anim1->_elements[0];

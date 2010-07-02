@@ -1413,6 +1413,56 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 
 }
 
+int Screen::drawAnimation(Animation *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount) {
+
+	AnimationFrame *frame = frameList->frames[frameIndex];
+
+	int drawX = x, drawY = y;
+	int index = frame->elementIndex;
+	int maxInterpolationStep = frame->flags & 0x3FFF;
+	int gfxMode = frame->flags >> 14;
+	int result = 0;
+
+	for (int i = 0; i <= frameIndex; i++) {
+		drawX += frameList->frames[i]->xOffs;
+		drawY += frameList->frames[i]->yOffs;
+	}
+
+	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
+		gfxMode, x, y, drawX, drawY, gfxMode, maxInterpolationStep);
+
+	switch (gfxMode) {
+	case 0:
+		drawAnimationElement(animation, index, drawX, drawY);
+		break;
+	case 1:
+	{
+		int nextFrameIndex = frameIndex + 1;
+		if (nextFrameIndex >= frameCount)
+			nextFrameIndex = frameIndex;
+		AnimationFrame *nextFrame = frameList->frames[nextFrameIndex];
+		InterpolatedAnimationElement interElem;
+		AnimationElement *elem1 = animation->_elements[frame->elementIndex];
+		AnimationElement *elem2 = animation->_elements[nextFrame->elementIndex];
+	
+		buildInterpolatedAnimationElement(elem1, elem2, &interElem);
+		drawInterpolatedAnimationElement(&interElem, drawX, drawY, maxInterpolationStep == 0 ? 1 : maxInterpolationStep);
+		
+		interpolationStep++;
+		if (interpolationStep >= maxInterpolationStep)
+			interpolationStep = 0;
+			
+		result = interpolationStep;			
+
+		break;		
+	}				
+	default:
+		debug("Screen::drawAnimation() gfxMode == %d not yet implemented", gfxMode);
+	}
+
+	return result;
+}
+
 void Screen::setClipRect(int clipX1, int clipY1, int clipX2, int clipY2) {
 	// The clipping rect is only used in drawAnimationCelSprite
 	_clipX1 = clipX1;

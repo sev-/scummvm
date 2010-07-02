@@ -85,6 +85,8 @@ public:
 	void buildInterpolatedAnimationElement(AnimationElement *elem1, AnimationElement *elem2,
 		InterpolatedAnimationElement *interElem);
 
+	int drawAnimation(Animation *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount);
+
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
 	void setClipX(int clipX1, int clipX2);
 	void setClipY(int clipY1, int clipY2);
