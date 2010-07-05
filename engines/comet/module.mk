@@ -5,25 +5,23 @@ MODULE_OBJS = \
 	animation.o \
 	animationmgr.o \
 	book.o \
+	comet.o \
 	detection.o \
 	dialog.o \
 	font.o \
-	comet.o \
-	script.o \
-	pak.o \
-	puzzle.o \
-	unpack.o \
-	screen.o \
-	speech.o \
-	marche.o \
-	saveload.o \
-	shadow.o \
 	inventory.o \
 	map.o \
 	music.o \
-	sound.o \
+	pak.o \
+	puzzle.o \
+	saveload.o \
+	screen.o \
 	scene.o \
-	text.o
+	script.o \
+	shadow.o \
+	speech.o \
+	text.o \
+	unpack.o
 
 # This module can be built as a plugin
 ifdef BUILD_PLUGINS

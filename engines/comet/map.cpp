@@ -8,13 +8,13 @@ namespace Comet {
 
 int CometEngine::updateMap() {
 
-	static const Common::Point mapPoints[] = {
-		Common::Point(248, 126), Common::Point(226, 126), Common::Point(224, 150), Common::Point(204, 156),
-		Common::Point(178, 154), Common::Point(176, 138), Common::Point(152, 136), Common::Point(124, 134),
-		Common::Point(112, 148), Common::Point( 96, 132), Common::Point( 92, 114), Common::Point(146, 116),
-		Common::Point(176, 106), Common::Point(138, 100), Common::Point(104,  94), Common::Point( 82,  96),
-		Common::Point(172,  94), Common::Point(116,  80), Common::Point(134,  80), Common::Point(148,  86),
-		Common::Point(202, 118), Common::Point(178, 120), Common::Point(190,  92)
+	static const struct MapPoint { int16 x, y; } mapPoints[] = {
+		{248, 126}, {226, 126}, {224, 150}, {204, 156},
+		{178, 154}, {176, 138}, {152, 136}, {124, 134},
+		{112, 148}, { 96, 132}, { 92, 114}, {146, 116},
+		{176, 106}, {138, 100}, {104,  94}, { 82,  96},
+		{172,  94}, {116,  80}, {134,  80}, {148,  86},
+		{202, 118}, {178, 120}, {190,  92}
 	};
 
 	static const struct MapRect { int16 x1, y1, x2, y2; } mapRects[] = {
@@ -54,7 +54,7 @@ int CometEngine::updateMap() {
 	// seg002:344D	
 	while (mapStatus == 0) {
 
-		int16 currMapItemIndex, selectedMapItemIndex;
+		int16 currMapLocation, selectedMapLocation;
 
 		handleEvents();
 
@@ -105,33 +105,33 @@ int CometEngine::updateMap() {
 				
 		// seg002:3572
 
-		currMapItemIndex = -1;	
-		selectedMapItemIndex = -1;
+		currMapLocation = -1;	
+		selectedMapLocation = -1;
 
-		for (int16 mapItemIndex = 0; mapItemIndex < 10; mapItemIndex++) {
-			const MapRect &mapRect = mapRects[mapItemIndex];
-			if ((sceneBitMaskStatus & (1 << mapItemIndex)) && 
+		for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
+			const MapRect &mapRect = mapRects[mapLocation];
+			if ((sceneBitMaskStatus & (1 << mapLocation)) && 
 				cursorX >= mapRect.x1 && cursorX <= mapRect.x2 && 
 				cursorY >= mapRect.y1 && cursorY <= mapRect.y2) {
-				currMapItemIndex = mapItemIndex;
+				currMapLocation = mapLocation;
 				break;
 			}
 		}
 		
-		if (currMapItemIndex != -1) {
-			byte *locationName = _textReader->getString(2, 40 + currMapItemIndex);
+		if (currMapLocation != -1) {
+			byte *locationName = _textReader->getString(2, 40 + currMapLocation);
 			_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _screen->_font->getTextWidth(locationName)), 
 				cursorY - 6, locationName, 119, 120);
 			if (_keyScancode == Common::KEYCODE_RETURN || _leftButton) {
-				selectedMapItemIndex = currMapItemIndex;
+				selectedMapLocation = currMapLocation;
 			}
 		} else {
 			_screen->drawAnimationElement(_iconSprite, 51, cursorX, cursorY);
 		}
 
-		if (selectedMapItemIndex != -1) {
+		if (selectedMapLocation != -1) {
 			// seg002:36DA
-			const MapExit &mapExit = mapExits[selectedMapItemIndex];
+			const MapExit &mapExit = mapExits[selectedMapLocation];
 			_moduleNumber = mapExit.moduleNumber;
 			_sceneNumber = mapExit.sceneNumber;
 			if (sceneStatus1 == 1) {
@@ -141,7 +141,7 @@ int CometEngine::updateMap() {
 			}
 			if ((locationNumber == 7 || locationNumber == 8) &&
 				_scriptVars[5] == 2 && _scriptVars[6] == 0 &&
-				selectedMapItemIndex != 6 && selectedMapItemIndex != 7 && selectedMapItemIndex != 4) {
+				selectedMapLocation != 6 && selectedMapLocation != 7 && selectedMapLocation != 4) {
 				_sceneNumber += 36;
 			}
 			mapStatus = 2;
