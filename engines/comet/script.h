@@ -92,7 +92,7 @@ public:
 
 	void initializeScript();
 	void initializeScriptAfterLoadGame();
-	void prepareScript(int scriptNumber);
+	void initScript(int scriptNumber);
 	void runScript(int scriptNumber);
 	void runAllScripts();
 	//TODO: Use something like getGlobalVar(index) and setGlobalVar(index, value) instead?
@@ -149,7 +149,7 @@ public:
 	void o1_actorWalkTo(Script *script);
 	void o1_setPaletteBrightness(Script *script);
 	void o1_setSceneNumber(Script *script);
-	void o1_setAnimValues(Script *script);
+	void o1_setupActorAnim(Script *script);
 	void o1_setAnimationType(Script *script);
 	void o1_heroIncPositionY(Script *script);
 	void o1_setZoom(Script *script);
@@ -183,7 +183,7 @@ public:
 	void o1_actorTalk(Script *script);
 	void o1_loadSavegame(Script *script);
 	void o1_addSceneItem2(Script *script);
-	void o1_playAnim(Script *script);
+	void o1_playActorAnim(Script *script);
 	void o1_actorTalkPortrait(Script *script);
 	void o1_initActor(Script *script);
 	void o1_loadActorSprite(Script *script);

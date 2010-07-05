@@ -31,7 +31,7 @@ void CometEngine::actorInit(int itemIndex, int16 animationSlot) {
 	actor->visible = true;
 	actor->textX = -1;
 	actor->textY = -1;
-	actor->animSubIndex2 = -1;
+	actor->animPlayFrameIndex = -1;
 
 	if (itemIndex == 0)
 		actor->textColor = 21;
@@ -62,7 +62,7 @@ void CometEngine::actorSetAnimNumber(Actor *actor, int index) {
 	}
 	actor->animFrameIndex = 0;
 	actor->animIndex = index;
-	actor->animSubIndex2 = -1;
+	actor->animPlayFrameIndex = -1;
 	
 	debug(5, "actorSetAnimNumber() animIndex = %d; animFrameIndex = %d; animFrameCount = %d",
 		actor->animIndex, actor->animFrameIndex, actor->animFrameCount);
@@ -324,8 +324,8 @@ void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animN
 
 	if (animNumber != 255) {
 		_animIndex = actor->animIndex;
-		_animSubIndex2 = actor->animSubIndex2;
-		_animSubIndex = actor->animFrameIndex;
+		_animPlayFrameIndex = actor->animPlayFrameIndex;
+		_animFrameIndex = actor->animFrameIndex;
 		actorSetAnimNumber(actor, animNumber);
 		actor->status = 2;
 	} else {
@@ -414,7 +414,7 @@ void CometEngine::moveActorAroundBounds(int index, Actor *actor) {
 
 void CometEngine::updatePortraitAnimation(Actor *actor) {
 
-	if (actor->animSubIndex2 == -1) {
+	if (actor->animPlayFrameIndex == -1) {
 
 		// FIXME: This check is not in the original, find out why it's needed here...
 		if (actor->animationSlot == -1)
@@ -471,7 +471,7 @@ void CometEngine::updateActorAnimation(Actor *actor) {
 		actorSetAnimNumber(actor, actor->direction + actor->directionAdd - 1);
 	} else {
 
-		if (actor->animSubIndex2 == -1) {
+		if (actor->animPlayFrameIndex == -1) {
 
 			/* NOTE: See note below, but here we bail out. */
 			if (actor->animIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims.size())

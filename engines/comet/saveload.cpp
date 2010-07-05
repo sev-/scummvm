@@ -162,7 +162,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(actor.animFrameIndex);
 		out->writeUint16LE(actor.interpolationStep);
 		out->writeUint16LE(actor.animFrameCount);
-		out->writeUint16LE(actor.animSubIndex2);
+		out->writeUint16LE(actor.animPlayFrameIndex);
 		out->writeUint16LE(actor.deltaX);
 		out->writeUint16LE(actor.deltaY);
 		out->writeUint16LE(actor.collisionType);
@@ -312,7 +312,7 @@ void CometEngine::loadgame(const char *filename) {
 		actor.animFrameIndex = in->readUint16LE();
 		actor.interpolationStep = in->readUint16LE();
 		actor.animFrameCount = in->readUint16LE();
-		actor.animSubIndex2 = in->readUint16LE();
+		actor.animPlayFrameIndex = in->readUint16LE();
 		actor.deltaX = in->readUint16LE();
 		actor.deltaY = in->readUint16LE();
 		actor.collisionType = in->readUint16LE();

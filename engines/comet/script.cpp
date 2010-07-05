@@ -136,7 +136,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_actorSetClipY);
 	RegisterOpcode(o1_setSceneNumber);
 	// 45
-	RegisterOpcode(o1_setAnimValues);
+	RegisterOpcode(o1_setupActorAnim);
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setAnimationType);
 	RegisterOpcode(o1_heroIncPositionY);
@@ -186,7 +186,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 85
 	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_nop);// TODO: o1_waitForKey();
-	RegisterOpcode(o1_playAnim);
+	RegisterOpcode(o1_playActorAnim);
 	RegisterOpcode(o1_actorSetAnimNumber);
 	RegisterOpcode(o1_actorTalkPortrait);
 	// 90
@@ -218,7 +218,7 @@ void ScriptInterpreter::initializeScript() {
 	debug(2, "CometEngine::initializeScript()  _scriptCount = %d", _scriptCount);
 	
 	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++)
-		prepareScript(scriptNumber);
+		initScript(scriptNumber);
 
 	_scripts[0]->status = 0;
 	runScript(0);
@@ -238,7 +238,7 @@ void ScriptInterpreter::initializeScriptAfterLoadGame() {
 
 }
 
-void ScriptInterpreter::prepareScript(int scriptNumber) {
+void ScriptInterpreter::initScript(int scriptNumber) {
 
 	Script *script = _scripts[scriptNumber];
 
@@ -332,7 +332,7 @@ void ScriptInterpreter::processScriptDialog() {
 
 void ScriptInterpreter::processScriptTalk() {
 
-	if (_vm->_textActive == 0) {
+	if (!_vm->_textActive) {
 		_curScript->status &= ~kScriptTalking;
 		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_animIndex != -1)
@@ -342,8 +342,8 @@ void ScriptInterpreter::processScriptTalk() {
 		} else if (_vm->_animIndex != -1) {
 			Actor *actor = _vm->getActor(_vm->_talkActorIndex);
 			_vm->actorSetAnimNumber(actor, _vm->_animIndex);
-			actor->animSubIndex2 = _vm->_animSubIndex2;
-			actor->animFrameIndex = _vm->_animSubIndex;
+			actor->animPlayFrameIndex = _vm->_animPlayFrameIndex;
+			actor->animFrameIndex = _vm->_animFrameIndex;
 			_vm->_animIndex = -1;
 		}
 		debug(4, "*** talking finished");
@@ -647,7 +647,7 @@ void ScriptInterpreter::o1_endIntroLoop(Script *script) {
 void ScriptInterpreter::o1_startScript(Script *script) {
 	ARG_BYTE(scriptNumber);
 	if (scriptNumber < _scriptCount) {
-		prepareScript(scriptNumber);
+		initScript(scriptNumber);
 		_scripts[scriptNumber]->status &= ~kScriptPaused;
 	}
 }
@@ -660,7 +660,7 @@ void ScriptInterpreter::o1_stopScript(Script *script) {
 void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
 	int scriptNumber;
 	while ((scriptNumber = script->readByte()) != 255) {
-		prepareScript(scriptNumber);
+		initScript(scriptNumber);
 		_scripts[scriptNumber]->status &= ~kScriptPaused;
 	}
 }
@@ -697,11 +697,11 @@ void ScriptInterpreter::o1_subVar(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorDisableCollisions(Script *script) {
-	script->actor()->collisionType = 8;
+	script->actor()->collisionType = kCollisionDisabled;
 }
 
 void ScriptInterpreter::o1_actorEnableCollisions(Script *script) {
-	script->actor()->collisionType = 0;
+	script->actor()->collisionType = kCollisionNone;
 }
 
 void ScriptInterpreter::o1_actorWalkTo(Script *script) {
@@ -730,12 +730,12 @@ void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 	}
 }
 
-void ScriptInterpreter::o1_setAnimValues(Script *script) {
+void ScriptInterpreter::o1_setupActorAnim(Script *script) {
 	ARG_BYTE(animIndex);
 	ARG_BYTE(animFrameIndex);
 	script->actor()->animIndex = animIndex;
 	script->actor()->animFrameIndex = animFrameIndex;
-	script->actor()->animSubIndex2 = animFrameIndex;
+	script->actor()->animPlayFrameIndex = animFrameIndex;
 	script->actor()->status = 2;
 }
 
@@ -839,9 +839,9 @@ void ScriptInterpreter::o1_loadScene(Script *script) {
 }
 
 void ScriptInterpreter::o1_addBlockingRect(Script *script) {
-	ARG_BYTE(x1);
+	ARG_BYTEX(x1);
 	ARG_BYTE(y1);
-	ARG_BYTE(x2);
+	ARG_BYTEX(x2);
 	ARG_BYTE(y2);
 	_vm->_scene->addBlockingRect(x1, y1, x2, y2);
 }
@@ -940,7 +940,7 @@ void ScriptInterpreter::o1_addBeam(Script *script) {
 }
 
 void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
-	ARG_BYTE(x);
+	ARG_BYTEX(x);
 	ARG_BYTE(y);
 	_vm->_scene->removeBlockingRect(x, y);
 }
@@ -984,7 +984,6 @@ void ScriptInterpreter::o1_actorTalk(Script *script) {
 	_vm->actorTalkWithAnim(actorIndex, talkTextIndex, animNumber);
 	_curScript->status |= kScriptTalking;
 	_yield = true;
-
 }
 
 void ScriptInterpreter::o1_loadSavegame(Script *script) {
@@ -999,11 +998,10 @@ void ScriptInterpreter::o1_addSceneItem2(Script *script) {
 	_vm->addSceneItem(itemIndex, x, y, 1);
 }
 
-void ScriptInterpreter::o1_playAnim(Script *script) {
+void ScriptInterpreter::o1_playActorAnim(Script *script) {
 	o1_actorSetAnimNumber(script);
 	script->status |= kScriptAnimPlaying;
 	_yield = true;
-
 }
 
 void ScriptInterpreter::o1_actorSetAnimNumber(Script *script) {

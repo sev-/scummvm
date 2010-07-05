@@ -104,7 +104,7 @@ struct Actor {
 	int16 animFrameIndex;
 	int16 interpolationStep;
 	int16 animFrameCount;
-	int16 animSubIndex2;
+	int16 animPlayFrameIndex;
 	int16 deltaX, deltaY;
 	uint16 collisionType;
 	int16 collisionIndex;
@@ -394,7 +394,7 @@ public:
 	Actor *getActor(int index);
 
 	/* Text */
-	int _talkActorIndex, _animIndex, _animSubIndex2, _animSubIndex, _talkTextIndex;
+	int _talkActorIndex, _animIndex, _animPlayFrameIndex, _animFrameIndex, _talkTextIndex;
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
