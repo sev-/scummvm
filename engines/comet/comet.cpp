@@ -83,7 +83,6 @@ Common::Error CometEngine::run() {
 		fwrite(buf, size, 1, x);
 		fclose(x);
 	}
-
 #endif
 
 	// TODO: delete stuff at engine shutdown
@@ -119,7 +118,6 @@ Common::Error CometEngine::run() {
 
 	_sceneDecorationSprite = NULL;
 	_loadgameRequested = false;
- 	//_sceneExits.clear();
 
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;

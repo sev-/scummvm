@@ -48,7 +48,7 @@ void Scene::getExitLink(int index, int &moduleNumber, int &sceneNumber) {
 }
 
 void Scene::addBlockingRect(int x1, int y1, int x2, int y2) {
-	_blockingRects.push_back(Common::Rect(x1 * 2, y1, x2 * 2, y2));
+	_blockingRects.push_back(Common::Rect(x1, y1, x2, y2));
 }
 
 void Scene::removeBlockingRect(int x, int y) {

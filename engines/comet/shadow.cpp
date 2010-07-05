@@ -481,8 +481,8 @@ void CometEngine::drawActor(int actorIndex) {
 
 	Actor *actor = getActor(actorIndex);
 	
-	int x = actor->x, y = actor->y;
-	//int deltaX = actor->deltaX, deltaY = actor->deltaY;
+	int x = actor->x;
+	int y = actor->y;
 
 	Animation *animation = _animationMan->getAnimation(actor->animationSlot);
 	
@@ -1206,7 +1206,7 @@ void CometEngine::initSceneDecorationBlockingRects() {
 			blockY1 = cmd->points[0].y - (objectElement->height / 16 % 4 * 4 + 4);
 			blockX2 = (cmd->points[0].x + objectElement->width) / 2;
 			blockY2 = cmd->points[0].y;
-			_scene->addBlockingRect(blockX1, blockY1, blockX2, blockY2);
+			_scene->addBlockingRect(blockX1 * 2, blockY1, blockX2 * 2, blockY2);
 		}
 	}
 
