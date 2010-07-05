@@ -507,34 +507,3 @@ int PAK_explode(uint8 *srcBuffer, uint8 *dstBuffer, uint32 compressedSize, uint3
 
 	return(0);
 }
-
-// --------------------------------------------------------------
-// ZLIB wrapper to deflate
-// --------------------------------------------------------------
-
-int PAK_deflate(uint8 *srcBuffer, uint8 *dstBuffer, uint32 compressedSize, uint32 uncompressedSize) {
-/*
-	z_stream G;
-	G.next_in = srcBuffer;
-	G.avail_in = compressedSize;
-	G.next_out = dstBuffer;
-	G.avail_out = uncompressedSize;
-	G.zalloc = (alloc_func)0;
-	G.zfree = (free_func)0;
-
-	inflateInit2(&G, -15);
-	inflate(&G, Z_SYNC_FLUSH);
-	inflateEnd(&G);
-*/
-  return(0);
-}
-
-// --------------------------------------------------------------
-// UTILS
-// --------------------------------------------------------------
-
-void PAK_Error(char * txt) {
-	printf("%s", txt);
-	getchar();
-	exit(0);
-}
