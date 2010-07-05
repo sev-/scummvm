@@ -1348,7 +1348,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	
 		byte *workSoundFramesData = soundFramesData;
 		int workSoundFramesCount = soundFramesCount;
-		int animFrameIndex, animSoundFrameIndex, interpolationStep = 0;
+		int animFrameIndex, animSoundFrameIndex = 0, interpolationStep = 0;
 		
 		if (soundFramesCount > 0) {
 			workSoundFramesData++;

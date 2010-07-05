@@ -1329,7 +1329,7 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 
 	for (uint cmdIndex = 0; cmdIndex < maxCmdCount; cmdIndex++) {
 
-		AnimationCommand *cmd1, *cmd2;
+		AnimationCommand *cmd1 = NULL, *cmd2 = NULL;
 		InterpolatedAnimationCommand *interCmd;
 
 		if (cmdIndex < elem1->commands.size())

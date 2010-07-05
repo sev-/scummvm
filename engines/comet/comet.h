@@ -65,10 +65,10 @@ class MusicPlayer;
 class CometEngine;
 
 class Animation;
-class AnimationElement;
+struct AnimationElement;
 class AnimationManager;
 struct AnimationFrameList;
-class InterpolatedAnimationElement;
+struct InterpolatedAnimationElement;
 class ScriptInterpreter;
 class Scene;
 
