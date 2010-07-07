@@ -151,6 +151,19 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
+/* SoundResource */
+
+class SoundResource : public BaseResource {
+public:
+	SoundResource();
+	Audio::SeekableAudioStream *makeAudioStream();
+protected:
+	byte *_data;
+	int32 _dataSize;
+	void free();	
+	void internalLoad(Common::MemoryReadStream &stream);
+};
+
 } // End of namespace Comet
 
 #endif /* COMET_RESOURCE_H */

@@ -30,7 +30,8 @@
 
 #include "sound/audiostream.h"
 #include "sound/mixer.h"
-#include "sound/decoders/wave.h"
+#include "sound/decoders/raw.h"
+#include "sound/decoders/voc.h"
 
 #include "comet/resource.h"
 #include "comet/screen.h"
@@ -336,6 +337,28 @@ void ScreenResource::free() {
 void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
 	_screen = new byte[stream.size()];
 	stream.read(_screen, stream.size());	
+}
+
+/* SoundResource */
+
+SoundResource::SoundResource() : _data(NULL), _dataSize(0) {
+}
+
+void SoundResource::free() {
+	delete _data;
+}
+	
+void SoundResource::internalLoad(Common::MemoryReadStream &stream) {
+	_dataSize = stream.size();
+	_data = new byte[_dataSize];
+	stream.read(_data, _dataSize);
+	// For speech sounds, the VOC header's first byte is '\0' instead of 'C' so we have to work around it
+	_data[0] = 'C';
+}
+
+Audio::SeekableAudioStream *SoundResource::makeAudioStream() {
+	Common::MemoryReadStream vocStream(_data, _dataSize, DisposeAfterUse::NO);
+	return Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
 }
 
 } // End of namespace Prisoner

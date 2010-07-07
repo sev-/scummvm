@@ -1054,7 +1054,7 @@ void ScriptInterpreter::o1_paletteFadeOut(Script *script) {
 void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 	ARG_BYTE(narFileIndex);
 	_vm->_narFileIndex = narFileIndex;
-	_vm->openVoiceFile(_vm->_narFileIndex);
+	_vm->setVoiceFileIndex(narFileIndex);
 }
 
 void ScriptInterpreter::o1_ifNearActor(Script *script) {

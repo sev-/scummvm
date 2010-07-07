@@ -1250,24 +1250,36 @@ void CometEngine::playMusic(int musicIndex) {
 }
 
 void CometEngine::playSample(int sampleIndex, int loopCount) {
-	// The sample files are plain Voc files without a modified header
 	debug(2, "playSample(%d, %d)", sampleIndex, loopCount);
 	if (sampleIndex == 255) {
 		if (_mixer->isSoundHandleActive(_sampleHandle))
 			_mixer->stopHandle(_sampleHandle);
 	} else if (!_mixer->isSoundHandleActive(_sampleHandle)) {
-		int sampleSize = getPakSize("SMP.PAK", sampleIndex);
-		byte *sampleBuffer = (byte*)malloc(sampleSize);
-		loadPakToPtr("SMP.PAK", sampleIndex, sampleBuffer);
-		Common::MemoryReadStream vocReadStream(sampleBuffer, sampleSize, DisposeAfterUse::YES);
-		Audio::AudioStream *audioStream;
-		if (loopCount > 1) {
-			audioStream = makeLoopingAudioStream(Audio::makeVOCStream(&vocReadStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES), loopCount);
-		} else {
-			audioStream = Audio::makeVOCStream(&vocReadStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
-		}
-		_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, audioStream);
+		_res->loadFromPak(_soundResource, "SMP.PAK", sampleIndex);
+		_mixer->playStream(Audio::Mixer::kSFXSoundType, &_sampleHandle, loopCount > 1
+			? makeLoopingAudioStream(_soundResource->makeAudioStream(), loopCount)
+			: _soundResource->makeAudioStream());
 	}
+}
+
+void CometEngine::setVoiceFileIndex(int narFileIndex) {
+	_currNarFileIndex = narFileIndex;
+	_narFilename = Common::String::printf("D%02d.NAR", narFileIndex);
+}
+
+void CometEngine::playVoice(int voiceIndex) {
+	stopVoice();
+	/* TODO
+	if (_narOffsets[number] == 0)
+		return;
+	*/		
+	_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
+	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
+}
+
+void CometEngine::stopVoice() {
+	if (_mixer->isSoundHandleActive(_sampleHandle))
+		_mixer->stopHandle(_sampleHandle);
 }
 
 void CometEngine::drawTextIllsmouth() {
