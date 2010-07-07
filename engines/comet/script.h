@@ -82,7 +82,6 @@ public:
 	int _scriptCount;
 	Script *_scripts[17];
 	int _curScriptNumber;
-	Script *_curScript;
 	bool _yield;
 
 	Common::Array<ScriptOpcode*> _opcodes;
@@ -100,15 +99,14 @@ public:
 
 	bool evalBoolOp(int value1, int value2, int boolOp);
 
-	Actor *getScriptActor();
 	Actor *getActor(int index);
 
-	void processScriptSynchronize();
-	void processScriptSleep();
-	void processScriptWalk();
-	void processScriptAnim();
-	void processScriptDialog();
-	void processScriptTalk();
+	void processScriptSynchronize(Script *script);
+	void processScriptSleep(Script *script);
+	void processScriptWalk(Script *script);
+	void processScriptAnim(Script *script);
+	void processScriptDialog(Script *script);
+	void processScriptTalk(Script *script);
 	
 	bool isHeroInZone(Script *script);
 

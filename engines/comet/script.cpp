@@ -61,7 +61,6 @@ ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 	_scriptData = new byte[3000];
 	_scriptCount = 0;
 	_curScriptNumber = -1;
-	_curScript = NULL;
 
 	for (int i = 0; i < 17; i++)
 		_scripts[i] = new Script(this);
@@ -244,8 +243,8 @@ void ScriptInterpreter::initScript(int scriptNumber) {
 
 	uint16 ofs = READ_LE_UINT16(_scriptData + scriptNumber * 2);
 
-	script->ip = _scriptData + ofs;
 	script->code = _scriptData + ofs;
+	script->ip = script->code;
 	script->actorIndex = 0;
 	script->status = kScriptPaused;
 	script->scriptNumber = 0;
@@ -253,87 +252,61 @@ void ScriptInterpreter::initScript(int scriptNumber) {
 
 }
 
-void ScriptInterpreter::processScriptSynchronize() {
-
-	//debug(3, "######## processScriptSynchronize()");
-
-	int scriptNumber = _curScript->scriptNumber;
-	Script *script = _scripts[scriptNumber];
-	
-	if ((script->status & kScriptSynchronize) && script->scriptNumber == _curScriptNumber) {
+void ScriptInterpreter::processScriptSynchronize(Script *script) {
+	Script *otherScript = _scripts[script->scriptNumber];
+	if ((otherScript->status & kScriptSynchronize) && otherScript->scriptNumber == _curScriptNumber) {
+		otherScript->status &= ~kScriptSynchronize;
+		otherScript->scriptNumber = 0;
 		script->status &= ~kScriptSynchronize;
 		script->scriptNumber = 0;
-		_curScript->status &= ~kScriptSynchronize;
-		_curScript->scriptNumber = 0;
 	} else {
 		_yield = true;
 	}
-
 }
 
-void ScriptInterpreter::processScriptSleep() {
-
-	//debug(3, "######## processScriptSleep()");
-
-	if (_curScript->scriptNumber > 0)
-		_curScript->scriptNumber--;
-
-	if (_curScript->scriptNumber == 0) {
-		_curScript->status &= ~kScriptSleeping;
-		debug(4, "*** sleeping finished");
+void ScriptInterpreter::processScriptSleep(Script *script) {
+	if (script->scriptNumber > 0)
+		script->scriptNumber--;
+	if (script->scriptNumber == 0) {
+		script->status &= ~kScriptSleeping;
 	} else {
 		_yield = true;
 	}
-
 }
 
-void ScriptInterpreter::processScriptWalk() {
-
-	debug(3, "######## processScriptWalk()  actorIndex = %d", _curScript->actorIndex);
-
-	debug(2, "CometEngine::processScriptWalk() walkStatus = %d; life = %d",
-		_curScript->actor()->walkStatus, _curScript->actor()->life);
-
-	if ((_curScript->actor()->walkStatus & 3) == 0 || _curScript->actor()->life == 0) {
-		_curScript->status &= ~kScriptWalking;
-		_vm->actorSetAnimNumber(_curScript->actor(), 0);
-		debug(4, "*** walking finished");
+void ScriptInterpreter::processScriptWalk(Script *script) {
+	if ((script->actor()->walkStatus & 3) == 0 || script->actor()->life == 0) {
+		script->status &= ~kScriptWalking;
+		_vm->actorSetAnimNumber(script->actor(), 0);
 	} else {
 		_yield = true;
 	}
-
 }
 
-void ScriptInterpreter::processScriptAnim() {
-
-	if (_curScript->actor()->animFrameIndex + 1 == _curScript->actor()->animFrameCount) {
-		_curScript->status &= ~kScriptAnimPlaying;
-		debug(4, "*** anim playing finished");
+void ScriptInterpreter::processScriptAnim(Script *script) {
+	if (script->actor()->animFrameIndex + 1 == script->actor()->animFrameCount) {
+		script->status &= ~kScriptAnimPlaying;
 	} else {
 		_yield = true;
 	}
-
 }
 
-void ScriptInterpreter::processScriptDialog() {
-
+void ScriptInterpreter::processScriptDialog(Script *script) {
 	if (!_vm->_dialog->isRunning()) {
-		_curScript->status &= ~kScriptDialogRunning;
+		script->status &= ~kScriptDialogRunning;
 		// FIXME: I don't like that getChoiceScriptIp directly returns a pointer
 		// should be encapsulated in either Script or Dialog
-		_curScript->ip = _vm->_dialog->getChoiceScriptIp();
-		_curScript->jump();
+		script->ip = _vm->_dialog->getChoiceScriptIp();
+		script->jump();
 		debug(4, "*** dialog finished");
 	} else {
  		_yield = true;
  	}
-
 }
 
-void ScriptInterpreter::processScriptTalk() {
-
+void ScriptInterpreter::processScriptTalk(Script *script) {
 	if (!_vm->_textActive) {
-		_curScript->status &= ~kScriptTalking;
+		script->status &= ~kScriptTalking;
 		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_animIndex != -1)
 				_vm->_actors[_vm->_animIndex].visible = true;
@@ -346,75 +319,67 @@ void ScriptInterpreter::processScriptTalk() {
 			actor->animFrameIndex = _vm->_animFrameIndex;
 			_vm->_animIndex = -1;
 		}
-		debug(4, "*** talking finished");
 	} else {
 		_yield = true;
 	}
-	
 }
 
 void ScriptInterpreter::runScript(int scriptNumber) {
 
-	//debug(3, "CometEngine::runScript(%d)", scriptNumber);
-
 	_curScriptNumber = scriptNumber;
-	_curScript = _scripts[scriptNumber];
+	Script *script = _scripts[scriptNumber];
 
 	_yield = false;
 
-	if (_curScript->status & kScriptWalking)
+#if 0
+	if (script->status & kScriptWalking)
 		debug(2, "kScriptWalking %d", scriptNumber);
-	if (_curScript->status & kScriptSleeping)
+	if (script->status & kScriptSleeping)
 		debug(2, "kScriptSleeping %d", scriptNumber);
-	if (_curScript->status & kScriptAnimPlaying)
+	if (script->status & kScriptAnimPlaying)
 		debug(2, "kScriptAnimPlaying %d", scriptNumber);
-	if (_curScript->status & kScriptSynchronize)
+	if (script->status & kScriptSynchronize)
 		debug(2, "kScriptSynchronize %d", scriptNumber);
-	if (_curScript->status & kScriptDialogRunning)
+	if (script->status & kScriptDialogRunning)
 		debug(2, "kScriptDialogRunning %d", scriptNumber);
-	if (_curScript->status & kScriptPaused)
+	if (script->status & kScriptPaused)
 		debug(2, "kScriptPaused %d", scriptNumber);
-	if (_curScript->status & kScriptTalking)
+	if (script->status & kScriptTalking)
 		debug(2, "kScriptTalking %d", scriptNumber);
+#endif
 
-	if (_curScript->status & kScriptPaused)
+	if (script->status & kScriptPaused)
 		return;
 		
-	if (_curScript->status & kScriptSynchronize)
-		processScriptSynchronize();
+	if (script->status & kScriptSynchronize)
+		processScriptSynchronize(script);
 
-	if (_curScript->status & kScriptSleeping)
-		processScriptSleep();
+	if (script->status & kScriptSleeping)
+		processScriptSleep(script);
 
-	if (_curScript->status & kScriptWalking)
-		processScriptWalk();
+	if (script->status & kScriptWalking)
+		processScriptWalk(script);
 
-	if (_curScript->status & kScriptAnimPlaying)
-		processScriptAnim();
+	if (script->status & kScriptAnimPlaying)
+		processScriptAnim(script);
 
-	if (_curScript->status & kScriptDialogRunning)
-		processScriptDialog();
+	if (script->status & kScriptDialogRunning)
+		processScriptDialog(script);
 
-	if (_curScript->status & kScriptTalking)
-		processScriptTalk();
+	if (script->status & kScriptTalking)
+		processScriptTalk(script);
 
 	while (!_yield) {
-		byte opcode = *_curScript->ip++;
-
+		byte opcode = script->readByte();
 		/* DEBUG: So that o1_nop can print the opcode
 			This will be removed again once all opcodes are implemented.
 		*/
-		_curScript->debugOpcode = opcode;
-
-		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(_curScript->ip - _curScript->code), opcode);
-
+		script->debugOpcode = opcode;
+		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(script->ip - script->code), opcode);
 		if (opcode >= _opcodes.size())
 			error("CometEngine::runScript() Invalid opcode %d", opcode);
-
 		debug(2, "%s", _opcodeNames[opcode].c_str());
-			
-		(*_opcodes[opcode])(_curScript);
-
+		(*_opcodes[opcode])(script);
 	}
 
 }
@@ -462,10 +427,6 @@ bool ScriptInterpreter::evalBoolOp(int value1, int value2, int boolOp) {
 		error("ScriptInterpreter::evalBoolOp() Unknown bool operation code %d", boolOp);
 	}
 	return false;
-}
-
-Actor *ScriptInterpreter::getScriptActor() {
-	return _vm->getActor(_curScript->actorIndex);
 }
 
 Actor *ScriptInterpreter::getActor(int index) {
@@ -982,7 +943,7 @@ void ScriptInterpreter::o1_actorTalk(Script *script) {
 	ARG_INT16(talkTextIndex);
 	ARG_BYTE(animNumber);
 	_vm->actorTalkWithAnim(actorIndex, talkTextIndex, animNumber);
-	_curScript->status |= kScriptTalking;
+	script->status |= kScriptTalking;
 	_yield = true;
 }
 
@@ -1016,7 +977,7 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	ARG_BYTE(animNumber);
 	ARG_BYTE(fileIndex);
 	_vm->actorTalkPortrait(actorIndex, talkTextIndex, animNumber, fileIndex);
-	_curScript->status |= kScriptTalking;
+	script->status |= kScriptTalking;
 	_yield = true;
 }
 
