@@ -41,15 +41,15 @@ enum {
 };
 
 class ScriptInterpreter;
+class ScriptResource;
 
 class Script {
 public:
 	byte *code;
-	byte *ip;
+	uint16 ip;
 	byte debugOpcode;
 	int16 actorIndex;
 	uint16 status;
-	uint16 resumeIp; // FIXME: Remove this hacky thing
 	int scriptNumber;
 	int loopCounter;
 	int zoneX1, zoneY1, zoneX2, zoneY2;
@@ -66,6 +66,8 @@ private:
 
 typedef Common::Functor1<Script*, void> ScriptOpcode;
 
+const int kMaxScriptCount = 17;
+
 class ScriptInterpreter {
 public:
 	ScriptInterpreter(CometEngine *vm);
@@ -77,10 +79,10 @@ protected:
 //protected:
 // Everything is public during the transition phase to more object-oriented design
 public:
-	
-	byte *_scriptData;
+
+	ScriptResource *_scriptResource;	
 	int _scriptCount;
-	Script *_scripts[17];
+	Script *_scripts[kMaxScriptCount];
 	int _curScriptNumber;
 	bool _yield;
 
@@ -89,6 +91,7 @@ public:
 
 	void setupOpcodes();
 
+    void loadScript(const char *filename, int index);
 	void initializeScript();
 	void initializeScriptAfterLoadGame();
 	void initScript(int scriptNumber);

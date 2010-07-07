@@ -331,7 +331,7 @@ ScreenResource::ScreenResource() : _screen(NULL) {
 }
 
 void ScreenResource::free() {
-	delete _screen;
+	delete[] _screen;
 }
 
 void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
@@ -345,7 +345,7 @@ SoundResource::SoundResource() : _data(NULL), _dataSize(0) {
 }
 
 void SoundResource::free() {
-	delete _data;
+	delete[] _data;
 }
 	
 void SoundResource::internalLoad(Common::MemoryReadStream &stream) {
@@ -359,6 +359,28 @@ void SoundResource::internalLoad(Common::MemoryReadStream &stream) {
 Audio::SeekableAudioStream *SoundResource::makeAudioStream() {
 	Common::MemoryReadStream vocStream(_data, _dataSize, DisposeAfterUse::NO);
 	return Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
+}
+
+/* ScriptResource */
+
+ScriptResource::ScriptResource() : _scriptData(NULL) {
+}
+
+byte *ScriptResource::getScript(int index) {
+	return _scriptData + READ_LE_UINT16(_scriptData + index * 2);
+}
+
+int ScriptResource::getCount() {
+	return READ_LE_UINT16(_scriptData) / 2;
+}
+
+void ScriptResource::free() {
+	delete[] _scriptData;
+}
+	
+void ScriptResource::internalLoad(Common::MemoryReadStream &stream) {
+	_scriptData = new byte[stream.size()];
+	stream.read(_scriptData, stream.size());
 }
 
 } // End of namespace Prisoner

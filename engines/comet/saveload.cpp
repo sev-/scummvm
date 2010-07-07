@@ -47,7 +47,6 @@ namespace Comet {
 /* TODO:
 	- Saveload is working so far but only one slot is supported until the game menu is implemented
 	- Save with F7; Load with F9
-	- Saving during an animation (AnimationPlayer) is not working correctly yet
 	- Maybe switch to SCUMM/Tinsel serialization approach?
 */
 
@@ -131,7 +130,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeByte(_script->_scriptCount);
 	for (int i = 0; i < _script->_scriptCount; i++) {
 		const Script &script = *_script->_scripts[i];
-		out->writeUint16LE(script.ip - script.code);
+		out->writeUint16LE(script.ip);
 		out->writeByte(script.actorIndex);
 		out->writeUint16LE(script.status);
 		out->writeUint16LE(script.scriptNumber);
@@ -279,7 +278,7 @@ void CometEngine::loadgame(const char *filename) {
 	_script->_scriptCount = in->readByte();
 	for (int i = 0; i < _script->_scriptCount; i++) {
 		Script &script = *_script->_scripts[i];
-		script.resumeIp = in->readUint16LE();
+		script.ip = in->readUint16LE();
 		script.actorIndex = in->readByte();
 		script.status = in->readUint16LE();
 		script.scriptNumber = in->readUint16LE();

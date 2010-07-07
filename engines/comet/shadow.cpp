@@ -215,14 +215,10 @@ void CometEngine::setModuleAndScene(int moduleNumber, int sceneNumber) {
 	_moduleNumber = moduleNumber;
 	_sceneNumber = sceneNumber;
 	
-	//debug(4, "CometEngine::setModuleAndScene(%d, %d)", moduleNumber, sceneNumber);
-	
 	//FIXME
 	sprintf(AName, "A%d%d.PAK", _moduleNumber / 10, _moduleNumber % 10);
 	sprintf(DName, "D%d%d.PAK", _moduleNumber / 10, _moduleNumber % 10);
 	sprintf(RName, "R%d%d.CC4", _moduleNumber / 10, _moduleNumber % 10);
-	
-	//debug(4, "AName = %s; DName = %s; RName = %s", AName, DName, RName);
 	
 }
 
@@ -622,15 +618,7 @@ void CometEngine::resetVars() {
 
 void CometEngine::loadAndRunScript(bool loadingGame) {
 
-	Common::File fd;
-	uint32 ofs;
-
-	fd.open(RName);
-	fd.seek(_currentSceneNumber * 4);
-	ofs = fd.readUint32LE();
-	fd.seek(ofs);
-	fd.read(_script->_scriptData, 3000);
-	fd.close();
+	_script->loadScript(RName, _currentSceneNumber);
 
 	if (!loadingGame) {
 		resetVars();
@@ -943,7 +931,7 @@ void CometEngine::handleInput() {
 		0, 0, 0, 0, 0, 0, 1, 2, 2, 4, 0, 1, 2, 3, 3, 0, 4, 2, 3, 4, 0, 1, 3, 3, 4, 0
 	};
 
-	Actor *actor = getActor(0);
+	Actor *mainActor = getActor(0);
 	
 	_mouseButtons4 = _keyDirection;
 	_mouseCursor2 = mouseCursorArray[_mouseButtons4 & 0x0F];
@@ -960,29 +948,29 @@ void CometEngine::handleInput() {
 	//FIXME
 	_scriptMouseFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseButtons5 & 0x80) || (_keyDirection2 != 0);
 
-	if (actor->walkStatus & 3)
+	if (mainActor->walkStatus & 3)
 		return;
 		
-	if (_dialog->isRunning() && actor->directionAdd != 0) {
-		actorStopWalking(actor);
+	if (_dialog->isRunning() && mainActor->directionAdd != 0) {
+		actorStopWalking(mainActor);
 		return;
 	}
 
-	int directionAdd = actor->directionAdd;
+	int directionAdd = mainActor->directionAdd;
 
-	actor->walkDestX = actor->x;
-	actor->walkDestY = actor->y;
+	mainActor->walkDestX = mainActor->x;
+	mainActor->walkDestY = mainActor->y;
 	
 	if (directionAdd == 4)
 		directionAdd = 0;
 		
-	if (actor->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
+	if (mainActor->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
 		directionAdd = 4;
 		
-	int direction = mouseDirectionTable[actor->direction * 5 + _mouseCursor2];
+	int direction = mouseDirectionTable[mainActor->direction * 5 + _mouseCursor2];
 	
-	actorSetDirection(actor, direction);
-	actorSetDirectionAdd(actor, directionAdd);
+	actorSetDirection(mainActor, direction);
+	actorSetDirectionAdd(mainActor, directionAdd);
 	
 }
 

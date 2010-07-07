@@ -164,6 +164,19 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
+/* ScriptResource */
+
+class ScriptResource : public BaseResource {
+public:
+	ScriptResource();
+	byte *getScript(int index);
+	int getCount();
+protected:
+	byte *_scriptData;
+	void free();	
+	void internalLoad(Common::MemoryReadStream &stream);
+};
+
 } // End of namespace Comet
 
 #endif /* COMET_RESOURCE_H */
