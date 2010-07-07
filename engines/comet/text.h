@@ -27,37 +27,25 @@
 
 #include "common/file.h"
 
-namespace Comet {
+#include "comet/comet.h"
+#include "comet/resource.h"
 
-class TextStrings {
-public:
-	TextStrings(Common::File *fd, uint32 size);
-	~TextStrings();
-	byte *getString(uint stringIndex);
-	void loadString(uint stringIndex, byte *buffer);
-	uint count() const { return _stringCount; }
-protected:
-	byte *_data;
-	uint _stringCount;
-	uint32 *_stringOffsets;
-};
+namespace Comet {
 
 class TextReader {
 public:
-	TextReader();
+	TextReader(CometEngine *vm);
 	~TextReader();
-	void open(const char *filename);
-	void close();
-	TextStrings *loadTextStrings(uint tableIndex);
+	void setTextFilename(const char *filename);
+	TextResource *loadTextResource(uint tableIndex);
 	byte *getString(uint tableIndex, uint stringIndex);
 	void loadString(uint tableIndex, uint stringIndex, byte *buffer);
 protected:
-	Common::File *_fd;
-	uint _tableCount;
-	uint32 *_tableOffsets;
-	TextStrings *_cachedTextStrings;
-	uint _cachedTextStringsTableIndex;
-	TextStrings *getCachedTextStrings(uint tableIndex);
+	CometEngine *_vm;
+	Common::String _textFilename;
+	TextResource *_cachedTextResource;
+	int _cachedTextResourceTableIndex;
+	TextResource *getCachedTextResource(uint tableIndex);
 };
 
 } // End of namespace Comet

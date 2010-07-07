@@ -21,7 +21,9 @@ MODULE_OBJS = \
 	shadow.o \
 	speech.o \
 	text.o \
-	unpack.o
+	unpack.o \
+	resource.o \
+	resourcemgr.o
 
 # This module can be built as a plugin
 ifdef BUILD_PLUGINS
