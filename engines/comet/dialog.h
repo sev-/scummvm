@@ -12,7 +12,7 @@ namespace Comet {
 struct DialogItem {
 	int16 index;
 	byte *text;
-	byte *scriptIp;
+	uint16 scriptIp;
 };
 
 class Dialog {
@@ -25,7 +25,7 @@ public:
 	void stop();
 	void update();
 	bool isRunning() const { return _isRunning; }
-	byte *getChoiceScriptIp();
+	uint16 getChoiceScriptIp();
 	
 protected:
 

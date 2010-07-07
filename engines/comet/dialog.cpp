@@ -175,7 +175,7 @@ void Dialog::drawTextBubbles() {
 
 }
 
-byte *Dialog::getChoiceScriptIp() {
+uint16 Dialog::getChoiceScriptIp() {
 	return _items[_selectedItemIndex].scriptIp;
 }
 

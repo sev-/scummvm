@@ -4,6 +4,7 @@
 #include "comet/dialog.h"
 #include "comet/scene.h"
 #include "comet/animationmgr.h"
+#include "comet/resource.h"
 
 #include "comet/pak.h"
 
@@ -12,23 +13,19 @@ namespace Comet {
 /* Script */
 
 byte Script::readByte() {
-	return *ip++;
+	return code[ip++];
 }
 
 int16 Script::readInt16() {
-	int16 value = (int16)READ_LE_UINT16(ip);
+	int16 value = (int16)READ_LE_UINT16(code + ip);
 	ip += 2;
 	return value;
 }
 
 void Script::jump() {
-
-	int16 ofs = (int16)READ_LE_UINT16(ip);
-
-	debug(3, "    jump: %d (%04X)", ofs, ofs);
-	
+	int16 ofs = (int16)READ_LE_UINT16(code + ip);
+	debug(3, "  jump: %d (%04X)", ofs, ofs);
 	ip += ofs;
-	
 }
 
 uint16 Script::loadVarValue() {
@@ -53,16 +50,16 @@ Actor *Script::actor() const {
 	return _inter->getActor(actorIndex);
 }
 
-
-/* Script interpreter */
+/* ScriptInterpreter */
 
 ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 
-	_scriptData = new byte[3000];
 	_scriptCount = 0;
 	_curScriptNumber = -1;
 
-	for (int i = 0; i < 17; i++)
+    _scriptResource = new ScriptResource();
+
+	for (int i = 0; i < kMaxScriptCount; i++)
 		_scripts[i] = new Script(this);
 
 	setupOpcodes();
@@ -70,9 +67,12 @@ ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 }
 
 ScriptInterpreter::~ScriptInterpreter() {
-	delete[] _scriptData;
-	for (int i = 0; i < 17; i++)
+
+	delete _scriptResource;
+
+	for (int i = 0; i < kMaxScriptCount; i++)
 		delete _scripts[i];
+
 }
 
 typedef Common::Functor1Mem<Script*, void, ScriptInterpreter> ScriptOpcodeF;
@@ -210,46 +210,32 @@ void ScriptInterpreter::setupOpcodes() {
 }
 #undef RegisterOpcode
 
-void ScriptInterpreter::initializeScript() {
+void ScriptInterpreter::loadScript(const char *filename, int index) {
+	_vm->_res->loadFromCC4(_scriptResource, filename, index);
+}
 
-	_scriptCount = READ_LE_UINT16(_scriptData) / 2;
-	
-	debug(2, "CometEngine::initializeScript()  _scriptCount = %d", _scriptCount);
-	
+void ScriptInterpreter::initializeScript() {
+	_scriptCount = _scriptResource->getCount();
 	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++)
 		initScript(scriptNumber);
-
 	_scripts[0]->status = 0;
 	runScript(0);
-
 }
 
 void ScriptInterpreter::initializeScriptAfterLoadGame() {
-
 	debug(2, "CometEngine::initializeScriptAfterLoadGame()  _scriptCount = %d", _scriptCount);
-
-	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++) {
-		Script *script = _scripts[scriptNumber];
-		uint16 ofs = READ_LE_UINT16(_scriptData + scriptNumber * 2);
-		script->code = _scriptData + ofs;
-		script->ip = script->code + script->resumeIp;
-	}
-
+	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++)
+		_scripts[scriptNumber]->code = _scriptResource->getScript(scriptNumber);
 }
 
 void ScriptInterpreter::initScript(int scriptNumber) {
-
 	Script *script = _scripts[scriptNumber];
-
-	uint16 ofs = READ_LE_UINT16(_scriptData + scriptNumber * 2);
-
-	script->code = _scriptData + ofs;
-	script->ip = script->code;
+	script->code = _scriptResource->getScript(scriptNumber);
+	script->ip = 0;
 	script->actorIndex = 0;
 	script->status = kScriptPaused;
 	script->scriptNumber = 0;
 	script->loopCounter = 0;
-
 }
 
 void ScriptInterpreter::processScriptSynchronize(Script *script) {
@@ -294,11 +280,8 @@ void ScriptInterpreter::processScriptAnim(Script *script) {
 void ScriptInterpreter::processScriptDialog(Script *script) {
 	if (!_vm->_dialog->isRunning()) {
 		script->status &= ~kScriptDialogRunning;
-		// FIXME: I don't like that getChoiceScriptIp directly returns a pointer
-		// should be encapsulated in either Script or Dialog
 		script->ip = _vm->_dialog->getChoiceScriptIp();
 		script->jump();
-		debug(4, "*** dialog finished");
 	} else {
  		_yield = true;
  	}
@@ -375,7 +358,7 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 			This will be removed again once all opcodes are implemented.
 		*/
 		script->debugOpcode = opcode;
-		debug(2, "[%02d:%08X] %d", _curScriptNumber, (uint32)(script->ip - script->code), opcode);
+		debug(2, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
 		if (opcode >= _opcodes.size())
 			error("CometEngine::runScript() Invalid opcode %d", opcode);
 		debug(2, "%s", _opcodeNames[opcode].c_str());
@@ -478,7 +461,7 @@ void ScriptInterpreter::o1_actorWalkToY(Script *script) {
 }
 
 void ScriptInterpreter::o1_loop(Script *script) {
-	byte loopCount = script->ip[2];
+	byte loopCount = script->code[script->ip + 2];
 	script->loopCounter++;
 	if (script->loopCounter < loopCount) {
 		script->jump();
@@ -550,7 +533,7 @@ void ScriptInterpreter::o1_actorWalkToMainActorY(Script *script) {
 void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 	ARG_BYTE(deltaX);
 	ARG_BYTE(deltaY);
-	Actor *mainActor = getActor(0);
+	Actor *mainActor = _vm->getActor(0);
 	Actor *actor = script->actor();
 	int x = mainActor->x + deltaX;
 	int y = mainActor->y + deltaY;
@@ -573,7 +556,7 @@ void ScriptInterpreter::o1_unblockInput(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
-	Actor *mainActor = getActor(0);
+	Actor *mainActor = _vm->getActor(0);
 	int direction = _vm->calcDirection(script->actor()->x, script->actor()->y, mainActor->x, mainActor->y);
 	script->actor()->status = 0;
 	_vm->actorSetDirection(script->actor(), direction);
@@ -585,13 +568,13 @@ void ScriptInterpreter::o1_selectActor(Script *script) {
 }
 
 void ScriptInterpreter::o1_initSceneBounds(Script *script) {
-	_vm->_scene->initBounds(script->ip);
-	script->ip += *script->ip * 2 + 1;
+	_vm->_scene->initBounds(script->code + script->ip);
+	script->ip += script->code[script->ip] * 2 + 1;
 }
 
 void ScriptInterpreter::o1_initSceneExits(Script *script) {
-	_vm->_scene->initExits(script->ip);
-	script->ip += *script->ip * 5 + 1;
+	_vm->_scene->initExits(script->code + script->ip);
+	script->ip += script->code[script->ip] * 5 + 1;
 }
 
 void ScriptInterpreter::o1_addSceneObject(Script *script) {
@@ -632,7 +615,7 @@ void ScriptInterpreter::o1_playCutscene(Script *script) {
 	ARG_INT16(backgroundIndex);
 	ARG_BYTE(loopCount);
 	ARG_BYTE(soundFramesCount);
-	_vm->playCutscene(fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount, script->ip);
+	_vm->playCutscene(fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount, script->code + script->ip);
 	script->ip += soundFramesCount * 3;
 }
 
@@ -684,11 +667,7 @@ void ScriptInterpreter::o1_setPaletteBrightness(Script *script) {
 
 void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 	ARG_BYTE(sceneNumber);
-	if (sceneNumber == 255) {
-		_vm->_sceneNumber = -1;
-	} else {
-		_vm->_sceneNumber = sceneNumber;
-	}
+	_vm->_sceneNumber = sceneNumber == 255 ? -1 : sceneNumber; 
 }
 
 void ScriptInterpreter::o1_setupActorAnim(Script *script) {
@@ -706,7 +685,7 @@ void ScriptInterpreter::o1_setAnimationType(Script *script) {
 }
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
-	Actor *mainActor = getActor(0);
+	Actor *mainActor = _vm->getActor(0);
 	_vm->actorSetPosition(script->actorIndex, mainActor->x, mainActor->y + 1);
 }
 
@@ -720,7 +699,7 @@ void ScriptInterpreter::o1_setZoom(Script *script) {
 void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_BYTE(zoomFactor);
-	Actor *actor = getActor(actorIndex);
+	Actor *actor = _vm->getActor(actorIndex);
 	_vm->_screen->setZoom(zoomFactor, actor->x, actor->y);
 }
 
@@ -849,7 +828,7 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 	script->zoneY1 = zoneY1;
 	script->zoneX2 = zoneX2;
 	script->zoneY2 = zoneY2;
-	Actor *mainActor = getActor(0);
+	Actor *mainActor = _vm->getActor(0);
 	Common::Rect rect1(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2);
 	Common::Rect rect2(
 		mainActor->x - mainActor->deltaX,
@@ -1057,6 +1036,5 @@ void ScriptInterpreter::o1_setWhitePalette(Script *script) {
 	ARG_BYTE(value);
 	_vm->_screen->setWhitePalette(value);
 }
-
 
 } // End of namespace Comet
