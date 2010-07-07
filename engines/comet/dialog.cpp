@@ -2,8 +2,9 @@
 #include "comet/font.h"
 #include "comet/pak.h"
 
-#include "comet/screen.h"
 #include "comet/dialog.h"
+#include "comet/screen.h"
+#include "comet/text.h"
 
 namespace Comet {
 

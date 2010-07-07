@@ -42,7 +42,7 @@
 #include "engines/engine.h"
 
 //#include "comet/music.h"
-#include "comet/text.h"
+//#include "comet/text.h"
 
 namespace Comet {
 
@@ -69,8 +69,11 @@ struct AnimationElement;
 class AnimationManager;
 struct AnimationFrameList;
 struct InterpolatedAnimationElement;
+class ResourceManager;
 class ScriptInterpreter;
 class Scene;
+class TextReader;
+class TextResource;
 
 enum {
 	kDirectionUp		= 3,
@@ -195,11 +198,12 @@ public:
 	ScriptInterpreter *_script;
 	Scene *_scene;
 	AnimationManager *_animationMan;
+	ResourceManager *_res;
 
 	byte *_sceneBackground;
 
 	TextReader *_textReader;
-	TextStrings *_globalStrings, *_inventoryItemNames;
+	TextResource *_globalStrings, *_inventoryItemNames;
 
 	byte *_palette;
 

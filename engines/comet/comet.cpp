@@ -28,6 +28,9 @@
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/text.h"
+										 
+#include "comet/resource.h"
+#include "comet/resourcemgr.h"
 
 namespace Comet {
 
@@ -92,8 +95,10 @@ Common::Error CometEngine::run() {
 	_script = new ScriptInterpreter(this);
 	_scene = new Scene(this);
 	_animationMan = new AnimationManager(this);
-	_textReader = new TextReader();
-	_textReader->open("E.CC4"); // TODO: Use language-specific filename
+	_res = new ResourceManager();
+	
+	_textReader = new TextReader(this);
+	_textReader->setTextFilename("E.CC4"); // TODO: Use language-specific filename
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -213,6 +218,16 @@ Common::Error CometEngine::run() {
 #endif	
 
 #if 0
+	// Test new resource loader
+	ResourceManager res;
+	GenericResource *g = new GenericResource();
+	//res.loadFromPak(g, "A00.PAK", 1);
+	//res.loadFromCC4(g, "E.CC4", 0);
+	res.loadFromNar(g, "D00.NAR", 806);
+	delete g;
+#endif
+
+#if 0
 	// Play the intro
 	introMainLoop();
 #else	
@@ -220,6 +235,7 @@ Common::Error CometEngine::run() {
 	_sceneNumber = 9;
 #endif	
 
+#if 1
 	waitForKeys();
 
 	if (_currentModuleNumber == 5)
@@ -234,6 +250,7 @@ Common::Error CometEngine::run() {
 	debug("_currentSceneNumber = %d; _currentModuleNumber = %d", _currentSceneNumber, _currentModuleNumber);
 
 	gameMainLoop();
+#endif	
 
 	return Common::kNoError;
 }

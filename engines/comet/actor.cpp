@@ -4,6 +4,7 @@
 #include "comet/animationmgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
+#include "comet/text.h"
 
 namespace Comet {
 

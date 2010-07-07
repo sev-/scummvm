@@ -1,5 +1,6 @@
 #include "comet/comet.h"
 #include "comet/screen.h"
+#include "comet/text.h"
 
 namespace Comet {
 

@@ -15,6 +15,7 @@
 #include "comet/music.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
+#include "comet/text.h"
 
 namespace Comet {
 
@@ -169,8 +170,8 @@ void CometEngine::initAndLoadGlobalData() {
 void CometEngine::loadGlobalTextData() {
 	_textActive = false;
 	_narOkFlag = false;
-	_globalStrings = _textReader->loadTextStrings(0);
-	_inventoryItemNames = _textReader->loadTextStrings(1);
+	_globalStrings = _textReader->loadTextResource(0);
+	_inventoryItemNames = _textReader->loadTextResource(1);
 }
 
 void CometEngine::initData() {
