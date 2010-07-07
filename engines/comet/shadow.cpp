@@ -13,9 +13,9 @@
 #include "comet/dialog.h"
 #include "comet/music.h"
 #include "comet/resource.h"
+#include "comet/resourcemgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
-#include "comet/text.h"
 
 namespace Comet {
 
@@ -99,14 +99,16 @@ void CometEngine::drawSceneExits() {
 
 void CometEngine::initSceneBackground(bool loadingGame) {
 	
-	_screen->clearScreen();
+	_screen->clear();
 	
 	loadSceneBackground();
 	loadSceneDecoration();
 
+	/*
 	memcpy(_screen->getScreen(), _sceneBackground, 64000);
 	drawSceneDecoration();
 	memcpy(_sceneBackground, _screen->getScreen(), 64000);
+	*/
 
 	/* TODO: Unused in Comet CD
 	if (screenCopyFlag != 0)
@@ -142,10 +144,10 @@ void CometEngine::initAndLoadGlobalData() {
 	_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
 	_inventoryItemSprites = _animationMan->loadAnimationResource("RES.PAK", 4);
 
-	_ctuPal = loadFromPak("RES.PAK", 5);
+	_gamePalette = loadFromPak("RES.PAK", 5);
 	_flashbakPal = loadFromPak("RES.PAK", 6);
-	_cdintroPal = loadFromPak("RES.PAK", 7);
-	_pali0Pal = loadFromPak("RES.PAK", 8);
+	_introPalette1 = loadFromPak("RES.PAK", 7);
+	_introPalette2 = loadFromPak("RES.PAK", 8);
 
 	_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
 	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
@@ -154,8 +156,8 @@ void CometEngine::initAndLoadGlobalData() {
 
 	//TODO: seg001:0758 Mouse cursor stuff...
 	
-	_paletteBuffer = new byte[768];
-	memcpy(_paletteBuffer, _ctuPal, 768);
+	_backupPalette = new byte[768];
+	memcpy(_backupPalette, _gamePalette, 768);
 	
 	initData();
 
@@ -177,9 +179,9 @@ void CometEngine::loadGlobalTextData() {
 void CometEngine::initData() {
 
 	_sceneBackground = new byte[72000];
-	_palette = new byte[768];
+	_screenPalette = new byte[768];
 
-	memcpy(_palette, _ctuPal, 768);
+	memcpy(_screenPalette, _gamePalette, 768);
 	
 	memset(_scriptVars, 0, sizeof(_scriptVars));
 	memset(_inventoryItemStatus, 0, sizeof(_inventoryItemStatus));
@@ -661,33 +663,33 @@ void CometEngine::updateScreen() {
 		drawBeams();
 	
 	if (_clearScreenRequest) {
-		_screen->clearScreen();
+		_screen->clear();
 		_clearScreenRequest = false;
 	}
 	
 	if (_currentModuleNumber == 9 && _currentSceneNumber == 0 && _paletteStatus == 0) {
-		memcpy(_paletteBuffer, _ctuPal, 768);
-		memcpy(_ctuPal, _pali0Pal, 768);
-		memcpy(_palette, _pali0Pal, 768);
-		_screen->clearScreen();
-		_screen->setFullPalette(_ctuPal);
+		memcpy(_backupPalette, _gamePalette, 768);
+		memcpy(_gamePalette, _introPalette2, 768);
+		memcpy(_screenPalette, _introPalette2, 768);
+		_screen->clear();
+		_screen->setFullPalette(_gamePalette);
 		_paletteStatus = 3;
 	} else if (_currentModuleNumber == 9 && _currentSceneNumber == 1 && _paletteStatus == 3) {
-		memcpy(_ctuPal, _cdintroPal, 768);
-		memcpy(_palette, _cdintroPal, 768);
-  		_screen->clearScreen();
-		_screen->setFullPalette(_ctuPal);
+		memcpy(_gamePalette, _introPalette1, 768);
+		memcpy(_screenPalette, _introPalette1, 768);
+  		_screen->clear();
+		_screen->setFullPalette(_gamePalette);
 		_paletteStatus = 2;
 	} else if (_currentModuleNumber == 5 && _currentSceneNumber == 0 && (_paletteStatus == 2 || _paletteStatus == 3)) {
-		memcpy(_ctuPal, _paletteBuffer, 768);
-		memcpy(_palette, _paletteBuffer, 768);
-  		_screen->clearScreen();
-		_screen->setFullPalette(_ctuPal);
+		memcpy(_gamePalette, _backupPalette, 768);
+		memcpy(_screenPalette, _backupPalette, 768);
+  		_screen->clear();
+		_screen->setFullPalette(_gamePalette);
 		_paletteStatus = 0;
 	} else if (_currentModuleNumber == 0 && _currentSceneNumber == 0 && _paletteStatus != 0) {
-		memcpy(_ctuPal, _paletteBuffer, 768);
-		memcpy(_palette, _paletteBuffer, 768);
-		_screen->setFullPalette(_ctuPal);
+		memcpy(_gamePalette, _backupPalette, 768);
+		memcpy(_screenPalette, _backupPalette, 768);
+		_screen->setFullPalette(_gamePalette);
 		_paletteStatus = 0;
 	}
 
@@ -1237,17 +1239,15 @@ uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisi
 
 void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 
-	debug(4, "###### handleSceneChange(%d, %d)", sceneNumber, moduleNumber);
-
-	Actor *actor = getActor(0);
+	Actor *mainActor = getActor(0);
 	int direction, x1, x2, y1, y2;
 
-	_scene->findExitRect(sceneNumber, moduleNumber, actor->direction, x1, y1, x2, y2, direction);
+	_scene->findExitRect(sceneNumber, moduleNumber, mainActor->direction, x1, y1, x2, y2, direction);
 
-	actor->x = (x2 - x1) / 2 + x1;
-	actor->y = (y2 - y1) / 2 + y1;
-	actor->direction = direction;
-	actorSetAnimNumber(actor, direction - 1);
+	mainActor->x = (x2 - x1) / 2 + x1;
+	mainActor->y = (y2 - y1) / 2 + y1;
+	mainActor->direction = direction;
+	actorSetAnimNumber(mainActor, direction - 1);
 	
 	// Scene change effects
 	if (_screen->getZoomFactor() == 0) {
@@ -1268,8 +1268,8 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 	}
 
 	if (_screen->getFadeType() == kFadeNone) {
-		_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
-		_screen->setFullPalette(_palette);
+		_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
+		_screen->setFullPalette(_screenPalette);
 	}
 
 }
@@ -1328,7 +1328,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	animFrameCount = frameList->frames.size();
 	
 	if (backgroundIndex == 0) {
-		_screen->clearScreen();
+		_screen->clear();
 	} else if (backgroundIndex < 0) {
 		_screen->drawAnimationElement(cutsceneSprite, -backgroundIndex, 0, 0);
 	} else if (backgroundIndex < 32000) {
@@ -1403,7 +1403,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	delete cutsceneSprite;
 
 	if (palStatus > 0) {
-		_screen->setFullPalette(_palette);
+		_screen->setFullPalette(_screenPalette);
 	}
 	
 	if (_textActive)
@@ -1444,350 +1444,6 @@ void CometEngine::drawBeams() {
 	// TODO: beamColor stuff, unused in Comet CD
 }
 
-/* Control bar */
-
-void CometEngine::drawCommandBar(int selectedItem, int animFrameCounter) {
-
-	const int x = 196;
-	const int y = 14;
-
-	_screen->drawAnimationElement(_iconSprite, 0, 0, 0);
-	_screen->drawAnimationElement(_iconSprite, selectedItem + 1, 0, 0);
-
-	if (_currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0) {
-		_currentInventoryItem = -1;
-		for (int inventoryItem = 0; inventoryItem <= 255 && _currentInventoryItem == -1; inventoryItem++) {
-			if (_inventoryItemStatus[inventoryItem] > 0)
-				_currentInventoryItem = inventoryItem;
-		}
-	}	
-
-	if (_currentInventoryItem >= 0)
-		drawAnimatedIcon(_inventoryItemSprites, _currentInventoryItem, x, y, animFrameCounter);
-	
-}
-
-void CometEngine::handleCommandBar() {
-
-	const int kCBANone		= -1;
-	const int kCBAExit		= -2;
-	const int kCBAVerbTalk	= 0;
-	const int kCBAVerbGet	= 1;
-	const int kCBAUseItem	= 2;
-	const int kCBAVerbLook	= 3;
-	const int kCBAInventory	= 4;
-	const int kCBAMap		= 5;
-	const int kCBAMenu		= 6;
-
-	static const GuiRectangle commandBarRects[] = {
-		{  6, 4,  41, 34, kCBAVerbTalk}, 
-		{ 51, 4,  86, 34, kCBAVerbGet}, 
-		{ 96, 4, 131, 34, kCBAUseItem},
-		{141, 4, 176, 34, kCBAVerbLook}, 
-		{186, 4, 221, 34, kCBAInventory}, 
-		{231, 4, 266, 34, kCBAMap},
-		{276, 4, 311, 34, kCBAMenu}};
-	const int commandBarItemCount = 6; // Intentionally doesn't match actual count!
-
-	int commandBarStatus = 0;
-	int animFrameCounter = 0;
-	
-	_menuStatus++;
-	
-	waitForKeys();
-
-	// TODO: copyScreens(vgaScreen, _sceneBackground);
-	// TODO: copyScreens(vgaScreen, _workScreen);
-	// TODO: setMouseCursor(1, 0);
-
-	_commandBarSelectedItem = kCBANone;
-
-	while (commandBarStatus == 0) {
-		int mouseSelectedItem, commandBarAction = kCBANone;
-	
-		mouseSelectedItem = findRect(commandBarRects, _mouseX, _mouseY, commandBarItemCount + 1, kCBANone);
-		if (mouseSelectedItem != kCBANone)
-			_commandBarSelectedItem = mouseSelectedItem;
-			
-		drawCommandBar(_commandBarSelectedItem,	animFrameCounter++);		
-		_screen->update();
-		_system->delayMillis(40); // TODO
-
-		handleEvents();
-
-		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
-			continue;
-
-		if (_rightButton) {
-			commandBarAction = kCBAExit;
-		} else if (_leftButton && _commandBarSelectedItem != kCBANone) {
-			commandBarAction = _commandBarSelectedItem;
-		}
-		
-		switch (_keyScancode) {
-		case Common::KEYCODE_RIGHT:
-			if (_commandBarSelectedItem == commandBarItemCount) {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_commandBarSelectedItem = 0;
-			} else {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_commandBarSelectedItem++;
-			}
-			break;
-		case Common::KEYCODE_LEFT:
-			if (_commandBarSelectedItem == 0) {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_commandBarSelectedItem = commandBarItemCount;
-			} else {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_commandBarSelectedItem--;
-			}
-			break;
-		case Common::KEYCODE_ESCAPE:
-		case Common::KEYCODE_TAB:
-			commandBarAction = kCBAExit;
-			break;
-		case Common::KEYCODE_RETURN:
-			commandBarAction = _commandBarSelectedItem;
-			break;			
-		case Common::KEYCODE_t:
-			commandBarAction = kCBAVerbTalk;
-			break;
-		case Common::KEYCODE_g:
-			commandBarAction = kCBAVerbGet;
-			break;
-		case Common::KEYCODE_l:
-			commandBarAction = kCBAVerbLook;
-			break;
-		case Common::KEYCODE_o:
-			commandBarAction = kCBAInventory;
-			break;
-		case Common::KEYCODE_u:
-			commandBarAction = kCBAUseItem;
-			break;
-		case Common::KEYCODE_d:
-			commandBarAction = kCBAMenu;
-			break;
-		case Common::KEYCODE_m:
-			commandBarAction = kCBAMap;
-			break;
-		default:
-			break;			
-		}
-		
-		if (commandBarAction >= 0) {
-			drawCommandBar(commandBarAction, animFrameCounter);		
-			_screen->update();
-		}
-		
-		switch (commandBarAction) {
-		case kCBANone:
-			break;
-		case kCBAExit:
-			commandBarStatus = 2;
-			break;
-		case kCBAVerbTalk:
-			_cmdTalk = true;
-			commandBarStatus = 1;
-			break;
-		case kCBAVerbGet:
-			_cmdGet = true;
-			commandBarStatus = 1;
-			break;
-		case kCBAVerbLook:
-			_cmdLook = true;
-			commandBarStatus = 1;
-			break;
-		case kCBAUseItem:
-			useCurrentInventoryItem();
-			commandBarStatus = 1;
-			break;
-		case kCBAInventory:
-			commandBarStatus = handleInventory();
-			break;
-		case kCBAMap:
-			commandBarStatus = handleMap();
-			break;
-		case kCBAMenu:
-			// TODO: Disk menu
-			break;
-		}								
-
-		waitForKeys();
-	
-	}
-
-	waitForKeys();
-
-	_menuStatus--;
-
-	loadSceneBackground();
-
-}
-	
-/* Disk menu */
-
-void CometEngine::drawDiskMenu(int selectedItem) {
-
-	const int x = 137;
-	const int y = 65;
-	const int itemHeight = 23;
-
-	_screen->drawAnimationElement(_iconSprite, 10, 0, 0);
-	_screen->drawAnimationElement(_iconSprite, 11, x, y + selectedItem * itemHeight);
-
-}
-
-int CometEngine::handleDiskMenu() {
-	
-	const int kDMANone		= -1;
-	const int kDMAExit		= -2;
-	const int kDMASave		= 0;
-	const int kDMALoad		= 1;
-	const int kDMAOptions	= 2;
-	const int kDMAQuit		= 3;
-
-	static const GuiRectangle diskMenuRects[] = {
-		{136,  64, 184,  80, kDMASave},
-		{136,  87, 184, 103, kDMALoad},
-		{136, 110, 184, 126, kDMAOptions},
-		{136, 133, 184, 149, kDMAQuit}};		
-
-	int diskMenuStatus = 0;
-	
-	_menuStatus++;
-	
-	waitForKeys();
-
-	// TODO
-
-	_diskMenuSelectedItem = kDMASave;
-
-	while (diskMenuStatus == 0) {
-		int mouseSelectedItem, diskMenuAction = kDMANone;
-	
-		mouseSelectedItem = findRect(diskMenuRects, _mouseX, _mouseY, 4, kDMANone);
-		if (mouseSelectedItem != kDMANone)
-			_diskMenuSelectedItem = mouseSelectedItem;
-			
-		drawDiskMenu(_diskMenuSelectedItem);		
-		_screen->update();
-		_system->delayMillis(40); // TODO
-
-		handleEvents();
-
-		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
-			continue;
-
-		if (_rightButton) {
-			diskMenuAction = kDMAExit;
-		} else if (_leftButton && _diskMenuSelectedItem != kDMANone) {
-			diskMenuAction = _diskMenuSelectedItem;
-		}
-		
-		switch (_keyScancode) {
-		case Common::KEYCODE_DOWN:
-			if (_diskMenuSelectedItem == 3) {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_diskMenuSelectedItem = 0;
-			} else {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_diskMenuSelectedItem++;
-			}
-			break;
-		case Common::KEYCODE_UP:
-			if (_diskMenuSelectedItem == 0) {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_diskMenuSelectedItem = 3;
-			} else {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
-				_diskMenuSelectedItem--;
-			}
-			break;
-		case Common::KEYCODE_ESCAPE:
-			diskMenuAction = kDMAExit;
-			break;
-		case Common::KEYCODE_RETURN:
-			diskMenuAction = _diskMenuSelectedItem;
-			break;			
-		case Common::KEYCODE_s:
-			diskMenuAction = kDMASave;
-			break;
-		case Common::KEYCODE_l:
-			diskMenuAction = kDMALoad;
-			break;
-		case Common::KEYCODE_t:
-			diskMenuAction = kDMAOptions;
-			break;
-		case Common::KEYCODE_x:
-			diskMenuAction = kDMAQuit;
-			break;
-		default:
-			break;			
-		}
-		
-		if (diskMenuAction >= 0) {
-			drawDiskMenu(_diskMenuSelectedItem);		
-			_screen->update();
-		}
-		
-		switch (diskMenuAction) {
-		case kDMANone:
-			break;
-		case kDMAExit:
-			diskMenuStatus = 2;
-			break;
-		case kDMASave:
-			// TODO
-			debug("disk menu: save game");
-			diskMenuStatus = 0;
-			break;
-		case kDMALoad:
-			// TODO
-			debug("disk menu: load game");
-			diskMenuStatus = 0;
-			break;
-		case kDMAOptions:
-			// TODO
-			debug("disk menu: options");
-			diskMenuStatus = 0;
-			break;
-		case kDMAQuit:
-			// TODO
-			debug("disk menu: quit");
-			diskMenuStatus = 0;
-			break;
-		}								
-
-		waitForKeys();
-	
-	}
-
-	waitForKeys();
-
-	_menuStatus--;
-
-	loadSceneBackground();
-
-	return 0;
-}
-
 void CometEngine::initSystemVars() {
 	_systemVars[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
@@ -1799,6 +1455,42 @@ void CometEngine::initSystemVars() {
 	_systemVars[32] = &_scriptMouseFlag;
 	_systemVars[33] = &_scriptRandomValue;
 	_systemVars[34] = &_prevModuleNumber;
+}
+
+void CometEngine::useCurrentInventoryItem() {
+
+	for (uint index = 0; index < 256; index++) {
+		if (_inventoryItemStatus[index] == 2)
+			_inventoryItemStatus[index] = 1;
+	}
+	
+	if (_currentInventoryItem != -1) {
+		if (_inventoryItemStatus[_currentInventoryItem] == 1)
+			_inventoryItemStatus[_currentInventoryItem] = 2;
+	}
+
+}
+
+void CometEngine::checkCurrentInventoryItem() {
+
+	/* If the currently selected item was disabled, scan for the preceeding item
+		and set it as selected item. */
+	if (_currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0) {
+		if (_currentInventoryItem >= 1) {
+			for (_currentInventoryItem = _currentInventoryItem - 1; _currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0;
+				_currentInventoryItem--) {
+			}
+		} else {
+			_currentInventoryItem = -1;
+		}
+	}
+
+	/* Check if the player wants to read the notebook */
+	if (_inventoryItemStatus[0] == 2) {
+		handleReadBook();
+		_inventoryItemStatus[0] = 1;
+	}
+
 }
 
 void CometEngine::introMainLoop() {
@@ -1848,17 +1540,17 @@ void CometEngine::gameMainLoop() {
 #endif			
 
 		if (_currentModuleNumber == 7 && _currentSceneNumber == 1 && _paletteStatus == 0) {
-			memcpy(_paletteBuffer, _ctuPal, 768);
-			memcpy(_ctuPal, _flashbakPal, 768);
-			memcpy(_palette, _flashbakPal, 768);
-			_screen->clearScreen();
-			_screen->setFullPalette(_ctuPal);
+			memcpy(_backupPalette, _gamePalette, 768);
+			memcpy(_gamePalette, _flashbakPal, 768);
+			memcpy(_screenPalette, _flashbakPal, 768);
+			_screen->clear();
+			_screen->setFullPalette(_gamePalette);
 			_paletteStatus = 1;
 		} else if (_currentModuleNumber == 2 && _currentSceneNumber == 22 && _paletteStatus == 1) {
-			memcpy(_ctuPal, _paletteBuffer, 768);
-			memcpy(_palette, _paletteBuffer, 768);
-			_screen->clearScreen();
-			_screen->setFullPalette(_ctuPal);
+			memcpy(_gamePalette, _backupPalette, 768);
+			memcpy(_screenPalette, _backupPalette, 768);
+			_screen->clear();
+			_screen->setFullPalette(_gamePalette);
 			_paletteStatus = 0;
 		}
 		

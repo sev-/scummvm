@@ -205,8 +205,6 @@ public:
 	TextReader *_textReader;
 	TextResource *_globalStrings, *_inventoryItemNames;
 
-	byte *_palette;
-
 	int16 _animationType;
 
 	Actor _actors[11];
@@ -215,7 +213,6 @@ public:
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
 	int _paletteStatus;
-	byte *_paletteBuffer;
 	int _paletteBrightness;
 	bool _clearScreenRequest;
 
@@ -247,7 +244,10 @@ public:
 
 	AnimationResource *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
 	AnimationResource *_sceneDecorationSprite;
-	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
+
+	byte *_screenPalette, *_backupPalette;
+	byte *_gamePalette, *_flashbakPal;
+	byte *_introPalette1, *_introPalette2;
 
 	int _gameLoopCounter;
 	bool _endIntroLoop;

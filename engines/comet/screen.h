@@ -86,7 +86,7 @@ public:
 	void setPartialPalette(byte *palette, int start, int count);
 	void setFullPalette(byte *palette);
 
-	void clearScreen();
+	void clear();
 
 	byte *getScreen() const {
 		return _workScreen;

@@ -384,8 +384,8 @@ void CometEngine::loadgame(const char *filename) {
 	loadAndRunScript(true);
 	initSceneBackground(true);
 	_animationMan->restoreAnimationSlots();
-	_screen->buildPalette(_ctuPal, _palette, _paletteBrightness);
-	_screen->setFullPalette(_palette);
+	_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
+	_screen->setFullPalette(_screenPalette);
 
 	openVoiceFile(_narFileIndex); // NEW in reimplementation
 

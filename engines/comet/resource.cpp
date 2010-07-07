@@ -324,4 +324,18 @@ AnimationFrameList *AnimationResource::loadAnimationFrameList(Common::SeekableRe
 	return animationFrameList;
 }
 
+/* ScreenResource */
+
+ScreenResource::ScreenResource() : _screen(NULL) {
+}
+
+void ScreenResource::free() {
+	delete _screen;
+}
+
+void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
+	_screen = new byte[stream.size()];
+	stream.read(_screen, stream.size());	
+}
+
 } // End of namespace Prisoner

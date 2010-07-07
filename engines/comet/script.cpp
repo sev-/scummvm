@@ -717,8 +717,8 @@ void ScriptInterpreter::o1_actorWalkTo(Script *script) {
 void ScriptInterpreter::o1_setPaletteBrightness(Script *script) {
 	ARG_BYTE(paletteBrightness);
 	_vm->_paletteBrightness = paletteBrightness;
-	_vm->_screen->buildPalette(_vm->_ctuPal, _vm->_palette, _vm->_paletteBrightness);
-	_vm->_screen->setFullPalette(_vm->_palette);
+	_vm->_screen->buildPalette(_vm->_gamePalette, _vm->_screenPalette, _vm->_paletteBrightness);
+	_vm->_screen->setFullPalette(_vm->_screenPalette);
 }
 
 void ScriptInterpreter::o1_setSceneNumber(Script *script) {
@@ -1088,8 +1088,8 @@ void ScriptInterpreter::o1_playSampleLooping(Script *script) {
 void ScriptInterpreter::o1_setRedPalette(Script *script) {
 	ARG_BYTE(paletteRedness);
 	// TODO: Remember "redness" value
-	_vm->_screen->buildRedPalette(_vm->_ctuPal, _vm->_palette, paletteRedness);
-	_vm->_screen->setFullPalette(_vm->_palette);
+	_vm->_screen->buildRedPalette(_vm->_gamePalette, _vm->_screenPalette, paletteRedness);
+	_vm->_screen->setFullPalette(_vm->_screenPalette);
 }
 
 void ScriptInterpreter::o1_setWhitePalette(Script *script) {
