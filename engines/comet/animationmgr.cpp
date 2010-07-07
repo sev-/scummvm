@@ -5,7 +5,7 @@
 #include "comet/screen.h"
 
 #include "comet/animationmgr.h"
-#include "comet/animation.h"
+#include "comet/resource.h"
 
 namespace Comet {
 
@@ -26,15 +26,10 @@ void AnimationManager::saveState(Common::WriteStream *out) {
 void AnimationManager::loadState(Common::ReadStream *in) {
 }
 
-Animation *AnimationManager::loadAnimationResource(const char *pakFilename, int fileIndex) {
+AnimationResource *AnimationManager::loadAnimationResource(const char *pakFilename, int fileIndex) {
 	debug(0, "AnimationManager::loadAnimationResource([%s], %d)", pakFilename, fileIndex);
-	Animation *animation = new Animation();
-	byte *buffer = loadFromPak(pakFilename, fileIndex);
-	int size = getPakSize(pakFilename, fileIndex);
-	Common::MemoryReadStream *stream = new Common::MemoryReadStream(buffer, size);
-	animation->load(*stream, size);
-	delete stream;
-	free(buffer);
+	AnimationResource *animation = new AnimationResource();
+	_vm->_res->loadFromPak(animation, pakFilename, fileIndex);
 	debug(0, "AnimationManager::loadAnimationResource([%s], %d) ok", pakFilename, fileIndex);
 	return animation;
 }

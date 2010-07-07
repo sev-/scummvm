@@ -1,7 +1,7 @@
 #include "comet/comet.h"
 
-#include "comet/animation.h"
 #include "comet/animationmgr.h"
+#include "comet/resource.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/text.h"
@@ -266,7 +266,7 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 	int newX = actor->x;
 	int newY = actor->y;
 
-	Animation *anim = _animationMan->getAnimation(actor->animationSlot);
+	AnimationResource *anim = _animationMan->getAnimation(actor->animationSlot);
 	AnimationFrame *frame = anim->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
  	int16 xAdd = frame->xOffs;
@@ -537,7 +537,7 @@ void CometEngine::clearAnimationSlotByIndex(int16 animationSlot) {
 	}
 }
 
-Animation *CometEngine::getGlobalAnimationResource(int16 animationType) {
+AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	switch (animationType) {
 	case 1:
 		return _heroSprite;

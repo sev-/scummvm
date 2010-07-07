@@ -28,7 +28,7 @@
 #include "common/func.h"
 
 #include "comet/comet.h"
-#include "comet/animation.h"
+#include "comet/resource.h"
 
 namespace Comet {
 
@@ -81,7 +81,7 @@ public: // while still in progress
 
 	Common::Array<Common::Rect> _blockingRects;
 	Common::Array<SceneExitItem> _exits;
-	Animation *_sceneObjectsSprite;
+	AnimationResource *_sceneObjectsSprite;
 	PointArray _bounds;
 	byte _boundsMap[320];
 	

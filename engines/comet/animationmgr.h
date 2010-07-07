@@ -31,14 +31,14 @@ class AnimationManager {
 public:
 	AnimationManager(CometEngine *vm);
 	~AnimationManager();
-	Animation *loadAnimationResource(const char *pakFilename, int fileIndex);
+	AnimationResource *loadAnimationResource(const char *pakFilename, int fileIndex);
 	void purgeUnusedAnimationSlots();
 	void purgeAnimationSlots();
 	int getAnimationResource(int16 animationType, int16 fileIndex);
 	void refreshAnimationSlots();
 	void restoreAnimationSlots();
 	AnimationSlot *getAnimationSlot(uint index) { return &_animationSlots[index]; }
-	Animation *getAnimation(uint index) { return _animationSlots[index].anim; }
+	AnimationResource *getAnimation(uint index) { return _animationSlots[index].anim; }
 	void saveState(Common::WriteStream *out);
 	void loadState(Common::ReadStream *in);
 //protected: again temporary...

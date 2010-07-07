@@ -33,6 +33,7 @@
 #include "sound/decoders/wave.h"
 
 #include "comet/resource.h"
+#include "comet/screen.h"
 
 namespace Comet {
 
@@ -183,6 +184,144 @@ int FontResource::getTextWidth(byte *text) {
 		text++;
 	}
 	return textWidth;
+}
+
+/* AnimationResource */
+
+AnimationElement::~AnimationElement() {
+	for (Common::Array<AnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
+		delete (*iter);
+}
+
+AnimationFrameList::~AnimationFrameList() {
+	for (Common::Array<AnimationFrame*>::iterator iter = frames.begin(); iter != frames.end(); ++iter)
+		delete (*iter);
+}
+
+AnimationResource::AnimationResource() {
+}
+
+void AnimationResource::free() {
+	for (Common::Array<AnimationElement*>::iterator iter = _elements.begin(); iter != _elements.end(); ++iter)
+		delete (*iter);
+	for (Common::Array<AnimationCel*>::iterator iter = _cels.begin(); iter != _cels.end(); ++iter)
+		delete (*iter);
+	for (Common::Array<AnimationFrameList*>::iterator iter = _anims.begin(); iter != _anims.end(); ++iter)
+		delete (*iter);
+}
+
+void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
+
+	OffsetArray sectionOffsets, offsets;
+	
+	loadOffsets(stream, sectionOffsets);
+
+	if (sectionOffsets.size() < 4)
+		error("Animation::load() Unexpected section count");
+
+	// Load animation elements
+	stream.seek(sectionOffsets[0]);
+	loadOffsets(stream, offsets);
+	for (uint i = 0; i < offsets.size(); i++) {
+		stream.seek(sectionOffsets[0] + offsets[i] - 2);
+		AnimationElement *animationElement = loadAnimationElement(stream);
+		_elements.push_back(animationElement);
+	}
+	
+	// Load animation cels
+	stream.seek(sectionOffsets[1]);
+	loadOffsets(stream, offsets);
+	offsets.push_back(sectionOffsets[2] - sectionOffsets[1]);
+	for (uint i = 0; i < offsets.size() - 1; i++) {
+		stream.seek(sectionOffsets[1] + offsets[i] - 2);
+		AnimationCel *animationCel = new AnimationCel();
+		animationCel->flags = stream.readUint16LE();
+		animationCel->width = stream.readByte() * 16;
+		animationCel->height = stream.readByte();
+		animationCel->dataSize = offsets[i + 1] - offsets[i] - 2;
+		animationCel->data = new byte[animationCel->dataSize];
+		stream.read(animationCel->data, animationCel->dataSize);
+		debug(8, "Animation::load() cel width = %d; height = %d; dataSize = %d", animationCel->width, animationCel->height, animationCel->dataSize);
+		_cels.push_back(animationCel);
+	}
+
+	// Load animation frames
+	stream.seek(sectionOffsets[2]);
+	loadOffsets(stream, offsets);
+	for (uint i = 0; i < offsets.size(); i++) {
+		stream.seek(sectionOffsets[2] + offsets[i]);
+		AnimationFrameList *animationFrameList = loadAnimationFrameList(stream);
+		_anims.push_back(animationFrameList);
+	}
+
+	// TODO: Load section 4 data
+
+}
+
+void AnimationResource::loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets) {
+	offsets.clear();
+	uint32 offset = sourceS.readUint32LE();
+	uint count = offset / 4;
+	debug(8, "Animation::loadOffsets() count = %d", count);
+	while (count--) {
+		offsets.push_back(offset);
+		offset = sourceS.readUint32LE();
+	}
+}
+
+AnimationElement *AnimationResource::loadAnimationElement(Common::SeekableReadStream &sourceS) {
+	AnimationElement *animationElement = new AnimationElement();
+	animationElement->width = sourceS.readByte();
+	animationElement->height = sourceS.readByte();
+	animationElement->flags = sourceS.readByte();
+	byte cmdCount = sourceS.readByte();
+	debug(8, "Animation::loadAnimationElement() cmdCount = %d; flags = %02X", cmdCount, animationElement->flags);
+	while (cmdCount--) {
+		AnimationCommand *animationCommand = loadAnimationCommand(sourceS, animationElement->flags & 0x10);
+		animationElement->commands.push_back(animationCommand);
+	}
+	return animationElement;
+}
+
+AnimationCommand *AnimationResource::loadAnimationCommand(Common::SeekableReadStream &sourceS, bool ptAsByte) {
+	AnimationCommand *animationCommand = new AnimationCommand();
+	animationCommand->cmd = sourceS.readByte();
+	byte pointsCount = sourceS.readByte();
+	animationCommand->arg1 = sourceS.readByte();
+	animationCommand->arg2 = sourceS.readByte();
+	debug(8, "Animation::loadAnimationCommand() cmd = %d; pointsCount = %d; arg1 = %d; arg2 = %d",
+		animationCommand->cmd, pointsCount, animationCommand->arg1, animationCommand->arg2);
+	while (pointsCount--) {
+		Point pt;
+		if (ptAsByte) {
+			pt.x = (int8)sourceS.readByte();
+			pt.y = (int8)sourceS.readByte();
+		} else {
+			pt.x = (int16)sourceS.readUint16LE();
+			pt.y = (int16)sourceS.readUint16LE();
+		}
+		debug(8, "Animation::loadAnimationCommand()	 x = %d; y = %d", pt.x, pt.y);
+		animationCommand->points.push_back(pt);
+	}
+	return animationCommand;
+}
+
+AnimationFrameList *AnimationResource::loadAnimationFrameList(Common::SeekableReadStream &sourceS) {
+	AnimationFrameList *animationFrameList = new AnimationFrameList();
+	animationFrameList->priority = sourceS.readByte();
+	byte frameCount = sourceS.readByte();
+	debug(8, "Animation::loadAnimationFrameList() frameCount = %d", frameCount);
+	while (frameCount--) {
+		AnimationFrame *animationFrame = new AnimationFrame();
+		animationFrame->elementIndex = sourceS.readUint16LE();
+		animationFrame->flags = sourceS.readUint16LE();
+		animationFrame->xOffs = (int16)sourceS.readUint16LE();
+		animationFrame->yOffs = (int16)sourceS.readUint16LE();
+		debug(0, "Animation::loadAnimationFrameList() elementIndex = %d; flags = %04X; xOffs = %d; yOffs = %d",
+			animationFrame->elementIndex, animationFrame->flags, animationFrame->xOffs, animationFrame->yOffs);
+		animationFrameList->frames.push_back(animationFrame);
+	}
+	return animationFrameList;
 }
 
 } // End of namespace Prisoner

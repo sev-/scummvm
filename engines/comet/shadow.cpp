@@ -9,10 +9,10 @@
 #include "comet/font.h"
 #include "comet/pak.h"
 
-#include "comet/animation.h"
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
 #include "comet/music.h"
+#include "comet/resource.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/text.h"
@@ -485,7 +485,7 @@ void CometEngine::drawActor(int actorIndex) {
 	int x = actor->x;
 	int y = actor->y;
 
-	Animation *animation = _animationMan->getAnimation(actor->animationSlot);
+	AnimationResource *animation = _animationMan->getAnimation(actor->animationSlot);
 	
 	/* NOTE: Yet another workaround for a crash (see updateActorAnimation). */
 	if (actor->animIndex >= (int)animation->_anims.size()) {
@@ -518,7 +518,7 @@ void CometEngine::drawActor(int actorIndex) {
 
 }
 
-void CometEngine::drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
+void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
 	AnimationFrameList *frameList = animation->_anims[frameListIndex];
 	uint frameIndex = 0;
 	if (frameList->frames.size() > 1) {
@@ -1315,7 +1315,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	debug("playCutscene(%d, %d, %d, %d, %d)", fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount);
 
 	int palStatus = 0;
-	Animation *cutsceneSprite;
+	AnimationResource *cutsceneSprite;
 	AnimationFrameList *frameList;
 	int animFrameCount;
 	

@@ -64,7 +64,7 @@ class Anim;
 class MusicPlayer;
 class CometEngine;
 
-class Animation;
+class AnimationResource;
 struct AnimationElement;
 class AnimationManager;
 struct AnimationFrameList;
@@ -126,7 +126,7 @@ struct Actor {
 struct AnimationSlot {
 	int16 animationType;
 	int16 fileIndex;
-	Animation *anim;
+	AnimationResource *anim;
 };
 
 struct SceneExitItem {
@@ -161,7 +161,7 @@ typedef Common::Array<Common::Point> PointArray;
 class CometEngine : public Engine {
 	// FIXME: I don't need no friends
 	friend class Script;
-	friend class Animation;
+	friend class AnimationResource;
 protected:
 	Common::Error run();
 	void shutdown();
@@ -245,8 +245,8 @@ public:
 	int16 _currentModuleNumber, _currentSceneNumber;
 	int16 _prevModuleNumber, _prevSceneNumber;
 
-	Animation *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
-	Animation *_sceneDecorationSprite;
+	AnimationResource *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
+	AnimationResource *_sceneDecorationSprite;
 	byte *_ctuPal, *_flashbakPal, *_cdintroPal, *_pali0Pal;
 
 	int _gameLoopCounter;
@@ -329,7 +329,7 @@ public:
 	
 	void drawSpriteQueue();
 	void drawActor(int actorIndex);
-	void drawAnimatedIcon(Animation *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
+	void drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 	
 	void updateTextDialog();
 	void updateText();
@@ -380,7 +380,7 @@ public:
 	/* Marche */
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearAnimationSlotByIndex(int16 animationSlot);
-	Animation *getGlobalAnimationResource(int16 animationType);
+	AnimationResource *getGlobalAnimationResource(int16 animationType);
 	void unloadActorSprite(Actor *actor);
 
 	/* Actor */
@@ -451,7 +451,7 @@ public:
 
 	/* Puzzle */
 	uint16 _puzzleTiles[6][6];
-	Animation *_puzzleSprite;
+	AnimationResource *_puzzleSprite;
 	int _puzzleTableRow, _puzzleTableColumn;
 	int _puzzleCursorX, _puzzleCursorY;
 	 

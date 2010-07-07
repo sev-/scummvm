@@ -6,7 +6,7 @@
 #include "common/util.h"
 
 #include "comet/comet.h"
-#include "comet/animation.h"
+#include "comet/resource.h"
 
 namespace Comet {
 
@@ -20,6 +20,32 @@ struct Point {
 	int16 x, y;
 	Point() : x(0), y(0) {}
 	Point(int16 px, int16 py) : x(px), y(py) {}
+};
+
+enum AnimationCommandType {
+	kActElement			= 0,
+	kActCelSprite		= 1,
+	kActNop0			= 2,
+	kActNop1			= 3,
+	kActFilledPolygon	= 4,
+	kActRectangle		= 5,
+	kActPolygon			= 6,
+	kActPixels			= 7,
+	kActPolygon1		= 8,	// unused in Comet? / Alias for kActPolygon
+	kActPolygon2		= 9,	// unused in Comet? / Alias for kActPolygon
+	kActCelRle			= 10
+};
+
+struct InterpolatedAnimationCommand {
+	byte _cmd;
+	byte _aarg1, _aarg2, _barg1, _barg2;
+	Common::Array<Point> _points;
+	InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2);
+};
+
+struct InterpolatedAnimationElement {
+	Common::Array<InterpolatedAnimationCommand*> commands;
+	~InterpolatedAnimationElement();
 };
 
 class Screen {
@@ -78,14 +104,14 @@ public:
 	// New Animation drawing code
 	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
 	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
-	void drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
-	void drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
+	void drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
+	void drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 	void drawInterpolatedAnimationElement(InterpolatedAnimationElement *interElem, int16 x, int16 y, int mulValue);
 	void drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *interCmd, int16 x, int16 y, int mulValue, byte color1, byte color2);
 	void buildInterpolatedAnimationElement(AnimationElement *elem1, AnimationElement *elem2,
 		InterpolatedAnimationElement *interElem);
 
-	int drawAnimation(Animation *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount);
+	int drawAnimation(AnimationResource *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount);
 
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
 	void setClipX(int clipX1, int clipX2);
