@@ -241,7 +241,7 @@ Common::Error CometEngine::run() {
 	else if (_currentModuleNumber == 9)
 		_sceneNumber = 9;				
 
-	_screen->clearScreen();
+	_screen->clear();
 	_screen->update();
 
 	debug("_sceneNumber = %d; _moduleNumber = %d", _sceneNumber, _moduleNumber);

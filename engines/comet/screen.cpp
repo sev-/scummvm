@@ -322,22 +322,22 @@ void Screen::buildRedPalette(byte *sourcePal, byte *destPal, int value) {
 
 void Screen::paletteFadeIn() {
 
-	buildPalette(_vm->_ctuPal, _vm->_palette, 0);
-	setFullPalette(_vm->_palette);
+	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
+	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 	_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
 
 	int value = 0;
 	while (value < 255) {
-		buildPalette(_vm->_ctuPal, _vm->_palette, value);
-		setFullPalette(_vm->_palette);
+		buildPalette(_vm->_gamePalette, _vm->_screenPalette, value);
+		setFullPalette(_vm->_screenPalette);
 		_vm->_system->updateScreen();
 		value += _fadeStep;
 		_vm->_system->delayMillis(10);
 	}
 
-	buildPalette(_vm->_ctuPal, _vm->_palette, 255);
-	setFullPalette(_vm->_palette);
+	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
+	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 
 	_fadeType = kFadeNone;
@@ -347,21 +347,21 @@ void Screen::paletteFadeIn() {
 
 void Screen::paletteFadeOut() {
 
-	buildPalette(_vm->_ctuPal, _vm->_palette, 255);
-	setFullPalette(_vm->_palette);
+	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
+	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 
 	int value = 255;
 	while (value > 0) {
-		buildPalette(_vm->_ctuPal, _vm->_palette, value);
-		setFullPalette(_vm->_palette);
+		buildPalette(_vm->_gamePalette, _vm->_screenPalette, value);
+		setFullPalette(_vm->_screenPalette);
 		_vm->_system->updateScreen();
 		value -= _fadeStep;
 		_vm->_system->delayMillis(10);
 	}
 
-	buildPalette(_vm->_ctuPal, _vm->_palette, 0);
-	setFullPalette(_vm->_palette);
+	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
+	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 
 	_fadeType = kFadeNone;
@@ -371,9 +371,9 @@ void Screen::paletteFadeOut() {
 
 void Screen::setWhitePalette(int value) {
 	for (int i = 0; i < 768; i++) {
-		_vm->_palette[i] = _vm->_ctuPal[i] + (256 - _vm->_ctuPal[i]) / 16 * value;
+		_vm->_screenPalette[i] = _vm->_gamePalette[i] + (256 - _vm->_gamePalette[i]) / 16 * value;
 	}
-	setFullPalette(_vm->_palette);
+	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 }
 
@@ -392,7 +392,7 @@ void Screen::setFullPalette(byte *palette) {
 	setPartialPalette(palette, 0, 256);
 }
 
-void Screen::clearScreen() {
+void Screen::clear() {
 	memset(_workScreen, 0, 64320);
 }
 

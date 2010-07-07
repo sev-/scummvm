@@ -140,6 +140,17 @@ public:
 	AnimationFrameList *loadAnimationFrameList(Common::SeekableReadStream &sourceS);
 };
 
+/* ScreenResource */
+
+class ScreenResource : public BaseResource {
+public:
+	ScreenResource();
+protected:
+	byte *_screen;
+	void free();	
+	void internalLoad(Common::MemoryReadStream &stream);
+};
+
 } // End of namespace Comet
 
 #endif /* COMET_RESOURCE_H */

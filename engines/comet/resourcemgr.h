@@ -31,7 +31,7 @@
 #include "common/util.h"
 #include "common/debug.h"
 
-#include "prisoner/kroarchive.h"
+#include "comet/comet.h"
 
 namespace Comet {
 
@@ -101,6 +101,22 @@ protected:
 		Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::YES);
 		resource->load(stream);
 	}
+};
+
+class TextReader {
+public:
+	TextReader(CometEngine *vm);
+	~TextReader();
+	void setTextFilename(const char *filename);
+	TextResource *loadTextResource(uint tableIndex);
+	byte *getString(uint tableIndex, uint stringIndex);
+	void loadString(uint tableIndex, uint stringIndex, byte *buffer);
+protected:
+	CometEngine *_vm;
+	Common::String _textFilename;
+	TextResource *_cachedTextResource;
+	int _cachedTextResourceTableIndex;
+	TextResource *getCachedTextResource(uint tableIndex);
 };
 
 } // End of namespace Comet
