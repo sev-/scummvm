@@ -58,6 +58,7 @@ struct AnimationElement;
 class AnimationManager;
 struct AnimationFrameList;
 struct InterpolatedAnimationElement;
+class Gui;
 class ResourceManager;
 class ScriptInterpreter;
 class Scene;
@@ -180,6 +181,8 @@ public:
 
 	TextReader *_textReader;
 	TextResource *_globalStrings, *_inventoryItemNames;
+	
+	Gui *_gui;
 
 	int16 _animationType;
 
@@ -229,7 +232,6 @@ public:
 	
 	bool _cmdLook, _cmdGet, _cmdTalk;
 	int _currentInventoryItem;
-	byte _invSelectionColor;
 
 	int _textColorFlag;
 	bool _textBubbleActive, _itemInSight;
@@ -273,15 +275,9 @@ public:
 	
 	void drawTextIllsmouth();
 	
-	int handleInventory();
-	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
 	void useCurrentInventoryItem();
 	void checkCurrentInventoryItem();
-	int handleReadBook();
-	void drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor);
-	void bookTurnPage(bool turnDirection);
-	void bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex);
-	
+
 	void skipText();
 
 	void setModuleAndScene(int moduleNumber, int sceneNumber);
@@ -421,20 +417,6 @@ public:
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
 
-	/* Puzzle */
-	uint16 _puzzleTiles[6][6];
-	AnimationResource *_puzzleSprite;
-	int _puzzleTableRow, _puzzleTableColumn;
-	int _puzzleCursorX, _puzzleCursorY;
-	 
-	int runPuzzle();
-	void puzzleDrawFinger();
-	void puzzleDrawField();
-	void puzzleDrawTile(int columnIndex, int rowIndex, int xOffs, int yOffs);
-	void puzzleMoveTileColumn(int columnIndex, int direction);
-	void puzzleMoveTileRow(int rowIndex, int direction);
-	bool puzzleTestIsSolved();
-
 	int updateMap();
 	int handleMap();
 
@@ -454,16 +436,6 @@ public:
 	void drawBeams();
 	
 	int _menuStatus;
-
-	/* Control bar */
-	int _commandBarSelectedItem;
-	void drawCommandBar(int selectedItem, int animFrameCounter);
-	void handleCommandBar();
-	
-	/* Disk menu */
-	int _diskMenuSelectedItem;
-	void drawDiskMenu(int selectedItem);
-	int handleDiskMenu();
 
 	void initSystemVars();
 

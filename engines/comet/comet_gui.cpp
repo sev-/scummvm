@@ -1,4 +1,5 @@
 #include "comet/comet.h"
+#include "comet/comet_gui.h"
 #include "comet/animationmgr.h"
 #include "comet/font.h"
 #include "comet/resource.h"
@@ -7,9 +8,57 @@
 
 namespace Comet {
 
-/* Inventory */
+Gui::Gui(CometEngine *vm) : _vm(vm) {
+	_guiInventory = new GuiInventory(_vm);
+	_guiCommandBar = new GuiCommandBar(_vm);
+	_guiDiary = new GuiDiary(_vm);
+	_guiTownMap = new GuiTownMap(_vm);
+	_guiMainMenu = new GuiMainMenu(_vm);
+	_guiPuzzle = new GuiPuzzle(_vm);
+}
 
-int CometEngine::handleInventory() {
+Gui::~Gui() {
+	delete _guiInventory;
+	delete _guiCommandBar;
+	delete _guiDiary;
+	delete _guiTownMap;
+	delete _guiMainMenu;
+	delete _guiPuzzle;
+}
+
+int Gui::runInventory() {
+	return _guiInventory->run();
+}
+
+int Gui::runCommandBar() {
+	return _guiCommandBar->run();
+}
+
+int Gui::runDiary() {
+	return _guiDiary->run();
+}
+
+int Gui::runTownMap() {
+	return _guiTownMap->run();
+}
+
+int Gui::runMainMenu() {
+	return _guiMainMenu->run();
+}
+
+int Gui::runPuzzle() {
+	return _guiPuzzle->run();
+}
+
+/* GuiInventory */
+
+GuiInventory::GuiInventory(CometEngine *vm) : _vm(vm) {
+}
+
+GuiInventory::~GuiInventory() {
+}
+
+int GuiInventory::run() {
 
 	const int kIANone		= -1;
 	const int kIAUp			= -2;
@@ -38,13 +87,13 @@ int CometEngine::handleInventory() {
 	uint firstItem = 0, currentItem = 0, animFrameCounter = 0;
 	int inventoryStatus = 0;
 
-	waitForKeys();
+	_vm->waitForKeys();
 		
 	// Build items array and set up variables
 	for (int i = 0; i < 256; i++) {
-		if (_inventoryItemStatus[i] >= 1) {
+		if (_vm->_inventoryItemStatus[i] >= 1) {
 			items.push_back(i);
-			if (i == _currentInventoryItem) {
+			if (i == _vm->_currentInventoryItem) {
 				firstItem = items.size() < 5 ? 0 : items.size() - 5;
 				currentItem = items.size() - 1;
 			}
@@ -54,9 +103,9 @@ int CometEngine::handleInventory() {
 	while (inventoryStatus == 0) {
 		int inventoryAction = kIANone, mouseSelectedItem;
 			
-		handleEvents();
+		_vm->handleEvents();
 
-		mouseSelectedItem = findRect(inventorySlotRects, _mouseX, _mouseY, MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
+		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_mouseX, _vm->_mouseY, MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
 			
 		if (mouseSelectedItem >= 0) {
 			currentItem = firstItem + mouseSelectedItem;
@@ -64,19 +113,19 @@ int CometEngine::handleInventory() {
 	
 		drawInventory(items, firstItem, currentItem, animFrameCounter++);
 
-		_screen->update();
-		_system->delayMillis(40); // TODO: Adjust or use fps counter
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO: Adjust or use fps counter
 
-		if (_rightButton) {
+		if (_vm->_rightButton) {
 			inventoryAction = kIAExit;
-		} else if (_leftButton) {
+		} else if (_vm->_leftButton) {
 			if (mouseSelectedItem >= 0)
 				inventoryAction = kIAUse;
 			else if (mouseSelectedItem != kIANone)
 				inventoryAction = mouseSelectedItem;				
 		}
 
-		switch (_keyScancode) {
+		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
 			inventoryAction = kIADown;
 			break;
@@ -124,14 +173,14 @@ int CometEngine::handleInventory() {
 		case kIAUse:
 			// TODO: Move elsewhere
 			for (uint i = 0; i < 255; i++) {
-				if (_inventoryItemStatus[i] == 2)
-					_inventoryItemStatus[i] = 1;
+				if (_vm->_inventoryItemStatus[i] == 2)
+					_vm->_inventoryItemStatus[i] = 1;
 			}
-			_currentInventoryItem = items[currentItem];
+			_vm->_currentInventoryItem = items[currentItem];
 			// Return just selects, U actually uses the item
 			if (inventoryAction == kIAUse) {
 				//debug("Use item #%d", _currentInventoryItem);
-				_inventoryItemStatus[_currentInventoryItem] = 2;
+				_vm->_inventoryItemStatus[_vm->_currentInventoryItem] = 2;
 			}
 			inventoryStatus = 1;
 			break;
@@ -139,7 +188,7 @@ int CometEngine::handleInventory() {
 			break;
 		}
 		
-  		waitForKeys();
+  		_vm->waitForKeys();
 	}
 	
 	// TODO...
@@ -147,66 +196,77 @@ int CometEngine::handleInventory() {
 	return 2 - inventoryStatus;;
 }
 
-void CometEngine::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
+void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
 
 	const uint kMaxItemsOnScreen = 10;
 
 	uint xadd = 74, yadd = 64, itemHeight = 12;
 
-	_screen->drawAnimationElement(_iconSprite, 16, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 16, 0, 0);
 
 	// Draw up arrow
 	if (firstItem > 0)
-		_screen->drawAnimationElement(_iconSprite, 53, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 53, 0, 0);
 
 	// Draw down arrow
 	if (firstItem + kMaxItemsOnScreen < items.size())
-		_screen->drawAnimationElement(_iconSprite, 52, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 52, 0, 0);
 
 	for (uint itemIndex = 0; (itemIndex < kMaxItemsOnScreen) && (firstItem + itemIndex < items.size()); itemIndex++) {
-		byte *itemName = _inventoryItemNames->getString(items[firstItem + itemIndex]);
+		byte *itemName = _vm->_inventoryItemNames->getString(items[firstItem + itemIndex]);
 		int itemX = xadd + 21, itemY = yadd + itemHeight * itemIndex;
-		_screen->setFontColor(120);
-		_screen->drawText(itemX, itemY, itemName);
-		_screen->setFontColor(119);
-		_screen->drawText(itemX + 1, itemY + 1, itemName);
-		drawAnimatedIcon(_inventoryItemSprites, items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
+		_vm->_screen->setFontColor(120);
+		_vm->_screen->drawText(itemX, itemY, itemName);
+		_vm->_screen->setFontColor(119);
+		_vm->_screen->drawText(itemX + 1, itemY + 1, itemName);
+		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
 	}
 	
 	if (items.size() > 0) {
 		int selectionY = yadd + (currentItem - firstItem) * itemHeight - 1;
-		_screen->frameRect(xadd + 16, selectionY, 253, selectionY + itemHeight - 1, _invSelectionColor);
-		_invSelectionColor++;
-		if (_invSelectionColor >= 96)
-			_invSelectionColor = 80;
+		_vm->_screen->frameRect(xadd + 16, selectionY, 253, selectionY + itemHeight - 1, _selectionColor);
+		_selectionColor++;
+		if (_selectionColor >= 96)
+			_selectionColor = 80;
 	}
 
 }
 
-/* Command bar */
+/* GuiCommandBar */
 
-void CometEngine::drawCommandBar(int selectedItem, int animFrameCounter) {
+GuiCommandBar::GuiCommandBar(CometEngine *vm) : _vm(vm), _commandBarSelectedItem(-1) {
+}
+
+GuiCommandBar::~GuiCommandBar() {
+}
+
+int GuiCommandBar::run() {
+	handleCommandBar();
+	return 0;
+}
+
+void GuiCommandBar::drawCommandBar(int selectedItem, int animFrameCounter) {
 
 	const int x = 196;
 	const int y = 14;
 
-	_screen->drawAnimationElement(_iconSprite, 0, 0, 0);
-	_screen->drawAnimationElement(_iconSprite, selectedItem + 1, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 0, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, selectedItem + 1, 0, 0);
 
-	if (_currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0) {
-		_currentInventoryItem = -1;
-		for (int inventoryItem = 0; inventoryItem <= 255 && _currentInventoryItem == -1; inventoryItem++) {
-			if (_inventoryItemStatus[inventoryItem] > 0)
-				_currentInventoryItem = inventoryItem;
+	if (_vm->_currentInventoryItem >= 0 && _vm->_inventoryItemStatus[_vm->_currentInventoryItem] == 0) {
+		_vm->_currentInventoryItem = -1;
+		for (int inventoryItem = 0; inventoryItem <= 255 && _vm->_currentInventoryItem == -1; inventoryItem++) {
+			if (_vm->_inventoryItemStatus[inventoryItem] > 0)
+				_vm->_currentInventoryItem = inventoryItem;
 		}
 	}	
 
-	if (_currentInventoryItem >= 0)
-		drawAnimatedIcon(_inventoryItemSprites, _currentInventoryItem, x, y, animFrameCounter);
+	if (_vm->_currentInventoryItem >= 0)
+		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, _vm->_currentInventoryItem, x, y, animFrameCounter);
 	
 }
 
-void CometEngine::handleCommandBar() {
+void GuiCommandBar::handleCommandBar() {
 
 	const int kCBANone		= -1;
 	const int kCBAExit		= -2;
@@ -231,39 +291,37 @@ void CometEngine::handleCommandBar() {
 	int commandBarStatus = 0;
 	int animFrameCounter = 0;
 	
-	_menuStatus++;
+	//_menuStatus++;
 	
-	waitForKeys();
+	_vm->waitForKeys();
 
 	// TODO: copyScreens(vgaScreen, _sceneBackground);
 	// TODO: copyScreens(vgaScreen, _workScreen);
 	// TODO: setMouseCursor(1, 0);
 
-	_commandBarSelectedItem = kCBANone;
-
 	while (commandBarStatus == 0) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
 	
-		mouseSelectedItem = findRect(commandBarRects, _mouseX, _mouseY, commandBarItemCount + 1, kCBANone);
+		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
 		if (mouseSelectedItem != kCBANone)
 			_commandBarSelectedItem = mouseSelectedItem;
 			
 		drawCommandBar(_commandBarSelectedItem,	animFrameCounter++);		
-		_screen->update();
-		_system->delayMillis(40); // TODO
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
+		
+		_vm->handleEvents();
 
-		handleEvents();
-
-		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
+		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
 			continue;
 
-		if (_rightButton) {
+		if (_vm->_rightButton) {
 			commandBarAction = kCBAExit;
-		} else if (_leftButton && _commandBarSelectedItem != kCBANone) {
+		} else if (_vm->_leftButton && _commandBarSelectedItem != kCBANone) {
 			commandBarAction = _commandBarSelectedItem;
 		}
 		
-		switch (_keyScancode) {
+		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RIGHT:
 			if (_commandBarSelectedItem == commandBarItemCount) {
 				if (mouseSelectedItem == _commandBarSelectedItem) {
@@ -324,7 +382,7 @@ void CometEngine::handleCommandBar() {
 		
 		if (commandBarAction >= 0) {
 			drawCommandBar(commandBarAction, animFrameCounter);		
-			_screen->update();
+			_vm->_screen->update();
 		}
 		
 		switch (commandBarAction) {
@@ -334,202 +392,207 @@ void CometEngine::handleCommandBar() {
 			commandBarStatus = 2;
 			break;
 		case kCBAVerbTalk:
-			_cmdTalk = true;
+			_vm->_cmdTalk = true;
 			commandBarStatus = 1;
 			break;
 		case kCBAVerbGet:
-			_cmdGet = true;
+			_vm->_cmdGet = true;
 			commandBarStatus = 1;
 			break;
 		case kCBAVerbLook:
-			_cmdLook = true;
+			_vm->_cmdLook = true;
 			commandBarStatus = 1;
 			break;
 		case kCBAUseItem:
-			useCurrentInventoryItem();
+			_vm->useCurrentInventoryItem();
 			commandBarStatus = 1;
 			break;
 		case kCBAInventory:
-			commandBarStatus = handleInventory();
+			commandBarStatus = _vm->_gui->runInventory();
 			break;
 		case kCBAMap:
-			commandBarStatus = handleMap();
+			commandBarStatus = _vm->handleMap();
 			break;
 		case kCBAMenu:
-			// TODO: Disk menu
+			commandBarStatus = _vm->_gui->runMainMenu();//CHECKME
 			break;
 		}								
 
-		waitForKeys();
+		_vm->waitForKeys();
 	
 	}
 
-	waitForKeys();
+	_vm->waitForKeys();
 
+	/* TODO ??
 	_menuStatus--;
-
 	loadSceneBackground();
+	*/
 
 }
 	
-/* Disk menu */
+/* GuiMainMenu */
 
-void CometEngine::drawDiskMenu(int selectedItem) {
-
-	const int x = 137;
-	const int y = 65;
-	const int itemHeight = 23;
-
-	_screen->drawAnimationElement(_iconSprite, 10, 0, 0);
-	_screen->drawAnimationElement(_iconSprite, 11, x, y + selectedItem * itemHeight);
-
+GuiMainMenu::GuiMainMenu(CometEngine *vm) : _vm(vm), _mainMenuSelectedItem(0) {
 }
 
-int CometEngine::handleDiskMenu() {
+GuiMainMenu::~GuiMainMenu() {
+}
+
+int GuiMainMenu::run() {
 	
-	const int kDMANone		= -1;
-	const int kDMAExit		= -2;
-	const int kDMASave		= 0;
-	const int kDMALoad		= 1;
-	const int kDMAOptions	= 2;
-	const int kDMAQuit		= 3;
+	const int kMMANone		= -1;
+	const int kMMAExit		= -2;
+	const int kMMASave		= 0;
+	const int kMMALoad		= 1;
+	const int kMMAOptions	= 2;
+	const int kMMAQuit		= 3;
 
-	static const GuiRectangle diskMenuRects[] = {
-		{136,  64, 184,  80, kDMASave},
-		{136,  87, 184, 103, kDMALoad},
-		{136, 110, 184, 126, kDMAOptions},
-		{136, 133, 184, 149, kDMAQuit}};		
+	static const GuiRectangle mainMenuRects[] = {
+		{136,  64, 184,  80, kMMASave},
+		{136,  87, 184, 103, kMMALoad},
+		{136, 110, 184, 126, kMMAOptions},
+		{136, 133, 184, 149, kMMAQuit}};		
 
-	int diskMenuStatus = 0;
+	int mainMenuStatus = 0;
 	
-	_menuStatus++;
+	//_menuStatus++;
 	
-	waitForKeys();
+	_vm->waitForKeys();
 
-	// TODO
-
-	_diskMenuSelectedItem = kDMASave;
-
-	while (diskMenuStatus == 0) {
-		int mouseSelectedItem, diskMenuAction = kDMANone;
+	while (mainMenuStatus == 0) {
+		int mouseSelectedItem, mainMenuAction = kMMANone;
 	
-		mouseSelectedItem = findRect(diskMenuRects, _mouseX, _mouseY, 4, kDMANone);
-		if (mouseSelectedItem != kDMANone)
-			_diskMenuSelectedItem = mouseSelectedItem;
+		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_mouseX, _vm->_mouseY, 4, kMMANone);
+		if (mouseSelectedItem != kMMANone)
+			_mainMenuSelectedItem = mouseSelectedItem;
 			
-		drawDiskMenu(_diskMenuSelectedItem);		
-		_screen->update();
-		_system->delayMillis(40); // TODO
+		drawMainMenu(_mainMenuSelectedItem);		
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
 
-		handleEvents();
+		_vm->handleEvents();
 
-		if (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton)
+		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
 			continue;
 
-		if (_rightButton) {
-			diskMenuAction = kDMAExit;
-		} else if (_leftButton && _diskMenuSelectedItem != kDMANone) {
-			diskMenuAction = _diskMenuSelectedItem;
+		if (_vm->_rightButton) {
+			mainMenuAction = kMMAExit;
+		} else if (_vm->_leftButton && _mainMenuSelectedItem != kMMANone) {
+			mainMenuAction = _mainMenuSelectedItem;
 		}
 		
-		switch (_keyScancode) {
+		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
-			if (_diskMenuSelectedItem == 3) {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
+			if (_mainMenuSelectedItem == 3) {
+				if (mouseSelectedItem == _mainMenuSelectedItem) {
 					// TODO: Warp mouse cursor
 				}
-				_diskMenuSelectedItem = 0;
+				_mainMenuSelectedItem = 0;
 			} else {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
+				if (mouseSelectedItem == _mainMenuSelectedItem) {
 					// TODO: Warp mouse cursor
 				}
-				_diskMenuSelectedItem++;
+				_mainMenuSelectedItem++;
 			}
 			break;
 		case Common::KEYCODE_UP:
-			if (_diskMenuSelectedItem == 0) {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
+			if (_mainMenuSelectedItem == 0) {
+				if (mouseSelectedItem == _mainMenuSelectedItem) {
 					// TODO: Warp mouse cursor
 				}
-				_diskMenuSelectedItem = 3;
+				_mainMenuSelectedItem = 3;
 			} else {
-				if (mouseSelectedItem == _diskMenuSelectedItem) {
+				if (mouseSelectedItem == _mainMenuSelectedItem) {
 					// TODO: Warp mouse cursor
 				}
-				_diskMenuSelectedItem--;
+				_mainMenuSelectedItem--;
 			}
 			break;
 		case Common::KEYCODE_ESCAPE:
-			diskMenuAction = kDMAExit;
+			mainMenuAction = kMMAExit;
 			break;
 		case Common::KEYCODE_RETURN:
-			diskMenuAction = _diskMenuSelectedItem;
+			mainMenuAction = _mainMenuSelectedItem;
 			break;			
 		case Common::KEYCODE_s:
-			diskMenuAction = kDMASave;
+			mainMenuAction = kMMASave;
 			break;
 		case Common::KEYCODE_l:
-			diskMenuAction = kDMALoad;
+			mainMenuAction = kMMALoad;
 			break;
 		case Common::KEYCODE_t:
-			diskMenuAction = kDMAOptions;
+			mainMenuAction = kMMAOptions;
 			break;
 		case Common::KEYCODE_x:
-			diskMenuAction = kDMAQuit;
+			mainMenuAction = kMMAQuit;
 			break;
 		default:
 			break;			
 		}
 		
-		if (diskMenuAction >= 0) {
-			drawDiskMenu(_diskMenuSelectedItem);		
-			_screen->update();
+		if (mainMenuAction >= 0) {
+			drawMainMenu(_mainMenuSelectedItem);		
+			_vm->_screen->update();
 		}
 		
-		switch (diskMenuAction) {
-		case kDMANone:
+		switch (mainMenuAction) {
+		case kMMANone:
 			break;
-		case kDMAExit:
-			diskMenuStatus = 2;
+		case kMMAExit:
+			mainMenuStatus = 2;
 			break;
-		case kDMASave:
+		case kMMASave:
 			// TODO
-			debug("disk menu: save game");
-			diskMenuStatus = 0;
+			debug("main menu: save game");
+			mainMenuStatus = 0;
 			break;
-		case kDMALoad:
+		case kMMALoad:
 			// TODO
-			debug("disk menu: load game");
-			diskMenuStatus = 0;
+			debug("main menu: load game");
+			mainMenuStatus = 0;
 			break;
-		case kDMAOptions:
+		case kMMAOptions:
 			// TODO
-			debug("disk menu: options");
-			diskMenuStatus = 0;
+			debug("main menu: options");
+			mainMenuStatus = 0;
 			break;
-		case kDMAQuit:
+		case kMMAQuit:
 			// TODO
-			debug("disk menu: quit");
-			diskMenuStatus = 0;
+			debug("main menu: quit");
+			mainMenuStatus = 0;
 			break;
 		}								
 
-		waitForKeys();
+		_vm->waitForKeys();
 	
 	}
 
-	waitForKeys();
+	_vm->waitForKeys();
 
-	_menuStatus--;
-
-	loadSceneBackground();
+	//_menuStatus--;
+	//loadSceneBackground();
 
 	return 0;
 }
 
-/* Town map */
+void GuiMainMenu::drawMainMenu(int selectedItem) {
+	const int x = 137;
+	const int y = 65;
+	const int itemHeight = 23;
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 10, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 11, x, y + selectedItem * itemHeight);
+}
 
-int CometEngine::updateMap() {
+/* GuiTownMap */
+
+GuiTownMap::GuiTownMap(CometEngine *vm) : _vm(vm) {
+}
+
+GuiTownMap::~GuiTownMap() {
+}
+
+int GuiTownMap::run() {
 
 	static const struct MapPoint { int16 x, y; } mapPoints[] = {
 		{248, 126}, {226, 126}, {224, 150}, {204, 156},
@@ -558,48 +621,35 @@ int CometEngine::updateMap() {
 	int16 mapRectY1 = 65, mapRectY2 = 187;
 	int16 cursorAddX = 8, cursorAddY = 8;
 	// Init map status values from script
-	uint16 sceneBitMaskStatus = _scriptVars[2];
-	uint16 sceneStatus1 = _scriptVars[3];
-	uint16 sceneStatus2 = _scriptVars[4];
+	uint16 sceneBitMaskStatus = _vm->_scriptVars[2];
+	uint16 sceneStatus1 = _vm->_scriptVars[3];
+	uint16 sceneStatus2 = _vm->_scriptVars[4];
 	int16 cursorX, cursorY;
-	int16 locationNumber = _sceneNumber % 30;
+	int16 locationNumber = _vm->_sceneNumber % 30;
 
 	// seg002:33FB
 	cursorX = mapPoints[locationNumber].x;
 	cursorY = mapPoints[locationNumber].y;
 	
-	_system->warpMouse(cursorX, cursorY);
+	_vm->_system->warpMouse(cursorX, cursorY);
 
 	// TODO: Copy vga screen to work screen...
 
-	waitForKeys();
+	_vm->waitForKeys();
 
 	// seg002:344D	
 	while (mapStatus == 0) {
 
 		int16 currMapLocation, selectedMapLocation;
 
-		handleEvents();
+		_vm->handleEvents();
 
-		if (_mouseX > mapRectX1 && _mouseX < mapRectX2) {
-			cursorX = _mouseX;
-		} else if (_mouseX < mapRectX2) {
-			cursorX = mapRectX1 + 1;
-		} else {
-			cursorX = mapRectX2 - 1;
-		}			
-		
-		if (_mouseY > mapRectY1 && _mouseY < mapRectY2) {
-			cursorY = _mouseY;
-		} else if (_mouseY < mapRectY2) {
-			cursorY = mapRectY1 + 1;
-		} else {
-			cursorY = mapRectY2 - 1;
-		}			
-	
+		cursorX = CLIP(_vm->_mouseX, mapRectX1 + 1, mapRectX2 - 1);
+		cursorY = CLIP(_vm->_mouseY, mapRectY1 + 1, mapRectY2 - 1);
+
 		// seg002:34A7
 
-		switch (_keyScancode) {
+		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_UP:
 			cursorY = MAX(cursorY - cursorAddY, mapRectY1 + 1);
 			break;
@@ -616,13 +666,13 @@ int CometEngine::updateMap() {
 			break;			
 		}						
 		
-		if (_mouseX != cursorX || _mouseY != cursorY)
-			_system->warpMouse(cursorX, cursorY);	
+		if (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY)
+			_vm->_system->warpMouse(cursorX, cursorY);	
 
 		// seg002:3545
-		_screen->drawAnimationElement(_iconSprite, 50, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
 		
-		if (_keyScancode == Common::KEYCODE_ESCAPE || _rightButton) {
+		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
 			mapStatus = 1;
 		}
 				
@@ -642,68 +692,70 @@ int CometEngine::updateMap() {
 		}
 		
 		if (currMapLocation != -1) {
-			byte *locationName = _textReader->getString(2, 40 + currMapLocation);
-			_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _screen->_font->getTextWidth(locationName)), 
+			byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
+			_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->_font->getTextWidth(locationName)), 
 				cursorY - 6, locationName, 119, 120);
-			if (_keyScancode == Common::KEYCODE_RETURN || _leftButton) {
+			if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
 				selectedMapLocation = currMapLocation;
 			}
 		} else {
-			_screen->drawAnimationElement(_iconSprite, 51, cursorX, cursorY);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 51, cursorX, cursorY);
 		}
 
 		if (selectedMapLocation != -1) {
 			// seg002:36DA
 			const MapExit &mapExit = mapExits[selectedMapLocation];
-			_moduleNumber = mapExit.moduleNumber;
-			_sceneNumber = mapExit.sceneNumber;
+			_vm->_moduleNumber = mapExit.moduleNumber;
+			_vm->_sceneNumber = mapExit.sceneNumber;
 			if (sceneStatus1 == 1) {
-				_moduleNumber += 6;
+				_vm->_moduleNumber += 6;
 			} else {
-				_sceneNumber += (sceneStatus2 - 1) * 30;
+				_vm->_sceneNumber += (sceneStatus2 - 1) * 30;
 			}
 			if ((locationNumber == 7 || locationNumber == 8) &&
-				_scriptVars[5] == 2 && _scriptVars[6] == 0 &&
+				_vm->_scriptVars[5] == 2 && _vm->_scriptVars[6] == 0 &&
 				selectedMapLocation != 6 && selectedMapLocation != 7 && selectedMapLocation != 4) {
-				_sceneNumber += 36;
+				_vm->_sceneNumber += 36;
 			}
 			mapStatus = 2;
-			debug("moduleNumber: %d; sceneNumber: %d", _moduleNumber, _sceneNumber);
+			debug("moduleNumber: %d; sceneNumber: %d", _vm->_moduleNumber, _vm->_sceneNumber);
 		}
 
-		_screen->update();
-		_system->delayMillis(40); // TODO
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
 
 	}
 	
-	waitForKeys();
+	_vm->waitForKeys();
 
 	return 1;
 }
 
-int CometEngine::handleMap() {
+/* GuiDiary */
 
-	// TODO: Proper implementation
-
-	return updateMap();
-
+GuiDiary::GuiDiary(CometEngine *vm) : _vm(vm) {
 }
 
-/* Diary */
+GuiDiary::~GuiDiary() {
+}
 
-int CometEngine::handleReadBook() {
+int GuiDiary::run() {
+	return handleReadBook();
+}
+
+int GuiDiary::handleReadBook() {
 
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
 	int bookStatus = 0;
 
 	// Use values from script; this is the most current diary entry
-	pageNumber = _scriptVars[1];
-	pageCount = _scriptVars[1];
+	pageNumber = _vm->_scriptVars[1];
+	pageCount = _vm->_scriptVars[1];
 
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
 	// Set speech file
-	setVoiceFileIndex(7);
+	_vm->setVoiceFileIndex(7);
 
 	while (bookStatus == 0/*TODO:check for quit*/) {
 
@@ -716,20 +768,20 @@ int CometEngine::handleReadBook() {
 			// Play page speech
 			if (talkPageNumber != pageNumber) {
 				if (pageNumber > 0) {
-					playVoice(pageNumber);
+					_vm->playVoice(pageNumber);
 				} else {
-					stopVoice();
+					_vm->stopVoice();
 				}
 				talkPageNumber = pageNumber;
 			}
 			// TODO: Check mouse rectangles
-			handleEvents();
-			_system->delayMillis(20); // TODO: Adjust or use fps counter
-		} while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0/*TODO:check for quit*/);
+			_vm->handleEvents();
+			_vm->_system->delayMillis(20); // TODO: Adjust or use fps counter
+		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0/*TODO:check for quit*/);
 		
 		// TODO: Handle mouse rectangles
 		
-		switch (_keyScancode) {
+		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RETURN:
 			bookStatus = 1;
 			break;
@@ -756,47 +808,47 @@ int CometEngine::handleReadBook() {
 			break;
 		}
 
-  		waitForKeys();
+  		_vm->waitForKeys();
 
 	}
 
-	waitForKeys();
-	stopVoice();
- 	_textActive = false;
+	_vm->waitForKeys();
+	_vm->stopVoice();
+ 	_vm->_textActive = false;
 
-	setVoiceFileIndex(_narFileIndex);
+	_vm->setVoiceFileIndex(_vm->_narFileIndex);
 
 	return 2 - bookStatus;
 
 }
 
-void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
+void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
 
 	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
 	char pageNumberString[10];
 	int pageNumberStringWidth;
 
-	byte *pageText = _textReader->getString(2, pageTextIndex);
+	byte *pageText = _vm->_textReader->getString(2, pageTextIndex);
 	
-	_screen->drawAnimationElement(_iconSprite, 30, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
 	if (pageTextIndex < pageTextMaxIndex)
-		_screen->drawAnimationElement(_iconSprite, 37, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 37, 0, 0);
 		
-	_screen->setFontColor(58);
+	_vm->_screen->setFontColor(58);
 
 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 1);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
-	_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
+	pageNumberStringWidth = _vm->_screen->_font->getTextWidth((byte*)pageNumberString);
+	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
  	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
-	pageNumberStringWidth = _screen->_font->getTextWidth((byte*)pageNumberString);
-	_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
+	pageNumberStringWidth = _vm->_screen->_font->getTextWidth((byte*)pageNumberString);
+	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
-	_screen->setFontColor(fontColor);
+	_vm->_screen->setFontColor(fontColor);
 	
 	while (*pageText != 0 && *pageText != '*') {
-		x = MAX(xadd + (106 - _screen->_font->getTextWidth(pageText)) / 2, 0);
-		_screen->drawText(x, yadd + lineNumber * 10, pageText);
+		x = MAX(xadd + (106 - _vm->_screen->_font->getTextWidth(pageText)) / 2, 0);
+		_vm->_screen->drawText(x, yadd + lineNumber * 10, pageText);
 		if (++lineNumber == 13) {
 			xadd += 115;
 			yadd -= 130;
@@ -808,43 +860,53 @@ void CometEngine::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fon
 
 }
 
-void CometEngine::bookTurnPage(bool turnDirection) {
+void GuiDiary::bookTurnPage(bool turnDirection) {
 	if (turnDirection) {
 		for (uint i = 38; i < 49; i++) {
-			_screen->drawAnimationElement(_iconSprite, 30, 0, 0);
-			_screen->drawAnimationElement(_iconSprite, i, 0, 0);
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 	} else {
 		for (uint i = 49; i > 38; i--) {
-			_screen->drawAnimationElement(_iconSprite, 30, 0, 0);
-			_screen->drawAnimationElement(_iconSprite, i, 0, 0);
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 	}
 }
 
-void CometEngine::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
+void GuiDiary::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
 	if (turnDirection) {
 		for (byte fontColor = 64; fontColor < 72; fontColor++) {
 			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 	} else {
 		for (byte fontColor = 72; fontColor > 64; fontColor--) {
 			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 	}
 }
 
-/* Puzzle */
+/* GuiPuzzle */
 
-int CometEngine::runPuzzle() {
+GuiPuzzle::GuiPuzzle(CometEngine *vm) : _vm(vm) {
+}
+
+GuiPuzzle::~GuiPuzzle() {
+}
+
+int GuiPuzzle::run() {
+	return runPuzzle();
+}
+
+int GuiPuzzle::runPuzzle() {
 
 #define PUZZLE_CHEAT
 #ifdef PUZZLE_CHEAT
@@ -898,7 +960,7 @@ int CometEngine::runPuzzle() {
 
 	int puzzleStatus = 0;
 
-	_puzzleSprite = _animationMan->loadAnimationResource("A07.PAK", 24);
+	_puzzleSprite = _vm->_animationMan->loadAnimationResource("A07.PAK", 24);
 
 	// Initialize the puzzle state
 	for (int i = 0; i < 6; i++)
@@ -912,15 +974,15 @@ int CometEngine::runPuzzle() {
 
 		int selectedTile;
 
-		handleEvents();
+		_vm->handleEvents();
 
-		_puzzleCursorX = CLIP(_mouseX, 103, 231);
-		_puzzleCursorY = CLIP(_mouseY, 44, 171);
+		_puzzleCursorX = CLIP(_vm->_mouseX, 103, 231);
+		_puzzleCursorY = CLIP(_vm->_mouseY, 44, 171);
 
-		if (_mouseX != _puzzleCursorX || _mouseY != _puzzleCursorY)
-			_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+		if (_vm->_mouseX != _puzzleCursorX || _vm->_mouseY != _puzzleCursorY)
+			_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
 
-		selectedTile = findRect(puzzleTileRects, _mouseX, _mouseY, 21, -1);
+		selectedTile = _vm->findRect(puzzleTileRects, _vm->_mouseX, _vm->_mouseY, 21, -1);
 		if (selectedTile >= 0) {
 			if (selectedTile >= 0 && selectedTile < 20) {
 				_puzzleTableColumn = rectToColRow[selectedTile].col;
@@ -934,15 +996,15 @@ int CometEngine::runPuzzle() {
 			}
 		}
 
-		puzzleDrawField();
-		_screen->update();
-		_system->delayMillis(40); // TODO
+		drawField();
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
 
-		if (_keyScancode != Common::KEYCODE_INVALID) {
+		if (_vm->_keyScancode != Common::KEYCODE_INVALID) {
 			
 			bool selectionChanged = false;
 
-			switch (_keyScancode) {
+			switch (_vm->_keyScancode) {
 			case Common::KEYCODE_UP:
 				if (_puzzleTableRow > 0) {
 					_puzzleTableRow--;
@@ -999,32 +1061,32 @@ int CometEngine::runPuzzle() {
 				}
 				
 				// Mouse warp to selected tile
-				_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+				_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
 
 			}
 
 		}
 
-		if (_keyScancode == Common::KEYCODE_ESCAPE || _rightButton) {
+		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
 			puzzleStatus = 1;
-		} else if (_keyScancode == Common::KEYCODE_RETURN || _leftButton) {
+		} else if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
 			if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
 				// TODO: playSampleFlag, play sample
-				puzzleMoveTileRow(_puzzleTableRow, -1);
+				moveTileRow(_puzzleTableRow, -1);
 			} else if (_puzzleTableColumn == 5 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
 				// TODO: playSampleFlag, play sample
-				puzzleMoveTileRow(_puzzleTableRow, 1);
+				moveTileRow(_puzzleTableRow, 1);
 			} else if (_puzzleTableRow == 0 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
 				// TODO: playSampleFlag, play sample
-				puzzleMoveTileColumn(_puzzleTableColumn, -1);
+				moveTileColumn(_puzzleTableColumn, -1);
 			} else if (_puzzleTableRow == 5 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
 				// TODO: playSampleFlag, play sample
-				puzzleMoveTileColumn(_puzzleTableColumn, 1);
+				moveTileColumn(_puzzleTableColumn, 1);
 			}
-			if (puzzleTestIsSolved())
+			if (testIsSolved())
 				puzzleStatus = 2;
 		} else {
-			waitForKeys();
+			_vm->waitForKeys();
 		}				
 			
 	}		
@@ -1035,38 +1097,38 @@ int CometEngine::runPuzzle() {
 
 }
 
-void CometEngine::puzzleDrawFinger() {
-	_screen->drawAnimationElement(_puzzleSprite, 18, _puzzleCursorX, _puzzleCursorY);
+void GuiPuzzle::drawFinger() {
+	_vm->_screen->drawAnimationElement(_puzzleSprite, 18, _puzzleCursorX, _puzzleCursorY);
 }
 
-void CometEngine::puzzleDrawField() {
-	memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
-	_screen->drawAnimationElement(_puzzleSprite, 17, 0, 0);
+void GuiPuzzle::drawField() {
+	// TODO ??: memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
+	_vm->_screen->drawAnimationElement(_puzzleSprite, 17, 0, 0);
 	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
 		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {
-			puzzleDrawTile(columnIndex, rowIndex, 0, 0);		
+			drawTile(columnIndex, rowIndex, 0, 0);		
 		}
 	}
-	puzzleDrawFinger();
+	drawFinger();
 }
 
-void CometEngine::puzzleDrawTile(int columnIndex, int rowIndex, int xOffs, int yOffs) {
-	_screen->drawAnimationElement(_puzzleSprite, _puzzleTiles[columnIndex][rowIndex], 
+void GuiPuzzle::drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs) {
+	_vm->_screen->drawAnimationElement(_puzzleSprite, _puzzleTiles[columnIndex][rowIndex], 
 		119 + (columnIndex - 1) * 24 + xOffs, 60 + (rowIndex - 1) * 24 + yOffs);
 }
 
-void CometEngine::puzzleMoveTileColumn(int columnIndex, int direction) {
+void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 	if (direction < 0) {
 		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			_screen->setClipY(60, 156);
+			_vm->_screen->setClipY(60, 156);
 			for (int rowIndex = 1; rowIndex <= 5; rowIndex++) {
-				puzzleDrawTile(columnIndex, rowIndex, 0, -yOffs);				
+				drawTile(columnIndex, rowIndex, 0, -yOffs);				
 			}
-			_screen->setClipY(0, 199);
-			puzzleDrawFinger();
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->setClipY(0, 199);
+			drawFinger();
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 		for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex + 1];
@@ -1075,14 +1137,14 @@ void CometEngine::puzzleMoveTileColumn(int columnIndex, int direction) {
 	} else {
 		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			_screen->setClipY(60, 156);
+			_vm->_screen->setClipY(60, 156);
 			for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
-				puzzleDrawTile(columnIndex, rowIndex, 0, yOffs);				
+				drawTile(columnIndex, rowIndex, 0, yOffs);				
 			}
-			_screen->setClipY(0, 199);
-			puzzleDrawFinger();
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->setClipY(0, 199);
+			drawFinger();
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 		for (int rowIndex = 5; rowIndex >= 1; rowIndex--) {
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex - 1];
@@ -1091,18 +1153,18 @@ void CometEngine::puzzleMoveTileColumn(int columnIndex, int direction) {
 	}
 }
 
-void CometEngine::puzzleMoveTileRow(int rowIndex, int direction) {
+void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 	if (direction < 0) {
 		_puzzleTiles[5][rowIndex] = _puzzleTiles[1][rowIndex];
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
-			_screen->setClipX(120, 215);
+			_vm->_screen->setClipX(120, 215);
 			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
-				puzzleDrawTile(columnIndex, rowIndex, -xOffs, 0);				
+				drawTile(columnIndex, rowIndex, -xOffs, 0);				
 			}
-			_screen->setClipX(0, 319);
-			puzzleDrawFinger();
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->setClipX(0, 319);
+			drawFinger();
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 		for (int columnIndex = 0; columnIndex <= 4; columnIndex++) {
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex + 1][rowIndex];
@@ -1111,14 +1173,14 @@ void CometEngine::puzzleMoveTileRow(int rowIndex, int direction) {
 	} else {
 		_puzzleTiles[0][rowIndex] = _puzzleTiles[4][rowIndex];
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
-			_screen->setClipX(120, 215);
+			_vm->_screen->setClipX(120, 215);
 			for (int columnIndex = 0; columnIndex <= 4; columnIndex++) {
-				puzzleDrawTile(columnIndex, rowIndex, xOffs, 0);				
+				drawTile(columnIndex, rowIndex, xOffs, 0);				
 			}
-			_screen->setClipX(0, 319);
-			puzzleDrawFinger();
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			_vm->_screen->setClipX(0, 319);
+			drawFinger();
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO
 		}
 		for (int columnIndex = 5; columnIndex >= 1; columnIndex--) {
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex - 1][rowIndex];
@@ -1127,7 +1189,7 @@ void CometEngine::puzzleMoveTileRow(int rowIndex, int direction) {
 	}
 }
 
-bool CometEngine::puzzleTestIsSolved() {
+bool GuiPuzzle::testIsSolved() {
 	int matchingTiles = 0;
 	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
 		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {

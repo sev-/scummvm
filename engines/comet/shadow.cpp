@@ -11,6 +11,7 @@
 
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
+#include "comet/comet_gui.h"
 #include "comet/music.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
@@ -1008,7 +1009,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_o:
-		handleInventory();
+		_gui->runInventory();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_u:
@@ -1016,7 +1017,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
-		// TODO: handleDiskMenu();
+		_gui->runMainMenu();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_m:
@@ -1024,7 +1025,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_i:
-		handleReadBook();
+		_gui->runDiary();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
@@ -1037,7 +1038,7 @@ void CometEngine::handleKeyInput() {
 		break;
 	default:
 		if (Common::KEYCODE_TAB == _keyScancode || _rightButton) {
-			handleCommandBar();
+			_gui->runCommandBar();
 		}
 		break;			
 	}
@@ -1465,7 +1466,7 @@ void CometEngine::checkCurrentInventoryItem() {
 
 	/* Check if the player wants to read the notebook */
 	if (_inventoryItemStatus[0] == 2) {
-		handleReadBook();
+		_gui->runDiary();
 		_inventoryItemStatus[0] = 1;
 	}
 
@@ -1533,7 +1534,7 @@ void CometEngine::gameMainLoop() {
 		
 		if (_scriptVars[9] == 1) {
 			// TODO: Copy vga screen to scene background
-			_scriptVars[9] = runPuzzle();
+			_scriptVars[9] = _gui->runPuzzle();
 			loadSceneBackground();
 		}
 
@@ -1547,6 +1548,9 @@ void CometEngine::gameMainLoop() {
 		switch (_keyScancode) {
 		case Common::KEYCODE_r:
 			_debugRectangles = !_debugRectangles;
+			break;
+		case Common::KEYCODE_F1:
+			_gui->runPuzzle();
 			break;
 		case Common::KEYCODE_F7:
 			savegame("comet.000", "Quicksave");
@@ -1596,6 +1600,11 @@ void CometEngine::gameMainLoop() {
 
 	}
 	
+}
+
+int CometEngine::handleMap() {
+	// TODO: Proper implementation
+	return _gui->runTownMap();
 }
 
 } // End of namespace Comet

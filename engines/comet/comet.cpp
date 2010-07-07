@@ -23,6 +23,7 @@
 #include "comet/music.h"
 
 #include "comet/animationmgr.h"
+#include "comet/comet_gui.h"
 #include "comet/dialog.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
@@ -94,6 +95,8 @@ Common::Error CometEngine::run() {
 	
 	_textReader = new TextReader(this);
 	_textReader->setTextFilename("E.CC4"); // TODO: Use language-specific filename
+	
+	_gui = new Gui(this);
 
 	_soundResource = new SoundResource();
 
@@ -189,11 +192,6 @@ Common::Error CometEngine::run() {
 	_screen->setFullPalette(_ctuPal);
 	strcpy(AName, "A00.PAK");
 	playCutscene(38, 0, 32000, 3, 1, soundFramesData);
-#endif
-
-#if 0
-	_screen->setFullPalette(_ctuPal);
-	handleCommandBar();
 #endif
 
 #if 0
