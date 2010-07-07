@@ -142,6 +142,43 @@ void Scene::findExitRect(int sceneNumber, int moduleNumber, int direction, int &
 
 }
 
+void Scene::addSceneItem(int itemIndex, int x, int y, int paramType) {
+	SceneItem sceneItem;
+	sceneItem.itemIndex = itemIndex;
+	sceneItem.active = true;
+	sceneItem.paramType = paramType;
+	sceneItem.x = x;
+	sceneItem.y = y;
+	_sceneItems.push_back(sceneItem);
+}
+
+void Scene::removeSceneItem(int itemIndex) {
+	uint index = 0;
+	while (index < _sceneItems.size()) {
+		if (_sceneItems[index].itemIndex == itemIndex) {
+			_sceneItems.remove_at(index);
+		} else {
+			index++;
+		}
+	}
+}
+
+uint16 Scene::findSceneItemAt(const Common::Rect &rect) {
+	for (uint i = 0; i < _sceneItems.size(); i++) {
+		if (_sceneItems[i].active) {
+			Common::Rect itemRect(_sceneItems[i].x - 8, _sceneItems[i].y - 8, _sceneItems[i].x + 8, _sceneItems[i].y + 8);
+			if (_vm->rectCompare(rect, itemRect)) {
+				return COLLISION(kCollisionSceneItem, i);
+			}
+		}
+	}
+	return 0;
+}
+
+SceneItem& Scene::getSceneItem(int itemIndex) {
+	return _sceneItems[itemIndex];
+}
+
 int Scene::findBoundsRight(int x, int y) {
 	int yp = 0;
 	for (uint i = 0; i < _bounds.size(); i++) {

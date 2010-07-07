@@ -129,23 +129,9 @@ struct AnimationSlot {
 	AnimationResource *anim;
 };
 
-struct SceneExitItem {
-	int directionIndex;
-	int moduleNumber;
-	int sceneNumber;
-	int x1, x2;
-};
-
 struct SpriteDraw {
 	byte y;
 	byte index;
-};
-
-struct SceneItem {
-	int itemIndex;
-	bool active;
-	int paramType;
-	int x, y;
 };
 
 struct GuiRectangle {
@@ -209,7 +195,6 @@ public:
 
 	Actor _actors[11];
 
-	Common::Array<SceneItem> _sceneItems;
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
 	int _paletteStatus;
@@ -365,9 +350,6 @@ public:
 	
 	void handleSceneChange(int sceneNumber, int moduleNumber);
 
-	void addSceneItem(int itemIndex, int x, int y, int paramType);
-	void removeSceneItem(int itemIndex);
-	uint16 findSceneItemAt(const Common::Rect &rect);
 	void drawLineOfSight();
 	
 	void moveActorAroundBounds(int index, Actor *actor);

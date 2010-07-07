@@ -637,7 +637,7 @@ void ScriptInterpreter::o1_addSceneObject(Script *script) {
 	ARG_BYTE(itemIndex);
 	ARG_BYTEX(x);
 	ARG_BYTE(y);
-	_vm->addSceneItem(itemIndex, x, y, 0);
+	_vm->_scene->addSceneItem(itemIndex, x, y, 0);
 }
 
 void ScriptInterpreter::o1_endIntroLoop(Script *script) {
@@ -995,7 +995,7 @@ void ScriptInterpreter::o1_addSceneItem2(Script *script) {
 	ARG_BYTE(itemIndex);
 	ARG_INT16(x);
 	ARG_BYTE(y);
-	_vm->addSceneItem(itemIndex, x, y, 1);
+	_vm->_scene->addSceneItem(itemIndex, x, y, 1);
 }
 
 void ScriptInterpreter::o1_playActorAnim(Script *script) {
@@ -1070,7 +1070,7 @@ void ScriptInterpreter::o1_ifNearActor(Script *script) {
 
 void ScriptInterpreter::o1_removeSceneItem(Script *script) {
 	ARG_BYTE(itemIndex);
-	_vm->removeSceneItem(itemIndex);
+	_vm->_scene->removeSceneItem(itemIndex);
 }
 
 void ScriptInterpreter::o1_playSample(Script *script) {
