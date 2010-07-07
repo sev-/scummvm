@@ -17,7 +17,6 @@ MODULE_OBJS = \
 	scene.o \
 	script.o \
 	shadow.o \
-	speech.o \
 	unpack.o
 
 # This module can be built as a plugin

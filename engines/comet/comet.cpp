@@ -54,8 +54,6 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	_mixer->setVolumeForSoundType(Audio::Mixer::kSpeechSoundType, ConfMan.getInt("speech_volume"));
 	_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, ConfMan.getInt("music_volume"));
 
-	DebugMan.addDebugChannel(kDebugScript, "script", "Script debug level");
-	
 }
 
 CometEngine::~CometEngine() {
@@ -96,6 +94,8 @@ Common::Error CometEngine::run() {
 	
 	_textReader = new TextReader(this);
 	_textReader->setTextFilename("E.CC4"); // TODO: Use language-specific filename
+
+	_soundResource = new SoundResource();
 
 	/* Init vars */
 	_gameLoopCounter = 0;
@@ -149,10 +149,6 @@ Common::Error CometEngine::run() {
 
 	_startupModuleNumber = 9;
 	_startupSceneNumber = 0;
-
-	_narFile = NULL;
-	_narCount = 0;
-	_narOffsets = NULL;
 
 	/* Unused in Comet CD
 	_beamColor = 112;

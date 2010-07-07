@@ -703,7 +703,7 @@ int CometEngine::handleReadBook() {
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
 	// Set speech file
-	openVoiceFile(7);
+	setVoiceFileIndex(7);
 
 	while (bookStatus == 0/*TODO:check for quit*/) {
 
@@ -764,7 +764,7 @@ int CometEngine::handleReadBook() {
 	stopVoice();
  	_textActive = false;
 
-	openVoiceFile(_narFileIndex);
+	setVoiceFileIndex(_narFileIndex);
 
 	return 2 - bookStatus;
 

@@ -41,18 +41,7 @@
 
 #include "engines/engine.h"
 
-//#include "comet/music.h"
-//#include "comet/text.h"
-
 namespace Comet {
-
-enum {
-	kFileTypeHash
-};
-
-enum {
-	kDebugScript = 1 << 0
-};
 
 struct CometGameDescription;
 
@@ -72,6 +61,7 @@ struct InterpolatedAnimationElement;
 class ResourceManager;
 class ScriptInterpreter;
 class Scene;
+class SoundResource;
 class TextReader;
 class TextResource;
 
@@ -263,13 +253,13 @@ public:
 	/* Filenames */
 	char AName[16], DName[16], RName[16];
 
-	Common::File *_narFile;
-	int _narCount;
-	uint32 *_narOffsets;
 	Audio::SoundHandle _sampleHandle;
+	SoundResource *_soundResource;
+	int _currNarFileIndex;
+	Common::String _narFilename;
 
-	void openVoiceFile(int index);
-	void playVoice(int number);
+	void setVoiceFileIndex(int narFileIndex);
+	void playVoice(int voiceIndex);
 	void stopVoice();
 
 	void initAndLoadGlobalData();

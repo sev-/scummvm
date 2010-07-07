@@ -387,7 +387,7 @@ void CometEngine::loadgame(const char *filename) {
 	_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
 	_screen->setFullPalette(_screenPalette);
 
-	openVoiceFile(_narFileIndex); // NEW in reimplementation
+	setVoiceFileIndex(_narFileIndex); // NEW in reimplementation
 
 	// TODO: palStuff2
 
