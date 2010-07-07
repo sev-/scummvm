@@ -32,14 +32,19 @@
 
 namespace Comet {
 
-#if 0
 struct SceneExitItem {
 	int directionIndex;
-	int chapterNumber;
+	int moduleNumber;
 	int sceneNumber;
 	int x1, x2;
 };
-#endif
+
+struct SceneItem {
+	int itemIndex;
+	bool active;
+	int paramType;
+	int x, y;
+};
 
 class Scene {
 public:
@@ -70,6 +75,11 @@ public:
 	void getExitRect(int index, int &x1, int &y1, int &x2, int &y2);
 	void findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection);
 
+	void addSceneItem(int itemIndex, int x, int y, int paramType);
+	void removeSceneItem(int itemIndex);
+	uint16 findSceneItemAt(const Common::Rect &rect);
+	SceneItem& getSceneItem(int itemIndex);
+
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
@@ -81,6 +91,7 @@ public: // while still in progress
 
 	Common::Array<Common::Rect> _blockingRects;
 	Common::Array<SceneExitItem> _exits;
+	Common::Array<SceneItem> _sceneItems;
 	AnimationResource *_sceneObjectsSprite;
 	PointArray _bounds;
 	byte _boundsMap[320];

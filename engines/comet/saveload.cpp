@@ -191,8 +191,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(marcheItem.fileIndex);
 	}
 	
-	out->writeByte(_sceneItems.size());
-	for (Common::Array<SceneItem>::iterator iter = _sceneItems.begin(); iter != _sceneItems.end(); ++iter) {
+	out->writeByte(_scene->_sceneItems.size());
+	for (Common::Array<SceneItem>::iterator iter = _scene->_sceneItems.begin(); iter != _scene->_sceneItems.end(); ++iter) {
 		const SceneItem &sceneItem = *iter;
 		out->writeUint16LE(sceneItem.itemIndex);
 		out->writeByte(sceneItem.active ? 1 : 0);
@@ -343,7 +343,7 @@ void CometEngine::loadgame(const char *filename) {
 		marcheItem.anim = NULL;
 	}
 
-	_sceneItems.clear();
+	_scene->_sceneItems.clear();
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		SceneItem sceneItem;
@@ -352,7 +352,7 @@ void CometEngine::loadgame(const char *filename) {
 		sceneItem.paramType = in->readByte();
 		sceneItem.x = in->readUint16LE();
 		sceneItem.y = in->readUint16LE();
-		_sceneItems.push_back(sceneItem);
+		_scene->_sceneItems.push_back(sceneItem);
 	}
 
 	_scene->_blockingRects.clear();

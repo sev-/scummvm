@@ -28,7 +28,6 @@
 #include "comet/resourcemgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
-#include "comet/text.h"
 
 namespace Comet {
 

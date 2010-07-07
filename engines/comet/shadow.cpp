@@ -343,15 +343,14 @@ void CometEngine::getItemInSight() {
 	Common::Rect sightRect;
 	calcSightRect(sightRect, 0, 50);
 	
-	int sceneItemIndex = findSceneItemAt(sightRect);
-
+	int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 	if (sceneItemIndex != 0) {
-		SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
-		if (sceneItem->paramType == 0) {
-			_inventoryItemStatus[sceneItem->itemIndex] = 1;
-			_inventoryItemIndex = sceneItem->itemIndex;
-			sceneItem->active = false;
-			showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex));
+		SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
+		if (sceneItem.paramType == 0) {
+			_inventoryItemStatus[sceneItem.itemIndex] = 1;
+			_inventoryItemIndex = sceneItem.itemIndex;
+			sceneItem.active = false;
+			showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex));
 		} else {
 			showTextBubble(4, _inventoryItemNames->getString(4));
 		}
@@ -367,18 +366,18 @@ void CometEngine::lookAtItemInSight(bool showText) {
 		Common::Rect sightRect;
 		calcSightRect(sightRect, 0, 50);
 		//_screen->fillRect(rect.left, rect.top, rect.right, rect.bottom, 150);
-		int sceneItemIndex = findSceneItemAt(sightRect);
+		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 		if (sceneItemIndex != 0) {
-			SceneItem *sceneItem = &_sceneItems[sceneItemIndex & 0xFF];
+			SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
 			_itemInSight = true;
 			_itemDirection = _actors[0].direction;
-			_itemX = sceneItem->x;
-			_itemY = sceneItem->y - 6;
+			_itemX = sceneItem.x;
+			_itemY = sceneItem.y - 6;
 			if (showText && (!_dialog->isRunning() || !_textActive)) {
-				if (sceneItem->paramType == 0) {
-					showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex));
+				if (sceneItem.paramType == 0) {
+					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex));
 				} else {
-					warning("sceneItem->paramType != 0; sceneItem->itemIndex = %d", sceneItem->itemIndex);
+					warning("sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
 					// TODO: Remove this:
 					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
@@ -616,7 +615,7 @@ void CometEngine::resetVars() {
 	_cmdTalk = false;
  	_scene->clearExits();
 	_blockedInput = 0;
-	_sceneItems.clear();
+	_scene->_sceneItems.clear();//TODO
 
 }
 
@@ -1088,39 +1087,6 @@ int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNu
 	
 }
 
-void CometEngine::addSceneItem(int itemIndex, int x, int y, int paramType) {
-	SceneItem sceneItem;
-	sceneItem.itemIndex = itemIndex;
-	sceneItem.active = true;
-	sceneItem.paramType = paramType;
-	sceneItem.x = x;
-	sceneItem.y = y;
-	_sceneItems.push_back(sceneItem);
-}
-
-void CometEngine::removeSceneItem(int itemIndex) {
-	uint index = 0;
-	while (index < _sceneItems.size()) {
-		if (_sceneItems[index].itemIndex == itemIndex) {
-			_sceneItems.remove_at(index);
-		} else {
-			index++;
-		}
-	}
-}
-
-uint16 CometEngine::findSceneItemAt(const Common::Rect &rect) {
-	for (uint i = 0; i < _sceneItems.size(); i++) {
-		if (_sceneItems[i].active) {
-			Common::Rect itemRect(_sceneItems[i].x - 8, _sceneItems[i].y - 8, _sceneItems[i].x + 8, _sceneItems[i].y + 8);
-			if (rectCompare(rect, itemRect)) {
-				return COLLISION(kCollisionSceneItem, i);
-			}
-		}
-	}
-	return 0;
-}
-
 void CometEngine::showTextBubble(int index, byte *text) {
 
 	_talkActorIndex = 0;
@@ -1526,7 +1492,6 @@ void CometEngine::introMainLoop() {
 
 void CometEngine::gameMainLoop() {
 
-	/* Hacked together main loop */
 	_endLoopFlag = false;
 	while (!_endLoopFlag) {
 		handleEvents();
@@ -1559,7 +1524,7 @@ void CometEngine::gameMainLoop() {
 			_scriptVars[9] = runPuzzle();
 			loadSceneBackground();
 		}
-		
+
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
 			handleKeyInput();
 		} else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
@@ -1604,6 +1569,7 @@ void CometEngine::gameMainLoop() {
 		}
 
 		updateGame();
+		
 		_system->delayMillis(40);//TODO
 
 		if (_loadgameRequested) {
