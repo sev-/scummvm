@@ -1,7 +1,7 @@
 #include "comet/comet.h"
-#include "comet/animation.h"
 #include "comet/animationmgr.h"
 #include "comet/font.h"
+#include "comet/resource.h"
 #include "comet/screen.h"
 
 namespace Comet {

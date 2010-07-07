@@ -2,7 +2,6 @@ MODULE := engines/comet
 
 MODULE_OBJS = \
 	actor.o \
-	animation.o \
 	animationmgr.o \
 	book.o \
 	comet.o \
@@ -14,6 +13,8 @@ MODULE_OBJS = \
 	music.o \
 	pak.o \
 	puzzle.o \
+	resource.o \
+	resourcemgr.o \
 	saveload.o \
 	screen.o \
 	scene.o \
@@ -21,9 +22,7 @@ MODULE_OBJS = \
 	shadow.o \
 	speech.o \
 	text.o \
-	unpack.o \
-	resource.o \
-	resourcemgr.o
+	unpack.o
 
 # This module can be built as a plugin
 ifdef BUILD_PLUGINS

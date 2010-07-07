@@ -88,6 +88,58 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
+struct Point;
+
+struct AnimationCommand {
+	byte cmd;
+	byte arg1, arg2;
+	Common::Array<Point> points;
+};
+
+struct AnimationElement {
+	byte width, height, flags;
+	Common::Array<AnimationCommand*> commands;
+	~AnimationElement();
+};
+
+struct AnimationCel {
+	uint16 flags;
+	uint16 width, height;
+	uint16 dataSize;
+	byte *data;
+};
+
+struct AnimationFrame {
+	uint16 elementIndex;
+	uint16 flags;
+	int16 xOffs, yOffs;
+};
+
+struct AnimationFrameList {
+	byte priority;
+	Common::Array<AnimationFrame*> frames;
+	~AnimationFrameList();
+};
+
+class AnimationResource : public BaseResource {
+public:
+	AnimationResource();
+	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->width; }
+	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->height; }
+//protected://all public while in progress
+	typedef Common::Array<uint32> OffsetArray;
+	Common::Array<AnimationElement*> _elements;
+	Common::Array<AnimationCel*> _cels;
+	Common::Array<AnimationFrameList*> _anims;
+	// TODO: Section 4 is palette
+	void free();
+	void internalLoad(Common::MemoryReadStream &stream);
+	void loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets);
+	AnimationElement *loadAnimationElement(Common::SeekableReadStream &sourceS);
+	AnimationCommand *loadAnimationCommand(Common::SeekableReadStream &sourceS, bool ptAsByte);
+	AnimationFrameList *loadAnimationFrameList(Common::SeekableReadStream &sourceS);
+};
+
 } // End of namespace Comet
 
 #endif /* COMET_RESOURCE_H */

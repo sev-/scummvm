@@ -22,15 +22,13 @@
 #include "comet/pak.h"
 #include "comet/music.h"
 
-#include "comet/animation.h"
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
+#include "comet/resource.h"
+#include "comet/resourcemgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/text.h"
-										 
-#include "comet/resource.h"
-#include "comet/resourcemgr.h"
 
 namespace Comet {
 

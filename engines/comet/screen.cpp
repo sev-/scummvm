@@ -9,6 +9,15 @@
 
 namespace Comet {
 
+InterpolatedAnimationCommand::InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2)
+	: _cmd(cmd), _aarg1(aarg1), _aarg2(aarg2), _barg1(barg1), _barg2(barg2) {
+}
+
+InterpolatedAnimationElement::~InterpolatedAnimationElement() {
+	for (Common::Array<InterpolatedAnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
+		delete (*iter);
+}
+
 int *Screen::gfxPrimitivesPolyInts = NULL;
 uint Screen::gfxPrimitivesPolyAllocated = 0;
 
@@ -1127,7 +1136,7 @@ void Screen::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 
 }
 
-void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
+void Screen::drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
 	AnimationElement *element = animation->_elements[elementIndex];
 
 	byte flags = element->flags | (parentFlags & 0xA0);
@@ -1139,7 +1148,7 @@ void Screen::drawAnimationElement(Animation *animation, int16 elementIndex, int1
 
 }
 
-void Screen::drawAnimationCommand(Animation *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
+void Screen::drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
 
 	debug(8, "Screen::drawAnimationCommand() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
 
@@ -1413,7 +1422,7 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 
 }
 
-int Screen::drawAnimation(Animation *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount) {
+int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount) {
 
 	AnimationFrame *frame = frameList->frames[frameIndex];
 
