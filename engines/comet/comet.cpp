@@ -219,6 +219,98 @@ Common::Error CometEngine::run() {
 #endif
 
 #if 0
+	Common::Array<Point> *poly = new Common::Array<Point>();
+	poly->push_back(Point(319, 156));
+	poly->push_back(Point(325, 152));
+	poly->push_back(Point(325, 156));
+	poly->push_back(Point(319, 156));
+	for (uint i = 0; i < poly->size(); i++) {
+		Point pt = (*poly)[i];
+		debug("pt.x = %d; pt.y = %d", pt.x, pt.y);
+	}
+	_screen->clipPolygonRight(&poly, 319);
+	debug("--------------------------------");
+	for (uint i = 0; i < poly->size(); i++) {
+		Point pt = (*poly)[i];
+		debug("pt.x = %d; pt.y = %d", pt.x, pt.y);
+	}
+	delete poly;
+#endif	
+
+#if 0
+	// Anim viewer
+	_screen->setFullPalette(_gamePalette);
+	AnimationResource *anim;
+	bool done = false;
+	int frameListIndex = 0, frameIndex = 3;
+	int resIndex = 6;
+	//anim = _animationMan->loadAnimationResource("A05.PAK", 7);//FIRE
+	anim = _animationMan->loadAnimationResource("A05.PAK", resIndex);
+	while (!done) {
+		int16 x, y;
+		AnimationFrameList *frameList;
+		handleEvents();
+		// Debugging keys
+		switch (_keyScancode) {
+		case Common::KEYCODE_KP_PLUS:
+			resIndex++;
+			debug("resIndex = %d", resIndex);
+			delete anim;
+			anim = _animationMan->loadAnimationResource("A05.PAK", resIndex);
+			frameListIndex = 0;
+			frameIndex = 0;
+			break;						
+		case Common::KEYCODE_KP_MINUS:
+			if (resIndex > 0) {
+				resIndex--;
+				debug("resIndex = %d", resIndex);
+				delete anim;
+				anim = _animationMan->loadAnimationResource("A05.PAK", resIndex);
+				frameListIndex = 0;
+				frameIndex = 0;
+			}
+			break;						
+		case Common::KEYCODE_ESCAPE:
+			done = true;
+			break;
+		case Common::KEYCODE_SPACE:
+			frameList = anim->_anims[frameListIndex];
+			debug("(%d/%d); (%d/%d); (%d/%d)", frameIndex, frameList->frames.size(), frameListIndex, anim->_anims.size(), x, y);
+			break;
+		case Common::KEYCODE_a:
+			frameIndex++;
+			if (frameIndex >= frameList->frames.size()) {
+				frameIndex = 0;
+				frameListIndex++;
+				if (frameListIndex >= anim->_anims.size()) 
+					frameListIndex = 0;
+			}
+			frameList = anim->_anims[frameListIndex];
+			debug("(%d/%d); (%d/%d); (%d/%d)", frameIndex, frameList->frames.size(), frameListIndex, anim->_anims.size(), x, y);
+			break;
+		default:
+			break;
+		}
+		//x = 141; y = 6;
+		x = 0; y = 0;
+		//x = 141; 
+		//y = 0;
+		//x = _mouseX; 
+		//y = _mouseY;
+		//frameListIndex = 1;
+		//frameIndex = 49;
+		frameList = anim->_anims[frameListIndex];
+		_screen->clear();
+		if (frameIndex < frameList->frames.size())
+			_screen->drawAnimationElement(anim, frameList->frames[frameIndex]->elementIndex, x, y);
+		_screen->update();
+		_system->delayMillis(40);
+	}
+#endif	
+
+#if 1
+
+#if 0
 	// Play the intro
 	introMainLoop();
 #else	
@@ -226,7 +318,6 @@ Common::Error CometEngine::run() {
 	_sceneNumber = 9;
 #endif	
 
-#if 1
 	waitForKeys();
 
 	if (_currentModuleNumber == 5)

@@ -18,9 +18,6 @@ InterpolatedAnimationElement::~InterpolatedAnimationElement() {
 		delete (*iter);
 }
 
-int *Screen::gfxPrimitivesPolyInts = NULL;
-uint Screen::gfxPrimitivesPolyAllocated = 0;
-
 Screen::Screen(CometEngine *vm) : _vm(vm) {
 
 	_fadeType = kFadeNone;
@@ -492,90 +489,272 @@ int gfxPrimitivesCompareInt(const void *a, const void *b) {
 	return (*(const int *) a) - (*(const int *) b);
 }
 
+void Screen::clipPolygonLeft(Common::Array<Point> **poly, int16 clipLeft) {
+	Common::Array<Point> *points = *poly; 
+	Common::Array<Point> *clipPoints = new Common::Array<Point>();
+	int16 currX, currY;
+	currX = (*points)[0].x;
+	currY = (*points)[0].y;
+	for (uint ptIndex = 1; ptIndex < points->size(); ptIndex++) {
+		int16 newX, newY;
+		bool doClip = false;
+		newX = (*points)[ptIndex].x;
+		newY = (*points)[ptIndex].y;
+		if (currX < clipLeft) {
+			doClip = newX >= clipLeft;
+		} else {
+			clipPoints->push_back(Point(currX, currY));
+			doClip = newX < clipLeft;
+		}
+		if (doClip) {
+			if (newX <= currX) {
+				SWAP(newX, currX);
+				SWAP(newY, currY);
+			}
+			clipPoints->push_back(Point(
+				clipLeft,
+				-(currX - clipLeft) * (newY - currY) / (newX - currX) + currY));
+		}
+		currX = (*points)[ptIndex].x;
+		currY = (*points)[ptIndex].y;
+	}
+	if (clipPoints->size() > 0)
+		clipPoints->push_back((*clipPoints)[0]);
+	delete points;
+	*poly = clipPoints;	
+}
+
+void Screen::clipPolygonRight(Common::Array<Point> **poly, int16 clipRight) {
+	Common::Array<Point> *points = *poly; 
+	Common::Array<Point> *clipPoints = new Common::Array<Point>();
+	int16 currX, currY;
+	currX = (*points)[0].x;
+	currY = (*points)[0].y;
+	for (uint ptIndex = 1; ptIndex < points->size(); ptIndex++) {
+		int16 newX, newY;
+		bool doClip = false;
+		newX = (*points)[ptIndex].x;
+		newY = (*points)[ptIndex].y;
+		if (currX > clipRight) {
+			doClip = newX <= clipRight;
+		} else {
+			clipPoints->push_back(Point(currX, currY));
+			doClip = newX > clipRight;
+		}
+		if (doClip) {
+			if (newX <= currX) {
+				SWAP(newX, currX);
+				SWAP(newY, currY);
+			}
+			clipPoints->push_back(Point(
+				clipRight,
+				-(currX - clipRight) * (newY - currY) / (newX - currX) + currY));
+		}
+		currX = (*points)[ptIndex].x;
+		currY = (*points)[ptIndex].y;
+	}
+	if (clipPoints->size() > 0)
+		clipPoints->push_back((*clipPoints)[0]);
+	delete points;
+	*poly = clipPoints;	
+}
+
+void Screen::clipPolygonTop(Common::Array<Point> **poly, int16 clipTop) {
+	Common::Array<Point> *points = *poly; 
+	Common::Array<Point> *clipPoints = new Common::Array<Point>();
+	int16 currX, currY;
+	currX = (*points)[0].x;
+	currY = (*points)[0].y;
+	for (uint ptIndex = 1; ptIndex < points->size(); ptIndex++) {
+		int16 newX, newY;
+		bool doClip = false;
+		newX = (*points)[ptIndex].x;
+		newY = (*points)[ptIndex].y;
+		if (currY < clipTop) {
+			doClip = newY >= clipTop;
+		} else {
+			clipPoints->push_back(Point(currX, currY));
+			doClip = newY < clipTop;
+		}
+		if (doClip) {
+			clipPoints->push_back(Point(
+				-(currY - clipTop) * (newX - currX) / (newY - currY) + currX, 
+				clipTop));
+		}
+		currX = (*points)[ptIndex].x;
+		currY = (*points)[ptIndex].y;
+	}
+	if (clipPoints->size() > 0)
+		clipPoints->push_back((*clipPoints)[0]);
+	delete points;
+	*poly = clipPoints;	
+}
+
+void Screen::clipPolygonBottom(Common::Array<Point> **poly, int16 clipBottom) {
+	Common::Array<Point> *points = *poly; 
+	Common::Array<Point> *clipPoints = new Common::Array<Point>();
+	int16 currX, currY;
+	currX = (*points)[0].x;
+	currY = (*points)[0].y;
+	for (uint ptIndex = 1; ptIndex < points->size(); ptIndex++) {
+		int16 newX, newY;
+		bool doClip = false;
+		newX = (*points)[ptIndex].x;
+		newY = (*points)[ptIndex].y;
+		if (currY > clipBottom) {
+			doClip = newY <= clipBottom;
+		} else {
+			clipPoints->push_back(Point(currX, currY));
+			doClip = newY > clipBottom;
+		}
+		if (doClip) {
+			clipPoints->push_back(Point(
+				(-(currY - clipBottom)) * (newX - currX) / (newY - currY) + currX, 
+				clipBottom));
+		}
+		currX = (*points)[ptIndex].x;
+		currY = (*points)[ptIndex].y;
+	}
+	if (clipPoints->size() > 0)
+		clipPoints->push_back((*clipPoints)[0]);
+	delete points;
+	*poly = clipPoints;	
+}
+
 void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 
-	/* NOTE: This polygon drawing code is not REd but taken from SDL_Gfx
-		ATM it's better than nothing but sometimes gives wrong results.
-		Eventually the original engine's filled polygon drawing code might
-		have to be rewritten. */
+	Common::Array<Point> *workPoints = new Common::Array<Point>();
+	int16 x1buffer[200], x2buffer[200];
+	int16 minX = 0x7FFF, maxX = 0x8000;
+	int16 minY = 0x7FFF, maxY = 0x8000;
+	int16 currX, currY;
+	int16 *x1dst, *x2dst;
+	bool clipped = false;
 
-	int y, xa, xb, miny, maxy;
-	int x1, y1, x2, y2;
-	int ind1, ind2;
-	uint ints;
-
-	/* Sanity check */
-	if (poly.size() < 3)
+	workPoints->reserve(poly.size() + 1);
+	for (uint i = 0; i < poly.size(); i++) {
+		Point pt = poly[i];
+		if (pt.x < minX) minX = pt.x;
+		if (pt.x > maxX) maxX = pt.x;
+		if (pt.y < minY) minY = pt.y;
+		if (pt.y > maxY) maxY = pt.y;
+		workPoints->push_back(pt);
+	}
+	workPoints->push_back((*workPoints)[0]);
+					  
+	if (minY == maxY) {
+		delete workPoints;
 		return;
+	}
 
-	/* Allocate temp array, only grow array */
-	if (!gfxPrimitivesPolyAllocated) {
-		gfxPrimitivesPolyInts = (int*)malloc(sizeof(int) * poly.size());
-		gfxPrimitivesPolyAllocated = poly.size();
-	} else {
-		if (gfxPrimitivesPolyAllocated < poly.size()) {
-			gfxPrimitivesPolyInts = (int*)realloc(gfxPrimitivesPolyInts, sizeof(int) * poly.size());
-			gfxPrimitivesPolyAllocated = poly.size();
+	if (minX < _clipX1 && workPoints->size() > 2) {
+		clipPolygonLeft(&workPoints, _clipX1);
+		clipped = true;
+	}
+
+	if (maxX >= _clipX2 && workPoints->size() > 2) {
+		clipPolygonRight(&workPoints, _clipX2 - 1);
+		clipped = true;
+	}
+
+	if (minY < _clipY1 && workPoints->size() > 2) {
+		clipPolygonTop(&workPoints, _clipY1);
+		clipped = true;
+	}
+	
+	if (maxY >= _clipY2 && workPoints->size() > 2) {
+		clipPolygonBottom(&workPoints, _clipY2 - 1);
+		clipped = true;
+	}
+
+	if (workPoints->size() <= 2) {
+		delete workPoints;
+		return;
+	}
+
+	if (clipped) {
+		// Recalc min/max y
+		minX = 0x7FFF;
+		maxX = 0x8000;
+		minY = 0x7FFF;
+		maxY = 0x8000;
+		for (uint i = 0; i < workPoints->size(); i++) {
+			Point pt = (*workPoints)[i];
+			if (pt.x < minX) minX = pt.x;
+			if (pt.x > maxX) maxX = pt.x;
+			if (pt.y < minY) minY = pt.y;
+			if (pt.y > maxY) maxY = pt.y;
 		}
 	}
 
-	/* Determine Y maxima */
-	miny = poly[0].y;
-	maxy = poly[0].y;
-	for (uint i = 1; i < poly.size(); i++) {
-		if (poly[i].y < miny) {
-			miny = poly[i].y;
-		} else if (poly[i].y > maxy) {
-			maxy = poly[i].y;
+	// seg024:00A7
+	x1dst = x1buffer;
+	x2dst = x2buffer;
+	currX = (*workPoints)[0].x;
+	currY = (*workPoints)[0].y;
+	for (uint i = 1; i < workPoints->size(); i++) {
+		int16 newX, newY, sax, sdx;
+		// seg024:018A
+		newX = (*workPoints)[i].x;
+		newY = (*workPoints)[i].y;
+		sdx = newX;
+		sax = newY;
+		if (newY != currY) {
+			int16 err;
+			// seg024:0194
+			if (currY == minY || currY == maxY)
+				SWAP(x1dst, x2dst);
+			// seg024:01A0
+			if (currX >= newX) {
+				SWAP(currX, newX);
+				SWAP(currY, newY);
+			}
+			// seg024:01A7
+			int16 *di = x2dst + currY;
+			int dir = 1;
+			if (currY >= newY) {
+				dir = -1;
+				SWAP(currY, newY);
+			}
+			// seg024:01B5
+			SWAP(currY, newY);
+			currY -= newY;
+			*di = currX;
+			di += dir;
+			newX -= currX;
+			err = currY / 2;
+			// seg024:01C6
+			for (int y = 0; y < currY; y++) {
+				err += newX;
+				while (err >= currY) {
+					err -= currY;
+					currX++;
+				}
+				// seg024:01D1
+				*di = currX;
+				di += dir;
+			}
 		}
+		// seg024:01D5
+		currX = sdx;
+		currY = sax;
 	}
 
-	/* Draw, scanning y */
+	// seg024:01DD
+	int16 *x1src = x1dst + minY;
+	int16 *x2src = x2dst + minY;
+	int16 rowCount = maxY - minY + 1;
+	do {
+		int16 x1 = *x1src++;
+		int16 x2 = *x2src++;
+		if (x1 > x2) SWAP(x1, x2);
+		hLine(x1, minY, x2, color);
+		//memset(getScreen() + x1 + minY * 320, color, x2 - x1 + 1);
+		minY++;
+	} while (--rowCount);
 
-	for (y = miny; y <= maxy; y++) {
-
-		ints = 0;
-
-		for (uint i = 0; i < poly.size(); i++) {
-			if (!i) {
-				ind1 = poly.size() - 1;
-				ind2 = 0;
-			} else {
-				ind1 = i - 1;
-				ind2 = i;
-			}
-			y1 = poly[ind1].y;
-			y2 = poly[ind2].y;
-			if (y1 < y2) {
-				x1 = poly[ind1].x;
-				x2 = poly[ind2].x;
-			} else if (y1 > y2) {
-				y2 = poly[ind1].y;
-				y1 = poly[ind2].y;
-				x2 = poly[ind1].x;
-				x1 = poly[ind2].x;
-			} else {
-				continue;
-			}
-
-			if ( (y >= y1 && y < y2) || (y == maxy && y > y1 && y <= y2) ) {
-				gfxPrimitivesPolyInts[ints++] = ((65536 * (y - y1)) / (y2 - y1)) * (x2 - x1) + (65536 * x1);
-			}
-
-		}
-
-		qsort(gfxPrimitivesPolyInts, ints, sizeof(int), gfxPrimitivesCompareInt);
-
-		for (uint i = 0; i < ints; i += 2) {
-			xa = gfxPrimitivesPolyInts[i] + 1;
-			xa = (xa >> 16) + ((xa & 32768) >> 15);
-			xb = gfxPrimitivesPolyInts[i+1] - 1;
-			xb = (xb >> 16) + ((xb & 32768) >> 15);
-			hLine(xa, y, xb, color);
-		}
-
-	}
-
+	delete workPoints;
+	
 }
 
 void Screen::loadFont(const char *pakName, int index) {
@@ -646,8 +825,6 @@ void Screen::dottedPlotProc(int x, int y, int color, void *data = NULL) {
 			screen->getScreen()[x + y * 320] = color;
 	}
 }
-
-// New Animation drawing code
 
 void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
 
@@ -767,8 +944,6 @@ void Screen::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 			dl = cmd;
 
 			cmd = ((cmd & 0xC0) | (flags & 0x3E)) >> 1;
-
-			//debug(2, "cmd = %d", cmd);
 
 			switch (cmd) {
 
@@ -1194,7 +1369,7 @@ void Screen::drawAnimationCommand(AnimationResource *animation, AnimationCommand
 			points.push_back(points[0]);
 			for (uint i = 0; i < points.size() - 1; i++)
 				drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, cmd->arg1);
-		}
+		}				
 		break;
 	}
 
@@ -1407,18 +1582,6 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 		}
 		
 	}
-
-#if 0
-	// DEBUG: Dump the points
-	debug("cmdCount = %d", interElem->commands.size());
-	for (uint cmdIndex = 0; cmdIndex < interElem->commands.size(); cmdIndex++) {
-		InterpolatedAnimationCommand *interCmd = interElem->commands[cmdIndex];
-		debug("cmd = %d; pointsCount = %d", interCmd->_cmd, interCmd->_points.size());
-		for (uint ptIndex = 0; ptIndex < interCmd->_points.size(); ptIndex++) {
-			debug("--> %d; %d", interCmd->_points[ptIndex].x, interCmd->_points[ptIndex].y);
-		}
-	}
-#endif
 
 }
 
