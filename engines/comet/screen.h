@@ -81,6 +81,11 @@ public:
 	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
 	void frameRect(int x1, int y1, int x2, int y2, byte color);
+	
+	void clipPolygonLeft(Common::Array<Point> **poly, int16 clipLeft);
+	void clipPolygonRight(Common::Array<Point> **poly, int16 clipRight);
+	void clipPolygonTop(Common::Array<Point> **poly, int16 clipTop);
+	void clipPolygonBottom(Common::Array<Point> **poly, int16 clipBottom);
 	void filledPolygonColor(Common::Array<Point> &poly, byte color);
 
 	void setPartialPalette(byte *palette, int start, int count);
@@ -139,11 +144,6 @@ public:
 // FIXME
 public:
 	Font *_font;
-
-protected:
-	// FIXME: Remove static vars
-	static int *gfxPrimitivesPolyInts;
-	static uint gfxPrimitivesPolyAllocated;
 
 };
 

@@ -60,6 +60,8 @@ byte *PakResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	uint32 offset;
 	byte *data = NULL;
 	
+	debug(1, "load('%s', %d)", filename, index);
+	
 	if (!fd.open(filename))
 		error("PakResourceLoader::load() Could not open %s", filename);
 
@@ -67,14 +69,14 @@ byte *PakResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	offset = fd.readUint32LE();
 	fd.seek(offset);
 
-    fd.readUint32LE();
+	fd.readUint32LE();
 	pakEntry.discSize = fd.readUint32LE();
 	pakEntry.uncompressedSize = fd.readUint32LE();
 	pakEntry.compressionType = fd.readByte();
 	pakEntry.info5 = fd.readByte();
 	pakEntry.nameLen = fd.readUint16LE();
 	// Skip filename which may or may not be present
-    fd.seek(pakEntry.nameLen, SEEK_CUR);
+	fd.seek(pakEntry.nameLen, SEEK_CUR);
 
 	switch (pakEntry.compressionType) {
 	case 0:
