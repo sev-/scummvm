@@ -55,7 +55,7 @@ void GenericResource::internalLoad(Common::MemoryReadStream &stream) {
 
 /* TextResource */
 
-TextResource::TextResource() : _data(NULL), _stringCount(0) {
+TextResource::TextResource() : _data(NULL), _stringCount(0), _stringOffsets(NULL) {
 }
 
 void TextResource::free() {
