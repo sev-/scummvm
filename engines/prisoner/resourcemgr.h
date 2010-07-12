@@ -45,13 +45,11 @@ public:
 
 struct ResourceSlot {
 	int16 type;
-	// UNUSED? byte unk1;
 	uint refCount;
 	Common::String pakName;
-	Common::String soundPakName;
 	int16 pakSlot;
 	BaseResource *resource;
-	ResourceSlot() : type(-1), refCount(0), resource(NULL) {}
+	ResourceSlot() : type(-1), refCount(0), resource(NULL), pakSlot(-1) {}
 };
 
 class ResourceLoader {
@@ -88,11 +86,18 @@ public:
 			Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::YES);
 			_slots[slotIndex].resource = new T();
 			_slots[slotIndex].resource->load(stream);
+
+			debug("add: _slots[%d].resource = %p; type = %d", slotIndex, (void*)_slots[slotIndex].resource, type);
+
 		}
 		return slotIndex;
 	}
 	template<class T>
-	T* get(int16 slotIndex) const { return (T*)_slots[slotIndex].resource; }
+	T* get(int16 slotIndex) const {
+		debug("get(%d): resource = %p; type = %d; pakName = %s; pakSlot = %d",
+			slotIndex, (void*)_slots[slotIndex].resource, _slots[slotIndex].type, _slots[slotIndex].pakName.c_str(), _slots[slotIndex].pakSlot);
+		return (T*)_slots[slotIndex].resource;
+	}
 	void unload(int16 slotIndex);
 	void purge();
 	void getSlotInfo(int16 slotIndex, Common::String &pakName, int16 &pakSlot, int16 *type = NULL) {
