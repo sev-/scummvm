@@ -197,7 +197,7 @@ public:
 	int _backgroundFileIndex;
 
 	int _narFileIndex;
-	bool _narOkFlag;
+	bool _talkieSpeechPlaying;
 
 	byte *_currentText, *_textNextPos;
 	int _textSpeed;
