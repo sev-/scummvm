@@ -172,7 +172,7 @@ void CometEngine::initAndLoadGlobalData() {
 
 void CometEngine::loadGlobalTextData() {
 	_textActive = false;
-	_narOkFlag = false;
+	_talkieSpeechPlaying = false;
 	_globalStrings = _textReader->loadTextResource(0);
 	_inventoryItemNames = _textReader->loadTextResource(1);
 }
@@ -576,7 +576,7 @@ void CometEngine::updateText() {
 		if (_moreText) {
 			setText(_textNextPos);
 		} else {
-			if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+			if (!_talkieSpeechPlaying) {
 				resetTextValues();
 			} else {
 				_textDuration = 2;
@@ -590,7 +590,7 @@ void CometEngine::updateText() {
 		if (_moreText) {
 			setText(_textNextPos);
 		} else {
-			if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+			if (!_talkieSpeechPlaying) {
 				resetTextValues();
 			}
 		}
@@ -599,7 +599,14 @@ void CometEngine::updateText() {
 }
 
 void CometEngine::updateTalkAnims() {
-	//TODO
+	
+	if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+		debug("stopVoice");
+		stopVoice();
+	}
+
+	// TODO: Update talk anim
+
 }
 
 void CometEngine::resetVars() {
@@ -1243,7 +1250,7 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 	if (sampleIndex == 255) {
 		if (_mixer->isSoundHandleActive(_sampleHandle))
 			_mixer->stopHandle(_sampleHandle);
-	} else if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+	} else if (!_talkieSpeechPlaying && !_mixer->isSoundHandleActive(_sampleHandle)) {
 		_res->loadFromPak(_soundResource, "SMP.PAK", sampleIndex);
 		_mixer->playStream(Audio::Mixer::kSFXSoundType, &_sampleHandle, loopCount > 1
 			? makeLoopingAudioStream(_soundResource->makeAudioStream(), loopCount)
@@ -1257,18 +1264,34 @@ void CometEngine::setVoiceFileIndex(int narFileIndex) {
 }
 
 void CometEngine::playVoice(int voiceIndex) {
+
 	stopVoice();
-	/* TODO
+
+	/* TODO: Check if speech data exists
 	if (_narOffsets[number] == 0)
 		return;
 	*/		
+
+	_textActive = true;
+	_talkieSpeechPlaying = true;
+
 	_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
 	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
+	
 }
 
 void CometEngine::stopVoice() {
+
 	if (_mixer->isSoundHandleActive(_sampleHandle))
 		_mixer->stopHandle(_sampleHandle);
+
+	if (_talkieMode == 2 && !_textBubbleActive) {
+		_textActive = false;
+		_textDuration = 0;
+	}
+	
+	_talkieSpeechPlaying = false;
+	
 }
 
 void CometEngine::drawTextIllsmouth() {

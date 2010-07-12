@@ -446,7 +446,7 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 							_portraitTalkCounter = 1;
 					} else {
 						_portraitTalkAnimNumber = random(3);
-						if (!_narOkFlag)
+						if (!_talkieSpeechPlaying)
 					  		_portraitTalkAnimNumber = 0;
 					}
 				} else {
