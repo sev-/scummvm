@@ -74,7 +74,6 @@ public:
 	~ResourceManager();
 	template<class T>
 	int16 load(Common::String &pakName, int16 pakSlot, int16 type) {
-		//debug("ResourceManager::load() %s:%d(%d)", pakName.c_str(), pakSlot, type);
 		int16 slotIndex = find(pakName, pakSlot, type);
 		if (slotIndex != -1) {
 			_slots[slotIndex].refCount++;
@@ -86,18 +85,11 @@ public:
 			Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::YES);
 			_slots[slotIndex].resource = new T();
 			_slots[slotIndex].resource->load(stream);
-
-			debug("add: _slots[%d].resource = %p; type = %d", slotIndex, (void*)_slots[slotIndex].resource, type);
-
 		}
 		return slotIndex;
 	}
 	template<class T>
-	T* get(int16 slotIndex) const {
-		debug("get(%d): resource = %p; type = %d; pakName = %s; pakSlot = %d",
-			slotIndex, (void*)_slots[slotIndex].resource, _slots[slotIndex].type, _slots[slotIndex].pakName.c_str(), _slots[slotIndex].pakSlot);
-		return (T*)_slots[slotIndex].resource;
-	}
+	T* get(int16 slotIndex) const { return (T*)_slots[slotIndex].resource; }
 	void unload(int16 slotIndex);
 	void purge();
 	void getSlotInfo(int16 slotIndex, Common::String &pakName, int16 &pakSlot, int16 *type = NULL) {
