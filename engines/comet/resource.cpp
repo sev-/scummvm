@@ -65,7 +65,7 @@ void TextResource::free() {
 
 void TextResource::internalLoad(Common::MemoryReadStream &stream) {
 	uint32 firstOffs = stream.readUint32LE();
-	uint32 size;
+	uint32 size = stream.size();
 	_stringCount = firstOffs / 4;
 	_stringOffsets = new uint32[_stringCount + 1];
 	_stringOffsets[0] = 0;
