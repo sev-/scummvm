@@ -625,8 +625,8 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 
 	Common::Array<Point> *workPoints = new Common::Array<Point>();
 	int16 x1buffer[200], x2buffer[200];
-	int16 minX = 0x7FFF, maxX = 0x8000;
-	int16 minY = 0x7FFF, maxY = 0x8000;
+	int16 minX = 32767, maxX = -32767;
+	int16 minY = 32767, maxY = -32767;
 	int16 currX, currY;
 	int16 *x1dst, *x2dst;
 	bool clipped = false;
@@ -674,10 +674,10 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 
 	if (clipped) {
 		// Recalc min/max y
-		minX = 0x7FFF;
-		maxX = 0x8000;
-		minY = 0x7FFF;
-		maxY = 0x8000;
+		minX = 32767;
+		maxX = -32767;
+		minY = 32767;
+		maxY = -32767;
 		for (uint i = 0; i < workPoints->size(); i++) {
 			Point pt = (*workPoints)[i];
 			if (pt.x < minX) minX = pt.x;
