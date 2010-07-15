@@ -283,12 +283,12 @@ void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
 	while (copyOfs < 320) {
 		if (scrollDirection < 0) {
 			for (int y = 0; y < 200; y++) {
-				memcpy(&_workScreen[y * 320], &_workScreen[y * 320 + kScrollStripWidth], 320 - kScrollStripWidth);
+				memmove(&_workScreen[y * 320], &_workScreen[y * 320 + kScrollStripWidth], 320 - kScrollStripWidth);
 				memcpy(&_workScreen[y * 320 + 320 - kScrollStripWidth], &newScreen[y * 320 + copyOfs], kScrollStripWidth);
 			}
 		} else {
 			for (int y = 0; y < 200; y++) {
-				memcpy(&_workScreen[y * 320 + kScrollStripWidth], &_workScreen[y * 320], 320 - kScrollStripWidth);
+				memmove(&_workScreen[y * 320 + kScrollStripWidth], &_workScreen[y * 320], 320 - kScrollStripWidth);
 				memcpy(&_workScreen[y * 320], &newScreen[y * 320 + (320 - kScrollStripWidth - copyOfs)], kScrollStripWidth);
 			}
 		}
