@@ -1494,7 +1494,7 @@ void CometEngine::introMainLoop() {
 		case Common::KEYCODE_ESCAPE:
 			_endIntroLoop = true;
 			break;
-		case Common::KEYCODE_RETURN	:
+		case Common::KEYCODE_RETURN:
 			skipText();
 			break;
 		case Common::KEYCODE_p:
