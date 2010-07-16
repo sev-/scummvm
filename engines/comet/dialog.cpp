@@ -107,7 +107,9 @@ void Dialog::update() {
 		//DEBUG: if (_talkieMode == 1)
 		{
 			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
-			//TODO: loop with updateTalkAnims()
+			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
+				_vm->updateTalkAnims();
+			}
 		}
 		_isRunning = false;
 	}
