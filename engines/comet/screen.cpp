@@ -2,7 +2,6 @@
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"
-#include "comet/font.h"
 #include "comet/pak.h"
 
 #include "comet/screen.h"
@@ -27,7 +26,7 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 	_zoomY = 100;
 
 	_workScreen = new byte[64320];
-	_font = new Font();
+	_currFontResource = new FontResource();
 	
 	setClipRect(0, 0, 320, 200);
 
@@ -35,7 +34,7 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 
 Screen::~Screen() {
 	delete[] _workScreen;
-	delete _font;
+	delete _currFontResource;
 }
 
 void Screen::update() {
@@ -758,19 +757,28 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 }
 
 void Screen::loadFont(const char *pakName, int index) {
-	_font->load(pakName, index);
+	_vm->_res->loadFromPak(_currFontResource, pakName, 0);
 }
 
 void Screen::setFontColor(byte color) {
-	_font->setColor(color);
+	_currFontColor = color;
 }
 
 void Screen::drawText(int x, int y, byte *text) {
-	_font->drawText(x, y, getScreen(), text);
+	_currFontResource->drawText(x, y, getScreen(), text, _currFontColor);
 }
 
 void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2) {
-	_font->drawTextOutlined(x, y, getScreen(), text, color1, color2);
+	byte *destBuffer = getScreen();
+	_currFontResource->drawText(x + 1, y + 1, destBuffer, text, color2);
+	_currFontResource->drawText(x + 1, y - 1, destBuffer, text, color2);
+	_currFontResource->drawText(x + 1, y, destBuffer, text, color2);
+	_currFontResource->drawText(x - 1, y, destBuffer, text, color2);
+	_currFontResource->drawText(x, y + 1, destBuffer, text, color2);
+	_currFontResource->drawText(x, y - 1, destBuffer, text, color2);
+	_currFontResource->drawText(x - 1, y + 1, destBuffer, text, color2);
+	_currFontResource->drawText(x - 1, y - 1, destBuffer, text, color2);
+	_currFontResource->drawText(x, y, destBuffer, text, color1);
 }
 
 int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
@@ -787,7 +795,7 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 		int textWidth, textWidth2;
 
 		if (flag == 0) {
-			textWidth = _font->getTextWidth(text);
+			textWidth = getTextWidth(text);
 			textWidth2 = textWidth / 2;
 			textX = x - textWidth2;
 			tw = x + textWidth2;
@@ -812,6 +820,9 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 
 }
 
+int Screen::getTextWidth(byte *text) {
+	return _currFontResource->getTextWidth(text);
+}
 void Screen::plotProc(int x, int y, int color, void *data) {
 	Screen *screen = (Screen*)data;
 	screen->putPixel(x, y, color);

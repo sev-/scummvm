@@ -1,7 +1,6 @@
 #include "comet/comet.h"
 #include "comet/comet_gui.h"
 #include "comet/animationmgr.h"
-#include "comet/font.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
 #include "comet/screen.h"
@@ -693,7 +692,7 @@ int GuiTownMap::run() {
 		
 		if (currMapLocation != -1) {
 			byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
-			_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->_font->getTextWidth(locationName)), 
+			_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
 				cursorY - 6, locationName, 119, 120);
 			if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
 				selectedMapLocation = currMapLocation;
@@ -837,17 +836,17 @@ void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontCo
 	_vm->_screen->setFontColor(58);
 
 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 1);
-	pageNumberStringWidth = _vm->_screen->_font->getTextWidth((byte*)pageNumberString);
+	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString);
 	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
  	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
-	pageNumberStringWidth = _vm->_screen->_font->getTextWidth((byte*)pageNumberString);
+	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString);
 	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
 	
 	_vm->_screen->setFontColor(fontColor);
 	
 	while (*pageText != 0 && *pageText != '*') {
-		x = MAX(xadd + (106 - _vm->_screen->_font->getTextWidth(pageText)) / 2, 0);
+		x = MAX(xadd + (106 - _vm->_screen->getTextWidth(pageText)) / 2, 0);
 		_vm->_screen->drawText(x, yadd + lineNumber * 10, pageText);
 		if (++lineNumber == 13) {
 			xadd += 115;

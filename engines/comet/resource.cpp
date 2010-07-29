@@ -113,11 +113,7 @@ void FontResource::internalLoad(Common::MemoryReadStream &stream) {
 	_charInfo = _fontData + READ_BE_UINT16(_fontData + 6) - skipChars;
 }
 
-void FontResource::setColor(byte color) {
-	_color = color;
-}
-
-void FontResource::drawText(int x, int y, byte *destBuffer, byte *text) {
+void FontResource::drawText(int x, int y, byte *destBuffer, byte *text, byte color) {
 
 	static const byte startFlags[] = {
 		0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
@@ -138,7 +134,7 @@ void FontResource::drawText(int x, int y, byte *destBuffer, byte *text) {
 				byte dataOfs = 0;
 				for (int w = 0; w < charWidth; w++) {
 					if (charMask & charByte)
-						destBuffer[(x + w) + (y + h) * 320] = _color;
+						destBuffer[(x + w) + (y + h) * 320] = color;
 					if (charMask & 1) {
 						dataOfs++;
 						charByte = charData[dataOfs];
@@ -156,20 +152,6 @@ void FontResource::drawText(int x, int y, byte *destBuffer, byte *text) {
 		text++;
 	}
 
-}
-
-void FontResource::drawTextOutlined(int x, int y, byte *destBuffer, byte *text, byte color2, byte color) {
-	setColor(color);
-	drawText(x + 1, y + 1, destBuffer, text);
-	drawText(x + 1, y - 1, destBuffer, text);
-	drawText(x + 1, y, destBuffer, text);
-	drawText(x - 1, y, destBuffer, text);
-	drawText(x, y + 1, destBuffer, text);
-	drawText(x, y - 1, destBuffer, text);
-	drawText(x - 1, y + 1, destBuffer, text);
-	drawText(x - 1, y - 1, destBuffer, text);
-	setColor(color2);
-	drawText(x, y, destBuffer, text);
 }
 
 int FontResource::getTextWidth(byte *text) {
