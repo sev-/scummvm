@@ -18,7 +18,6 @@
 #include "sound/mixer.h"
 
 #include "comet/comet.h"
-#include "comet/font.h"
 #include "comet/pak.h"
 #include "comet/music.h"
 

@@ -7,7 +7,6 @@ MODULE_OBJS = \
 	comet_gui.o \
 	detection.o \
 	dialog.o \
-	font.o \
 	music.o \
 	pak.o \
 	resource.o \

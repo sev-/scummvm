@@ -48,7 +48,6 @@ struct CometGameDescription;
 class Dialog;
 class Screen;
 
-class Font;
 class Anim;
 class MusicPlayer;
 class CometEngine;
@@ -65,6 +64,7 @@ class Scene;
 class SoundResource;
 class TextReader;
 class TextResource;
+class FontResource;
 
 enum {
 	kDirectionUp		= 3,

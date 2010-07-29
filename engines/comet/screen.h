@@ -102,6 +102,7 @@ public:
 	void drawText(int x, int y, byte *text);
 	void drawTextOutlined(int x, int y, byte *text, byte color1, byte color2);
 	int drawText3(int x, int y, byte *text, byte color, int flag);
+	int getTextWidth(byte *text);
 
 	static void plotProc(int x, int y, int color, void *data);
 	static void dottedPlotProc(int x, int y, int color, void *data);
@@ -123,28 +124,17 @@ public:
 	void setClipY(int clipY1, int clipY2);
 
 //protected:
-
 	CometEngine *_vm;
-
 	byte *_workScreen;
-
 	bool _transitionEffect;
 	int _zoomFactor, _zoomX, _zoomY;
-	
 	PaletteFadeType _fadeType;
 	int _fadeStep;
 	bool _palFlag;
-	
 	int _clipX1, _clipY1, _clipX2, _clipY2;
-
 	int _dotFlag;
-
-	//byte *_paletteBuffer;
-
-// FIXME
-public:
-	Font *_font;
-
+	FontResource *_currFontResource;
+	byte _currFontColor;
 };
 
 }

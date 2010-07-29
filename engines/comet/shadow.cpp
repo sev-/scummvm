@@ -6,7 +6,6 @@
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"
-#include "comet/font.h"
 #include "comet/pak.h"
 
 #include "comet/animationmgr.h"
@@ -781,7 +780,7 @@ void CometEngine::setText(byte *text) {
 	_textDuration = 0;
 	
 	while (*text != '*') {
-		int textWidth = _screen->_font->getTextWidth(text);
+		int textWidth = _screen->getTextWidth(text);
 		_textDuration += textWidth / 4;
 		if (_textDuration < 100)
 			_textDuration = 100;
@@ -1296,7 +1295,7 @@ void CometEngine::stopVoice() {
 
 void CometEngine::drawTextIllsmouth() {
 	byte *text = _textReader->getString(2, 36);
-	_screen->drawTextOutlined((320 - _screen->_font->getTextWidth(text)) / 2, 180, text, 7, 0); 
+	_screen->drawTextOutlined((320 - _screen->getTextWidth(text)) / 2, 180, text, 7, 0); 
 	_scriptVars[11]++;
 }
 

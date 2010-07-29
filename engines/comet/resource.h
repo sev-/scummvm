@@ -74,14 +74,12 @@ class FontResource : public BaseResource {
 public:
 	FontResource();
 	void setColor(byte color);
-	void drawText(int x, int y, byte *destBuffer, byte *text);
-	void drawTextOutlined(int x, int y, byte *destBuffer, byte *text, byte color2, byte color);
+	void drawText(int x, int y, byte *destBuffer, byte *text, byte color);
 	int getTextWidth(byte *text);
 private:
 	byte *_fontData;
 	byte *_charData;
 	byte *_charInfo;
-	byte _color;
 	int _charHeight, _bytesPerLine;
 protected:	
 	void free();
