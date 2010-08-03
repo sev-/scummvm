@@ -71,7 +71,7 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 			header.thumbnail = 0;
 		}
 	} else {
-		Graphics::skipThumbnailHeader(*in);
+		Graphics::skipThumbnail(*in);
 	}
 
 	// Not used yet, reserved for future usage
