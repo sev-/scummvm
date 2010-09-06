@@ -1,7 +1,6 @@
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"
-#include "comet/pak.h"
 #include "comet/screen.h"
 
 #include "comet/animationmgr.h"

@@ -6,8 +6,6 @@
 #include "comet/animationmgr.h"
 #include "comet/resource.h"
 
-#include "comet/pak.h"
-
 namespace Comet {
 
 /* Script */

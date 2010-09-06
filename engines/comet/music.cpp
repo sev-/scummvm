@@ -26,8 +26,8 @@
 #include "common/file.h"
 
 #include "common/endian.h"
-#include "comet/pak.h"
 #include "comet/music.h"
+#include "comet/resourcemgr.h"
 
 namespace Comet {
 
@@ -600,7 +600,7 @@ void MusicPlayer::loadMusic(char *musicPtr) {
 void MusicPlayer::playMusic(int musicNumber) {
 	if (musicNumber >= 0) {
 		if (fadeMusic(0,0,0x10) == -1) {
-		  	byte *musicPtr = loadFromPak("MUS.PAK", musicNumber);
+		  	byte *musicPtr = _vm->_res->loadRawFromPak("MUS.PAK", musicNumber);
 		  	_currentMusic = musicNumber;
 			fadeMusic(0,0,0x40);
 			loadMusic((char*)musicPtr);

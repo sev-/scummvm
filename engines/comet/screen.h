@@ -54,6 +54,10 @@ public:
 	~Screen();
 	
 	void update();
+
+	void copyFromScreenResource(ScreenResource *screenResource);
+	void copyFromScreen(byte *source);
+	void copyToScreen(byte *dest);
 	
 	void enableTransitionEffect();
 	void setZoom(int zoomFactor, int x, int y);
