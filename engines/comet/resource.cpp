@@ -317,8 +317,26 @@ void ScreenResource::free() {
 }
 
 void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
+	if (stream.size() != 64000)
+		error("ScreenResource::internalLoad() Unexpected data size (%d)", stream.size());
 	_screen = new byte[stream.size()];
 	stream.read(_screen, stream.size());	
+}
+
+/* PaletteResource */
+
+PaletteResource::PaletteResource() : _palette(NULL) {
+}
+
+void PaletteResource::free() {
+	delete[] _palette;
+}
+
+void PaletteResource::internalLoad(Common::MemoryReadStream &stream) {
+	if (stream.size() != 768)
+		error("PaletteResource::internalLoad() Unexpected data size (%d)", stream.size());
+	_palette = new byte[stream.size()];
+	stream.read(_palette, stream.size());	
 }
 
 /* SoundResource */

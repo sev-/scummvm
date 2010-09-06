@@ -1,6 +1,4 @@
 #include "comet/comet.h"
-#include "comet/pak.h"
-
 #include "comet/dialog.h"
 #include "comet/screen.h"
 

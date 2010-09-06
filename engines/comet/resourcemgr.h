@@ -86,6 +86,9 @@ public:
 	void loadFromPak(BaseResource *resource, const char *filename, int index) {
 		loadFrom<PakResourceLoader>(resource, filename, index);
 	}
+	byte *loadRawFromPak(const char *filename, int index, uint32 *outDataSize = NULL) {
+		return loadRawFrom<PakResourceLoader>(filename, index, outDataSize);
+	}
 	void loadFromCC4(BaseResource *resource, const char *filename, int index) {
 		loadFrom<CC4ResourceLoader>(resource, filename, index);
 	}
@@ -95,11 +98,19 @@ public:
 protected:
 	template<typename T>
 	void loadFrom(BaseResource *resource, const char *filename, int index) {
+		uint32 dataSize;
+		byte *data = loadRawFrom<T>(filename, index, &dataSize);
+		Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::YES);
+		resource->load(stream);
+	}
+	template<typename T>
+	byte *loadRawFrom(const char *filename, int index, uint32 *outDataSize = NULL) {
 		T loader;
 		uint32 dataSize;
 		byte *data = loader.load(filename, index, dataSize);
-		Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::YES);
-		resource->load(stream);
+		if (outDataSize)
+			*outDataSize = dataSize;
+		return data;			
 	}
 };
 

@@ -143,8 +143,21 @@ public:
 class ScreenResource : public BaseResource {
 public:
 	ScreenResource();
+	byte *getScreen() const { return _screen; }
 protected:
 	byte *_screen;
+	void free();	
+	void internalLoad(Common::MemoryReadStream &stream);
+};
+
+/* PaletteResource */
+
+class PaletteResource : public BaseResource {
+public:
+	PaletteResource();
+	byte *getPalette() const { return _palette; }
+protected:
+	byte *_palette;
 	void free();	
 	void internalLoad(Common::MemoryReadStream &stream);
 };

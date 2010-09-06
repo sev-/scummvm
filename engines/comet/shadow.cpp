@@ -6,8 +6,6 @@
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"
-#include "comet/pak.h"
-
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
 #include "comet/comet_gui.h"
@@ -121,7 +119,8 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 }
 
 void CometEngine::loadSceneBackground() {
-	loadPakToPtr(DName, _backgroundFileIndex, _sceneBackground);
+	_res->loadFromPak(_sceneBackgroundResource, DName, _backgroundFileIndex);
+	//!!!loadPakToPtr(DName, _backgroundFileIndex, _sceneBackground);
 }
 
 void CometEngine::loadSceneDecoration() {
@@ -144,10 +143,10 @@ void CometEngine::initAndLoadGlobalData() {
 	_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
 	_inventoryItemSprites = _animationMan->loadAnimationResource("RES.PAK", 4);
 
-	_gamePalette = loadFromPak("RES.PAK", 5);
-	_flashbakPal = loadFromPak("RES.PAK", 6);
-	_introPalette1 = loadFromPak("RES.PAK", 7);
-	_introPalette2 = loadFromPak("RES.PAK", 8);
+	_gamePalette = _res->loadRawFromPak("RES.PAK", 5);
+	_flashbakPal = _res->loadRawFromPak("RES.PAK", 6);
+	_introPalette1 = _res->loadRawFromPak("RES.PAK", 7);
+	_introPalette2 = _res->loadRawFromPak("RES.PAK", 8);
 
 	_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
 	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
@@ -178,8 +177,10 @@ void CometEngine::loadGlobalTextData() {
 
 void CometEngine::initData() {
 
-	_sceneBackground = new byte[72000];
+	_tempScreen = new byte[64000];
 	_screenPalette = new byte[768];
+	
+	_sceneBackgroundResource = new ScreenResource();
 
 	memcpy(_screenPalette, _gamePalette, 768);
 	
@@ -232,7 +233,7 @@ void CometEngine::updateGame() {
 	if (_sceneNumber != _currentSceneNumber)
 		updateSceneNumber();
 
-	memcpy(_screen->getScreen(), _sceneBackground, 64000);
+	_screen->copyFromScreenResource(_sceneBackgroundResource);
 
 	if (_cmdLook)
 		lookAtItemInSight(true);
@@ -1215,16 +1216,17 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 		if (direction == 1 || direction == 3) {
 			_screen->enableTransitionEffect();
 		} else {
-			memcpy(_screen->getScreen(), _sceneBackground, 320 * 200);
+			/* First draw the current scene incl. sprites the last time to
+			   a temporary buffer, then actually scroll it. */
+			_screen->copyFromScreenResource(_sceneBackgroundResource);
 			buildSpriteDrawQueue();		
 			drawSpriteQueue();
-			memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
+			_screen->copyToScreen(_tempScreen);
 			if (direction == 2) {
-				_screen->screenScrollEffect(_sceneBackground, -1);
+				_screen->screenScrollEffect(_tempScreen, -1);
 			} else if (direction == 4) {
-				_screen->screenScrollEffect(_sceneBackground, 1);
-			} 		
-			loadSceneBackground();
+				_screen->screenScrollEffect(_tempScreen, 1);
+			}
 		}
 	}
 
@@ -1265,11 +1267,6 @@ void CometEngine::setVoiceFileIndex(int narFileIndex) {
 void CometEngine::playVoice(int voiceIndex) {
 
 	stopVoice();
-
-	/* TODO: Check if speech data exists
-	if (_narOffsets[number] == 0)
-		return;
-	*/		
 
 	_textActive = true;
 	_talkieSpeechPlaying = true;
@@ -1326,7 +1323,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		// TODO: Grab vga screen to work screen
 	}
 	
-	memcpy(_sceneBackground, _screen->getScreen(), 64000);
+	_screen->copyToScreen(_tempScreen);
 
 	if (soundFramesCount > 0) {
 		int sampleIndex = soundFramesData[0];
@@ -1351,7 +1348,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		
 			handleEvents();
 		
-			memcpy(_screen->getScreen(), _sceneBackground, 64000);
+			_screen->copyFromScreen(_tempScreen);
 
 			interpolationStep = _screen->drawAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
 						
@@ -1398,8 +1395,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	if (_textActive)
 		resetTextValues();
 
-	loadSceneBackground();
-	memcpy(_screen->getScreen(), _sceneBackground, 64000);
+	// CHECKME: If this is neccessary (screen is copied in main loop anyways)
+	_screen->copyFromScreenResource(_sceneBackgroundResource);
 	
 }
 

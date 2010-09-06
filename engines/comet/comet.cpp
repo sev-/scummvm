@@ -1,8 +1,3 @@
-/*
-	Global TODO:
-*/
-
-
 #include "common/scummsys.h"
 #include "common/debug-channels.h"
 #include "common/EventRecorder.h"
@@ -18,9 +13,7 @@
 #include "sound/mixer.h"
 
 #include "comet/comet.h"
-#include "comet/pak.h"
 #include "comet/music.h"
-
 #include "comet/animationmgr.h"
 #include "comet/comet_gui.h"
 #include "comet/dialog.h"

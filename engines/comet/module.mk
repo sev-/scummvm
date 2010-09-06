@@ -8,7 +8,6 @@ MODULE_OBJS = \
 	detection.o \
 	dialog.o \
 	music.o \
-	pak.o \
 	resource.o \
 	resourcemgr.o \
 	saveload.o \

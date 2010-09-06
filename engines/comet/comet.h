@@ -61,6 +61,7 @@ class Gui;
 class ResourceManager;
 class ScriptInterpreter;
 class Scene;
+class ScreenResource;
 class SoundResource;
 class TextReader;
 class TextResource;
@@ -177,7 +178,10 @@ public:
 	AnimationManager *_animationMan;
 	ResourceManager *_res;
 
-	byte *_sceneBackground;
+    ScreenResource *_sceneBackgroundResource;
+
+	//byte *_sceneBackground;
+	byte *_tempScreen;
 
 	TextReader *_textReader;
 	TextResource *_globalStrings, *_inventoryItemNames;
@@ -224,6 +228,7 @@ public:
 	AnimationResource *_sceneDecorationSprite;
 
 	byte *_screenPalette, *_backupPalette;
+	
 	byte *_gamePalette, *_flashbakPal;
 	byte *_introPalette1, *_introPalette2;
 

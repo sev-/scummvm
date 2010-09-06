@@ -2,8 +2,6 @@
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"
-#include "comet/pak.h"
-
 #include "comet/screen.h"
 
 namespace Comet {
@@ -69,6 +67,18 @@ void Screen::update() {
 		_vm->_system->delayMillis(5);//DEBUG
 	}
 
+}
+
+void Screen::copyFromScreenResource(ScreenResource *screenResource) {
+	memcpy(getScreen(), screenResource->getScreen(), 64000);
+}
+
+void Screen::copyFromScreen(byte *source) {
+	memcpy(getScreen(), source, 64000);
+}
+
+void Screen::copyToScreen(byte *dest) {
+	memcpy(dest, getScreen(), 64000);
 }
 
 void Screen::enableTransitionEffect() {
