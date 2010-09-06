@@ -1,0 +1,16 @@
+Todo:
+-------
+- More work on the menu system
+- More mouse control (only works in a few menus so far)
+- Save/Load code (from GMM and game itself)
+- Load from Gui
+- Return to Gui
+- Switch savegame system to Serializer
+- Dirty rectangles
+  The original doesn't do any dirty rectangles and always blits the whole workscreen.
+  Since the game uses vectors we'll have to see if/how this could be implemented.
+
+Bugs:
+-------
+- Player stuck after loading when user input disabled
+- Also in the original: Pressing enter will also skip sound effects, this looks like a bug in the if condition
