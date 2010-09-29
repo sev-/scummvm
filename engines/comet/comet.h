@@ -178,7 +178,7 @@ public:
 	AnimationManager *_animationMan;
 	ResourceManager *_res;
 
-    ScreenResource *_sceneBackgroundResource;
+	ScreenResource *_sceneBackgroundResource;
 
 	//byte *_sceneBackground;
 	byte *_tempScreen;
@@ -187,6 +187,7 @@ public:
 	TextResource *_globalStrings, *_inventoryItemNames;
 	
 	Gui *_gui;
+	byte *_mouseCursors[7];
 
 	int16 _animationType;
 
@@ -209,13 +210,15 @@ public:
 
 	/* Input related */
 	Common::KeyCode _keyScancode;
-	int _keyDirection, _keyDirection2;
-	int16 _mouseButtons4, _mouseButtons5;
+	int _keyDirection;
 	int _mouseX, _mouseY;
 	bool _leftButton, _rightButton;
-	int _mouseCursor2;
 	int _blockedInput;
-	int16 _scriptMouseFlag;
+	int16 _cursorDirection, _mouseClick;
+	int _walkDirection;
+	int16 _scriptKeybFlag;
+	bool _mouseWalking;
+	int _mouseCursorDirection;	
 
 	bool _loadgameRequested;
 	
@@ -319,6 +322,10 @@ public:
 
 	void updateScreen();
 
+	// index == 0 uses the cursor in cursorSprite, 
+	// index > 0 uses the engine's system cursor with that index  
+	void setMouseCursor(uint index, const byte *cursorSprite);
+
 	int16 random(int maxValue);
 	
 	void drawBubble(int x1, int y1, int x2, int y2);
@@ -349,6 +356,8 @@ public:
 	
 	void blockInput(int flagIndex);
 	void unblockInput();
+
+	int mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY);
 
 	/* Marche */
 	bool isAnimationSlotUsed(int16 animationSlot);

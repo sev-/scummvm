@@ -2,8 +2,9 @@
 #include "sound/audiostream.h"
 #include "sound/decoders/raw.h"
 #include "sound/decoders/voc.h"
-#include "graphics/surface.h"
+#include "graphics/cursorman.h"
 #include "graphics/primitives.h"
+#include "graphics/surface.h"
 
 #include "comet/comet.h"
 #include "comet/animationmgr.h"
@@ -153,7 +154,14 @@ void CometEngine::initAndLoadGlobalData() {
 	
 	_screen->setFontColor(0);
 
-	//TODO: seg001:0758 Mouse cursor stuff...
+	// Initialize mouse cursor array
+	_mouseCursors[0] = _cursorSprite->_cels[1]->data;
+	_mouseCursors[1] = _cursorSprite->_cels[0]->data;
+	_mouseCursors[2] = _cursorSprite->_cels[4]->data;
+	_mouseCursors[3] = _cursorSprite->_cels[3]->data;
+	_mouseCursors[4] = _cursorSprite->_cels[2]->data;
+	_mouseCursors[5] = _cursorSprite->_cels[5]->data;
+	_mouseCursors[6] = _cursorSprite->_cels[6]->data;
 	
 	_backupPalette = new byte[768];
 	memcpy(_backupPalette, _gamePalette, 768);
@@ -601,7 +609,6 @@ void CometEngine::updateText() {
 void CometEngine::updateTalkAnims() {
 	
 	if (!_mixer->isSoundHandleActive(_sampleHandle)) {
-		debug("stopVoice");
 		stopVoice();
 	}
 
@@ -692,9 +699,37 @@ void CometEngine::updateScreen() {
 
 }
 
+void CometEngine::setMouseCursor(uint index, const byte *cursorSprite) {
+	
+	static const byte sysMouseCursor1[] = {
+		  1,  0,  0,  2,192,192, 14,  1,  0,  0,  3,192,255,
+		192, 13,  1,  0,  1,  0,192,255,255,192, 12,  1,  0,
+		  1,  1,192,255,255,255,192, 11,  1,  0,  1,  2,192,
+		255,255,255,255,192, 10,  1,  0,  1,  3,192,255,255,
+		255,255,255,192,  9,  1,  0,  2,  0,192,255,255,255,
+		255,255,255,192,  8,  1,  0,  2,  1,192,255,255,255,
+		255,255,255,255,192,  7,  1,  0,  2,  2,192,255,255,
+		255,255,255,255,255,255,192,  6,  1,  0,  2,  3,192,
+		255,255,255,255,255,192,192,192,192,192,  5,  1,  0,
+		  1,  3,192,255,255,192,255,255,192,  9,  2,  0,  0,
+		  3,192,255,192,  1,  1,  0,192,255,255,192,  8,  2,
+		  0,  0,  2,192,192,  2,  1,  0,192,255,255,192,  8,
+		  2,  0,  0,  1,192,  4,  1,  0,192,255,255,192,  7,
+		  1,  5,  1,  0,192,255,255,192,  7,  1,  6,  0,  3,
+		192,192,192,  7};
+
+	if (index > 0)
+		cursorSprite = sysMouseCursor1;
+
+	Graphics::Surface *cursor = _screen->decompressAnimationCel(cursorSprite, 16, 16);
+	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
+	delete cursor;
+
+}
+	
 void CometEngine::blockInput(int flagIndex) {
 	if (flagIndex == 0) {
-		_mouseCursor2 = 0;
+		_walkDirection = 0;
 		_blockedInput = 15;
 		actorStopWalking(getActor(0));
 	} else {
@@ -707,6 +742,29 @@ void CometEngine::unblockInput() {
 	_blockedInput = 0;
 	if (_actors[0].status == 2)
 		_actors[0].status = 0;
+}
+
+int CometEngine::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY) {
+	int deltaX, deltaY;
+	int deltaXAbs, deltaYAbs;
+	int direction;
+	deltaX = toX - fromX;
+	deltaY = toY - fromY;
+	deltaXAbs = ABS(toX - fromX);
+	deltaYAbs = ABS(toY - fromY);
+	if (deltaX == 0 && deltaY == 0)
+		direction = 0;
+	else if (deltaY > 0 && deltaY > deltaXAbs && deltaYAbs > 2)
+		direction = 3;
+	else if (deltaY < 0 && deltaYAbs > deltaXAbs && deltaYAbs > 2)
+		direction = 1;
+	else if (deltaX > 0 && deltaX > deltaYAbs && deltaXAbs > 2)
+		direction = 2;
+	else if (deltaX < 0 && deltaXAbs > deltaYAbs && deltaXAbs > 2)
+		direction = 4;
+	else
+		direction = 0;
+	return direction;
 }
 
 int16 CometEngine::random(int maxValue) {
@@ -930,7 +988,7 @@ void CometEngine::waitForKeys() {
 
 void CometEngine::handleInput() {
 
-	static const byte mouseCursorArray[] = {
+	static const byte walkDirectionTable[] = {
 		0, 1, 3, 0, 4, 4, 4, 0, 2, 2, 2, 0, 0, 0, 0, 0
 	};
 	
@@ -938,22 +996,65 @@ void CometEngine::handleInput() {
 		0, 0, 0, 0, 0, 0, 1, 2, 2, 4, 0, 1, 2, 3, 3, 0, 4, 2, 3, 4, 0, 1, 3, 3, 4, 0
 	};
 
+	int direction, directionAdd;
 	Actor *mainActor = getActor(0);
 	
-	_mouseButtons4 = _keyDirection;
-	_mouseCursor2 = mouseCursorArray[_mouseButtons4 & 0x0F];
+	_cursorDirection = _keyDirection;
+	_walkDirection = walkDirectionTable[_cursorDirection & 0x0F];
 	
-	// TODO: seg009:212C...skip_mouse
-	
-	if ((_blockedInput & _mouseButtons4) || _dialog->isRunning()) {
-		_mouseCursor2 = 0;
-		_mouseButtons5 = 0;
-	} else {
-		_mouseButtons5 = _mouseButtons4 & 0x80;
+	if (!_dialog->isRunning() && !_textActive && _blockedInput != 0x0F) {
+		if (!_mouseWalking && _walkDirection == 0) {
+			_mouseCursorDirection = mouseCalcCursorDirection(mainActor->x, mainActor->y, _mouseX, _mouseY);
+		} else if (_walkDirection != 0) {
+			_mouseCursorDirection = _walkDirection;
+		}
+		_mouseWalking = _leftButton;
+		switch (_mouseCursorDirection) {
+		case 1:
+			if (_mouseWalking) {
+				_cursorDirection = (_cursorDirection & 0x80) | 1;
+				_walkDirection = _mouseCursorDirection;
+			}
+			setMouseCursor(0, _mouseCursors[0]);
+			break;
+		case 2:
+			if (_mouseWalking) {
+				_cursorDirection = (_cursorDirection & 0x80) | 8;
+				_walkDirection = _mouseCursorDirection;
+			}
+			setMouseCursor(0, _mouseCursors[2]);
+			break;
+		case 3:
+			if (_mouseWalking) {
+				_cursorDirection = (_cursorDirection & 0x80) | 2;
+				_walkDirection = _mouseCursorDirection;
+			}
+			setMouseCursor(0, _mouseCursors[1]);
+			break;
+		case 4:
+			if (_mouseWalking) {
+				_cursorDirection = (_cursorDirection & 0x80) | 4;
+				_walkDirection = _mouseCursorDirection;
+			}
+			setMouseCursor(0, _mouseCursors[3]);
+			break;
+		}
+	} else if (_textActive) {
+		setMouseCursor(0, _mouseCursors[4]);
+	} else if (_dialog->isRunning()) {
+		setMouseCursor(0, _mouseCursors[6]);
+	} else if (_blockedInput == 0x0F) {
+		setMouseCursor(0, _mouseCursors[5]);
 	}
 	
-	//FIXME
-	_scriptMouseFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseButtons5 & 0x80) || (_keyDirection2 != 0);
+	if ((_blockedInput & _cursorDirection) || _dialog->isRunning()) {
+		_walkDirection = 0;
+		_mouseClick = 0;
+	} else {
+		_mouseClick = _cursorDirection & 0x80;
+	}
+	
+	_scriptKeybFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseClick & 0x80) || _leftButton || _rightButton;
 
 	if (mainActor->walkStatus & 3)
 		return;
@@ -963,7 +1064,7 @@ void CometEngine::handleInput() {
 		return;
 	}
 
-	int directionAdd = mainActor->directionAdd;
+	directionAdd = mainActor->directionAdd;
 
 	mainActor->walkDestX = mainActor->x;
 	mainActor->walkDestY = mainActor->y;
@@ -971,10 +1072,10 @@ void CometEngine::handleInput() {
 	if (directionAdd == 4)
 		directionAdd = 0;
 		
-	if (mainActor->direction == _mouseCursor2 && !(_blockedInput & _mouseButtons4))
+	if (mainActor->direction == _walkDirection && !(_blockedInput & _cursorDirection))
 		directionAdd = 4;
 		
-	int direction = mouseDirectionTable[mainActor->direction * 5 + _mouseCursor2];
+	direction = mouseDirectionTable[mainActor->direction * 5 + _walkDirection];
 	
 	actorSetDirection(mainActor, direction);
 	actorSetDirectionAdd(mainActor, directionAdd);
@@ -1437,8 +1538,8 @@ void CometEngine::initSystemVars() {
 		_systemVars[2 + i * 3] = &_actors[i].x;
 		_systemVars[3 + i * 3] = &_actors[i].y;
 	}
-	_systemVars[31] = &_mouseButtons4;
-	_systemVars[32] = &_scriptMouseFlag;
+	_systemVars[31] = &_cursorDirection;
+	_systemVars[32] = &_scriptKeybFlag;
 	_systemVars[33] = &_scriptRandomValue;
 	_systemVars[34] = &_prevModuleNumber;
 }
