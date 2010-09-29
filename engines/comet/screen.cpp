@@ -458,9 +458,6 @@ void Screen::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
 
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
 
-	// FIXME: We allow the rectangle to be 200 pixels hight, but only 319
-	//        pixels wide? Is that correct?
-
 	if (x1 < 0) x1 = 0;
 	else if (x1 >= 320) x1 = 319;
 	if (x2 < 0) x2 = 0;
@@ -845,6 +842,29 @@ void Screen::dottedPlotProc(int x, int y, int color, void *data = NULL) {
 		if (screen->_dotFlag & 2)
 			screen->getScreen()[x + y * 320] = color;
 	}
+}
+
+Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 width, int16 height) {
+	Graphics::Surface *surface = new Graphics::Surface();
+	surface->create(width, height, 1);
+	const byte *src = celData;
+	byte *dst = (byte*)surface->pixels;
+	while (height--) {
+		byte *row = dst;
+		byte chunks = *src++;
+		while (chunks--) {
+			byte skip = src[0];
+			int count = src[1] * 4 + src[2];
+			src += 3;
+			row += skip;
+			memcpy(row, src, count);
+			row += count;
+			src += count;
+		}
+		src++;
+		dst += surface->pitch;
+	}
+	return surface;
 }
 
 void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {

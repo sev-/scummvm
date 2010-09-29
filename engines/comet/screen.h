@@ -111,7 +111,7 @@ public:
 	static void plotProc(int x, int y, int color, void *data);
 	static void dottedPlotProc(int x, int y, int color, void *data);
 
-	// New Animation drawing code
+	Graphics::Surface *decompressAnimationCel(const byte *celData, int16 width, int16 height);
 	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
 	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
 	void drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);

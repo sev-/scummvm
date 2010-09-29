@@ -70,11 +70,11 @@ void Dialog::update() {
 
 	oldDialogSelectedItemIndex = _selectedItemIndex;
 
-	if (_vm->_mouseButtons4 & 1) {
+	if (_vm->_cursorDirection & 1) {
 		_vm->waitForKeys();
 		if (_selectedItemIndex > 0)
 			_selectedItemIndex--;
-	} else if (_vm->_mouseButtons4 & 2) {
+	} else if (_vm->_cursorDirection & 2) {
 		_vm->waitForKeys();
 		if (_selectedItemIndex < (int)_items.size() - 1)
 			_selectedItemIndex++;

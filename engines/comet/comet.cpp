@@ -123,10 +123,11 @@ Common::Error CometEngine::run() {
 	_mouseY = 0;
 	_keyScancode = Common::KEYCODE_INVALID;
 	_keyDirection = 0;
-	_keyDirection2 = 0;
-	_mouseButtons4 = 0;
-	_mouseButtons5 = 0;
-	_scriptMouseFlag = false;
+	_cursorDirection = 0;
+	_mouseClick = 0;
+	_scriptKeybFlag = 0;
+	_mouseWalking = false;
+	_mouseCursorDirection = 0;
 	_leftButton = false;
 	_rightButton = false;
 	
@@ -234,10 +235,10 @@ Common::Error CometEngine::run() {
 	_screen->setFullPalette(_gamePalette);
 	AnimationResource *anim;
 	bool done = false;
-	int frameListIndex = 0, frameIndex = 3;
-	int resIndex = 6;
+	int frameListIndex = 0, frameIndex = 0;
+	int resIndex = 9;
 	//anim = _animationMan->loadAnimationResource("A05.PAK", 7);//FIRE
-	anim = _animationMan->loadAnimationResource("A05.PAK", resIndex);
+	anim = _animationMan->loadAnimationResource("RES.PAK", resIndex);
 	while (!done) {
 		int16 x, y;
 		AnimationFrameList *frameList;
@@ -248,7 +249,7 @@ Common::Error CometEngine::run() {
 			resIndex++;
 			debug("resIndex = %d", resIndex);
 			delete anim;
-			anim = _animationMan->loadAnimationResource("A05.PAK", resIndex);
+			anim = _animationMan->loadAnimationResource("RES.PAK", resIndex);
 			frameListIndex = 0;
 			frameIndex = 0;
 			break;						
@@ -284,11 +285,11 @@ Common::Error CometEngine::run() {
 			break;
 		}
 		//x = 141; y = 6;
-		x = 0; y = 0;
+		//x = 0; y = 0;
 		//x = 141; 
 		//y = 0;
-		//x = _mouseX; 
-		//y = _mouseY;
+		x = _mouseX; 
+		y = _mouseY;
 		//frameListIndex = 1;
 		//frameIndex = 49;
 		frameList = anim->_anims[frameListIndex];
@@ -300,7 +301,51 @@ Common::Error CometEngine::run() {
 	}
 #endif	
 
+#if 0
+	// Cursor viewer
+	_screen->setFullPalette(_gamePalette);
+	AnimationResource *anim;
+	bool done = false;
+	int celIndex = 0;
+	anim = _animationMan->loadAnimationResource("RES.PAK", 9);
+	while (!done) {
+		int16 x, y;
+		AnimationCel *currCel = anim->_cels[celIndex];
+		handleEvents();
+		// Debugging keys
+		switch (_keyScancode) {
+		case Common::KEYCODE_KP_PLUS:
+			celIndex++;
+			if (celIndex >= anim->_cels.size())
+				celIndex = 0;
+			debug("celIndex = %d", celIndex);
+			currCel = anim->_cels[celIndex];
+			break;						
+		case Common::KEYCODE_KP_MINUS:
+			celIndex--;
+			if (celIndex < 0) 
+				celIndex = anim->_cels.size() - 1;
+			debug("celIndex = %d", celIndex);
+			currCel = anim->_cels[celIndex];
+			break;						
+		case Common::KEYCODE_ESCAPE:
+			done = true;
+			break;
+		default:
+			break;
+		}
+		x = _mouseX + 20; 
+		y = _mouseY + 20;
+		_screen->clear();
+		_screen->drawAnimationCelSprite(*currCel, x, y, 0);
+		_screen->update();
+		_system->delayMillis(40);
+	}
+#endif	
+
 #if 1
+
+	setMouseCursor(0, _mouseCursors[0]);
 
 #if 0
 	// Play the intro
