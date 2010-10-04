@@ -55,7 +55,7 @@ ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 	_scriptCount = 0;
 	_curScriptNumber = -1;
 
-    _scriptResource = new ScriptResource();
+	_scriptResource = new ScriptResource();
 
 	for (int i = 0; i < kMaxScriptCount; i++)
 		_scripts[i] = new Script(this);
@@ -1026,6 +1026,7 @@ void ScriptInterpreter::o1_playSampleLooping(Script *script) {
 void ScriptInterpreter::o1_setRedPalette(Script *script) {
 	ARG_BYTE(paletteRedness);
 	// TODO: Remember "redness" value
+	_vm->_paletteRedness = paletteRedness;
 	_vm->_screen->buildRedPalette(_vm->_gamePalette, _vm->_screenPalette, paletteRedness);
 	_vm->_screen->setFullPalette(_vm->_screenPalette);
 }

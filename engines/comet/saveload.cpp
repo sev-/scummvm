@@ -48,14 +48,15 @@ namespace Comet {
 	- Saveload is working so far but only one slot is supported until the game menu is implemented
 	- Save with F7; Load with F9
 	- Maybe switch to SCUMM/Tinsel serialization approach?
+	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
 */
 
-#define SAVEGAME_VERSION 0 // 0 is dev version until in official SVN
+#define SAVEGAME_VERSION 1 // < 1000 is dev version until in official SVN
 
 CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header) {
 
 	header.version = in->readUint32LE();
-	if (header.version != SAVEGAME_VERSION)
+	if (header.version > SAVEGAME_VERSION)
 		return kRSHEInvalidVersion;
 
 	byte descriptionLen = in->readByte();
@@ -116,6 +117,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint16LE(_backgroundFileIndex);
 	out->writeUint16LE(_narFileIndex);
 	out->writeUint32LE(_gameLoopCounter);
+	out->writeByte(_blockedInput);
 
 	out->writeByte(_scene->_exits.size());
 	for (Common::Array<SceneExitItem>::iterator iter = _scene->_exits.begin(); iter != _scene->_exits.end(); ++iter) {
@@ -210,6 +212,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 
 	out->writeByte(_paletteBrightness);
+	out->writeByte(_paletteRedness);
 	out->writeUint16LE(_screen->_zoomX);
 	out->writeUint16LE(_screen->_zoomY);
 
@@ -262,6 +265,10 @@ void CometEngine::loadgame(const char *filename) {
 	_backgroundFileIndex = in->readUint16LE();
 	_narFileIndex = in->readUint16LE();
 	_gameLoopCounter = in->readUint32LE();
+	
+	if (header.version > 0)//REMOVEME	
+	_blockedInput = in->readByte();
+	else _blockedInput = 0; 
 
 	_scene->_exits.clear();
 	count = in->readByte();
@@ -366,6 +373,11 @@ void CometEngine::loadgame(const char *filename) {
 	}
 
 	_paletteBrightness = in->readByte();
+	
+	if (header.version > 0)//REMOVEME	
+	_paletteRedness = in->readByte();
+	else _paletteRedness = 0;
+	
 	_screen->_zoomX = in->readUint16LE();
 	_screen->_zoomY = in->readUint16LE();
 
@@ -383,7 +395,10 @@ void CometEngine::loadgame(const char *filename) {
 	loadAndRunScript(true);
 	initSceneBackground(true);
 	_animationMan->restoreAnimationSlots();
-	_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
+	if (_paletteRedness != 0)
+		_screen->buildRedPalette(_gamePalette, _screenPalette, _paletteRedness);
+	else		
+		_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
 	_screen->setFullPalette(_screenPalette);
 
 	setVoiceFileIndex(_narFileIndex); // NEW in reimplementation

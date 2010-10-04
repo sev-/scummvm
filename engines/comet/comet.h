@@ -196,7 +196,7 @@ public:
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
 	int _paletteStatus;
-	int _paletteBrightness;
+	byte _paletteBrightness, _paletteRedness;
 	bool _clearScreenRequest;
 
 	int _backgroundFileIndex;
@@ -213,7 +213,7 @@ public:
 	int _keyDirection;
 	int _mouseX, _mouseY;
 	bool _leftButton, _rightButton;
-	int _blockedInput;
+	byte _blockedInput;
 	int16 _cursorDirection, _mouseClick;
 	int _walkDirection;
 	int16 _scriptKeybFlag;
