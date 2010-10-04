@@ -455,6 +455,7 @@ public:
 
 	void introMainLoop();
 	void gameMainLoop();
+	void checkPauseGame();
 
 public:
 	/* Misc */
