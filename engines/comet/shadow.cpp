@@ -1126,7 +1126,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
-		// TODO: checkForPauseGame();
+		checkPauseGame();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
@@ -1472,7 +1472,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 				}
 			}						
 
-			// TODO: checkForPauseGame();
+			checkPauseGame();
+			
 			if (_keyScancode == Common::KEYCODE_ESCAPE) {
 				// TODO: yesNoDialog();
 			} else if (_keyScancode == Common::KEYCODE_RETURN) {
@@ -1596,7 +1597,7 @@ void CometEngine::introMainLoop() {
 			skipText();
 			break;
 		case Common::KEYCODE_p:
-			// TODO: checkForPauseGame();
+			checkPauseGame();
 			break;
 		default:			
 			break;
@@ -1709,6 +1710,33 @@ void CometEngine::gameMainLoop() {
 
 	}
 	
+}
+
+void CometEngine::checkPauseGame() {
+	byte *pauseText = (byte*)"Game Paused";
+	if (_keyScancode == Common::KEYCODE_p) {
+		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
+		int y = 180;
+		waitForKeys();
+		_screen->setFontColor(80);
+		_screen->drawText(x + 1, y + 1, pauseText);
+		_screen->drawText(x + 1, y - 1, pauseText);
+		_screen->drawText(x + 1, y,     pauseText);
+		_screen->drawText(x - 1, y,     pauseText);
+		_screen->drawText(x,     y + 1, pauseText);
+		_screen->drawText(x,     y - 1, pauseText);
+		_screen->drawText(x - 1, y + 1, pauseText);
+		_screen->drawText(x - 1, y - 1, pauseText);
+		_screen->setFontColor(95);
+		_screen->drawText(x, y, pauseText);
+		_screen->update();
+		_keyDirection = 0;
+		stopVoice();
+		do {
+			handleEvents();
+			_system->delayMillis(40); // TODO
+		} while (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton); 
+	}
 }
 
 int CometEngine::handleMap() {
