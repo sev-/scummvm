@@ -61,6 +61,19 @@ protected:
 	void drawMainMenu(int selectedItem);
 };
 
+class GuiOptionsMenu {
+public:
+	GuiOptionsMenu(CometEngine *vm);
+	~GuiOptionsMenu();
+	int run();
+protected:
+	CometEngine *_vm;
+	int _optionsMenuSelectedItem;
+	void drawOptionsMenu(int selectedItem, int musicVolumeDiv, int sampleVolumeDiv, 
+		int textSpeed, int gameSpeed, int language, uint animFrameCounter,
+		const GuiRectangle *guiRectangles);
+};
+
 class GuiPuzzle {
 public:
 	GuiPuzzle(CometEngine *vm);
@@ -90,6 +103,7 @@ public:
 	int runDiary();
 	int runTownMap();
 	int runMainMenu();
+	int runOptionsMenu();
 	int runPuzzle();
 protected:
 	CometEngine *_vm;
@@ -98,6 +112,7 @@ protected:
 	GuiDiary *_guiDiary;
 	GuiTownMap *_guiTownMap;
 	GuiMainMenu *_guiMainMenu;
+	GuiOptionsMenu *_guiOptionsMenu;
 	GuiPuzzle *_guiPuzzle;
 };
 

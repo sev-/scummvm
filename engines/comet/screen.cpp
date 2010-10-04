@@ -473,7 +473,7 @@ void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
 	if (y2 < y1)
 		SWAP(y2, y1);
 
-	int width = x2 - x1;
+	int width = x2 - x1 + 1;
 	int height = y2 - y1 + 1;
 
 	byte *ptr = getScreen() + x1 + y1 * 320;
