@@ -13,6 +13,7 @@ Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiDiary = new GuiDiary(_vm);
 	_guiTownMap = new GuiTownMap(_vm);
 	_guiMainMenu = new GuiMainMenu(_vm);
+	_guiOptionsMenu = new GuiOptionsMenu(_vm);
 	_guiPuzzle = new GuiPuzzle(_vm);
 }
 
@@ -22,6 +23,7 @@ Gui::~Gui() {
 	delete _guiDiary;
 	delete _guiTownMap;
 	delete _guiMainMenu;
+	delete _guiOptionsMenu;
 	delete _guiPuzzle;
 }
 
@@ -43,6 +45,10 @@ int Gui::runTownMap() {
 
 int Gui::runMainMenu() {
 	return _guiMainMenu->run();
+}
+
+int Gui::runOptionsMenu() {
+	return _guiOptionsMenu->run();
 }
 
 int Gui::runPuzzle() {
@@ -552,8 +558,8 @@ int GuiMainMenu::run() {
 			mainMenuStatus = 0;
 			break;
 		case kMMAOptions:
-			// TODO
-			debug("main menu: options");
+			// TODO? debug("main menu: options");
+			_vm->_gui->runOptionsMenu();
 			mainMenuStatus = 0;
 			break;
 		case kMMAQuit:
@@ -581,6 +587,348 @@ void GuiMainMenu::drawMainMenu(int selectedItem) {
 	const int itemHeight = 23;
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 10, 0, 0);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 11, x, y + selectedItem * itemHeight);
+}
+
+/* GuiOptionsMenu */
+
+GuiOptionsMenu::GuiOptionsMenu(CometEngine *vm) : _vm(vm), _optionsMenuSelectedItem(0) {
+}
+
+GuiOptionsMenu::~GuiOptionsMenu() {
+}
+
+int GuiOptionsMenu::run() {
+#if 0
+	int optionsMenuStatus = 0;
+	while (optionsMenuStatus == 0) {
+		drawOptionsMenu(1, 5, 5, 5, 5, 0, 1);
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
+		_vm->handleEvents();
+		switch (_vm->_keyScancode) {
+		case Common::KEYCODE_ESCAPE:
+			optionsMenuStatus = 1;
+			break;
+		default:
+			break;			
+		}
+		_vm->waitForKeys();
+	}
+#endif
+
+	const int kOMANone			= -1;
+	const int kOMAExit			= -2;
+	const int kOMAMusicVol		= 0;
+	const int kOMASoundVol		= 1;
+	const int kOMATalkie		= 2;
+	const int kOMAGameSpeed		= 3;
+	const int kOMALanguage		= 4;
+	const int kOMAOk			= 6;
+	const int kOMADefMusicVol	= 7;
+	const int kOMADefSoundVol	= 8;
+	const int kOMADefGameSpeed	= 9;
+	const int kOMAIncMusicVol	= 10;
+	const int kOMADecMusicVol	= 11;
+	const int kOMAIncSoundVol	= 12;
+	const int kOMADecSoundVol	= 13;
+	const int kOMAIncGameSpeed	= 14;
+	const int kOMADecGameSpeed	= 15;
+	const int kOMAIncLanguage	= 16;
+	const int kOMADecLanguage	= 17;
+
+	static const GuiRectangle optionsMenuRects[] = {
+		{127,  64, 189,  79, kOMAMusicVol},
+		{127,  84, 189,  99, kOMASoundVol},
+		{127, 104, 164, 119, kOMATalkie},
+		{127, 124, 189, 139, kOMAGameSpeed},
+		{127, 144, 142, 159, kOMALanguage},
+		{127, 164, 142, 179, 5},//???
+		{172, 165, 199, 178, kOMAOk},
+		{106,  64, 121,  79, kOMADefMusicVol},
+		{106,  84, 121,  99, kOMADefSoundVol},
+		{106, 104, 121, 119, kOMATalkie},
+		{106, 124, 121, 139, kOMADefGameSpeed},
+		{106, 144, 121, 159, kOMALanguage},
+		{106, 164, 121, 179, 35}};//???
+
+	int optionsMenuStatus = 0;
+	int musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language;
+	uint animFrameCounter = 0;
+	
+	// TODO: Get real values
+	musicVolumeDiv = 2;
+	sampleVolumeDiv = 2;
+	textSpeed = 2;
+	gameSpeed = 2;
+	language = 1;
+	
+	//_menuStatus++;
+	
+	_vm->waitForKeys();
+
+	while (optionsMenuStatus == 0) {
+		int mouseSelectedItem, optionsMenuAction = kOMANone, selectedItemToDraw;
+		bool doWaitForKeys = true;
+
+		int16 mouseX = CLIP(_vm->_mouseX, 127, 189);
+	
+		mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_mouseX, _vm->_mouseY, 13, kOMANone);
+		if (mouseSelectedItem != kOMANone)
+			_optionsMenuSelectedItem = mouseSelectedItem;
+		
+		// TODO: Update music volume
+		
+		animFrameCounter++;
+		if (animFrameCounter == 32)
+			animFrameCounter = 0;
+		
+		selectedItemToDraw = _optionsMenuSelectedItem;
+		if (selectedItemToDraw == kOMADefMusicVol)
+			selectedItemToDraw = kOMAMusicVol;
+		else if (selectedItemToDraw == kOMADefSoundVol)
+			selectedItemToDraw = kOMASoundVol;
+		else if (selectedItemToDraw == kOMADefGameSpeed)
+			selectedItemToDraw = kOMAGameSpeed;
+
+		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language, animFrameCounter, optionsMenuRects);
+
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
+
+		_vm->handleEvents();
+
+		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
+			continue;
+
+		if (_vm->_rightButton) {
+			optionsMenuAction = kOMAExit;
+		} else if (_vm->_leftButton && _optionsMenuSelectedItem != kOMANone) {
+			optionsMenuAction = _optionsMenuSelectedItem;
+		}
+		
+		switch (_vm->_keyScancode) {
+		case Common::KEYCODE_DOWN:
+			if (_optionsMenuSelectedItem == 5) {
+				if (mouseSelectedItem == _optionsMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_optionsMenuSelectedItem = 0;
+			} else {
+				if (mouseSelectedItem == _optionsMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_optionsMenuSelectedItem++;
+			}
+			break;
+		case Common::KEYCODE_UP:
+			if (_optionsMenuSelectedItem == 0) {
+				if (mouseSelectedItem == _optionsMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_optionsMenuSelectedItem = 5;
+			} else {
+				if (mouseSelectedItem == _optionsMenuSelectedItem) {
+					// TODO: Warp mouse cursor
+				}
+				_optionsMenuSelectedItem--;
+			}
+			break;
+		case Common::KEYCODE_LEFT:
+			if (_optionsMenuSelectedItem == 0) {
+				optionsMenuAction = kOMADecMusicVol;
+			} else if (_optionsMenuSelectedItem == 1) {
+				optionsMenuAction = kOMADecSoundVol;
+			} else if (_optionsMenuSelectedItem == 2) {
+				optionsMenuAction = kOMATalkie;
+			} else if (_optionsMenuSelectedItem == 3) {
+				optionsMenuAction = kOMADecGameSpeed;
+			} else if (_optionsMenuSelectedItem == 4) {
+				optionsMenuAction = kOMADecLanguage;
+			}
+			break;
+		case Common::KEYCODE_RIGHT:
+			if (_optionsMenuSelectedItem == 0) {
+				optionsMenuAction = kOMAIncMusicVol;
+			} else if (_optionsMenuSelectedItem == 1) {
+				optionsMenuAction = kOMAIncSoundVol;
+			} else if (_optionsMenuSelectedItem == 2) {
+				optionsMenuAction = kOMATalkie;
+			} else if (_optionsMenuSelectedItem == 3) {
+				optionsMenuAction = kOMAIncGameSpeed;
+			} else if (_optionsMenuSelectedItem == 4) {
+				optionsMenuAction = kOMAIncLanguage;
+			}
+			break;
+		case Common::KEYCODE_ESCAPE:
+			optionsMenuAction = kOMAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6) {
+				optionsMenuAction = kOMAExit;
+			}
+			break;			
+		default:
+			break;			
+		}
+
+		/*		
+		if (mainMenuAction >= 0) {
+			drawMainMenu(_mainMenuSelectedItem);		
+			_vm->_screen->update();
+		}
+		*/
+				
+		switch (optionsMenuAction) {
+		case kOMANone:
+			break;
+		case kOMAExit:
+			optionsMenuStatus = 2;
+			break;
+		case kOMAMusicVol:
+			musicVolumeDiv = (mouseX - 127) / 4;
+			doWaitForKeys = false;
+			break;
+		case kOMASoundVol:
+			sampleVolumeDiv = (mouseX - 127) / 4;
+			doWaitForKeys = false;
+			break;
+		case kOMATalkie:
+			_vm->_talkieMode++;
+			if (_vm->_talkieMode > 2)
+				_vm->_talkieMode = 0;
+			break;
+		case kOMAGameSpeed:
+			gameSpeed = (mouseX - 127) / 4;
+			doWaitForKeys = false;
+			break;
+		case kOMALanguage:
+			if (language < 4)
+				language++;
+			else
+				language = 0;				
+			break;
+		case kOMAOk:
+			optionsMenuStatus = 1;
+			break;
+		case kOMADefMusicVol:
+			musicVolumeDiv = 8;
+			break;
+		case kOMADefSoundVol:
+			sampleVolumeDiv = 8;
+			break;
+		case kOMADefGameSpeed:
+			gameSpeed = 8;
+			break;
+		case kOMAIncMusicVol:
+			if (musicVolumeDiv < 15)
+				musicVolumeDiv++;
+			doWaitForKeys = false;
+			break;
+		case kOMADecMusicVol:
+			if (musicVolumeDiv > 0)
+				musicVolumeDiv--;
+			doWaitForKeys = false;
+			break;
+		case kOMAIncSoundVol:
+			if (sampleVolumeDiv < 15)
+				sampleVolumeDiv++;
+			doWaitForKeys = false;
+			break;
+		case kOMADecSoundVol:
+			if (sampleVolumeDiv > 0)
+				sampleVolumeDiv--;
+			doWaitForKeys = false;
+			break;
+		case kOMAIncGameSpeed:
+			if (gameSpeed < 15)
+				gameSpeed++;
+			doWaitForKeys = false;
+			break;
+		case kOMADecGameSpeed:
+			if (gameSpeed > 0)
+				gameSpeed--;
+			doWaitForKeys = false;
+			break;
+		case kOMAIncLanguage:
+			if (language < 4)
+				language++;
+			break;
+		case kOMADecLanguage:
+			if (language > 0)
+				language--;
+			break;
+		}								
+
+		if (doWaitForKeys)
+			_vm->waitForKeys();
+	
+	}
+
+	_vm->waitForKeys();
+
+	//_menuStatus--;
+	//loadSceneBackground();
+
+	return 0;
+}
+
+void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int sampleVolumeDiv, 
+	int textSpeed, int gameSpeed, int language, uint animFrameCounter,
+	const GuiRectangle *guiRectangles) {
+
+	const int x = 107;
+	const int y_add_val3 = 65;
+	const int y_index = 20;
+	const int gaugeX = 128;
+	const int y = 70;
+
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
+
+	if (selectedItem == 5 || selectedItem == 6) {
+		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
+	} else {
+    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, x, selectedItem * y_index + y_add_val3);
+	}
+
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, y);
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, y + y_index);
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, y + y_index * 3);
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
+
+	if (musicVolumeDiv == 0) {
+    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 55, 0, 0);
+	} else if (musicVolumeDiv > 0 && musicVolumeDiv < 8) {
+		if (animFrameCounter < 16) {
+    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 71, 0, 0);
+		} else {
+    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 72, 0, 0);
+		}
+	} else if (musicVolumeDiv >= 8) {
+		if (animFrameCounter < 16) {
+    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 73, 0, 0);
+		} else {
+    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 74, 0, 0);
+		}
+	}
+		                                
+	if (sampleVolumeDiv == 0) {
+    	_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
+	} else if (sampleVolumeDiv < 7) {
+    	_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
+	} else {
+    	_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
+	} 
+
+    _vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
+
+	if (gameSpeed < 5) {
+    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
+	} else if (gameSpeed >= 5 && gameSpeed < 10) {
+    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 76, 0, 0);
+	} else if (gameSpeed >= 10) {
+    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 77, 0, 0);
+	}
+
 }
 
 /* GuiTownMap */

@@ -1113,7 +1113,8 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
-		_gui->runMainMenu();
+		//_gui->runMainMenu();
+		_gui->runOptionsMenu();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_m:
