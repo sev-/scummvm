@@ -1740,8 +1740,30 @@ void CometEngine::checkPauseGame() {
 }
 
 int CometEngine::handleMap() {
-	// TODO: Proper implementation
-	return _gui->runTownMap();
+
+	stopVoice();
+
+	if (!_textActive && _blockedInput == 0 && !_dialog->isRunning() && !_talkieSpeechPlaying &&
+		_scriptVars[7] != 1 && _scriptVars[8] != 1 && _scriptVars[8] != 2) {
+	
+		if (_currentModuleNumber == 0 && 
+			((_currentSceneNumber >= 0 && _currentSceneNumber <= 22) ||
+			(_currentSceneNumber >= 30 || _currentSceneNumber <= 52) ||
+			(_currentSceneNumber >= 60 || _currentSceneNumber <= 82))) {
+		
+			_gui->runTownMap();
+			_inventoryItemStatus[0] = 1;
+				
+		}
+
+		if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
+			_gui->runTownMap();
+			_inventoryItemStatus[0] = 1;
+		}
+		
+	}
+
+	return 1;
 }
 
 } // End of namespace Comet

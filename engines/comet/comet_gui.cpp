@@ -882,51 +882,51 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 	const int gaugeX = 128;
 	const int y = 70;
 
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
 
 	if (selectedItem == 5 || selectedItem == 6) {
 		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
 	} else {
-    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, x, selectedItem * y_index + y_add_val3);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, x, selectedItem * y_index + y_add_val3);
 	}
 
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, y);
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, y + y_index);
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, y + y_index * 3);
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, y);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, y + y_index);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, y + y_index * 3);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
 
 	if (musicVolumeDiv == 0) {
-    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 55, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 55, 0, 0);
 	} else if (musicVolumeDiv > 0 && musicVolumeDiv < 8) {
 		if (animFrameCounter < 16) {
-    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 71, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 71, 0, 0);
 		} else {
-    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 72, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 72, 0, 0);
 		}
 	} else if (musicVolumeDiv >= 8) {
 		if (animFrameCounter < 16) {
-    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 73, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 73, 0, 0);
 		} else {
-    		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 74, 0, 0);
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 74, 0, 0);
 		}
 	}
-		                                
+
 	if (sampleVolumeDiv == 0) {
-    	_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
+		_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
 	} else if (sampleVolumeDiv < 7) {
-    	_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
+		_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
 	} else {
-    	_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
+		_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
 	} 
 
-    _vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
 
 	if (gameSpeed < 5) {
-    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
 	} else if (gameSpeed >= 5 && gameSpeed < 10) {
-    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 76, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 76, 0, 0);
 	} else if (gameSpeed >= 10) {
-    	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 77, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 77, 0, 0);
 	}
 
 }
@@ -1056,13 +1056,13 @@ int GuiTownMap::run() {
 			_vm->_sceneNumber = mapExit.sceneNumber;
 			if (sceneStatus1 == 1) {
 				_vm->_moduleNumber += 6;
-			} else {
+			} else if (sceneStatus2 >= 2) {
 				_vm->_sceneNumber += (sceneStatus2 - 1) * 30;
 			}
 			if ((locationNumber == 7 || locationNumber == 8) &&
 				_vm->_scriptVars[5] == 2 && _vm->_scriptVars[6] == 0 &&
 				selectedMapLocation != 6 && selectedMapLocation != 7 && selectedMapLocation != 4) {
-				_vm->_sceneNumber += 36;
+				_vm->_sceneNumber = 36;
 			}
 			mapStatus = 2;
 			debug("moduleNumber: %d; sceneNumber: %d", _vm->_moduleNumber, _vm->_sceneNumber);
