@@ -184,6 +184,7 @@ public:
 	void o1_actorTalk(Script *script);
 	void o1_loadSavegame(Script *script);
 	void o1_addSceneItem2(Script *script);
+	void o1_waitForKeyPress(Script *script);
 	void o1_playActorAnim(Script *script);
 	void o1_actorTalkPortrait(Script *script);
 	void o1_initActor(Script *script);

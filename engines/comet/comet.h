@@ -278,6 +278,7 @@ public:
 
 	void handleEvents();
 	void waitForKeys();
+	void waitForKeyPress();
 	void handleInput();
 	void handleKeyInput();
 	

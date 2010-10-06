@@ -986,6 +986,13 @@ void CometEngine::waitForKeys() {
 	}
 }
 
+void CometEngine::waitForKeyPress() {
+	waitForKeys();
+	while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton) {
+		handleEvents();
+	}
+}
+
 void CometEngine::handleInput() {
 
 	static const byte walkDirectionTable[] = {
