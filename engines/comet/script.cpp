@@ -159,7 +159,7 @@ void ScriptInterpreter::setupOpcodes() {
 	// 65
 	RegisterOpcode(o1_ifLookAt);
 	RegisterOpcode(o1_ifLookZone);
-	RegisterOpcode(o1_addBeam);//TODO
+	RegisterOpcode(o1_addBeam);
 	RegisterOpcode(o1_removeBlockingRect);
 	RegisterOpcode(o1_actorSetTextColor);
 	// 70
@@ -182,7 +182,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_addSceneItem2); // Unused in Comet CD
 	// 85
 	RegisterOpcode(o1_nop); // Unused in Comet CD
-	RegisterOpcode(o1_nop);// TODO: o1_waitForKey();
+	RegisterOpcode(o1_waitForKeyPress);
 	RegisterOpcode(o1_playActorAnim);
 	RegisterOpcode(o1_actorSetAnimNumber);
 	RegisterOpcode(o1_actorTalkPortrait);
@@ -195,13 +195,13 @@ void ScriptInterpreter::setupOpcodes() {
 	// 95
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_setNarFileIndex);
-	RegisterOpcode(o1_ifNearActor);//TODO
+	RegisterOpcode(o1_ifNearActor);
 	RegisterOpcode(o1_removeSceneItem);
 	RegisterOpcode(o1_playSample);
 	// 100
 	RegisterOpcode(o1_playSampleLooping);
 	RegisterOpcode(o1_setRedPalette);
-	RegisterOpcode(o1_setWhitePalette);//TODO
+	RegisterOpcode(o1_setWhitePalette);
 	RegisterOpcode(o1_nop);//TODO
 	RegisterOpcode(o1_nop);//TODO
 
@@ -936,6 +936,10 @@ void ScriptInterpreter::o1_addSceneItem2(Script *script) {
 	_vm->_scene->addSceneItem(itemIndex, x, y, 1);
 }
 
+void ScriptInterpreter::o1_waitForKeyPress(Script *script) {
+	_vm->waitForKeyPress();
+}
+
 void ScriptInterpreter::o1_playActorAnim(Script *script) {
 	o1_actorSetAnimNumber(script);
 	script->status |= kScriptAnimPlaying;
@@ -1025,7 +1029,6 @@ void ScriptInterpreter::o1_playSampleLooping(Script *script) {
 
 void ScriptInterpreter::o1_setRedPalette(Script *script) {
 	ARG_BYTE(paletteRedness);
-	// TODO: Remember "redness" value
 	_vm->_paletteRedness = paletteRedness;
 	_vm->_screen->buildRedPalette(_vm->_gamePalette, _vm->_screenPalette, paletteRedness);
 	_vm->_screen->setFullPalette(_vm->_screenPalette);
