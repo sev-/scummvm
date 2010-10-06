@@ -156,6 +156,7 @@ public:
 	Common::Language getLanguage() const;
 	Common::Platform getPlatform() const;
 	uint16 getVersion() const;
+	const Common::String& getTargetName() const { return _targetName; }
 
 	const char *getGameFile(int fileType);
 
@@ -210,6 +211,7 @@ public:
 
 	/* Input related */
 	Common::KeyCode _keyScancode;
+	char _keyAscii;
 	int _keyDirection;
 	int _mouseX, _mouseY;
 	bool _leftButton, _rightButton;

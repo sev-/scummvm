@@ -15,6 +15,7 @@ Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiMainMenu = new GuiMainMenu(_vm);
 	_guiOptionsMenu = new GuiOptionsMenu(_vm);
 	_guiPuzzle = new GuiPuzzle(_vm);
+	_guiSaveLoadMenu = new GuiSaveLoadMenu(_vm);
 }
 
 Gui::~Gui() {
@@ -25,6 +26,7 @@ Gui::~Gui() {
 	delete _guiMainMenu;
 	delete _guiOptionsMenu;
 	delete _guiPuzzle;
+	delete _guiSaveLoadMenu;
 }
 
 int Gui::runInventory() {
@@ -53,6 +55,14 @@ int Gui::runOptionsMenu() {
 
 int Gui::runPuzzle() {
 	return _guiPuzzle->run();
+}
+
+int Gui::runSaveMenu() {
+	return _guiSaveLoadMenu->run(true);
+}
+
+int Gui::runLoadMenu() {
+	return _guiSaveLoadMenu->run(false);
 }
 
 /* GuiInventory */
@@ -548,19 +558,14 @@ int GuiMainMenu::run() {
 			mainMenuStatus = 2;
 			break;
 		case kMMASave:
-			// TODO
-			debug("main menu: save game");
-			mainMenuStatus = 0;
+			mainMenuStatus = _vm->_gui->runSaveMenu();
 			break;
 		case kMMALoad:
-			// TODO
-			debug("main menu: load game");
-			mainMenuStatus = 0;
+			mainMenuStatus = _vm->_gui->runLoadMenu();
+			debug("mainMenuStatus = %d", mainMenuStatus);
 			break;
 		case kMMAOptions:
-			// TODO? debug("main menu: options");
-			_vm->_gui->runOptionsMenu();
-			mainMenuStatus = 0;
+			mainMenuStatus = _vm->_gui->runOptionsMenu();
 			break;
 		case kMMAQuit:
 			// TODO
@@ -598,23 +603,6 @@ GuiOptionsMenu::~GuiOptionsMenu() {
 }
 
 int GuiOptionsMenu::run() {
-#if 0
-	int optionsMenuStatus = 0;
-	while (optionsMenuStatus == 0) {
-		drawOptionsMenu(1, 5, 5, 5, 5, 0, 1);
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
-		_vm->handleEvents();
-		switch (_vm->_keyScancode) {
-		case Common::KEYCODE_ESCAPE:
-			optionsMenuStatus = 1;
-			break;
-		default:
-			break;			
-		}
-		_vm->waitForKeys();
-	}
-#endif
 
 	const int kOMANone			= -1;
 	const int kOMAExit			= -2;
@@ -1545,6 +1533,252 @@ bool GuiPuzzle::testIsSolved() {
 		}
 	}
 	return matchingTiles == 16;
+}
+
+/* GuiSaveLoadMenu */
+
+GuiSaveLoadMenu::GuiSaveLoadMenu(CometEngine *vm) : _vm(vm) {
+}
+
+GuiSaveLoadMenu::~GuiSaveLoadMenu() {
+}
+
+int GuiSaveLoadMenu::run(bool asSaveMenu) {
+
+	static const GuiRectangle saveLoadMenuRects[] = {
+		{93,  62, 232,  73, 0},
+		{93,  74, 232,  85, 1},
+		{93,  86, 232,  97, 2},
+		{93,  98, 232, 109, 3},
+		{93, 110, 232, 121, 4},
+		{93, 122, 232, 133, 5},
+		{93, 134, 232, 145, 6},
+		{93, 146, 232, 157, 7},
+		{93, 158, 232, 169, 8},
+		{93, 170, 232, 181, 9}};
+
+	int saveLoadMenuStatus = 0, selectedItem = 0;
+	
+	//_menuStatus++;
+	
+	loadSavegamesList();
+	
+	_vm->waitForKeys();
+
+	while (saveLoadMenuStatus == 0) {
+		int mouseSelectedItem;
+
+		mouseSelectedItem = _vm->findRect(saveLoadMenuRects, _vm->_mouseX, _vm->_mouseY, 10, -1);
+		if (mouseSelectedItem != -1)
+			selectedItem = mouseSelectedItem;
+
+		drawSaveLoadMenu(selectedItem, asSaveMenu);		
+
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
+		
+		_vm->handleEvents();
+
+		if (mouseSelectedItem != -1 && _vm->_leftButton) {
+			saveLoadMenuStatus = 1;
+		} else if (_vm->_rightButton) {
+			saveLoadMenuStatus = 2;
+		}
+		
+		switch (_vm->_keyScancode) {
+		case Common::KEYCODE_RETURN:
+			saveLoadMenuStatus = 1;
+			break;
+		case Common::KEYCODE_ESCAPE:
+			saveLoadMenuStatus = 2;
+			break;
+		case Common::KEYCODE_DOWN:
+			if (selectedItem < 9)
+				selectedItem++;
+			else
+				selectedItem = 0;				
+			break;
+		case Common::KEYCODE_UP:
+			if (selectedItem > 0)
+				selectedItem--;
+			else
+				selectedItem = 9;				
+			break;
+		default:
+			if (asSaveMenu && _vm->_keyScancode >= Common::KEYCODE_SPACE && _vm->_keyScancode <= Common::KEYCODE_z) {
+				if (handleEditSavegameDescription(selectedItem) == 1)
+					saveLoadMenuStatus = 1;
+			}
+			break;
+		}
+
+		// When loading only allow to select entries which are actually occupied...
+		if (saveLoadMenuStatus == 1 && !asSaveMenu && _savegames[selectedItem].description.size() == 0) {
+			saveLoadMenuStatus = 0;
+		}
+
+		_vm->waitForKeys();
+		
+	}
+
+	if (saveLoadMenuStatus == 1) {
+		if (asSaveMenu) {
+			debug("Save: %d", selectedItem);
+			if (_savegames[selectedItem].filename.size() == 0)
+				_savegames[selectedItem].filename = Common::String::printf("%s.%03d", _vm->getTargetName().c_str(), selectedItem);
+			_vm->savegame(_savegames[selectedItem].filename.c_str(), _savegames[selectedItem].description.c_str());
+		} else {
+			debug("Load: %d", selectedItem);
+			_vm->loadgame(_savegames[selectedItem].filename.c_str());
+		}
+	}
+
+	return 2 - saveLoadMenuStatus;
+
+}
+
+void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem, bool loadOrSave) {
+
+	const int x = 95;
+	const int y = 64;
+	const int itemHeight = 12;
+
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, loadOrSave ? 14 : 15, 0, 0);
+
+	for (int itemIndex = 0; itemIndex < 10; itemIndex++) {
+		drawSavegameDescription(_savegames[itemIndex].description, itemIndex);
+	}
+
+	_vm->_screen->frameRect(x - 2, y + selectedItem * itemHeight - 2, x + 138, y + selectedItem * itemHeight + 9, 119);
+
+}
+	
+void GuiSaveLoadMenu::loadSavegamesList() {
+
+	for (int i = 0; i < 10; i++) {
+		_savegames[i].description = "";
+		_savegames[i].filename = "";
+	}
+	
+	Common::SaveFileManager *saveFileMan = g_system->getSavefileManager();
+	Comet::CometEngine::SaveHeader header;
+	Common::String pattern = _vm->getTargetName();
+	pattern += ".???";
+
+	debug("pattern = %s", pattern.c_str());
+
+	Common::StringArray filenames;
+	filenames = saveFileMan->listSavefiles(pattern.c_str());
+	Common::sort(filenames.begin(), filenames.end());	// Sort (hopefully ensuring we are sorted numerically..)
+
+	int savegameCount = 0;
+	for (Common::StringArray::const_iterator file = filenames.begin(); file != filenames.end() && savegameCount < 10; file++) {
+		Common::InSaveFile *in = saveFileMan->openForLoading(file->c_str());
+		if (in) {
+			if (_vm->readSaveHeader(in, false, header) == Comet::CometEngine::kRSHENoError) {
+				_savegames[savegameCount].description = header.description;
+				_savegames[savegameCount].filename = *file;
+				savegameCount++;
+			}
+			delete in;
+		}
+	}
+
+}
+
+int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
+
+	const int x = 95;
+	const int y = 64;
+	const int itemHeight = 12;
+
+	int editSavegameDescriptionStatus = 0;
+	Common::String description = _savegames[savegameIndex].description;
+	bool redrawSavegameDescription = true;
+
+	while (editSavegameDescriptionStatus == 0) {
+		Common::Event event;
+
+		if (redrawSavegameDescription) {
+			_vm->_screen->fillRect(94, 63 + savegameIndex * 12, 231, 71 + savegameIndex * 12, 19);
+			drawSavegameDescription(description, savegameIndex);
+			redrawSavegameDescription = false;
+		}
+	
+		_vm->_screen->update();
+		_vm->_system->delayMillis(40); // TODO
+	
+		if (_vm->_leftButton)
+			editSavegameDescriptionStatus = 1;
+		else if (_vm->_rightButton)
+			editSavegameDescriptionStatus = 2;
+
+		// Local event polling since handleEvents seems to drop characters for some reason...	
+		while (g_system->getEventManager()->pollEvent(event)) {
+			switch (event.type) {
+			case Common::EVENT_KEYDOWN:
+				switch (event.kbd.keycode) {
+				case Common::KEYCODE_ESCAPE:
+					editSavegameDescriptionStatus = 2;
+					break;
+				case Common::KEYCODE_RETURN:
+					editSavegameDescriptionStatus = 1;
+					break;
+				case Common::KEYCODE_BACKSPACE:
+					description.deleteLastChar();
+					redrawSavegameDescription = true;
+					break;
+				default:
+					if (event.kbd.keycode >= Common::KEYCODE_SPACE && event.kbd.keycode <= Common::KEYCODE_z &&
+						description.size() < 29 && _vm->_screen->getTextWidth((byte*)description.c_str()) < 130) {
+						description += event.kbd.ascii;
+						redrawSavegameDescription = true;
+					}
+					break;
+				}
+			case Common::EVENT_MOUSEMOVE:
+				_vm->_mouseX = event.mouse.x;
+				_vm->_mouseY = event.mouse.y;
+				break;
+			case Common::EVENT_LBUTTONDOWN:
+				_vm->_leftButton = true;
+				break;
+			case Common::EVENT_LBUTTONUP:
+				_vm->_leftButton = false;
+				break;
+			case Common::EVENT_RBUTTONDOWN:
+				_vm->_rightButton = true;
+				break;
+			case Common::EVENT_RBUTTONUP:
+				_vm->_rightButton = false;
+				break;
+			case Common::EVENT_QUIT:
+				// TODO
+				break;
+			default:
+				break;
+			}
+		}
+	
+	}
+
+	if (editSavegameDescriptionStatus == 1) {
+		_savegames[savegameIndex].description = description;
+	}
+
+	return editSavegameDescriptionStatus;
+
+}
+
+void GuiSaveLoadMenu::drawSavegameDescription(Common::String &description, int savegameIndex) {
+	const int x = 95;
+	const int y = 64;
+	const int itemHeight = 12;
+	int textX = (135 - _vm->_screen->getTextWidth((byte*)description.c_str())) / 2;
+	_vm->_screen->setFontColor(120);
+	_vm->_screen->drawText(x + textX + 1, y + savegameIndex * itemHeight + 1, (byte*)description.c_str());
+	_vm->_screen->setFontColor(119);
+	_vm->_screen->drawText(x + textX, y + savegameIndex * itemHeight, (byte*)description.c_str());
 }
 
 } // End of namespace Comet

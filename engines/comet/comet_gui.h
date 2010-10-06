@@ -94,6 +94,25 @@ protected:
 	bool testIsSolved();
 };
 
+struct SavegameItem {
+	Common::String description;
+	Common::String filename;
+};
+
+class GuiSaveLoadMenu {
+public:
+	GuiSaveLoadMenu(CometEngine *vm);
+	~GuiSaveLoadMenu();
+	int run(bool asSaveMenu);
+protected:
+	CometEngine *_vm;
+	SavegameItem _savegames[10];
+	void drawSaveLoadMenu(int selectedItem, bool loadOrSave);
+	void loadSavegamesList();
+	int handleEditSavegameDescription(int savegameIndex);
+	void drawSavegameDescription(Common::String &description, int savegameIndex);
+};
+
 class Gui {
 public:
 	Gui(CometEngine *vm);
@@ -105,6 +124,8 @@ public:
 	int runMainMenu();
 	int runOptionsMenu();
 	int runPuzzle();
+	int runSaveMenu();
+	int runLoadMenu();
 protected:
 	CometEngine *_vm;
 	GuiInventory *_guiInventory;
@@ -114,6 +135,7 @@ protected:
 	GuiMainMenu *_guiMainMenu;
 	GuiOptionsMenu *_guiOptionsMenu;
 	GuiPuzzle *_guiPuzzle;
+	GuiSaveLoadMenu *_guiSaveLoadMenu;
 };
 
 }
