@@ -899,8 +899,8 @@ void CometEngine::handleEvents() {
 
 		while (g_system->getEventManager()->pollEvent(event)) {
 
-		switch (event.type) {
-
+			switch (event.type) {
+	
 			case Common::EVENT_KEYDOWN:
 				waitForKeyRelease = false;
 				switch (event.kbd.keycode) {
@@ -921,8 +921,9 @@ void CometEngine::handleEvents() {
 					break;
 				}
 				_keyScancode = event.kbd.keycode;
+				_keyAscii = event.kbd.ascii;
 				break;
-
+	
 			case Common::EVENT_KEYUP:
 				waitForKeyRelease = false;
 				switch (event.kbd.keycode) {
@@ -943,35 +944,35 @@ void CometEngine::handleEvents() {
 				}
 				_keyScancode = event.kbd.keycode;
 				break;
-
+	
 			case Common::EVENT_MOUSEMOVE:
 				_mouseX = event.mouse.x;
 				_mouseY = event.mouse.y;
 				break;
-
+	
 			case Common::EVENT_LBUTTONDOWN:
 				_leftButton = true;
 				break;
-
+	
 			case Common::EVENT_LBUTTONUP:
 				_leftButton = false;
 				break;
-
+	
 			case Common::EVENT_RBUTTONDOWN:
 				_rightButton = true;
 				break;
-
+	
 			case Common::EVENT_RBUTTONUP:
 				_rightButton = false;
 				break;
-
+	
 			case Common::EVENT_QUIT:
 				_endLoopFlag = true;
 				return;
-
+	
 			default:
 				break;
-
+	
 			}
 
 		}
@@ -1120,8 +1121,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
-		//_gui->runMainMenu();
-		_gui->runOptionsMenu();
+		_gui->runMainMenu();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_m:
