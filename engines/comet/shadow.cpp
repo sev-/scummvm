@@ -966,8 +966,9 @@ void CometEngine::handleEvents() {
 				_rightButton = false;
 				break;
 	
+			case Common::EVENT_RTL:
 			case Common::EVENT_QUIT:
-				_endLoopFlag = true;
+				_quitGame = true;
 				return;
 	
 			default:
@@ -977,19 +978,19 @@ void CometEngine::handleEvents() {
 
 		}
 
-	} while (waitForKeyRelease);
+	} while (waitForKeyRelease && !_quitGame);
 	
 }
 
 void CometEngine::waitForKeys() {
-	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) {
+	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton && !_quitGame) {
 		handleEvents();
 	}
 }
 
 void CometEngine::waitForKeyPress() {
 	waitForKeys();
-	while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton) {
+	while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton && !_quitGame) {
 		handleEvents();
 	}
 }
@@ -1133,7 +1134,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
-		checkPauseGame();
+		checkPauseGame();//TODO
 		waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
@@ -1440,7 +1441,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		// TODO: Load the sample
 	}
 	
-	for (int loopIndex = 0; loopIndex < loopCount; loopIndex++) {
+	for (int loopIndex = 0; loopIndex < loopCount && !_quitGame; loopIndex++) {
 	
 		byte *workSoundFramesData = soundFramesData;
 		int workSoundFramesCount = soundFramesCount;
@@ -1456,6 +1457,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		while (animFrameIndex < animFrameCount) {
 		
 			handleEvents();
+			if (_quitGame)
+				break;
 		
 			_screen->copyFromScreen(_tempScreen);
 
@@ -1593,7 +1596,7 @@ void CometEngine::introMainLoop() {
 
 	_endIntroLoop = false;
 
-	while (!_endIntroLoop /*TODO:Check for quit*/) {
+	while (!_endIntroLoop && !_quitGame) {
 		handleEvents();
 		
 		switch (_keyScancode) {
@@ -1622,8 +1625,8 @@ void CometEngine::introMainLoop() {
 
 void CometEngine::gameMainLoop() {
 
-	_endLoopFlag = false;
-	while (!_endLoopFlag) {
+	_quitGame = false;
+	while (!_quitGame) {
 		handleEvents();
 
 #if 0
@@ -1660,6 +1663,9 @@ void CometEngine::gameMainLoop() {
 		} else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
 			skipText();
 		}
+
+		if (_quitGame)
+			return;
 
 		// Debugging keys
 		switch (_keyScancode) {
@@ -1742,11 +1748,13 @@ void CometEngine::checkPauseGame() {
 		do {
 			handleEvents();
 			_system->delayMillis(40); // TODO
-		} while (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton); 
+		} while (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton && !_quitGame); 
 	}
 }
 
 int CometEngine::handleMap() {
+
+	int mapResult = 0;
 
 	stopVoice();
 
@@ -1758,19 +1766,19 @@ int CometEngine::handleMap() {
 			(_currentSceneNumber >= 30 || _currentSceneNumber <= 52) ||
 			(_currentSceneNumber >= 60 || _currentSceneNumber <= 82))) {
 		
-			_gui->runTownMap();
+			mapResult = _gui->runTownMap();
 			_inventoryItemStatus[0] = 1;
 				
 		}
 
 		if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
-			_gui->runTownMap();
+			mapResult = _gui->runTownMap();
 			_inventoryItemStatus[0] = 1;
 		}
 		
 	}
 
-	return 1;
+	return mapResult;
 }
 
 } // End of namespace Comet

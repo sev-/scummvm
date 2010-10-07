@@ -115,7 +115,7 @@ int GuiInventory::run() {
 		}
 	}
 
-	while (inventoryStatus == 0) {
+	while (inventoryStatus == 0 && !_vm->_quitGame) {
 		int inventoryAction = kIANone, mouseSelectedItem;
 			
 		_vm->handleEvents();
@@ -256,8 +256,7 @@ GuiCommandBar::~GuiCommandBar() {
 }
 
 int GuiCommandBar::run() {
-	handleCommandBar();
-	return 0;
+	return handleCommandBar();
 }
 
 void GuiCommandBar::drawCommandBar(int selectedItem, int animFrameCounter) {
@@ -281,7 +280,7 @@ void GuiCommandBar::drawCommandBar(int selectedItem, int animFrameCounter) {
 	
 }
 
-void GuiCommandBar::handleCommandBar() {
+int GuiCommandBar::handleCommandBar() {
 
 	const int kCBANone		= -1;
 	const int kCBAExit		= -2;
@@ -314,7 +313,7 @@ void GuiCommandBar::handleCommandBar() {
 	// TODO: copyScreens(vgaScreen, _workScreen);
 	// TODO: setMouseCursor(1, 0);
 
-	while (commandBarStatus == 0) {
+	while (commandBarStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
 	
 		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
@@ -444,6 +443,7 @@ void GuiCommandBar::handleCommandBar() {
 	loadSceneBackground();
 	*/
 
+	return 0;
 }
 	
 /* GuiMainMenu */
@@ -475,7 +475,7 @@ int GuiMainMenu::run() {
 	
 	_vm->waitForKeys();
 
-	while (mainMenuStatus == 0) {
+	while (mainMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, mainMenuAction = kMMANone;
 	
 		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_mouseX, _vm->_mouseY, 4, kMMANone);
@@ -568,8 +568,7 @@ int GuiMainMenu::run() {
 			mainMenuStatus = _vm->_gui->runOptionsMenu();
 			break;
 		case kMMAQuit:
-			// TODO
-			debug("main menu: quit");
+			_vm->quitGame();
 			mainMenuStatus = 0;
 			break;
 		}								
@@ -654,7 +653,7 @@ int GuiOptionsMenu::run() {
 	
 	_vm->waitForKeys();
 
-	while (optionsMenuStatus == 0) {
+	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, optionsMenuAction = kOMANone, selectedItemToDraw;
 		bool doWaitForKeys = true;
 
@@ -973,7 +972,7 @@ int GuiTownMap::run() {
 	_vm->waitForKeys();
 
 	// seg002:344D	
-	while (mapStatus == 0) {
+	while (mapStatus == 0 && !_vm->_quitGame) {
 
 		int16 currMapLocation, selectedMapLocation;
 
@@ -1092,7 +1091,7 @@ int GuiDiary::handleReadBook() {
 	// Set speech file
 	_vm->setVoiceFileIndex(7);
 
-	while (bookStatus == 0/*TODO:check for quit*/) {
+	while (bookStatus == 0) {
 
 		if (currPageNumber != pageNumber) {
 			drawBookPage(pageNumber, pageCount, 64);
@@ -1112,7 +1111,7 @@ int GuiDiary::handleReadBook() {
 			// TODO: Check mouse rectangles
 			_vm->handleEvents();
 			_vm->_system->delayMillis(20); // TODO: Adjust or use fps counter
-		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0/*TODO:check for quit*/);
+		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0 && !_vm->_quitGame);
 		
 		// TODO: Handle mouse rectangles
 		
@@ -1305,7 +1304,7 @@ int GuiPuzzle::runPuzzle() {
 	_puzzleCursorX = 0;
 	_puzzleCursorY = 0;
 
-	while (puzzleStatus == 0) {
+	while (puzzleStatus == 0 && !_vm->_quitGame) {
 
 		int selectedTile;
 
@@ -1565,7 +1564,7 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 	
 	_vm->waitForKeys();
 
-	while (saveLoadMenuStatus == 0) {
+	while (saveLoadMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem;
 
 		mouseSelectedItem = _vm->findRect(saveLoadMenuRects, _vm->_mouseX, _vm->_mouseY, 10, -1);
@@ -1696,7 +1695,7 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 	Common::String description = _savegames[savegameIndex].description;
 	bool redrawSavegameDescription = true;
 
-	while (editSavegameDescriptionStatus == 0) {
+	while (editSavegameDescriptionStatus == 0 && !_vm->_quitGame) {
 		Common::Event event;
 
 		if (redrawSavegameDescription) {
@@ -1752,9 +1751,10 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 			case Common::EVENT_RBUTTONUP:
 				_vm->_rightButton = false;
 				break;
+			case Common::EVENT_RTL:
 			case Common::EVENT_QUIT:
-				// TODO
-				break;
+				 _vm->_quitGame = true;
+				 break;
 			default:
 				break;
 			}
