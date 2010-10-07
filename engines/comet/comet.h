@@ -138,7 +138,7 @@ typedef Common::Array<Common::Point> PointArray;
 
 class CometEngine : public Engine {
 	// FIXME: I don't need no friends
-	friend class Script;
+//	friend class Script;
 	friend class AnimationResource;
 protected:
 	Common::Error run();
@@ -149,6 +149,8 @@ protected:
 public:
 	CometEngine(OSystem *syst, const CometGameDescription *gameDesc);
 	virtual ~CometEngine();
+
+	virtual bool hasFeature(EngineFeature f) const;
 
 	int getGameType() const;
 	uint32 getGameID() const;

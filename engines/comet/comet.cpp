@@ -106,6 +106,7 @@ Common::Error CometEngine::run() {
 
 	_clearScreenRequest = false;
 
+	_paletteRedness = 0;
 	_paletteStatus = 0;
 	_animationType = 0;
 	_textActive = false;
@@ -150,6 +151,8 @@ Common::Error CometEngine::run() {
 	_beamColor = 112;
 	_beamColorIncr = 1;
 	*/
+
+	_isSaveAllowed = true;
 	
 	_debugRectangles = false;
 
@@ -347,20 +350,28 @@ Common::Error CometEngine::run() {
 
 	setMouseCursor(0, _mouseCursors[0]);
 
+	if (ConfMan.hasKey("save_slot")) {
+		int saveSlot = ConfMan.getInt("save_slot");
+		if (saveSlot >= 0 && saveSlot <= 99) {
+			loadGameState(saveSlot);
+		}
+	} else {
 #if 0
-	// Play the intro
-	introMainLoop();
+		// Play the intro
+		introMainLoop();
 #else	
-	_moduleNumber = 9;
-	_sceneNumber = 9;
+		_moduleNumber = 9;
+		_sceneNumber = 9;
 #endif	
 
-	waitForKeys();
+		waitForKeys();
 
-	if (_currentModuleNumber == 5)
-		_sceneNumber = 2;
-	else if (_currentModuleNumber == 9)
-		_sceneNumber = 9;				
+		if (_currentModuleNumber == 5)
+			_sceneNumber = 2;
+		else if (_currentModuleNumber == 9)
+			_sceneNumber = 9;
+			
+	}				
 
 	_screen->clear();
 	_screen->update();

@@ -51,7 +51,7 @@ namespace Comet {
 	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
 */
 
-#define SAVEGAME_VERSION 1 // < 1000 is dev version until in official SVN
+#define SAVEGAME_VERSION 2 // < 1000 is dev version until in official SVN
 
 CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header) {
 
@@ -64,7 +64,7 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 	while (descriptionLen--)
 		header.description += (char)in->readByte();
 
-	if (loadThumbnail) {
+	if (loadThumbnail && header.version > 1/*REMOVEME*/) {
 		header.thumbnail = new Graphics::Surface();
 		assert(header.thumbnail);
 		if (!Graphics::loadThumbnail(*in, *header.thumbnail)) {
@@ -73,6 +73,7 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 		}
 	} else {
 		Graphics::skipThumbnail(*in);
+		header.thumbnail = 0;
 	}
 
 	// Not used yet, reserved for future usage
@@ -98,7 +99,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeByte(descriptionLen);
 	out->write(description, descriptionLen);
 	
-//	Graphics::saveThumbnail(*out);
+	Graphics::saveThumbnail(*out);
 
 	// Not used yet, reserved for future usage
 	out->writeByte(0); // gameID
@@ -395,15 +396,14 @@ void CometEngine::loadgame(const char *filename) {
 	loadAndRunScript(true);
 	initSceneBackground(true);
 	_animationMan->restoreAnimationSlots();
+	
 	if (_paletteRedness != 0)
 		_screen->buildRedPalette(_gamePalette, _screenPalette, _paletteRedness);
 	else		
 		_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
 	_screen->setFullPalette(_screenPalette);
 
-	setVoiceFileIndex(_narFileIndex); // NEW in reimplementation
-
-	// TODO: palStuff2
+	setVoiceFileIndex(_narFileIndex);
 
 }
 
