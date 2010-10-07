@@ -254,7 +254,7 @@ public:
 	bool _moreText, _textActive;
 	byte _talkTextColor;
 	
-	bool _endLoopFlag;
+	bool _quitGame;
 	
 	int16 _scriptRandomValue;
 	

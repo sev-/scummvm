@@ -38,7 +38,7 @@ protected:
 	CometEngine *_vm;
 	int _commandBarSelectedItem;
 	void drawCommandBar(int selectedItem, int animFrameCounter);
-	void handleCommandBar();
+	int handleCommandBar();
 };
 
 class GuiTownMap {
