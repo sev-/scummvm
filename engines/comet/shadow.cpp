@@ -983,7 +983,7 @@ void CometEngine::handleEvents() {
 }
 
 void CometEngine::waitForKeys() {
-	while (_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton && !_quitGame) {
+	while ((_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) && !_quitGame) {
 		handleEvents();
 	}
 }
