@@ -103,6 +103,7 @@ void Dialog::update() {
 	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _selectedItemIndex != -1) {
 		//DEBUG: if (_talkieMode == 1)
 		{
+			_vm->waitForKeys();
 			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
 				_vm->updateTalkAnims();
