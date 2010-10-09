@@ -890,96 +890,83 @@ void CometEngine::handleEvents() {
 
 	Common::Event event;
 	
-	_keyScancode = Common::KEYCODE_INVALID;
+	while (g_system->getEventManager()->pollEvent(event)) {
 
-	// FIXME: There must be a better way
-	bool waitForKeyRelease = false;
+		switch (event.type) {
 
-	do {
-
-		while (g_system->getEventManager()->pollEvent(event)) {
-
-			switch (event.type) {
-	
-			case Common::EVENT_KEYDOWN:
-				waitForKeyRelease = false;
-				switch (event.kbd.keycode) {
-				case Common::KEYCODE_UP:
-					_keyDirection = 1;
-					break;
-				case Common::KEYCODE_DOWN:
-					_keyDirection = 2;
-					break;
-				case Common::KEYCODE_LEFT:
-					_keyDirection = 4;
-					break;
-				case Common::KEYCODE_RIGHT:
-					_keyDirection = 8;
-					break;
-				default:
-					waitForKeyRelease = true;
-					break;
-				}
-				_keyScancode = event.kbd.keycode;
-				_keyAscii = event.kbd.ascii;
+		case Common::EVENT_KEYDOWN:
+			switch (event.kbd.keycode) {
+			case Common::KEYCODE_UP:
+				_keyDirection = 1;
 				break;
-	
-			case Common::EVENT_KEYUP:
-				waitForKeyRelease = false;
-				switch (event.kbd.keycode) {
-				case Common::KEYCODE_UP:
-					_keyDirection &= ~1;
-					break;
-				case Common::KEYCODE_DOWN:
-					_keyDirection &= ~2;
-					break;
-				case Common::KEYCODE_LEFT:
-					_keyDirection &= ~4;
-					break;
-				case Common::KEYCODE_RIGHT:
-					_keyDirection &= ~8;
-					break;
-				default:
-					break;
-				}
-				_keyScancode = event.kbd.keycode;
+			case Common::KEYCODE_DOWN:
+				_keyDirection = 2;
 				break;
-	
-			case Common::EVENT_MOUSEMOVE:
-				_mouseX = event.mouse.x;
-				_mouseY = event.mouse.y;
+			case Common::KEYCODE_LEFT:
+				_keyDirection = 4;
 				break;
-	
-			case Common::EVENT_LBUTTONDOWN:
-				_leftButton = true;
+			case Common::KEYCODE_RIGHT:
+				_keyDirection = 8;
 				break;
-	
-			case Common::EVENT_LBUTTONUP:
-				_leftButton = false;
-				break;
-	
-			case Common::EVENT_RBUTTONDOWN:
-				_rightButton = true;
-				break;
-	
-			case Common::EVENT_RBUTTONUP:
-				_rightButton = false;
-				break;
-	
-			case Common::EVENT_RTL:
-			case Common::EVENT_QUIT:
-				_quitGame = true;
-				return;
-	
 			default:
 				break;
-	
 			}
+			_keyScancode = event.kbd.keycode;
+			_keyAscii = event.kbd.ascii;
+			break;
 
+		case Common::EVENT_KEYUP:
+			switch (event.kbd.keycode) {
+			case Common::KEYCODE_UP:
+				_keyDirection &= ~1;
+				break;
+			case Common::KEYCODE_DOWN:
+				_keyDirection &= ~2;
+				break;
+			case Common::KEYCODE_LEFT:
+				_keyDirection &= ~4;
+				break;
+			case Common::KEYCODE_RIGHT:
+				_keyDirection &= ~8;
+				break;
+			default:
+				break;
+			}
+			_keyScancode = Common::KEYCODE_INVALID;
+			break;
+
+		case Common::EVENT_MOUSEMOVE:
+			_mouseX = event.mouse.x;
+			_mouseY = event.mouse.y;
+			break;
+
+		case Common::EVENT_LBUTTONDOWN:
+			_leftButton = true;
+			break;
+
+		case Common::EVENT_LBUTTONUP:
+			_leftButton = false;
+			break;
+
+		case Common::EVENT_RBUTTONDOWN:
+			_rightButton = true;
+			break;
+
+		case Common::EVENT_RBUTTONUP:
+			_rightButton = false;
+			break;
+
+		case Common::EVENT_RTL:
+		case Common::EVENT_QUIT:
+			_quitGame = true;
+			return;
+
+		default:
+			break;
 		}
 
-	} while (waitForKeyRelease && !_quitGame);
-	
+	}
+
 }
 
 void CometEngine::waitForKeys() {
@@ -1054,6 +1041,8 @@ void CometEngine::handleInput() {
 		setMouseCursor(0, _mouseCursors[6]);
 	} else if (_blockedInput == 0x0F) {
 		setMouseCursor(0, _mouseCursors[5]);
+	} else {
+		setMouseCursor(1, NULL);
 	}
 	
 	if ((_blockedInput & _cursorDirection) || _dialog->isRunning()) {
@@ -1094,7 +1083,7 @@ void CometEngine::handleInput() {
 void CometEngine::skipText() {
 	_textDuration = 1;
 	_textActive = false;
-	//waitForKeys();
+	waitForKeys();
 	stopVoice();
 }
 
@@ -1114,6 +1103,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_o:
+		setMouseCursor(1, NULL);
 		_gui->runInventory();
 		waitForKeys();
 		break;
@@ -1122,6 +1112,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
+		setMouseCursor(1, NULL);
 		_gui->runMainMenu();
 		waitForKeys();
 		break;
@@ -1130,6 +1121,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_i:
+		setMouseCursor(1, NULL);
 		_gui->runDiary();
 		waitForKeys();
 		break;
@@ -1139,10 +1131,10 @@ void CometEngine::handleKeyInput() {
 		break;
 	case Common::KEYCODE_RETURN:
 		skipText();
-		waitForKeys();
 		break;
 	default:
 		if (Common::KEYCODE_TAB == _keyScancode || _rightButton) {
+			setMouseCursor(1, NULL);
 			_gui->runCommandBar();
 		}
 		break;			
@@ -1660,7 +1652,8 @@ void CometEngine::gameMainLoop() {
 
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
 			handleKeyInput();
-		} else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
+		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
+		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
 			skipText();
 		}
 
@@ -1760,6 +1753,8 @@ int CometEngine::handleMap() {
 
 	if (!_textActive && _blockedInput == 0 && !_dialog->isRunning() && !_talkieSpeechPlaying &&
 		_scriptVars[7] != 1 && _scriptVars[8] != 1 && _scriptVars[8] != 2) {
+
+		setMouseCursor(1, NULL);
 	
 		if (_currentModuleNumber == 0 && 
 			((_currentSceneNumber >= 0 && _currentSceneNumber <= 22) ||
