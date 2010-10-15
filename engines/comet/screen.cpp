@@ -1563,6 +1563,9 @@ void Screen::buildInterpolatedAnimationElement(AnimationElement *elem1, Animatio
 		if (cmdIndex < elem2->commands.size())
 			cmd2 = elem2->commands[cmdIndex];
 
+		if (!cmd1 || !cmd2)
+			continue;
+
 		minPointsCount = MIN(cmd1->points.size(), cmd2->points.size());
 		maxPointsCount = MAX(cmd1->points.size(), cmd2->points.size());
 
