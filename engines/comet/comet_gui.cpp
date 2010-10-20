@@ -1686,11 +1686,11 @@ void GuiSaveLoadMenu::loadSavegamesList() {
 }
 
 int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
-
+/*
 	const int x = 95;
 	const int y = 64;
 	const int itemHeight = 12;
-
+*/
 	int editSavegameDescriptionStatus = 0;
 	Common::String description = _savegames[savegameIndex].description;
 	bool redrawSavegameDescription = true;
