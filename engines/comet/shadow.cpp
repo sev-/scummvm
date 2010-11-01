@@ -1363,7 +1363,7 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 
 void CometEngine::setVoiceFileIndex(int narFileIndex) {
 	_currNarFileIndex = narFileIndex;
-	_narFilename = Common::String::printf("D%02d.NAR", narFileIndex);
+	_narFilename = Common::String::format("D%02d.NAR", narFileIndex);
 }
 
 void CometEngine::playVoice(int voiceIndex) {

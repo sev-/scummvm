@@ -1624,7 +1624,7 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 		if (asSaveMenu) {
 			debug("Save: %d", selectedItem);
 			if (_savegames[selectedItem].filename.size() == 0)
-				_savegames[selectedItem].filename = Common::String::printf("%s.%03d", _vm->getTargetName().c_str(), selectedItem);
+				_savegames[selectedItem].filename = Common::String::format("%s.%03d", _vm->getTargetName().c_str(), selectedItem);
 			_vm->savegame(_savegames[selectedItem].filename.c_str(), _savegames[selectedItem].description.c_str());
 		} else {
 			debug("Load: %d", selectedItem);
