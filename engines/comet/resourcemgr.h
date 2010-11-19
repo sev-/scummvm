@@ -27,7 +27,7 @@
 #define COMET_RESOURCEMANAGER_H
 
 #include "common/array.h"
-#include "common/file.h"
+#include "common/memstream.h"
 #include "common/util.h"
 #include "common/debug.h"
 
