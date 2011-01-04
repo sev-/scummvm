@@ -33,7 +33,8 @@
 #include "common/fs.h"
  
 #include "engines/util.h"
- 
+
+#include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
 
@@ -74,23 +75,27 @@ Common::Error DuneEngine::run() {
 	initGraphics(320, 200, false);
  
 	// Create debugger console. It requires GFX to be initialized
-	_console = new Console(this);
+	_console = new DuneConsole(this);
  
 	// Additional setup.
 	//debug("DuneEngine::init\n");
  
-	// Testing HSQ file decompression
-	Resource *test = new Resource("PHRASE11.HSQ");
-	test->dump("PHRASE11.RAW");
-	delete test;
+	Common::Event event;
+	Common::EventManager *eventMan = _system->getEventManager();
 
 	// Your main even loop should be (invoked from) here.
 	//debug("DuneEngine::go: Hello, World!\n");
  	while (!shouldQuit()) {
-		_console->onFrame();
+		// Open the debugger window, if requested
+		while (eventMan->pollEvent(event)) {
+			if (event.kbd.hasFlags(Common::KBD_CTRL) && event.kbd.keycode == Common::KEYCODE_d) {
+				_console->attach();
+				_console->onFrame();
+			}
+		}
 
 		// TODO: Do something...
-
+		
 		_system->delayMillis(10);
 	}
 

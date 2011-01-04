@@ -19,48 +19,31 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * $URL: 
- * $Id: dune.h
+ * $Id: console.h
  *
  */
 
-#ifndef DUNE_H
-#define DUNE_H
- 
-#include "common/random.h"
-#include "engines/engine.h"
-#include "gui/debugger.h"
- 
-namespace Dune {
- 
-class Console;
- 
-// our engine debug levels
-enum {
-	kQuuxDebugExample = 1 << 0,
-	kQuuxDebugExample2 = 1 << 1
-	// next new level must be 1 << 2 (4)
-	// the current limitation is 32 debug levels (1 << 31 is the last one)
-};
- 
-struct DuneGameDescription;
+#ifndef CONSOLE_H
+#define CONSOLE_H
 
-class DuneEngine : public Engine {
+#include "gui/debugger.h"
+
+namespace Dune {
+
+class DuneEngine;
+
+class DuneConsole : public GUI::Debugger {
 public:
-	DuneEngine(OSystem *syst, const DuneGameDescription *gameDesc);
-	~DuneEngine();
- 
-	virtual Common::Error run();
- 	virtual bool hasFeature(EngineFeature f) const;
+	DuneConsole(DuneEngine *vm);
+	virtual ~DuneConsole(void);
 
 private:
-	DuneConsole *_console;
- 
-	// We need random numbers
-	Common::RandomSource _rnd;
-	const DuneGameDescription *_gameDescription;
+	// General
+	bool cmdDump(int argc, const char **argv);
+
+	DuneEngine *_engine;
 };
  
-
 } // End of namespace Dune
  
 #endif
