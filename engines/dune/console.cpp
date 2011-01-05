@@ -25,8 +25,8 @@
 
 // Console module
 
+#include "dune/animation.h"
 #include "dune/console.h"
-#include "dune/dune.h"
 #include "dune/resource.h"
 #include "dune/sentences.h"
 
@@ -37,6 +37,8 @@ DuneConsole::DuneConsole(DuneEngine *engine) : GUI::Debugger(),
 
 	DCmd_Register("dump",				WRAP_METHOD(DuneConsole, cmdDump));
 	DCmd_Register("sentences",			WRAP_METHOD(DuneConsole, cmdSentences));
+	DCmd_Register("animinfo",			WRAP_METHOD(DuneConsole, cmdAnimInfo));
+	DCmd_Register("animshow",			WRAP_METHOD(DuneConsole, cmdAnimShow));
 }
 
 DuneConsole::~DuneConsole() {
@@ -81,12 +83,86 @@ bool DuneConsole::cmdSentences(int argc, const char **argv) {
 	if (argc == 2) {
 		DebugPrintf("File contains %d sentences\n", s->count());
 	} else {
-		DebugPrintf("%s\n", s->getSentence(atoi(argv[2]), true).c_str());
+		if (atoi(argv[2]) >= s->count())
+			DebugPrintf("Invalid sentence\n");
+		else
+			DebugPrintf("%s\n", s->getSentence(atoi(argv[2]), true).c_str());
 	}
 	delete s;
 	delete hsqResource;
 
 	return true;
+}
+
+bool DuneConsole::cmdAnimInfo(int argc, const char **argv) {
+	if (argc < 2) {
+		DebugPrintf("Shows information about an animation or image file\n");
+		DebugPrintf("  Usage: %s <file name>\n\n", argv[0]);
+		DebugPrintf("  Example: \"%s balcon.hsq\" - show information on file balcon.hsq\n", argv[0]);
+		return true;
+	}
+
+	Common::String fileName(argv[1]);
+	if (!fileName.contains('.'))
+		fileName += ".hsq";
+
+	Resource *hsqResource = new Resource(fileName);
+	Animation *a = new Animation(hsqResource->_stream, _engine->_system);
+
+	uint16 frameCount = a->getFrameCount();
+	DebugPrintf("Frame count: %d\n", frameCount);
+	for (int i = 0; i < frameCount; i++) {
+		FrameInfo info = a->getFrameInfo(i);
+		DebugPrintf("%d: offset %d, comp: %d, size: %dx%d, pal offset: %d\n",
+				i, info.offset, info.isCompressed, info.width, info.height, info.palOffset);
+	}
+
+	delete a;
+	delete hsqResource;
+
+	return true;
+}
+
+bool DuneConsole::cmdAnimShow(int argc, const char **argv) {
+	if (argc < 2) {
+		DebugPrintf("Shows an animation or image file on screen\n");
+		DebugPrintf("  Usage: %s <file name> <frame number>\n\n", argv[0]);
+		DebugPrintf("  Example: \"%s stars.hsq\" - plays animation stars.hsq\n", argv[0]);
+		DebugPrintf("  Example: \"%s stars.hsq 0\" - shows frame 0 of the stars.hsq animation\n", argv[0]);
+		DebugPrintf("  Example: \"%s balcon.hsq\" - shows image balcon.hsq\n", argv[0]);
+		return true;
+	}
+
+	Common::String fileName(argv[1]);
+	if (!fileName.contains('.'))
+		fileName += ".hsq";
+
+	Resource *hsqResource = new Resource(fileName);
+	Animation *a = new Animation(hsqResource->_stream, _engine->_system);
+
+	uint16 frameCount = a->getFrameCount();
+
+	if (argc == 2) {
+		// TODO
+		DebugPrintf("TODO: Animation playing. Showing frame 0 instead\n");
+		a->setPalette();
+		a->drawFrame(0);
+	} else {
+		if (atoi(argv[2]) >= frameCount) {
+			DebugPrintf("Invalid frame\n");
+			delete a;
+			delete hsqResource;
+			return true;
+		} else {
+			a->setPalette();
+			a->drawFrame(atoi(argv[2]));
+		}
+	}
+
+	delete a;
+	delete hsqResource;
+
+	return false;
 }
 
 } // End of namespace Dune

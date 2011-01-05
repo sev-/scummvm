@@ -26,6 +26,8 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include "dune/dune.h"
+
 namespace Common {
 
 class MemoryReadStream;
