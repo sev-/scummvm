@@ -19,31 +19,47 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * $URL: 
- * $Id: console.h
+ * $Id: resource.cpp
  *
  */
 
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#include "common/memstream.h"
 
-#include "gui/debugger.h"
+#include "dune/resource.h"
+#include "dune/sentences.h"
 
 namespace Dune {
 
-class DuneEngine;
+Sentences::Sentences(Common::MemoryReadStream *res) : _res(res) {
+	uint16 firstSentence = res->readUint16LE();
+	res->seek(0);
+	_sentenceCount = firstSentence / 2;
+}
 
-class DuneConsole : public GUI::Debugger {
-public:
-	DuneConsole(DuneEngine *vm);
-	virtual ~DuneConsole(void);
+Sentences::~Sentences() {
+}
 
-private:
-	bool cmdDump(int argc, const char **argv);
-	bool cmdSentences(int argc, const char **argv);
+Common::String Sentences::getSentence(uint16 index, bool printableOnly) {
+	assert(index <= _sentenceCount);
 
-	DuneEngine *_engine;
-};
- 
+	_res->seek(index * 2);
+	uint16 start = _res->readUint16LE();
+	_res->seek(start);
+
+	// Keep reading till we find a 0xFF marker
+	Common::String sentence;
+	byte cur = 0;
+	
+	while(true) {
+		cur = _res->readByte();
+		if ((cur == 0x2E || cur == 0x0D) && printableOnly)
+			continue;
+		if (cur == 0xFF)
+			break;
+		sentence += cur;
+	}
+
+	return sentence;
+}
+
 } // End of namespace Dune
- 
-#endif

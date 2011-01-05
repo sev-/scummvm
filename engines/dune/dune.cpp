@@ -37,6 +37,7 @@
 #include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
+#include "dune/sentences.h"
 
 namespace Dune {
  
@@ -82,6 +83,16 @@ Common::Error DuneEngine::run() {
  
 	Common::Event event;
 	Common::EventManager *eventMan = _system->getEventManager();
+
+	// Sentence testing
+	Resource *res = new Resource("phrase12.hsq");
+	Sentences *s = new Sentences(res->_stream);
+	Common::String firstPhrase = s->getSentence(0, true);
+	Common::String lastPhrase = s->getSentence(s->count() - 1, true);
+	debug("First phrase: '%s'", firstPhrase.c_str());
+	debug("Last phrase: '%s'", lastPhrase.c_str());
+	delete s;
+	delete res;
 
 	// Your main even loop should be (invoked from) here.
 	//debug("DuneEngine::go: Hello, World!\n");

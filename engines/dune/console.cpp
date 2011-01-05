@@ -28,6 +28,7 @@
 #include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
+#include "dune/sentences.h"
 
 namespace Dune {
 
@@ -35,6 +36,7 @@ DuneConsole::DuneConsole(DuneEngine *engine) : GUI::Debugger(),
 	_engine(engine) {
 
 	DCmd_Register("dump",				WRAP_METHOD(DuneConsole, cmdDump));
+	DCmd_Register("sentences",			WRAP_METHOD(DuneConsole, cmdSentences));
 }
 
 DuneConsole::~DuneConsole() {
@@ -60,6 +62,34 @@ bool DuneConsole::cmdDump(int argc, const char **argv) {
 	delete hsqResource;
 
 	DebugPrintf("%s has been dumped to %s\n", (fileName + ".hsq").c_str(), (fileName + ".raw").c_str());
+	return true;
+}
+
+bool DuneConsole::cmdSentences(int argc, const char **argv) {
+	if (argc < 2) {
+		DebugPrintf("Shows information about a sentence file, or prints a specific sentence from a file\n");
+		DebugPrintf("  Usage: %s <file name> <sentence number>\n\n", argv[0]);
+		DebugPrintf("  Example: \"%s phrase12\" - show information on file phrase12.hsq\n", argv[0]);
+		DebugPrintf("  Example: \"%s phrase12 0\" - print sentence with index 0 from file phrase12.hsq\n\n", argv[0]);
+		return true;
+	}
+
+	Common::String fileName(argv[1]);
+	if (fileName.contains('.')) {
+		DebugPrintf("Please supply the file name without the extension\n");
+		return true;
+	}
+
+	Resource *hsqResource = new Resource(fileName + ".hsq");
+	Sentences *s = new Sentences(hsqResource->_stream);
+	if (argc == 2) {
+		DebugPrintf("File contains %d sentences\n", s->count());
+	} else {
+		DebugPrintf("%s\n", s->getSentence(atoi(argv[2]), true).c_str());
+	}
+	delete s;
+	delete hsqResource;
+
 	return true;
 }
 

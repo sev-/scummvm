@@ -19,31 +19,34 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  * $URL: 
- * $Id: console.h
+ * $Id: sentences.h
  *
  */
 
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef SENTENCES_H
+#define SENTENCES_H
 
-#include "gui/debugger.h"
+namespace Common {
+
+class MemoryReadStream;
+
+}
 
 namespace Dune {
 
-class DuneEngine;
-
-class DuneConsole : public GUI::Debugger {
+class Sentences {
 public:
-	DuneConsole(DuneEngine *vm);
-	virtual ~DuneConsole(void);
+	Sentences(Common::MemoryReadStream *res);
+	~Sentences();
+
+	uint16 count() const { return _sentenceCount; }
+	Common::String getSentence(uint16 index, bool printableOnly = false);
 
 private:
-	bool cmdDump(int argc, const char **argv);
-	bool cmdSentences(int argc, const char **argv);
-
-	DuneEngine *_engine;
+	Common::MemoryReadStream *_res;
+	uint16 _sentenceCount;
 };
- 
+
 } // End of namespace Dune
  
 #endif

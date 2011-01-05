@@ -35,6 +35,7 @@ class Resource {
 public:
 	Resource(Common::String filename);
 	~Resource();
+
 	void dump(Common::String outFilename);
 
 	Common::MemoryReadStream *_stream;

@@ -3,7 +3,8 @@ MODULE := engines/dune
 MODULE_OBJS := \
 	console.o \
 	detection.o \
-	dune.o
+	dune.o \
+	sentences.o
  
 MODULE_DIRS += \
 	engines/dune
