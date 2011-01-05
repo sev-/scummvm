@@ -1,0 +1,156 @@
+/* ScummVM - Graphic Adventure Engine
+ *
+ * ScummVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ * $URL: 
+ * $Id: resource.cpp
+ *
+ */
+
+#include "common/memstream.h"
+#include "common/system.h"
+#include "graphics/surface.h"
+
+#include "dune/resource.h"
+#include "dune/animation.h"
+
+namespace Dune {
+
+Animation::Animation(Common::MemoryReadStream *res, OSystem *system) : _res(res), _system(system) {
+}
+
+Animation::~Animation() {
+}
+
+void Animation::setPalette() {
+	// The first chunk is the palette chunk
+	_res->seek(0);
+	uint16 chunkSize = _res->readUint16LE();
+	uint16 curPos = 2;
+
+	if (chunkSize > _res->size())
+		error("Animation file is corrupted");
+
+	while (curPos < chunkSize) {
+		byte palStart = _res->readByte();
+		byte palCount = _res->readByte();
+
+		if (palStart == 0xFF && palCount == 0xFF)
+			break;
+
+		byte *palChunk = new byte[palCount * 4];	// RBGA
+		for (uint i = 0; i < palCount; i++) {
+			palChunk[i * 4 + 0] = _res->readByte() << 2;	// R
+			palChunk[i * 4 + 1] = _res->readByte() << 2;	// G
+			palChunk[i * 4 + 2] = _res->readByte() << 2;	// B
+			palChunk[i * 4 + 2] = 0;	// A
+		}
+		_system->setPalette(palChunk, palStart, palCount);
+		delete[] palChunk;
+	}
+}
+
+uint16 Animation::getFrameCount() {
+	// The second chunk is the frame chunk, a list of 16-bit offsets
+	_res->seek(0);
+
+	uint16 chunkSize = _res->readUint16LE();
+	_res->seek(chunkSize);
+	chunkSize = _res->readUint16LE();
+
+	return (chunkSize - 2) / 2;
+}
+
+FrameInfo Animation::getFrameInfo(uint16 frameIndex) {
+	FrameInfo result;
+	// First, get the frame count
+	// This will place the pointer at the start of the frame table
+	uint16 frameCount = getFrameCount();
+	uint16 chunkStart = _res->pos() - 2;
+	assert (frameIndex < frameCount);
+
+	// Now, get the offset of the frame
+	_res->skip(frameIndex * 2);
+	result.offset = _res->readUint16LE();
+	_res->seek(chunkStart + result.offset);
+
+	byte b1 = _res->readByte();
+	byte b2 = _res->readByte();
+	result.isCompressed = b2 & 0x80;
+	result.width = b1 | ((b2 & 0x7f) << 8);
+	result.height = _res->readByte();
+	result.palOffset = _res->readByte();
+
+	return result;
+}
+
+void Animation::drawFrame(uint16 frameIndex) {
+	FrameInfo info = getFrameInfo(frameIndex);
+	// The pointer is now at the beginning of the frame data
+
+	uint32 totalSize = info.width * info.height;
+	if (totalSize & 1)
+		totalSize++;
+
+	// TODO: The code below is buggy
+	warning("Animation::drawFrame(): Still buggy");
+	return;
+
+
+	byte *rect = new byte[totalSize];
+	byte *dst = rect;
+	uint32 cur = 0;
+	byte count, pixel;
+
+	if (!info.isCompressed) {
+		byte *buf = new byte[totalSize / 2];
+		_res->read(buf, totalSize / 2);
+		while (cur < totalSize) {
+			pixel = buf[cur / 2];
+			// Data is stored in half bytes
+			*dst++ = pixel & 0xf;
+			*dst++ = pixel >> 4;
+			cur += 2;
+			if (cur >= totalSize)
+				break;
+		}
+		delete[] buf;
+	} else {
+		while (cur < totalSize) {
+			// Data is stored in half bytes, with a simple RLE compression
+			//count = _res->readByte();
+			count = (byte)ABS<int8>(_res->readSByte());
+			pixel = _res->readByte();
+			for (int i = 0; i < count; i++) {
+				*dst++ = pixel & 0xf;
+				*dst++ = pixel >> 4;
+				cur += 2;
+				if (cur >= totalSize)
+					break;
+			}
+		}
+	}
+	
+	_system->copyRectToScreen(rect, info.width, 0, 0, info.width, info.height);
+	_system->updateScreen();
+
+	delete[] rect;
+}
+
+} // End of namespace Dune

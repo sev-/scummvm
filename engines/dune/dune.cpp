@@ -34,6 +34,7 @@
  
 #include "engines/util.h"
 
+#include "dune/animation.h"
 #include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
@@ -93,6 +94,25 @@ Common::Error DuneEngine::run() {
 	debug("Last phrase: '%s'", lastPhrase.c_str());
 	delete s;
 	delete res;
+
+	// Animation testing
+	Resource *animRes = new Resource("stars.hsq");
+	Animation *a = new Animation(animRes->_stream, _system);
+
+	uint16 frameCount = a->getFrameCount();
+	debug("Frame count: %d", frameCount);
+	for (int i = 0; i < frameCount; i++) {
+		FrameInfo info = a->getFrameInfo(i);
+		debug("%d: offset %d, comp: %d, size: %dx%d, pal offset: %d",
+				i, info.offset, info.isCompressed, info.width, info.height, info.palOffset);
+	}
+	
+	// Draw the first frame
+	a->setPalette();
+	a->drawFrame(0);
+
+	delete a;
+	delete animRes;
 
 	// Your main even loop should be (invoked from) here.
 	//debug("DuneEngine::go: Hello, World!\n");

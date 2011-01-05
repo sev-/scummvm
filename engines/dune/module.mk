@@ -1,6 +1,7 @@
 MODULE := engines/dune
  
 MODULE_OBJS := \
+	animation.o \
 	console.o \
 	detection.o \
 	dune.o \
