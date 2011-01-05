@@ -60,12 +60,12 @@ DuneEngine::DuneEngine(OSystem *syst, const DuneGameDescription *gameDesc)
 	// Don't forget to register your random source
 	g_eventRec.registerRandomSource(_rnd, "dune");
  
-	printf("DuneEngine::DuneEngine\n");
+	//debug("DuneEngine::DuneEngine");
 }
  
 DuneEngine::~DuneEngine() {
 	// Dispose your resources here
-	debug("DuneEngine::~DuneEngine\n");
+	//debug("DuneEngine::~DuneEngine");
  
 	// Remove all of our debug levels here
 	DebugMan.clearAllDebugChannels();
