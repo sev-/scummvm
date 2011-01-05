@@ -26,6 +26,7 @@
 #ifndef RESOURCE_H
 #define RESOURCE_H
 
+#include "common/memstream.h"
 #include "dune/dune.h"
 
 namespace Dune {
@@ -36,11 +37,13 @@ public:
 	~Resource();
 	void dump(Common::String outFilename);
 
+	Common::MemoryReadStream *_stream;
+
 private:
-	// Load the whole file in memory, for now
-	// FIXME: Perhaps we don't really need to keep the file in memory...
-	byte *_data;
+	void hsqUnpack(byte *inData, byte *outData);
+
 	uint16 _size;
+	byte *_data;
 };
 
 } // End of namespace Dune

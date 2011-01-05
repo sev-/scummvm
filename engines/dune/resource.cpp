@@ -29,11 +29,14 @@
 
 namespace Dune {
 
-#define PACKED_CHECKSUM 171
+#define HSQ_PACKED_CHECKSUM 171
 
-class BitReader {
+/**
+ * A class that reads both bits and bytes from a stream, with a 16-bit buffer.
+ */
+class BitByteReader {
 public:
-	BitReader(byte *data) : _data(data), _curBit(0), _queue(0) { }
+	BitByteReader(byte *data) : _data(data), _curBit(0), _queue(0) { }
 
 	byte getBit() {
 		if (!_curBit)
@@ -67,90 +70,88 @@ Resource::Resource(Common::String filename) {
 	
 	if (f.open(filename)) {
 		uint16 origSize = f.size();
-		byte *origData = new byte[_size];
-
+		byte *origData = new byte[origSize];
 		f.read(origData, origSize);
 		f.close();
 
-		// Check if the file is packed
-		if (origSize < 6) {
-			// Can't be packed, stop here
-			_size = origSize;
-			_data = origData;
-		} else {
-			// Get a checksum of the first 6 bytes
-			byte sum = 0;	// sum must be a byte, so that the salt value can overflow it to 0xAB
-			for (int i = 0; i < 6; i++)
-				sum += origData[i];
+		_size = origSize;
+		_data = origData;
 
-			if (sum == PACKED_CHECKSUM) {
-				// File is packed, unpack it
-				// Details taken from http://wiki.multimedia.cx/index.php?title=HNM_(1)
+		if (_size < 6)
+			error("File %s is too small to be an HSQ file", filename.c_str());
 
-				// Header
-				// word unpacked_len - size of the unpacked data
-				// byte zero         - should be zero
-				// word packed_len   - size of the packed data, including this header
-				// byte salt         - adjust checksum to 171 (0xAB)
-				_size = READ_LE_UINT16(origData);
-				assert (*(origData + 2) == 0);
-				uint16 packedSize = READ_LE_UINT16(origData + 3);
-				if (packedSize != origSize)
-					error("File %s is corrupt - size is %d, it should be %d", filename.c_str(), origSize, packedSize);
+		// Get a checksum of the first 6 bytes
+		byte sum = 0;	// sum must be a byte, so that the salt value can overflow it to 0xAB
+		for (int i = 0; i < 6; i++)
+			sum += origData[i];
 
-				_data = new byte[_size];
-				memset(_data, 0, _size);
-				byte *dst = _data;
+		if (sum == HSQ_PACKED_CHECKSUM) {	// HSQ compression
+			// Details taken from http://wiki.multimedia.cx/index.php?title=HNM_(1)
 
-				byte count;
-				int16 offset;
-				BitReader br(origData + 6);
+			// Read 6 byte header
+			_size = READ_LE_UINT16(origData);
+			assert (*(origData + 2) == 0);	// must be 0
+			uint16 packedSize = READ_LE_UINT16(origData + 3);
+			if (packedSize != origSize)
+				error("File %s is corrupt - size is %d, it should be %d", filename.c_str(), origSize, packedSize);
+			// one byte salt, to adjust checksum to 171 (0xAB)
 
-				while (true) {
-					if (br.getBit()) {
-						*dst++ = br.getByte();
-					} else {
-						if (br.getBit()) {
-							byte b1 = br.getByte();
-							byte b2 = br.getByte();
+			_data = new byte[_size];
+			memset(_data, 0, _size);
 
-							count = b1 & 0x7;
-							offset = ((b1 >> 3) | (b2 << 5)) - 0x2000;
+			hsqUnpack(origData + 6, _data);
 
-							if (!count)
-								count = br.getByte();
-							
-							if (!count)
-								break;	// finish the unpacking
-						} else {
-							count = br.getBit() * 2;
-							count += br.getBit();
-							offset = br.getByte() - 256;
-						}
+			// Delete the original packed data
+			delete[] origData;
+		}	// if (sum == PACKED_CHECKSUM)
 
-						count += 2;
-
-						byte *src = dst + offset;
-						while (count--)
-							*dst++ = *src++;
-					}	// if (!b)
-				}	// while (true)
-
-				// Delete the original packed data
-				delete[] origData;
-			} else {
-				// File isn't packed
-				_size = origSize;
-				_data = origData;
-			}	// if (sum == PACKED_CHECKSUM)
-		}	// if (origSize >= 6)
+		// Create a memory read stream of the final data
+		_stream = new Common::MemoryReadStream(_data, _size);
 	} else {
-		error("File %s not found", filename.c_str());
+		error("Error reading from file %s", filename.c_str());
 	}
 }
 
 Resource::~Resource() {
-	delete[] _data;
+	delete _stream;
+	delete _data;
+}
+
+void Resource::hsqUnpack(byte *inData, byte *outData) {
+	byte count;
+	int16 offset;
+	BitByteReader br(inData);
+	byte *dst = outData;
+
+	while (true) {
+		if (br.getBit()) {
+			*dst++ = br.getByte();
+		} else {
+			if (br.getBit()) {
+				byte b1 = br.getByte();
+				byte b2 = br.getByte();
+
+				count = b1 & 0x7;
+				offset = ((b1 >> 3) | (b2 << 5)) - 0x2000;
+
+				if (!count)
+					count = br.getByte();
+							
+				if (!count)
+					break;	// finish the unpacking
+			} else {
+				count = br.getBit() * 2;
+				count += br.getBit();
+				offset = br.getByte() - 256;
+			}
+
+			count += 2;
+
+			byte *src = dst + offset;
+			while (count--)
+				*dst++ = *src++;
+		}	// if (!b)
+	}	// while (true)
 }
 
 void Resource::dump(Common::String outFilename) {
