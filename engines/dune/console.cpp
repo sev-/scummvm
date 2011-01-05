@@ -25,6 +25,8 @@
 
 // Console module
 
+#include "common/system.h"
+
 #include "dune/animation.h"
 #include "dune/console.h"
 #include "dune/resource.h"
@@ -136,6 +138,8 @@ bool DuneConsole::cmdAnimShow(int argc, const char **argv) {
 	Common::String fileName(argv[1]);
 	if (!fileName.contains('.'))
 		fileName += ".hsq";
+
+	_engine->_system->fillScreen(0);
 
 	Resource *hsqResource = new Resource(fileName);
 	Animation *a = new Animation(hsqResource->_stream, _engine->_system);
