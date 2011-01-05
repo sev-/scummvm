@@ -85,9 +85,13 @@ Common::Error DuneEngine::run() {
 	Common::Event event;
 	Common::EventManager *eventMan = _system->getEventManager();
 
-	// Debug: Show the console
-	_console->attach();
-	_console->onFrame();
+	// Show something
+	Resource *hsqResource = new Resource("intds.hsq");
+	Animation *a = new Animation(hsqResource->_stream, _system);
+	a->setPalette();
+	a->drawFrame(0);
+	delete a;
+	delete hsqResource;
 
 	// Your main even loop should be (invoked from) here.
 	//debug("DuneEngine::go: Hello, World!\n");

@@ -54,12 +54,14 @@ void Animation::setPalette() {
 		if (palStart == 0xFF && palCount == 0xFF)
 			break;
 
-		byte *palChunk = new byte[palCount * 4];	// RBGA
+		byte *palChunk = new byte[palCount * 4];	// RGBA
 		for (uint i = 0; i < palCount; i++) {
+			if (i + palStart > 256)
+				break;
 			palChunk[i * 4 + 0] = _res->readByte() << 2;	// R
 			palChunk[i * 4 + 1] = _res->readByte() << 2;	// G
 			palChunk[i * 4 + 2] = _res->readByte() << 2;	// B
-			palChunk[i * 4 + 2] = 0;	// A
+			palChunk[i * 4 + 3] = 0;	// A
 		}
 		_system->setPalette(palChunk, palStart, palCount);
 		delete[] palChunk;
@@ -120,8 +122,8 @@ void Animation::drawFrame(uint16 frameIndex) {
 		while (cur < totalSize) {
 			pixel = buf[cur / 2];
 			// Data is stored in half bytes
-			*dst++ = pixel & 0xf;
-			*dst++ = pixel >> 4;
+			*dst++ = (pixel & 0xf) + info.palOffset;
+			*dst++ = (pixel >> 4) + info.palOffset;
 			cur += 2;
 			if (cur >= totalSize)
 				break;
@@ -139,8 +141,8 @@ void Animation::drawFrame(uint16 frameIndex) {
 				if (!fillSingleValue)
 					pixel = _res->readByte();
 
-				*dst++ = pixel & 0xf;
-				*dst++ = pixel >> 4;
+				*dst++ = (pixel & 0xf) + info.palOffset;
+				*dst++ = (pixel >> 4) + info.palOffset;
 				cur += 2;
 				if (cur >= totalSize)
 					break;
