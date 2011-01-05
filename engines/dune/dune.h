@@ -32,7 +32,7 @@
  
 namespace Dune {
  
-class Console;
+class DuneConsole;
  
 // our engine debug levels
 enum {
