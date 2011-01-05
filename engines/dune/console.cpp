@@ -44,24 +44,22 @@ DuneConsole::~DuneConsole() {
 
 bool DuneConsole::cmdDump(int argc, const char **argv) {
 	if (argc < 2) {
-		DebugPrintf("Decompresses the given HSQ file (without an extension) into a raw uncompressed file\n");
+		DebugPrintf("Decompresses the given HSQ file into a raw uncompressed file\n");
 		DebugPrintf("  Usage: %s <file name>\n\n", argv[0]);
-		DebugPrintf("  Example: %s phrase11\n", argv[0]);
-		DebugPrintf("  The above will uncompress phrase11.hsq into phrase11.raw\n");
+		DebugPrintf("  Example: %s phrase11.hsq\n", argv[0]);
+		DebugPrintf("  The above will uncompress phrase11.hsq into phrase11.hsq.raw\n");
 		return true;
 	}
 
 	Common::String fileName(argv[1]);
-	if (fileName.contains('.')) {
-		DebugPrintf("Please supply the file name without the extension\n");
-		return true;
-	}
+	if (!fileName.contains('.'))
+		fileName += ".hsq";
 
-	Resource *hsqResource = new Resource(fileName + ".hsq");
+	Resource *hsqResource = new Resource(fileName);
 	hsqResource->dump(fileName + ".raw");
 	delete hsqResource;
 
-	DebugPrintf("%s has been dumped to %s\n", (fileName + ".hsq").c_str(), (fileName + ".raw").c_str());
+	DebugPrintf("%s has been dumped to %s\n", fileName.c_str(), (fileName + ".raw").c_str());
 	return true;
 }
 
@@ -69,18 +67,16 @@ bool DuneConsole::cmdSentences(int argc, const char **argv) {
 	if (argc < 2) {
 		DebugPrintf("Shows information about a sentence file, or prints a specific sentence from a file\n");
 		DebugPrintf("  Usage: %s <file name> <sentence number>\n\n", argv[0]);
-		DebugPrintf("  Example: \"%s phrase12\" - show information on file phrase12.hsq\n", argv[0]);
-		DebugPrintf("  Example: \"%s phrase12 0\" - print sentence with index 0 from file phrase12.hsq\n\n", argv[0]);
+		DebugPrintf("  Example: \"%s phrase12.hsq\" - show information on file phrase12.hsq\n", argv[0]);
+		DebugPrintf("  Example: \"%s phrase12.hsq 0\" - print sentence with index 0 from file phrase12.hsq\n\n", argv[0]);
 		return true;
 	}
 
 	Common::String fileName(argv[1]);
-	if (fileName.contains('.')) {
-		DebugPrintf("Please supply the file name without the extension\n");
-		return true;
-	}
+	if (!fileName.contains('.'))
+		fileName += ".hsq";
 
-	Resource *hsqResource = new Resource(fileName + ".hsq");
+	Resource *hsqResource = new Resource(fileName);
 	Sentences *s = new Sentences(hsqResource->_stream);
 	if (argc == 2) {
 		DebugPrintf("File contains %d sentences\n", s->count());
