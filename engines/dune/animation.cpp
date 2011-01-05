@@ -108,15 +108,11 @@ void Animation::drawFrame(uint16 frameIndex) {
 	if (totalSize & 1)
 		totalSize++;
 
-	// TODO: The code below is buggy
-	warning("Animation::drawFrame(): Still buggy");
-	return;
-
-
 	byte *rect = new byte[totalSize];
 	byte *dst = rect;
 	uint32 cur = 0;
-	byte count, pixel;
+	byte pixel;
+	int count;
 
 	if (!info.isCompressed) {
 		byte *buf = new byte[totalSize / 2];
@@ -134,10 +130,15 @@ void Animation::drawFrame(uint16 frameIndex) {
 	} else {
 		while (cur < totalSize) {
 			// Data is stored in half bytes, with a simple RLE compression
-			//count = _res->readByte();
-			count = (byte)ABS<int8>(_res->readSByte());
-			pixel = _res->readByte();
+			int8 repetition = _res->readSByte();
+			bool fillSingleValue = (repetition < 0);
+			count = ((repetition < 0) ? -repetition : repetition) + 1;
+			pixel = fillSingleValue ? _res->readByte() : 0;
+
 			for (int i = 0; i < count; i++) {
+				if (!fillSingleValue)
+					pixel = _res->readByte();
+
 				*dst++ = pixel & 0xf;
 				*dst++ = pixel >> 4;
 				cur += 2;
