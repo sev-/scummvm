@@ -34,7 +34,7 @@
  
 #include "engines/util.h"
 
-#include "dune/animation.h"
+#include "dune/sprite.h"
 #include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
@@ -87,10 +87,10 @@ Common::Error DuneEngine::run() {
 
 	// Show something
 	Resource *hsqResource = new Resource("intds.hsq");
-	Animation *a = new Animation(hsqResource->_stream, _system);
-	a->setPalette();
-	a->drawFrame(0);
-	delete a;
+	Sprite *s = new Sprite(hsqResource->_stream, _system);
+	s->setPalette();
+	s->drawFrame(0);
+	delete s;
 	delete hsqResource;
 
 	// Your main even loop should be (invoked from) here.

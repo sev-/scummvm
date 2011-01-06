@@ -28,24 +28,24 @@
 #include "graphics/surface.h"
 
 #include "dune/resource.h"
-#include "dune/animation.h"
+#include "dune/sprite.h"
 
 namespace Dune {
 
-Animation::Animation(Common::MemoryReadStream *res, OSystem *system) : _res(res), _system(system) {
+Sprite::Sprite(Common::MemoryReadStream *res, OSystem *system) : _res(res), _system(system) {
 }
 
-Animation::~Animation() {
+Sprite::~Sprite() {
 }
 
-void Animation::setPalette() {
+void Sprite::setPalette() {
 	// The first chunk is the palette chunk
 	_res->seek(0);
 	uint16 chunkSize = _res->readUint16LE();
 	uint16 curPos = 2;
 
 	if (chunkSize > _res->size())
-		error("Animation file is corrupted");
+		error("Sprite file is corrupted");
 
 	while (curPos < chunkSize) {
 		byte palStart = _res->readByte();
@@ -68,7 +68,7 @@ void Animation::setPalette() {
 	}
 }
 
-uint16 Animation::getFrameCount() {
+uint16 Sprite::getFrameCount() {
 	// The second chunk is the frame chunk, a list of 16-bit offsets
 	_res->seek(0);
 
@@ -79,7 +79,7 @@ uint16 Animation::getFrameCount() {
 	return (chunkSize - 2) / 2;
 }
 
-FrameInfo Animation::getFrameInfo(uint16 frameIndex) {
+FrameInfo Sprite::getFrameInfo(uint16 frameIndex) {
 	FrameInfo result;
 	// First, get the frame count
 	// This will place the pointer at the start of the frame table
@@ -106,7 +106,7 @@ FrameInfo Animation::getFrameInfo(uint16 frameIndex) {
 	return result;
 }
 
-void Animation::drawFrame(uint16 frameIndex) {
+void Sprite::drawFrame(uint16 frameIndex, uint16 x, uint16 y) {
 	FrameInfo info = getFrameInfo(frameIndex);
 	// The pointer is now at the beginning of the frame data
 
@@ -152,7 +152,7 @@ void Animation::drawFrame(uint16 frameIndex) {
 		}
 	}
 	
-	_system->copyRectToScreen(rect, info.width, 0, 0, info.width, info.height);
+	_system->copyRectToScreen(rect, info.width, x, y, info.width, info.height);
 	_system->updateScreen();
 
 	delete[] rect;

@@ -27,7 +27,7 @@
 
 #include "common/system.h"
 
-#include "dune/animation.h"
+#include "dune/sprite.h"
 #include "dune/console.h"
 #include "dune/resource.h"
 #include "dune/sentences.h"
@@ -39,8 +39,7 @@ DuneConsole::DuneConsole(DuneEngine *engine) : GUI::Debugger(),
 
 	DCmd_Register("dump",				WRAP_METHOD(DuneConsole, cmdDump));
 	DCmd_Register("sentences",			WRAP_METHOD(DuneConsole, cmdSentences));
-	DCmd_Register("animinfo",			WRAP_METHOD(DuneConsole, cmdAnimInfo));
-	DCmd_Register("animshow",			WRAP_METHOD(DuneConsole, cmdAnimShow));
+	DCmd_Register("sprite",				WRAP_METHOD(DuneConsole, cmdSprite));
 }
 
 DuneConsole::~DuneConsole() {
@@ -71,7 +70,7 @@ bool DuneConsole::cmdSentences(int argc, const char **argv) {
 	if (argc < 2) {
 		DebugPrintf("Shows information about a sentence file, or prints a specific sentence from a file\n");
 		DebugPrintf("  Usage: %s <file name> <sentence number>\n\n", argv[0]);
-		DebugPrintf("  Example: \"%s phrase12.hsq\" - show information on file phrase12.hsq\n", argv[0]);
+		DebugPrintf("  Example: \"%s phrase12\" - show information on file phrase12.hsq\n", argv[0]);
 		DebugPrintf("  Example: \"%s phrase12.hsq 0\" - print sentence with index 0 from file phrase12.hsq\n\n", argv[0]);
 		return true;
 	}
@@ -96,11 +95,13 @@ bool DuneConsole::cmdSentences(int argc, const char **argv) {
 	return true;
 }
 
-bool DuneConsole::cmdAnimInfo(int argc, const char **argv) {
+bool DuneConsole::cmdSprite(int argc, const char **argv) {
 	if (argc < 2) {
-		DebugPrintf("Shows information about an animation or image file\n");
-		DebugPrintf("  Usage: %s <file name>\n\n", argv[0]);
-		DebugPrintf("  Example: \"%s balcon.hsq\" - show information on file balcon.hsq\n", argv[0]);
+		DebugPrintf("Shows information about a game sprite (character/background) file\n");
+		DebugPrintf("  Usage: %s <file name> <frame number> <x> <y>\n\n", argv[0]);
+		DebugPrintf("  Example: \"%s mirror\" - show information on file mirror.hsq\n", argv[0]);
+		DebugPrintf("  Example: \"%s mirror.hsq 0\" - display frame number 0 from mirror.hsq at 0, 0\n", argv[0]);
+		DebugPrintf("  Example: \"%s mirror.hsq 0 100 100\" - display frame number 0 from mirror.hsq at 100, 100\n", argv[0]);
 		return true;
 	}
 
@@ -109,64 +110,38 @@ bool DuneConsole::cmdAnimInfo(int argc, const char **argv) {
 		fileName += ".hsq";
 
 	Resource *hsqResource = new Resource(fileName);
-	Animation *a = new Animation(hsqResource->_stream, _engine->_system);
+	Sprite *s = new Sprite(hsqResource->_stream, _engine->_system);
+	bool showConsole = true;
 
-	uint16 frameCount = a->getFrameCount();
-	DebugPrintf("Frame count: %d\n", frameCount);
-	for (int i = 0; i < frameCount; i++) {
-		FrameInfo info = a->getFrameInfo(i);
-		DebugPrintf("%d: offset %d, comp: %d, size: %dx%d, pal offset: %d\n",
-				i, info.offset, info.isCompressed, info.width, info.height, info.palOffset);
-	}
-
-	delete a;
-	delete hsqResource;
-
-	return true;
-}
-
-bool DuneConsole::cmdAnimShow(int argc, const char **argv) {
-	if (argc < 2) {
-		DebugPrintf("Shows an animation or image file on screen\n");
-		DebugPrintf("  Usage: %s <file name> <frame number>\n\n", argv[0]);
-		DebugPrintf("  Example: \"%s stars.hsq\" - plays animation stars.hsq\n", argv[0]);
-		DebugPrintf("  Example: \"%s stars.hsq 0\" - shows frame 0 of the stars.hsq animation\n", argv[0]);
-		DebugPrintf("  Example: \"%s balcon.hsq\" - shows image balcon.hsq\n", argv[0]);
-		return true;
-	}
-
-	Common::String fileName(argv[1]);
-	if (!fileName.contains('.'))
-		fileName += ".hsq";
-
-	_engine->_system->fillScreen(0);
-
-	Resource *hsqResource = new Resource(fileName);
-	Animation *a = new Animation(hsqResource->_stream, _engine->_system);
-
-	uint16 frameCount = a->getFrameCount();
-
+	uint16 frameCount = s->getFrameCount();
 	if (argc == 2) {
-		// TODO
-		DebugPrintf("TODO: Animation playing. Showing frame 0 instead\n");
-		a->setPalette();
-		a->drawFrame(0);
+		// Show sprite info
+		DebugPrintf("Frame count: %d\n", frameCount);
+		for (int i = 0; i < frameCount; i++) {
+			FrameInfo info = s->getFrameInfo(i);
+			DebugPrintf("%d: offset %d, comp: %d, size: %dx%d, pal offset: %d\n",
+					i, info.offset, info.isCompressed, info.width, info.height, info.palOffset);
+		}
 	} else {
-		if (atoi(argv[2]) >= frameCount) {
+		// Draw sprite frame
+		_engine->_system->fillScreen(0);
+		uint16 frameNumber = atoi(argv[2]);
+		uint16 x = (argc > 3) ? atoi(argv[3]) : 0;
+		uint16 y = (argc > 4) ? atoi(argv[4]) : 0;
+
+		if (frameNumber >= frameCount) {
 			DebugPrintf("Invalid frame\n");
-			delete a;
-			delete hsqResource;
-			return true;
 		} else {
-			a->setPalette();
-			a->drawFrame(atoi(argv[2]));
+			s->setPalette();
+			s->drawFrame(frameNumber, x, y);
+			showConsole = false;
 		}
 	}
 
-	delete a;
+	delete s;
 	delete hsqResource;
 
-	return false;
+	return showConsole;
 }
 
 } // End of namespace Dune

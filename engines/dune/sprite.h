@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef ANIMATION_H
-#define ANIMATION_H
+#ifndef SPRITE_H
+#define SPRITE_H
 
 #include "dune/dune.h"
 
@@ -44,15 +44,15 @@ struct FrameInfo {
 	byte palOffset;
 };
 
-class Animation {
+class Sprite {
 public:
-	Animation(Common::MemoryReadStream *res, OSystem *system);
-	~Animation();
+	Sprite(Common::MemoryReadStream *res, OSystem *system);
+	~Sprite();
 
 	void setPalette();
 	uint16 getFrameCount();
 	FrameInfo getFrameInfo(uint16 frameIndex);
-	void drawFrame(uint16 frameIndex);
+	void drawFrame(uint16 frameIndex, uint16 x = 0, uint16 y = 0);
 
 private:
 	Common::MemoryReadStream *_res;

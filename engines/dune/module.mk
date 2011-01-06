@@ -1,12 +1,12 @@
 MODULE := engines/dune
  
 MODULE_OBJS := \
-	animation.o \
 	console.o \
 	detection.o \
 	dune.o \
-	sentences.o
- 
+	sentences.o \
+	sprite.o
+	
 MODULE_DIRS += \
 	engines/dune
  

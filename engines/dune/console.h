@@ -40,8 +40,7 @@ public:
 private:
 	bool cmdDump(int argc, const char **argv);
 	bool cmdSentences(int argc, const char **argv);
-	bool cmdAnimInfo(int argc, const char **argv);
-	bool cmdAnimShow(int argc, const char **argv);
+	bool cmdSprite(int argc, const char **argv);
 
 	DuneEngine *_engine;
 };
