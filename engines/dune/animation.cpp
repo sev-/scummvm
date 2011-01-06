@@ -99,6 +99,10 @@ FrameInfo Animation::getFrameInfo(uint16 frameIndex) {
 	result.height = _res->readByte();
 	result.palOffset = _res->readByte();
 
+	// width must be divisible by 4
+	while (result.width % 4 != 0)
+		result.width++;
+
 	return result;
 }
 
@@ -107,8 +111,6 @@ void Animation::drawFrame(uint16 frameIndex) {
 	// The pointer is now at the beginning of the frame data
 
 	uint32 totalSize = info.width * info.height;
-	if (totalSize & 1)
-		totalSize++;
 
 	byte *rect = new byte[totalSize];
 	byte *dst = rect;
