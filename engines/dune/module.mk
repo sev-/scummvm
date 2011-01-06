@@ -5,6 +5,7 @@ MODULE_OBJS := \
 	detection.o \
 	dune.o \
 	music.o \
+	resource.o \
 	sentences.o \
 	sprite.o
 	
