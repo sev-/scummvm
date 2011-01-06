@@ -109,6 +109,7 @@ FrameInfo Sprite::getFrameInfo(uint16 frameIndex) {
 void Sprite::drawFrame(uint16 frameIndex, uint16 x, uint16 y) {
 	FrameInfo info = getFrameInfo(frameIndex);
 	// The pointer is now at the beginning of the frame data
+	assert (info.width > 0 && info.height > 0);
 
 	uint32 totalSize = info.width * info.height;
 
