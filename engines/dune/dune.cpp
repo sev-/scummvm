@@ -34,11 +34,11 @@
  
 #include "engines/util.h"
 
-#include "dune/sprite.h"
 #include "dune/console.h"
 #include "dune/dune.h"
 #include "dune/resource.h"
 #include "dune/sentences.h"
+#include "dune/sprite.h"
 
 namespace Dune {
  
