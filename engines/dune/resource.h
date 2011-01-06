@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef RESOURCE_H
-#define RESOURCE_H
+#ifndef DUNE_RESOURCE_H
+#define DUNE_RESOURCE_H
 
 #include "common/memstream.h"
 #include "dune/dune.h"

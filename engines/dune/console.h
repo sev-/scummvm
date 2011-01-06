@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef CONSOLE_H
-#define CONSOLE_H
+#ifndef DUNE_CONSOLE_H
+#define DUNE_CONSOLE_H
 
 #include "gui/debugger.h"
 

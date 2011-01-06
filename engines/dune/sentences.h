@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef SENTENCES_H
-#define SENTENCES_H
+#ifndef DUNE_SENTENCES_H
+#define DUNE_SENTENCES_H
 
 namespace Common {
 

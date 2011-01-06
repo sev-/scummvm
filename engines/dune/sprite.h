@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef DUNE_SPRITE_H
+#define DUNE_SPRITE_H
 
 #include "dune/dune.h"
 
