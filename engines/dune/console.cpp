@@ -115,13 +115,7 @@ bool DuneConsole::cmdSound(int argc, const char **argv) {
 	}
 
 	char filename[10];
-	if (soundId >= 1 && soundId <= 9) {
-		sprintf(filename, "sd%d.hsq", soundId);
-	} else if (soundId == 10) {
-		sprintf(filename, "sda.hsq");
-	} else if (soundId == 11) {
-		sprintf(filename, "sdb.hsq");
-	}
+	sprintf(filename, "sd%x.hsq", soundId);
 
 	Resource *res = new Resource(filename);
 	Common::SeekableReadStream& readS = *res->_stream;
