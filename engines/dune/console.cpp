@@ -27,10 +27,16 @@
 
 #include "common/system.h"
 
-#include "dune/sprite.h"
+#include "sound/audiostream.h"
+#include "sound/decoders/voc.h"
+#include "sound/decoders/raw.h"
+#include "sound/mixer.h"
+
 #include "dune/console.h"
+#include "dune/dune.h"
 #include "dune/resource.h"
 #include "dune/sentences.h"
+#include "dune/sprite.h"
 
 namespace Dune {
 
@@ -39,6 +45,7 @@ DuneConsole::DuneConsole(DuneEngine *engine) : GUI::Debugger(),
 
 	DCmd_Register("dump",				WRAP_METHOD(DuneConsole, cmdDump));
 	DCmd_Register("sentences",			WRAP_METHOD(DuneConsole, cmdSentences));
+	DCmd_Register("sound",				WRAP_METHOD(DuneConsole, cmdSound));
 	DCmd_Register("sprite",				WRAP_METHOD(DuneConsole, cmdSprite));
 }
 
@@ -91,6 +98,41 @@ bool DuneConsole::cmdSentences(int argc, const char **argv) {
 	}
 	delete s;
 	delete hsqResource;
+
+	return true;
+}
+
+bool DuneConsole::cmdSound(int argc, const char **argv) {
+	if (argc < 2) {
+		DebugPrintf("Plays a sound file (sd*.hsq). Valid sounds are 1-11\n");
+		return true;
+	}
+
+	uint16 soundId = atoi(argv[1]);
+	if (soundId < 1 || soundId > 11) {
+		DebugPrintf("Invalid sound\n");
+		return true;
+	}
+
+	char filename[10];
+	if (soundId >= 1 && soundId <= 9) {
+		sprintf(filename, "sd%d.hsq", soundId);
+	} else if (soundId == 10) {
+		sprintf(filename, "sda.hsq");
+	} else if (soundId == 11) {
+		sprintf(filename, "sdb.hsq");
+	}
+
+	Resource *res = new Resource(filename);
+	Common::SeekableReadStream& readS = *res->_stream;
+	int size = res->_stream->size();
+	int rate = 0;
+	Audio::SoundHandle handle;
+	byte *data = Audio::loadVOCFromStream(readS, size, rate);
+	delete res;
+
+	Audio::RewindableAudioStream *stream = Audio::makeRawStream(data, size, rate, Audio::FLAG_UNSIGNED);
+	_engine->_system->getMixer()->playStream(Audio::Mixer::kSFXSoundType, &handle, stream, -1, 255);
 
 	return true;
 }

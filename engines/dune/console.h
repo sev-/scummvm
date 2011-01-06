@@ -41,6 +41,7 @@ private:
 	bool cmdDump(int argc, const char **argv);
 	bool cmdSentences(int argc, const char **argv);
 	bool cmdSprite(int argc, const char **argv);
+	bool cmdSound(int argc, const char **argv);
 
 	DuneEngine *_engine;
 };
