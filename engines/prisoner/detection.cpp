@@ -30,7 +30,6 @@
 
 #include "prisoner/prisoner.h"
 
-
 namespace Prisoner {
 
 struct PrisonerGameDescription {
@@ -65,7 +64,6 @@ static const PlainGameDescriptor prisonerGames[] = {
 	{0, 0}
 };
 
-
 namespace Prisoner {
 
 using Common::GUIO_NONE;
@@ -74,11 +72,28 @@ using Common::GUIO_NOSPEECH;
 static const PrisonerGameDescription gameDescriptions[] = {
 
 	{
-		// Prisoner English version
+		// Prisoner US English version
 		{
 			"prisoner",
 			0,
 			AD_ENTRY1s("e_klang.bin", "898cc3ba5b382cf9eed2918bea56ac64", 561),
+			Common::EN_ANY,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			GUIO_NONE
+		},
+		0,
+		0,
+		0,
+		0,
+	},
+
+	{
+		// Prisoner Multilingual Version - English
+		{
+			"prisoner",
+			0,
+			AD_ENTRY1s("e_klang.bin", "c8e85c96425a2c5bd535410ef39fd9fe", 561),
 			Common::EN_ANY,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
