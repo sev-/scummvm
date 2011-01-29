@@ -73,7 +73,7 @@ byte *PakResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	pakEntry.discSize = fd.readUint32LE();
 	pakEntry.uncompressedSize = fd.readUint32LE();
 	pakEntry.compressionType = fd.readByte();
-	pakEntry.info5 = fd.readByte();
+	pakEntry.flags = fd.readByte();
 	pakEntry.nameLen = fd.readUint16LE();
 	// Skip filename which may or may not be present
 	fd.seek(pakEntry.nameLen, SEEK_CUR);
@@ -88,13 +88,10 @@ byte *PakResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	}
 	case 1:
 	{
+		DecompressImplode dec;
 		dataSize = pakEntry.uncompressedSize;
 		data = (byte*)malloc(dataSize);
-		byte *compressedDataPtr = (byte*)malloc(pakEntry.discSize);
-		fd.read(compressedDataPtr, pakEntry.discSize);
-		memset(data, 0, dataSize);
-		PAK_explode(compressedDataPtr, data, pakEntry.discSize, pakEntry.uncompressedSize, pakEntry.info5);
-		free(compressedDataPtr);
+		dec.decompress(&fd, pakEntry.flags, pakEntry.uncompressedSize, data);
 		break;
 	}
 	default:
