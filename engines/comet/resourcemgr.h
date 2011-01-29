@@ -54,7 +54,7 @@ struct PakEntry {
   uint32 discSize;
   uint32 uncompressedSize;
   byte compressionType;
-  byte info5;
+  byte flags;
   uint16 nameLen;
 };
 
