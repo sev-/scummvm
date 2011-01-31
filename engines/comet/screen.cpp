@@ -16,7 +16,7 @@ InterpolatedAnimationElement::~InterpolatedAnimationElement() {
 }
 
 Screen::Screen(CometEngine *vm) : _vm(vm) {
-
+	_palFlag = false;
 	_fadeType = kFadeNone;
 	_transitionEffect = false;
 	_zoomFactor = 0;
