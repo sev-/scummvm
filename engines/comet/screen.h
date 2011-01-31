@@ -107,6 +107,7 @@ public:
 	void drawTextOutlined(int x, int y, byte *text, byte color1, byte color2);
 	int drawText3(int x, int y, byte *text, byte color, int flag);
 	int getTextWidth(byte *text);
+	int getTextHeight(byte *text);
 
 	static void plotProc(int x, int y, int color, void *data);
 	static void dottedPlotProc(int x, int y, int color, void *data);
