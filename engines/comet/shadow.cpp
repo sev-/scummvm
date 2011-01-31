@@ -137,7 +137,6 @@ void CometEngine::drawSceneDecoration() {
 /* Graphics */
 
 void CometEngine::initAndLoadGlobalData() {
-
 	_screen->loadFont("RES.PAK", 0);
 
 	_bubbleSprite = _animationMan->loadAnimationResource("RES.PAK", 1);
@@ -184,7 +183,6 @@ void CometEngine::loadGlobalTextData() {
 }
 
 void CometEngine::initData() {
-
 	_tempScreen = new byte[64000];
 	_screenPalette = new byte[768];
 	
@@ -723,10 +721,10 @@ void CometEngine::setMouseCursor(uint index, const byte *cursorSprite) {
 
 	Graphics::Surface *cursor = _screen->decompressAnimationCel(cursorSprite, 16, 16);
 	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
+	cursor->free();
 	delete cursor;
-
 }
-	
+
 void CometEngine::blockInput(int flagIndex) {
 	if (flagIndex == 0) {
 		_walkDirection = 0;

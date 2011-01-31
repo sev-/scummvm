@@ -47,17 +47,76 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 	_mixer->setVolumeForSoundType(Audio::Mixer::kSpeechSoundType, ConfMan.getInt("speech_volume"));
 	_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, ConfMan.getInt("music_volume"));
 
+	_music = 0;
+	_screen = 0;
+	_dialog = 0;
+	_script = 0;
+	_scene = 0;
+	_animationMan = 0;
+	_res = 0;
+	_textReader = 0;
+	_gui = 0;
+	_soundResource = 0;
+
+	_tempScreen = 0;
+	_screenPalette = 0;
+	_backupPalette = 0;
+
+	_sceneBackgroundResource = 0;
+
+	_globalStrings = 0;
+	_inventoryItemNames = 0;
+
+	_bubbleSprite = 0;
+	_heroSprite = 0;
+	_inventoryItemSprites = 0;
+
+	_gamePalette = 0;
+	_flashbakPal = 0;
+	_introPalette1 = 0;
+	_introPalette2 = 0;
+
+	_cursorSprite = 0;
+	_iconSprite = 0;
 }
 
 CometEngine::~CometEngine() {
 	delete _rnd;
+
 	delete _music;
 	delete _screen;
 	delete _dialog;
+	delete _script;
+	delete _scene;
+	delete _animationMan;
+	delete _res;
+	delete _textReader;
+	delete _gui;
+	delete _soundResource;
+
+	delete[] _tempScreen;
+	delete[] _screenPalette;
+	delete[] _backupPalette;
+
+	delete _sceneBackgroundResource;
+
+	delete _globalStrings;
+	delete _inventoryItemNames;
+
+	delete _bubbleSprite;
+	delete _heroSprite;
+	delete _inventoryItemSprites;
+
+	delete _gamePalette;
+	delete _flashbakPal;
+	delete _introPalette1;
+	delete _introPalette2;
+
+	delete _cursorSprite;
+	delete _iconSprite;
 }
 
 Common::Error CometEngine::run() {
-
 	Common::Event event;
 
 	// Initialize backend
@@ -76,7 +135,6 @@ Common::Error CometEngine::run() {
 	}
 #endif
 
-	// TODO: delete stuff at engine shutdown
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
@@ -202,7 +260,7 @@ Common::Error CometEngine::run() {
 	InterpolatedAnimationElement interElem;
 	buildInterpolatedAnimationElement(elem1, elem2, &interElem);
 	delete anim1;
-#endif	
+#endif
 
 #if 0
 	// Test new resource loader
@@ -231,7 +289,7 @@ Common::Error CometEngine::run() {
 		debug("pt.x = %d; pt.y = %d", pt.x, pt.y);
 	}
 	delete poly;
-#endif	
+#endif
 
 #if 0
 	// Anim viewer
@@ -255,7 +313,7 @@ Common::Error CometEngine::run() {
 			anim = _animationMan->loadAnimationResource("RES.PAK", resIndex);
 			frameListIndex = 0;
 			frameIndex = 0;
-			break;						
+			break;
 		case Common::KEYCODE_KP_MINUS:
 			if (resIndex > 0) {
 				resIndex--;
@@ -265,7 +323,7 @@ Common::Error CometEngine::run() {
 				frameListIndex = 0;
 				frameIndex = 0;
 			}
-			break;						
+			break;
 		case Common::KEYCODE_ESCAPE:
 			done = true;
 			break;
@@ -302,7 +360,7 @@ Common::Error CometEngine::run() {
 		_screen->update();
 		_system->delayMillis(40);
 	}
-#endif	
+#endif
 
 #if 0
 	// Cursor viewer
@@ -323,14 +381,14 @@ Common::Error CometEngine::run() {
 				celIndex = 0;
 			debug("celIndex = %d", celIndex);
 			currCel = anim->_cels[celIndex];
-			break;						
+			break;
 		case Common::KEYCODE_KP_MINUS:
 			celIndex--;
 			if (celIndex < 0) 
 				celIndex = anim->_cels.size() - 1;
 			debug("celIndex = %d", celIndex);
 			currCel = anim->_cels[celIndex];
-			break;						
+			break;
 		case Common::KEYCODE_ESCAPE:
 			done = true;
 			break;
@@ -344,7 +402,7 @@ Common::Error CometEngine::run() {
 		_screen->update();
 		_system->delayMillis(40);
 	}
-#endif	
+#endif
 
 #if 1
 
@@ -359,10 +417,10 @@ Common::Error CometEngine::run() {
 #if 0
 		// Play the intro
 		introMainLoop();
-#else	
+#else
 		_moduleNumber = 9;
 		_sceneNumber = 9;
-#endif	
+#endif
 
 		waitForKeys();
 
@@ -370,8 +428,7 @@ Common::Error CometEngine::run() {
 			_sceneNumber = 2;
 		else if (_currentModuleNumber == 9)
 			_sceneNumber = 9;
-			
-	}				
+	}
 
 	_screen->clear();
 	_screen->update();
@@ -380,7 +437,7 @@ Common::Error CometEngine::run() {
 	debug("_currentSceneNumber = %d; _currentModuleNumber = %d", _currentSceneNumber, _currentModuleNumber);
 
 	gameMainLoop();
-#endif	
+#endif
 
 	return Common::kNoError;
 }

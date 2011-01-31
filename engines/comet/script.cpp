@@ -61,16 +61,17 @@ ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 		_scripts[i] = new Script(this);
 
 	setupOpcodes();
-	
 }
 
 ScriptInterpreter::~ScriptInterpreter() {
-
 	delete _scriptResource;
 
 	for (int i = 0; i < kMaxScriptCount; i++)
 		delete _scripts[i];
 
+	for (uint i = 0; i < _opcodes.size(); i++)
+		delete _opcodes[i];
+	_opcodes.clear();
 }
 
 typedef Common::Functor1Mem<Script*, void, ScriptInterpreter> ScriptOpcodeF;
@@ -306,7 +307,6 @@ void ScriptInterpreter::processScriptTalk(Script *script) {
 }
 
 void ScriptInterpreter::runScript(int scriptNumber) {
-
 	_curScriptNumber = scriptNumber;
 	Script *script = _scripts[scriptNumber];
 
@@ -374,7 +374,6 @@ void ScriptInterpreter::runAllScripts() {
 }
 
 int16 *ScriptInterpreter::getVarPointer(int varIndex) {
-
 	if (varIndex < 1000) {
 		assert(_vm->_systemVars[varIndex]);
 		return _vm->_systemVars[varIndex];
