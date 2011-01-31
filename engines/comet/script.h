@@ -79,8 +79,7 @@ protected:
 //protected:
 // Everything is public during the transition phase to more object-oriented design
 public:
-
-	ScriptResource *_scriptResource;	
+	ScriptResource *_scriptResource;
 	int _scriptCount;
 	Script *_scripts[kMaxScriptCount];
 	int _curScriptNumber;
@@ -91,7 +90,7 @@ public:
 
 	void setupOpcodes();
 
-    void loadScript(const char *filename, int index);
+	void loadScript(const char *filename, int index);
 	void initializeScript();
 	void initializeScriptAfterLoadGame();
 	void initScript(int scriptNumber);
@@ -199,7 +198,6 @@ public:
 	void o1_playSampleLooping(Script *script);
 	void o1_setRedPalette(Script *script);
 	void o1_setWhitePalette(Script *script);
-	
 };
 
 // Macros for convenience and clarity
