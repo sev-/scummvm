@@ -789,18 +789,12 @@ void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2
 }
 
 int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
-
 	int tw = 0, linesDrawn = 0, textX = x, textY = y;
-
 	if (textY < 3)
 		textY = 3;
-
 	setFontColor(color);
-
 	while (*text != '*' && ++linesDrawn <= 3) {
-
 		int textWidth, textWidth2;
-
 		if (flag == 0) {
 			textWidth = getTextWidth(text);
 			textWidth2 = textWidth / 2;
@@ -813,23 +807,28 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 		} else {
 			textWidth2 = 1;//HACK
 		}
-
 		if (textWidth2 != 0) {
 			drawText(textX, textY, text);
 			textY += 8;
 		}
-
 		text += strlen((char*)text) + 1;
-
 	}
-
 	return textY;
-
 }
 
 int Screen::getTextWidth(byte *text) {
 	return _currFontResource->getTextWidth(text);
 }
+
+int Screen::getTextHeight(byte *text) {
+	int textHeight = 0, linesDrawn = 0;
+	while (*text != '*' && ++linesDrawn <= 3) {
+		textHeight += 8;
+		text += strlen((char*)text) + 1;
+	}
+	return textHeight;
+}
+
 void Screen::plotProc(int x, int y, int color, void *data) {
 	Screen *screen = (Screen*)data;
 	screen->putPixel(x, y, color);

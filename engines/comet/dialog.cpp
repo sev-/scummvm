@@ -20,7 +20,7 @@ Dialog::~Dialog() {
 
 void Dialog::start(Script *script) {
 
-	int dialogItemCount;
+	int dialogItemCount, y;
 
 	_vm->resetTextValues();
 
@@ -34,6 +34,10 @@ void Dialog::start(Script *script) {
 
 	_textX = script->readByte() * 2;
 	_textY = script->readByte();
+	
+	y = _textY;
+	if (y < 3)
+		y = 3;
 
 	dialogItemCount = script->readByte();
 
@@ -46,6 +50,14 @@ void Dialog::start(Script *script) {
   		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
   		dialogItem.scriptIp = script->ip;
   		script->ip += 2;
+		_vm->setText(dialogItem.text);
+		y += _vm->_screen->getTextHeight(dialogItem.text);
+		dialogItem.rect.x = _textX - 4;
+		dialogItem.rect.y = y - 4 - _vm->_textMaxTextHeight;
+		dialogItem.rect.x2 = _textX + _vm->_textMaxTextWidth * 2 + 4;
+		dialogItem.rect.y2 = y;
+		dialogItem.rect.id = index;
+		y += 8;
 		_items.push_back(dialogItem);
 	}
 
@@ -66,9 +78,7 @@ void Dialog::stop() {
 
 void Dialog::update() {
 
-	int oldDialogSelectedItemIndex;
-
-	oldDialogSelectedItemIndex = _selectedItemIndex;
+	int oldDialogSelectedItemIndex = _selectedItemIndex;
 
 	if (_vm->_cursorDirection & 1) {
 		_vm->waitForKeys();
@@ -81,7 +91,16 @@ void Dialog::update() {
 	}
 
 	if (oldDialogSelectedItemIndex == _selectedItemIndex) {
-		// TODO: Handle selection by mouse
+		// Handle selection by mouse
+		int mouseSelectedItemIndex = -1;
+		for (uint i = 0; i < _items.size(); i++) {
+			if (_vm->_mouseX > _items[i].rect.x && _vm->_mouseX < _items[i].rect.x2 &&
+				_vm->_mouseY > _items[i].rect.y && _vm->_mouseY < _items[i].rect.y2)
+				mouseSelectedItemIndex = _items[i].rect.id;
+		}
+		if (mouseSelectedItemIndex != -1) {
+			_selectedItemIndex = mouseSelectedItemIndex;
+		}
 	} else {
 		// TODO: Move mouse cursor to center of selected dialog item
 	}
@@ -94,19 +113,17 @@ void Dialog::update() {
 	drawTextBubbles();
 
 	// The following was in dialogHandleInput() in the original code, we do it right here
-
 	//handleEvents();
 
-	//printf("Dialog(2)::_keyScancode = %d\n", _keyScancode);
-
-	// TODO: Check for mouseclick later, too
-	if (_vm->_keyScancode == Common::KEYCODE_RETURN && _selectedItemIndex != -1) {
+	if (_selectedItemIndex != -1 && (_vm->_leftButton || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
 		//DEBUG: if (_talkieMode == 1)
 		{
 			_vm->waitForKeys();
 			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
 				_vm->updateTalkAnims();
+				_vm->handleEvents();
+				_vm->_system->updateScreen();
 			}
 		}
 		_isRunning = false;
@@ -121,8 +138,6 @@ void Dialog::drawTextBubbles() {
 
 	//TODO: Before...
 
-	_itemRectangles.clear();
-
 	x = _textX;
 	y = _textY;
 
@@ -132,9 +147,7 @@ void Dialog::drawTextBubbles() {
  		color1 = _vm->_actors[0].textColor;
 
 	for (uint i = 0; i < _items.size(); i++) {
-
 		color2 = color1;
-
 		if (i == (uint)_selectedItemIndex) {
 			if (_vm->_actors[0].textColor == 25) {
 				color2 = _textColor;
@@ -152,23 +165,10 @@ void Dialog::drawTextBubbles() {
 				color2 = 159;
 			}
 		}
-
 		_vm->setText(_items[i].text);
-
 		_vm->drawBubble(x - 4, y - 4, x + _vm->_textMaxTextWidth * 2 + 4, y + _vm->_textMaxTextHeight);
-
 		y = _vm->_screen->drawText3(x, y, _items[i].text, color2, 1);
-
-		GuiRectangle rect;
-		rect.x = x - 4;
-		rect.y = y - 4 - _vm->_textMaxTextHeight;
-		rect.x2 = x + _vm->_textMaxTextWidth * 2 + 4;
-		rect.y2 = y;
-		rect.id = i;
-		_itemRectangles.push_back(rect);
-
 		y += 8;
-
 	}
 
 	//TODO: After...

@@ -13,6 +13,7 @@ struct DialogItem {
 	int16 index;
 	byte *text;
 	uint16 scriptIp;
+	GuiRectangle rect;
 };
 
 class Dialog {
@@ -37,7 +38,6 @@ protected:
 	int _textColorInc;
 	bool _isRunning;
 	Common::Array<DialogItem> _items;
-	Common::Array<GuiRectangle> _itemRectangles;
 
 	void drawTextBubbles();
 	
