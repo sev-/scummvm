@@ -32,6 +32,8 @@ namespace Comet {
 
 class CometEngine;
 
+extern bool debugShowActorNum;
+
 class CometConsole : public GUI::Debugger {
 public:
 	CometConsole(CometEngine *vm);
@@ -39,6 +41,8 @@ public:
 
 private:
 	CometEngine *_vm;
+
+	bool Cmd_ShowActorNum(int argc, const char **argv);
 };
 
 } // End of namespace Comet

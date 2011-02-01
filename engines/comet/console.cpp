@@ -26,12 +26,25 @@
 #include "comet/console.h"
 #include "comet/comet.h"
 
+#include "gui/debugger.h"
+
 namespace Comet {
 
+bool debugShowActorNum;
+
 CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
+	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
+
+	debugShowActorNum = false;
 }
 
 CometConsole::~CometConsole() {
+}
+
+bool CometConsole::Cmd_ShowActorNum(int argc, const char **argv) {
+	DebugPrintf("Enabling Display of Actor Number...\n");
+	debugShowActorNum = true;
+	return true;
 }
 
 } // End of namespace Comet
