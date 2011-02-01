@@ -501,7 +501,7 @@ void CometEngine::drawActor(int actorIndex) {
 
 	AnimationResource *animation = _animationMan->getAnimation(actor->animationSlot);
 
-	/* NOTE: Yet another workaround for a crash (see updateActorAnimation). */
+	// NOTE: Yet another workaround for a crash (see updateActorAnimation).
 	if (actor->animIndex >= (int)animation->_anims.size()) {
 		actor->animIndex = 0;
 		actor->animFrameIndex = 0;
@@ -523,12 +523,12 @@ void CometEngine::drawActor(int actorIndex) {
 
 	_screen->setClipRect(0, 0, 320, 200);
 
-#if 0
-	// DEBUG: Show actor number
-	char temp[16];
-	snprintf(temp, 16, "%d", actorIndex);
-	_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (byte*)temp);
-#endif
+	if (debugShowActorNum) {
+		// DEBUG: Show actor number
+		char temp[16];
+		snprintf(temp, 16, "%d", actorIndex);
+		_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (byte*)temp);
+	}
 }
 
 void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
@@ -899,6 +899,7 @@ void CometEngine::handleEvents() {
 				if (event.kbd.flags & Common::KBD_CTRL) {
 					_console->attach();
 					_console->onFrame();
+					event.kbd.keycode = Common::KEYCODE_INVALID;
 				}
 				break;
 			default:
