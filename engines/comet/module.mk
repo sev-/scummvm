@@ -3,6 +3,7 @@ MODULE := engines/comet
 MODULE_OBJS = \
 	actor.o \
 	animationmgr.o \
+	console.o \
 	comet.o \
 	comet_gui.o \
 	detection.o \
