@@ -38,6 +38,7 @@
 #include "sound/mixer.h"
 
 #include "comet/comet.h"
+#include "comet/console.h"
 #include "comet/music.h"
 #include "comet/animationmgr.h"
 #include "comet/comet_gui.h"
@@ -68,6 +69,8 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 
 	_rnd = new Common::RandomSource();
 	g_eventRec.registerRandomSource(*_rnd, "comet");
+
+	_console = 0;
 
 	// Setup mixer
 	if (!_mixer->isReady()) {
@@ -117,6 +120,7 @@ CometEngine::~CometEngine() {
 	DebugMan.clearAllDebugChannels();
 
 	delete _rnd;
+	delete _console;
 
 	delete _music;
 	delete _screen;
@@ -158,9 +162,11 @@ Common::Error CometEngine::run() {
 
 	// Initialize backend
 	_system->beginGFXTransaction();
-		initCommonGFX(false);
-		_system->initSize(320, 200);
+	initCommonGFX(false);
+	_system->initSize(320, 200);
 	_system->endGFXTransaction();
+
+	_console = new CometConsole(this);
 
 #if 0
 	{
@@ -187,7 +193,7 @@ Common::Error CometEngine::run() {
 
 	_soundResource = new SoundResource();
 
-	/* Init vars */
+	// Init vars
 	_gameLoopCounter = 0;
 	_textColorFlag = 0;
 	

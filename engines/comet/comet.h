@@ -45,6 +45,8 @@
 
 #include "engines/engine.h"
 
+#include "comet/console.h"
+
 namespace Comet {
 
 struct CometGameDescription;
@@ -55,6 +57,7 @@ class Screen;
 class Anim;
 class MusicPlayer;
 class CometEngine;
+class CometConsole;
 
 class AnimationResource;
 struct AnimationElement;
@@ -152,7 +155,7 @@ class CometEngine : public Engine {
 protected:
 	Common::Error run();
 	void shutdown();
-	
+
 	bool initGame();
 
 public:
@@ -172,6 +175,8 @@ public:
 	const char *getGameFile(int fileType);
 
 	const CometGameDescription *_gameDescription;
+
+	GUI::Debugger *getDebugger() { return _console; }
 
 private:
 	bool detectGame();
@@ -197,7 +202,7 @@ public:
 
 	TextReader *_textReader;
 	TextResource *_globalStrings, *_inventoryItemNames;
-	
+
 	Gui *_gui;
 	byte *_mouseCursors[7];
 
@@ -220,7 +225,7 @@ public:
 	int _textSpeed;
 	int _textMaxTextHeight, _textMaxTextWidth, _textDuration;
 
-	/* Input related */
+	// Input related
 	Common::KeyCode _keyScancode;
 	char _keyAscii;
 	int _keyDirection;
@@ -244,13 +249,13 @@ public:
 	AnimationResource *_sceneDecorationSprite;
 
 	byte *_screenPalette, *_backupPalette;
-	
+
 	byte *_gamePalette, *_flashbakPal;
 	byte *_introPalette1, *_introPalette2;
 
 	int _gameLoopCounter;
 	bool _endIntroLoop;
-	
+
 	bool _cmdLook, _cmdGet, _cmdTalk;
 	int _currentInventoryItem;
 
@@ -262,18 +267,18 @@ public:
 	int _talkieMode;
 	bool _moreText, _textActive;
 	byte _talkTextColor;
-	
+
 	bool _quitGame;
-	
+
 	int16 _scriptRandomValue;
-	
-	/* Audio */
+
+	// Audio
 	MusicPlayer *_music;
 
-	/* Sprite array */
+	// Sprite array
 	Common::Array<SpriteDraw> _spriteDrawQueue;
 
-	/* Filenames */
+	// Filenames
 	char AName[16], DName[16], RName[16];
 
 	Audio::SoundHandle _sampleHandle;
@@ -294,9 +299,9 @@ public:
 	void waitForKeyPress();
 	void handleInput();
 	void handleKeyInput();
-	
+
 	void drawTextIllsmouth();
-	
+
 	void useCurrentInventoryItem();
 	void checkCurrentInventoryItem();
 
@@ -319,11 +324,11 @@ public:
 	void handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
 	void resetVars();
-	
+
 	void drawSpriteQueue();
 	void drawActor(int actorIndex);
 	void drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
-	
+
 	void updateTextDialog();
 	void updateText();
 	void updateTalkAnims();
@@ -348,7 +353,7 @@ public:
 	void drawDialogTextBubbles();
 	void showTextBubble(int index, byte *text);
 
-	/* Scene */
+	// Scene
 	void initSceneBackground(bool loadingGame = false);
 	void initSceneDecorationBlockingRects();
 	void loadSceneBackground();
@@ -373,13 +378,13 @@ public:
 
 	int mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY);
 
-	/* Marche */
+	// Marche
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearAnimationSlotByIndex(int16 animationSlot);
 	AnimationResource *getGlobalAnimationResource(int16 animationType);
 	void unloadActorSprite(Actor *actor);
 
-	/* Actor */
+	// Actor
 	void actorInit(int itemIndex, int16 animationSlot);
 	void actorSetDirection(Actor *actor, int direction);
 	void actorSetDirectionAdd(Actor *actor, int directionAdd);
@@ -393,7 +398,7 @@ public:
 	bool actorStartWalking(int actorIndex, int x, int y);
 	Actor *getActor(int index);
 
-	/* Text */
+	// Text
 	int _talkActorIndex, _animIndex, _animPlayFrameIndex, _animFrameIndex, _talkTextIndex;
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
@@ -401,11 +406,11 @@ public:
 
 	void resetActorsLife();
 
-	/* Misc */
+	// Misc
 	int comparePointXY(int x, int y, int x2, int y2);
 	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 
-	/* Script */
+	// Script
 	int16 *_systemVars[256];
 	int16 _scriptVars[256], _inventoryItemStatus[256];
 	void loadAndRunScript(bool loadingGame = false);
@@ -417,7 +422,7 @@ public:
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x1, int y1, int x2, int y2);
 
-	/* Save/load */
+	// Save/load
 
 	enum kReadSaveHeaderError {
 		kRSHENoError = 0,
@@ -453,7 +458,7 @@ public:
 	
 	void playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData);
 
-	/* Beams */
+	// Beams
 	Common::Array<Beam> _beams;
 	/* Unused in Comet CD
 	byte _beamColor;
@@ -472,7 +477,7 @@ public:
 	void checkPauseGame();
 
 public:
-	/* Misc */
+	// Misc
 	//ALL FIXME
 	int calcDirection(int fromX, int fromY, int toX, int toY);
 	void drawSceneExits();
@@ -480,6 +485,7 @@ public:
 protected:
 
 private:
+	CometConsole *_console;
 };
 
 void plotProc(int x, int y, int color, void *data = NULL);
