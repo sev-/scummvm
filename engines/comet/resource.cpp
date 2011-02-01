@@ -38,10 +38,9 @@
 
 namespace Comet {
 
-/* GenericResource */
+// GenericResource
 
 void GenericResource::internalLoad(Common::MemoryReadStream &stream) {
-	
 	debug("GenericResource::internalLoad() stream.size = %d", stream.size());
 	
 #if 0
@@ -55,14 +54,14 @@ void GenericResource::internalLoad(Common::MemoryReadStream &stream) {
 
 }
 
-/* TextResource */
+// TextResource
 
 TextResource::TextResource() : _data(NULL), _stringCount(0), _stringOffsets(NULL) {
 }
 
 void TextResource::free() {
-	delete _stringOffsets;
-	delete _data;
+	delete[] _stringOffsets;
+	delete[] _data;
 }
 
 void TextResource::internalLoad(Common::MemoryReadStream &stream) {
@@ -94,13 +93,13 @@ void TextResource::loadString(uint stringIndex, byte *buffer) {
 	memcpy(buffer, getString(stringIndex), stringLen);
 }
 
-/* FontResource */
+// FontResource
 
 FontResource::FontResource() : _fontData(NULL) {
 }
 
 void FontResource::free() {
-	delete _fontData;
+	delete[] _fontData;
 }
 
 void FontResource::internalLoad(Common::MemoryReadStream &stream) {
@@ -116,13 +115,11 @@ void FontResource::internalLoad(Common::MemoryReadStream &stream) {
 }
 
 void FontResource::drawText(int x, int y, byte *destBuffer, byte *text, byte color) {
-
 	static const byte startFlags[] = {
 		0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
 	};
 
 	while (*text) {
-
 		uint16 charOfs = text[0] * 2;
 		uint16 charInfo = READ_BE_UINT16(_charInfo + charOfs);
 		byte charWidth = (charInfo & 0xF000) >> 12;
@@ -171,7 +168,7 @@ int FontResource::getTextWidth(byte *text) {
 	return textWidth;
 }
 
-/* AnimationResource */
+// AnimationResource
 
 AnimationElement::~AnimationElement() {
 	for (Common::Array<AnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
@@ -196,9 +193,8 @@ void AnimationResource::free() {
 }
 
 void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
-
 	OffsetArray sectionOffsets, offsets;
-	
+
 	loadOffsets(stream, sectionOffsets);
 
 	if (sectionOffsets.size() < 4)
@@ -240,7 +236,6 @@ void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
 	}
 
 	// TODO: Load section 4 data
-
 }
 
 void AnimationResource::loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets) {
@@ -309,7 +304,7 @@ AnimationFrameList *AnimationResource::loadAnimationFrameList(Common::SeekableRe
 	return animationFrameList;
 }
 
-/* ScreenResource */
+// ScreenResource
 
 ScreenResource::ScreenResource() : _screen(NULL) {
 }
@@ -322,10 +317,10 @@ void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
 	if (stream.size() != 64000)
 		error("ScreenResource::internalLoad() Unexpected data size (%d)", stream.size());
 	_screen = new byte[stream.size()];
-	stream.read(_screen, stream.size());	
+	stream.read(_screen, stream.size());
 }
 
-/* PaletteResource */
+// PaletteResource
 
 PaletteResource::PaletteResource() : _palette(NULL) {
 }
@@ -341,7 +336,7 @@ void PaletteResource::internalLoad(Common::MemoryReadStream &stream) {
 	stream.read(_palette, stream.size());	
 }
 
-/* SoundResource */
+// SoundResource
 
 SoundResource::SoundResource() : _data(NULL), _dataSize(0) {
 }
@@ -363,7 +358,7 @@ Audio::SeekableAudioStream *SoundResource::makeAudioStream() {
 	return Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
 }
 
-/* ScriptResource */
+// ScriptResource
 
 ScriptResource::ScriptResource() : _scriptData(NULL) {
 }
@@ -379,7 +374,7 @@ int ScriptResource::getCount() {
 void ScriptResource::free() {
 	delete[] _scriptData;
 }
-	
+
 void ScriptResource::internalLoad(Common::MemoryReadStream &stream) {
 	_scriptData = new byte[stream.size()];
 	stream.read(_scriptData, stream.size());

@@ -17,6 +17,8 @@ AnimationManager::AnimationManager(CometEngine *vm) : _vm(vm) {
 }
 
 AnimationManager::~AnimationManager() {
+	for (uint i = 0; i < kAnimationSlotCount; i++)
+		delete _animationSlots[i].anim;
 }
 
 void AnimationManager::saveState(Common::WriteStream *out) {
@@ -54,7 +56,6 @@ void AnimationManager::purgeAnimationSlots() {
 }
 
 int AnimationManager::getAnimationResource(int16 animationType, int16 fileIndex) {
-
 	int16 animationSlot = findAnimationSlot(animationType, fileIndex);
 
 	if (animationSlot == -1) {
@@ -75,7 +76,6 @@ int AnimationManager::getAnimationResource(int16 animationType, int16 fileIndex)
 	}
 
 	return animationSlot;
-
 }
 
 void AnimationManager::refreshAnimationSlots() {

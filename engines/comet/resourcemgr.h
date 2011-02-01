@@ -39,7 +39,7 @@ class BaseResource {
 public:
 	virtual ~BaseResource();
 	void load(Common::MemoryReadStream &stream);
-protected:	
+protected:
 	virtual void free() {}
 	virtual void internalLoad(Common::MemoryReadStream &stream) = 0;
 };

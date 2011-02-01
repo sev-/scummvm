@@ -45,14 +45,14 @@
 
 namespace Comet {
 
-/* GenericResource */
+// GenericResource
 
 class GenericResource : public BaseResource {
-protected:	
+protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-/* TextResource */
+// TextResource
 
 class TextResource : public BaseResource {
 public:
@@ -68,7 +68,7 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-/* FontResource */
+// FontResource
 
 class FontResource : public BaseResource {
 public:
@@ -81,7 +81,7 @@ private:
 	byte *_charData;
 	byte *_charInfo;
 	int _charHeight, _bytesPerLine;
-protected:	
+protected:
 	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 };
@@ -105,6 +105,9 @@ struct AnimationCel {
 	uint16 width, height;
 	uint16 dataSize;
 	byte *data;
+
+	AnimationCel() : flags(0), width(0), height(0), dataSize(0), data(0) {}
+	~AnimationCel() { delete[] data; }
 };
 
 struct AnimationFrame {
@@ -138,7 +141,7 @@ public:
 	AnimationFrameList *loadAnimationFrameList(Common::SeekableReadStream &sourceS);
 };
 
-/* ScreenResource */
+// ScreenResource
 
 class ScreenResource : public BaseResource {
 public:
@@ -146,11 +149,11 @@ public:
 	byte *getScreen() const { return _screen; }
 protected:
 	byte *_screen;
-	void free();	
+	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-/* PaletteResource */
+// PaletteResource
 
 class PaletteResource : public BaseResource {
 public:
@@ -158,11 +161,11 @@ public:
 	byte *getPalette() const { return _palette; }
 protected:
 	byte *_palette;
-	void free();	
+	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-/* SoundResource */
+// SoundResource
 
 class SoundResource : public BaseResource {
 public:
@@ -171,11 +174,11 @@ public:
 protected:
 	byte *_data;
 	int32 _dataSize;
-	void free();	
+	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-/* ScriptResource */
+// ScriptResource
 
 class ScriptResource : public BaseResource {
 public:
@@ -184,7 +187,7 @@ public:
 	int getCount();
 protected:
 	byte *_scriptData;
-	void free();	
+	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 

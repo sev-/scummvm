@@ -41,9 +41,11 @@ public:
 	AnimationResource *getAnimation(uint index) { return _animationSlots[index].anim; }
 	void saveState(Common::WriteStream *out);
 	void loadState(Common::ReadStream *in);
-//protected: again temporary...
+
+private:
 	CometEngine *_vm;
 	AnimationSlot _animationSlots[kAnimationSlotCount];
+
 	int findAnimationSlot(int16 animationType, int16 fileIndex);
 	int findFreeAnimationSlot();
 };

@@ -187,10 +187,10 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeByte(actor.visible ? 1 : 0);
 	}
 	
-	for (int i = 0; i < ARRAYSIZE(_animationMan->_animationSlots); i++) {
-		const AnimationSlot &marcheItem = _animationMan->_animationSlots[i];
-		out->writeUint16LE(marcheItem.animationType);
-		out->writeUint16LE(marcheItem.fileIndex);
+	for (uint i = 0; i < kAnimationSlotCount; i++) {
+		const AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);
+		out->writeUint16LE(marcheItem->animationType);
+		out->writeUint16LE(marcheItem->fileIndex);
 	}
 	
 	out->writeByte(_scene->_sceneItems.size());
@@ -342,12 +342,12 @@ void CometEngine::loadgame(const char *filename) {
 		actor.visible = in->readByte() != 0;
 	}
 
-	for (int i = 0; i < ARRAYSIZE(_animationMan->_animationSlots); i++) {
-		AnimationSlot &marcheItem = _animationMan->_animationSlots[i];
-		marcheItem.animationType = in->readUint16LE();
-		marcheItem.fileIndex = (int16)in->readUint16LE();
-		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem.animationType, marcheItem.fileIndex);
-		marcheItem.anim = NULL;
+	for (uint i = 0; i < kAnimationSlotCount; i++) {
+		AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);
+		marcheItem->animationType = in->readUint16LE();
+		marcheItem->fileIndex = (int16)in->readUint16LE();
+		marcheItem->anim = NULL;
+		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem->animationType, marcheItem->fileIndex);
 	}
 
 	_scene->_sceneItems.clear();
