@@ -59,6 +59,10 @@ void GenericResource::internalLoad(Common::MemoryReadStream &stream) {
 TextResource::TextResource() : _data(NULL), _stringCount(0), _stringOffsets(NULL) {
 }
 
+TextResource::~TextResource() {
+	free();
+}
+
 void TextResource::free() {
 	delete[] _stringOffsets;
 	delete[] _data;
@@ -96,6 +100,10 @@ void TextResource::loadString(uint stringIndex, byte *buffer) {
 // FontResource
 
 FontResource::FontResource() : _fontData(NULL) {
+}
+
+FontResource::~FontResource() {
+	free();
 }
 
 void FontResource::free() {
@@ -180,6 +188,10 @@ AnimationFrameList::~AnimationFrameList() {
 }
 
 AnimationResource::AnimationResource() {
+}
+
+AnimationResource::~AnimationResource() {
+	free();
 }
 
 void AnimationResource::free() {
@@ -308,6 +320,10 @@ AnimationFrameList *AnimationResource::loadAnimationFrameList(Common::SeekableRe
 ScreenResource::ScreenResource() : _screen(NULL) {
 }
 
+ScreenResource::~ScreenResource() {
+	free();
+}
+
 void ScreenResource::free() {
 	delete[] _screen;
 }
@@ -324,6 +340,10 @@ void ScreenResource::internalLoad(Common::MemoryReadStream &stream) {
 PaletteResource::PaletteResource() : _palette(NULL) {
 }
 
+PaletteResource::~PaletteResource() {
+	free();
+}
+
 void PaletteResource::free() {
 	delete[] _palette;
 }
@@ -338,6 +358,10 @@ void PaletteResource::internalLoad(Common::MemoryReadStream &stream) {
 // SoundResource
 
 SoundResource::SoundResource() : _data(NULL), _dataSize(0) {
+}
+
+SoundResource::~SoundResource() {
+	free();
 }
 
 void SoundResource::free() {
@@ -360,6 +384,10 @@ Audio::SeekableAudioStream *SoundResource::makeAudioStream() {
 // ScriptResource
 
 ScriptResource::ScriptResource() : _scriptData(NULL) {
+}
+
+ScriptResource::~ScriptResource() {
+	free();
 }
 
 byte *ScriptResource::getScript(int index) {

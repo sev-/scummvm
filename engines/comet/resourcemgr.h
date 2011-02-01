@@ -37,7 +37,7 @@ namespace Comet {
 
 class BaseResource {
 public:
-	virtual ~BaseResource();
+	virtual ~BaseResource() {}
 	void load(Common::MemoryReadStream &stream);
 protected:
 	virtual void free() {}
@@ -110,7 +110,7 @@ protected:
 		byte *data = loader.load(filename, index, dataSize);
 		if (outDataSize)
 			*outDataSize = dataSize;
-		return data;			
+		return data;
 	}
 };
 
@@ -118,15 +118,18 @@ class TextReader {
 public:
 	TextReader(CometEngine *vm);
 	~TextReader();
+
 	void setTextFilename(const char *filename);
 	TextResource *loadTextResource(uint tableIndex);
 	byte *getString(uint tableIndex, uint stringIndex);
 	void loadString(uint tableIndex, uint stringIndex, byte *buffer);
+
 protected:
 	CometEngine *_vm;
 	Common::String _textFilename;
 	TextResource *_cachedTextResource;
 	int _cachedTextResourceTableIndex;
+
 	TextResource *getCachedTextResource(uint tableIndex);
 };
 
