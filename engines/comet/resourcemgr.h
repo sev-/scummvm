@@ -51,11 +51,11 @@ public:
 };
 
 struct PakEntry {
-  uint32 discSize;
-  uint32 uncompressedSize;
-  byte compressionType;
-  byte flags;
-  uint16 nameLen;
+	uint32 discSize;
+	uint32 uncompressedSize;
+	byte compressionType;
+	byte flags;
+	uint16 nameLen;
 };
 
 class PakResourceLoader : public ResourceLoader {
