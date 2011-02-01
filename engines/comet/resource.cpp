@@ -150,7 +150,6 @@ void FontResource::drawText(int x, int y, byte *destBuffer, byte *text, byte col
 		}
 		text++;
 	}
-
 }
 
 int FontResource::getTextWidth(byte *text) {

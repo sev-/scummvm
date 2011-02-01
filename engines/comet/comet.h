@@ -1,8 +1,6 @@
 /* ScummVM - Scumm Interpreter
  * Copyright (C) 2006 The ScummVM project
  *
- * cinE Engine is (C) 2004-2005 by CinE Team
- *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -30,6 +28,9 @@
 #include "common/array.h"
 #include "common/list.h"
 #include "common/file.h"
+#include "common/endian.h"
+#include "common/stream.h"
+#include "common/util.h"
 #include "common/random.h"
 #include "common/savefile.h"
 #include "common/system.h"
@@ -113,12 +114,6 @@ struct Actor {
 	int16 savedWalkDestX, savedWalkDestY;
 	int16 clipX1, clipY1, clipX2, clipY2;
 	bool visible;
-};
-
-struct AnimationSlot {
-	int16 animationType;
-	int16 fileIndex;
-	AnimationResource *anim;
 };
 
 struct SpriteDraw {
@@ -222,10 +217,10 @@ public:
 	int _walkDirection;
 	int16 _scriptKeybFlag;
 	bool _mouseWalking;
-	int _mouseCursorDirection;	
+	int _mouseCursorDirection;
 
 	bool _loadgameRequested;
-	
+
 	int16 _startupModuleNumber, _startupSceneNumber;
 	int16 _moduleNumber, _sceneNumber;
 	int16 _currentModuleNumber, _currentSceneNumber;
