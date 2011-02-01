@@ -57,8 +57,14 @@ enum {
 	kMouseRightUp		= 4
 };
 
-CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
-	Engine(syst), _gameDescription(gameDesc) {
+CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
+	DebugMan.addDebugChannel(kDebugResource, "Resource", "Resource Debug Flag");
+	DebugMan.addDebugChannel(kDebugAnimation, "Animation", "Animation Debug Flag");
+	DebugMan.addDebugChannel(kDebugSaveLoad, "Saveload", "Saveload Debug Flag");
+	DebugMan.addDebugChannel(kDebugScript, "Script", "Script Debug Flag");
+	DebugMan.addDebugChannel(kDebugText, "Text", "Text Debug Flag");
+	DebugMan.addDebugChannel(kDebugCollision, "Collision", "Collision Debug Flag");
+	DebugMan.addDebugChannel(kDebugScreen, "Screen", "Screen Debug Flag");
 
 	_rnd = new Common::RandomSource();
 	g_eventRec.registerRandomSource(*_rnd, "comet");
@@ -108,6 +114,8 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 }
 
 CometEngine::~CometEngine() {
+	DebugMan.clearAllDebugChannels();
+
 	delete _rnd;
 
 	delete _music;
