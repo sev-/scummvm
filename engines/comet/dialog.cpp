@@ -1,3 +1,28 @@
+/* ScummVM - Graphic Adventure Engine
+ *
+ * ScummVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ * $URL$
+ * $Id$
+ *
+ */
+
 #include "comet/comet.h"
 #include "comet/dialog.h"
 #include "comet/screen.h"
@@ -5,21 +30,18 @@
 namespace Comet {
 
 Dialog::Dialog(CometEngine *vm) : _vm(vm) {
-
 	_introTextIndex = 0;
 	_textX = 0;
 	_textY = 0;
 	_textColor = 79;
 	_textColorInc = -1;
 	_isRunning = false;
-
 }
 
 Dialog::~Dialog() {
 }
 
 void Dialog::start(Script *script) {
-
 	int dialogItemCount, y;
 
 	_vm->resetTextValues();
@@ -47,9 +69,9 @@ void Dialog::start(Script *script) {
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
 		dialogItem.index = script->readInt16();
-  		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
-  		dialogItem.scriptIp = script->ip;
-  		script->ip += 2;
+		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
+		dialogItem.scriptIp = script->ip;
+		script->ip += 2;
 		_vm->setText(dialogItem.text);
 		y += _vm->_screen->getTextHeight(dialogItem.text);
 		dialogItem.rect.x = _textX - 4;
@@ -69,7 +91,6 @@ void Dialog::start(Script *script) {
 	_isRunning = true;
 
 	drawTextBubbles();
-
 }
 
 void Dialog::stop() {
@@ -77,7 +98,6 @@ void Dialog::stop() {
 }
 
 void Dialog::update() {
-
 	int oldDialogSelectedItemIndex = _selectedItemIndex;
 
 	if (_vm->_cursorDirection & 1) {
@@ -128,11 +148,9 @@ void Dialog::update() {
 		}
 		_isRunning = false;
 	}
-
 }
 
 void Dialog::drawTextBubbles() {
-
 	int x, y;
 	byte color1, color2;
 
@@ -172,7 +190,6 @@ void Dialog::drawTextBubbles() {
 	}
 
 	//TODO: After...
-
 }
 
 uint16 Dialog::getChoiceScriptIp() {
