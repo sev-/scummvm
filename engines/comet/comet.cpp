@@ -78,6 +78,8 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) :
 
 	_cursorSprite = 0;
 	_iconSprite = 0;
+
+	_sceneDecorationSprite = 0;
 }
 
 CometEngine::~CometEngine() {
@@ -107,13 +109,15 @@ CometEngine::~CometEngine() {
 	delete _heroSprite;
 	delete _inventoryItemSprites;
 
-	delete _gamePalette;
-	delete _flashbakPal;
-	delete _introPalette1;
-	delete _introPalette2;
+	free(_gamePalette);
+	free(_flashbakPal);
+	free(_introPalette1);
+	free(_introPalette2);
 
 	delete _cursorSprite;
 	delete _iconSprite;
+
+	delete _sceneDecorationSprite;
 }
 
 Common::Error CometEngine::run() {
