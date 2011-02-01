@@ -38,8 +38,15 @@ AnimationManager::AnimationManager(CometEngine *vm) : _vm(vm) {
 }
 
 AnimationManager::~AnimationManager() {
-//	for (uint i = 0; i < kAnimationSlotCount; i++)
-//		delete _animationSlots[i].anim;
+	for (uint i = 0; i < kAnimationSlotCount; i++) {
+		// Only deallocate "normal" animations here,
+		// the GlobalAnimationResources have pointers held by the engine
+		// and are deallocated there.
+		if (_animationSlots[i].animationType == 0) {
+			delete _animationSlots[i].anim;
+			_animationSlots[i].anim = NULL;
+		}
+	}
 }
 
 void AnimationManager::saveState(Common::WriteStream *out) {
@@ -57,7 +64,7 @@ AnimationResource *AnimationManager::loadAnimationResource(const char *pakFilena
 }
 
 void AnimationManager::purgeUnusedAnimationSlots() {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && !_vm->isAnimationSlotUsed(i)) {
 			_vm->clearAnimationSlotByIndex(i);
 			delete _animationSlots[i].anim;
@@ -67,7 +74,7 @@ void AnimationManager::purgeUnusedAnimationSlots() {
 }
 
 void AnimationManager::purgeAnimationSlots() {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && _vm->_actors[0].animationSlot != i) {
 			_vm->clearAnimationSlotByIndex(i);
 			delete _animationSlots[i].anim;
@@ -100,7 +107,7 @@ int AnimationManager::getAnimationResource(int16 animationType, int16 fileIndex)
 }
 
 void AnimationManager::refreshAnimationSlots() {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0) {
 			delete _animationSlots[i].anim;
 			_animationSlots[i].anim = NULL;
@@ -110,7 +117,7 @@ void AnimationManager::refreshAnimationSlots() {
 }
 
 void AnimationManager::restoreAnimationSlots() {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].fileIndex != -1) {
 			if (_animationSlots[i].animationType == 0) {
 				delete _animationSlots[i].anim;
@@ -125,7 +132,7 @@ void AnimationManager::restoreAnimationSlots() {
 }
 
 int AnimationManager::findAnimationSlot(int16 animationType, int16 fileIndex) {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].animationType == animationType && _animationSlots[i].fileIndex == fileIndex) {
 			return i;
 		}
@@ -134,7 +141,7 @@ int AnimationManager::findAnimationSlot(int16 animationType, int16 fileIndex) {
 }
 
 int AnimationManager::findFreeAnimationSlot() {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].anim == NULL) {
 			return i;
 		}
