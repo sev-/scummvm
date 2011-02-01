@@ -134,6 +134,17 @@ struct Beam {
 
 typedef Common::Array<Common::Point> PointArray;
 
+// Engine Debug Flags
+enum {
+	kDebugResource  = (1 << 0),
+	kDebugAnimation = (1 << 1),
+	kDebugSaveLoad  = (1 << 2),
+	kDebugScript    = (1 << 3),
+	kDebugText      = (1 << 4),
+	kDebugCollision = (1 << 5),
+	kDebugScreen    = (1 << 6)
+};
+
 class CometEngine : public Engine {
 	// FIXME: I don't need no friends
 //	friend class Script;

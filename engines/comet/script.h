@@ -113,7 +113,7 @@ public:
 	
 	bool isHeroInZone(Script *script);
 
-	/* Script functions */
+	// Script functions
 
 	void o1_nop(Script *script);
 	void o1_actorSetDirection(Script *script);
@@ -204,19 +204,19 @@ public:
 // Macros for convenience and clarity
 #define ARG_BYTE(name) \
 	int16 name = script->readByte(); \
-	debug(1, "byte() " #name " = %d", name);
+	debugC(1, kDebugScript, "byte() " #name " = %d", name);
 #define ARG_BYTEX(name) \
 	int16 name = script->readByte() * 2; \
-	debug(1, "bytex() " #name " = %d", name);
+	debugC(1, kDebugScript, "bytex() " #name " = %d", name);
 #define ARG_INT16(name) \
 	int16 name = script->readInt16(); \
-	debug(1, "int16() " #name " = %d", name);
+	debugC(1, kDebugScript, "int16() " #name " = %d", name);
 #define ARG_VAR(name) \
 	int16 name = script->loadVarValue(); \
-	debug(1, "var() " #name " = %d", name);
+	debugC(1, kDebugScript, "var() " #name " = %d", name);
 #define ARG_VALUE(name) \
 	int16 name = script->loadValue(); \
-	debug(1, "value() " #name " = %d", name);
+	debugC(1, kDebugScript, "value() " #name " = %d", name);
 
 } // End of namespace Comet
 

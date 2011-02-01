@@ -47,7 +47,7 @@ int16 Script::readInt16() {
 
 void Script::jump() {
 	int16 ofs = (int16)READ_LE_UINT16(code + ip);
-	debug(3, "  jump: %d (%04X)", ofs, ofs);
+	debugC(3, kDebugScript, "  jump: %d (%04X)", ofs, ofs);
 	ip += ofs;
 }
 
@@ -247,7 +247,7 @@ void ScriptInterpreter::initializeScript() {
 }
 
 void ScriptInterpreter::initializeScriptAfterLoadGame() {
-	debug(2, "CometEngine::initializeScriptAfterLoadGame()  _scriptCount = %d", _scriptCount);
+	debugC(2, kDebugScript, "CometEngine::initializeScriptAfterLoadGame()  _scriptCount = %d", _scriptCount);
 	for (int scriptNumber = 0; scriptNumber < _scriptCount; scriptNumber++)
 		_scripts[scriptNumber]->code = _scriptResource->getScript(scriptNumber);
 }
@@ -337,22 +337,20 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 
 	_yield = false;
 
-#if 0
 	if (script->status & kScriptWalking)
-		debug(2, "kScriptWalking %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptWalking %d", scriptNumber);
 	if (script->status & kScriptSleeping)
-		debug(2, "kScriptSleeping %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptSleeping %d", scriptNumber);
 	if (script->status & kScriptAnimPlaying)
-		debug(2, "kScriptAnimPlaying %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptAnimPlaying %d", scriptNumber);
 	if (script->status & kScriptSynchronize)
-		debug(2, "kScriptSynchronize %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptSynchronize %d", scriptNumber);
 	if (script->status & kScriptDialogRunning)
-		debug(2, "kScriptDialogRunning %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptDialogRunning %d", scriptNumber);
 	if (script->status & kScriptPaused)
-		debug(2, "kScriptPaused %d", scriptNumber);
+		debugC(2, kDebugScript, "kScriptPaused %d", scriptNumber);
 	if (script->status & kScriptTalking)
-		debug(2, "kScriptTalking %d", scriptNumber);
-#endif
+		debugC(2, kDebugScript, "kScriptTalking %d", scriptNumber);
 
 	if (script->status & kScriptPaused)
 		return;
@@ -381,17 +379,17 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 			This will be removed again once all opcodes are implemented.
 		*/
 		script->debugOpcode = opcode;
-		debug(2, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
+		debugC(2, kDebugScript, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
 		if (opcode >= _opcodes.size())
 			error("CometEngine::runScript() Invalid opcode %d", opcode);
-		debug(2, "%s", _opcodeNames[opcode].c_str());
+		debugC(2, kDebugScript, "%s", _opcodeNames[opcode].c_str());
 		(*_opcodes[opcode])(script);
 	}
 
 }
 
 void ScriptInterpreter::runAllScripts() {
-	debug(2, "ScriptInterpreter::runAllScripts()");
+	debugC(2, kDebugScript, "ScriptInterpreter::runAllScripts()");
 	// Run all scripts except the main script
 	for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++) {
 		runScript(scriptNumber);
@@ -441,11 +439,11 @@ Actor *ScriptInterpreter::getActor(int index) {
 /* Script functions */
 
 void ScriptInterpreter::o1_nop(Script *script) {
-	debug("Unimplemented opcode %02X", script->debugOpcode);
+	debugC(kDebugScript, "Unimplemented opcode %02X", script->debugOpcode);
 }
 
 void ScriptInterpreter::o1_actorSetDirection(Script *script) {
-	debug(2, "o1_actorSetDirection");
+	debugC(2, kDebugScript, "o1_actorSetDirection");
 
 	int direction = script->readByte();
 	script->actor()->status = 0;
