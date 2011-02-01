@@ -57,6 +57,8 @@ protected:
 class TextResource : public BaseResource {
 public:
 	TextResource();
+	~TextResource();
+
 	byte *getString(uint stringIndex);
 	void loadString(uint stringIndex, byte *buffer);
 	uint count() const { return _stringCount; }
@@ -73,6 +75,8 @@ protected:
 class FontResource : public BaseResource {
 public:
 	FontResource();
+	~FontResource();
+
 	void setColor(byte color);
 	void drawText(int x, int y, byte *destBuffer, byte *text, byte color);
 	int getTextWidth(byte *text);
@@ -125,6 +129,8 @@ struct AnimationFrameList {
 class AnimationResource : public BaseResource {
 public:
 	AnimationResource();
+	~AnimationResource();
+
 	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->width; }
 	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->height; }
 //protected://all public while in progress
@@ -146,6 +152,8 @@ public:
 class ScreenResource : public BaseResource {
 public:
 	ScreenResource();
+	~ScreenResource();
+
 	byte *getScreen() const { return _screen; }
 protected:
 	byte *_screen;
@@ -158,6 +166,8 @@ protected:
 class PaletteResource : public BaseResource {
 public:
 	PaletteResource();
+	~PaletteResource();
+
 	byte *getPalette() const { return _palette; }
 protected:
 	byte *_palette;
@@ -170,6 +180,8 @@ protected:
 class SoundResource : public BaseResource {
 public:
 	SoundResource();
+	~SoundResource();
+
 	Audio::SeekableAudioStream *makeAudioStream();
 protected:
 	byte *_data;
@@ -183,6 +195,8 @@ protected:
 class ScriptResource : public BaseResource {
 public:
 	ScriptResource();
+	~ScriptResource();
+
 	byte *getScript(int index);
 	int getCount();
 protected:

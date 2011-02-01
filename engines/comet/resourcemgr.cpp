@@ -36,10 +36,6 @@ namespace Comet {
 
 /* BaseResource */
 
-BaseResource::~BaseResource() {
-	free();
-}
-
 void BaseResource::load(Common::MemoryReadStream &stream) {
 	free();
 	internalLoad(stream);
