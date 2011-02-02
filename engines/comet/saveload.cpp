@@ -44,17 +44,15 @@
 
 namespace Comet {
 
-/* TODO:
-	- Saveload is working so far but only one slot is supported until the game menu is implemented
-	- Save with F7; Load with F9
-	- Maybe switch to SCUMM/Tinsel serialization approach?
-	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
-*/
+// TODO:
+//	- Saveload is working so far but only one slot is supported until the game menu is implemented
+//	- Save with F7; Load with F9
+//	- Maybe switch to SCUMM/Tinsel serialization approach?
+//	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
 
 #define SAVEGAME_VERSION 2 // < 1000 is dev version until in official SVN
 
 CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header) {
-
 	header.version = in->readUint32LE();
 	if (header.version > SAVEGAME_VERSION)
 		return kRSHEInvalidVersion;
@@ -64,7 +62,7 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 	while (descriptionLen--)
 		header.description += (char)in->readByte();
 
-	if (loadThumbnail && header.version > 1/*REMOVEME*/) {
+	if (loadThumbnail && header.version > 1 /*REMOVEME*/ ) {
 		header.thumbnail = new Graphics::Surface();
 		assert(header.thumbnail);
 		if (!Graphics::loadThumbnail(*in, *header.thumbnail)) {
@@ -106,7 +104,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint32LE(0); // flags
 
 	// Save...
-	/* TODO: This will need some refactoring so that each class saves its own stuff. */
+	// TODO: This will need some refactoring so that each class saves its own stuff.
 	
 	out->writeUint16LE(_moduleNumber);
 	out->writeUint16LE(_currentModuleNumber);
@@ -250,7 +248,7 @@ void CometEngine::loadgame(const char *filename) {
 	}
 
 	// Load...
-	/* TODO: This will need some refactoring so that each class loads its own stuff. */
+	// TODO: This will need some refactoring so that each class loads its own stuff.
 
 	int count;
 	

@@ -248,10 +248,9 @@ Common::Error CometEngine::run() {
 	_startupModuleNumber = 9;
 	_startupSceneNumber = 0;
 
-	/* Unused in Comet CD
-	_beamColor = 112;
-	_beamColorIncr = 1;
-	*/
+	// Unused in Comet CD
+	// _beamColor = 112;
+	// _beamColorIncr = 1;
 
 	_isSaveAllowed = true;
 	
@@ -472,7 +471,8 @@ Common::Error CometEngine::run() {
 	debug("_sceneNumber = %d; _moduleNumber = %d", _sceneNumber, _moduleNumber);
 	debug("_currentSceneNumber = %d; _currentModuleNumber = %d", _currentSceneNumber, _currentModuleNumber);
 
-	gameMainLoop();
+	if (!_quitGame)
+		gameMainLoop();
 
 	return Common::kNoError;
 }

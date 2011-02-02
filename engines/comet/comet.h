@@ -460,10 +460,11 @@ public:
 
 	// Beams
 	Common::Array<Beam> _beams;
-	/* Unused in Comet CD
-	byte _beamColor;
-	int _beamColorIncr;
-	*/
+	
+	// Unused in Comet CD
+	//byte _beamColor;
+	//int _beamColorIncr;
+
 	void addBeam(int x1, int y1, int x2, int y2);
 	void drawBeam(int x1, int y1, int x2, int y2);
 	void drawBeams();

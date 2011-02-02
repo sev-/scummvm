@@ -34,14 +34,14 @@
 
 namespace Comet {
 
-/* BaseResource */
+// BaseResource
 
 void BaseResource::load(Common::MemoryReadStream &stream) {
 	free();
 	internalLoad(stream);
 }
 
-/* PakResourceLoader */
+// PakResourceLoader
 
 PakResourceLoader::PakResourceLoader() {
 }
@@ -99,7 +99,7 @@ byte *PakResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	return data;
 }
 
-/* CC4ResourceLoader */
+// CC4ResourceLoader
 
 CC4ResourceLoader::CC4ResourceLoader() {
 }
@@ -134,7 +134,7 @@ byte *CC4ResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 	return data;
 }
 
-/* NarResourceLoader */
+// NarResourceLoader
 
 NarResourceLoader::NarResourceLoader() {
 }
@@ -181,7 +181,7 @@ byte *NarResourceLoader::load(const char *filename, int index, uint32 &dataSize)
 
 }
 
-/* ResourceManager */
+// ResourceManager
 
 ResourceManager::ResourceManager() {
 }
@@ -189,7 +189,7 @@ ResourceManager::ResourceManager() {
 ResourceManager::~ResourceManager() {
 }
 
-/* TextReader */
+// TextReader
 
 TextReader::TextReader(CometEngine *vm)
 	: _vm(vm), _cachedTextResource(NULL), _cachedTextResourceTableIndex(-1) {

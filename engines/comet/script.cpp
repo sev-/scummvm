@@ -33,7 +33,7 @@
 
 namespace Comet {
 
-/* Script */
+// Script
 
 byte Script::readByte() {
 	return code[ip++];
@@ -73,7 +73,7 @@ Actor *Script::actor() const {
 	return _inter->getActor(actorIndex);
 }
 
-/* ScriptInterpreter */
+// ScriptInterpreter
 
 ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {
 
@@ -375,9 +375,8 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 
 	while (!_yield) {
 		byte opcode = script->readByte();
-		/* DEBUG: So that o1_nop can print the opcode
-			This will be removed again once all opcodes are implemented.
-		*/
+		// DEBUG: So that o1_nop can print the opcode
+		//	This will be removed again once all opcodes are implemented.
 		script->debugOpcode = opcode;
 		debugC(2, kDebugScript, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
 		if (opcode >= _opcodes.size())
@@ -436,7 +435,7 @@ Actor *ScriptInterpreter::getActor(int index) {
 	return _vm->getActor(index);
 }
 
-/* Script functions */
+// Script functions
 
 void ScriptInterpreter::o1_nop(Script *script) {
 	debugC(kDebugScript, "Unimplemented opcode %02X", script->debugOpcode);

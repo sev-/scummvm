@@ -207,4 +207,4 @@ protected:
 
 } // End of namespace Comet
 
-#endif /* COMET_RESOURCE_H */
+#endif
