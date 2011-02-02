@@ -447,8 +447,6 @@ Common::Error CometEngine::run() {
 	}
 #endif
 
-#if 1
-
 	setMouseCursor(0, _mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {
@@ -457,13 +455,8 @@ Common::Error CometEngine::run() {
 			loadGameState(saveSlot);
 		}
 	} else {
-#if 0
 		// Play the intro
 		introMainLoop();
-#else
-		_moduleNumber = 9;
-		_sceneNumber = 9;
-#endif
 
 		waitForKeys();
 
@@ -480,7 +473,6 @@ Common::Error CometEngine::run() {
 	debug("_currentSceneNumber = %d; _currentModuleNumber = %d", _currentSceneNumber, _currentModuleNumber);
 
 	gameMainLoop();
-#endif
 
 	return Common::kNoError;
 }
