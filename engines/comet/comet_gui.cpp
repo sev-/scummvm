@@ -90,7 +90,7 @@ int Gui::runLoadMenu() {
 	return _guiSaveLoadMenu->run(false);
 }
 
-/* GuiInventory */
+// GuiInventory
 
 GuiInventory::GuiInventory(CometEngine *vm) : _vm(vm) {
 }
@@ -457,10 +457,9 @@ int GuiCommandBar::handleCommandBar() {
 
 	_vm->waitForKeys();
 
-	/* TODO ??
-	_menuStatus--;
-	loadSceneBackground();
-	*/
+	// TODO ??
+	//_menuStatus--;
+	//loadSceneBackground();
 
 	return 0;
 }

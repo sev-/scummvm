@@ -127,16 +127,13 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	loadSceneBackground();
 	loadSceneDecoration();
 
-	/*
-	memcpy(_screen->getScreen(), _sceneBackground, 64000);
-	drawSceneDecoration();
-	memcpy(_sceneBackground, _screen->getScreen(), 64000);
-	*/
+	//memcpy(_screen->getScreen(), _sceneBackground, 64000);
+	//drawSceneDecoration();
+	//memcpy(_sceneBackground, _screen->getScreen(), 64000);
 
-	/* TODO: Unused in Comet CD
-	if (screenCopyFlag != 0)
-		screen_c_1();
-	*/
+	// TODO: Unused in Comet CD
+	//if (screenCopyFlag != 0)
+	//	screen_c_1();
 	
 	if (!loadingGame)
 		initSceneDecorationBlockingRects();
@@ -221,12 +218,11 @@ void CometEngine::initData() {
 	_currentModuleNumber = 0;
 	_sceneNumber = 0;
 
-/*
-	_bounds.clear();
-	_bounds.push_back(Common::Point(0, 100));
-	_bounds.push_back(Common::Point(319, 100));
-	initSceneBoundsMap();
-*/
+	//_bounds.clear();
+	//_bounds.push_back(Common::Point(0, 100));
+	//_bounds.push_back(Common::Point(319, 100));
+	//initSceneBoundsMap();
+
 	resetVars();
 
 	resetActorsLife();
@@ -1294,8 +1290,8 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 		if (direction == 1 || direction == 3) {
 			_screen->enableTransitionEffect();
 		} else {
-			/* First draw the current scene incl. sprites the last time to
-			   a temporary buffer, then actually scroll it. */
+			// First draw the current scene incl. sprites the last time to
+			// a temporary buffer, then actually scroll it.
 			_screen->copyFromScreenResource(_sceneBackgroundResource);
 			buildSpriteDrawQueue();		
 			drawSpriteQueue();
@@ -1663,10 +1659,10 @@ void CometEngine::gameMainLoop() {
 		_system->delayMillis(40);//TODO
 
 		if (_loadgameRequested) {
-			/* TODO:
-				while (savegame_load() == 0);
-				savegame_load
-			*/
+			// TODO:
+			//	while (savegame_load() == 0);
+			//	savegame_load
+
 			_loadgameRequested = false;
 		}
 

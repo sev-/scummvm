@@ -32,7 +32,7 @@
 
 namespace Comet {
 
-/* Actor */
+// Actor
 
 void CometEngine::actorInit(int itemIndex, int16 animationSlot) {
 
@@ -498,12 +498,12 @@ void CometEngine::updateActorAnimation(Actor *actor) {
 
 		if (actor->animPlayFrameIndex == -1) {
 
-			/* NOTE: See note below, but here we bail out. */
+			// NOTE: See note below, but here we bail out.
 			if (actor->animIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims.size())
 				return;
 
-			/* NOTE: After watching the ritual the players' frame number is out-of-bounds.
-				I don't know yet why this happens, but setting it to 0 at least avoids a crash. */
+			// NOTE: After watching the ritual the players' frame number is out-of-bounds.
+			//	I don't know yet why this happens, but setting it to 0 at least avoids a crash.
 			if (actor->animFrameIndex >= (int)_animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames.size())
 				actor->animFrameIndex = 0;
 
@@ -574,7 +574,7 @@ AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) 
 	}
 }
 
-/* SceneObjects */
+// SceneObjects
 
 void CometEngine::resetActorsLife() {
 	for (int i = 1; i < 11; i++) {

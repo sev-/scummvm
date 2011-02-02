@@ -52,13 +52,11 @@ public:
 	Scene(CometEngine *vm);
 	~Scene();
 
-/*
-	void initSceneBackground();
-	void initStaticObjectRects();
-	void loadSceneBackground();
-	void loadStaticObjects();
-	void drawSceneForeground();
-*/
+	//void initSceneBackground();
+	//void initStaticObjectRects();
+	//void loadSceneBackground();
+	//void loadStaticObjects();
+	//void drawSceneForeground();
 
 	void initBounds(byte *data);
 

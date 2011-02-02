@@ -86,9 +86,9 @@ void TextResource::internalLoad(Common::MemoryReadStream &stream) {
 }
 
 byte *TextResource::getString(uint stringIndex) {
-	/*	We add 1 to the offset since that's where the actual text starts.
-		The leftover byte at the beginning is the '*'-character, which
-		serves as string terminator for the preceeding string. */
+	//	We add 1 to the offset since that's where the actual text starts.
+	//	The leftover byte at the beginning is the '*'-character, which
+	//	serves as string terminator for the preceeding string.
 	return _data + _stringOffsets[stringIndex] + 1;
 }
 
