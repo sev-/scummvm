@@ -32,7 +32,6 @@
 
 #include "comet/comet.h"
 
-
 namespace Comet {
 
 struct CometGameDescription {
@@ -52,6 +51,10 @@ uint32 CometEngine::getFeatures() const {
 	return _gameDescription->features;
 }
 
+Common::Language CometEngine::getLanguage() const {
+	return _gameDescription->desc.language;
+}
+
 Common::Platform CometEngine::getPlatform() const {
 	return _gameDescription->desc.platform;
 }
@@ -68,7 +71,6 @@ static const PlainGameDescriptor cometGames[] = {
 	{0, 0}
 };
 
-
 namespace Comet {
 
 using Common::GUIO_NONE;
@@ -76,13 +78,91 @@ using Common::GUIO_NOSPEECH;
 
 static const CometGameDescription gameDescriptions[] = {
 
+	// Shadow Of The Comet - English Version
 	{
-		// Comet English version
 		{
 			"comet",
 			"English",
-			AD_ENTRY1("r00.cc4", "f664b9cf60c9895f6f460d9432d45d85"),
+			{{"r00.cc4", 0, "f664b9cf60c9895f6f460d9432d45d85", -1},
+			 {  "e.cc4", 0, "494620a4e5c27ca0b350f9a8b07911e8", -1},
+			 AD_LISTEND},
 			Common::EN_ANY,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		0,
+		0,
+		0,
+		0
+	},
+
+	// Shadow Of The Comet - German Version
+	{
+		{
+			"comet",
+			"German",
+			{{"r00.cc4", 0, "f664b9cf60c9895f6f460d9432d45d85", -1},
+			 {  "d.cc4", 0, "84546199e56cb461cf6e130a052a72d8", -1},
+			 AD_LISTEND},
+			Common::DE_DEU,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		0,
+		0,
+		0,
+		0
+	},
+
+	// Shadow Of The Comet - Italian Version
+	{
+		{
+			"comet",
+			"Italian",
+			{{"r00.cc4", 0, "f664b9cf60c9895f6f460d9432d45d85", -1},
+			 {  "i.cc4", 0, "542351b71e06e8610b6cc145b3123db2", -1},
+			 AD_LISTEND},
+			Common::IT_ITA,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		0,
+		0,
+		0,
+		0
+	},
+
+	// Shadow Of The Comet - Spanish Version
+	{
+		{
+			"comet",
+			"Spanish",
+			{{"r00.cc4", 0, "f664b9cf60c9895f6f460d9432d45d85", -1},
+			 {  "s.cc4", 0, "95d64f493878dd222864371f16d29ca7", -1},
+			 AD_LISTEND},
+			Common::ES_ESP,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		0,
+		0,
+		0,
+		0
+	},
+
+	// Shadow Of The Comet - French Version
+	{
+		{
+			"comet",
+			"French",
+			{{"r00.cc4", 0, "f664b9cf60c9895f6f460d9432d45d85", -1},
+			 {  "t.cc4", 0, "3f9be4f98216f425c24fad1c3d306dcb", -1},
+			 AD_LISTEND},
+			Common::FR_FRA,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
