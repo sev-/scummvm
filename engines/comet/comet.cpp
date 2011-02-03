@@ -114,6 +114,8 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 	_iconSprite = 0;
 
 	_sceneDecorationSprite = 0;
+
+	_quitGame = false;
 }
 
 CometEngine::~CometEngine() {
