@@ -30,82 +30,97 @@
 
 namespace Comet {
 
-class GuiInventory {
+enum GuiPageIdent {
+	kGuiInventory,
+	kGuiCommandBar,
+	kGuiDiary,
+	kGuiTownMap,
+	kGuiMainMenu,
+	kGuiOptionsMenu,
+	kGuiPuzzle,
+	kGuiSaveMenu,
+	kGuiLoadMenu
+};
+
+class GuiPage {
 public:
-	GuiInventory(CometEngine *vm);
-	~GuiInventory();
-	int run();
+	GuiPage(CometEngine *vm) : _vm(vm) {};
+	virtual ~GuiPage() {};
+	virtual int run() = 0;
+	virtual void draw() = 0;
 protected:
 	CometEngine *_vm;
+};
+
+class GuiInventory : public GuiPage {
+public:
+	GuiInventory(CometEngine *vm) : GuiPage(vm) {};
+	int run();
+	void draw();
+protected:
 	byte _selectionColor;
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
 };
 
-class GuiDiary {
+class GuiDiary : public GuiPage {
 public:
-	GuiDiary(CometEngine *vm);
-	~GuiDiary();
+	GuiDiary(CometEngine *vm) : GuiPage(vm) {};
 	int run();
+	void draw();
 protected:
-	CometEngine *_vm;
 	int handleReadBook();
 	void drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor);
 	void bookTurnPage(bool turnDirection);
 	void bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex);
 };
 
-class GuiCommandBar {
+class GuiCommandBar : public GuiPage {
 public:
-	GuiCommandBar(CometEngine *vm);
-	~GuiCommandBar();
+	GuiCommandBar(CometEngine *vm) : GuiPage(vm) {};
 	int run();
+	void draw();
 protected:
-	CometEngine *_vm;
 	int _commandBarSelectedItem;
-	void drawCommandBar(int selectedItem, int animFrameCounter);
+	uint _animFrameCounter;
+	void drawCommandBar(int selectedItem);
 	int handleCommandBar();
 };
 
-class GuiTownMap {
+class GuiTownMap : public GuiPage {
 public:
-	GuiTownMap(CometEngine *vm);
-	~GuiTownMap();
+	GuiTownMap(CometEngine *vm) : GuiPage(vm) {};
 	int run();
-protected:
-	CometEngine *_vm;
+	void draw();
 };
 
-class GuiMainMenu {
+class GuiMainMenu : public GuiPage {
 public:
-	GuiMainMenu(CometEngine *vm);
-	~GuiMainMenu();
+	GuiMainMenu(CometEngine *vm) : GuiPage(vm) {};
 	int run();
+	void draw();
 protected:
-	CometEngine *_vm;
 	int _mainMenuSelectedItem;
 	void drawMainMenu(int selectedItem);
 };
 
-class GuiOptionsMenu {
+class GuiOptionsMenu : public GuiPage {
 public:
-	GuiOptionsMenu(CometEngine *vm);
-	~GuiOptionsMenu();
+	GuiOptionsMenu(CometEngine *vm) : GuiPage(vm) {};
 	int run();
+	void draw();
 protected:
-	CometEngine *_vm;
 	int _optionsMenuSelectedItem;
 	void drawOptionsMenu(int selectedItem, int musicVolumeDiv, int sampleVolumeDiv, 
 		int textSpeed, int gameSpeed, int language, uint animFrameCounter,
 		const GuiRectangle *guiRectangles);
 };
 
-class GuiPuzzle {
+class GuiPuzzle : public GuiPage {
 public:
-	GuiPuzzle(CometEngine *vm);
-	~GuiPuzzle();
+	GuiPuzzle(CometEngine *vm) : GuiPage(vm) {};
 	int run();
+	void draw();
 protected:
-	CometEngine *_vm;
 	uint16 _puzzleTiles[6][6];
 	AnimationResource *_puzzleSprite;
 	int _puzzleTableRow, _puzzleTableColumn;
@@ -124,15 +139,16 @@ struct SavegameItem {
 	Common::String filename;
 };
 
-class GuiSaveLoadMenu {
+class GuiSaveLoadMenu : public GuiPage {
 public:
-	GuiSaveLoadMenu(CometEngine *vm);
-	~GuiSaveLoadMenu();
-	int run(bool asSaveMenu);
+	GuiSaveLoadMenu(CometEngine *vm) : GuiPage(vm) {};
+	int run();
+	void draw();
+	void setAsSaveMenu(bool value) { _asSaveMenu = value; }
 protected:
-	CometEngine *_vm;
 	SavegameItem _savegames[10];
-	void drawSaveLoadMenu(int selectedItem, bool loadOrSave);
+	bool _asSaveMenu;
+	void drawSaveLoadMenu(int selectedItem);
 	void loadSavegamesList();
 	int handleEditSavegameDescription(int savegameIndex);
 	void drawSavegameDescription(Common::String &description, int savegameIndex);
@@ -142,17 +158,12 @@ class Gui {
 public:
 	Gui(CometEngine *vm);
 	~Gui();
-	int runInventory();
-	int runCommandBar();
-	int runDiary();
-	int runTownMap();
-	int runMainMenu();
-	int runOptionsMenu();
-	int runPuzzle();
-	int runSaveMenu();
-	int runLoadMenu();
+	int run(GuiPageIdent page);
 protected:
 	CometEngine *_vm;
+	GuiPage *_currPage;
+	Common::Array<GuiPage*> _stack;
+	byte *_gameScreen;
 	GuiInventory *_guiInventory;
 	GuiCommandBar *_guiCommandBar;
 	GuiDiary *_guiDiary;

@@ -41,6 +41,8 @@ Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiOptionsMenu = new GuiOptionsMenu(_vm);
 	_guiPuzzle = new GuiPuzzle(_vm);
 	_guiSaveLoadMenu = new GuiSaveLoadMenu(_vm);
+	_gameScreen = new byte[64000];
+	_currPage = NULL;
 }
 
 Gui::~Gui() {
@@ -52,51 +54,59 @@ Gui::~Gui() {
 	delete _guiOptionsMenu;
 	delete _guiPuzzle;
 	delete _guiSaveLoadMenu;
+	delete[] _gameScreen;
 }
 
-int Gui::runInventory() {
-	return _guiInventory->run();
+int Gui::run(GuiPageIdent page) {
+	debug("Gui::run(%d)", page);
+	int result;
+	if (_currPage)
+		_stack.push_back(_currPage);
+	else
+		_vm->_screen->copyToScreen(_gameScreen);		
+	switch (page) {
+	case kGuiInventory:
+		_currPage = _guiInventory;
+		break;
+	case kGuiCommandBar:
+		_currPage = _guiCommandBar;
+		break;
+	case kGuiDiary:
+		_currPage = _guiDiary;
+		break;
+	case kGuiTownMap:
+		_currPage = _guiTownMap;
+		break;
+	case kGuiMainMenu:
+		_currPage = _guiMainMenu;
+		break;
+	case kGuiOptionsMenu:
+		_currPage = _guiOptionsMenu;
+		break;
+	case kGuiPuzzle:
+		_currPage = _guiPuzzle;
+		break;
+	case kGuiSaveMenu:
+	case kGuiLoadMenu:
+		_guiSaveLoadMenu->setAsSaveMenu(page == kGuiSaveMenu);
+		_currPage = _guiSaveLoadMenu;
+		break;
+	}
+	result = _currPage->run();
+	if (_stack.size() > 0) {
+		_currPage = _stack.back();
+		_stack.pop_back();
+		_vm->_screen->copyFromScreen(_gameScreen);
+		for (Common::Array<GuiPage*>::iterator it = _stack.begin(); it != _stack.end(); it++) {
+			(*it)->draw();
+		}
+	} else
+		_currPage = NULL;
+	debug("Gui::run(%d) leave", page);
+	return result;
 }
 
-int Gui::runCommandBar() {
-	return _guiCommandBar->run();
-}
-
-int Gui::runDiary() {
-	return _guiDiary->run();
-}
-
-int Gui::runTownMap() {
-	return _guiTownMap->run();
-}
-
-int Gui::runMainMenu() {
-	return _guiMainMenu->run();
-}
-
-int Gui::runOptionsMenu() {
-	return _guiOptionsMenu->run();
-}
-
-int Gui::runPuzzle() {
-	return _guiPuzzle->run();
-}
-
-int Gui::runSaveMenu() {
-	return _guiSaveLoadMenu->run(true);
-}
-
-int Gui::runLoadMenu() {
-	return _guiSaveLoadMenu->run(false);
-}
-
-// GuiInventory
-
-GuiInventory::GuiInventory(CometEngine *vm) : _vm(vm) {
-}
-
-GuiInventory::~GuiInventory() {
-}
+/* GuiInventory */
 
 int GuiInventory::run() {
 
@@ -233,10 +243,14 @@ int GuiInventory::run() {
 
 	// TODO...
 
-	return 2 - inventoryStatus;
+	return 2 - inventoryStatus;;
+}
+
+void GuiInventory::draw() {
 }
 
 void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
+
 	const uint kMaxItemsOnScreen = 10;
 
 	uint xadd = 74, yadd = 64, itemHeight = 12;
@@ -270,19 +284,18 @@ void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, u
 	}
 }
 
-// GuiCommandBar
-
-GuiCommandBar::GuiCommandBar(CometEngine *vm) : _vm(vm), _commandBarSelectedItem(-1) {
-}
-
-GuiCommandBar::~GuiCommandBar() {
-}
+/* GuiCommandBar */
 
 int GuiCommandBar::run() {
 	return handleCommandBar();
 }
 
-void GuiCommandBar::drawCommandBar(int selectedItem, int animFrameCounter) {
+void GuiCommandBar::draw() {
+	drawCommandBar(_commandBarSelectedItem);
+}
+
+void GuiCommandBar::drawCommandBar(int selectedItem) {
+
 	const int x = 196;
 	const int y = 14;
 
@@ -298,10 +311,12 @@ void GuiCommandBar::drawCommandBar(int selectedItem, int animFrameCounter) {
 	}	
 
 	if (_vm->_currentInventoryItem >= 0)
-		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, _vm->_currentInventoryItem, x, y, animFrameCounter);
+		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, _vm->_currentInventoryItem, x, y, _animFrameCounter);
+	
 }
 
 int GuiCommandBar::handleCommandBar() {
+
 	const int kCBANone		= -1;
 	const int kCBAExit		= -2;
 	const int kCBAVerbTalk	= 0;
@@ -323,27 +338,24 @@ int GuiCommandBar::handleCommandBar() {
 	const int commandBarItemCount = 6; // Intentionally doesn't match actual count!
 
 	int commandBarStatus = 0;
-	int animFrameCounter = 0;
-
-	//_menuStatus++;
-
+	_animFrameCounter = 0;
+	
 	_vm->waitForKeys();
 
-	// TODO: copyScreens(vgaScreen, _sceneBackground);
-	// TODO: copyScreens(vgaScreen, _workScreen);
-	// TODO: setMouseCursor(1, 0);
+	_vm->setMouseCursor(1, NULL);
 
 	while (commandBarStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
-
+	
 		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
 		if (mouseSelectedItem != kCBANone)
 			_commandBarSelectedItem = mouseSelectedItem;
-
-		drawCommandBar(_commandBarSelectedItem,	animFrameCounter++);
+			
+		drawCommandBar(_commandBarSelectedItem);
+		_animFrameCounter++;		
 		_vm->_screen->update();
 		_vm->_system->delayMillis(40); // TODO
-
+		
 		_vm->handleEvents();
 
 		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
@@ -354,7 +366,7 @@ int GuiCommandBar::handleCommandBar() {
 		} else if (_vm->_leftButton && _commandBarSelectedItem != kCBANone) {
 			commandBarAction = _commandBarSelectedItem;
 		}
-
+		
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RIGHT:
 			if (_commandBarSelectedItem == commandBarItemCount) {
@@ -388,7 +400,7 @@ int GuiCommandBar::handleCommandBar() {
 			break;
 		case Common::KEYCODE_RETURN:
 			commandBarAction = _commandBarSelectedItem;
-			break;
+			break;			
 		case Common::KEYCODE_t:
 			commandBarAction = kCBAVerbTalk;
 			break;
@@ -411,14 +423,14 @@ int GuiCommandBar::handleCommandBar() {
 			commandBarAction = kCBAMap;
 			break;
 		default:
-			break;
+			break;			
 		}
-
+		
 		if (commandBarAction >= 0) {
-			drawCommandBar(commandBarAction, animFrameCounter);
+			drawCommandBar(commandBarAction);		
 			_vm->_screen->update();
 		}
-
+		
 		switch (commandBarAction) {
 		case kCBANone:
 			break;
@@ -442,37 +454,29 @@ int GuiCommandBar::handleCommandBar() {
 			commandBarStatus = 1;
 			break;
 		case kCBAInventory:
-			commandBarStatus = _vm->_gui->runInventory();
+			commandBarStatus = _vm->_gui->run(kGuiInventory);
 			break;
 		case kCBAMap:
 			commandBarStatus = _vm->handleMap();
 			break;
 		case kCBAMenu:
-			commandBarStatus = _vm->_gui->runMainMenu();//CHECKME
+			commandBarStatus = _vm->_gui->run(kGuiMainMenu);
 			break;
-		}
+		}								
 
 		_vm->waitForKeys();
+	
 	}
 
 	_vm->waitForKeys();
 
-	// TODO ??
-	//_menuStatus--;
-	//loadSceneBackground();
-
 	return 0;
 }
-
-// GuiMainMenu
-
-GuiMainMenu::GuiMainMenu(CometEngine *vm) : _vm(vm), _mainMenuSelectedItem(0) {
-}
-
-GuiMainMenu::~GuiMainMenu() {
-}
+	
+/* GuiMainMenu */
 
 int GuiMainMenu::run() {
+	
 	const int kMMANone		= -1;
 	const int kMMAExit		= -2;
 	const int kMMASave		= 0;
@@ -484,23 +488,20 @@ int GuiMainMenu::run() {
 		{136,  64, 184,  80, kMMASave},
 		{136,  87, 184, 103, kMMALoad},
 		{136, 110, 184, 126, kMMAOptions},
-		{136, 133, 184, 149, kMMAQuit}
-	};
+		{136, 133, 184, 149, kMMAQuit}};		
 
 	int mainMenuStatus = 0;
-
-	//_menuStatus++;
-
+	
 	_vm->waitForKeys();
 
 	while (mainMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, mainMenuAction = kMMANone;
-
+	
 		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_mouseX, _vm->_mouseY, 4, kMMANone);
 		if (mouseSelectedItem != kMMANone)
 			_mainMenuSelectedItem = mouseSelectedItem;
-
-		drawMainMenu(_mainMenuSelectedItem);
+			
+		drawMainMenu(_mainMenuSelectedItem);		
 		_vm->_screen->update();
 		_vm->_system->delayMillis(40); // TODO
 
@@ -514,7 +515,7 @@ int GuiMainMenu::run() {
 		} else if (_vm->_leftButton && _mainMenuSelectedItem != kMMANone) {
 			mainMenuAction = _mainMenuSelectedItem;
 		}
-
+		
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
 			if (_mainMenuSelectedItem == 3) {
@@ -547,7 +548,7 @@ int GuiMainMenu::run() {
 			break;
 		case Common::KEYCODE_RETURN:
 			mainMenuAction = _mainMenuSelectedItem;
-			break;
+			break;			
 		case Common::KEYCODE_s:
 			mainMenuAction = kMMASave;
 			break;
@@ -561,14 +562,14 @@ int GuiMainMenu::run() {
 			mainMenuAction = kMMAQuit;
 			break;
 		default:
-			break;
+			break;			
 		}
-
+		
 		if (mainMenuAction >= 0) {
-			drawMainMenu(_mainMenuSelectedItem);
+			drawMainMenu(_mainMenuSelectedItem);		
 			_vm->_screen->update();
 		}
-
+		
 		switch (mainMenuAction) {
 		case kMMANone:
 			break;
@@ -576,30 +577,32 @@ int GuiMainMenu::run() {
 			mainMenuStatus = 2;
 			break;
 		case kMMASave:
-			mainMenuStatus = _vm->_gui->runSaveMenu();
+			mainMenuStatus = _vm->_gui->run(kGuiSaveMenu);
 			break;
 		case kMMALoad:
-			mainMenuStatus = _vm->_gui->runLoadMenu();
-			debug("mainMenuStatus = %d", mainMenuStatus);
+			mainMenuStatus = _vm->_gui->run(kGuiLoadMenu);
 			break;
 		case kMMAOptions:
-			mainMenuStatus = _vm->_gui->runOptionsMenu();
+			mainMenuStatus = _vm->_gui->run(kGuiOptionsMenu);
 			break;
 		case kMMAQuit:
 			_vm->quitGame();
 			mainMenuStatus = 0;
 			break;
-		}
+		}								
 
 		_vm->waitForKeys();
+	
 	}
 
 	_vm->waitForKeys();
 
-	//_menuStatus--;
-	//loadSceneBackground();
 
 	return 0;
+}
+
+void GuiMainMenu::draw() {
+	drawMainMenu(_mainMenuSelectedItem);
 }
 
 void GuiMainMenu::drawMainMenu(int selectedItem) {
@@ -610,15 +613,10 @@ void GuiMainMenu::drawMainMenu(int selectedItem) {
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 11, x, y + selectedItem * itemHeight);
 }
 
-// GuiOptionsMenu
-
-GuiOptionsMenu::GuiOptionsMenu(CometEngine *vm) : _vm(vm), _optionsMenuSelectedItem(0) {
-}
-
-GuiOptionsMenu::~GuiOptionsMenu() {
-}
+/* GuiOptionsMenu */
 
 int GuiOptionsMenu::run() {
+
 	const int kOMANone			= -1;
 	const int kOMAExit			= -2;
 	const int kOMAMusicVol		= 0;
@@ -645,29 +643,26 @@ int GuiOptionsMenu::run() {
 		{127, 104, 164, 119, kOMATalkie},
 		{127, 124, 189, 139, kOMAGameSpeed},
 		{127, 144, 142, 159, kOMALanguage},
-		{127, 164, 142, 179, 5}, //???
+		{127, 164, 142, 179, 5},//???
 		{172, 165, 199, 178, kOMAOk},
 		{106,  64, 121,  79, kOMADefMusicVol},
 		{106,  84, 121,  99, kOMADefSoundVol},
 		{106, 104, 121, 119, kOMATalkie},
 		{106, 124, 121, 139, kOMADefGameSpeed},
 		{106, 144, 121, 159, kOMALanguage},
-		{106, 164, 121, 179, 35} //???
-	};
+		{106, 164, 121, 179, 35}};//???
 
 	int optionsMenuStatus = 0;
 	int musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language;
 	uint animFrameCounter = 0;
-
+	
 	// TODO: Get real values
 	musicVolumeDiv = 2;
 	sampleVolumeDiv = 2;
 	textSpeed = 2;
 	gameSpeed = 2;
 	language = 1;
-
-	//_menuStatus++;
-
+	
 	_vm->waitForKeys();
 
 	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
@@ -675,17 +670,17 @@ int GuiOptionsMenu::run() {
 		bool doWaitForKeys = true;
 
 		int16 mouseX = CLIP(_vm->_mouseX, 127, 189);
-
+	
 		mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_mouseX, _vm->_mouseY, 13, kOMANone);
 		if (mouseSelectedItem != kOMANone)
 			_optionsMenuSelectedItem = mouseSelectedItem;
-
+		
 		// TODO: Update music volume
-
+		
 		animFrameCounter++;
 		if (animFrameCounter == 32)
 			animFrameCounter = 0;
-
+		
 		selectedItemToDraw = _optionsMenuSelectedItem;
 		if (selectedItemToDraw == kOMADefMusicVol)
 			selectedItemToDraw = kOMAMusicVol;
@@ -709,7 +704,7 @@ int GuiOptionsMenu::run() {
 		} else if (_vm->_leftButton && _optionsMenuSelectedItem != kOMANone) {
 			optionsMenuAction = _optionsMenuSelectedItem;
 		}
-
+		
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
 			if (_optionsMenuSelectedItem == 5) {
@@ -770,16 +765,18 @@ int GuiOptionsMenu::run() {
 			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6) {
 				optionsMenuAction = kOMAExit;
 			}
-			break;
+			break;			
 		default:
-			break;
+			break;			
 		}
 
-		// if (mainMenuAction >= 0) {
-		// 	drawMainMenu(_mainMenuSelectedItem);
-		// 	_vm->_screen->update();
-		// }
-
+		/*		
+		if (mainMenuAction >= 0) {
+			drawMainMenu(_mainMenuSelectedItem);		
+			_vm->_screen->update();
+		}
+		*/
+				
 		switch (optionsMenuAction) {
 		case kOMANone:
 			break;
@@ -807,7 +804,7 @@ int GuiOptionsMenu::run() {
 			if (language < 4)
 				language++;
 			else
-				language = 0;
+				language = 0;				
 			break;
 		case kOMAOk:
 			optionsMenuStatus = 1;
@@ -859,18 +856,19 @@ int GuiOptionsMenu::run() {
 			if (language > 0)
 				language--;
 			break;
-		}
+		}								
 
 		if (doWaitForKeys)
 			_vm->waitForKeys();
+	
 	}
 
 	_vm->waitForKeys();
 
-	//_menuStatus--;
-	//loadSceneBackground();
-
 	return 0;
+}
+
+void GuiOptionsMenu::draw() {
 }
 
 void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int sampleVolumeDiv, 
@@ -932,13 +930,7 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 
 }
 
-// GuiTownMap
-
-GuiTownMap::GuiTownMap(CometEngine *vm) : _vm(vm) {
-}
-
-GuiTownMap::~GuiTownMap() {
-}
+/* GuiTownMap */
 
 int GuiTownMap::run() {
 
@@ -962,12 +954,13 @@ int GuiTownMap::run() {
 		{0,  0}, {0, 20}, {0, 16}, {0, 12}, {0, 11},
 		{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
 	};
+	
+	// TODO: Use Common::Rect
+	const int16 mapRectX1 = 64, mapRectX2 = 269;
+	const int16 mapRectY1 = 65, mapRectY2 = 187;
+	const int16 cursorAddX = 8, cursorAddY = 8;
 
 	int mapStatus = 0;
-	// TODO: Use Common::Rect
-	int16 mapRectX1 = 64, mapRectX2 = 269;
-	int16 mapRectY1 = 65, mapRectY2 = 187;
-	int16 cursorAddX = 8, cursorAddY = 8;
 	// Init map status values from script
 	uint16 sceneBitMaskStatus = _vm->_scriptVars[2];
 	uint16 sceneStatus1 = _vm->_scriptVars[3];
@@ -978,14 +971,12 @@ int GuiTownMap::run() {
 	// seg002:33FB
 	cursorX = mapPoints[locationNumber].x;
 	cursorY = mapPoints[locationNumber].y;
-
+	
 	_vm->_system->warpMouse(cursorX, cursorY);
-
-	// TODO: Copy vga screen to work screen...
 
 	_vm->waitForKeys();
 
-	// seg002:344D
+	// seg002:344D	
 	while (mapStatus == 0 && !_vm->_quitGame) {
 
 		int16 currMapLocation, selectedMapLocation;
@@ -1011,22 +1002,22 @@ int GuiTownMap::run() {
 			cursorX = MIN(cursorX + cursorAddX, mapRectX2 - 1);
 			break;
 		default:
-			break;
-		}
-
+			break;			
+		}						
+		
 		if (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY)
 			_vm->_system->warpMouse(cursorX, cursorY);	
 
 		// seg002:3545
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
-
+		
 		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
 			mapStatus = 1;
 		}
-
+				
 		// seg002:3572
 
-		currMapLocation = -1;
+		currMapLocation = -1;	
 		selectedMapLocation = -1;
 
 		for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
@@ -1038,7 +1029,7 @@ int GuiTownMap::run() {
 				break;
 			}
 		}
-
+		
 		if (currMapLocation != -1) {
 			byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
 			_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
@@ -1073,25 +1064,26 @@ int GuiTownMap::run() {
 		_vm->_system->delayMillis(40); // TODO
 
 	}
-
+	
 	_vm->waitForKeys();
 
 	return 1;
 }
 
-// GuiDiary
-
-GuiDiary::GuiDiary(CometEngine *vm) : _vm(vm) {
+void GuiTownMap::draw() {
 }
 
-GuiDiary::~GuiDiary() {
-}
+/* GuiDiary */
 
 int GuiDiary::run() {
 	return handleReadBook();
 }
 
+void GuiDiary::draw() {
+}
+
 int GuiDiary::handleReadBook() {
+
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
 	int bookStatus = 0;
 
@@ -1123,11 +1115,12 @@ int GuiDiary::handleReadBook() {
 			}
 			// TODO: Check mouse rectangles
 			_vm->handleEvents();
-			_vm->_system->delayMillis(20); // TODO: Adjust or use fps counter
+			_vm->_screen->update();
+			_vm->_system->delayMillis(40); // TODO: Adjust or use fps counter
 		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0 && !_vm->_quitGame);
-
+		
 		// TODO: Handle mouse rectangles
-
+		
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RETURN:
 			bookStatus = 1;
@@ -1155,41 +1148,44 @@ int GuiDiary::handleReadBook() {
 			break;
 		}
 
-		_vm->waitForKeys();
+  		_vm->waitForKeys();
+
 	}
 
 	_vm->waitForKeys();
 	_vm->stopVoice();
-	_vm->_textActive = false;
+ 	_vm->_textActive = false;
 
 	_vm->setVoiceFileIndex(_vm->_narFileIndex);
 
 	return 2 - bookStatus;
+
 }
 
 void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
+
 	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
 	char pageNumberString[10];
 	int pageNumberStringWidth;
 
 	byte *pageText = _vm->_textReader->getString(2, pageTextIndex);
-
+	
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
 	if (pageTextIndex < pageTextMaxIndex)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 37, 0, 0);
-
+		
 	_vm->_screen->setFontColor(58);
 
 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 1);
 	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString);
 	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
-
-	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
+	
+ 	snprintf(pageNumberString, 10, "- %d -", pageTextIndex * 2 + 2);
 	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString);
 	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString);
-
+	
 	_vm->_screen->setFontColor(fontColor);
-
+	
 	while (*pageText != 0 && *pageText != '*') {
 		x = MAX(xadd + (106 - _vm->_screen->getTextWidth(pageText)) / 2, 0);
 		_vm->_screen->drawText(x, yadd + lineNumber * 10, pageText);
@@ -1201,6 +1197,7 @@ void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontCo
 			pageText++;
 		pageText++;
 	}
+
 }
 
 void GuiDiary::bookTurnPage(bool turnDirection) {
@@ -1237,16 +1234,13 @@ void GuiDiary::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int
 	}
 }
 
-// GuiPuzzle
-
-GuiPuzzle::GuiPuzzle(CometEngine *vm) : _vm(vm) {
-}
-
-GuiPuzzle::~GuiPuzzle() {
-}
+/* GuiPuzzle */
 
 int GuiPuzzle::run() {
 	return runPuzzle();
+}
+
+void GuiPuzzle::draw() {
 }
 
 int GuiPuzzle::runPuzzle() {
@@ -1344,6 +1338,7 @@ int GuiPuzzle::runPuzzle() {
 		_vm->_system->delayMillis(40); // TODO
 
 		if (_vm->_keyScancode != Common::KEYCODE_INVALID) {
+			
 			bool selectionChanged = false;
 
 			switch (_vm->_keyScancode) {
@@ -1372,9 +1367,9 @@ int GuiPuzzle::runPuzzle() {
 				}
 				break;
 			default:
-				break;
-			}
-
+				break;			
+			}						
+			
 			if (selectionChanged) {
 				selectedTile = 20;
 				if (_puzzleTableColumn == 0 && _puzzleTableRow == 0)
@@ -1401,10 +1396,12 @@ int GuiPuzzle::runPuzzle() {
 					_puzzleCursorX = (_puzzleTableColumn - 1) * 24 + 130;
 					_puzzleCursorY = (_puzzleTableRow - 1) * 24 + 71;
 				}
-
+				
 				// Mouse warp to selected tile
 				_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+
 			}
+
 		}
 
 		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
@@ -1427,12 +1424,14 @@ int GuiPuzzle::runPuzzle() {
 				puzzleStatus = 2;
 		} else {
 			_vm->waitForKeys();
-		}
-	}
+		}				
+			
+	}		
 
 	delete _puzzleSprite;
 
 	return puzzleStatus == 2 ? 2 : 0;
+
 }
 
 void GuiPuzzle::drawFinger() {
@@ -1440,11 +1439,10 @@ void GuiPuzzle::drawFinger() {
 }
 
 void GuiPuzzle::drawField() {
-	// TODO ??: memcpy(_sceneBackground, _screen->getScreen(), 320 * 200);
 	_vm->_screen->drawAnimationElement(_puzzleSprite, 17, 0, 0);
 	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
 		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {
-			drawTile(columnIndex, rowIndex, 0, 0);
+			drawTile(columnIndex, rowIndex, 0, 0);		
 		}
 	}
 	drawFinger();
@@ -1461,7 +1459,7 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
 			_vm->_screen->setClipY(60, 156);
 			for (int rowIndex = 1; rowIndex <= 5; rowIndex++) {
-				drawTile(columnIndex, rowIndex, 0, -yOffs);
+				drawTile(columnIndex, rowIndex, 0, -yOffs);				
 			}
 			_vm->_screen->setClipY(0, 199);
 			drawFinger();
@@ -1477,7 +1475,7 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
 			_vm->_screen->setClipY(60, 156);
 			for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
-				drawTile(columnIndex, rowIndex, 0, yOffs);
+				drawTile(columnIndex, rowIndex, 0, yOffs);				
 			}
 			_vm->_screen->setClipY(0, 199);
 			drawFinger();
@@ -1497,7 +1495,7 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
 			_vm->_screen->setClipX(120, 215);
 			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
-				drawTile(columnIndex, rowIndex, -xOffs, 0);
+				drawTile(columnIndex, rowIndex, -xOffs, 0);				
 			}
 			_vm->_screen->setClipX(0, 319);
 			drawFinger();
@@ -1513,7 +1511,7 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
 			_vm->_screen->setClipX(120, 215);
 			for (int columnIndex = 0; columnIndex <= 4; columnIndex++) {
-				drawTile(columnIndex, rowIndex, xOffs, 0);
+				drawTile(columnIndex, rowIndex, xOffs, 0);				
 			}
 			_vm->_screen->setClipX(0, 319);
 			drawFinger();
@@ -1532,21 +1530,15 @@ bool GuiPuzzle::testIsSolved() {
 	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
 		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {
 			if (_puzzleTiles[columnIndex][rowIndex] == (rowIndex - 1) * 4 + (columnIndex - 1))
-				matchingTiles++;
+				matchingTiles++;					
 		}
 	}
 	return matchingTiles == 16;
 }
 
-// GuiSaveLoadMenu
+/* GuiSaveLoadMenu */
 
-GuiSaveLoadMenu::GuiSaveLoadMenu(CometEngine *vm) : _vm(vm) {
-}
-
-GuiSaveLoadMenu::~GuiSaveLoadMenu() {
-}
-
-int GuiSaveLoadMenu::run(bool asSaveMenu) {
+int GuiSaveLoadMenu::run() {
 
 	static const GuiRectangle saveLoadMenuRects[] = {
 		{93,  62, 232,  73, 0},
@@ -1558,15 +1550,12 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 		{93, 134, 232, 145, 6},
 		{93, 146, 232, 157, 7},
 		{93, 158, 232, 169, 8},
-		{93, 170, 232, 181, 9}
-	};
+		{93, 170, 232, 181, 9}};
 
 	int saveLoadMenuStatus = 0, selectedItem = 0;
-
-	//_menuStatus++;
-
+	
 	loadSavegamesList();
-
+	
 	_vm->waitForKeys();
 
 	while (saveLoadMenuStatus == 0 && !_vm->_quitGame) {
@@ -1576,7 +1565,7 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 		if (mouseSelectedItem != -1)
 			selectedItem = mouseSelectedItem;
 
-		drawSaveLoadMenu(selectedItem, asSaveMenu);
+		drawSaveLoadMenu(selectedItem);		
 
 		_vm->_screen->update();
 		_vm->_system->delayMillis(40); // TODO
@@ -1600,16 +1589,16 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 			if (selectedItem < 9)
 				selectedItem++;
 			else
-				selectedItem = 0;
+				selectedItem = 0;				
 			break;
 		case Common::KEYCODE_UP:
 			if (selectedItem > 0)
 				selectedItem--;
 			else
-				selectedItem = 9;
+				selectedItem = 9;				
 			break;
 		default:
-			if (asSaveMenu && _vm->_keyScancode >= Common::KEYCODE_SPACE && _vm->_keyScancode <= Common::KEYCODE_z) {
+			if (_asSaveMenu && _vm->_keyScancode >= Common::KEYCODE_SPACE && _vm->_keyScancode <= Common::KEYCODE_z) {
 				if (handleEditSavegameDescription(selectedItem) == 1)
 					saveLoadMenuStatus = 1;
 			}
@@ -1617,15 +1606,16 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 		}
 
 		// When loading only allow to select entries which are actually occupied...
-		if (saveLoadMenuStatus == 1 && !asSaveMenu && _savegames[selectedItem].description.size() == 0) {
+		if (saveLoadMenuStatus == 1 && !_asSaveMenu && _savegames[selectedItem].description.size() == 0) {
 			saveLoadMenuStatus = 0;
 		}
 
 		_vm->waitForKeys();
+		
 	}
 
 	if (saveLoadMenuStatus == 1) {
-		if (asSaveMenu) {
+		if (_asSaveMenu) {
 			debug("Save: %d", selectedItem);
 			if (_savegames[selectedItem].filename.size() == 0)
 				_savegames[selectedItem].filename = Common::String::format("%s.%03d", _vm->getTargetName().c_str(), selectedItem);
@@ -1637,26 +1627,34 @@ int GuiSaveLoadMenu::run(bool asSaveMenu) {
 	}
 
 	return 2 - saveLoadMenuStatus;
+
 }
 
-void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem, bool loadOrSave) {
+void GuiSaveLoadMenu::draw() {
+}
+
+void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem) {
+
 	const int x = 95;
 	const int y = 64;
 	const int itemHeight = 12;
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, loadOrSave ? 14 : 15, 0, 0);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _asSaveMenu ? 14 : 15, 0, 0);
 
 	for (int itemIndex = 0; itemIndex < 10; itemIndex++) {
 		drawSavegameDescription(_savegames[itemIndex].description, itemIndex);
 	}
 
 	_vm->_screen->frameRect(x - 2, y + selectedItem * itemHeight - 2, x + 138, y + selectedItem * itemHeight + 9, 119);
-}
 
+}
+	
 void GuiSaveLoadMenu::loadSavegamesList() {
+	debug("GuiSaveLoadMenu::loadSavegamesList()");
+
 	for (int i = 0; i < 10; i++) {
-		_savegames[i].description = "";
-		_savegames[i].filename = "";
+		_savegames[i].description.clear();
+		_savegames[i].filename.clear();
 	}
 
 	Common::SaveFileManager *saveFileMan = g_system->getSavefileManager();
@@ -1682,12 +1680,10 @@ void GuiSaveLoadMenu::loadSavegamesList() {
 			delete in;
 		}
 	}
+
 }
 
 int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
-	//const int x = 95;
-	//const int y = 64;
-	//const int itemHeight = 12;
 
 	int editSavegameDescriptionStatus = 0;
 	Common::String description = _savegames[savegameIndex].description;
@@ -1701,16 +1697,16 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 			drawSavegameDescription(description, savegameIndex);
 			redrawSavegameDescription = false;
 		}
-
+	
 		_vm->_screen->update();
 		_vm->_system->delayMillis(40); // TODO
-
+	
 		if (_vm->_leftButton)
 			editSavegameDescriptionStatus = 1;
 		else if (_vm->_rightButton)
 			editSavegameDescriptionStatus = 2;
 
-		// FIXME: Local event polling since handleEvents seems to drop characters for some reason...
+		// Local event polling since handleEvents seems to drop characters for some reason...	
 		while (g_system->getEventManager()->pollEvent(event)) {
 			switch (event.type) {
 			case Common::EVENT_KEYDOWN:
@@ -1751,8 +1747,8 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 				break;
 			case Common::EVENT_RTL:
 			case Common::EVENT_QUIT:
-				_vm->_quitGame = true;
-				break;
+				 _vm->_quitGame = true;
+				 break;
 			default:
 				break;
 			}
@@ -1765,6 +1761,7 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 	}
 
 	return editSavegameDescriptionStatus;
+
 }
 
 void GuiSaveLoadMenu::drawSavegameDescription(Common::String &description, int savegameIndex) {

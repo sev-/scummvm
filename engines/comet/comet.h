@@ -92,9 +92,9 @@ enum {
 	kCollisionDisabled	= 8
 };
 
-#define COLLISION(type, index) ((type << 8) | (index))
-#define COLLISION_TYPE(collision) ((collision >> 8) & 0xFF)
-#define COLLISION_INDEX(collision) (collision & 0xFF)
+#define COLLISION(type, index) (((type) << 8) | (index))
+#define COLLISION_TYPE(collision) (((collision) >> 8) & 0xFF)
+#define COLLISION_INDEX(collision) ((collision) & 0xFF)
 
 struct Actor {
 	int16 x, y;
@@ -149,9 +149,6 @@ enum {
 };
 
 class CometEngine : public Engine {
-	// FIXME: I don't need no friends
-//	friend class Script;
-	friend class AnimationResource;
 protected:
 	Common::Error run();
 	void shutdown();
@@ -197,7 +194,6 @@ public:
 
 	ScreenResource *_sceneBackgroundResource;
 
-	//byte *_sceneBackground;
 	byte *_tempScreen;
 
 	TextReader *_textReader;
@@ -450,7 +446,6 @@ public:
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
 
-	int updateMap();
 	int handleMap();
 
 	void playMusic(int musicNumber);
@@ -469,8 +464,6 @@ public:
 	void drawBeam(int x1, int y1, int x2, int y2);
 	void drawBeams();
 	
-	int _menuStatus;
-
 	void initSystemVars();
 
 	void introMainLoop();

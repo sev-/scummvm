@@ -1090,7 +1090,7 @@ void CometEngine::handleKeyInput() {
 		break;
 	case Common::KEYCODE_o:
 		setMouseCursor(1, NULL);
-		_gui->runInventory();
+		_gui->run(kGuiInventory);
 		waitForKeys();
 		break;
 	case Common::KEYCODE_u:
@@ -1099,7 +1099,7 @@ void CometEngine::handleKeyInput() {
 		break;
 	case Common::KEYCODE_d:
 		setMouseCursor(1, NULL);
-		_gui->runMainMenu();
+		_gui->run(kGuiMainMenu);
 		waitForKeys();
 		break;
 	case Common::KEYCODE_m:
@@ -1108,7 +1108,7 @@ void CometEngine::handleKeyInput() {
 		break;
 	case Common::KEYCODE_i:
 		setMouseCursor(1, NULL);
-		_gui->runDiary();
+		_gui->run(kGuiDiary);
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
@@ -1121,7 +1121,7 @@ void CometEngine::handleKeyInput() {
 	default:
 		if (Common::KEYCODE_TAB == _keyScancode || _rightButton) {
 			setMouseCursor(1, NULL);
-			_gui->runCommandBar();
+			_gui->run(kGuiCommandBar);
 		}
 		break;
 	}
@@ -1537,7 +1537,7 @@ void CometEngine::checkCurrentInventoryItem() {
 
 	// Check if the player wants to read the notebook
 	if (_inventoryItemStatus[0] == 2) {
-		_gui->runDiary();
+		_gui->run(kGuiDiary);
 		_inventoryItemStatus[0] = 1;
 	}
 }
@@ -1600,7 +1600,7 @@ void CometEngine::gameMainLoop() {
 
 		if (_scriptVars[9] == 1) {
 			// TODO: Copy vga screen to scene background
-			_scriptVars[9] = _gui->runPuzzle();
+			_scriptVars[9] = _gui->run(kGuiPuzzle);
 			loadSceneBackground();
 		}
 
@@ -1620,7 +1620,7 @@ void CometEngine::gameMainLoop() {
 			_debugRectangles = !_debugRectangles;
 			break;
 		case Common::KEYCODE_F1:
-			_gui->runPuzzle();
+			_gui->run(kGuiPuzzle);
 			break;
 		case Common::KEYCODE_F7:
 			savegame("comet.000", "Quicksave");
@@ -1711,12 +1711,12 @@ int CometEngine::handleMap() {
 			((_currentSceneNumber >= 0 && _currentSceneNumber <= 22) ||
 			(_currentSceneNumber >= 30 || _currentSceneNumber <= 52) ||
 			(_currentSceneNumber >= 60 || _currentSceneNumber <= 82))) {
-			mapResult = _gui->runTownMap();
+			mapResult = _gui->run(kGuiTownMap);
 			_inventoryItemStatus[0] = 1;
 		}
 
 		if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
-			mapResult = _gui->runTownMap();
+			mapResult = _gui->run(kGuiTownMap);
 			_inventoryItemStatus[0] = 1;
 		}
 		
