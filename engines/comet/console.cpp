@@ -23,6 +23,8 @@
  *
  */
 
+#include "comet/resourcemgr.h"
+
 #include "comet/console.h"
 #include "comet/comet.h"
 
@@ -34,6 +36,7 @@ bool debugShowActorNum;
 
 CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
 	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
+	DCmd_Register("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
 
 	debugShowActorNum = false;
 }
@@ -44,6 +47,33 @@ CometConsole::~CometConsole() {
 bool CometConsole::Cmd_ShowActorNum(int argc, const char **argv) {
 	DebugPrintf("Enabling Display of Actor Number...\n");
 	debugShowActorNum = true;
+	return true;
+}
+
+bool CometConsole::Cmd_DumpResource(int argc, const char **argv) {
+	if (argc != 3) {
+		DebugPrintf("Usage: dumpResource <Pak Name> <Resource Number>\n");
+		return true;
+	}
+
+	Common::String pakName = Common::String(argv[1]);
+	pakName += ".pak";
+
+	uint32 resourceNum = atoi(argv[2]);
+
+	uint32 size = 0;
+	byte *buf = _vm->_res->loadRawFromPak(pakName.c_str(), resourceNum, &size);
+
+	Common::String outFileName;
+	outFileName = outFileName.format("%s-%03d.dump", argv[1], resourceNum);
+	Common::DumpFile *outFile = new Common::DumpFile();
+	outFile->open(outFileName);
+	outFile->write(buf, size);
+	outFile->flush();
+	outFile->close();
+	delete outFile;
+
+	free(buf);
 	return true;
 }
 

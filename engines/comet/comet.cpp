@@ -168,16 +168,6 @@ Common::Error CometEngine::run() {
 
 	_console = new CometConsole(this);
 
-#if 0
-	{
-		int size = getPakSize("A00.PAK", 12);
-		byte *buf = loadFromPak("A00.PAK", 12);
-		FILE *x = fopen("SEAGULLS.VA2", "wb");
-		fwrite(buf, size, 1, x);
-		fclose(x);
-	}
-#endif
-
 	_music = new MusicPlayer(this);
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
@@ -284,7 +274,7 @@ Common::Error CometEngine::run() {
 #endif
 
 #if 0
-	static byte soundFramesData[] = {3, 3, 0};
+	byte soundFramesData[] = {3, 3, 0};
 	_screen->setFullPalette(_ctuPal);
 	strcpy(AName, "A00.PAK");
 	playCutscene(38, 0, 32000, 3, 1, soundFramesData);
