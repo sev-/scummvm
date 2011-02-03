@@ -205,6 +205,7 @@ Common::Error CometEngine::run() {
 	_gui = new Gui(this);
 
 	_soundResource = new SoundResource();
+	_currSoundResourceIndex = -1;
 
 	// Init vars
 	_gameLoopCounter = 0;
@@ -282,10 +283,10 @@ Common::Error CometEngine::run() {
 
 	_system->showMouse(true);
 
-#if 0
+#if 1
 	// Test the puzzle
-	_screen->setFullPalette(_ctuPal);
-	runPuzzle();
+	_screen->setFullPalette(_gamePalette);
+	_gui->run(kGuiPuzzle);
 #endif
 
 #if 0

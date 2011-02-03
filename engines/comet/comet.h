@@ -279,6 +279,7 @@ public:
 
 	Audio::SoundHandle _sampleHandle;
 	SoundResource *_soundResource;
+	int _currSoundResourceIndex;
 	int _currNarFileIndex;
 	Common::String _narFilename;
 
