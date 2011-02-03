@@ -814,6 +814,7 @@ void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2
 }
 
 int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
+	debugC(kDebugText, "Screen::drawText3(x: %d, y: %d, byte *text, color: %d, flag: %d)", x, y, color, flag);
 	int tw = 0, linesDrawn = 0, textX = x, textY = y;
 	if (textY < 3)
 		textY = 3;
@@ -833,11 +834,13 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 			textWidth2 = 1;//HACK
 		}
 		if (textWidth2 != 0) {
+			debugC(kDebugText, "\tdrawText(textX: %d, textY: %d, text: \"%s\"", textX, textY, text);
 			drawText(textX, textY, text);
 			textY += 8;
 		}
 		text += strlen((char*)text) + 1;
 	}
+	debugC(kDebugText, "End of Screen::drawText3()");
 	return textY;
 }
 
