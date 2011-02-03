@@ -1579,14 +1579,6 @@ void CometEngine::gameMainLoop() {
 	while (!_quitGame) {
 		handleEvents();
 
-#if 0
-		// Test the "beam-room"
-		_scriptVars[116] = 1;
-		_scriptVars[139] = 1;
-		_moduleNumber = 7;
-		_sceneNumber = 4;
-#endif
-
 		if (_currentModuleNumber == 7 && _currentSceneNumber == 1 && _paletteStatus == 0) {
 			memcpy(_backupPalette, _gamePalette, 768);
 			memcpy(_gamePalette, _flashbakPal, 768);
@@ -1617,6 +1609,11 @@ void CometEngine::gameMainLoop() {
 
 		if (_quitGame)
 			return;
+
+		if (debugTestPuzzle) {
+			_gui->run(kGuiPuzzle);
+			debugTestPuzzle = false;
+		}
 
 		// Debugging keys
 		switch (_keyScancode) {
