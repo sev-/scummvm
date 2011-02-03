@@ -43,6 +43,7 @@ private:
 	CometEngine *_vm;
 
 	bool Cmd_ShowActorNum(int argc, const char **argv);
+	bool Cmd_DumpResource(int argc, const char **argv);
 };
 
 } // End of namespace Comet
