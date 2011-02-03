@@ -459,8 +459,13 @@ Common::Error CometEngine::run() {
 			loadGameState(saveSlot);
 		}
 	} else {
-		// Play the intro
-		introMainLoop();
+		if (ConfMan.getInt("boot_param") != 1) {
+			// Play the intro
+			introMainLoop();
+		} else {
+			_moduleNumber = 9;
+			_sceneNumber = 9;
+		}
 
 		waitForKeys();
 
