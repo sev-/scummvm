@@ -289,14 +289,6 @@ Common::Error CometEngine::run() {
 #endif
 
 #if 0
-	_scriptVars[2] = 0xFFFF;
-	_scriptVars[3] = 0;
-	_scriptVars[4] = 1;
-	_screen->setFullPalette(_ctuPal);
-	updateMap();
-#endif
-
-#if 0
 	byte soundFramesData[] = {3, 3, 0};
 	_screen->setFullPalette(_ctuPal);
 	strcpy(AName, "A00.PAK");
