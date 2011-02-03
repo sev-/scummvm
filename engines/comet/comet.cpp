@@ -175,10 +175,33 @@ Common::Error CometEngine::run() {
 	_scene = new Scene(this);
 	_animationMan = new AnimationManager(this);
 	_res = new ResourceManager();
-	
+
 	_textReader = new TextReader(this);
-	_textReader->setTextFilename("E.CC4"); // TODO: Use language-specific filename
-	
+	Common::String langText;
+	switch (getLanguage()) {
+		case Common::EN_ANY: // English
+			langText += "E";
+			break;
+		case Common::DE_DEU: // German
+			langText += "D";
+			break;
+		case Common::IT_ITA: // Italian
+			langText += "I";
+			break;
+		case Common::ES_ESP: // Spanish
+			langText += "S";
+			break;
+		case Common::FR_FRA: // French
+			langText += "T";
+			break;
+		default:
+			warning("Unknown Text Language - Defaulting to English");
+			langText += "E";
+			break;
+	}
+	langText += ".CC4";
+	_textReader->setTextFilename(langText.c_str());  
+
 	_gui = new Gui(this);
 
 	_soundResource = new SoundResource();
@@ -222,13 +245,13 @@ Common::Error CometEngine::run() {
 	_mouseCursorDirection = 0;
 	_leftButton = false;
 	_rightButton = false;
-	
+
 	_cmdLook = false;
 	_cmdGet = false;
 	_cmdTalk = false;
-	
+
 	_currentInventoryItem = -1;
-	
+
 	_animIndex = -1;
 
 	initSystemVars();
