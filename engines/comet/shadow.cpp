@@ -1325,7 +1325,11 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 		if (_mixer->isSoundHandleActive(_sampleHandle))
 			_mixer->stopHandle(_sampleHandle);
 	} else if (!_talkieSpeechPlaying && !_mixer->isSoundHandleActive(_sampleHandle)) {
-		_res->loadFromPak(_soundResource, "SMP.PAK", sampleIndex);
+		if (sampleIndex != _currSoundResourceIndex) {
+			// Only load the sample when neccessary
+			_res->loadFromPak(_soundResource, "SMP.PAK", sampleIndex);
+			_currSoundResourceIndex = sampleIndex;
+		}
 		_mixer->playStream(Audio::Mixer::kSFXSoundType, &_sampleHandle, loopCount > 1
 			? makeLoopingAudioStream(_soundResource->makeAudioStream(), loopCount)
 			: _soundResource->makeAudioStream());

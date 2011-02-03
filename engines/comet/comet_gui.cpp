@@ -1408,16 +1408,16 @@ int GuiPuzzle::runPuzzle() {
 			puzzleStatus = 1;
 		} else if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
 			if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				// TODO: playSampleFlag, play sample
+				_vm->playSample(75, 1);
 				moveTileRow(_puzzleTableRow, -1);
 			} else if (_puzzleTableColumn == 5 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				// TODO: playSampleFlag, play sample
+				_vm->playSample(75, 1);
 				moveTileRow(_puzzleTableRow, 1);
 			} else if (_puzzleTableRow == 0 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				// TODO: playSampleFlag, play sample
+				_vm->playSample(75, 1);
 				moveTileColumn(_puzzleTableColumn, -1);
 			} else if (_puzzleTableRow == 5 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				// TODO: playSampleFlag, play sample
+				_vm->playSample(75, 1);
 				moveTileColumn(_puzzleTableColumn, 1);
 			}
 			if (testIsSolved())
