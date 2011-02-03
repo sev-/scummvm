@@ -212,7 +212,7 @@ Common::Error CometEngine::run() {
 	// Init vars
 	_gameLoopCounter = 0;
 	_textColorFlag = 0;
-	
+
 	_prevModuleNumber = -1;
 	_currentModuleNumber = -1;
 	_moduleNumber = 0;
@@ -269,14 +269,10 @@ Common::Error CometEngine::run() {
 	// _beamColorIncr = 1;
 
 	_isSaveAllowed = true;
-	
+
 	_debugRectangles = false;
 
 	initAndLoadGlobalData();
-
-	//DEBUG:
-	//setFullPalette(_cdintroPal);
-	//setFullPalette(_ctuPal);
 
 	//TEST
 	_talkieMode = 1;
@@ -284,12 +280,6 @@ Common::Error CometEngine::run() {
 	//_music->playMusic(4);
 
 	_system->showMouse(true);
-
-#if 1
-	// Test the puzzle
-	_screen->setFullPalette(_gamePalette);
-	_gui->run(kGuiPuzzle);
-#endif
 
 #if 0
 	byte soundFramesData[] = {3, 3, 0};

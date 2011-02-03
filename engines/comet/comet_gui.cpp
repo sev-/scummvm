@@ -29,6 +29,7 @@
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
 #include "comet/screen.h"
+#include "comet/console.h"
 
 namespace Comet {
 
@@ -1244,17 +1245,14 @@ void GuiPuzzle::draw() {
 }
 
 int GuiPuzzle::runPuzzle() {
-
-#define PUZZLE_CHEAT
-#ifdef PUZZLE_CHEAT
-	static const uint16 puzzleInitialTiles[6][6] = {
+	static const uint16 puzzleCheatInitialTiles[6][6] = {
 		{0, 0, 0, 0, 0, 0},
 		{0, 0, 4, 8,13, 0},
 		{0, 1, 5, 9,14, 0},
 		{0, 2, 6,10,15, 0},
 		{0, 3, 7,11,12, 0},
 		{0, 0, 0, 0, 0, 0}};
-#else
+
 	static const uint16 puzzleInitialTiles[6][6] = {
 		{0, 0, 0, 0, 0, 0},
 		{0, 0, 4,10,15, 0},
@@ -1262,7 +1260,7 @@ int GuiPuzzle::runPuzzle() {
 		{0, 8, 1, 2, 6, 0},
 		{0, 3, 7, 9,14, 0},
 		{0, 0, 0, 0, 0, 0}};
-#endif
+
 	static const GuiRectangle puzzleTileRects[] = {
 		{118,  44, 142,  59,  0},
 		{143,  44, 167,  59,  1},
@@ -1300,15 +1298,19 @@ int GuiPuzzle::runPuzzle() {
 	_puzzleSprite = _vm->_animationMan->loadAnimationResource("A07.PAK", 24);
 
 	// Initialize the puzzle state
-	for (int i = 0; i < 6; i++)
-		for (int j = 0; j < 6; j++)
-			_puzzleTiles[i][j] = puzzleInitialTiles[i][j];
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			if (debugPuzzleCheat)
+				_puzzleTiles[i][j] = puzzleCheatInitialTiles[i][j];
+			else
+				_puzzleTiles[i][j] = puzzleInitialTiles[i][j];
+		}
+	}
 
 	_puzzleCursorX = 0;
 	_puzzleCursorY = 0;
 
 	while (puzzleStatus == 0 && !_vm->_quitGame) {
-
 		int selectedTile;
 
 		_vm->handleEvents();

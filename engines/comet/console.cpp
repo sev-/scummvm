@@ -24,6 +24,8 @@
  */
 
 #include "comet/resourcemgr.h"
+#include "comet/comet_gui.h"
+#include "comet/screen.h"
 
 #include "comet/console.h"
 #include "comet/comet.h"
@@ -33,12 +35,19 @@
 namespace Comet {
 
 bool debugShowActorNum;
+bool debugTestPuzzle;
+bool debugPuzzleCheat;
 
 CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
 	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
 	DCmd_Register("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
+	DCmd_Register("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
+	DCmd_Register("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
+	DCmd_Register("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
 
 	debugShowActorNum = false;
+	debugTestPuzzle = false;
+	debugPuzzleCheat = false;
 }
 
 CometConsole::~CometConsole() {
@@ -74,6 +83,27 @@ bool CometConsole::Cmd_DumpResource(int argc, const char **argv) {
 	delete outFile;
 
 	free(buf);
+	return true;
+}
+
+bool CometConsole::Cmd_TestBeamRoom(int argc, const char **argv) {
+	DebugPrintf("Jump To Beam Room For Test...\n");
+	_vm->_scriptVars[116] = 1;
+	_vm->_scriptVars[139] = 1;
+	_vm->_moduleNumber = 7;
+	_vm->_sceneNumber = 4;
+	return true;
+}
+
+bool CometConsole::Cmd_TestPuzzle(int argc, const char **argv) {
+	DebugPrintf("Testing Block Puzzle...\n");
+	debugTestPuzzle = true;
+	return true;
+}
+
+bool CometConsole::Cmd_PuzzleCheat(int argc, const char **argv) {
+	DebugPrintf("Enabling Block Puzzle Cheating...\n");
+	debugPuzzleCheat = true;
 	return true;
 }
 
