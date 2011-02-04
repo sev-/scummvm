@@ -200,28 +200,33 @@ TextReader::~TextReader() {
 }
 
 void TextReader::setTextFilename(const char *filename) {
-	_textFilename = filename;	
+	debugC(kDebugText, "TextReader::setTextFilename(filename: \"%s\")", filename);
+	_textFilename = filename;
 	_cachedTextResourceTableIndex = -1;
 	delete _cachedTextResource;
 }
 
 TextResource *TextReader::loadTextResource(uint tableIndex) {
+	debugC(kDebugText, "TextReader::loadTextResource(tableIndex: %d)", tableIndex);
 	TextResource *textResource = new TextResource();
 	_vm->_res->loadFromCC4(textResource, _textFilename.c_str(), tableIndex);
 	return textResource;
 }
 
 byte *TextReader::getString(uint tableIndex, uint stringIndex) {
+	debugC(kDebugText, "TextReader::getString(tableIndex: %d, stringIndex: %d)", tableIndex, stringIndex);
 	return getCachedTextResource(tableIndex)->getString(stringIndex);
 }
 
 void TextReader::loadString(uint tableIndex, uint stringIndex, byte *buffer) {
+	debugC(kDebugText, "TextReader::loadString(tableIndex: %d, stringIndex: %d, buffer)", tableIndex, stringIndex);
 	getCachedTextResource(tableIndex)->loadString(stringIndex, buffer);
 }
 
 TextResource *TextReader::getCachedTextResource(uint tableIndex) {
+	debugC(kDebugText, "TextReader::getCachedTextResource(tableIndex: %d)", tableIndex);
 	if ((uint)_cachedTextResourceTableIndex != tableIndex || !_cachedTextResource) {
-		debug("TextReader::getCachedTextResource() loading table %d", tableIndex);
+		debugC(kDebugText, "\tloading table %d", tableIndex);
 		delete _cachedTextResource;
 		_cachedTextResource = loadTextResource(tableIndex);
 		_cachedTextResourceTableIndex = tableIndex;
