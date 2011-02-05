@@ -1346,6 +1346,7 @@ void CometEngine::playVoice(int voiceIndex) {
 
 	_textActive = true;
 	_talkieSpeechPlaying = true;
+	_currSoundResourceIndex = -1;
 
 	_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
 	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
