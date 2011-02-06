@@ -44,6 +44,8 @@ CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
 	DCmd_Register("toggleRects", WRAP_METHOD(CometConsole, Cmd_ToggleDebugRectangles));
 	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
 	DCmd_Register("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
+	DCmd_Register("module", WRAP_METHOD(CometConsole, Cmd_Module));
+	DCmd_Register("scene", WRAP_METHOD(CometConsole, Cmd_Scene));
 	DCmd_Register("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
 	DCmd_Register("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
 	DCmd_Register("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
@@ -94,6 +96,42 @@ bool CometConsole::Cmd_DumpResource(int argc, const char **argv) {
 	delete outFile;
 
 	free(buf);
+	return true;
+}
+
+bool CometConsole::Cmd_Module(int argc, const char **argv) {
+	int16 moduleNum;
+	switch (argc) {
+	case 1:
+		DebugPrintf("Current Module: %d\n", _vm->_moduleNumber);
+		break;
+	case 2:
+		moduleNum = atoi(argv[1]);
+		DebugPrintf("Changing to Module: %d\n", moduleNum);
+		_vm->_moduleNumber = moduleNum;
+		break;
+	default:
+		DebugPrintf("Usage: module <Module Number>\n");
+		break;
+	}
+	return true;
+}
+
+bool CometConsole::Cmd_Scene(int argc, const char **argv) {
+	int16 sceneNum;
+	switch (argc) {
+	case 1:
+		DebugPrintf("Current Scene: %d\n", _vm->_sceneNumber);
+		break;
+	case 2:
+		sceneNum = atoi(argv[1]);
+		DebugPrintf("Changing to Scene: %d\n", sceneNum);
+		_vm->_sceneNumber = sceneNum;
+		break;
+	default:
+		DebugPrintf("Usage: scene <Scene Number>\n");
+		break;
+	}
 	return true;
 }
 

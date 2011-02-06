@@ -427,9 +427,6 @@ Common::Error CometEngine::run() {
 	_screen->clear();
 	_screen->update();
 
-	debug("_sceneNumber = %d; _moduleNumber = %d", _sceneNumber, _moduleNumber);
-	debug("_currentSceneNumber = %d; _currentModuleNumber = %d", _currentSceneNumber, _currentModuleNumber);
-
 	if (!_quitGame)
 		gameMainLoop();
 
