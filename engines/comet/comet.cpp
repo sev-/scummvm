@@ -400,48 +400,6 @@ Common::Error CometEngine::run() {
 	}
 #endif
 
-#if 0
-	// Cursor viewer
-	_screen->setFullPalette(_gamePalette);
-	AnimationResource *anim;
-	bool done = false;
-	int celIndex = 0;
-	anim = _animationMan->loadAnimationResource("RES.PAK", 9);
-	while (!done) {
-		int16 x, y;
-		AnimationCel *currCel = anim->_cels[celIndex];
-		handleEvents();
-		// Debugging keys
-		switch (_keyScancode) {
-		case Common::KEYCODE_KP_PLUS:
-			celIndex++;
-			if (celIndex >= anim->_cels.size())
-				celIndex = 0;
-			debug("celIndex = %d", celIndex);
-			currCel = anim->_cels[celIndex];
-			break;
-		case Common::KEYCODE_KP_MINUS:
-			celIndex--;
-			if (celIndex < 0) 
-				celIndex = anim->_cels.size() - 1;
-			debug("celIndex = %d", celIndex);
-			currCel = anim->_cels[celIndex];
-			break;
-		case Common::KEYCODE_ESCAPE:
-			done = true;
-			break;
-		default:
-			break;
-		}
-		x = _mouseX + 20; 
-		y = _mouseY + 20;
-		_screen->clear();
-		_screen->drawAnimationCelSprite(*currCel, x, y, 0);
-		_screen->update();
-		_system->delayMillis(40);
-	}
-#endif
-
 	setMouseCursor(0, _mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {

@@ -24,6 +24,7 @@
  */
 
 #include "comet/resourcemgr.h"
+#include "comet/animationmgr.h"
 #include "comet/comet_gui.h"
 #include "comet/screen.h"
 
@@ -46,6 +47,7 @@ CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
 	DCmd_Register("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
 	DCmd_Register("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
 	DCmd_Register("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
+	DCmd_Register("viewCursor", WRAP_METHOD(CometConsole, Cmd_ViewCursor));
 
 	debugRectangles = false;
 	debugShowActorNum = false;
@@ -113,6 +115,55 @@ bool CometConsole::Cmd_TestPuzzle(int argc, const char **argv) {
 bool CometConsole::Cmd_PuzzleCheat(int argc, const char **argv) {
 	DebugPrintf("Enabling Block Puzzle Cheating...\n");
 	debugPuzzleCheat = true;
+	return true;
+}
+
+bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
+	if (argc != 2) {
+		DebugPrintf("Usage: viewCursor <Resource Number>\n");
+		return true;
+	}
+
+	uint32 resourceNum = atoi(argv[1]);
+
+	_vm->_screen->setFullPalette(_vm->_gamePalette);
+	AnimationResource *anim;
+	AnimationCel *currCel;
+	bool done = false;
+	uint celIndex = 0;
+	anim = _vm->_animationMan->loadAnimationResource("RES.PAK", resourceNum);
+	while (!done && !_vm->shouldQuit()) {
+		int16 x, y;
+		_vm->handleEvents();
+		switch (_vm->_keyScancode) {
+		case Common::KEYCODE_UP:
+			if (celIndex >= anim->_cels.size())
+				celIndex = 0;
+			else
+				celIndex++;
+			break;
+		case Common::KEYCODE_DOWN:
+			if (celIndex == 0)
+				celIndex = anim->_cels.size() - 1;
+			else
+				celIndex--;
+			break;
+		case Common::KEYCODE_ESCAPE:
+			done = true;
+			break;
+		default:
+			break;
+		}
+		debug(0, "celIndex = %d", celIndex);
+		currCel = anim->_cels[celIndex];
+		x = _vm->_mouseX + 20; 
+		y = _vm->_mouseY + 20;
+		_vm->_screen->clear();
+		_vm->_screen->drawAnimationCelSprite(*currCel, x, y, 0);
+		_vm->_screen->update();
+	}
+	delete anim;
+
 	return true;
 }
 
