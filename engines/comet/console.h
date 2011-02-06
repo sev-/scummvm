@@ -48,6 +48,8 @@ private:
 	bool Cmd_ToggleDebugRectangles(int argc, const char **argv);
 	bool Cmd_ShowActorNum(int argc, const char **argv);
 	bool Cmd_DumpResource(int argc, const char **argv);
+	bool Cmd_Module(int argc, const char **argv);
+	bool Cmd_Scene(int argc, const char **argv);
 	bool Cmd_TestBeamRoom(int argc, const char **argv);
 	bool Cmd_TestPuzzle(int argc, const char **argv);
 	bool Cmd_PuzzleCheat(int argc, const char **argv);
