@@ -25,6 +25,7 @@
 
 #include "comet/comet.h"
 
+#include "comet/console.h"
 #include "comet/animationmgr.h"
 #include "comet/resource.h"
 #include "comet/scene.h"
@@ -261,7 +262,7 @@ void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Co
 
 	int comp = comparePointXY(actor->x, actor->y, actor->walkDestX, actor->walkDestY);
 	
-	if (_debugRectangles) {
+	if (debugRectangles) {
 		_screen->fillRect(actor->walkDestX - 6, actor->walkDestY - 6, actor->walkDestX + 6, actor->walkDestY + 6, 220);
 		_screen->drawDottedLine(actor->x, actor->y, actor->walkDestX, actor->walkDestY, 100);
 	}

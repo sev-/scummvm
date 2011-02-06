@@ -270,8 +270,6 @@ Common::Error CometEngine::run() {
 
 	_isSaveAllowed = true;
 
-	_debugRectangles = false;
-
 	initAndLoadGlobalData();
 
 	//TEST

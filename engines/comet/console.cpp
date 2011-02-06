@@ -34,23 +34,32 @@
 
 namespace Comet {
 
+bool debugRectangles;
 bool debugShowActorNum;
 bool debugTestPuzzle;
 bool debugPuzzleCheat;
 
 CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
+	DCmd_Register("toggleRects", WRAP_METHOD(CometConsole, Cmd_ToggleDebugRectangles));
 	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
 	DCmd_Register("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
 	DCmd_Register("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
 	DCmd_Register("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
 	DCmd_Register("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
 
+	debugRectangles = false;
 	debugShowActorNum = false;
 	debugTestPuzzle = false;
 	debugPuzzleCheat = false;
 }
 
 CometConsole::~CometConsole() {
+}
+
+bool CometConsole::Cmd_ToggleDebugRectangles(int argc, const char **argv) {
+	debugRectangles = !debugRectangles;
+	DebugPrintf("Debug Rectangles: %s\n", debugRectangles ? "Enabled" : "Disabled");
+	return true;
 }
 
 bool CometConsole::Cmd_ShowActorNum(int argc, const char **argv) {
