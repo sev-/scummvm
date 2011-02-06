@@ -32,6 +32,7 @@ namespace Comet {
 
 class CometEngine;
 
+extern bool debugRectangles;
 extern bool debugShowActorNum;
 extern bool debugTestPuzzle;
 extern bool debugPuzzleCheat;
@@ -44,6 +45,7 @@ public:
 private:
 	CometEngine *_vm;
 
+	bool Cmd_ToggleDebugRectangles(int argc, const char **argv);
 	bool Cmd_ShowActorNum(int argc, const char **argv);
 	bool Cmd_DumpResource(int argc, const char **argv);
 	bool Cmd_TestBeamRoom(int argc, const char **argv);

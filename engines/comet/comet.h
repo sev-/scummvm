@@ -183,8 +183,6 @@ private:
 public:
 	Common::RandomSource *_rnd;
 
-	bool _debugRectangles;
-
 	Screen *_screen;
 	Dialog *_dialog;
 	ScriptInterpreter *_script;

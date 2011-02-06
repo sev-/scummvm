@@ -1618,12 +1618,6 @@ void CometEngine::gameMainLoop() {
 
 		// Debugging keys
 		switch (_keyScancode) {
-		case Common::KEYCODE_r:
-			_debugRectangles = !_debugRectangles;
-			break;
-		case Common::KEYCODE_F1:
-			_gui->run(kGuiPuzzle);
-			break;
 		case Common::KEYCODE_F7:
 			savegame("comet.000", "Quicksave");
 			break;
