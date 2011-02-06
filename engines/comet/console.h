@@ -51,6 +51,7 @@ private:
 	bool Cmd_TestBeamRoom(int argc, const char **argv);
 	bool Cmd_TestPuzzle(int argc, const char **argv);
 	bool Cmd_PuzzleCheat(int argc, const char **argv);
+	bool Cmd_ViewCursor(int argc, const char **argv);
 };
 
 } // End of namespace Comet
