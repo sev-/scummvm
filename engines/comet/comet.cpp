@@ -33,6 +33,8 @@
 
 #include "base/plugins.h"
 
+#include "graphics/cursorman.h"
+
 #include "sound/mididrv.h"
 #include "sound/audiostream.h"
 #include "sound/mixer.h"
@@ -277,7 +279,7 @@ Common::Error CometEngine::run() {
 	_textSpeed = 0;
 	//_music->playMusic(4);
 
-	_system->showMouse(true);
+	CursorMan.showMouse(true);
 
 #if 0
 	byte soundFramesData[] = {3, 3, 0};
