@@ -352,7 +352,6 @@ void Screen::buildRedPalette(byte *sourcePal, byte *destPal, int value) {
 }
 
 void Screen::paletteFadeIn() {
-
 	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
 	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
@@ -377,7 +376,6 @@ void Screen::paletteFadeIn() {
 }
 
 void Screen::paletteFadeOut() {
-
 	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
 	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
@@ -416,7 +414,7 @@ void Screen::setPartialPalette(byte *palette, int start, int count) {
 		colors[i * 4 + 2] = palette[i * 3 + 2];
 		colors[i * 4 + 3] = 0;
 	}
-	_vm->_system->setPalette(colors, start, count);
+	_vm->_system->getPaletteManager()->setPalette(colors, start, count);
 }
 
 void Screen::setFullPalette(byte *palette) {
