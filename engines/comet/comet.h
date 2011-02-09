@@ -41,7 +41,7 @@
 #include "common/events.h"
 #include "common/keyboard.h"
 #include "common/config-manager.h"
-#include "sound/mixer.h"
+#include "audio/mixer.h"
 
 #include "engines/engine.h"
 

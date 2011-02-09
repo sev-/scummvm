@@ -34,7 +34,7 @@
 
 #include "graphics/thumbnail.h"
 
-#include "sound/mixer.h"
+#include "audio/mixer.h"
 
 #include "comet/comet.h"
 #include "comet/animationmgr.h"

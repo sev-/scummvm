@@ -24,9 +24,9 @@
  */
 
 #include "common/stream.h"
-#include "sound/audiostream.h"
-#include "sound/decoders/raw.h"
-#include "sound/decoders/voc.h"
+#include "audio/audiostream.h"
+#include "audio/decoders/raw.h"
+#include "audio/decoders/voc.h"
 #include "graphics/cursorman.h"
 #include "graphics/primitives.h"
 #include "graphics/surface.h"
