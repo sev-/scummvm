@@ -27,9 +27,9 @@
 #define COMET_MUSIC_H
 
 #include "common/mutex.h"
-#include "sound/audiostream.h"
-#include "sound/mixer.h"
-#include "sound/fmopl.h"
+#include "audio/audiostream.h"
+#include "audio/mixer.h"
+#include "audio/fmopl.h"
 
 #include "comet/comet.h"
 

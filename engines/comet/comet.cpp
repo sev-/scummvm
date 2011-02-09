@@ -35,9 +35,9 @@
 
 #include "graphics/cursorman.h"
 
-#include "sound/mididrv.h"
-#include "sound/audiostream.h"
-#include "sound/mixer.h"
+#include "audio/mididrv.h"
+#include "audio/audiostream.h"
+#include "audio/mixer.h"
 
 #include "comet/comet.h"
 #include "comet/console.h"
