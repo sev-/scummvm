@@ -76,7 +76,7 @@ protected:
 
 class GuiCommandBar : public GuiPage {
 public:
-	GuiCommandBar(CometEngine *vm) : GuiPage(vm) {};
+	GuiCommandBar(CometEngine *vm) : GuiPage(vm), _commandBarSelectedItem(0) {};
 	int run();
 	void draw();
 protected:
