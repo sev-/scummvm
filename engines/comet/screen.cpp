@@ -407,14 +407,7 @@ void Screen::setWhitePalette(int value) {
 }
 
 void Screen::setPartialPalette(byte *palette, int start, int count) {
-	byte colors[1024];
-	for (int i = start; i < count; i++) {
-		colors[i * 4 + 0] = palette[i * 3 + 0];
-		colors[i * 4 + 1] = palette[i * 3 + 1];
-		colors[i * 4 + 2] = palette[i * 3 + 2];
-		colors[i * 4 + 3] = 0;
-	}
-	_vm->_system->getPaletteManager()->setPalette(colors, start, count);
+	_vm->_system->getPaletteManager()->setPalette(palette+(start*3), start, count);
 }
 
 void Screen::setFullPalette(byte *palette) {
