@@ -122,7 +122,7 @@ void FontResource::internalLoad(Common::MemoryReadStream &stream) {
 	_charInfo = _fontData + READ_BE_UINT16(_fontData + 6) - skipChars;
 }
 
-void FontResource::drawText(int x, int y, byte *destBuffer, byte *text, byte color) {
+void FontResource::drawText(int x, int y, byte *destBuffer, const byte *text, byte color) {
 	static const byte startFlags[] = {
 		0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01
 	};
@@ -160,7 +160,7 @@ void FontResource::drawText(int x, int y, byte *destBuffer, byte *text, byte col
 	}
 }
 
-int FontResource::getTextWidth(byte *text) {
+int FontResource::getTextWidth(const byte *text) {
 	int textWidth = 0;
 	while (*text) {
 		uint16 charOfs = text[0] * 2;

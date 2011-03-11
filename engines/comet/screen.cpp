@@ -787,11 +787,11 @@ void Screen::setFontColor(byte color) {
 	_currFontColor = color;
 }
 
-void Screen::drawText(int x, int y, byte *text) {
+void Screen::drawText(int x, int y, const byte *text) {
 	_currFontResource->drawText(x, y, getScreen(), text, _currFontColor);
 }
 
-void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2) {
+void Screen::drawTextOutlined(int x, int y, const byte *text, byte color1, byte color2) {
 	byte *destBuffer = getScreen();
 	_currFontResource->drawText(x + 1, y + 1, destBuffer, text, color2);
 	_currFontResource->drawText(x + 1, y - 1, destBuffer, text, color2);
@@ -804,7 +804,7 @@ void Screen::drawTextOutlined(int x, int y, byte *text, byte color1, byte color2
 	_currFontResource->drawText(x, y, destBuffer, text, color1);
 }
 
-int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
+int Screen::drawText3(int x, int y, const byte *text, byte color, int flag) {
 	debugC(kDebugText, "Screen::drawText3(x: %d, y: %d, byte *text, color: %d, flag: %d)", x, y, color, flag);
 	int tw = 0, linesDrawn = 0, textX = x, textY = y;
 	if (textY < 3)
@@ -835,11 +835,11 @@ int Screen::drawText3(int x, int y, byte *text, byte color, int flag) {
 	return textY;
 }
 
-int Screen::getTextWidth(byte *text) {
+int Screen::getTextWidth(const byte *text) {
 	return _currFontResource->getTextWidth(text);
 }
 
-int Screen::getTextHeight(byte *text) {
+int Screen::getTextHeight(const byte *text) {
 	int textHeight = 0, linesDrawn = 0;
 	while (*text != '*' && ++linesDrawn <= 3) {
 		textHeight += 8;

@@ -128,11 +128,11 @@ public:
 
 	void loadFont(const char *pakName, int index);
 	void setFontColor(byte color);
-	void drawText(int x, int y, byte *text);
-	void drawTextOutlined(int x, int y, byte *text, byte color1, byte color2);
-	int drawText3(int x, int y, byte *text, byte color, int flag);
-	int getTextWidth(byte *text);
-	int getTextHeight(byte *text);
+	void drawText(int x, int y, const byte *text);
+	void drawTextOutlined(int x, int y, const byte *text, byte color1, byte color2);
+	int drawText3(int x, int y, const byte *text, byte color, int flag);
+	int getTextWidth(const byte *text);
+	int getTextHeight(const byte *text);
 
 	static void plotProc(int x, int y, int color, void *data);
 	static void dottedPlotProc(int x, int y, int color, void *data);
