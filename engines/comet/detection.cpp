@@ -67,6 +67,7 @@ uint16 CometEngine::getVersion() const {
 
 static const PlainGameDescriptor cometGames[] = {
 	{"comet", "Shadow of the Comet"},
+	{"musee", "Lovecraft Museum"},
 
 	{0, 0}
 };
@@ -91,7 +92,7 @@ static const CometGameDescription gameDescriptions[] = {
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
 		},
-		0,
+		GID_COMET,
 		0,
 		0,
 		0
@@ -110,7 +111,7 @@ static const CometGameDescription gameDescriptions[] = {
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
 		},
-		0,
+		GID_COMET,
 		0,
 		0,
 		0
@@ -129,7 +130,7 @@ static const CometGameDescription gameDescriptions[] = {
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
 		},
-		0,
+		GID_COMET,
 		0,
 		0,
 		0
@@ -148,7 +149,7 @@ static const CometGameDescription gameDescriptions[] = {
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
 		},
-		0,
+		GID_COMET,
 		0,
 		0,
 		0
@@ -167,7 +168,26 @@ static const CometGameDescription gameDescriptions[] = {
 			ADGF_NO_FLAGS,
 			Common::GUIO_NONE
 		},
+		GID_COMET,
 		0,
+		0,
+		0
+	},
+
+	// Lovecraft Museum - English Version
+	{
+		{
+			"musee",
+			"English",
+			{{"r00.cc4", 0, "7219f01576e81fc9d5a9330de898b21a", -1},
+			 {  "e.cc4", 0, "420714a8cd2528095f11607ef470f9d4", -1},
+			 AD_LISTEND},
+			Common::EN_ANY,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		GID_MUSEUM,
 		0,
 		0,
 		0
