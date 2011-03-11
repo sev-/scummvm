@@ -74,6 +74,18 @@ class TextReader;
 class TextResource;
 class FontResource;
 
+enum CometGameID {
+	GID_COMET	= 0,	// Shadow of the Comet
+	GID_MUSEUM	= 1		// Lovecraft Museum
+};
+
+enum CometGameFeatures {
+	GF_DEMO				= 1 << 0,
+	GF_CD				= 1 << 1,
+	GF_CD_COMPRESSED	= 1 << 2,
+	GF_FLOPPY			= 1 << 3
+};
+
 enum {
 	kDirectionUp		= 3,
 	kDirectionLeft		= 2,
@@ -466,7 +478,8 @@ public:
 	void initSystemVars();
 
 	void introMainLoop();
-	void gameMainLoop();
+	void cometMainLoop();
+	void museumMainLoop();
 	void checkPauseGame();
 
 public:

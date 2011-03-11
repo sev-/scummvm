@@ -1338,6 +1338,8 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 
 void CometEngine::setVoiceFileIndex(int narFileIndex) {
 	_currNarFileIndex = narFileIndex;
+	if (getGameID() == GID_MUSEUM)
+		narFileIndex = 6; // Lovecraft museum uses only this NAR file
 	_narFilename = Common::String::format("D%02d.NAR", narFileIndex);
 }
 
@@ -1575,7 +1577,7 @@ void CometEngine::introMainLoop() {
 	}
 }
 
-void CometEngine::gameMainLoop() {
+void CometEngine::cometMainLoop() {
 	_quitGame = false;
 	while (!_quitGame) {
 		handleEvents();
@@ -1663,6 +1665,28 @@ void CometEngine::gameMainLoop() {
 		}
 
 		checkCurrentInventoryItem();
+	}
+}
+
+void CometEngine::museumMainLoop() {
+	_quitGame = false;
+	while (!_quitGame) {
+		handleEvents();
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
+			handleKeyInput();
+		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
+			skipText();
+		}
+		if (_quitGame)
+			return;
+		updateGame();
+		_system->delayMillis(40);//TODO
+		if (_loadgameRequested) {
+			// TODO:
+			//	while (savegame_load() == 0);
+			//	savegame_load
+			_loadgameRequested = false;
+		}
 	}
 }
 
