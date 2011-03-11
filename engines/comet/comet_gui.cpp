@@ -1702,7 +1702,7 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 					break;
 				default:
 					if (event.kbd.keycode >= Common::KEYCODE_SPACE && event.kbd.keycode <= Common::KEYCODE_z &&
-						description.size() < 29 && _vm->_screen->getTextWidth((byte*)description.c_str()) < 130) {
+						description.size() < 29 && _vm->_screen->getTextWidth((const byte*)description.c_str()) < 130) {
 						description += event.kbd.ascii;
 						redrawSavegameDescription = true;
 					}
@@ -1745,11 +1745,11 @@ void GuiSaveLoadMenu::drawSavegameDescription(Common::String &description, int s
 	const int x = 95;
 	const int y = 64;
 	const int itemHeight = 12;
-	int textX = (135 - _vm->_screen->getTextWidth((byte*)description.c_str())) / 2;
+	int textX = (135 - _vm->_screen->getTextWidth((const byte*)description.c_str())) / 2;
 	_vm->_screen->setFontColor(120);
-	_vm->_screen->drawText(x + textX + 1, y + savegameIndex * itemHeight + 1, (byte*)description.c_str());
+	_vm->_screen->drawText(x + textX + 1, y + savegameIndex * itemHeight + 1, (const byte*)description.c_str());
 	_vm->_screen->setFontColor(119);
-	_vm->_screen->drawText(x + textX, y + savegameIndex * itemHeight, (byte*)description.c_str());
+	_vm->_screen->drawText(x + textX, y + savegameIndex * itemHeight, (const byte*)description.c_str());
 }
 
 } // End of namespace Comet

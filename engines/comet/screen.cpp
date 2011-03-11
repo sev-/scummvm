@@ -829,7 +829,7 @@ int Screen::drawText3(int x, int y, const byte *text, byte color, int flag) {
 			drawText(textX, textY, text);
 			textY += 8;
 		}
-		text += strlen((char*)text) + 1;
+		text += strlen((const char*)text) + 1;
 	}
 	debugC(kDebugText, "End of Screen::drawText3()");
 	return textY;
@@ -843,7 +843,7 @@ int Screen::getTextHeight(const byte *text) {
 	int textHeight = 0, linesDrawn = 0;
 	while (*text != '*' && ++linesDrawn <= 3) {
 		textHeight += 8;
-		text += strlen((char*)text) + 1;
+		text += strlen((const char*)text) + 1;
 	}
 	return textHeight;
 }
