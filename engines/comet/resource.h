@@ -78,8 +78,8 @@ public:
 	~FontResource();
 
 	void setColor(byte color);
-	void drawText(int x, int y, byte *destBuffer, byte *text, byte color);
-	int getTextWidth(byte *text);
+	void drawText(int x, int y, byte *destBuffer, const byte *text, byte color);
+	int getTextWidth(const byte *text);
 private:
 	byte *_fontData;
 	byte *_charData;

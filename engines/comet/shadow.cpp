@@ -1667,7 +1667,7 @@ void CometEngine::gameMainLoop() {
 }
 
 void CometEngine::checkPauseGame() {
-	byte *pauseText = (byte*)"Game Paused";
+	const byte *pauseText = (const byte*)"Game Paused";
 	if (_keyScancode == Common::KEYCODE_p) {
 		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
 		int y = 180;
@@ -1675,10 +1675,10 @@ void CometEngine::checkPauseGame() {
 		_screen->setFontColor(80);
 		_screen->drawText(x + 1, y + 1, pauseText);
 		_screen->drawText(x + 1, y - 1, pauseText);
-		_screen->drawText(x + 1, y,     pauseText);
-		_screen->drawText(x - 1, y,     pauseText);
-		_screen->drawText(x,     y + 1, pauseText);
-		_screen->drawText(x,     y - 1, pauseText);
+		_screen->drawText(x + 1, y, pauseText);
+		_screen->drawText(x - 1, y, pauseText);
+		_screen->drawText(x, y + 1, pauseText);
+		_screen->drawText(x, y - 1, pauseText);
 		_screen->drawText(x - 1, y + 1, pauseText);
 		_screen->drawText(x - 1, y - 1, pauseText);
 		_screen->setFontColor(95);
