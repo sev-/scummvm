@@ -37,6 +37,7 @@
 #include "common/random.h"
 #include "common/savefile.h"
 #include "common/system.h"
+#include "common/textconsole.h"
 #include "common/hash-str.h"
 #include "common/events.h"
 #include "common/keyboard.h"
