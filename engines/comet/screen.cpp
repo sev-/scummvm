@@ -24,6 +24,7 @@
  */
 
 #include "graphics/surface.h"
+#include "graphics/palette.h"
 #include "graphics/primitives.h"
 
 #include "comet/comet.h"

@@ -23,6 +23,8 @@
  *
  */
 
+#include "common/textconsole.h"
+
 #include "comet/unpack.h"
 
 // Based on gunzip.c by Pasi Ojala from http://www.cs.tut.fi/~albert/Dev/gunzip/
