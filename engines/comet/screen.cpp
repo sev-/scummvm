@@ -865,7 +865,7 @@ void Screen::dottedPlotProc(int x, int y, int color, void *data = NULL) {
 
 Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 width, int16 height) {
 	Graphics::Surface *surface = new Graphics::Surface();
-	surface->create(width, height, 1);
+	surface->create(width, height, Graphics::PixelFormat::createFormatCLUT8());
 	const byte *src = celData;
 	byte *dst = (byte*)surface->pixels;
 	while (height--) {
