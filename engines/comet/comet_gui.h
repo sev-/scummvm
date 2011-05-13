@@ -126,7 +126,7 @@ protected:
 	int _puzzleTableRow, _puzzleTableColumn;
 	int _puzzleCursorX, _puzzleCursorY;
 	int runPuzzle();
-	void drawFinger();
+	void loadFingerCursor();
 	void drawField();
 	void drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs);
 	void moveTileColumn(int columnIndex, int direction);

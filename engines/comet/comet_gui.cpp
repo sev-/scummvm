@@ -23,6 +23,8 @@
  *
  */
 
+#include "graphics/cursorman.h"
+
 #include "comet/comet.h"
 #include "comet/comet_gui.h"
 #include "comet/animationmgr.h"
@@ -1294,6 +1296,8 @@ int GuiPuzzle::runPuzzle() {
 		}
 	}
 
+	loadFingerCursor();
+
 	_puzzleCursorX = 0;
 	_puzzleCursorY = 0;
 
@@ -1418,8 +1422,13 @@ int GuiPuzzle::runPuzzle() {
 	return puzzleStatus == 2 ? 2 : 0;
 }
 
-void GuiPuzzle::drawFinger() {
-	_vm->_screen->drawAnimationElement(_puzzleSprite, 18, _puzzleCursorX, _puzzleCursorY);
+void GuiPuzzle::loadFingerCursor() {
+	AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
+	AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
+	Graphics::Surface *cursor = _vm->_screen->decompressAnimationCel(cel->data, cel->width, cel->height);
+	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
+	cursor->free();
+	delete cursor;
 }
 
 void GuiPuzzle::drawField() {
@@ -1429,7 +1438,6 @@ void GuiPuzzle::drawField() {
 			drawTile(columnIndex, rowIndex, 0, 0);		
 		}
 	}
-	drawFinger();
 }
 
 void GuiPuzzle::drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs) {
@@ -1446,7 +1454,6 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 				drawTile(columnIndex, rowIndex, 0, -yOffs);
 			}
 			_vm->_screen->setClipY(0, 199);
-			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1462,7 +1469,6 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 				drawTile(columnIndex, rowIndex, 0, yOffs);
 			}
 			_vm->_screen->setClipY(0, 199);
-			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1482,7 +1488,6 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 				drawTile(columnIndex, rowIndex, -xOffs, 0);
 			}
 			_vm->_screen->setClipX(0, 319);
-			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1498,7 +1503,6 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 				drawTile(columnIndex, rowIndex, xOffs, 0);
 			}
 			_vm->_screen->setClipX(0, 319);
-			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
