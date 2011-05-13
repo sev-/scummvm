@@ -508,10 +508,6 @@ void Screen::frameRect(int x1, int y1, int x2, int y2, byte color) {
 	vLine(x2 - 1, y1, y2 - 1, color);
 }
 
-int gfxPrimitivesCompareInt(const void *a, const void *b) {
-	return (*(const int *) a) - (*(const int *) b);
-}
-
 void Screen::clipPolygonLeft(Common::Array<Point> **poly, int16 clipLeft) {
 	Common::Array<Point> *points = *poly; 
 	Common::Array<Point> *clipPoints = new Common::Array<Point>();
