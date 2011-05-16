@@ -1429,6 +1429,7 @@ void GuiPuzzle::loadFingerCursor() {
 	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
 	cursor->free();
 	delete cursor;
+	_vm->_currCursorSprite = NULL;
 }
 
 void GuiPuzzle::drawField() {
