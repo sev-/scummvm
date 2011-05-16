@@ -254,6 +254,7 @@ public:
 
 	AnimationResource *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
 	AnimationResource *_sceneDecorationSprite;
+	const byte *_currCursorSprite;
 
 	byte *_screenPalette, *_backupPalette;
 

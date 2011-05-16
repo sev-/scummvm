@@ -170,6 +170,8 @@ void CometEngine::initAndLoadGlobalData() {
 
 	_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
 	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
+	
+	_currCursorSprite = NULL;
 
 	_screen->setFontColor(0);
 
@@ -712,10 +714,13 @@ void CometEngine::setMouseCursor(uint index, const byte *cursorSprite) {
 	if (index > 0)
 		cursorSprite = sysMouseCursor1;
 
-	Graphics::Surface *cursor = _screen->decompressAnimationCel(cursorSprite, 16, 16);
-	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
-	cursor->free();
-	delete cursor;
+	if (_currCursorSprite != cursorSprite) {
+		Graphics::Surface *cursor = _screen->decompressAnimationCel(cursorSprite, 16, 16);
+		CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
+		cursor->free();
+		delete cursor;
+	}
+	
 }
 
 void CometEngine::blockInput(int flagIndex) {
@@ -759,10 +764,7 @@ int CometEngine::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY
 }
 
 int16 CometEngine::random(int maxValue) {
-	if (maxValue >= 2)
-		return _rnd->getRandomNumber(maxValue - 1);
-	else
-		return 0;
+	return maxValue >= 2 ? _rnd->getRandomNumber(maxValue - 1) : 0;
 }
 
 void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
