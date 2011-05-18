@@ -62,6 +62,7 @@ class CometConsole;
 
 class AnimationResource;
 struct AnimationElement;
+struct AnimationCel;
 class AnimationManager;
 struct AnimationFrameList;
 struct InterpolatedAnimationElement;
@@ -211,7 +212,7 @@ public:
 	TextResource *_globalStrings, *_inventoryItemNames;
 
 	Gui *_gui;
-	byte *_mouseCursors[7];
+	AnimationCel *_mouseCursors[7];
 
 	int16 _animationType;
 
@@ -350,9 +351,8 @@ public:
 
 	void updateScreen();
 
-	// index == 0 uses the cursor in cursorSprite, 
-	// index > 0 uses the engine's system cursor with that index  
-	void setMouseCursor(uint index, const byte *cursorSprite);
+	// cursorSprite = NULL uses the engine's system cursor  
+	void setMouseCursor(AnimationCel *cursorSprite);
 
 	int16 random(int maxValue);
 	

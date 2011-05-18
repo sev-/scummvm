@@ -286,7 +286,7 @@ Common::Error CometEngine::run() {
 
 	CursorMan.showMouse(true);
 
-	setMouseCursor(0, _mouseCursors[0]);
+	setMouseCursor(_mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {
 		int saveSlot = ConfMan.getInt("save_slot");
