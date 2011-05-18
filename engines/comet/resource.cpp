@@ -42,16 +42,6 @@ namespace Comet {
 
 void GenericResource::internalLoad(Common::MemoryReadStream &stream) {
 	debug("GenericResource::internalLoad() stream.size = %d", stream.size());
-	
-#if 0
-	FILE *x = fopen("dump.0", "wb");
-	while (!stream.eos()) {
-		byte b = stream.readByte();
-		fwrite(&b, 1, 1, x);
-	}
-	fclose(x);
-#endif
-
 }
 
 // TextResource

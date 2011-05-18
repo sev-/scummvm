@@ -43,8 +43,6 @@
 
 namespace Comet {
 
-// TODO: Move a lot of stuff to own classes
-
 int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 	int flags = 0;
 	if (x == x2)
@@ -141,7 +139,6 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 
 void CometEngine::loadSceneBackground() {
 	_res->loadFromPak(_sceneBackgroundResource, DName, _backgroundFileIndex);
-	//!!!loadPakToPtr(DName, _backgroundFileIndex, _sceneBackground);
 }
 
 void CometEngine::loadSceneDecoration() {
@@ -188,12 +185,10 @@ void CometEngine::initAndLoadGlobalData() {
 	memcpy(_backupPalette, _gamePalette, 768);
 
 	initData();
-
 	loadGlobalTextData();
 
-	//TODO...
-
 	setModuleAndScene(_startupModuleNumber, _startupSceneNumber);
+	
 }
 
 void CometEngine::loadGlobalTextData() {
@@ -219,11 +214,6 @@ void CometEngine::initData() {
 
 	_currentModuleNumber = 0;
 	_sceneNumber = 0;
-
-	//_bounds.clear();
-	//_bounds.push_back(Common::Point(0, 100));
-	//_bounds.push_back(Common::Point(319, 100));
-	//initSceneBoundsMap();
 
 	resetVars();
 
@@ -273,11 +263,8 @@ void CometEngine::updateGame() {
 	drawSceneExits();
 	updateActorAnimations();
 	updateActorMovement();
-
 	buildSpriteDrawQueue();
-
 	lookAtItemInSight(false);
-
 	drawSpriteQueue();
 
 	if (_talkieMode == 0)
@@ -315,7 +302,6 @@ void CometEngine::updateModuleNumber() {
 }
 
 void CometEngine::updateSceneNumber() {
-	//TODO: mouse_4(0, 0x40);
 	Actor *mainActor = getActor(0);
 
 	if (mainActor->walkStatus != 0 &&
@@ -348,7 +334,6 @@ void CometEngine::updateSceneNumber() {
 
 		handleSceneChange(_prevSceneNumber, _prevModuleNumber);
 
-		//TODO: mouse_4(0, 0);
 	}
 }
 
@@ -374,11 +359,9 @@ void CometEngine::getItemInSight() {
 
 void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
-
 	if (_blockedInput != 15) {
 		Common::Rect sightRect;
 		calcSightRect(sightRect, 0, 50);
-		//_screen->fillRect(rect.left, rect.top, rect.right, rect.bottom, 150);
 		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 		if (sceneItemIndex != 0) {
 			SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
@@ -398,7 +381,6 @@ void CometEngine::lookAtItemInSight(bool showText) {
 			}
 		}
 	}
-	//TODO?
 }
 
 void CometEngine::updateActorAnimations() {
@@ -470,11 +452,10 @@ void CometEngine::updateHeroLife() {
 }
 
 void CometEngine::drawSpriteQueue() {
-	//TODO: Real stuff
-
-	//TODO: setScreenRectAll();
 
 	int objectCmdIndex = 0;
+
+	_screen->setClipRect(0, 0, 320, 200);
 
 	for (uint32 i = 0; i < _spriteDrawQueue.size(); i++) {
 		if (_spriteDrawQueue[i].index < 16) {

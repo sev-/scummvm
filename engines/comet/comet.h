@@ -152,13 +152,13 @@ typedef Common::Array<Common::Point> PointArray;
 
 // Engine Debug Flags
 enum {
-	kDebugResource  = (1 << 0),
-	kDebugAnimation = (1 << 1),
-	kDebugSaveLoad  = (1 << 2),
-	kDebugScript    = (1 << 3),
-	kDebugText      = (1 << 4),
-	kDebugCollision = (1 << 5),
-	kDebugScreen    = (1 << 6)
+	kDebugResource	= (1 << 0),
+	kDebugAnimation	= (1 << 1),
+	kDebugSaveLoad	= (1 << 2),
+	kDebugScript	= (1 << 3),
+	kDebugText		= (1 << 4),
+	kDebugCollision	= (1 << 5),
+	kDebugScreen	= (1 << 6)
 };
 
 class CometEngine : public Engine {
@@ -408,7 +408,7 @@ public:
 	Actor *getActor(int index);
 
 	// Text
-	int _talkActorIndex, _animIndex, _animPlayFrameIndex, _animFrameIndex, _talkTextIndex;
+	int _talkActorIndex, _talkAnimIndex, _talkAnimPlayFrameIndex, _talkAnimFrameIndex, _talkTextIndex;
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
