@@ -927,7 +927,7 @@ void ScriptInterpreter::o1_playMusic(Script *script) {
 
 void ScriptInterpreter::o1_setRandomValue(Script *script) {
 	ARG_BYTE(maxValue);
-	_vm->_scriptRandomValue = _vm->random(maxValue);
+	_vm->_scriptRandomValue = _vm->randomValue(maxValue);
 }
 
 void ScriptInterpreter::o1_gotoModule(Script *script) {

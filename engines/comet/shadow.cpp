@@ -738,7 +738,7 @@ int CometEngine::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY
 	return direction;
 }
 
-int16 CometEngine::random(int maxValue) {
+int16 CometEngine::randomValue(int maxValue) {
 	return maxValue >= 2 ? _rnd->getRandomNumber(maxValue - 1) : 0;
 }
 
@@ -1170,7 +1170,7 @@ void CometEngine::drawLineOfSight() {
 			x -= 5;
 			break;
 		}
-		_screen->drawDottedLine(x, y, _itemX + random(3) - 1, _itemY + random(3) - 1, 7);
+		_screen->drawDottedLine(x, y, _itemX + randomValue(3) - 1, _itemY + randomValue(3) - 1, 7);
 	}
 }
 
@@ -1463,9 +1463,9 @@ void CometEngine::addBeam(int x1, int y1, int x2, int y2) {
 void CometEngine::drawBeam(int x1, int y1, int x2, int y2) {
 	int currX1 = x1, currY1 = y1, currX2, currY2;
 	for (int i = 1; i <= 10; i++) {
-		byte color = random(7) + 144;
-		currX2 = random(8) + (x2 - x1) * i / 10 + x1 - 2;
-		currY2 = random(8) + (y2 - y1) * i / 10 + y1 - 2;
+		byte color = randomValue(7) + 144;
+		currX2 = randomValue(8) + (x2 - x1) * i / 10 + x1 - 2;
+		currY2 = randomValue(8) + (y2 - y1) * i / 10 + y1 - 2;
 		_screen->drawLine(currX1, currY1, currX2, currY2, color);
 		currX1 = currX2;
 		currY1 = currY2;
