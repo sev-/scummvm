@@ -183,7 +183,7 @@ bool CometEngine::actorStartWalking(int objectIndex, int x, int y) {
 		if (actor->walkStatus & 3) {
 			actor->walkStatus ^= 3;
 		} else {
-			actor->walkStatus |= (random(2) + 1);
+			actor->walkStatus |= (randomValue(2) + 1);
 		}
 	} else {
 		actor->walkStatus &= ~3;
@@ -211,7 +211,7 @@ void CometEngine::actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::
 	switch (actor->direction) {
 	case 1:
 	case 3:
-		if (random(2) == 0) {
+		if (randomValue(2) == 0) {
 			x = obstacleRect.left - (actor->deltaX + 2);
 		} else {
 			x = obstacleRect.right + (actor->deltaX + 2);
@@ -219,7 +219,7 @@ void CometEngine::actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::
 		break;
 	case 2:
 	case 4:
-		if (random(2) == 0) {
+		if (randomValue(2) == 0) {
 			y = obstacleRect.top - 2;
 		} else {
 			y = obstacleRect.bottom + (actor->deltaY + 2);
@@ -463,11 +463,11 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 			if (actor->animIndex < 4) {
 				if (_portraitTalkCounter == 0) {
 					if (_talkieMode == 0) {
-						_portraitTalkAnimNumber = random(4);
+						_portraitTalkAnimNumber = randomValue(4);
 						if (_portraitTalkAnimNumber == 0)
 							_portraitTalkCounter = 1;
 					} else {
-						_portraitTalkAnimNumber = random(3);
+						_portraitTalkAnimNumber = randomValue(3);
 						if (!_talkieSpeechPlaying)
 					  		_portraitTalkAnimNumber = 0;
 					}

@@ -25,7 +25,7 @@
 
 #include "common/scummsys.h"
 #include "common/debug-channels.h"
-#include "common/EventRecorder.h"
+#include "common/random.h"
 #include "common/keyboard.h"
 #include "common/config-manager.h"
 
@@ -69,8 +69,7 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 	DebugMan.addDebugChannel(kDebugCollision, "Collision", "Collision Debug Flag");
 	DebugMan.addDebugChannel(kDebugScreen, "Screen", "Screen Debug Flag");
 
-	_rnd = new Common::RandomSource();
-	g_eventRec.registerRandomSource(*_rnd, "comet");
+	_rnd = new Common::RandomSource("comet");
 
 	_console = 0;
 

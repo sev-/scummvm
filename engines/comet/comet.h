@@ -354,7 +354,7 @@ public:
 	// cursorSprite = NULL uses the engine's system cursor  
 	void setMouseCursor(AnimationCel *cursorSprite);
 
-	int16 random(int maxValue);
+	int16 randomValue(int maxValue);
 	
 	void drawBubble(int x1, int y1, int x2, int y2);
 	void setText(byte *text);
