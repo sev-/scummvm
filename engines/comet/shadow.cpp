@@ -550,42 +550,23 @@ void CometEngine::updateText() {
 	_screen->drawText3(textX + 1, textY, _currentText, _talkTextColor, 0);
 	
 	_textDuration--;
-
-	// TODO: Merge _talkieMode handling code
-
-	if (_talkieMode == 0 && _textDuration <= 0) {
+	if (_textDuration <= 0) {
 		_textActive = _moreText;
 		if (_moreText) {
+			// There's more text to display
 			setText(_textNextPos);
 		} else {
-			resetTextValues();
-		}
-	}
-
-	if (_talkieMode == 1 && _textDuration <= 0) {
-		_textActive = _moreText;
-		if (_moreText) {
-			setText(_textNextPos);
-		} else {
-			if (!_talkieSpeechPlaying) {
+			if (_talkieMode == 0 || !_talkieSpeechPlaying) {
+				// Stop text display if text only mode or speech mode
 				resetTextValues();
-			} else {
+			} else if (_talkieMode == 1 && _talkieSpeechPlaying) {
+				// Keep text display alive if text+speech mode
 				_textDuration = 2;
 				_textActive = true;
 			}
 		}
 	}
 
-	if (_talkieMode == 2 && _textDuration <= 0) {
-		_textActive = _moreText;
-		if (_moreText) {
-			setText(_textNextPos);
-		} else {
-			if (!_talkieSpeechPlaying) {
-				resetTextValues();
-			}
-		}
-	}
 }
 
 void CometEngine::updateTalkAnims() {
