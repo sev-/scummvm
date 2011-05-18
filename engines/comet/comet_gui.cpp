@@ -340,7 +340,7 @@ int GuiCommandBar::handleCommandBar() {
 	
 	_vm->waitForKeys();
 
-	_vm->setMouseCursor(1, NULL);
+	_vm->setMouseCursor(NULL);
 
 	while (commandBarStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
@@ -1416,11 +1416,7 @@ int GuiPuzzle::runPuzzle() {
 void GuiPuzzle::loadFingerCursor() {
 	AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
 	AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
-	Graphics::Surface *cursor = _vm->_screen->decompressAnimationCel(cel->data, cel->width, cel->height);
-	CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
-	cursor->free();
-	delete cursor;
-	_vm->_currCursorSprite = NULL;
+	_vm->setMouseCursor(cel);
 }
 
 void GuiPuzzle::drawField() {
