@@ -1357,8 +1357,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	AnimationFrameList *frameList;
 	int animFrameCount;
 
-	// TODO: __snd_stopSample
-	// TODO: narStopSpeech
+	stopVoice();
 	skipText();
 
 	cutsceneSprite = _animationMan->loadAnimationResource(AName, fileIndex);
