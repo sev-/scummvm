@@ -687,7 +687,7 @@ int GuiOptionsMenu::run() {
 		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language, animFrameCounter, optionsMenuRects);
 
 		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		_vm->_system->delayMillis(40); // $
 
 		_vm->handleEvents();
 
@@ -949,7 +949,6 @@ int GuiTownMap::run() {
 		{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
 	};
 	
-	// TODO: Use Common::Rect
 	const int16 mapRectX1 = 64, mapRectX2 = 269;
 	const int16 mapRectY1 = 65, mapRectY2 = 187;
 	const int16 cursorAddX = 8, cursorAddY = 8;
@@ -962,7 +961,6 @@ int GuiTownMap::run() {
 	int16 cursorX, cursorY;
 	int16 locationNumber = _vm->_sceneNumber % 30;
 
-	// seg002:33FB
 	cursorX = mapPoints[locationNumber].x;
 	cursorY = mapPoints[locationNumber].y;
 	
@@ -970,7 +968,6 @@ int GuiTownMap::run() {
 
 	_vm->waitForKeys();
 
-	// seg002:344D
 	while (mapStatus == 0 && !_vm->_quitGame) {
 
 		int16 currMapLocation, selectedMapLocation;
@@ -979,8 +976,6 @@ int GuiTownMap::run() {
 
 		cursorX = CLIP(_vm->_mouseX, mapRectX1 + 1, mapRectX2 - 1);
 		cursorY = CLIP(_vm->_mouseY, mapRectY1 + 1, mapRectY2 - 1);
-
-		// seg002:34A7
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_UP:
@@ -1002,14 +997,11 @@ int GuiTownMap::run() {
 		if (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY)
 			_vm->_system->warpMouse(cursorX, cursorY);
 
-		// seg002:3545
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
 
 		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
 			mapStatus = 1;
 		}
-
-		// seg002:3572
 
 		currMapLocation = -1;
 		selectedMapLocation = -1;
@@ -1036,7 +1028,6 @@ int GuiTownMap::run() {
 		}
 
 		if (selectedMapLocation != -1) {
-			// seg002:36DA
 			const MapExit &mapExit = mapExits[selectedMapLocation];
 			_vm->_moduleNumber = mapExit.moduleNumber;
 			_vm->_sceneNumber = mapExit.sceneNumber;
@@ -1080,7 +1071,7 @@ int GuiDiary::handleReadBook() {
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
 	int bookStatus = 0;
 
-	// Use values from script; this is the most current diary entry
+	// Use values from script; this is the most recent diary entry
 	pageNumber = _vm->_scriptVars[1];
 	pageCount = _vm->_scriptVars[1];
 

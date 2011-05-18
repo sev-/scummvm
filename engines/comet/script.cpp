@@ -219,7 +219,7 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_paletteFadeIn);
 	RegisterOpcode(o1_paletteFadeOut);
 	// 95
-	RegisterOpcode(o1_nop);//TODO
+	RegisterOpcode(o1_nop); // Unused in Comet CD
 	RegisterOpcode(o1_setNarFileIndex);
 	RegisterOpcode(o1_ifNearActor);
 	RegisterOpcode(o1_removeSceneItem);
@@ -228,8 +228,6 @@ void ScriptInterpreter::setupOpcodes() {
 	RegisterOpcode(o1_playSampleLooping);
 	RegisterOpcode(o1_setRedPalette);
 	RegisterOpcode(o1_setWhitePalette);
-	RegisterOpcode(o1_nop);//TODO
-	RegisterOpcode(o1_nop);//TODO
 
 }
 #undef RegisterOpcode
@@ -315,16 +313,17 @@ void ScriptInterpreter::processScriptTalk(Script *script) {
 	if (!_vm->_textActive) {
 		script->status &= ~kScriptTalking;
 		if (_vm->_talkActorIndex == 10) {
-			if (_vm->_animIndex != -1)
-				_vm->_actors[_vm->_animIndex].visible = true;
+			if (_vm->_talkAnimIndex != -1)
+				_vm->_actors[_vm->_talkAnimIndex].visible = true;
 			_vm->_actors[10].life = 0;
 			_vm->_screen->enableTransitionEffect();
-		} else if (_vm->_animIndex != -1) {
+		} else if (_vm->_talkAnimIndex != -1) {
+			// Restore previous actor animation
 			Actor *actor = _vm->getActor(_vm->_talkActorIndex);
-			_vm->actorSetAnimNumber(actor, _vm->_animIndex);
-			actor->animPlayFrameIndex = _vm->_animPlayFrameIndex;
-			actor->animFrameIndex = _vm->_animFrameIndex;
-			_vm->_animIndex = -1;
+			_vm->actorSetAnimNumber(actor, _vm->_talkAnimIndex);
+			actor->animPlayFrameIndex = _vm->_talkAnimPlayFrameIndex;
+			actor->animFrameIndex = _vm->_talkAnimFrameIndex;
+			_vm->_talkAnimIndex = -1;
 		}
 	} else {
 		_yield = true;
@@ -404,7 +403,6 @@ int16 *ScriptInterpreter::getVarPointer(int varIndex) {
 	} else {
 		return &_vm->_inventoryItemStatus[varIndex - 2000];
 	}
-	
 }
 
 bool ScriptInterpreter::evalBoolOp(int value1, int value2, int boolOp) {
@@ -576,9 +574,10 @@ void ScriptInterpreter::o1_unblockInput(Script *script) {
 
 void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
 	Actor *mainActor = _vm->getActor(0);
-	int direction = _vm->calcDirection(script->actor()->x, script->actor()->y, mainActor->x, mainActor->y);
-	script->actor()->status = 0;
-	_vm->actorSetDirection(script->actor(), direction);
+	Actor *actor = script->actor();
+	int direction = _vm->calcDirection(actor->x, actor->y, mainActor->x, mainActor->y);
+	actor->status = 0;
+	_vm->actorSetDirection(actor, direction);
 }
 
 void ScriptInterpreter::o1_selectActor(Script *script) {
@@ -692,10 +691,11 @@ void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 void ScriptInterpreter::o1_setupActorAnim(Script *script) {
 	ARG_BYTE(animIndex);
 	ARG_BYTE(animFrameIndex);
-	script->actor()->animIndex = animIndex;
-	script->actor()->animFrameIndex = animFrameIndex;
-	script->actor()->animPlayFrameIndex = animFrameIndex;
-	script->actor()->status = 2;
+	Actor *actor = script->actor();
+	actor->animIndex = animIndex;
+	actor->animFrameIndex = animFrameIndex;
+	actor->animPlayFrameIndex = animFrameIndex;
+	actor->status = 2;
 }
 
 void ScriptInterpreter::o1_setAnimationType(Script *script) {

@@ -234,16 +234,12 @@ void CometEngine::actorMoveAroundObstacle(int actorIndex, Actor *actor, Common::
 }
 
 void CometEngine::handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect) {
-
 	debug(4, "CometEngine::handleActorCollision() actorIndex = %d", actorIndex);
 	debug(4, "CometEngine::handleActorCollision() actor->collisionType = %d", actor->collisionType);
-
 	if (actor->collisionType == kCollisionBounds || actor->collisionType == kCollisionBoundsOff) {
-		// TODO
 		moveActorAroundBounds(actorIndex, actor);
 	} else if (actor->collisionType == kCollisionActor && actor->value6 == 6 && actor->collisionIndex == 0) {
-		// TODO
-		//debug(4, "CometEngine::handleActorCollision()");
+		// TODO: Never called in Comet CD since value6 is never 6 there, maybe used in Eternam
 		actor->value6 = 0;
 		actorStopWalking(actor);
 		if (actor->flag2 == 1) {
@@ -252,7 +248,6 @@ void CometEngine::handleActorCollision(int actorIndex, Actor *actor, Common::Rec
 	} else {
 		actorMoveAroundObstacle(actorIndex, actor, obstacleRect);
 	}
-
 }
 
 void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect) {
@@ -349,13 +344,15 @@ void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animN
 	actorTalk(actorIndex, talkTextIndex, actor->textColor);
 
 	if (animNumber != 255) {
-		_animIndex = actor->animIndex;
-		_animPlayFrameIndex = actor->animPlayFrameIndex;
-		_animFrameIndex = actor->animFrameIndex;
+		// Save current actor animation
+		_talkAnimIndex = actor->animIndex;
+		_talkAnimPlayFrameIndex = actor->animPlayFrameIndex;
+		_talkAnimFrameIndex = actor->animFrameIndex;
+		// Set actor talk animation
 		actorSetAnimNumber(actor, animNumber);
 		actor->status = 2;
 	} else {
-		_animIndex = -1;
+		_talkAnimIndex = -1;
 	}
 
 }
@@ -371,10 +368,9 @@ void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animN
 	_animationType = 0;
 	actorSetPosition(10, 0, 199);
 	actorTalkWithAnim(10, talkTextIndex, animNumber);
-	_animIndex = actorIndex;
+	_talkAnimIndex = actorIndex;
 	_screen->enableTransitionEffect();
 }
-
 
 bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
 
@@ -448,13 +444,13 @@ void CometEngine::updatePortraitAnimation(Actor *actor) {
 
 		AnimationFrame *frame = _animationMan->getAnimation(actor->animationSlot)->_anims[actor->animIndex]->frames[actor->animFrameIndex];
 
-		uint16 value = frame->flags & 0x3FFF;
+		uint16 maxInterpolationStep = frame->flags & 0x3FFF;
 		uint16 gfxMode = frame->flags >> 14;
 
 		if (gfxMode == 1) {
-			if (value < 1)
-				value = 1;
-			if (actor->interpolationStep >= value - 1) {
+			if (maxInterpolationStep < 1)
+				maxInterpolationStep = 1;
+			if (actor->interpolationStep >= maxInterpolationStep - 1) {
 				actor->interpolationStep = 0;
 				actor->animFrameIndex++;
 			}
@@ -574,8 +570,6 @@ AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) 
 		return NULL;
 	}
 }
-
-// SceneObjects
 
 void CometEngine::resetActorsLife() {
 	for (int i = 1; i < 11; i++) {

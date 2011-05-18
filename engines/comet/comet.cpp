@@ -257,7 +257,7 @@ Common::Error CometEngine::run() {
 
 	_currentInventoryItem = -1;
 
-	_animIndex = -1;
+	_talkAnimIndex = -1;
 
 	initSystemVars();
 
