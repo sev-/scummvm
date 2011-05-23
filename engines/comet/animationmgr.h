@@ -52,6 +52,7 @@ public:
 	~AnimationManager();
 
 	AnimationResource *loadAnimationResource(const char *pakFilename, int fileIndex);
+	AnimationResource *loadAnimationResourceFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
 	void purgeUnusedAnimationSlots();
 	void purgeAnimationSlots();
 	int getAnimationResource(int16 animationType, int16 fileIndex);

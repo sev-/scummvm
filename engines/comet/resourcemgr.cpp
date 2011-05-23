@@ -189,6 +189,24 @@ ResourceManager::ResourceManager() {
 ResourceManager::~ResourceManager() {
 }
 
+byte *ResourceManager::loadRawFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index) {
+	uint32 offset = READ_LE_UINT32(rawData + index * 4);
+	uint32 nextOffset = index < maxCount ? READ_LE_UINT32(rawData + index * 4 + 4) : rawDataSize;
+	uint32 dataSize = nextOffset - offset;
+	byte *data = (byte*)malloc(dataSize);
+	memcpy(data, rawData + offset, dataSize);
+	return data;
+}
+
+void ResourceManager::loadFromRaw(BaseResource *resource, const byte *rawData, uint32 rawDataSize, int maxCount, int index) {
+	uint32 offset = READ_LE_UINT32(rawData + index * 4);
+	uint32 nextOffset = index < maxCount ? READ_LE_UINT32(rawData + index * 4 + 4) : rawDataSize;
+	uint32 dataSize = nextOffset - offset;
+	const byte *data = rawData + offset;
+	Common::MemoryReadStream stream(data, dataSize, DisposeAfterUse::NO);
+	resource->load(stream);
+}
+
 // TextReader
 
 TextReader::TextReader(CometEngine *vm)

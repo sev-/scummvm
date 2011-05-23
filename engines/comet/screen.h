@@ -127,6 +127,7 @@ public:
 	}
 
 	void loadFont(const char *pakName, int index);
+	void loadFontFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
 	void setFontColor(byte color);
 	void drawText(int x, int y, const byte *text);
 	void drawTextOutlined(int x, int y, const byte *text, byte color1, byte color2);

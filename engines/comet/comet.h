@@ -232,7 +232,7 @@ public:
 
 	byte *_currentText, *_textNextPos;
 	int _textSpeed;
-	int _textMaxTextHeight, _textMaxTextWidth, _textDuration;
+	int _textMaxTextHeight, _textMaxTextWidth, _textDuration, _textOriginalDuration;
 
 	// Input related
 	Common::KeyCode _keyScancode;
@@ -361,7 +361,7 @@ public:
 	void setText(byte *text);
 	void resetTextValues();
 	void drawDialogTextBubbles();
-	void showTextBubble(int index, byte *text);
+	void showTextBubble(int index, byte *text, int textDuration);
 
 	// Scene
 	void initSceneBackground(bool loadingGame = false);

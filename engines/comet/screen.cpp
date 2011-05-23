@@ -777,7 +777,11 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 }
 
 void Screen::loadFont(const char *pakName, int index) {
-	_vm->_res->loadFromPak(_currFontResource, pakName, 0);
+	_vm->_res->loadFromPak(_currFontResource, pakName, index);
+}
+
+void Screen::loadFontFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index) {
+	_vm->_res->loadFromRaw(_currFontResource, rawData, rawDataSize, maxCount, index);
 }
 
 void Screen::setFontColor(byte color) {

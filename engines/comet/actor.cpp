@@ -320,29 +320,25 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 }
 
 void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
-
 	_talkActorIndex = actorIndex;
 	_talkTextIndex = talkTextIndex;
-	
-	if (_talkieMode == 0 || _talkieMode == 1) {
+	if (isFloppy()) {
 		setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
+	} else {
+		if (_talkieMode == 0 || _talkieMode == 1) {
+			setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
+		}
+		if (_talkieMode == 2 || _talkieMode == 1) {
+			playVoice(_talkTextIndex);
+		}
 	}
-
-	if (_talkieMode == 2 || _talkieMode == 1) {
-		playVoice(_talkTextIndex);
-	}
-
 	_textActive = true;
 	_talkTextColor = color;
-
 }
 
 void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber) {
-
 	Actor *actor = getActor(actorIndex);
-	
 	actorTalk(actorIndex, talkTextIndex, actor->textColor);
-
 	if (animNumber != 255) {
 		// Save current actor animation
 		_talkAnimIndex = actor->animIndex;
@@ -354,7 +350,6 @@ void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animN
 	} else {
 		_talkAnimIndex = -1;
 	}
-
 }
 
 void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex) {
