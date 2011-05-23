@@ -140,6 +140,7 @@ int GuiInventory::run() {
 	int inventoryStatus = 0;
 
 	_vm->waitForKeys();
+	_vm->setMouseCursor(NULL);
 
 	// Build items array and set up variables
 	for (int i = 0; i < 256; i++) {
@@ -339,7 +340,6 @@ int GuiCommandBar::handleCommandBar() {
 	_animFrameCounter = 0;
 	
 	_vm->waitForKeys();
-
 	_vm->setMouseCursor(NULL);
 
 	while (commandBarStatus == 0 && !_vm->_quitGame) {
@@ -490,6 +490,7 @@ int GuiMainMenu::run() {
 	int mainMenuStatus = 0;
 
 	_vm->waitForKeys();
+	_vm->setMouseCursor(NULL);
 
 	while (mainMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, mainMenuAction = kMMANone;
@@ -1074,6 +1075,8 @@ int GuiDiary::handleReadBook() {
 	// Use values from script; this is the most recent diary entry
 	pageNumber = _vm->_scriptVars[1];
 	pageCount = _vm->_scriptVars[1];
+
+	_vm->setMouseCursor(NULL);
 
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 

@@ -154,33 +154,42 @@ void CometEngine::drawSceneDecoration() {
 // Graphics
 
 void CometEngine::initAndLoadGlobalData() {
-	_screen->loadFont("RES.PAK", 0);
 
-	_bubbleSprite = _animationMan->loadAnimationResource("RES.PAK", 1);
-	_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
-	_inventoryItemSprites = _animationMan->loadAnimationResource("RES.PAK", 4);
+	if (isFloppy()) {
+		uint32 resDataSize;
+		byte *resData = _res->loadRawFromPak("RES.PAK", 0, &resDataSize);
+		_screen->loadFontFromRaw(resData, resDataSize, 6, 0);
+		_bubbleSprite = _animationMan->loadAnimationResourceFromRaw(resData, resDataSize, 6, 1);
+		_heroSprite = _animationMan->loadAnimationResourceFromRaw(resData, resDataSize, 6, 2);
+		_iconSprite = _animationMan->loadAnimationResourceFromRaw(resData, resDataSize, 6, 3);
+		_inventoryItemSprites = _animationMan->loadAnimationResourceFromRaw(resData, resDataSize, 6, 4);
+		_gamePalette = _res->loadRawFromRaw(resData, resDataSize, 6, 5);
+		_flashbakPal = _res->loadRawFromRaw(resData, resDataSize, 6, 6);
+		free(resData);
+	} else {
+		_screen->loadFont("RES.PAK", 0);
+		_bubbleSprite = _animationMan->loadAnimationResource("RES.PAK", 1);
+		_heroSprite = _animationMan->loadAnimationResource("RES.PAK", 2);
+		_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
+		_inventoryItemSprites = _animationMan->loadAnimationResource("RES.PAK", 4);
+		_gamePalette = _res->loadRawFromPak("RES.PAK", 5);
+		_flashbakPal = _res->loadRawFromPak("RES.PAK", 6);
+		_introPalette1 = _res->loadRawFromPak("RES.PAK", 7);
+		_introPalette2 = _res->loadRawFromPak("RES.PAK", 8);
+		// Initialize mouse cursors
+		_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
+		_mouseCursors[0] = _cursorSprite->_cels[1];
+		_mouseCursors[1] = _cursorSprite->_cels[0];
+		_mouseCursors[2] = _cursorSprite->_cels[4];
+		_mouseCursors[3] = _cursorSprite->_cels[3];
+		_mouseCursors[4] = _cursorSprite->_cels[2];
+		_mouseCursors[5] = _cursorSprite->_cels[5];
+		_mouseCursors[6] = _cursorSprite->_cels[6];
+	}
 
-	_gamePalette = _res->loadRawFromPak("RES.PAK", 5);
-	_flashbakPal = _res->loadRawFromPak("RES.PAK", 6);
-	_introPalette1 = _res->loadRawFromPak("RES.PAK", 7);
-	_introPalette2 = _res->loadRawFromPak("RES.PAK", 8);
-
-	_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
-	_iconSprite = _animationMan->loadAnimationResource("RES.PAK", 3);
-	
 	_currCursorSprite = NULL;
 
 	_screen->setFontColor(0);
-
-	// Initialize mouse cursor array
-	
-	_mouseCursors[0] = _cursorSprite->_cels[1];
-	_mouseCursors[1] = _cursorSprite->_cels[0];
-	_mouseCursors[2] = _cursorSprite->_cels[4];
-	_mouseCursors[3] = _cursorSprite->_cels[3];
-	_mouseCursors[4] = _cursorSprite->_cels[2];
-	_mouseCursors[5] = _cursorSprite->_cels[5];
-	_mouseCursors[6] = _cursorSprite->_cels[6];
 
 	_backupPalette = new byte[768];
 	memcpy(_backupPalette, _gamePalette, 768);
@@ -268,17 +277,19 @@ void CometEngine::updateGame() {
 	lookAtItemInSight(false);
 	drawSpriteQueue();
 
-	if (_talkieMode == 0)
+	if (isFloppy()) {
 		updateTextDialog();
+	} else {
+		if (_talkieMode == 0)
+			updateTextDialog();
+		if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 || _textBubbleActive))
+			updateText();
+		if (_dialog->isRunning())
+			_dialog->update();
+		updateTalkAnims();
+	}
 
-	if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 || _textBubbleActive))
-		updateText();
-
-	if (_dialog->isRunning())
-		_dialog->update();
-
-	updateTalkAnims();
-
+	// TODO: Make vars for indices
 	if (_scriptVars[11] < 100 && _scriptVars[10] == 1)
 		drawTextIllsmouth();
 
@@ -351,9 +362,9 @@ void CometEngine::getItemInSight() {
 			_inventoryItemStatus[sceneItem.itemIndex] = 1;
 			_inventoryItemIndex = sceneItem.itemIndex;
 			sceneItem.active = false;
-			showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex));
+			showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 		} else {
-			showTextBubble(4, _inventoryItemNames->getString(4));
+			showTextBubble(4, _inventoryItemNames->getString(4), 10);
 		}
 	}
 }
@@ -372,7 +383,7 @@ void CometEngine::lookAtItemInSight(bool showText) {
 			_itemY = sceneItem.y - 6;
 			if (showText && (!_dialog->isRunning() || !_textActive)) {
 				if (sceneItem.paramType == 0) {
-					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex));
+					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 				} else {
 					warning("sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
 					// TODO: Remove this:
@@ -525,9 +536,8 @@ void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListI
 }
 
 void CometEngine::updateTextDialog() {
-	if (_textActive || _textBubbleActive)
+	if ((isFloppy() && _textActive) || (!isFloppy() && (_textActive || _textBubbleActive)))
 		updateText();
-
 	if (_dialog->isRunning())
 		_dialog->update();
 }
@@ -557,7 +567,7 @@ void CometEngine::updateText() {
 			// There's more text to display
 			setText(_textNextPos);
 		} else {
-			if (_talkieMode == 0 || !_talkieSpeechPlaying) {
+			if (isFloppy() || _talkieMode == 0 || !_talkieSpeechPlaying) {
 				// Stop text display if text only mode or speech mode
 				resetTextValues();
 			} else if (_talkieMode == 1 && _talkieSpeechPlaying) {
@@ -615,42 +625,44 @@ void CometEngine::resetMarcheAndStaticObjects() {
 
 void CometEngine::updateScreen() {
 
-	// TODO: Draw unknown stuff -> Unused in Comet CD
+	// TODO: Draw unknown stuff -> Unused in Comet CD, check Comet floppy
 
 	if (_beams.size() > 0)
 		drawBeams();
 
-	// TODO: Draw pixels -> Unused in Comet CD
+	// TODO: Draw pixels -> Unused in Comet CD, check Comet floppy
 
 	if (_clearScreenRequest) {
 		_screen->clear();
 		_clearScreenRequest = false;
 	}
 
-	if (_currentModuleNumber == 9 && _currentSceneNumber == 0 && _paletteStatus == 0) {
-		memcpy(_backupPalette, _gamePalette, 768);
-		memcpy(_gamePalette, _introPalette2, 768);
-		memcpy(_screenPalette, _introPalette2, 768);
-		_screen->clear();
-		_screen->setFullPalette(_gamePalette);
-		_paletteStatus = 3;
-	} else if (_currentModuleNumber == 9 && _currentSceneNumber == 1 && _paletteStatus == 3) {
-		memcpy(_gamePalette, _introPalette1, 768);
-		memcpy(_screenPalette, _introPalette1, 768);
+	if (!isFloppy()) {
+		if (_currentModuleNumber == 9 && _currentSceneNumber == 0 && _paletteStatus == 0) {
+			memcpy(_backupPalette, _gamePalette, 768);
+			memcpy(_gamePalette, _introPalette2, 768);
+			memcpy(_screenPalette, _introPalette2, 768);
 			_screen->clear();
-		_screen->setFullPalette(_gamePalette);
-		_paletteStatus = 2;
-	} else if (_currentModuleNumber == 5 && _currentSceneNumber == 0 && (_paletteStatus == 2 || _paletteStatus == 3)) {
-		memcpy(_gamePalette, _backupPalette, 768);
-		memcpy(_screenPalette, _backupPalette, 768);
-			_screen->clear();
-		_screen->setFullPalette(_gamePalette);
-		_paletteStatus = 0;
-	} else if (_currentModuleNumber == 0 && _currentSceneNumber == 0 && _paletteStatus != 0) {
-		memcpy(_gamePalette, _backupPalette, 768);
-		memcpy(_screenPalette, _backupPalette, 768);
-		_screen->setFullPalette(_gamePalette);
-		_paletteStatus = 0;
+			_screen->setFullPalette(_gamePalette);
+			_paletteStatus = 3;
+		} else if (_currentModuleNumber == 9 && _currentSceneNumber == 1 && _paletteStatus == 3) {
+			memcpy(_gamePalette, _introPalette1, 768);
+			memcpy(_screenPalette, _introPalette1, 768);
+				_screen->clear();
+			_screen->setFullPalette(_gamePalette);
+			_paletteStatus = 2;
+		} else if (_currentModuleNumber == 5 && _currentSceneNumber == 0 && (_paletteStatus == 2 || _paletteStatus == 3)) {
+			memcpy(_gamePalette, _backupPalette, 768);
+			memcpy(_screenPalette, _backupPalette, 768);
+				_screen->clear();
+			_screen->setFullPalette(_gamePalette);
+			_paletteStatus = 0;
+		} else if (_currentModuleNumber == 0 && _currentSceneNumber == 0 && _paletteStatus != 0) {
+			memcpy(_gamePalette, _backupPalette, 768);
+			memcpy(_screenPalette, _backupPalette, 768);
+			_screen->setFullPalette(_gamePalette);
+			_paletteStatus = 0;
+		}
 	}
 
 	_screen->update();
@@ -677,6 +689,11 @@ void CometEngine::setMouseCursor(AnimationCel *cursorSprite) {
 
 	int width, height;
 	const byte *data;
+
+	if (isFloppy()) {
+		warning("setMouseCursor() called in floppy version");
+		return;
+	}
 
 	if (!cursorSprite) {
 		data = sysMouseCursor1;
@@ -828,6 +845,9 @@ void CometEngine::setText(byte *text) {
 	} else if (_textSpeed == 2) {
 		_textDuration = _textDuration / 2 + _textDuration;
 	}
+	
+	_textOriginalDuration = _textDuration;
+	
 }
 
 void CometEngine::resetTextValues() {
@@ -963,51 +983,53 @@ void CometEngine::handleInput() {
 	_cursorDirection = _keyDirection;
 	_walkDirection = walkDirectionTable[_cursorDirection & 0x0F];
 
-	if (!_dialog->isRunning() && !_textActive && _blockedInput != 0x0F) {
-		if (!_mouseWalking && _walkDirection == 0) {
-			_mouseCursorDirection = mouseCalcCursorDirection(mainActor->x, mainActor->y, _mouseX, _mouseY);
-		} else if (_walkDirection != 0) {
-			_mouseCursorDirection = _walkDirection;
+	if (!isFloppy()) {
+		if (!_dialog->isRunning() && !_textActive && _blockedInput != 0x0F) {
+			if (!_mouseWalking && _walkDirection == 0) {
+				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->x, mainActor->y, _mouseX, _mouseY);
+			} else if (_walkDirection != 0) {
+				_mouseCursorDirection = _walkDirection;
+			}
+			_mouseWalking = _leftButton;
+			switch (_mouseCursorDirection) {
+			case 1:
+				if (_mouseWalking) {
+					_cursorDirection = (_cursorDirection & 0x80) | 1;
+					_walkDirection = _mouseCursorDirection;
+				}
+				setMouseCursor(_mouseCursors[0]);
+				break;
+			case 2:
+				if (_mouseWalking) {
+					_cursorDirection = (_cursorDirection & 0x80) | 8;
+					_walkDirection = _mouseCursorDirection;
+				}
+				setMouseCursor(_mouseCursors[2]);
+				break;
+			case 3:
+				if (_mouseWalking) {
+					_cursorDirection = (_cursorDirection & 0x80) | 2;
+					_walkDirection = _mouseCursorDirection;
+				}
+				setMouseCursor(_mouseCursors[1]);
+				break;
+			case 4:
+				if (_mouseWalking) {
+					_cursorDirection = (_cursorDirection & 0x80) | 4;
+					_walkDirection = _mouseCursorDirection;
+				}
+				setMouseCursor(_mouseCursors[3]);
+				break;
+			}
+		} else if (_textActive) {
+			setMouseCursor(_mouseCursors[4]);
+		} else if (_dialog->isRunning()) {
+			setMouseCursor(_mouseCursors[6]);
+		} else if (_blockedInput == 0x0F) {
+			setMouseCursor(_mouseCursors[5]);
+		} else {
+			setMouseCursor(NULL);
 		}
-		_mouseWalking = _leftButton;
-		switch (_mouseCursorDirection) {
-		case 1:
-			if (_mouseWalking) {
-				_cursorDirection = (_cursorDirection & 0x80) | 1;
-				_walkDirection = _mouseCursorDirection;
-			}
-			setMouseCursor(_mouseCursors[0]);
-			break;
-		case 2:
-			if (_mouseWalking) {
-				_cursorDirection = (_cursorDirection & 0x80) | 8;
-				_walkDirection = _mouseCursorDirection;
-			}
-			setMouseCursor(_mouseCursors[2]);
-			break;
-		case 3:
-			if (_mouseWalking) {
-				_cursorDirection = (_cursorDirection & 0x80) | 2;
-				_walkDirection = _mouseCursorDirection;
-			}
-			setMouseCursor(_mouseCursors[1]);
-			break;
-		case 4:
-			if (_mouseWalking) {
-				_cursorDirection = (_cursorDirection & 0x80) | 4;
-				_walkDirection = _mouseCursorDirection;
-			}
-			setMouseCursor(_mouseCursors[3]);
-			break;
-		}
-	} else if (_textActive) {
-		setMouseCursor(_mouseCursors[4]);
-	} else if (_dialog->isRunning()) {
-		setMouseCursor(_mouseCursors[6]);
-	} else if (_blockedInput == 0x0F) {
-		setMouseCursor(_mouseCursors[5]);
-	} else {
-		setMouseCursor(NULL);
 	}
 
 	if ((_blockedInput & _cursorDirection) || _dialog->isRunning()) {
@@ -1017,7 +1039,9 @@ void CometEngine::handleInput() {
 		_mouseClick = _cursorDirection & 0x80;
 	}
 
-	_scriptKeybFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseClick & 0x80) || _leftButton || _rightButton;
+	_scriptKeybFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseClick & 0x80);
+	if (!isFloppy())
+		_scriptKeybFlag = _scriptKeybFlag || _leftButton || _rightButton;
 
 	if (mainActor->walkStatus & 3)
 		return;
@@ -1045,10 +1069,17 @@ void CometEngine::handleInput() {
 }
 
 void CometEngine::skipText() {
-	_textDuration = 1;
-	_textActive = false;
+	if (isFloppy()) {
+		if (_textDuration > 1 && _textDuration <= _textOriginalDuration - 3)
+			_textDuration = 1;
+		if (_dialog->isRunning())
+			_dialog->stop();			
+	} else {
+		_textDuration = 1;
+		_textActive = false;
+		stopVoice();
+	}
 	waitForKeys();
-	stopVoice();
 }
 
 void CometEngine::handleKeyInput() {
@@ -1066,7 +1097,6 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_o:
-		setMouseCursor(NULL);
 		_gui->run(kGuiInventory);
 		waitForKeys();
 		break;
@@ -1075,7 +1105,6 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_d:
-		setMouseCursor(NULL);
 		_gui->run(kGuiMainMenu);
 		waitForKeys();
 		break;
@@ -1084,20 +1113,18 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_i:
-		setMouseCursor(NULL);
 		_gui->run(kGuiDiary);
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
-		checkPauseGame();//TODO
+		checkPauseGame();
 		waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
 		skipText();
 		break;
 	default:
-		if (Common::KEYCODE_TAB == _keyScancode || _rightButton) {
-			setMouseCursor(NULL);
+		if (Common::KEYCODE_TAB == _keyScancode || (!isFloppy() && _rightButton)) {
 			_gui->run(kGuiCommandBar);
 		}
 		break;
@@ -1143,13 +1170,17 @@ int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNu
 	return 1;
 }
 
-void CometEngine::showTextBubble(int index, byte *text) {
+void CometEngine::showTextBubble(int index, byte *text, int textDuration) {
 	_talkActorIndex = 0;
 	_talkTextColor = 21;
 	_talkTextIndex = index;
 	setText(text);
 	_textActive = true;
 	_textBubbleActive = true;
+	if (isFloppy()) {
+		_textDuration = textDuration;
+		_textOriginalDuration = textDuration;
+	}
 }
 
 void CometEngine::drawLineOfSight() {
@@ -1314,13 +1345,18 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 }
 
 void CometEngine::setVoiceFileIndex(int narFileIndex) {
-	_currNarFileIndex = narFileIndex;
-	if (getGameID() == GID_MUSEUM)
-		narFileIndex = 6; // Lovecraft museum uses only this NAR file
-	_narFilename = Common::String::format("D%02d.NAR", narFileIndex);
+	if (!isFloppy()) {
+		_currNarFileIndex = narFileIndex;
+		if (getGameID() == GID_MUSEUM)
+			narFileIndex = 6; // Lovecraft museum uses only this NAR file
+		_narFilename = Common::String::format("D%02d.NAR", narFileIndex);
+	}
 }
 
 void CometEngine::playVoice(int voiceIndex) {
+	
+	warning("playVoice(%d)", voiceIndex);
+
 	stopVoice();
 
 	_textActive = true;

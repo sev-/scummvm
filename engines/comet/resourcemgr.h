@@ -95,6 +95,8 @@ public:
 	void loadFromNar(BaseResource *resource, const char *filename, int index) {
 		loadFrom<NarResourceLoader>(resource, filename, index);
 	}
+	byte *loadRawFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
+	void loadFromRaw(BaseResource *resource, const byte *rawData, uint32 rawDataSize, int maxCount, int index);
 protected:
 	template<typename T>
 	void loadFrom(BaseResource *resource, const char *filename, int index) {

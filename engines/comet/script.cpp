@@ -724,7 +724,8 @@ void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 
 void ScriptInterpreter::o1_startDialog(Script *script) {
 	_vm->_dialog->start(script);
-	_vm->waitForKeys();
+	if (!_vm->isFloppy())
+		_vm->waitForKeys();
 	script->status |= kScriptDialogRunning;
 	_yield = true;
 }

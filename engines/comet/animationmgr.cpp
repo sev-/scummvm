@@ -66,6 +66,12 @@ AnimationResource *AnimationManager::loadAnimationResource(const char *pakFilena
 	return animation;
 }
 
+AnimationResource *AnimationManager::loadAnimationResourceFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index) {
+	AnimationResource *animation = new AnimationResource();
+	_vm->_res->loadFromRaw(animation, rawData, rawDataSize, maxCount, index);
+	return animation;
+}
+
 void AnimationManager::purgeUnusedAnimationSlots() {
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
 		if (_animationSlots[i].anim && _animationSlots[i].animationType == 0 && !_vm->isAnimationSlotUsed(i)) {

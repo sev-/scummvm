@@ -100,29 +100,29 @@ void Dialog::stop() {
 void Dialog::update() {
 	int oldDialogSelectedItemIndex = _selectedItemIndex;
 
-	if (_vm->_cursorDirection & 1) {
+	if ((_vm->_cursorDirection & 1) && _selectedItemIndex > 0) {
+		_selectedItemIndex--;
 		_vm->waitForKeys();
-		if (_selectedItemIndex > 0)
-			_selectedItemIndex--;
-	} else if (_vm->_cursorDirection & 2) {
+	} else if ((_vm->_cursorDirection & 2) && _selectedItemIndex < (int)_items.size() - 1) {
+		_selectedItemIndex++;
 		_vm->waitForKeys();
-		if (_selectedItemIndex < (int)_items.size() - 1)
-			_selectedItemIndex++;
 	}
 
-	if (oldDialogSelectedItemIndex == _selectedItemIndex) {
-		// Handle selection by mouse
-		int mouseSelectedItemIndex = -1;
-		for (uint i = 0; i < _items.size(); i++) {
-			if (_vm->_mouseX > _items[i].rect.x && _vm->_mouseX < _items[i].rect.x2 &&
-				_vm->_mouseY > _items[i].rect.y && _vm->_mouseY < _items[i].rect.y2)
-				mouseSelectedItemIndex = _items[i].rect.id;
+	if (!isFloppy()) {
+		if (oldDialogSelectedItemIndex == _selectedItemIndex) {
+			// Handle selection by mouse
+			int mouseSelectedItemIndex = -1;
+			for (uint i = 0; i < _items.size(); i++) {
+				if (_vm->_mouseX > _items[i].rect.x && _vm->_mouseX < _items[i].rect.x2 &&
+					_vm->_mouseY > _items[i].rect.y && _vm->_mouseY < _items[i].rect.y2)
+					mouseSelectedItemIndex = _items[i].rect.id;
+			}
+			if (mouseSelectedItemIndex != -1) {
+				_selectedItemIndex = mouseSelectedItemIndex;
+			}
+		} else {
+			// TODO: Move mouse cursor to center of selected dialog item
 		}
-		if (mouseSelectedItemIndex != -1) {
-			_selectedItemIndex = mouseSelectedItemIndex;
-		}
-	} else {
-		// TODO: Move mouse cursor to center of selected dialog item
 	}
 
 	if (oldDialogSelectedItemIndex != _selectedItemIndex) {

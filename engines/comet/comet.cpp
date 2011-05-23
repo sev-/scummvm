@@ -260,7 +260,7 @@ Common::Error CometEngine::run() {
 
 	initSystemVars();
 
-	_talkieMode = 1;
+	_talkieMode = isFloppy() ? 0 : 1;
 
 	// Unused in Comet CD
 	// _beamColor = 112;
@@ -269,8 +269,13 @@ Common::Error CometEngine::run() {
 	_isSaveAllowed = true;
 
 	if (getGameID() == GID_COMET) {
-		_startupModuleNumber = 9;
-		_startupSceneNumber = 0;
+		if (isFloppy()) {
+			_startupModuleNumber = 5;
+			_startupSceneNumber = 0;
+		} else {
+			_startupModuleNumber = 9;
+			_startupSceneNumber = 0;
+		}
 	} else if (getGameID() == GID_MUSEUM) {
 		_startupModuleNumber = 0;
 		_startupSceneNumber = 43;
@@ -279,12 +284,11 @@ Common::Error CometEngine::run() {
 	initAndLoadGlobalData();
 
 	//TEST
-	_talkieMode = 1;
+	//_talkieMode = 1;
 	_textSpeed = 0;
 	//_music->playMusic(4);
 
 	CursorMan.showMouse(true);
-
 	setMouseCursor(_mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {
