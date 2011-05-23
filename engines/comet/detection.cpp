@@ -79,6 +79,25 @@ using Common::GUIO_NOSPEECH;
 
 static const CometGameDescription gameDescriptions[] = {
 
+	// Shadow Of The Comet - English Floppy Version
+	{
+		{
+			"comet",
+			"English",
+			{{"r00.cc4", 0, "b3a8616c12b87f8cddccd389e02d8a55", -1},
+			 {  "e.cc4", 0, "5a5eeea3a5112a32009a3ec9c540554a", -1},
+			 AD_LISTEND},
+			Common::EN_ANY,
+			Common::kPlatformPC,
+			ADGF_NO_FLAGS,
+			Common::GUIO_NONE
+		},
+		GID_COMET,
+		0,
+		GF_FLOPPY,
+		0
+	},
+
 	// Shadow Of The Comet - English Version
 	{
 		{
