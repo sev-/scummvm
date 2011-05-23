@@ -182,6 +182,7 @@ public:
 	Common::Platform getPlatform() const;
 	uint16 getVersion() const;
 	const Common::String& getTargetName() const { return _targetName; }
+	bool isFloppy() const { return getFeatures() & GF_FLOPPY; }
 
 	const char *getGameFile(int fileType);
 
