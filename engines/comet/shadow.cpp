@@ -282,7 +282,7 @@ void CometEngine::updateGame() {
 	} else {
 		if (_talkieMode == 0)
 			updateTextDialog();
-		if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 || _textBubbleActive))
+		if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 && _textBubbleActive))
 			updateText();
 		if (_dialog->isRunning())
 			_dialog->update();

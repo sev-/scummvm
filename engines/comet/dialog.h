@@ -61,6 +61,8 @@ protected:
 	int _introTextIndex, _textX, _textY;
 	byte _textColor;
 	int _textColorInc;
+	byte _frameColor;
+	int _frameColorInc;
 	bool _isRunning;
 	Common::Array<DialogItem> _items;
 
