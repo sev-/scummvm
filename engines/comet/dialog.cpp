@@ -108,7 +108,7 @@ void Dialog::update() {
 		_vm->waitForKeys();
 	}
 
-	if (!isFloppy()) {
+	if (!_vm->isFloppy()) {
 		if (oldDialogSelectedItemIndex == _selectedItemIndex) {
 			// Handle selection by mouse
 			int mouseSelectedItemIndex = -1;
