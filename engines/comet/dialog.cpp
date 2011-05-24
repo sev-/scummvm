@@ -35,6 +35,8 @@ Dialog::Dialog(CometEngine *vm) : _vm(vm) {
 	_textY = 0;
 	_textColor = 79;
 	_textColorInc = -1;
+	_frameColor = 82;
+	_frameColorInc = 1;
 	_isRunning = false;
 }
 
@@ -57,7 +59,13 @@ void Dialog::start(Script *script) {
 	_textX = script->readByte() * 2;
 	_textY = script->readByte();
 	
+	if (_vm->_talkieMode == 2) {
+		_textX = 8;
+		_textY = 16;
+	}
+
 	y = _textY;
+	// Y adjustment from drawText3
 	if (y < 3)
 		y = 3;
 
@@ -72,14 +80,23 @@ void Dialog::start(Script *script) {
 		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
 		dialogItem.scriptIp = script->ip;
 		script->ip += 2;
-		_vm->setText(dialogItem.text);
-		y += _vm->_screen->getTextHeight(dialogItem.text);
-		dialogItem.rect.x = _textX - 4;
-		dialogItem.rect.y = y - 4 - _vm->_textMaxTextHeight;
-		dialogItem.rect.x2 = _textX + _vm->_textMaxTextWidth * 2 + 4;
-		dialogItem.rect.y2 = y;
+		if (_vm->_talkieMode == 0 || _vm->_talkieMode == 1) {
+			// Dialog bubbles containing the whole text
+			_vm->setText(dialogItem.text);
+			y += _vm->_screen->getTextHeight(dialogItem.text);
+			dialogItem.rect.x = _textX - 4;
+			dialogItem.rect.y = y - 4 - _vm->_textMaxTextHeight;
+			dialogItem.rect.x2 = _textX + _vm->_textMaxTextWidth * 2 + 4;
+			dialogItem.rect.y2 = y;
+			y += 8;
+		} else if (_vm->_talkieMode == 2) {
+			// Dialog bubbles containing letters only
+			dialogItem.rect.x = _textX - 2;
+			dialogItem.rect.y = _textY + index * 16 - 10;
+			dialogItem.rect.x2 = _textX + 10;
+			dialogItem.rect.y2 = _textY + index * 16;
+		}
 		dialogItem.rect.id = index;
-		y += 8;
 		_items.push_back(dialogItem);
 	}
 
@@ -132,64 +149,85 @@ void Dialog::update() {
 
 	drawTextBubbles();
 
-	// The following was in dialogHandleInput() in the original code, we do it right here
-	//handleEvents();
-
 	if (_selectedItemIndex != -1 && (_vm->_leftButton || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
-		//DEBUG: if (_talkieMode == 1)
-		{
-			_vm->waitForKeys();
+		if (_vm->_talkieMode == 1) {
 			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
 				_vm->updateTalkAnims();
 				_vm->handleEvents();
 				_vm->_system->updateScreen();
 			}
+			_vm->waitForKeys();
 		}
 		_isRunning = false;
 	}
+	
 }
 
 void Dialog::drawTextBubbles() {
-	int x, y;
-	byte color1, color2;
-
-	//TODO: Before...
-
-	x = _textX;
-	y = _textY;
-
-	if (_vm->_actors[0].textColor == 25)
-		color1 = 22;
- 	else
- 		color1 = _vm->_actors[0].textColor;
-
-	for (uint i = 0; i < _items.size(); i++) {
-		color2 = color1;
-		if (i == (uint)_selectedItemIndex) {
-			if (_vm->_actors[0].textColor == 25) {
-				color2 = _textColor;
-				_textColor += _textColorInc;
-				if (_textColor > 25) {
-					_textColor = 25;
-					_textColorInc = -1;
-				} else if (_textColor < 22) {
-					_textColor = 22;
-					_textColorInc = 1;
+	if (_vm->isFloppy() || _vm->_talkieMode == 0 || _vm->_talkieMode == 1) {
+		int x = _textX;
+		int y = _textY;
+		byte color1 = _vm->_actors[0].textColor == 25 ? 22 : _vm->_actors[0].textColor;
+		byte color2;
+		// TODO: Draw intro text bubble in floppy version
+		for (uint i = 0; i < _items.size(); i++) {
+			color2 = color1;
+			if (i == (uint)_selectedItemIndex) {
+				if (_vm->_actors[0].textColor == 25) {
+					color2 = _textColor;
+					_textColor += _textColorInc;
+					if (_textColor > 25) {
+						_textColor = 25;
+						_textColorInc = -1;
+					} else if (_textColor < 22) {
+						_textColor = 22;
+						_textColorInc = 1;
+					}
+				} else if (_vm->_textColorFlag & 1) {
+					color2 = _vm->_actors[0].textColor;
+				} else {
+					color2 = 159;
 				}
-			} else if (_vm->_textColorFlag & 1) {
-				color2 = _vm->_actors[0].textColor;
-			} else {
-				color2 = 159;
 			}
+			_vm->setText(_items[i].text);
+			_vm->drawBubble(x - 4, y - 4, x + _vm->_textMaxTextWidth * 2 + 4, y + _vm->_textMaxTextHeight);
+			y = _vm->_screen->drawText3(x, y, _items[i].text, color2, 1);
+			y += 8;
 		}
-		_vm->setText(_items[i].text);
-		_vm->drawBubble(x - 4, y - 4, x + _vm->_textMaxTextWidth * 2 + 4, y + _vm->_textMaxTextHeight);
-		y = _vm->_screen->drawText3(x, y, _items[i].text, color2, 1);
-		y += 8;
+	} else if (_vm->_talkieMode == 2) {
+		byte letter[2];
+		_frameColor += _frameColorInc;
+		if (_frameColor == 94)
+			_frameColorInc = -1;
+		else if (_frameColor == 82)
+			_frameColorInc = 1;
+		if (_introTextIndex >= 0) {
+			// Play the intro speech
+			_vm->playVoice(_introTextIndex);
+		}
+		_introTextIndex = -1;
+		letter[0] = 'A';
+		letter[1] = 0;
+		for (uint index = 0; index < _items.size(); index++) {
+			_vm->_screen->fillRect(_textX - 2, _textY + index * 16 - 10, _textX + 10, _textY + index * 16 + 2, 84);
+			if (index == (uint)_selectedItemIndex) {
+				_vm->_screen->frameRect(_textX - 3, _textY + index * 16 - 11, _textX + 11, _textY + index * 16 + 3, _frameColor);
+			} else {
+				_vm->_screen->frameRect(_textX - 3, _textY + index * 16 - 11, _textX + 11, _textY + index * 16 + 3, 88);
+			}
+			_vm->_screen->setFontColor(94);
+			_vm->_screen->drawText(_textX, _textY + index * 16 - 8, letter);
+			letter[0]++;
+		}
+		if (_selectedItemIndex != _selectedItemIndex2) {
+			if (_selectedItemIndex >= 0) {
+				// Play the speech for the selected item
+				_vm->playVoice(_items[_selectedItemIndex].index);
+			}
+			_selectedItemIndex2 = _selectedItemIndex;
+		}
 	}
-
-	//TODO: After...
 }
 
 uint16 Dialog::getChoiceScriptIp() {

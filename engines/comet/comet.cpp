@@ -284,7 +284,7 @@ Common::Error CometEngine::run() {
 	initAndLoadGlobalData();
 
 	//TEST
-	//_talkieMode = 1;
+	_talkieMode = 2;
 	_textSpeed = 0;
 	//_music->playMusic(4);
 
