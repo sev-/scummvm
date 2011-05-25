@@ -38,7 +38,7 @@ namespace Comet {
 Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiInventory = new GuiInventory(_vm);
 	_guiCommandBar = new GuiCommandBar(_vm);
-	_guiDiary = new GuiDiary(_vm);
+	_guiJournal = new GuiJournal(_vm);
 	_guiTownMap = new GuiTownMap(_vm);
 	_guiMainMenu = new GuiMainMenu(_vm);
 	_guiOptionsMenu = new GuiOptionsMenu(_vm);
@@ -51,7 +51,7 @@ Gui::Gui(CometEngine *vm) : _vm(vm) {
 Gui::~Gui() {
 	delete _guiInventory;
 	delete _guiCommandBar;
-	delete _guiDiary;
+	delete _guiJournal;
 	delete _guiTownMap;
 	delete _guiMainMenu;
 	delete _guiOptionsMenu;
@@ -74,8 +74,8 @@ int Gui::run(GuiPageIdent page) {
 	case kGuiCommandBar:
 		_currPage = _guiCommandBar;
 		break;
-	case kGuiDiary:
-		_currPage = _guiDiary;
+	case kGuiJournal:
+		_currPage = _guiJournal;
 		break;
 	case kGuiTownMap:
 		_currPage = _guiTownMap;
@@ -1059,16 +1059,16 @@ int GuiTownMap::run() {
 void GuiTownMap::draw() {
 }
 
-// GuiDiary
+// GuiJournal
 
-int GuiDiary::run() {
+int GuiJournal::run() {
 	return handleReadBook();
 }
 
-void GuiDiary::draw() {
+void GuiJournal::draw() {
 }
 
-int GuiDiary::handleReadBook() {
+int GuiJournal::handleReadBook() {
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
 	int bookStatus = 0;
 
@@ -1148,7 +1148,7 @@ int GuiDiary::handleReadBook() {
 	return 2 - bookStatus;
 }
 
-void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
+void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
 	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
 	char pageNumberString[10];
 	int pageNumberStringWidth;
@@ -1184,7 +1184,7 @@ void GuiDiary::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontCo
 	}
 }
 
-void GuiDiary::bookTurnPage(bool turnDirection) {
+void GuiJournal::bookTurnPage(bool turnDirection) {
 	if (turnDirection) {
 		for (uint i = 38; i < 49; i++) {
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
@@ -1202,7 +1202,7 @@ void GuiDiary::bookTurnPage(bool turnDirection) {
 	}
 }
 
-void GuiDiary::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
+void GuiJournal::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
 	if (turnDirection) {
 		for (byte fontColor = 64; fontColor < 72; fontColor++) {
 			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);

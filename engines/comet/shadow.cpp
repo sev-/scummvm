@@ -1113,7 +1113,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_i:
-		_gui->run(kGuiDiary);
+		_gui->run(kGuiJournal);
 		waitForKeys();
 		break;
 	case Common::KEYCODE_p:
@@ -1556,7 +1556,7 @@ void CometEngine::checkCurrentInventoryItem() {
 
 	// Check if the player wants to read the notebook
 	if (_inventoryItemStatus[0] == 2) {
-		_gui->run(kGuiDiary);
+		_gui->run(kGuiJournal);
 		_inventoryItemStatus[0] = 1;
 	}
 }
