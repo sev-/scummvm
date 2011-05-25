@@ -33,7 +33,7 @@ namespace Comet {
 enum GuiPageIdent {
 	kGuiInventory,
 	kGuiCommandBar,
-	kGuiDiary,
+	kGuiJournal,
 	kGuiTownMap,
 	kGuiMainMenu,
 	kGuiOptionsMenu,
@@ -62,9 +62,9 @@ protected:
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);
 };
 
-class GuiDiary : public GuiPage {
+class GuiJournal : public GuiPage {
 public:
-	GuiDiary(CometEngine *vm) : GuiPage(vm) {};
+	GuiJournal(CometEngine *vm) : GuiPage(vm) {};
 	int run();
 	void draw();
 protected:
@@ -166,7 +166,7 @@ protected:
 	byte *_gameScreen;
 	GuiInventory *_guiInventory;
 	GuiCommandBar *_guiCommandBar;
-	GuiDiary *_guiDiary;
+	GuiJournal *_guiJournal;
 	GuiTownMap *_guiTownMap;
 	GuiMainMenu *_guiMainMenu;
 	GuiOptionsMenu *_guiOptionsMenu;
