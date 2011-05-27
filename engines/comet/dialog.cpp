@@ -149,7 +149,7 @@ void Dialog::update() {
 
 	drawTextBubbles();
 
-	if (_selectedItemIndex != -1 && (_vm->_leftButton || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
+	if (_selectedItemIndex != -1 && (_vm->leftButton() || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
 		if (_vm->_talkieMode == 1) {
 			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
@@ -170,7 +170,10 @@ void Dialog::drawTextBubbles() {
 		int y = _textY;
 		byte color1 = _vm->_actors[0].textColor == 25 ? 22 : _vm->_actors[0].textColor;
 		byte color2;
-		// TODO: Draw intro text bubble in floppy version
+		/* TODO: Draw intro text bubble in floppy version
+		   NOTE: Never used in Comet Floppy since _items[0].index == _introTextIndex is always true
+		   and so _introTextIndex is set to -1.
+		*/
 		for (uint i = 0; i < _items.size(); i++) {
 			color2 = color1;
 			if (i == (uint)_selectedItemIndex) {

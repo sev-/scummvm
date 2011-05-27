@@ -1277,6 +1277,7 @@ int GuiPuzzle::runPuzzle() {
 	};
 
 	int puzzleStatus = 0;
+	int puzzleCursorX = 0, puzzleCursorY = 0;
 
 	_puzzleSprite = _vm->_animationMan->loadAnimationResource("A07.PAK", 24);
 
@@ -1290,33 +1291,37 @@ int GuiPuzzle::runPuzzle() {
 		}
 	}
 
+	_fingerBackground = NULL;	
+	_puzzleTableRow = 0;
+	_puzzleTableColumn = 0;
+
 	loadFingerCursor();
 
-	_puzzleCursorX = 0;
-	_puzzleCursorY = 0;
-
 	while (puzzleStatus == 0 && !_vm->_quitGame) {
-		int selectedTile;
 
 		_vm->handleEvents();
 
-		_puzzleCursorX = CLIP(_vm->_mouseX, 103, 231);
-		_puzzleCursorY = CLIP(_vm->_mouseY, 44, 171);
-
-		if (_vm->_mouseX != _puzzleCursorX || _vm->_mouseY != _puzzleCursorY)
-			_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
-
-		selectedTile = _vm->findRect(puzzleTileRects, _vm->_mouseX, _vm->_mouseY, 21, -1);
-		if (selectedTile >= 0) {
-			if (selectedTile >= 0 && selectedTile < 20) {
-				_puzzleTableColumn = rectToColRow[selectedTile].col;
-				_puzzleTableRow = rectToColRow[selectedTile].row;
-			} else if (selectedTile == 20) {
-				_puzzleTableColumn = (_puzzleCursorX - 119) / 24 + 1;
-				_puzzleTableRow = (_puzzleCursorY - 60) / 24 + 1; 
-			} else {
-				_puzzleTableColumn = 0;
-				_puzzleTableRow = 0;
+		if (!_vm->isFloppy()) {
+			/* Comet CD: Find out which tile is selected and convert 
+			   mouse coords to tile coords.
+			*/
+			int mouseSelectedTile;
+			puzzleCursorX = CLIP(_vm->_mouseX, 103, 231);
+			puzzleCursorY = CLIP(_vm->_mouseY, 44, 171);
+			if (_vm->_mouseX != puzzleCursorX || _vm->_mouseY != puzzleCursorY)
+				_vm->_system->warpMouse(puzzleCursorX, puzzleCursorY);
+			mouseSelectedTile = _vm->findRect(puzzleTileRects, _vm->_mouseX, _vm->_mouseY, 21, -1);
+			if (mouseSelectedTile >= 0) {
+				if (mouseSelectedTile >= 0 && mouseSelectedTile < 20) {
+					_puzzleTableColumn = rectToColRow[mouseSelectedTile].col;
+					_puzzleTableRow = rectToColRow[mouseSelectedTile].row;
+				} else if (mouseSelectedTile == 20) {
+					_puzzleTableColumn = (puzzleCursorX - 119) / 24 + 1;
+					_puzzleTableRow = (puzzleCursorY - 60) / 24 + 1; 
+				} else {
+					_puzzleTableColumn = 0;
+					_puzzleTableRow = 0;
+				}
 			}
 		}
 
@@ -1356,52 +1361,52 @@ int GuiPuzzle::runPuzzle() {
 				break;
 			}
 
-			if (selectionChanged) {
-				selectedTile = 20;
+			if (selectionChanged && !_vm->isFloppy()) {
+				/* Comet CD: If the tile selection has been changed by cursor keys,
+				   position the mouse at the correct tile. */
+				int mouseNewTile = 20;
 				if (_puzzleTableColumn == 0 && _puzzleTableRow == 0)
-					selectedTile = 16;
+					mouseNewTile = 16;
 				else if (_puzzleTableColumn == 5 && _puzzleTableRow == 0)
-					selectedTile = 17;
+					mouseNewTile = 17;
 				else if (_puzzleTableColumn == 5 && _puzzleTableRow == 5)
-					selectedTile = 18;
+					mouseNewTile = 18;
 				else if (_puzzleTableColumn == 0 && _puzzleTableRow == 5)
-					selectedTile = 19;
+					mouseNewTile = 19;
 				else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 0)
-					selectedTile = _puzzleTableColumn - 1;
+					mouseNewTile = _puzzleTableColumn - 1;
 				else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 5)
-					selectedTile = _puzzleTableColumn + 7;
+					mouseNewTile = _puzzleTableColumn + 7;
 				else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 0)
-					selectedTile = _puzzleTableRow + 11;
+					mouseNewTile = _puzzleTableRow + 11;
 				else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 5)
-					selectedTile = _puzzleTableRow + 3;
-
-				if (selectedTile != 20) {
-					_puzzleCursorX = (puzzleTileRects[selectedTile].x + puzzleTileRects[selectedTile].x2) / 2;
-					_puzzleCursorY = (puzzleTileRects[selectedTile].y + puzzleTileRects[selectedTile].y2) / 2;
+					mouseNewTile = _puzzleTableRow + 3;
+				if (mouseNewTile != 20) {
+					puzzleCursorX = (puzzleTileRects[mouseNewTile].x + puzzleTileRects[mouseNewTile].x2) / 2;
+					puzzleCursorY = (puzzleTileRects[mouseNewTile].y + puzzleTileRects[mouseNewTile].y2) / 2;
 				} else {
-					_puzzleCursorX = (_puzzleTableColumn - 1) * 24 + 130;
-					_puzzleCursorY = (_puzzleTableRow - 1) * 24 + 71;
+					puzzleCursorX = (_puzzleTableColumn - 1) * 24 + 130;
+					puzzleCursorY = (_puzzleTableRow - 1) * 24 + 71;
 				}
-
-				// Mouse warp to selected tile
-				_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+				_vm->_system->warpMouse(puzzleCursorX, puzzleCursorY);
 			}
+			
 		}
 
-		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
+		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->rightButton()) {
 			puzzleStatus = 1;
-		} else if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
+		} else if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->leftButton()) {
 			if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				_vm->playSample(75, 1);
+				playTileSound();
 				moveTileRow(_puzzleTableRow, -1);
 			} else if (_puzzleTableColumn == 5 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				_vm->playSample(75, 1);
+				playTileSound();
 				moveTileRow(_puzzleTableRow, 1);
 			} else if (_puzzleTableRow == 0 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				_vm->playSample(75, 1);
+				playTileSound();
 				moveTileColumn(_puzzleTableColumn, -1);
 			} else if (_puzzleTableRow == 5 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				_vm->playSample(75, 1);
+				playTileSound();
 				moveTileColumn(_puzzleTableColumn, 1);
 			}
 			if (testIsSolved())
@@ -1411,15 +1416,40 @@ int GuiPuzzle::runPuzzle() {
 		}
 	}
 
+	delete _fingerBackground;
 	delete _puzzleSprite;
 
 	return puzzleStatus == 2 ? 2 : 0;
 }
 
 void GuiPuzzle::loadFingerCursor() {
-	AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
-	AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
-	_vm->setMouseCursor(cel);
+	if (!_vm->isFloppy()) {
+		AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
+		AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
+		_vm->setMouseCursor(cel);
+	}
+}
+
+void GuiPuzzle::drawFinger() {
+	if (_vm->isFloppy()) {
+		int16 fingerX = 108 + _puzzleTableColumn * 24;
+		int16 fingerY = 48 + _puzzleTableRow * 24;
+		if (!_fingerBackground) {
+			AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
+			AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
+			_fingerBackground = new Graphics::Surface();
+			_fingerBackground->create(cel->width, cel->height, Graphics::PixelFormat::createFormatCLUT8());
+			_prevFingerX = 0;
+			_prevFingerY = 0;
+		} else if ((_prevFingerX == 228 || _prevFingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY)) {
+			_vm->_screen->putRect(_fingerBackground, _prevFingerX, _prevFingerY);
+		}
+		if ((fingerX == 228 || fingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY))
+			_vm->_screen->grabRect(_fingerBackground, fingerX, fingerY);
+		_vm->_screen->drawAnimationElement(_puzzleSprite, 18, fingerX, fingerY);
+		_prevFingerX = fingerX; 
+		_prevFingerY = fingerY;
+	}
 }
 
 void GuiPuzzle::drawField() {
@@ -1429,6 +1459,7 @@ void GuiPuzzle::drawField() {
 			drawTile(columnIndex, rowIndex, 0, 0);		
 		}
 	}
+	drawFinger();
 }
 
 void GuiPuzzle::drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs) {
@@ -1445,6 +1476,7 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 				drawTile(columnIndex, rowIndex, 0, -yOffs);
 			}
 			_vm->_screen->setClipY(0, 199);
+			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1460,6 +1492,7 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 				drawTile(columnIndex, rowIndex, 0, yOffs);
 			}
 			_vm->_screen->setClipY(0, 199);
+			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1479,6 +1512,7 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 				drawTile(columnIndex, rowIndex, -xOffs, 0);
 			}
 			_vm->_screen->setClipX(0, 319);
+			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1494,6 +1528,7 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 				drawTile(columnIndex, rowIndex, xOffs, 0);
 			}
 			_vm->_screen->setClipX(0, 319);
+			drawFinger();
 			_vm->_screen->update();
 			_vm->_system->delayMillis(40); // TODO
 		}
@@ -1513,6 +1548,12 @@ bool GuiPuzzle::testIsSolved() {
 		}
 	}
 	return matchingTiles == 16;
+}
+
+void GuiPuzzle::playTileSound() {
+	if (!_vm->isFloppy()) {
+		_vm->playSample(75, 1);
+	}
 }
 
 // GuiSaveLoadMenu

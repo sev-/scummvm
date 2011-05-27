@@ -26,6 +26,8 @@
 #ifndef COMET_COMET_GUI_H
 #define COMET_COMET_GUI_H
 
+#include "graphics/surface.h"
+
 #include "comet/comet.h"
 
 namespace Comet {
@@ -124,14 +126,17 @@ protected:
 	uint16 _puzzleTiles[6][6];
 	AnimationResource *_puzzleSprite;
 	int _puzzleTableRow, _puzzleTableColumn;
-	int _puzzleCursorX, _puzzleCursorY;
+	Graphics::Surface *_fingerBackground;
+	int16 _prevFingerX, _prevFingerY;
 	int runPuzzle();
 	void loadFingerCursor();
+	void drawFinger();
 	void drawField();
 	void drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs);
 	void moveTileColumn(int columnIndex, int direction);
 	void moveTileRow(int rowIndex, int direction);
 	bool testIsSolved();
+	void playTileSound();
 };
 
 struct SavegameItem {
