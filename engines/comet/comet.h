@@ -189,6 +189,9 @@ public:
 	const CometGameDescription *_gameDescription;
 
 	GUI::Debugger *getDebugger() { return _console; }
+	
+	bool leftButton() const { return _leftButton && !isFloppy(); }
+	bool rightButton() const { return _rightButton && !isFloppy(); }
 
 private:
 	bool detectGame();

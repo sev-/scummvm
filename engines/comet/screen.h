@@ -84,6 +84,9 @@ public:
 	void copyFromScreen(byte *source);
 	void copyToScreen(byte *dest);
 	
+	void grabRect(Graphics::Surface *surface, int x, int y);
+	void putRect(Graphics::Surface *surface, int x, int y);
+	
 	void enableTransitionEffect();
 	void setZoom(int zoomFactor, int x, int y);
 	void setFadeType(PaletteFadeType fadeType);

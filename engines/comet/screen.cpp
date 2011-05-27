@@ -107,6 +107,18 @@ void Screen::copyToScreen(byte *dest) {
 	memcpy(dest, getScreen(), 64000);
 }
 
+void Screen::grabRect(Graphics::Surface *surface, int x, int y) {
+	for (int yc = 0; yc < surface->h; yc++) {
+		memcpy(surface->getBasePtr(0, yc), getScreen() + x + (y + yc) * 320, surface->w);
+	}
+}
+
+void Screen::putRect(Graphics::Surface *surface, int x, int y) {
+	for (int yc = 0; yc < surface->h; yc++) {
+		memcpy(getScreen() + x + (y + yc) * 320, surface->getBasePtr(0, yc), surface->w);
+	}
+}
+
 void Screen::enableTransitionEffect() {
 	_transitionEffect = true;
 }
