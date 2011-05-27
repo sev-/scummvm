@@ -288,7 +288,7 @@ Common::Error CometEngine::run() {
 	_textSpeed = 0;
 	//_music->playMusic(4);
 
-	CursorMan.showMouse(true);
+	CursorMan.showMouse(!isFloppy());
 	setMouseCursor(_mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {

@@ -950,85 +950,115 @@ int GuiTownMap::run() {
 		{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
 	};
 	
-	const int16 mapRectX1 = 64, mapRectX2 = 269;
-	const int16 mapRectY1 = 65, mapRectY2 = 187;
-	const int16 cursorAddX = 8, cursorAddY = 8;
+	const int16 kCursorAddX = 8, kCursorAddY = 8;
 
+	int mapRectX1, mapRectX2, mapRectY1, mapRectY2;
 	int mapStatus = 0;
-	// Init map status values from script
-	uint16 sceneBitMaskStatus = _vm->_scriptVars[2];
-	uint16 sceneStatus1 = _vm->_scriptVars[3];
-	uint16 sceneStatus2 = _vm->_scriptVars[4];
+	uint16 sceneBitMaskStatus;
+	uint16 sceneStatus1, sceneStatus2, sceneStatus3, sceneStatus4;
 	int16 cursorX, cursorY;
+	int16 prevCursorX = -1, prevCursorY = -1;
 	int16 locationNumber = _vm->_sceneNumber % 30;
+
+	if (_vm->isFloppy()) {
+		mapRectX1 = 82;
+		mapRectX2 = 268;
+		mapRectY1 = 68;
+		mapRectY2 = 186;
+		sceneBitMaskStatus = _vm->_scriptVars[2];
+		sceneStatus1 = _vm->_scriptVars[89];
+		sceneStatus2 = _vm->_scriptVars[114];
+		sceneStatus3 = _vm->_scriptVars[61];
+		sceneStatus4 = _vm->_scriptVars[92];
+	} else {
+		mapRectX1 = 65;
+		mapRectX2 = 268;
+		mapRectY1 = 66;
+		mapRectY2 = 186;
+		sceneBitMaskStatus = _vm->_scriptVars[2];
+		sceneStatus1 = _vm->_scriptVars[3];
+		sceneStatus2 = _vm->_scriptVars[4];
+		sceneStatus3 = _vm->_scriptVars[5];
+		sceneStatus4 = _vm->_scriptVars[6];
+	}
 
 	cursorX = mapPoints[locationNumber].x;
 	cursorY = mapPoints[locationNumber].y;
-	
-	_vm->_system->warpMouse(cursorX, cursorY);
 
 	_vm->waitForKeys();
+
+	if (!_vm->isFloppy()) {
+		CursorMan.showMouse(false);
+		_vm->_system->warpMouse(cursorX, cursorY);
+	}	
 
 	while (mapStatus == 0 && !_vm->_quitGame) {
 
 		int16 currMapLocation, selectedMapLocation;
+		bool cursorChanged;
 
 		_vm->handleEvents();
 
-		cursorX = CLIP(_vm->_mouseX, mapRectX1 + 1, mapRectX2 - 1);
-		cursorY = CLIP(_vm->_mouseY, mapRectY1 + 1, mapRectY2 - 1);
+		if (!_vm->isFloppy()) {
+			cursorX = CLIP(_vm->_mouseX, mapRectX1, mapRectX2);
+			cursorY = CLIP(_vm->_mouseY, mapRectY1, mapRectY2);
+		}
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_UP:
-			cursorY = MAX(cursorY - cursorAddY, mapRectY1 + 1);
+			cursorY = MAX(cursorY - kCursorAddY, mapRectY1);
 			break;
 		case Common::KEYCODE_DOWN:
-			cursorY = MIN(cursorY + cursorAddY, mapRectY2 - 1);
+			cursorY = MIN(cursorY + kCursorAddY, mapRectY2);
 			break;
 		case Common::KEYCODE_LEFT:
-			cursorX = MAX(cursorX - cursorAddX, mapRectX1 + 1);
+			cursorX = MAX(cursorX - kCursorAddX, mapRectX1);
 			break;
 		case Common::KEYCODE_RIGHT:
-			cursorX = MIN(cursorX + cursorAddX, mapRectX2 - 1);
+			cursorX = MIN(cursorX + kCursorAddX, mapRectX2);
 			break;
 		default:
 			break;
 		}
 
-		if (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY)
+		cursorChanged = prevCursorX != cursorX || prevCursorY != cursorY;
+
+		prevCursorX = cursorX;
+		prevCursorY = cursorY;
+
+		if (!_vm->isFloppy() && (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY))
 			_vm->_system->warpMouse(cursorX, cursorY);
 
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
-
-		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->_rightButton) {
+		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->rightButton()) {
 			mapStatus = 1;
+			cursorChanged = false;
+			currMapLocation = -1;
 		}
 
-		currMapLocation = -1;
-		selectedMapLocation = -1;
-
-		for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
-			const MapRect &mapRect = mapRects[mapLocation];
-			if ((sceneBitMaskStatus & (1 << mapLocation)) && 
-				cursorX >= mapRect.x1 && cursorX <= mapRect.x2 && 
-				cursorY >= mapRect.y1 && cursorY <= mapRect.y2) {
-				currMapLocation = mapLocation;
-				break;
+		if (cursorChanged) {
+			currMapLocation = -1;
+			selectedMapLocation = -1;
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
+			for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
+				const MapRect &mapRect = mapRects[mapLocation];
+				if ((sceneBitMaskStatus & (1 << mapLocation)) && 
+					cursorX >= mapRect.x1 && cursorX <= mapRect.x2 && 
+					cursorY >= mapRect.y1 && cursorY <= mapRect.y2) {
+					currMapLocation = mapLocation;
+					break;
+				}
+			}
+			if (currMapLocation != -1) {
+				byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
+				_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
+					cursorY - 6, locationName, 119, 120);
+			} else {
+				_vm->_screen->drawAnimationElement(_vm->_iconSprite, 51, cursorX, cursorY);
 			}
 		}
 
-		if (currMapLocation != -1) {
-			byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
-			_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
-				cursorY - 6, locationName, 119, 120);
-			if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->_leftButton) {
-				selectedMapLocation = currMapLocation;
-			}
-		} else {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 51, cursorX, cursorY);
-		}
-
-		if (selectedMapLocation != -1) {
+		if (currMapLocation != -1 && (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->leftButton())) {
+			selectedMapLocation = currMapLocation;
 			const MapExit &mapExit = mapExits[selectedMapLocation];
 			_vm->_moduleNumber = mapExit.moduleNumber;
 			_vm->_sceneNumber = mapExit.sceneNumber;
@@ -1038,7 +1068,7 @@ int GuiTownMap::run() {
 				_vm->_sceneNumber += (sceneStatus2 - 1) * 30;
 			}
 			if ((locationNumber == 7 || locationNumber == 8) &&
-				_vm->_scriptVars[5] == 2 && _vm->_scriptVars[6] == 0 &&
+				sceneStatus3 == 2 && sceneStatus4 == 0 &&
 				selectedMapLocation != 6 && selectedMapLocation != 7 && selectedMapLocation != 4) {
 				_vm->_sceneNumber = 36;
 			}
@@ -1052,6 +1082,8 @@ int GuiTownMap::run() {
 	}
 
 	_vm->waitForKeys();
+
+	CursorMan.showMouse(!_vm->isFloppy());
 
 	return 1;
 }
