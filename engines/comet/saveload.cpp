@@ -426,8 +426,8 @@ const char *CometEngine::getSavegameFilename(int num) {
 Common::String CometEngine::getSavegameFilename(const Common::String &target, int num) {
 	assert(num >= 0 && num <= 999);
 
-	char extension[5];
-	sprintf(extension, "%03d", num);
+	Common::String extension;
+	extension = Common::String::format("%03d", num);
 
 	return target + "." + extension;
 }
