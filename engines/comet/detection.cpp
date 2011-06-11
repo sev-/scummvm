@@ -215,38 +215,15 @@ static const CometGameDescription gameDescriptions[] = {
 	{ AD_TABLE_END_MARKER, 0, 0, 0, 0 }
 };
 
-static const ADParams detectionParams = {
-	// Pointer to ADGameDescription or its superset structure
-	(const byte *)Comet::gameDescriptions,
-	// Size of that superset structure
-	sizeof(Comet::CometGameDescription),
-	// Number of bytes to compute MD5 sum for
-	5000,
-	// List of all engine targets
-	cometGames,
-	// Structure for autoupgrading obsolete targets
-	0,
-	// Name of single gameid (optional)
-	"comet",
-	// List of files for file-based fallback detection (optional)
-	0,
-	// Flags
-	0,
-	// GUI options
-	Common::GUIO_NONE,
-	// Maximum directory depth
-	1,
-	// List of directory globs
-	0
-};
-
 } // End of namespace Comet
 
 using namespace Comet;
 
 class CometMetaEngine : public AdvancedMetaEngine {
 public:
-	CometMetaEngine() : AdvancedMetaEngine(detectionParams) {}
+	CometMetaEngine() : AdvancedMetaEngine(Comet::gameDescriptions, sizeof(Comet::CometGameDescription), cometGames) {
+		params.singleid = "comet";
+	}
 
 	virtual const char *getName() const {
 		return "Comet Engine";
