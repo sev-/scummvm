@@ -222,7 +222,7 @@ using namespace Comet;
 class CometMetaEngine : public AdvancedMetaEngine {
 public:
 	CometMetaEngine() : AdvancedMetaEngine(Comet::gameDescriptions, sizeof(Comet::CometGameDescription), cometGames) {
-		params.singleid = "comet";
+		_singleid = "comet";
 	}
 
 	virtual const char *getName() const {
