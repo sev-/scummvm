@@ -1194,12 +1194,12 @@ void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte font
 	_vm->_screen->setFontColor(58);
 
 	pageNumberString = Common::String::format("- %d -", pageTextIndex * 2 + 1);
-	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString.c_str());
-	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString.c_str());
+	pageNumberStringWidth = _vm->_screen->getTextWidth((const byte*)pageNumberString.c_str());
+	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (const byte*)pageNumberString.c_str());
 
 	pageNumberString = Common::String::format("- %d -", pageTextIndex * 2 + 2);
-	pageNumberStringWidth = _vm->_screen->getTextWidth((byte*)pageNumberString.c_str());
-	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (byte*)pageNumberString.c_str());
+	pageNumberStringWidth = _vm->_screen->getTextWidth((const byte*)pageNumberString.c_str());
+	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (const byte*)pageNumberString.c_str());
 
 	_vm->_screen->setFontColor(fontColor);
 
