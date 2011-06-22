@@ -518,7 +518,7 @@ void CometEngine::drawActor(int actorIndex) {
 		// DEBUG: Show actor number
 		Common::String temp;
 		temp = Common::String::format("%d", actorIndex);
-		_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (byte*)temp.c_str());
+		_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (const byte*)temp.c_str());
 	}
 }
 
