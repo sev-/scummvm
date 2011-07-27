@@ -19,7 +19,7 @@ MODULE_OBJS = \
 	unpack.o
 
 # This module can be built as a plugin
-ifdef BUILD_PLUGINS
+ifeq ($(ENABLE_COMET), DYNAMIC_PLUGIN)
 PLUGIN := 1
 endif
 
