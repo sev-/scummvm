@@ -163,11 +163,7 @@ CometEngine::~CometEngine() {
 Common::Error CometEngine::run() {
 	Common::Event event;
 
-	// Initialize backend
-	_system->beginGFXTransaction();
-	initCommonGFX(false);
-	_system->initSize(320, 200);
-	_system->endGFXTransaction();
+	initGraphics(320, 200, false);
 
 	_console = new CometConsole(this);
 
