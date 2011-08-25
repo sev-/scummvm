@@ -134,8 +134,8 @@ int DecompressImplode::createTree(HufNode *currentTree) {
 }
 
 int DecompressImplode::decompress(Common::ReadStream *source, int flags, int size, byte *dest) {
-	int minMatchLen = flags & 4 ? 3 : 2;
-	int distBits = flags & 2 ? 7 : 6;
+	const int minMatchLen = flags & 4 ? 3 : 2;
+	const int distBits = flags & 2 ? 7 : 6;
 	memset(_buffer, 0, 32768);
 	_bufferPos = 0;
 	_bitBufLeft = 0;

@@ -377,10 +377,11 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 		// DEBUG: So that o1_nop can print the opcode
 		//	This will be removed again once all opcodes are implemented.
 		script->debugOpcode = opcode;
-		debugC(2, kDebugScript, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
+		//debugC(2, kDebugScript, "[%02d:%08X] %d", _curScriptNumber, script->ip, opcode);
 		if (opcode >= _opcodes.size())
 			error("CometEngine::runScript() Invalid opcode %d", opcode);
-		debugC(2, kDebugScript, "%s", _opcodeNames[opcode].c_str());
+		//debugC(2, kDebugScript, "%s", _opcodeNames[opcode].c_str());
+		debugC(2, kDebugScript, "[%02d:%08X] %d %s", _curScriptNumber, script->ip, opcode, _opcodeNames[opcode].c_str());
 		(*_opcodes[opcode])(script);
 	}
 
@@ -410,7 +411,7 @@ bool ScriptInterpreter::evalBoolOp(int value1, int value2, int boolOp) {
 	case 0: // EQ
 		return value1 == value2;
 	case 1: // NEQ
-		return value2 != value2;
+		return value1 != value2;
 	case 2: // GT
 		return value1 > value2;
 	case 3: // GTE
