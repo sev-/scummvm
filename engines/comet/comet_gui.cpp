@@ -994,8 +994,8 @@ int GuiTownMap::run() {
 
 	while (mapStatus == 0 && !_vm->_quitGame) {
 
-		int16 currMapLocation, selectedMapLocation;
-		bool cursorChanged;
+		int16 currMapLocation = 0, selectedMapLocation = 0;
+		bool cursorChanged = false;
 
 		_vm->handleEvents();
 
