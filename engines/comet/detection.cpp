@@ -74,9 +74,6 @@ static const PlainGameDescriptor cometGames[] = {
 
 namespace Comet {
 
-using Common::GUIO_NONE;
-using Common::GUIO_NOSPEECH;
-
 static const CometGameDescription gameDescriptions[] = {
 
 	// Shadow Of The Comet - English Floppy Version
@@ -90,7 +87,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::EN_ANY,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -109,7 +106,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::EN_ANY,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -128,7 +125,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::DE_DEU,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -147,7 +144,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::IT_ITA,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -166,7 +163,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::ES_ESP,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -185,7 +182,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::FR_FRA,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
 		0,
@@ -204,7 +201,7 @@ static const CometGameDescription gameDescriptions[] = {
 			Common::EN_ANY,
 			Common::kPlatformPC,
 			ADGF_NO_FLAGS,
-			Common::GUIO_NONE
+			GUIO1(GUIO_NONE)
 		},
 		GID_MUSEUM,
 		0,
