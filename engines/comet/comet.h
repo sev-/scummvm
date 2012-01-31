@@ -319,7 +319,7 @@ public:
 	void useCurrentInventoryItem();
 	void checkCurrentInventoryItem();
 
-	void skipText();
+	void stopText();
 
 	void setModuleAndScene(int moduleNumber, int sceneNumber);
 	void updateGame();
@@ -348,10 +348,9 @@ public:
 	void updateTalkAnims();
 	void updatePortraitAnimation(Actor *actor);
 	void updateActorAnimation(Actor *actor);
-	void actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect);
+	void actorUpdateWalking(Actor *actor, int actorIndex, bool skipCollision, Common::Rect &obstacleRect);
 	bool updateActorPosition(int actorIndex, Common::Rect &obstacleRect);
-	void freeMarcheAndStaticObjects();
-	void resetMarcheAndStaticObjects();
+	void freeAnimationsAndSceneDecoration();
 
 	void updateScreen();
 

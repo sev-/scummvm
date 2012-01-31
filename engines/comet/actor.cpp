@@ -250,9 +250,9 @@ void CometEngine::handleActorCollision(int actorIndex, Actor *actor, Common::Rec
 	}
 }
 
-void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool flag, Common::Rect &obstacleRect) {
+void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool skipCollision, Common::Rect &obstacleRect) {
 
-	if (!flag)
+	if (!skipCollision)
 		handleActorCollision(actorIndex, actor, obstacleRect);
 
 	int comp = comparePointXY(actor->x, actor->y, actor->walkDestX, actor->walkDestY);
