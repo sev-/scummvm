@@ -125,10 +125,6 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	loadSceneBackground();
 	loadSceneDecoration();
 
-	//memcpy(_screen->getScreen(), _sceneBackground, 64000);
-	//drawSceneDecoration();
-	//memcpy(_sceneBackground, _screen->getScreen(), 64000);
-
 	// TODO: Unused in Comet CD
 	//if (screenCopyFlag != 0)
 	//	screen_c_1();
@@ -307,7 +303,7 @@ void CometEngine::updateGame() {
 void CometEngine::updateModuleNumber() {
 	if (_moduleNumber != -1) {
 		_animationMan->purgeAnimationSlots();
-		freeMarcheAndStaticObjects();
+		freeAnimationsAndSceneDecoration();
 		setModuleAndScene(_moduleNumber, _sceneNumber);
 		updateSceneNumber();
 	}
@@ -324,7 +320,8 @@ void CometEngine::updateSceneNumber() {
 
 	} else {
 
-		resetMarcheAndStaticObjects();
+		resetTextValues();
+		freeAnimationsAndSceneDecoration();
 		_prevSceneNumber = _currentSceneNumber;
 		_currentSceneNumber = _sceneNumber;
 		_prevModuleNumber = _currentModuleNumber;
@@ -385,10 +382,10 @@ void CometEngine::lookAtItemInSight(bool showText) {
 				if (sceneItem.paramType == 0) {
 					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 				} else {
+					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
 					warning("sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
 					// TODO: Remove this:
 					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
-					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
 				}
 			}
 		}
@@ -407,9 +404,9 @@ void CometEngine::updateActorMovement() {
 	for (int i = 0; i < 11; i++) {
 		if (_actors[i].life != 0) {
 			Common::Rect obstacleRect;
-			bool flag = updateActorPosition(i, obstacleRect);
+			bool skipCollision = updateActorPosition(i, obstacleRect);
 			if (_actors[i].walkStatus & 3)
-				actorUpdateWalking(&_actors[i], i, flag, obstacleRect);
+				actorUpdateWalking(&_actors[i], i, skipCollision, obstacleRect);
 		}
 	}
 }
@@ -543,7 +540,6 @@ void CometEngine::updateTextDialog() {
 }
 
 void CometEngine::updateText() {
-	//TODO
 
 	Actor *actor = getActor(_talkActorIndex);
 	int textX, textY;
@@ -589,15 +585,15 @@ void CometEngine::updateTalkAnims() {
 }
 
 void CometEngine::resetVars() {
-	//TODO: scDisableRectFlag();
+	//TODO: scDisableRectFlag(); // Unused in Comet
 	_paletteBrightness = 255;
-	//TODO: g_sp_byte_1 = 0;
+	//TODO: g_sp_byte_1 = 0; // Unused in Comet
 	_cmdGet = false;
 	_cmdLook = false;
 	_cmdTalk = false;
  	_scene->clearExits();
 	_blockedInput = 0;
-	_scene->_sceneItems.clear();//TODO
+	_scene->_sceneItems.clear();
 }
 
 void CometEngine::loadAndRunScript(bool loadingGame) {
@@ -612,15 +608,10 @@ void CometEngine::loadAndRunScript(bool loadingGame) {
 	}
 }
 
-void CometEngine::freeMarcheAndStaticObjects() {
+void CometEngine::freeAnimationsAndSceneDecoration() {
 	_animationMan->purgeAnimationSlots();
 	delete _sceneDecorationSprite;
 	_sceneDecorationSprite = NULL;
-}
-
-void CometEngine::resetMarcheAndStaticObjects() {
-	resetTextValues();
-	freeMarcheAndStaticObjects();
 }
 
 void CometEngine::updateScreen() {
@@ -1068,7 +1059,7 @@ void CometEngine::handleInput() {
 	actorSetDirectionAdd(mainActor, directionAdd);
 }
 
-void CometEngine::skipText() {
+void CometEngine::stopText() {
 	if (isFloppy()) {
 		if (_textDuration > 1 && _textDuration <= _textOriginalDuration - 3)
 			_textDuration = 1;
@@ -1121,7 +1112,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
-		skipText();
+		stopText();
 		break;
 	default:
 		if (Common::KEYCODE_TAB == _keyScancode || (!isFloppy() && _rightButton)) {
@@ -1355,8 +1346,6 @@ void CometEngine::setVoiceFileIndex(int narFileIndex) {
 
 void CometEngine::playVoice(int voiceIndex) {
 	
-	warning("playVoice(%d)", voiceIndex);
-
 	stopVoice();
 
 	_textActive = true;
@@ -1394,7 +1383,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	int animFrameCount;
 
 	stopVoice();
-	skipText();
+	stopText();
 
 	cutsceneSprite = _animationMan->loadAnimationResource(AName, fileIndex);
 	frameList = cutsceneSprite->_anims[frameListIndex];
@@ -1465,7 +1454,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 				animFrameIndex = animFrameCount;
 				loopIndex = loopCount;
 				if (_textActive)
-					skipText();
+					stopText();
 			}
 
 			if (interpolationStep == 0)
@@ -1534,7 +1523,6 @@ void CometEngine::useCurrentInventoryItem() {
 		if (_inventoryItemStatus[index] == 2)
 			_inventoryItemStatus[index] = 1;
 	}
-
 	if (_currentInventoryItem != -1) {
 		if (_inventoryItemStatus[_currentInventoryItem] == 1)
 			_inventoryItemStatus[_currentInventoryItem] = 2;
@@ -1553,7 +1541,6 @@ void CometEngine::checkCurrentInventoryItem() {
 			_currentInventoryItem = -1;
 		}
 	}
-
 	// Check if the player wants to read the notebook
 	if (_inventoryItemStatus[0] == 2) {
 		_gui->run(kGuiJournal);
@@ -1572,7 +1559,7 @@ void CometEngine::introMainLoop() {
 			_endIntroLoop = true;
 			break;
 		case Common::KEYCODE_RETURN:
-			skipText();
+			stopText();
 			break;
 		case Common::KEYCODE_p:
 			checkPauseGame();
@@ -1619,7 +1606,7 @@ void CometEngine::cometMainLoop() {
 			handleKeyInput();
 		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
 		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
-			skipText();
+			stopText();
 		}
 
 		if (_quitGame)
@@ -1687,7 +1674,7 @@ void CometEngine::museumMainLoop() {
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
 			handleKeyInput();
 		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
-			skipText();
+			stopText();
 		}
 		if (_quitGame)
 			return;
