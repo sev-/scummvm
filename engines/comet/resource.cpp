@@ -367,8 +367,8 @@ void SoundResource::internalLoad(Common::MemoryReadStream &stream) {
 }
 
 Audio::SeekableAudioStream *SoundResource::makeAudioStream() {
-	Common::MemoryReadStream vocStream(_data, _dataSize, DisposeAfterUse::NO);
-	return Audio::makeVOCStream(&vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
+	Common::MemoryReadStream *vocStream = new Common::MemoryReadStream(_data, _dataSize, DisposeAfterUse::NO);
+	return Audio::makeVOCStream(vocStream, Audio::FLAG_UNSIGNED, DisposeAfterUse::YES);
 }
 
 // ScriptResource
