@@ -1122,6 +1122,13 @@ void CometEngine::handleKeyInput() {
 	}
 }
 
+void CometEngine::syncUpdate(bool screenUpdate) {
+	// TODO Maybe implement better delay mechanism (wait less if neccessary)
+	if (screenUpdate)
+		_screen->update();
+	_system->delayMillis(40);
+}
+
 int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber) {
 	if (sceneNumber == -1) {
 		_moduleNumber = -1;
@@ -1435,8 +1442,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 				palStatus = 2;
 			}
 
-			_screen->update();
-			_system->delayMillis(40); // TODO
+			syncUpdate();
 
 			if (workSoundFramesCount > 0 && animFrameIndex == animSoundFrameIndex) {
 				// TODO: Play the anim sound
@@ -1572,7 +1578,7 @@ void CometEngine::introMainLoop() {
 			_endIntroLoop = true;
 
 		updateGame();
-		_system->delayMillis(40);//TODO
+		syncUpdate(false);
 	}
 }
 
@@ -1652,8 +1658,7 @@ void CometEngine::cometMainLoop() {
 		}
 
 		updateGame();
-
-		_system->delayMillis(40);//TODO
+		syncUpdate(false);
 
 		if (_loadgameRequested) {
 			// TODO:
@@ -1679,7 +1684,7 @@ void CometEngine::museumMainLoop() {
 		if (_quitGame)
 			return;
 		updateGame();
-		_system->delayMillis(40);//TODO
+		syncUpdate(false);
 		if (_loadgameRequested) {
 			// TODO:
 			//	while (savegame_load() == 0);
@@ -1711,7 +1716,7 @@ void CometEngine::checkPauseGame() {
 		stopVoice();
 		do {
 			handleEvents();
-			_system->delayMillis(40); // TODO
+			syncUpdate(false);
 		} while (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton && !_quitGame); 
 	}
 }

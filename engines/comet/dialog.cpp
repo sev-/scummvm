@@ -172,7 +172,7 @@ void Dialog::drawTextBubbles() {
 		byte color2;
 		/* TODO: Draw intro text bubble in floppy version
 		   NOTE: Never used in Comet Floppy since _items[0].index == _introTextIndex is always true
-		   and so _introTextIndex is set to -1.
+		   and so _introTextIndex is set to -1. (Also a case where it's likely used in Eternam.)
 		*/
 		for (uint i = 0; i < _items.size(); i++) {
 			color2 = color1;

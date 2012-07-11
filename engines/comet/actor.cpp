@@ -239,12 +239,11 @@ void CometEngine::handleActorCollision(int actorIndex, Actor *actor, Common::Rec
 	if (actor->collisionType == kCollisionBounds || actor->collisionType == kCollisionBoundsOff) {
 		moveActorAroundBounds(actorIndex, actor);
 	} else if (actor->collisionType == kCollisionActor && actor->value6 == 6 && actor->collisionIndex == 0) {
-		// TODO: Never called in Comet CD since value6 is never 6 there, maybe used in Eternam
+		// NOTE Never called in Comet CD since value6 is never 6 there, maybe used in Eternam so it's kept for now
 		actor->value6 = 0;
 		actorStopWalking(actor);
-		if (actor->flag2 == 1) {
+		if (actor->flag2 == 1)
 			actorUpdateLife(actor, actor->life);
-		}
 	} else {
 		actorMoveAroundObstacle(actorIndex, actor, obstacleRect);
 	}
@@ -292,7 +291,7 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
  	int16 xAdd = frame->xOffs;
  	int16 yAdd = frame->yOffs;
 
- 	// TODO: SceneObject_sub_8243(actor->direction, &xAdd, &yAdd); (but has no effect in Comet CD)
+ 	// NOTE SceneObject_sub_8243(actor->direction, &xAdd, &yAdd); (but has no effect in Comet CD, probably used in Eternam)
 
  	newX += xAdd;
  	newY += yAdd;
@@ -559,7 +558,7 @@ AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) 
 		return _heroSprite;
 	case 2:
 		return _sceneDecorationSprite;
-	//case 3: //TODO??? returns NULL var (maybe used in Eternam?)
+	//case 3: // NOTE unused/returns NULL var (maybe used in Eternam?)
 	default:
 		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
 		return NULL;

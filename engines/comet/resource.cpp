@@ -236,7 +236,7 @@ void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
 		_anims.push_back(animationFrameList);
 	}
 
-	// TODO: Load section 4 data
+	// NOTE Load section 4 data (never used in Comet, maybe in Eternam)
 }
 
 void AnimationResource::loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets) {

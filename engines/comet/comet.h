@@ -313,6 +313,7 @@ public:
 	void waitForKeyPress();
 	void handleInput();
 	void handleKeyInput();
+	void syncUpdate(bool screenUpdate = true);
 
 	void drawTextIllsmouth();
 

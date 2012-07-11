@@ -160,14 +160,12 @@ int GuiInventory::run() {
 
 		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_mouseX, _vm->_mouseY, MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
 
-		if (mouseSelectedItem >= 0) {
+		if (mouseSelectedItem >= 0)
 			currentItem = firstItem + mouseSelectedItem;
-		}
 
 		drawInventory(items, firstItem, currentItem, animFrameCounter++);
 
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO: Adjust or use fps counter
+		_vm->syncUpdate();
 
 		if (_vm->_rightButton) {
 			inventoryAction = kIAExit;
@@ -231,10 +229,8 @@ int GuiInventory::run() {
 			}
 			_vm->_currentInventoryItem = items[currentItem];
 			// Return just selects, U actually uses the item
-			if (inventoryAction == kIAUse) {
-				//debug("Use item #%d", _currentInventoryItem);
+			if (inventoryAction == kIAUse)
 				_vm->_inventoryItemStatus[_vm->_currentInventoryItem] = 2;
-			}
 			inventoryStatus = 1;
 			break;
 		default:
@@ -243,8 +239,6 @@ int GuiInventory::run() {
 
 		_vm->waitForKeys();
 	}
-
-	// TODO...
 
 	return 2 - inventoryStatus;;
 }
@@ -351,8 +345,8 @@ int GuiCommandBar::handleCommandBar() {
 
 		drawCommandBar(_commandBarSelectedItem);
 		_animFrameCounter++;
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		
+		_vm->syncUpdate();
 
 		_vm->handleEvents();
 
@@ -500,8 +494,8 @@ int GuiMainMenu::run() {
 			_mainMenuSelectedItem = mouseSelectedItem;
 			
 		drawMainMenu(_mainMenuSelectedItem);
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		
+		_vm->syncUpdate();
 
 		_vm->handleEvents();
 
@@ -687,8 +681,7 @@ int GuiOptionsMenu::run() {
 
 		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language, animFrameCounter, optionsMenuRects);
 
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // $
+		_vm->syncUpdate();
 
 		_vm->handleEvents();
 
@@ -870,23 +863,22 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 	int textSpeed, int gameSpeed, int language, uint animFrameCounter,
 	const GuiRectangle *guiRectangles) {
 
-	const int x = 107;
-	const int y_add_val3 = 65;
-	const int y_index = 20;
+	const int itemLeftX = 107;
+	const int itemTopY = 65;
+	const int itemHeight = 20;
 	const int gaugeX = 128;
-	const int y = 70;
+	const int gaugeY = 70;
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
 
-	if (selectedItem == 5 || selectedItem == 6) {
+	if (selectedItem == 5 || selectedItem == 6)
 		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
-	} else {
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, x, selectedItem * y_index + y_add_val3);
-	}
+	else
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, itemLeftX, selectedItem * itemHeight + itemTopY);
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, y);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, y + y_index);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, y + y_index * 3);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, gaugeY);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, gaugeY + itemHeight);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
 
 	if (musicVolumeDiv == 0) {
@@ -905,23 +897,21 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 		}
 	}
 
-	if (sampleVolumeDiv == 0) {
+	if (sampleVolumeDiv == 0)
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
-	} else if (sampleVolumeDiv < 7) {
+	else if (sampleVolumeDiv < 7)
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
-	} else {
+	else
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
-	} 
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
 
-	if (gameSpeed < 5) {
+	if (gameSpeed < 5)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
-	} else if (gameSpeed >= 5 && gameSpeed < 10) {
+	else if (gameSpeed >= 5 && gameSpeed < 10)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 76, 0, 0);
-	} else if (gameSpeed >= 10) {
+	else if (gameSpeed >= 10)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 77, 0, 0);
-	}
 
 }
 
@@ -1076,8 +1066,7 @@ int GuiTownMap::run() {
 			debug("moduleNumber: %d; sceneNumber: %d", _vm->_moduleNumber, _vm->_sceneNumber);
 		}
 
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		_vm->syncUpdate();
 
 	}
 
@@ -1134,8 +1123,7 @@ int GuiJournal::handleReadBook() {
 			}
 			// TODO: Check mouse rectangles
 			_vm->handleEvents();
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO: Adjust or use fps counter
+			_vm->syncUpdate();
 		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0 && !_vm->_quitGame);
 
 		// TODO: Handle mouse rectangles
@@ -1221,15 +1209,13 @@ void GuiJournal::bookTurnPage(bool turnDirection) {
 		for (uint i = 38; i < 49; i++) {
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
 	} else {
 		for (uint i = 49; i > 38; i--) {
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
 	}
 }
@@ -1238,14 +1224,12 @@ void GuiJournal::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, i
 	if (turnDirection) {
 		for (byte fontColor = 64; fontColor < 72; fontColor++) {
 			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
 	} else {
 		for (byte fontColor = 72; fontColor > 64; fontColor--) {
 			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
 	}
 }
@@ -1358,8 +1342,7 @@ int GuiPuzzle::runPuzzle() {
 		}
 
 		drawField();
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		_vm->syncUpdate();
 
 		if (_vm->_keyScancode != Common::KEYCODE_INVALID) {
 			bool selectionChanged = false;
@@ -1448,6 +1431,8 @@ int GuiPuzzle::runPuzzle() {
 		}
 	}
 
+	if (_fingerBackground)
+		_fingerBackground->free();
 	delete _fingerBackground;
 	delete _puzzleSprite;
 
@@ -1473,9 +1458,8 @@ void GuiPuzzle::drawFinger() {
 			_fingerBackground->create(cel->width, cel->height, Graphics::PixelFormat::createFormatCLUT8());
 			_prevFingerX = 0;
 			_prevFingerY = 0;
-		} else if ((_prevFingerX == 228 || _prevFingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY)) {
+		} else if ((_prevFingerX == 228 || _prevFingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY))
 			_vm->_screen->putRect(_fingerBackground, _prevFingerX, _prevFingerY);
-		}
 		if ((fingerX == 228 || fingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY))
 			_vm->_screen->grabRect(_fingerBackground, fingerX, fingerY);
 		_vm->_screen->drawAnimationElement(_puzzleSprite, 18, fingerX, fingerY);
@@ -1486,11 +1470,9 @@ void GuiPuzzle::drawFinger() {
 
 void GuiPuzzle::drawField() {
 	_vm->_screen->drawAnimationElement(_puzzleSprite, 17, 0, 0);
-	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
-		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {
+	for (int columnIndex = 1; columnIndex <= 4; columnIndex++)
+		for (int rowIndex = 1; rowIndex <= 4; rowIndex++)
 			drawTile(columnIndex, rowIndex, 0, 0);		
-		}
-	}
 	drawFinger();
 }
 
@@ -1504,33 +1486,27 @@ void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
 		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
 			_vm->_screen->setClipY(60, 156);
-			for (int rowIndex = 1; rowIndex <= 5; rowIndex++) {
+			for (int rowIndex = 1; rowIndex <= 5; rowIndex++)
 				drawTile(columnIndex, rowIndex, 0, -yOffs);
-			}
 			_vm->_screen->setClipY(0, 199);
 			drawFinger();
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
-		for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
+		for (int rowIndex = 0; rowIndex <= 4; rowIndex++)
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex + 1];
-		}
 		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
 	} else {
 		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
 		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
 			_vm->_screen->setClipY(60, 156);
-			for (int rowIndex = 0; rowIndex <= 4; rowIndex++) {
+			for (int rowIndex = 0; rowIndex <= 4; rowIndex++)
 				drawTile(columnIndex, rowIndex, 0, yOffs);
-			}
 			_vm->_screen->setClipY(0, 199);
 			drawFinger();
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
-		for (int rowIndex = 5; rowIndex >= 1; rowIndex--) {
+		for (int rowIndex = 5; rowIndex >= 1; rowIndex--)
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex - 1];
-		}
 		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
 	}
 }
@@ -1540,52 +1516,43 @@ void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
 		_puzzleTiles[5][rowIndex] = _puzzleTiles[1][rowIndex];
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
 			_vm->_screen->setClipX(120, 215);
-			for (int columnIndex = 1; columnIndex <= 5; columnIndex++) {
+			for (int columnIndex = 1; columnIndex <= 5; columnIndex++)
 				drawTile(columnIndex, rowIndex, -xOffs, 0);
-			}
 			_vm->_screen->setClipX(0, 319);
 			drawFinger();
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
-		for (int columnIndex = 0; columnIndex <= 4; columnIndex++) {
+		for (int columnIndex = 0; columnIndex <= 4; columnIndex++)
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex + 1][rowIndex];
-		}
 		_puzzleTiles[5][rowIndex] = _puzzleTiles[1][rowIndex];
 	} else {
 		_puzzleTiles[0][rowIndex] = _puzzleTiles[4][rowIndex];
 		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
 			_vm->_screen->setClipX(120, 215);
-			for (int columnIndex = 0; columnIndex <= 4; columnIndex++) {
+			for (int columnIndex = 0; columnIndex <= 4; columnIndex++)
 				drawTile(columnIndex, rowIndex, xOffs, 0);
-			}
 			_vm->_screen->setClipX(0, 319);
 			drawFinger();
-			_vm->_screen->update();
-			_vm->_system->delayMillis(40); // TODO
+			_vm->syncUpdate();
 		}
-		for (int columnIndex = 5; columnIndex >= 1; columnIndex--) {
+		for (int columnIndex = 5; columnIndex >= 1; columnIndex--)
 			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex - 1][rowIndex];
-		}
 		_puzzleTiles[0][rowIndex] = _puzzleTiles[4][rowIndex];
 	}
 }
 
 bool GuiPuzzle::testIsSolved() {
 	int matchingTiles = 0;
-	for (int columnIndex = 1; columnIndex <= 4; columnIndex++) {
-		for (int rowIndex = 1; rowIndex <= 4; rowIndex++) {
+	for (int columnIndex = 1; columnIndex <= 4; columnIndex++)
+		for (int rowIndex = 1; rowIndex <= 4; rowIndex++)
 			if (_puzzleTiles[columnIndex][rowIndex] == (rowIndex - 1) * 4 + (columnIndex - 1))
 				matchingTiles++;
-		}
-	}
 	return matchingTiles == 16;
 }
 
 void GuiPuzzle::playTileSound() {
-	if (!_vm->isFloppy()) {
+	if (!_vm->isFloppy())
 		_vm->playSample(75, 1);
-	}
 }
 
 // GuiSaveLoadMenu
@@ -1618,9 +1585,8 @@ int GuiSaveLoadMenu::run() {
 			selectedItem = mouseSelectedItem;
 
 		drawSaveLoadMenu(selectedItem);
-
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		
+		_vm->syncUpdate();
 
 		_vm->handleEvents();
 
@@ -1745,8 +1711,7 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 			redrawSavegameDescription = false;
 		}
 
-		_vm->_screen->update();
-		_vm->_system->delayMillis(40); // TODO
+		_vm->syncUpdate();
 
 		if (_vm->_leftButton)
 			editSavegameDescriptionStatus = 1;

@@ -811,9 +811,8 @@ void ScriptInterpreter::o1_ifSpeak(Script *script) {
 	if (_vm->_cmdTalk) {
 		script->ip += 2;
 		_vm->_cmdTalk = false;
-	} else {
+	} else
 		script->jump();
-	}
 }
 
 void ScriptInterpreter::o1_ifSpeakTo(Script *script) {
@@ -821,9 +820,8 @@ void ScriptInterpreter::o1_ifSpeakTo(Script *script) {
 	if (_vm->_cmdTalk && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
 		script->ip += 2;
 		_vm->_cmdTalk = false;
-	} else {
+	} else
 		script->jump();
-	}
 }
 
 void ScriptInterpreter::o1_ifSpeakZone(Script *script) {
@@ -831,9 +829,8 @@ void ScriptInterpreter::o1_ifSpeakZone(Script *script) {
 		if (isHeroInZone(script)) {
 			script->ip += 2;
 			_vm->_cmdTalk = false;
-		} else {
+		} else
 			script->jump();
-		}
 	} else {
 		script->ip += 4;
 		script->jump();
@@ -863,9 +860,8 @@ void ScriptInterpreter::o1_ifLook(Script *script) {
 	if (_vm->_cmdLook) {
 		script->ip += 2;
 		_vm->_cmdLook = false;
-	} else {
+	} else
 		script->jump();
-	}
 }
 
 void ScriptInterpreter::o1_ifLookAt(Script *script) {
@@ -873,9 +869,8 @@ void ScriptInterpreter::o1_ifLookAt(Script *script) {
 	if (_vm->_cmdLook && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
 		script->ip += 2;
 		_vm->_cmdLook = false;
-	} else {
+	} else
 		script->jump();
-	}
 }
 
 void ScriptInterpreter::o1_ifLookZone(Script *script) {
@@ -883,9 +878,8 @@ void ScriptInterpreter::o1_ifLookZone(Script *script) {
 		if (isHeroInZone(script)) {
 			script->ip += 2;
 			_vm->_cmdLook = false;
-		} else {
+		} else
 			script->jump();
-		}
 	} else {
 		script->ip += 4;
 		script->jump();
@@ -987,9 +981,8 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 
 void ScriptInterpreter::o1_initActor(Script *script) {
 	o1_selectActor(script);
-	if (script->actorIndex != 0) {
+	if (script->actorIndex != 0)
 		_vm->actorInit(script->actorIndex, -1);
-	}
 }
 
 void ScriptInterpreter::o1_loadActorSprite(Script *script) {
@@ -1026,11 +1019,10 @@ void ScriptInterpreter::o1_ifNearActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_BYTE(deltaX);
 	ARG_BYTE(deltaY);
-	if (_vm->isActorNearActor(0, actorIndex, deltaX, deltaY)) {
+	if (_vm->isActorNearActor(0, actorIndex, deltaX, deltaY))
 		script->ip += 2;
-	} else {
+	else
 		script->jump();
-	}
 }
 
 void ScriptInterpreter::o1_removeSceneItem(Script *script) {
