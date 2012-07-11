@@ -280,6 +280,7 @@ public:
 	int _talkieMode;
 	bool _moreText, _textActive;
 	byte _talkTextColor;
+	byte _actorTalkText[1000]; // Buffer size is take from the original
 
 	bool _quitGame;
 
