@@ -321,16 +321,12 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
 	_talkActorIndex = actorIndex;
 	_talkTextIndex = talkTextIndex;
-	if (isFloppy()) {
-		setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
-	} else {
-		if (_talkieMode == 0 || _talkieMode == 1) {
-			setText(_textReader->getString(_narFileIndex + 3, _talkTextIndex));
-		}
-		if (_talkieMode == 2 || _talkieMode == 1) {
-			playVoice(_talkTextIndex);
-		}
+	if (isFloppy() || _talkieMode == 0 || _talkieMode == 1) {
+		_textReader->loadString(_narFileIndex + 3, _talkTextIndex, _actorTalkText);
+		setText(_actorTalkText);
 	}
+	if (!isFloppy() && (_talkieMode == 2 || _talkieMode == 1))
+		playVoice(_talkTextIndex);
 	_textActive = true;
 	_talkTextColor = color;
 }
