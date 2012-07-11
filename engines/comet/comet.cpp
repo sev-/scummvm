@@ -279,19 +279,13 @@ Common::Error CometEngine::run() {
 
 	initAndLoadGlobalData();
 
-	//TEST
-	//_talkieMode = 2;
-	//_textSpeed = 0;
-	//_music->playMusic(4);
-
 	CursorMan.showMouse(!isFloppy());
 	setMouseCursor(_mouseCursors[0]);
 
 	if (ConfMan.hasKey("save_slot")) {
 		int saveSlot = ConfMan.getInt("save_slot");
-		if (saveSlot >= 0 && saveSlot <= 99) {
+		if (saveSlot >= 0 && saveSlot <= 99)
 			loadGameState(saveSlot);
-		}
 	} else if (getGameID() == GID_COMET) {
 		if (ConfMan.getInt("boot_param") != 1) {
 			// Play the intro

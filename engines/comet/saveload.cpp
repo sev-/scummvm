@@ -47,8 +47,8 @@ namespace Comet {
 // TODO:
 //	- Saveload is working so far but only one slot is supported until the game menu is implemented
 //	- Save with F7; Load with F9
-//	- Maybe switch to SCUMM/Tinsel serialization approach?
 //	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
+//  - Save playtime info
 
 #define SAVEGAME_VERSION 2 // < 1000 is dev version until in official SVN
 
@@ -98,9 +98,6 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeByte(0); // gameID
 	out->writeUint32LE(0); // flags
 
-	// Save...
-	// TODO: This will need some refactoring so that each class saves its own stuff.
-	
 	out->writeUint16LE(_moduleNumber);
 	out->writeUint16LE(_currentModuleNumber);
 	out->writeUint16LE(_prevModuleNumber);
@@ -242,9 +239,6 @@ void CometEngine::loadgame(const char *filename) {
 		return;
 	}
 
-	// Load...
-	// TODO: This will need some refactoring so that each class loads its own stuff.
-
 	int count;
 	
 	_animationMan->purgeAnimationSlots();
@@ -261,8 +255,9 @@ void CometEngine::loadgame(const char *filename) {
 	_gameLoopCounter = in->readUint32LE();
 	
 	if (header.version > 0)//REMOVEME	
-	_blockedInput = in->readByte();
-	else _blockedInput = 0; 
+		_blockedInput = in->readByte();
+	else
+		_blockedInput = 0; 
 
 	_scene->_exits.clear();
 	count = in->readByte();
@@ -369,8 +364,9 @@ void CometEngine::loadgame(const char *filename) {
 	_paletteBrightness = in->readByte();
 	
 	if (header.version > 0)//REMOVEME	
-	_paletteRedness = in->readByte();
-	else _paletteRedness = 0;
+		_paletteRedness = in->readByte();
+	else
+		_paletteRedness = 0;
 	
 	_screen->_zoomX = in->readUint16LE();
 	_screen->_zoomY = in->readUint16LE();

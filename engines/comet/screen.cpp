@@ -89,8 +89,7 @@ void Screen::update() {
 			break;
 		}
 
-		//_system->delayMillis(40);
-		_vm->_system->delayMillis(5);//DEBUG
+		_vm->_system->delayMillis(40); // TODO
 	}
 
 }
@@ -308,7 +307,7 @@ void Screen::screenTransitionEffect() {
 		}
 		_vm->_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
 		_vm->_system->updateScreen();
-		_vm->_system->delayMillis(40);
+		_vm->syncUpdate(false);
 	}
 
 	delete[] vgaScreen;
@@ -341,7 +340,7 @@ void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
 		}
 		_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
 		_vm->_system->updateScreen();
-		_vm->_system->delayMillis(40); // TODO
+		_vm->syncUpdate(false);
 		copyOfs += kScrollStripWidth;
 	}
 
@@ -376,7 +375,7 @@ void Screen::paletteFadeIn() {
 		setFullPalette(_vm->_screenPalette);
 		_vm->_system->updateScreen();
 		value += _fadeStep;
-		_vm->_system->delayMillis(10);
+		_vm->_system->delayMillis(10); // TODO
 	}
 
 	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
@@ -399,7 +398,7 @@ void Screen::paletteFadeOut() {
 		setFullPalette(_vm->_screenPalette);
 		_vm->_system->updateScreen();
 		value -= _fadeStep;
-		_vm->_system->delayMillis(10);
+		_vm->_system->delayMillis(10); // TODO
 	}
 
 	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
@@ -718,60 +717,50 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 		}
 	}
 
-	// seg024:00A7
 	x1dst = x1buffer;
 	x2dst = x2buffer;
 	currX = (*workPoints)[0].x;
 	currY = (*workPoints)[0].y;
 	for (uint i = 1; i < workPoints->size(); i++) {
 		int16 newX, newY, sax, sdx;
-		// seg024:018A
 		newX = (*workPoints)[i].x;
 		newY = (*workPoints)[i].y;
 		sdx = newX;
 		sax = newY;
 		if (newY != currY) {
 			int16 err;
-			// seg024:0194
 			if (currY == minY || currY == maxY)
 				SWAP(x1dst, x2dst);
-			// seg024:01A0
 			if (currX >= newX) {
 				SWAP(currX, newX);
 				SWAP(currY, newY);
 			}
-			// seg024:01A7
 			int16 *di = x2dst + currY;
 			int dir = 1;
 			if (currY >= newY) {
 				dir = -1;
 				SWAP(currY, newY);
 			}
-			// seg024:01B5
 			SWAP(currY, newY);
 			currY -= newY;
 			*di = currX;
 			di += dir;
 			newX -= currX;
 			err = currY / 2;
-			// seg024:01C6
 			for (int y = 0; y < currY; y++) {
 				err += newX;
 				while (err >= currY) {
 					err -= currY;
 					currX++;
 				}
-				// seg024:01D1
 				*di = currX;
 				di += dir;
 			}
 		}
-		// seg024:01D5
 		currX = sdx;
 		currY = sax;
 	}
 
-	// seg024:01DD
 	int16 *x1src = x1dst + minY;
 	int16 *x2src = x2dst + minY;
 	int16 rowCount = maxY - minY + 1;
@@ -780,7 +769,6 @@ void Screen::filledPolygonColor(Common::Array<Point> &poly, byte color) {
 		int16 x2 = *x2src++;
 		if (x1 > x2) SWAP(x1, x2);
 		hLine(x1, minY, x2, color);
-		//memset(getScreen() + x1 + minY * 320, color, x2 - x1 + 1);
 		minY++;
 	} while (--rowCount);
 
@@ -899,7 +887,6 @@ Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 wid
 }
 
 void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
-
 	byte *frameData = cel.data;
 
 	int width = cel.width;
@@ -909,7 +896,6 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 
 	flags ^= (cel.flags >> 8);
 
-	// TODO: More clipping
 	y -= height;
 	y++;
 
@@ -950,8 +936,6 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 
 		memset(lineBuffer, 0, lineWidth);
 
-		// TODO: Possibly merge decompression and drawing of pixels
-
 		// Decompress the current pixel row
 		byte chunks = *frameData++;
 		byte *lineBufferPtr = lineBuffer;
@@ -968,15 +952,13 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 
 		// Draw the decompressed pixels
 		if (flags & 0x80) {
-			for (int xc = skipX; xc < width; xc++) {
+			for (int xc = skipX; xc < width; xc++)
 				if (lineBuffer[lineWidth-xc-1] != 0)
 					screenDestPtr[xc-skipX] = lineBuffer[lineWidth-xc-1];
-			}
 		} else {
-			for (int xc = skipX; xc < width; xc++) {
+			for (int xc = skipX; xc < width; xc++)
 				if (lineBuffer[xc] != 0)
 					screenDestPtr[xc-skipX] = lineBuffer[xc];
-			}
 		}
 
 		screenDestPtr += 320;
@@ -985,8 +967,6 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 }
 
 void Screen::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
-
-	// TODO: Clean up this messy function
 
 	int line = 0;
 	byte *offsets[200];
@@ -1514,22 +1494,14 @@ void Screen::drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *inte
 	switch (interCmd->_cmd) {
 
 	case kActElement:
-	{
-		// CHECKME: Is this used somewhere?
-		//int16 subElementIndex = (cmd->arg2 << 8) | cmd->arg1;
-		//drawAnimationElement(animation, subElementIndex & 0x0FFF, points[0].x, points[0].y, 0);
 		warning("Screen::drawInterpolatedAnimationCommand() kActElement not supported here");
 		break;
-	}
 
 	case kActCelSprite:
-	{
 		warning("Screen::drawInterpolatedAnimationCommand() kActCelSprite not supported here");
 		break;
-	}
 
 	case kActFilledPolygon:
-	{
 		filledPolygonColor(points, color2);
 		if (color1 != 0xFF) {
 			points.push_back(points[0]);
@@ -1537,35 +1509,26 @@ void Screen::drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *inte
 				drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, color1);
 		}
 		break;
-	}
 
 	case kActRectangle:
-	{
 		fillRect(points[0].x, points[0].y, points[1].x, points[1].y, color2);
 		if (color1 != 0xFF)
 			frameRect(points[0].x, points[0].y, points[1].x, points[1].y, color1);
 		break;
-	}
 
 	case kActPolygon:
-	{
 		for (uint i = 0; i < points.size() - 1; i++)
 			drawLine(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y, color2);
 		break;
-	}
 
 	case kActPixels:
-	{
 		for (uint i = 0; i < points.size(); i++)
 			putPixel(points[i].x, points[i].y, color2);
 		break;
-	}
 
 	case kActCelRle:
-	{
 		warning("Screen::drawInterpolatedAnimationCommand() kActCelRle not supported here");
 		break;
-	}
 
 	default:
 		warning("Screen::drawAnimationCommand() Unknown command %d", interCmd->_cmd);
@@ -1680,10 +1643,12 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 
 	switch (gfxMode) {
 	case 0:
+		// Normal drawing
 		drawAnimationElement(animation, index, drawX, drawY);
 		break;
 	case 1:
 	{
+		// Interpolated vector drawing
 		int nextFrameIndex = frameIndex + 1;
 		if (nextFrameIndex >= frameCount)
 			nextFrameIndex = frameIndex;
@@ -1711,7 +1676,6 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 }
 
 void Screen::setClipRect(int clipX1, int clipY1, int clipX2, int clipY2) {
-	// The clipping rect is only used in drawAnimationCelSprite
 	_clipX1 = clipX1;
 	_clipY1 = clipY1;
 	_clipX2 = clipX2;
