@@ -1036,7 +1036,6 @@ void ScriptInterpreter::o1_playSample(Script *script) {
 }
 
 void ScriptInterpreter::o1_playSampleLooping(Script *script) {
-	// CHECKME: It's just a guess that this plays looping samples
 	ARG_BYTE(sampleIndex);
 	ARG_BYTE(loopCount);
 	_vm->playSample(sampleIndex, loopCount);
