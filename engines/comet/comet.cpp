@@ -167,7 +167,10 @@ Common::Error CometEngine::run() {
 
 	_console = new CometConsole(this);
 
-	_music = new MusicPlayer(this);
+	// Any music driver gets Adlib music except for 'No sound'
+	if (MidiDriver::getMusicType(MidiDriver::detectDevice(MDT_PCSPK | MDT_MIDI | MDT_ADLIB)) != MT_NULL)
+		_music = new MusicPlayer(this);
+		
 	_screen = new Screen(this);
 	_dialog = new Dialog(this);
 	_script = new ScriptInterpreter(this);

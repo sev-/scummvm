@@ -125,7 +125,7 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	loadSceneBackground();
 	loadSceneDecoration();
 
-	// TODO: Unused in Comet CD
+	// NOTE: Unused in Comet CD
 	//if (screenCopyFlag != 0)
 	//	screen_c_1();
 	
@@ -384,7 +384,7 @@ void CometEngine::lookAtItemInSight(bool showText) {
 				} else {
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
 					warning("sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
-					// TODO: Remove this:
+					// NOTE: Probably only used in Eternam
 					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 				}
 			}
@@ -585,9 +585,9 @@ void CometEngine::updateTalkAnims() {
 }
 
 void CometEngine::resetVars() {
-	//TODO: scDisableRectFlag(); // Unused in Comet
+	// NOTE: scDisableRectFlag(); // Unused in Comet
 	_paletteBrightness = 255;
-	//TODO: g_sp_byte_1 = 0; // Unused in Comet
+	// NOTE: g_sp_byte_1 = 0; // Unused in Comet
 	_cmdGet = false;
 	_cmdLook = false;
 	_cmdTalk = false;
@@ -616,12 +616,12 @@ void CometEngine::freeAnimationsAndSceneDecoration() {
 
 void CometEngine::updateScreen() {
 
-	// TODO: Draw unknown stuff -> Unused in Comet CD, check Comet floppy
+	// NOTE: Draw unknown stuff -> Unused in Comet CD, check Comet floppy
 
 	if (_beams.size() > 0)
 		drawBeams();
 
-	// TODO: Draw pixels -> Unused in Comet CD, check Comet floppy
+	// NOTE: Draw pixels -> Unused in Comet CD, check Comet floppy
 
 	if (_clearScreenRequest) {
 		_screen->clear();
@@ -1317,11 +1317,11 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 }
 
 void CometEngine::playMusic(int musicIndex) {
-	if (musicIndex != 255) {
-		//TODO_vm->_music->playMusic(musicIndex);
-	} else {
-		//TODO: musicFadeDown();
-		_music->stopMusic();
+	if (_music) {
+		if (musicIndex != 255)
+			_music->playMusic(musicIndex);
+		else
+			_music->stopMusic();
 	}
 }
 
