@@ -100,9 +100,8 @@ int Gui::run(GuiPageIdent page) {
 		_currPage = _stack.back();
 		_stack.pop_back();
 		_vm->_screen->copyFromScreen(_gameScreen);
-		for (Common::Array<GuiPage*>::iterator it = _stack.begin(); it != _stack.end(); it++) {
+		for (Common::Array<GuiPage*>::iterator it = _stack.begin(); it != _stack.end(); it++)
 			(*it)->draw();
-		}
 	} else
 		_currPage = NULL;
 	debug("Gui::run(%d) leave", page);
@@ -687,28 +686,25 @@ int GuiOptionsMenu::run() {
 		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
 			continue;
 
-		if (_vm->_rightButton) {
+		if (_vm->_rightButton)
 			optionsMenuAction = kOMAExit;
-		} else if (_vm->_leftButton && _optionsMenuSelectedItem != kOMANone) {
+		else if (_vm->_leftButton && _optionsMenuSelectedItem != kOMANone)
 			optionsMenuAction = _optionsMenuSelectedItem;
-		}
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
 			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
-			if (_optionsMenuSelectedItem == 5) {
+			if (_optionsMenuSelectedItem == 5)
 				_optionsMenuSelectedItem = 0;
-			} else {
+			else
 				_optionsMenuSelectedItem++;
-			}
 			break;
 		case Common::KEYCODE_UP:
 			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
-			if (_optionsMenuSelectedItem == 0) {
+			if (_optionsMenuSelectedItem == 0)
 				_optionsMenuSelectedItem = 5;
-			} else {
+			else
 				_optionsMenuSelectedItem--;
-			}
 			break;
 		case Common::KEYCODE_LEFT:
 			if (_optionsMenuSelectedItem == 0) {
@@ -740,9 +736,8 @@ int GuiOptionsMenu::run() {
 			optionsMenuAction = kOMAExit;
 			break;
 		case Common::KEYCODE_RETURN:
-			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6) {
+			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6)
 				optionsMenuAction = kOMAExit;
-			}
 			break;
 		default:
 			break;
@@ -1630,9 +1625,8 @@ int GuiSaveLoadMenu::run() {
 		}
 
 		// When loading only allow to select entries which are actually occupied...
-		if (saveLoadMenuStatus == 1 && !_asSaveMenu && _savegames[selectedItem].description.size() == 0) {
+		if (saveLoadMenuStatus == 1 && !_asSaveMenu && _savegames[selectedItem].description.size() == 0)
 			saveLoadMenuStatus = 0;
-		}
 
 		_vm->waitForKeys();
 
@@ -1660,13 +1654,9 @@ void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem) {
 	const int x = 95;
 	const int y = 64;
 	const int itemHeight = 12;
-
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _asSaveMenu ? 14 : 15, 0, 0);
-
-	for (int itemIndex = 0; itemIndex < 10; itemIndex++) {
+	for (int itemIndex = 0; itemIndex < 10; itemIndex++)
 		drawSavegameDescription(_savegames[itemIndex].description, itemIndex);
-	}
-
 	_vm->_screen->frameRect(x - 2, y + selectedItem * itemHeight - 2, x + 138, y + selectedItem * itemHeight + 9, 119);
 }
 	
@@ -1682,8 +1672,6 @@ void GuiSaveLoadMenu::loadSavegamesList() {
 	Comet::CometEngine::SaveHeader header;
 	Common::String pattern = _vm->getTargetName();
 	pattern += ".???";
-
-	debug("pattern = %s", pattern.c_str());
 
 	Common::StringArray filenames;
 	filenames = saveFileMan->listSavefiles(pattern.c_str());
@@ -1773,9 +1761,8 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 		}
 	}
 
-	if (editSavegameDescriptionStatus == 1) {
+	if (editSavegameDescriptionStatus == 1)
 		_savegames[savegameIndex].description = description;
-	}
 
 	return editSavegameDescriptionStatus;
 }

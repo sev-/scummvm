@@ -1701,7 +1701,7 @@ void CometEngine::museumMainLoop() {
 }
 
 void CometEngine::checkPauseGame() {
-	const byte *pauseText = (const byte*)"Game Paused";
+	static const byte *pauseText = (const byte*)"Game Paused";
 	if (_keyScancode == Common::KEYCODE_p) {
 		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
 		int y = 180;
