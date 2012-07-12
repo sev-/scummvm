@@ -155,6 +155,7 @@ int GuiInventory::run() {
 
 	while (inventoryStatus == 0 && !_vm->_quitGame) {
 		int inventoryAction = kIANone, mouseSelectedItem;
+		bool doWarpMouse = false;
 
 		_vm->handleEvents();
 
@@ -201,7 +202,7 @@ int GuiInventory::run() {
 			break;
 		case kIADown:
 			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && (currentItem + 1 < items.size())) {
-				// TODO: Check mouse rectangle
+				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
 				currentItem++;
 			} else if (firstItem + kMaxItemsOnScreen < items.size()) {
 				firstItem++;
@@ -210,7 +211,7 @@ int GuiInventory::run() {
 			break;
 		case kIAUp:
 			if (currentItem > firstItem) {
-				// TODO: Check mouse rectangle
+				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
 				currentItem--;
 			} else if (firstItem > 0) {
 				firstItem--;
@@ -235,6 +236,11 @@ int GuiInventory::run() {
 			break;
 		default:
 			break;
+		}
+		
+		if (doWarpMouse) {
+			_vm->warpMouseToRect(inventorySlotRects[currentItem - firstItem + 2]);
+			doWarpMouse = false;
 		}
 
 		_vm->waitForKeys();
@@ -338,6 +344,7 @@ int GuiCommandBar::handleCommandBar() {
 
 	while (commandBarStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
+		bool doWarpMouse = false;
 
 		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
 		if (mouseSelectedItem != kCBANone)
@@ -361,28 +368,18 @@ int GuiCommandBar::handleCommandBar() {
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RIGHT:
+			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
 			if (_commandBarSelectedItem == commandBarItemCount) {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_commandBarSelectedItem = 0;
 			} else {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_commandBarSelectedItem++;
 			}
 			break;
 		case Common::KEYCODE_LEFT:
+			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
 			if (_commandBarSelectedItem == 0) {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_commandBarSelectedItem = commandBarItemCount;
 			} else {
-				if (mouseSelectedItem == _commandBarSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_commandBarSelectedItem--;
 			}
 			break;
@@ -416,6 +413,11 @@ int GuiCommandBar::handleCommandBar() {
 			break;
 		default:
 			break;
+		}
+		
+		if (doWarpMouse) {
+			_vm->warpMouseToRect(commandBarRects[_commandBarSelectedItem]);
+			doWarpMouse = false;
 		}
 		
 		if (commandBarAction >= 0) {
@@ -488,6 +490,7 @@ int GuiMainMenu::run() {
 
 	while (mainMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, mainMenuAction = kMMANone;
+		bool doWarpMouse = false;
 	
 		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_mouseX, _vm->_mouseY, 4, kMMANone);
 		if (mouseSelectedItem != kMMANone)
@@ -510,28 +513,18 @@ int GuiMainMenu::run() {
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
+			doWarpMouse = mouseSelectedItem == _mainMenuSelectedItem;
 			if (_mainMenuSelectedItem == 3) {
-				if (mouseSelectedItem == _mainMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_mainMenuSelectedItem = 0;
 			} else {
-				if (mouseSelectedItem == _mainMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_mainMenuSelectedItem++;
 			}
 			break;
 		case Common::KEYCODE_UP:
+			doWarpMouse = mouseSelectedItem == _mainMenuSelectedItem;
 			if (_mainMenuSelectedItem == 0) {
-				if (mouseSelectedItem == _mainMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_mainMenuSelectedItem = 3;
 			} else {
-				if (mouseSelectedItem == _mainMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_mainMenuSelectedItem--;
 			}
 			break;
@@ -555,6 +548,11 @@ int GuiMainMenu::run() {
 			break;
 		default:
 			break;
+		}
+		
+		if (doWarpMouse) {
+			_vm->warpMouseToRect(mainMenuRects[_mainMenuSelectedItem]);
+			doWarpMouse = false;
 		}
 
 		if (mainMenuAction >= 0) {
@@ -658,6 +656,7 @@ int GuiOptionsMenu::run() {
 	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, optionsMenuAction = kOMANone, selectedItemToDraw;
 		bool doWaitForKeys = true;
+		bool doWarpMouse = false;
 
 		int16 mouseX = CLIP(_vm->_mouseX, 127, 189);
 
@@ -696,28 +695,18 @@ int GuiOptionsMenu::run() {
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_DOWN:
+			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
 			if (_optionsMenuSelectedItem == 5) {
-				if (mouseSelectedItem == _optionsMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_optionsMenuSelectedItem = 0;
 			} else {
-				if (mouseSelectedItem == _optionsMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_optionsMenuSelectedItem++;
 			}
 			break;
 		case Common::KEYCODE_UP:
+			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
 			if (_optionsMenuSelectedItem == 0) {
-				if (mouseSelectedItem == _optionsMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_optionsMenuSelectedItem = 5;
 			} else {
-				if (mouseSelectedItem == _optionsMenuSelectedItem) {
-					// TODO: Warp mouse cursor
-				}
 				_optionsMenuSelectedItem--;
 			}
 			break;
@@ -759,12 +748,10 @@ int GuiOptionsMenu::run() {
 			break;
 		}
 
-		/*
-		if (mainMenuAction >= 0) {
-			drawMainMenu(_mainMenuSelectedItem);
-			_vm->_screen->update();
+		if (doWarpMouse) {
+			_vm->warpMouseToRect(optionsMenuRects[_optionsMenuSelectedItem]);
+			doWarpMouse = false;
 		}
-		*/
 
 		switch (optionsMenuAction) {
 		case kOMANone:
@@ -1090,6 +1077,17 @@ void GuiJournal::draw() {
 }
 
 int GuiJournal::handleReadBook() {
+
+	const int kBANone			= -1;
+	const int kBAExit			= -2;
+	const int kBAPrevPage		= 0;
+	const int kBANextPage		= 1;
+
+	static const GuiRectangle bookRects[] = {
+		{ 54, 46, 166, 189, kBAPrevPage},
+		{167, 46, 279, 189, kBANextPage}
+	};
+
 	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
 	int bookStatus = 0;
 
@@ -1105,6 +1103,8 @@ int GuiJournal::handleReadBook() {
 	_vm->setVoiceFileIndex(7);
 
 	while (bookStatus == 0) {
+	
+		int bookAction = kBANone, mouseSelectedRect;
 
 		if (currPageNumber != pageNumber) {
 			drawBookPage(pageNumber, pageCount, 64);
@@ -1121,21 +1121,29 @@ int GuiJournal::handleReadBook() {
 				}
 				talkPageNumber = pageNumber;
 			}
-			// TODO: Check mouse rectangles
 			_vm->handleEvents();
+			mouseSelectedRect = _vm->findRect(bookRects, _vm->_mouseX, _vm->_mouseY, 2, kBANone);
+			if (mouseSelectedRect == -1)
+				_vm->setMouseCursor(NULL);
+			else if (mouseSelectedRect == 0)
+				_vm->setMouseCursor(_vm->_mouseCursors[3]);
+			else if (mouseSelectedRect == 1)
+				_vm->setMouseCursor(_vm->_mouseCursors[2]);
 			_vm->syncUpdate();
-		} while (_vm->_keyScancode == Common::KEYCODE_INVALID && _vm->_keyDirection == 0 && !_vm->_quitGame);
+			if (_vm->_quitGame || _vm->_rightButton || _vm->_keyScancode == Common::KEYCODE_RETURN ||
+				_vm->_keyScancode == Common::KEYCODE_ESCAPE)
+				bookAction = kBAExit;
+			else if (_vm->_keyScancode == Common::KEYCODE_LEFT || (_vm->_leftButton && mouseSelectedRect == 0))
+				bookAction = kBAPrevPage;
+			else if (_vm->_keyScancode == Common::KEYCODE_RIGHT || (_vm->_leftButton && mouseSelectedRect == 1))
+				bookAction = kBANextPage;
+		} while (bookAction == kBANone);
 
-		// TODO: Handle mouse rectangles
-
-		switch (_vm->_keyScancode) {
-		case Common::KEYCODE_RETURN:
-			bookStatus = 1;
-			break;
-		case Common::KEYCODE_ESCAPE:
+		switch (bookAction) {
+		case kBAExit:
 			bookStatus = 2;
 			break;
-		case Common::KEYCODE_LEFT:
+		case kBAPrevPage:
 			if (pageNumber > 0) {
 				bookTurnPageTextEffect(true, pageNumber, pageCount);
 				bookTurnPage(false);
@@ -1143,15 +1151,13 @@ int GuiJournal::handleReadBook() {
 				bookTurnPageTextEffect(false, pageNumber, pageCount);
 			}
 			break;
-		case Common::KEYCODE_RIGHT:
+		case kBANextPage:
 			if (pageNumber < pageCount) {
 				bookTurnPageTextEffect(true, pageNumber, pageCount);
 				bookTurnPage(true);
 				pageNumber++;
 				bookTurnPageTextEffect(false, pageNumber, pageCount);
 			}
-			break;
-		default:
 			break;
 		}
 
