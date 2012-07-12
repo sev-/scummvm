@@ -107,15 +107,13 @@ void Screen::copyToScreen(byte *dest) {
 }
 
 void Screen::grabRect(Graphics::Surface *surface, int x, int y) {
-	for (int yc = 0; yc < surface->h; yc++) {
+	for (int yc = 0; yc < surface->h; yc++)
 		memcpy(surface->getBasePtr(0, yc), getScreen() + x + (y + yc) * 320, surface->w);
-	}
 }
 
 void Screen::putRect(Graphics::Surface *surface, int x, int y) {
-	for (int yc = 0; yc < surface->h; yc++) {
+	for (int yc = 0; yc < surface->h; yc++)
 		memcpy(getScreen() + x + (y + yc) * 320, surface->getBasePtr(0, yc), surface->w);
-	}
 }
 
 void Screen::enableTransitionEffect() {
@@ -411,9 +409,8 @@ void Screen::paletteFadeOut() {
 }
 
 void Screen::setWhitePalette(int value) {
-	for (int i = 0; i < 768; i++) {
+	for (int i = 0; i < 768; i++)
 		_vm->_screenPalette[i] = _vm->_gamePalette[i] + (256 - _vm->_gamePalette[i]) / 16 * value;
-	}
 	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
 }
