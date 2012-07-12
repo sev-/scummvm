@@ -432,6 +432,7 @@ public:
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
 	
 	int findRect(const GuiRectangle *rects, int x, int y, int count, int defaultId);
+	void warpMouseToRect(const GuiRectangle &rect);
 	
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x1, int y1, int x2, int y2);

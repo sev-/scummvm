@@ -859,6 +859,13 @@ int CometEngine::findRect(const GuiRectangle *rects, int x, int y, int count, in
 	return defaultId;
 }
 
+void CometEngine::warpMouseToRect(const GuiRectangle &rect) {
+	debug("warpMouse(%d, %d)", rect.x + (rect.x2 - rect.x) / 2,
+		rect.y + (rect.y2 - rect.y) / 2);
+	_system->warpMouse(rect.x + (rect.x2 - rect.x) / 2,
+		rect.y + (rect.y2 - rect.y) / 2);
+}
+
 void CometEngine::handleEvents() {
 	Common::Event event;
 
@@ -1508,7 +1515,7 @@ void CometEngine::drawBeams() {
 		drawBeam(beam->x1, beam->y1, beam->x2, beam->y2);
 	}
 	_beams.clear();
-	// TODO: beamColor stuff, unused in Comet CD
+	// NOTE: beamColor stuff, unused in Comet CD
 }
 
 void CometEngine::initSystemVars() {
@@ -1603,7 +1610,6 @@ void CometEngine::cometMainLoop() {
 		}
 
 		if (_scriptVars[9] == 1) {
-			// TODO: Copy vga screen to scene background
 			_scriptVars[9] = _gui->run(kGuiPuzzle);
 			loadSceneBackground();
 		}
