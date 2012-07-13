@@ -265,9 +265,8 @@ void CometEngine::actorUpdateWalking(Actor *actor, int actorIndex, bool skipColl
 		if (actor->walkStatus & 4) {
 			actorStartWalking(actorIndex, actor->savedWalkDestX, actor->savedWalkDestY);
 			actor->walkStatus &= ~4;
-		} else {
+		} else
 			actorStopWalking(actor);
-		}
 	} else if ((actor->walkStatus & 3) == comp) {
 		actor->walkStatus ^= 3;
 		actorCalcDirection(actor);
@@ -296,9 +295,8 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
  	newX += xAdd;
  	newY += yAdd;
  	
- 	if (actor->walkStatus & 3) {
+ 	if (actor->walkStatus & 3)
 		actorGetNextWalkDestXY(actor, newX, newY);
-	}
 
 	if (actor->collisionType != kCollisionDisabled) {
 		uint16 collisionType = checkCollision(actorIndex, newX, newY, actor->deltaX, actor->deltaY, actor->direction, obstacleRect);
@@ -306,9 +304,8 @@ bool CometEngine::updateActorPosition(int actorIndex, Common::Rect &obstacleRect
 			collisionType = updateCollision(actor, actorIndex, collisionType);
 			if (collisionType == 0)
 				return false;
-		} else {
+		} else
 			actor->collisionType = kCollisionNone;
-		}
 	}
 
 	actor->x = newX;

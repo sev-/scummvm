@@ -134,18 +134,16 @@ void Dialog::update() {
 					_vm->_mouseY > _items[i].rect.y && _vm->_mouseY < _items[i].rect.y2)
 					mouseSelectedItemIndex = _items[i].rect.id;
 			}
-			if (mouseSelectedItemIndex != -1) {
+			if (mouseSelectedItemIndex != -1)
 				_selectedItemIndex = mouseSelectedItemIndex;
-			}
 		} else {
-			// TODO: Move mouse cursor to center of selected dialog item
+			// Move mouse cursor to the center of the selected dialog item
+			_vm->warpMouseToRect(_items[_selectedItemIndex].rect);
 		}
 	}
 
-	if (oldDialogSelectedItemIndex != _selectedItemIndex) {
-		// Reset the text color
+	if (oldDialogSelectedItemIndex != _selectedItemIndex)
 		_textColor = 79;
-	}
 
 	drawTextBubbles();
 
@@ -170,7 +168,7 @@ void Dialog::drawTextBubbles() {
 		int y = _textY;
 		byte color1 = _vm->_actors[0].textColor == 25 ? 22 : _vm->_actors[0].textColor;
 		byte color2;
-		/* TODO: Draw intro text bubble in floppy version
+		/* NOTE: Draw intro text bubble in floppy version
 		   NOTE: Never used in Comet Floppy since _items[0].index == _introTextIndex is always true
 		   and so _introTextIndex is set to -1. (Also a case where it's likely used in Eternam.)
 		*/

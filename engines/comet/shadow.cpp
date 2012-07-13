@@ -577,9 +577,8 @@ void CometEngine::updateText() {
 }
 
 void CometEngine::updateTalkAnims() {
-	if (!_mixer->isSoundHandleActive(_sampleHandle)) {
+	if (!_mixer->isSoundHandleActive(_sampleHandle))
 		stopVoice();
-	}
 
 	// TODO: Update talk anim
 }
@@ -860,8 +859,6 @@ int CometEngine::findRect(const GuiRectangle *rects, int x, int y, int count, in
 }
 
 void CometEngine::warpMouseToRect(const GuiRectangle &rect) {
-	debug("warpMouse(%d, %d)", rect.x + (rect.x2 - rect.x) / 2,
-		rect.y + (rect.y2 - rect.y) / 2);
 	_system->warpMouse(rect.x + (rect.x2 - rect.x) / 2,
 		rect.y + (rect.y2 - rect.y) / 2);
 }
@@ -1455,7 +1452,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 				// TODO: Play the anim sound
 				workSoundFramesCount--;
 				if (workSoundFramesCount > 0) {
-					// TODO: Load the next sample; unused in Comet CD (only max. one sample per cutscene)
+					// NOTE: Load the next sample; unused in Comet (only max. one sample per cutscene)
 				}
 			}
 
@@ -1477,9 +1474,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 
 	delete cutsceneSprite;
 
-	if (palStatus > 0) {
+	if (palStatus > 0)
 		_screen->setFullPalette(_screenPalette);
-	}
 
 	if (_textActive)
 		resetTextValues();

@@ -193,6 +193,8 @@ public:
 	bool leftButton() const { return _leftButton && !isFloppy(); }
 	bool rightButton() const { return _rightButton && !isFloppy(); }
 
+	virtual void syncSoundSettings();
+
 private:
 	bool detectGame();
 
