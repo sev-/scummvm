@@ -78,10 +78,6 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 		warning("Sound initialization failed.");
 	}
 
-	_mixer->setVolumeForSoundType(Audio::Mixer::kSFXSoundType, ConfMan.getInt("sfx_volume"));
-	_mixer->setVolumeForSoundType(Audio::Mixer::kSpeechSoundType, ConfMan.getInt("speech_volume"));
-	_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, ConfMan.getInt("music_volume"));
-
 	_music = 0;
 	_screen = 0;
 	_dialog = 0;
@@ -160,10 +156,20 @@ CometEngine::~CometEngine() {
 	delete _sceneDecorationSprite;
 }
 
+void CometEngine::syncSoundSettings() {
+	Engine::syncSoundSettings();
+
+	_mixer->setVolumeForSoundType(Audio::Mixer::kSFXSoundType, ConfMan.getInt("sfx_volume"));
+	_mixer->setVolumeForSoundType(Audio::Mixer::kSpeechSoundType, ConfMan.getInt("speech_volume"));
+	_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, ConfMan.getInt("music_volume"));
+}
+
 Common::Error CometEngine::run() {
 	Common::Event event;
 
 	initGraphics(320, 200, false);
+	
+	syncSoundSettings();
 
 	_console = new CometConsole(this);
 

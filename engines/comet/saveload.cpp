@@ -45,7 +45,6 @@
 namespace Comet {
 
 // TODO:
-//	- Saveload is working so far but only one slot is supported until the game menu is implemented
 //	- Save with F7; Load with F9
 //	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
 //  - Save playtime info

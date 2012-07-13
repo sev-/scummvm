@@ -222,7 +222,6 @@ int GuiInventory::run() {
 			break;
 		case kIASelect:
 		case kIAUse:
-			// TODO: Move elsewhere
 			for (uint i = 0; i < 255; i++) {
 				if (_vm->_inventoryItemStatus[i] == 2)
 					_vm->_inventoryItemStatus[i] = 1;
@@ -623,6 +622,8 @@ int GuiOptionsMenu::run() {
 	const int kOMADecGameSpeed	= 15;
 	const int kOMAIncLanguage	= 16;
 	const int kOMADecLanguage	= 17;
+	
+	const int kVolumeConversionFactor = 17;
 
 	static const GuiRectangle optionsMenuRects[] = {
 		{127,  64, 189,  79, kOMAMusicVol},
@@ -640,16 +641,20 @@ int GuiOptionsMenu::run() {
 		{106, 164, 121, 179, 35}};//???
 
 	int optionsMenuStatus = 0;
-	int musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language;
+	int musicVolumeDiv, currMusicVolumeDiv, digiVolumeDiv, gameSpeed, language;
 	uint animFrameCounter = 0;
 
-	// TODO: Get real values
-	musicVolumeDiv = 2;
-	sampleVolumeDiv = 2;
-	textSpeed = 2;
+	// NOTE There are no separate volume controls for speech and effects.
+	// Because we know if a sample is speech or an effect we use the proper sound types
+	// when playing. This means that the speech volume can only be changed in the ScummVM options.
+
+	musicVolumeDiv = ConfMan.getInt("music_volume") / kVolumeConversionFactor;
+	digiVolumeDiv = ConfMan.getInt("sfx_volume") / kVolumeConversionFactor;
+	currMusicVolumeDiv = musicVolumeDiv;
+	// TODO: Save/load these two
 	gameSpeed = 2;
 	language = 1;
-
+	
 	_vm->waitForKeys();
 
 	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
@@ -663,7 +668,10 @@ int GuiOptionsMenu::run() {
 		if (mouseSelectedItem != kOMANone)
 			_optionsMenuSelectedItem = mouseSelectedItem;
 
-		// TODO: Update music volume
+		if (musicVolumeDiv != currMusicVolumeDiv) {
+			_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, musicVolumeDiv * kVolumeConversionFactor);
+			currMusicVolumeDiv = musicVolumeDiv;
+		}
 
 		animFrameCounter++;
 		if (animFrameCounter == 32)
@@ -677,7 +685,7 @@ int GuiOptionsMenu::run() {
 		else if (selectedItemToDraw == kOMADefGameSpeed)
 			selectedItemToDraw = kOMAGameSpeed;
 
-		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, sampleVolumeDiv, textSpeed, gameSpeed, language, animFrameCounter, optionsMenuRects);
+		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, digiVolumeDiv, gameSpeed, language, animFrameCounter, optionsMenuRects);
 
 		_vm->syncUpdate();
 
@@ -737,7 +745,7 @@ int GuiOptionsMenu::run() {
 			break;
 		case Common::KEYCODE_RETURN:
 			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6)
-				optionsMenuAction = kOMAExit;
+				optionsMenuAction = kOMAOk;
 			break;
 		default:
 			break;
@@ -759,7 +767,7 @@ int GuiOptionsMenu::run() {
 			doWaitForKeys = false;
 			break;
 		case kOMASoundVol:
-			sampleVolumeDiv = (mouseX - 127) / 4;
+			digiVolumeDiv = (mouseX - 127) / 4;
 			doWaitForKeys = false;
 			break;
 		case kOMATalkie:
@@ -778,13 +786,17 @@ int GuiOptionsMenu::run() {
 				language = 0;
 			break;
 		case kOMAOk:
+			ConfMan.setInt("music_volume", musicVolumeDiv * kVolumeConversionFactor);
+			ConfMan.setInt("sfx_volume", digiVolumeDiv * kVolumeConversionFactor);
+			ConfMan.flushToDisk();
+			_vm->syncSoundSettings();
 			optionsMenuStatus = 1;
 			break;
 		case kOMADefMusicVol:
 			musicVolumeDiv = 8;
 			break;
 		case kOMADefSoundVol:
-			sampleVolumeDiv = 8;
+			digiVolumeDiv = 8;
 			break;
 		case kOMADefGameSpeed:
 			gameSpeed = 8;
@@ -800,13 +812,13 @@ int GuiOptionsMenu::run() {
 			doWaitForKeys = false;
 			break;
 		case kOMAIncSoundVol:
-			if (sampleVolumeDiv < 15)
-				sampleVolumeDiv++;
+			if (digiVolumeDiv < 15)
+				digiVolumeDiv++;
 			doWaitForKeys = false;
 			break;
 		case kOMADecSoundVol:
-			if (sampleVolumeDiv > 0)
-				sampleVolumeDiv--;
+			if (digiVolumeDiv > 0)
+				digiVolumeDiv--;
 			doWaitForKeys = false;
 			break;
 		case kOMAIncGameSpeed:
@@ -841,9 +853,8 @@ int GuiOptionsMenu::run() {
 void GuiOptionsMenu::draw() {
 }
 
-void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int sampleVolumeDiv, 
-	int textSpeed, int gameSpeed, int language, uint animFrameCounter,
-	const GuiRectangle *guiRectangles) {
+void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, 
+	int gameSpeed, int language, uint animFrameCounter, const GuiRectangle *guiRectangles) {
 
 	const int itemLeftX = 107;
 	const int itemTopY = 65;
@@ -859,7 +870,7 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, itemLeftX, selectedItem * itemHeight + itemTopY);
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, gaugeY);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + sampleVolumeDiv * 4, gaugeY + itemHeight);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + digiVolumeDiv * 4, gaugeY + itemHeight);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
 
@@ -879,9 +890,9 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int s
 		}
 	}
 
-	if (sampleVolumeDiv == 0)
+	if (digiVolumeDiv == 0)
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
-	else if (sampleVolumeDiv < 7)
+	else if (digiVolumeDiv < 7)
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
 	else
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
