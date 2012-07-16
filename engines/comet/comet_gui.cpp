@@ -607,21 +607,15 @@ int GuiOptionsMenu::run() {
 	const int kOMAExit			= -2;
 	const int kOMAMusicVol		= 0;
 	const int kOMASoundVol		= 1;
-	const int kOMATalkie		= 2;
+	const int kOMATextSpeed		= 2;
 	const int kOMAGameSpeed		= 3;
-	const int kOMALanguage		= 4;
+	const int kOMADriveLetter	= 4;
+	const int kOMALanguage		= 5;
 	const int kOMAOk			= 6;
-	const int kOMADefMusicVol	= 7;
-	const int kOMADefSoundVol	= 8;
-	const int kOMADefGameSpeed	= 9;
-	const int kOMAIncMusicVol	= 10;
-	const int kOMADecMusicVol	= 11;
-	const int kOMAIncSoundVol	= 12;
-	const int kOMADecSoundVol	= 13;
-	const int kOMAIncGameSpeed	= 14;
-	const int kOMADecGameSpeed	= 15;
-	const int kOMAIncLanguage	= 16;
-	const int kOMADecLanguage	= 17;
+	const int kOMATalkie		= 7;
+	const int kOMADefMusicVol	= 8;
+	const int kOMADefSoundVol	= 9;
+	const int kOMADefGameSpeed	= 10;
 	
 	const int kVolumeConversionFactor = 17;
 
@@ -631,7 +625,7 @@ int GuiOptionsMenu::run() {
 		{127, 104, 164, 119, kOMATalkie},
 		{127, 124, 189, 139, kOMAGameSpeed},
 		{127, 144, 142, 159, kOMALanguage},
-		{127, 164, 142, 179, 5},//???
+		{127, 164, 142, 179, kOMAOk},
 		{172, 165, 199, 178, kOMAOk},
 		{106,  64, 121,  79, kOMADefMusicVol},
 		{106,  84, 121,  99, kOMADefSoundVol},
@@ -641,7 +635,7 @@ int GuiOptionsMenu::run() {
 		{106, 164, 121, 179, 35}};//???
 
 	int optionsMenuStatus = 0;
-	int musicVolumeDiv, currMusicVolumeDiv, digiVolumeDiv, gameSpeed, language;
+	int musicVolumeDiv, currMusicVolumeDiv, digiVolumeDiv, textSpeed, gameSpeed, language;
 	uint animFrameCounter = 0;
 
 	// NOTE There are no separate volume controls for speech and effects.
@@ -651,22 +645,26 @@ int GuiOptionsMenu::run() {
 	musicVolumeDiv = ConfMan.getInt("music_volume") / kVolumeConversionFactor;
 	digiVolumeDiv = ConfMan.getInt("sfx_volume") / kVolumeConversionFactor;
 	currMusicVolumeDiv = musicVolumeDiv;
-	// TODO: Save/load these two
+	// TODO: Save/load these three
+	textSpeed = 0;
 	gameSpeed = 2;
 	language = 1;
 	
 	_vm->waitForKeys();
 
 	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
-		int mouseSelectedItem, optionsMenuAction = kOMANone, selectedItemToDraw;
+		int mouseSelectedItem = -1, optionsMenuAction = kOMANone, selectedItemToDraw;
+		int optionIncr = 0;
 		bool doWaitForKeys = true;
 		bool doWarpMouse = false;
 
 		int16 mouseX = CLIP(_vm->_mouseX, 127, 189);
 
-		mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_mouseX, _vm->_mouseY, 13, kOMANone);
-		if (mouseSelectedItem != kOMANone)
-			_optionsMenuSelectedItem = mouseSelectedItem;
+		if (!_vm->isFloppy()) {
+			mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_mouseX, _vm->_mouseY, 13, kOMANone);
+			if (mouseSelectedItem != kOMANone)
+				_optionsMenuSelectedItem = mouseSelectedItem;
+		}
 
 		if (musicVolumeDiv != currMusicVolumeDiv) {
 			_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, musicVolumeDiv * kVolumeConversionFactor);
@@ -678,17 +676,21 @@ int GuiOptionsMenu::run() {
 			animFrameCounter = 0;
 
 		selectedItemToDraw = _optionsMenuSelectedItem;
-		if (selectedItemToDraw == kOMADefMusicVol)
-			selectedItemToDraw = kOMAMusicVol;
-		else if (selectedItemToDraw == kOMADefSoundVol)
-			selectedItemToDraw = kOMASoundVol;
-		else if (selectedItemToDraw == kOMADefGameSpeed)
-			selectedItemToDraw = kOMAGameSpeed;
+		if (!_vm->isFloppy()) {
+			if (selectedItemToDraw == kOMADefMusicVol)
+				selectedItemToDraw = kOMAMusicVol;
+			else if (selectedItemToDraw == kOMADefSoundVol)
+				selectedItemToDraw = kOMASoundVol;
+			else if (selectedItemToDraw == kOMADefGameSpeed)
+				selectedItemToDraw = kOMAGameSpeed;
+			else if (selectedItemToDraw == kOMATalkie)
+				selectedItemToDraw = 2;
+		}
 
-		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, digiVolumeDiv, gameSpeed, language, animFrameCounter, optionsMenuRects);
+		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, digiVolumeDiv, textSpeed,
+			gameSpeed, language, animFrameCounter, optionsMenuRects);
 
 		_vm->syncUpdate();
-
 		_vm->handleEvents();
 
 		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
@@ -715,36 +717,24 @@ int GuiOptionsMenu::run() {
 				_optionsMenuSelectedItem--;
 			break;
 		case Common::KEYCODE_LEFT:
-			if (_optionsMenuSelectedItem == 0) {
-				optionsMenuAction = kOMADecMusicVol;
-			} else if (_optionsMenuSelectedItem == 1) {
-				optionsMenuAction = kOMADecSoundVol;
-			} else if (_optionsMenuSelectedItem == 2) {
-				optionsMenuAction = kOMATalkie;
-			} else if (_optionsMenuSelectedItem == 3) {
-				optionsMenuAction = kOMADecGameSpeed;
-			} else if (_optionsMenuSelectedItem == 4) {
-				optionsMenuAction = kOMADecLanguage;
-			}
+			optionIncr = -1;
+			if (_vm->isFloppy())
+				optionsMenuAction = _optionsMenuSelectedItem;
+			else if (_optionsMenuSelectedItem != 5)
+				optionsMenuAction = optionsMenuRects[_optionsMenuSelectedItem].id;
 			break;
 		case Common::KEYCODE_RIGHT:
-			if (_optionsMenuSelectedItem == 0) {
-				optionsMenuAction = kOMAIncMusicVol;
-			} else if (_optionsMenuSelectedItem == 1) {
-				optionsMenuAction = kOMAIncSoundVol;
-			} else if (_optionsMenuSelectedItem == 2) {
-				optionsMenuAction = kOMATalkie;
-			} else if (_optionsMenuSelectedItem == 3) {
-				optionsMenuAction = kOMAIncGameSpeed;
-			} else if (_optionsMenuSelectedItem == 4) {
-				optionsMenuAction = kOMAIncLanguage;
-			}
+			optionIncr = +1;
+			if (_vm->isFloppy())
+				optionsMenuAction = _optionsMenuSelectedItem;
+			else if (_optionsMenuSelectedItem != 5)
+				optionsMenuAction = optionsMenuRects[_optionsMenuSelectedItem].id;
 			break;
 		case Common::KEYCODE_ESCAPE:
 			optionsMenuAction = kOMAExit;
 			break;
 		case Common::KEYCODE_RETURN:
-			if (_optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6)
+			if (_vm->isFloppy() || _optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6)
 				optionsMenuAction = kOMAOk;
 			break;
 		default:
@@ -763,11 +753,17 @@ int GuiOptionsMenu::run() {
 			optionsMenuStatus = 2;
 			break;
 		case kOMAMusicVol:
-			musicVolumeDiv = (mouseX - 127) / 4;
+			if (optionIncr != 0)
+				musicVolumeDiv = CLIP(musicVolumeDiv + optionIncr, 0, 15);
+			else
+				musicVolumeDiv = (mouseX - 127) / 4;
 			doWaitForKeys = false;
 			break;
 		case kOMASoundVol:
-			digiVolumeDiv = (mouseX - 127) / 4;
+			if (optionIncr != 0)
+				digiVolumeDiv = CLIP(digiVolumeDiv + optionIncr, 0, 15);
+			else
+				digiVolumeDiv = (mouseX - 127) / 4;
 			doWaitForKeys = false;
 			break;
 		case kOMATalkie:
@@ -776,20 +772,29 @@ int GuiOptionsMenu::run() {
 				_vm->_talkieMode = 0;
 			break;
 		case kOMAGameSpeed:
-			gameSpeed = (mouseX - 127) / 4;
+			if (optionIncr != 0)
+				gameSpeed = CLIP(gameSpeed + optionIncr, 0, 15);
+			else
+				gameSpeed = (mouseX - 127) / 4;
 			doWaitForKeys = false;
 			break;
+		case kOMATextSpeed:
+			if (optionIncr != 0)
+				textSpeed = CLIP(textSpeed + optionIncr, 0, 2);
+			doWaitForKeys = false;
+			break;
+		case kOMADriveLetter:
+			// Nothing/not supported
+			break;
 		case kOMALanguage:
-			if (language < 4)
+			if (optionIncr != 0)
+				language = CLIP(language + optionIncr, 0, 4);
+			else if (language < 4)
 				language++;
 			else
 				language = 0;
 			break;
 		case kOMAOk:
-			ConfMan.setInt("music_volume", musicVolumeDiv * kVolumeConversionFactor);
-			ConfMan.setInt("sfx_volume", digiVolumeDiv * kVolumeConversionFactor);
-			ConfMan.flushToDisk();
-			_vm->syncSoundSettings();
 			optionsMenuStatus = 1;
 			break;
 		case kOMADefMusicVol:
@@ -801,44 +806,6 @@ int GuiOptionsMenu::run() {
 		case kOMADefGameSpeed:
 			gameSpeed = 8;
 			break;
-		case kOMAIncMusicVol:
-			if (musicVolumeDiv < 15)
-				musicVolumeDiv++;
-			doWaitForKeys = false;
-			break;
-		case kOMADecMusicVol:
-			if (musicVolumeDiv > 0)
-				musicVolumeDiv--;
-			doWaitForKeys = false;
-			break;
-		case kOMAIncSoundVol:
-			if (digiVolumeDiv < 15)
-				digiVolumeDiv++;
-			doWaitForKeys = false;
-			break;
-		case kOMADecSoundVol:
-			if (digiVolumeDiv > 0)
-				digiVolumeDiv--;
-			doWaitForKeys = false;
-			break;
-		case kOMAIncGameSpeed:
-			if (gameSpeed < 15)
-				gameSpeed++;
-			doWaitForKeys = false;
-			break;
-		case kOMADecGameSpeed:
-			if (gameSpeed > 0)
-				gameSpeed--;
-			doWaitForKeys = false;
-			break;
-		case kOMAIncLanguage:
-			if (language < 4)
-				language++;
-			break;
-		case kOMADecLanguage:
-			if (language > 0)
-				language--;
-			break;
 		}
 
 		if (doWaitForKeys)
@@ -847,13 +814,21 @@ int GuiOptionsMenu::run() {
 
 	_vm->waitForKeys();
 
+	if (optionsMenuStatus == 1) {
+		// TODO Also save game speed, text speed
+		ConfMan.setInt("music_volume", musicVolumeDiv * kVolumeConversionFactor);
+		ConfMan.setInt("sfx_volume", digiVolumeDiv * kVolumeConversionFactor);
+		ConfMan.flushToDisk();
+		_vm->syncSoundSettings();
+	}
+
 	return 0;
 }
 
 void GuiOptionsMenu::draw() {
 }
 
-void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, 
+void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, int textSpeed,
 	int gameSpeed, int language, uint animFrameCounter, const GuiRectangle *guiRectangles) {
 
 	const int itemLeftX = 107;
@@ -864,7 +839,7 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int d
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
 
-	if (selectedItem == 5 || selectedItem == 6)
+	if (!_vm->isFloppy() && selectedItem == 5)
 		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
 	else
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, itemLeftX, selectedItem * itemHeight + itemTopY);
@@ -872,7 +847,10 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int d
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, gaugeY);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + digiVolumeDiv * 4, gaugeY + itemHeight);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, 157);
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, _vm->isFloppy() ? 177 : 157);
+
+	if (_vm->isFloppy())
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + textSpeed * 30, gaugeY + itemHeight * 2);
 
 	if (musicVolumeDiv == 0) {
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 55, 0, 0);
@@ -897,7 +875,13 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int d
 	else
 		_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
+	if (_vm->isFloppy()) {
+		if ((textSpeed == 0 && animFrameCounter > 6) ||
+			(textSpeed == 1 && animFrameCounter > 16) ||
+			(textSpeed == 2 && animFrameCounter > 24))
+			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 70, 0, 0);
+	} else
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
 
 	if (gameSpeed < 5)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
@@ -1120,11 +1104,10 @@ int GuiJournal::handleReadBook() {
 		do {
 			// Play page speech
 			if (talkPageNumber != pageNumber) {
-				if (pageNumber > 0) {
+				if (pageNumber > 0)
 					_vm->playVoice(pageNumber);
-				} else {
+				else
 					_vm->stopVoice();
-				}
 				talkPageNumber = pageNumber;
 			}
 			_vm->handleEvents();
@@ -1217,32 +1200,23 @@ void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte font
 }
 
 void GuiJournal::bookTurnPage(bool turnDirection) {
-	if (turnDirection) {
-		for (uint i = 38; i < 49; i++) {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
-			_vm->syncUpdate();
-		}
-	} else {
-		for (uint i = 49; i > 38; i--) {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
-			_vm->syncUpdate();
-		}
+	const uint first = turnDirection ? 38 : 49;
+	const uint last = turnDirection ? 49 : 38;
+	const int incr = turnDirection ? +1 : -1;
+	for (uint i = first; i != last; i += incr) {
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
+		_vm->syncUpdate();
 	}
 }
 
 void GuiJournal::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
-	if (turnDirection) {
-		for (byte fontColor = 64; fontColor < 72; fontColor++) {
-			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_vm->syncUpdate();
-		}
-	} else {
-		for (byte fontColor = 72; fontColor > 64; fontColor--) {
-			drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-			_vm->syncUpdate();
-		}
+	const byte firstColor = turnDirection ? 64 : 72;
+	const byte lastColor = turnDirection ? 72 : 64;
+	const int incr = turnDirection ? +1 : -1;
+	for (byte fontColor = firstColor; fontColor != lastColor; fontColor += incr) {
+		drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
+		_vm->syncUpdate();
 	}
 }
 

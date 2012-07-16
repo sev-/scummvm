@@ -1462,7 +1462,6 @@ void Screen::drawInterpolatedAnimationElement(InterpolatedAnimationElement *inte
 	for (Common::Array<InterpolatedAnimationCommand*>::iterator iter = interElem->commands.begin(); iter != interElem->commands.end(); ++iter) {
 		InterpolatedAnimationCommand *interCmd = *iter;
 		byte color1, color2;
-		// TODO: int limit = (mul_val * cmdCount) / 256;
 		color1 = interCmd->_aarg1;
 		color2 = interCmd->_aarg2;
 		drawInterpolatedAnimationCommand(interCmd, x, y, mulValue, color1, color2);
@@ -1474,8 +1473,6 @@ void Screen::drawInterpolatedAnimationCommand(InterpolatedAnimationCommand *inte
 	debug(8, "Screen::drawInterpolatedAnimationCommand() cmd = %d; points = %d", interCmd->_cmd, interCmd->_points.size());
 
 	Common::Array<Point> points;
-
-	//int limit = (mul_val * cmdCount) / 256;
 
 	// The commands' points need to be adjusted according to the x/y position
 	points.reserve(interCmd->_points.size() + 1);
