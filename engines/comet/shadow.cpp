@@ -868,7 +868,6 @@ void CometEngine::handleEvents() {
 
 	while (g_system->getEventManager()->pollEvent(event)) {
 		switch (event.type) {
-
 		case Common::EVENT_KEYDOWN:
 			switch (event.kbd.keycode) {
 			case Common::KEYCODE_UP:
@@ -896,7 +895,6 @@ void CometEngine::handleEvents() {
 			_keyScancode = event.kbd.keycode;
 			_keyAscii = event.kbd.ascii;
 			break;
-
 		case Common::EVENT_KEYUP:
 			switch (event.kbd.keycode) {
 			case Common::KEYCODE_UP:
@@ -916,35 +914,35 @@ void CometEngine::handleEvents() {
 			}
 			_keyScancode = Common::KEYCODE_INVALID;
 			break;
-
-		case Common::EVENT_MOUSEMOVE:
-			_mouseX = event.mouse.x;
-			_mouseY = event.mouse.y;
-			break;
-
-		case Common::EVENT_LBUTTONDOWN:
-			_leftButton = true;
-			break;
-
-		case Common::EVENT_LBUTTONUP:
-			_leftButton = false;
-			break;
-
-		case Common::EVENT_RBUTTONDOWN:
-			_rightButton = true;
-			break;
-
-		case Common::EVENT_RBUTTONUP:
-			_rightButton = false;
-			break;
-
 		case Common::EVENT_RTL:
 		case Common::EVENT_QUIT:
 			_quitGame = true;
 			return;
-
 		default:
 			break;
+		}
+		if (!isFloppy()) {
+			// Handle mouse-related events only in the CD version
+			switch (event.type) {
+			case Common::EVENT_MOUSEMOVE:
+				_mouseX = event.mouse.x;
+				_mouseY = event.mouse.y;
+				break;
+			case Common::EVENT_LBUTTONDOWN:
+				_leftButton = true;
+				break;
+			case Common::EVENT_LBUTTONUP:
+				_leftButton = false;
+				break;
+			case Common::EVENT_RBUTTONDOWN:
+				_rightButton = true;
+				break;
+			case Common::EVENT_RBUTTONUP:
+				_rightButton = false;
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

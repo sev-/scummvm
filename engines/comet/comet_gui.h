@@ -112,7 +112,7 @@ public:
 	void draw();
 protected:
 	int _optionsMenuSelectedItem;
-	void drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, 
+	void drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, int textSpeed,
 		int gameSpeed, int language, uint animFrameCounter, const GuiRectangle *guiRectangles);
 };
 
