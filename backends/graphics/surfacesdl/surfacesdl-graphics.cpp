@@ -997,7 +997,11 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	// If the shake position changed, fill the dirty area with blackness
 	if (_currentShakePos != _newShakePos ||
 		(_mouseNeedsRedraw && _mouseBackup.y <= _currentShakePos)) {
-		SDL_Rect blackrect = {0, 0, (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth), (*_scalerPlugin)->scaleYCoordinate(_newShakePos)};
+		SDL_Rect blackrect;
+		blackrect.x = 0;
+		blackrect.y = 0;
+		blackrect.w = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
+		blackrect.h = (*_scalerPlugin)->scaleYCoordinate(_newShakePos);
 
 		if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 			blackrect.h = real2Aspect(blackrect.h - 1) + 1;
