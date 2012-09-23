@@ -44,6 +44,16 @@ public:
 	virtual void deinitialize() {}
 
 	/**
+	 * Scale a X coordinate according to the current factor.
+	 */
+	int scaleXCoordinate(int coord, bool inverse = false) const;
+
+	/**
+	 * Scale a Y coordinate according to the current factor.
+	 */
+	int scaleYCoordinate(int coord, bool inverse = false) const;
+
+	/**
 	 * Scale a rect.
 	 *
 	 * @param srcPtr   Pointer to the source buffer.

@@ -25,6 +25,22 @@ void ScalerPluginObject::initialize(const Graphics::PixelFormat &format) {
 	_format = format;
 }
 
+int ScalerPluginObject::scaleXCoordinate(int coord, bool inverse) const {
+	if (inverse) {
+		return coord / _factor;
+	} else {
+		return coord * _factor;
+	}
+}
+
+int ScalerPluginObject::scaleYCoordinate(int coord, bool inverse) const {
+	if (inverse) {
+		return coord / _factor;
+	} else {
+		return coord * _factor;
+	}
+}
+
 namespace {
 /**
  * Trivial 'scaler' - in fact it doesn't do any scaling but just copies the
