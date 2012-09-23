@@ -344,6 +344,7 @@ protected:
 
 	virtual int effectiveScreenHeight() const;
 
+	virtual void changeScaler();
 	virtual void setGraphicsModeIntern();
 
 	virtual bool handleScalerHotkeys(Common::KeyCode key);

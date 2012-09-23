@@ -402,6 +402,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 	if (_transactionDetails.sizeChanged) {
 #endif
 		unloadGFXMode();
+		changeScaler();
 		if (!loadGFXMode()) {
 			if (_oldVideoMode.setup) {
 				_transactionMode = kTransactionRollback;
@@ -420,6 +421,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 			_screenChangeCount++;
 		}
 	} else if (_transactionDetails.needHotswap) {
+		changeScaler();
 		setGraphicsModeIntern();
 		if (!hotswapGFXMode()) {
 			if (_oldVideoMode.setup) {
@@ -439,6 +441,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 				internUpdateScreen();
 		}
 	} else if (_transactionDetails.needUpdatescreen) {
+		changeScaler();
 		setGraphicsModeIntern();
 		internUpdateScreen();
 	}
@@ -579,47 +582,56 @@ bool SurfaceSdlGraphicsManager::setGraphicsMode(int mode) {
 	return true;
 }
 
+void SurfaceSdlGraphicsManager::changeScaler() {
+	Common::StackLock lock(_graphicsMutex);
+
+	// If the _scalerIndex has changed, change scaler plugins
+	if (_scalerPlugins[_scalerIndex] != _scalerPlugin || _transactionDetails.formatChanged) {
+		if (_scalerPlugin)
+			(*_scalerPlugin)->deinitialize();
+
+		_scalerPlugin = _scalerPlugins[_scalerIndex];
+	}
+
+	(*_scalerPlugin)->setFactor(_videoMode.scaleFactor);
+}
+
 void SurfaceSdlGraphicsManager::setGraphicsModeIntern() {
 	Common::StackLock lock(_graphicsMutex);
 
 	if (!_screen || !_hwscreen)
 		return;
 
+	// The initialization below is currently slightly wasteful, because
+	// it will reinitialize the scalers every time this function is called.
+	Graphics::PixelFormat format;
+	convertSDLPixelFormat(_hwscreen->format, &format);
 
-	// If the _scalerIndex has changed, change scaler plugins
-	if (_scalerPlugins[_scalerIndex] != _scalerPlugin || _transactionDetails.formatChanged) {
-		Graphics::PixelFormat format;
-		convertSDLPixelFormat(_hwscreen->format, &format);
-		if (_scalerPlugin)
-			(*_scalerPlugin)->deinitialize();
-
-		if (_scalerPlugins[_scalerIndex] != _normalPlugin) {
-			// _normalPlugin might be needed and needs to be initialized
-			(*_normalPlugin)->initialize(format);
-		}
-		_scalerPlugin = _scalerPlugins[_scalerIndex];
-		(*_scalerPlugin)->initialize(format);
-		_extraPixels = (*_scalerPlugin)->extraPixels();
-		_useOldSrc = (*_scalerPlugin)->useOldSource();
-		if (_useOldSrc) {
-			(*_scalerPlugin)->enableSource(true);
-			(*_scalerPlugin)->setSource((byte *)_tmpscreen->pixels, _tmpscreen->pitch,
-										_videoMode.screenWidth, _videoMode.screenHeight, _maxExtraPixels);
-			if (!_destbuffer) {
-				_destbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.screenWidth * _videoMode.scaleFactor,
-									_videoMode.screenHeight * _videoMode.scaleFactor,
-									16,
-									_hwscreen->format->Rmask,
-									_hwscreen->format->Gmask,
-									_hwscreen->format->Bmask,
-									_hwscreen->format->Amask);
-				if (_destbuffer == NULL)
-					error("allocating _destbuffer failed");
-			}
-		}
+	if (_scalerPlugins[_scalerIndex] != _normalPlugin) {
+		// _normalPlugin might be needed and needs to be initialized
+		(*_normalPlugin)->initialize(format);
 	}
 
-	(*_scalerPlugin)->setFactor(_videoMode.scaleFactor);
+	(*_scalerPlugin)->initialize(format);
+	_extraPixels = (*_scalerPlugin)->extraPixels();
+	_useOldSrc = (*_scalerPlugin)->useOldSource();
+
+	if (_useOldSrc) {
+		(*_scalerPlugin)->enableSource(true);
+		(*_scalerPlugin)->setSource((byte *)_tmpscreen->pixels, _tmpscreen->pitch,
+									_videoMode.screenWidth, _videoMode.screenHeight, _maxExtraPixels);
+		if (!_destbuffer) {
+			_destbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth),
+								(*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight),
+								16,
+								_hwscreen->format->Rmask,
+								_hwscreen->format->Gmask,
+								_hwscreen->format->Bmask,
+								_hwscreen->format->Amask);
+			if (_destbuffer == NULL)
+				error("allocating _destbuffer failed");
+		}
+	}
 
 	// Blit everything to the screen
 	_forceFull = true;
@@ -665,10 +677,10 @@ void SurfaceSdlGraphicsManager::initSize(uint w, uint h, const Graphics::PixelFo
 }
 
 int SurfaceSdlGraphicsManager::effectiveScreenHeight() const {
-	return _videoMode.scaleFactor *
+	return (*_scalerPlugin)->scaleYCoordinate(
 				(_videoMode.aspectRatioCorrection
 					? real2Aspect(_videoMode.screenHeight)
-					: _videoMode.screenHeight);
+					: _videoMode.screenHeight));
 }
 
 static void fixupResolutionForAspectRatio(AspectRatio desiredAspectRatio, int &width, int &height) {
@@ -716,8 +728,8 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	_forceFull = true;
 
 #if !defined(__MAEMO__) && !defined(DINGUX) && !defined(GPH_DEVICE) && !defined(LINUXMOTO) && !defined(OPENPANDORA)
-	_videoMode.overlayWidth = _videoMode.screenWidth * _videoMode.scaleFactor;
-	_videoMode.overlayHeight = _videoMode.screenHeight * _videoMode.scaleFactor;
+	_videoMode.overlayWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
+	_videoMode.overlayHeight = (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
 
 	if (_videoMode.screenHeight != 200 && _videoMode.screenHeight != 400)
 		_videoMode.aspectRatioCorrection = false;
@@ -725,7 +737,7 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	if (_videoMode.aspectRatioCorrection)
 		_videoMode.overlayHeight = real2Aspect(_videoMode.overlayHeight);
 
-	_videoMode.hardwareWidth = _videoMode.screenWidth * _videoMode.scaleFactor;
+	_videoMode.hardwareWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
 	_videoMode.hardwareHeight = effectiveScreenHeight();
 // On GPH devices ALL the _videoMode.hardware... are setup in GPHGraphicsManager::loadGFXMode()
 #elif !defined(GPH_DEVICE)
@@ -807,8 +819,8 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 									_videoMode.screenWidth, _videoMode.screenHeight, _maxExtraPixels);
 
 		// Create surface containing the raw output from the scaler
-		_destbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.screenWidth * _videoMode.scaleFactor,
-							_videoMode.screenHeight * _videoMode.scaleFactor,
+		_destbuffer = SDL_CreateRGBSurface(SDL_SWSURFACE, (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth),
+							(*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight),
 							16,
 							_hwscreen->format->Rmask,
 							_hwscreen->format->Gmask,
@@ -975,7 +987,6 @@ void SurfaceSdlGraphicsManager::updateScreen() {
 void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	SDL_Surface *srcSurf, *origSurf;
 	int height, width;
-	int scale1;
 
 	// definitions not available for non-DEBUG here. (needed this to compile in SYMBIAN32 & linux?)
 #if defined(DEBUG) && !defined(WIN32) && !defined(_WIN32_WCE)
@@ -986,7 +997,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	// If the shake position changed, fill the dirty area with blackness
 	if (_currentShakePos != _newShakePos ||
 		(_mouseNeedsRedraw && _mouseBackup.y <= _currentShakePos)) {
-		SDL_Rect blackrect = {0, 0, _videoMode.screenWidth * _videoMode.scaleFactor, _newShakePos * _videoMode.scaleFactor};
+		SDL_Rect blackrect = {0, 0, (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth), (*_scalerPlugin)->scaleYCoordinate(_newShakePos)};
 
 		if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 			blackrect.h = real2Aspect(blackrect.h - 1) + 1;
@@ -1036,13 +1047,12 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		srcSurf = _tmpscreen;
 		width = _videoMode.screenWidth;
 		height = _videoMode.screenHeight;
-		oldScaleFactor = scale1 = _videoMode.scaleFactor;
+		oldScaleFactor = _videoMode.scaleFactor;
 	} else {
 		origSurf = _overlayscreen;
 		srcSurf = _tmpscreen2;
 		width = _videoMode.overlayWidth;
 		height = _videoMode.overlayHeight;
-		scale1 = 1;
 		oldScaleFactor = (*_scalerPlugin)->setFactor(1);
 	}
 
@@ -1090,7 +1100,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 			register int dst_y = r->y + _currentShakePos;
 			register int dst_h = 0;
 			register int orig_dst_y = 0;
-			register int rx1 = r->x * scale1;
+			register int rx1 = (*_scalerPlugin)->scaleXCoordinate(r->x);
 
 			if (dst_y < height) {
 				dst_h = r->h;
@@ -1098,7 +1108,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 					dst_h = height - dst_y;
 
 				orig_dst_y = dst_y;
-				dst_y = dst_y * scale1;
+				dst_y = (*_scalerPlugin)->scaleYCoordinate(dst_y);
 
 				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 					dst_y = real2Aspect(dst_y);
@@ -1106,7 +1116,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 				if (_useOldSrc && !_overlayVisible) {
 					// scale into _destbuffer instead of _hwscreen to avoid AR problems
 					(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
-						(byte *)_destbuffer->pixels + rx1 * 2 + orig_dst_y * scale1 * _destbuffer->pitch, _destbuffer->pitch, r->w, dst_h, r->x, r->y);
+						(byte *)_destbuffer->pixels + rx1 * 2 + (*_scalerPlugin)->scaleYCoordinate(orig_dst_y) * _destbuffer->pitch, _destbuffer->pitch, r->w, dst_h, r->x, r->y);
 				} else {
 					(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
 						(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h, r->x, r->y);
@@ -1115,13 +1125,13 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 
 			r->x = rx1;
 			r->y = dst_y;
-			r->w = r->w * scale1;
-			r->h = dst_h * scale1;
+			r->w = (*_scalerPlugin)->scaleXCoordinate(r->w);
+			r->h = (*_scalerPlugin)->scaleYCoordinate(dst_h);
 
 #ifdef USE_SCALERS
 			if (_useOldSrc && !_overlayVisible) {
 				// Copy _destbuffer back into _hwscreen to be AR corrected
-				int y = orig_dst_y * scale1;
+				int y = (*_scalerPlugin)->scaleYCoordinate(orig_dst_y);
 				int h = r->h;
 				int w = r->w;
 				byte *dest = (byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch;
@@ -1137,9 +1147,9 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 #ifdef USE_ASPECT
 			if (_videoMode.aspectRatioCorrection && orig_dst_y < height && !_overlayVisible) {
 				if (_useOldSrc)
-					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, orig_dst_y * scale1);
+					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
 				else
-					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, orig_dst_y * scale1);
+					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
 			}
 #endif
 		}
@@ -1154,7 +1164,9 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		// This is necessary if shaking is active.
 		if (_forceFull) {
 			_dirtyRectList[0].y = 0;
+			int tmpScale = (*_scalerPlugin)->setFactor(oldScaleFactor);
 			_dirtyRectList[0].h = effectiveScreenHeight();
+			(*_scalerPlugin)->setFactor(tmpScale);
 		}
 
 		drawMouse();
@@ -1172,15 +1184,15 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		if (_enableFocusRect && !_overlayVisible) {
 			int y = _focusRect.top + _currentShakePos;
 			int h = 0;
-			int x = _focusRect.left * scale1;
-			int w = _focusRect.width() * scale1;
+			int x = (*_scalerPlugin)->scaleXCoordinate(_focusRect.left);
+			int w = (*_scalerPlugin)->scaleXCoordinate(_focusRect.width());
 
 			if (y < height) {
 				h = _focusRect.height();
 				if (h > height - y)
 					h = height - y;
 
-				y *= scale1;
+				y = (*_scalerPlugin)->scaleYCoordinate(y);
 
 				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 					y = real2Aspect(y);
@@ -1584,11 +1596,13 @@ void SurfaceSdlGraphicsManager::showOverlay() {
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = _mouseCurState.x * _videoMode.scaleFactor;
+	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x);
 	if (_videoMode.aspectRatioCorrection)
-		y = real2Aspect(_mouseCurState.y) * _videoMode.scaleFactor;
+		y = real2Aspect(_mouseCurState.y);
 	else
-		y = _mouseCurState.y * _videoMode.scaleFactor;
+		y = _mouseCurState.y;
+
+	y = (*_scalerPlugin)->scaleYCoordinate(y);
 
 	warpMouse(x, y);
 
@@ -1607,8 +1621,8 @@ void SurfaceSdlGraphicsManager::hideOverlay() {
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = _mouseCurState.x / _videoMode.scaleFactor;
-	y = _mouseCurState.y / _videoMode.scaleFactor;
+	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x, true);
+	y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y, true);
 	if (_videoMode.aspectRatioCorrection)
 		y = aspect2Real(y);
 
@@ -1652,7 +1666,7 @@ void SurfaceSdlGraphicsManager::clearOverlay() {
 #ifdef USE_ASPECT
 	if (_videoMode.aspectRatioCorrection)
 		stretch200To240((uint8 *)_overlayscreen->pixels, _overlayscreen->pitch,
-						_videoMode.overlayWidth, _videoMode.screenHeight * _videoMode.scaleFactor, 0, 0, 0);
+						_videoMode.overlayWidth, (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight), 0, 0, 0);
 #endif
 	SDL_UnlockSurface(_tmpscreen);
 	SDL_UnlockSurface(_overlayscreen);
@@ -1767,7 +1781,7 @@ void SurfaceSdlGraphicsManager::warpMouse(int x, int y) {
 
 	if (_mouseCurState.x != x || _mouseCurState.y != y) {
 		if (!_overlayVisible)
-			SDL_WarpMouse(x * _videoMode.scaleFactor, y1 * _videoMode.scaleFactor);
+			SDL_WarpMouse((*_scalerPlugin)->scaleXCoordinate(x), (*_scalerPlugin)->scaleYCoordinate(y1));
 		else
 			SDL_WarpMouse(x, y1);
 
@@ -2383,8 +2397,8 @@ void SurfaceSdlGraphicsManager::notifyVideoExpose() {
 
 void SurfaceSdlGraphicsManager::transformMouseCoordinates(Common::Point &point) {
 	if (!_overlayVisible) {
-		point.x /= _videoMode.scaleFactor;
-		point.y /= _videoMode.scaleFactor;
+		point.x = (*_scalerPlugin)->scaleXCoordinate(point.x, true);
+		point.y = (*_scalerPlugin)->scaleYCoordinate(point.y, true);
 		if (_videoMode.aspectRatioCorrection)
 			point.y = aspect2Real(point.y);
 	}
