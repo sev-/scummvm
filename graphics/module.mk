@@ -27,8 +27,10 @@ MODULE_OBJS := \
 	yuv_to_rgb.o \
 	decoders/bmp.o \
 	decoders/jpeg.o \
+	decoders/pcx.o \
 	decoders/pict.o \
-	decoders/png.o
+	decoders/png.o \
+	decoders/tga.o
 
 ifdef USE_ASPECT
 MODULE_OBJS += \

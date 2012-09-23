@@ -1189,26 +1189,15 @@ void Inter_v1::o1_palLoad(OpFuncParams &params) {
 }
 
 void Inter_v1::o1_keyFunc(OpFuncParams &params) {
-	static uint32 lastCalled = 0;
-	int16 cmd;
-	int16 key;
-	uint32 now;
-
 	if (!_vm->_vidPlayer->isPlayingLive()) {
 		_vm->_draw->forceBlit();
 		_vm->_video->retrace();
 	}
 
-	cmd = _vm->_game->_script->readInt16();
 	animPalette();
 	_vm->_draw->blitInvalidated();
 
-	now = _vm->_util->getTimeKey();
-	if (!_noBusyWait)
-		if ((now - lastCalled) <= 20)
-			_vm->_util->longDelay(1);
-	lastCalled = now;
-	_noBusyWait = false;
+	handleBusyWait();
 
 	// WORKAROUND for bug #1726130: Ween busy-waits in the intro for a counter
 	// to become 5000. We deliberately slow down busy-waiting, so we shorten
@@ -1216,6 +1205,9 @@ void Inter_v1::o1_keyFunc(OpFuncParams &params) {
 	if ((_vm->getGameType() == kGameTypeWeen) && (VAR(59) < 4000) &&
 	    (_vm->_game->_script->pos() == 729) && _vm->isCurrentTot("intro5.tot"))
 		WRITE_VAR(59, 4000);
+
+	int16 cmd = _vm->_game->_script->readInt16();
+	int16 key;
 
 	switch (cmd) {
 	case -1:
@@ -1584,14 +1576,13 @@ void Inter_v1::o1_waitEndPlay(OpFuncParams &params) {
 }
 
 void Inter_v1::o1_playComposition(OpFuncParams &params) {
-	int16 composition[50];
-	int16 dataVar;
-	int16 freqVal;
+	int16 dataVar = _vm->_game->_script->readVarIndex();
+	int16 freqVal = _vm->_game->_script->readValExpr();
 
-	dataVar = _vm->_game->_script->readVarIndex();
-	freqVal = _vm->_game->_script->readValExpr();
+	int16 composition[50];
+	int maxEntries = MIN<int>(50, (_variables->getSize() - dataVar) / 4);
 	for (int i = 0; i < 50; i++)
-		composition[i] = (int16) VAR_OFFSET(dataVar + i * 4);
+		composition[i] = (i < maxEntries) ? ((int16) VAR_OFFSET(dataVar + i * 4)) : -1;
 
 	_vm->_sound->blasterPlayComposition(composition, freqVal);
 }

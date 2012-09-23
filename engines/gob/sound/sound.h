@@ -51,7 +51,7 @@ public:
 	const SoundDesc *sampleGetBySlot(int slot) const;
 	int sampleGetNextFreeSlot() const;
 
-	bool sampleLoad(SoundDesc *sndDesc, SoundType type, const char *fileName, bool tryExist = true);
+	bool sampleLoad(SoundDesc *sndDesc, SoundType type, const char *fileName);
 	void sampleFree(SoundDesc *sndDesc, bool noteAdLib = false, int index = -1);
 
 
@@ -60,9 +60,10 @@ public:
 			int16 frequency, int16 fadeLength = 0);
 	void blasterStop(int16 fadeLength, SoundDesc *sndDesc = 0);
 
-	void blasterPlayComposition(int16 *composition, int16 freqVal,
+	void blasterPlayComposition(const int16 *composition, int16 freqVal,
 			SoundDesc *sndDescs = 0, int8 sndCount = kSoundsCount);
 	void blasterStopComposition();
+	void blasterRepeatComposition(int32 repCount);
 
 	char blasterPlayingSound() const;
 

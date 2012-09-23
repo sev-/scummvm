@@ -48,6 +48,8 @@ const char * const ThemeEngine::kImageLogoSmall = "logo_small.bmp";
 const char * const ThemeEngine::kImageSearch = "search.bmp";
 const char * const ThemeEngine::kImageEraser = "eraser.bmp";
 const char * const ThemeEngine::kImageDelbtn = "delbtn.bmp";
+const char * const ThemeEngine::kImageList = "list.bmp";
+const char * const ThemeEngine::kImageGrid = "grid.bmp";
 
 struct TextDrawData {
 	const Graphics::Font *_fontPtr;
@@ -429,7 +431,7 @@ bool ThemeEngine::init() {
 void ThemeEngine::clearAll() {
 	if (_initOk) {
 		_system->clearOverlay();
-		_system->grabOverlay((OverlayColor *)_screen.pixels, _screen.w);
+		_system->grabOverlay(_screen.pixels, _screen.pitch);
 	}
 }
 
@@ -1422,7 +1424,7 @@ const Graphics::Font *ThemeEngine::loadScalableFont(const Common::String &filena
 	for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
 		Common::SeekableReadStream *stream = (*i)->createReadStream();
 		if (stream) {
-			font = Graphics::loadTTFFont(*stream, pointsize, false,
+			font = Graphics::loadTTFFont(*stream, pointsize, 0, false,
 #ifdef USE_TRANSLATION
 			                             TransMan.getCharsetMapping()
 #else

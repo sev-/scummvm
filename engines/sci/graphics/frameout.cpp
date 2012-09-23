@@ -28,6 +28,7 @@
 #include "common/system.h"
 #include "common/textconsole.h"
 #include "engines/engine.h"
+#include "graphics/palette.h"
 #include "graphics/surface.h"
 
 #include "sci/sci.h"
@@ -62,8 +63,6 @@ GfxFrameout::GfxFrameout(SegManager *segMan, ResourceManager *resMan, GfxCoordAd
 	: _segMan(segMan), _resMan(resMan), _cache(cache), _screen(screen), _palette(palette), _paint32(paint32) {
 
 	_coordAdjuster = (GfxCoordAdjuster32 *)coordAdjuster;
-	_scriptsRunningWidth = 320;
-	_scriptsRunningHeight = 200;
 	_curScrollText = -1;
 	_showScrollText = false;
 	_maxScrollTexts = 0;
@@ -119,27 +118,43 @@ void GfxFrameout::showCurrentScrollText() {
 	}
 }
 
+extern void showScummVMDialog(const Common::String &message);
+
 void GfxFrameout::kernelAddPlane(reg_t object) {
 	PlaneEntry newPlane;
 
 	if (_planes.empty()) {
 		// There has to be another way for sierra sci to do this or maybe script resolution is compiled into
 		//  interpreter (TODO)
-		uint16 tmpRunningWidth = readSelectorValue(_segMan, object, SELECTOR(resX));
-		uint16 tmpRunningHeight = readSelectorValue(_segMan, object, SELECTOR(resY));
+		uint16 scriptWidth = readSelectorValue(_segMan, object, SELECTOR(resX));
+		uint16 scriptHeight = readSelectorValue(_segMan, object, SELECTOR(resY));
 
-		// The above can be 0 in SCI3 (e.g. Phantasmagoria 2)
-		if (tmpRunningWidth > 0 && tmpRunningHeight > 0) {
-			_scriptsRunningWidth = tmpRunningWidth;
-			_scriptsRunningHeight = tmpRunningHeight;
+		// Phantasmagoria 2 doesn't specify a script width/height
+		if (g_sci->getGameId() == GID_PHANTASMAGORIA2) {
+			scriptWidth = 640;
+			scriptHeight = 480;
 		}
 
-		_coordAdjuster->setScriptsResolution(_scriptsRunningWidth, _scriptsRunningHeight);
+		assert(scriptWidth > 0 && scriptHeight > 0);
+		_coordAdjuster->setScriptsResolution(scriptWidth, scriptHeight);
+	}
+
+	// Import of QfG character files dialog is shown in QFG4.
+	// Display additional popup information before letting user use it.
+	// For the SCI0-SCI1.1 version of this, check kDrawControl().
+	if (g_sci->inQfGImportRoom() && !strcmp(_segMan->getObjectName(object), "DSPlane")) {
+		showScummVMDialog("Characters saved inside ScummVM are shown "
+				"automatically. Character files saved in the original "
+				"interpreter need to be put inside ScummVM's saved games "
+				"directory and a prefix needs to be added depending on which "
+				"game it was saved in: 'qfg1-' for Quest for Glory 1, 'qfg2-' "
+				"for Quest for Glory 2, 'qfg3-' for Quest for Glory 3. "
+				"Example: 'qfg2-thief.sav'.");
 	}
 
 	newPlane.object = object;
 	newPlane.priority = readSelectorValue(_segMan, object, SELECTOR(priority));
-	newPlane.lastPriority = 0xFFFF; // hidden
+	newPlane.lastPriority = -1; // hidden
 	newPlane.planeOffsetX = 0;
 	newPlane.planeOffsetY = 0;
 	newPlane.pictureId = kPlanePlainColored;
@@ -172,11 +187,8 @@ void GfxFrameout::kernelUpdatePlane(reg_t object) {
 			it->planeRect.bottom = readSelectorValue(_segMan, object, SELECTOR(bottom));
 			it->planeRect.right = readSelectorValue(_segMan, object, SELECTOR(right));
 
-			Common::Rect screenRect(_screen->getWidth(), _screen->getHeight());
-			it->planeRect.top = (it->planeRect.top * screenRect.height()) / _scriptsRunningHeight;
-			it->planeRect.left = (it->planeRect.left * screenRect.width()) / _scriptsRunningWidth;
-			it->planeRect.bottom = (it->planeRect.bottom * screenRect.height()) / _scriptsRunningHeight;
-			it->planeRect.right = (it->planeRect.right * screenRect.width()) / _scriptsRunningWidth;
+			_coordAdjuster->fromScriptToDisplay(it->planeRect.top, it->planeRect.left);
+			_coordAdjuster->fromScriptToDisplay(it->planeRect.bottom, it->planeRect.right);
 
 			// We get negative left in kq7 in scrolling rooms
 			if (it->planeRect.left < 0) {
@@ -241,11 +253,9 @@ void GfxFrameout::kernelDeletePlane(reg_t object) {
 			planeRect.bottom = readSelectorValue(_segMan, object, SELECTOR(bottom));
 			planeRect.right = readSelectorValue(_segMan, object, SELECTOR(right));
 
-			Common::Rect screenRect(_screen->getWidth(), _screen->getHeight());
-			planeRect.top = (planeRect.top * screenRect.height()) / _scriptsRunningHeight;
-			planeRect.left = (planeRect.left * screenRect.width()) / _scriptsRunningWidth;
-			planeRect.bottom = (planeRect.bottom * screenRect.height()) / _scriptsRunningHeight;
-			planeRect.right = (planeRect.right * screenRect.width()) / _scriptsRunningWidth;
+			_coordAdjuster->fromScriptToDisplay(planeRect.top, planeRect.left);
+			_coordAdjuster->fromScriptToDisplay(planeRect.bottom, planeRect.right);
+
 			// Blackout removed plane rect
 			_paint32->fillRect(planeRect, 0);
 			return;
@@ -301,6 +311,10 @@ reg_t GfxFrameout::addPlaneLine(reg_t object, Common::Point startPoint, Common::
 }
 
 void GfxFrameout::updatePlaneLine(reg_t object, reg_t hunkId, Common::Point startPoint, Common::Point endPoint, byte color, byte priority, byte control) {
+	// Check if we're asked to update a line that was never added
+	if (hunkId.isNull())
+		return;
+
 	for (PlaneList::iterator it = _planes.begin(); it != _planes.end(); ++it) {
 		if (it->object == object) {
 			for (PlaneLineList::iterator it2 = it->lines.begin(); it2 != it->lines.end(); ++it2) {
@@ -318,6 +332,10 @@ void GfxFrameout::updatePlaneLine(reg_t object, reg_t hunkId, Common::Point star
 }
 
 void GfxFrameout::deletePlaneLine(reg_t object, reg_t hunkId) {
+	// Check if we're asked to delete a line that was never added (happens during the intro of LSL6)
+	if (hunkId.isNull())
+		return;
+
 	for (PlaneList::iterator it = _planes.begin(); it != _planes.end(); ++it) {
 		if (it->object == object) {
 			for (PlaneLineList::iterator it2 = it->lines.begin(); it2 != it->lines.end(); ++it2) {
@@ -333,8 +351,10 @@ void GfxFrameout::deletePlaneLine(reg_t object, reg_t hunkId) {
 
 void GfxFrameout::kernelAddScreenItem(reg_t object) {
 	// Ignore invalid items
-	if (!_segMan->isObject(object))
+	if (!_segMan->isObject(object)) {
+		warning("kernelAddScreenItem: Attempt to add an invalid object (%04x:%04x)", PRINT_REG(object));
 		return;
+	}
 
 	FrameoutEntry *itemEntry = new FrameoutEntry();
 	memset(itemEntry, 0, sizeof(FrameoutEntry));
@@ -348,8 +368,10 @@ void GfxFrameout::kernelAddScreenItem(reg_t object) {
 
 void GfxFrameout::kernelUpdateScreenItem(reg_t object) {
 	// Ignore invalid items
-	if (!_segMan->isObject(object))
+	if (!_segMan->isObject(object)) {
+		warning("kernelUpdateScreenItem: Attempt to update an invalid object (%04x:%04x)", PRINT_REG(object));
 		return;
+	}
 
 	FrameoutEntry *itemEntry = findScreenItem(object);
 	if (!itemEntry) {
@@ -379,10 +401,9 @@ void GfxFrameout::kernelUpdateScreenItem(reg_t object) {
 
 void GfxFrameout::kernelDeleteScreenItem(reg_t object) {
 	FrameoutEntry *itemEntry = findScreenItem(object);
-	if (!itemEntry) {
-		warning("kernelDeleteScreenItem: invalid object %04x:%04x", PRINT_REG(object));
+	// If the item could not be found, it may already have been deleted
+	if (!itemEntry)
 		return;
-	}
 
 	_screenItems.remove(itemEntry);
 	delete itemEntry;
@@ -439,15 +460,10 @@ bool sortHelper(const FrameoutEntry* entry1, const FrameoutEntry* entry2) {
 }
 
 bool planeSortHelper(const PlaneEntry &entry1, const PlaneEntry &entry2) {
-//	SegManager *segMan = g_sci->getEngineState()->_segMan;
-
-//	uint16 plane1Priority = readSelectorValue(segMan, entry1, SELECTOR(priority));
-//	uint16 plane2Priority = readSelectorValue(segMan, entry2, SELECTOR(priority));
-
-	if (entry1.priority == 0xffff)
+	if (entry1.priority < 0)
 		return true;
 
-	if (entry2.priority == 0xffff)
+	if (entry2.priority < 0)
 		return false;
 
 	return entry1.priority < entry2.priority;
@@ -466,23 +482,6 @@ void GfxFrameout::sortPlanes() {
 	Common::sort(_planes.begin(), _planes.end(), planeSortHelper);
 }
 
-int16 GfxFrameout::upscaleHorizontalCoordinate(int16 coordinate) {
-	return ((coordinate * _screen->getWidth()) / _scriptsRunningWidth);
-}
-
-int16 GfxFrameout::upscaleVerticalCoordinate(int16 coordinate) {
-	return ((coordinate * _screen->getHeight()) / _scriptsRunningHeight);
-}
-
-Common::Rect GfxFrameout::upscaleRect(Common::Rect &rect) {
-	rect.top = (rect.top * _scriptsRunningHeight) / _screen->getHeight();
-	rect.left = (rect.left * _scriptsRunningWidth) / _screen->getWidth();
-	rect.bottom = (rect.bottom * _scriptsRunningHeight) / _screen->getHeight();
-	rect.right = (rect.right * _scriptsRunningWidth) / _screen->getWidth();
-
-	return rect;
-}
-
 void GfxFrameout::showVideo() {
 	bool skipVideo = false;
 	RobotDecoder *videoDecoder = g_sci->_robotDecoder;
@@ -490,16 +489,16 @@ void GfxFrameout::showVideo() {
 	uint16 y = videoDecoder->getPos().y;
 
 	if (videoDecoder->hasDirtyPalette())
-		videoDecoder->setSystemPalette();
+		g_system->getPaletteManager()->setPalette(videoDecoder->getPalette(), 0, 256);
 
 	while (!g_engine->shouldQuit() && !videoDecoder->endOfVideo() && !skipVideo) {
 		if (videoDecoder->needsUpdate()) {
 			const Graphics::Surface *frame = videoDecoder->decodeNextFrame();
 			if (frame) {
-				g_system->copyRectToScreen((byte *)frame->pixels, frame->pitch, x, y, frame->w, frame->h);
+				g_system->copyRectToScreen(frame->pixels, frame->pitch, x, y, frame->w, frame->h);
 
 				if (videoDecoder->hasDirtyPalette())
-					videoDecoder->setSystemPalette();
+					g_system->getPaletteManager()->setPalette(videoDecoder->getPalette(), 0, 256);
 
 				g_system->updateScreen();
 			}
@@ -630,13 +629,13 @@ void GfxFrameout::kernelFrameout() {
 			_screen->drawLine(startPoint, endPoint, it2->color, it2->priority, it2->control);
 		}
 
-		uint16 planeLastPriority = it->lastPriority;
+		int16 planeLastPriority = it->lastPriority;
 
 		// Update priority here, sq6 sets it w/o UpdatePlane
-		uint16 planePriority = it->priority = readSelectorValue(_segMan, planeObject, SELECTOR(priority));
+		int16 planePriority = it->priority = readSelectorValue(_segMan, planeObject, SELECTOR(priority));
 
 		it->lastPriority = planePriority;
-		if (planePriority == 0xffff) { // Plane currently not meant to be shown
+		if (planePriority < 0) { // Plane currently not meant to be shown
 			// If plane was shown before, delete plane rect
 			if (planePriority != planeLastPriority)
 				_paint32->fillRect(it->planeRect, 0);
@@ -647,7 +646,7 @@ void GfxFrameout::kernelFrameout() {
 		// Since I first wrote the patch, the race has stopped occurring for me though.
 		// I'll leave this for investigation later, when someone can reproduce.
 		//if (it->pictureId == kPlanePlainColored)	// FIXME: This is what SSCI does, and fixes the intro of LSL7, but breaks the dialogs in GK1 (adds black boxes)
-		if (it->pictureId == kPlanePlainColored && it->planeBack)
+		if (it->pictureId == kPlanePlainColored && (it->planeBack || g_sci->getGameId() != GID_GK1))
 			_paint32->fillRect(it->planeRect, it->planeBack);
 
 		_coordAdjuster->pictureSetDisplayArea(it->planeRect);
@@ -665,24 +664,21 @@ void GfxFrameout::kernelFrameout() {
 			
 			if (itemEntry->object.isNull()) {
 				// Picture cel data
-				itemEntry->x = upscaleHorizontalCoordinate(itemEntry->x);
-				itemEntry->y = upscaleVerticalCoordinate(itemEntry->y);
-				itemEntry->picStartX = upscaleHorizontalCoordinate(itemEntry->picStartX);
-				itemEntry->picStartY = upscaleVerticalCoordinate(itemEntry->picStartY);
+				_coordAdjuster->fromScriptToDisplay(itemEntry->y, itemEntry->x);
+				_coordAdjuster->fromScriptToDisplay(itemEntry->picStartY, itemEntry->picStartX);
 
 				if (!isPictureOutOfView(itemEntry, it->planeRect, it->planeOffsetX, it->planeOffsetY))
 					drawPicture(itemEntry, it->planeOffsetX, it->planeOffsetY, it->planePictureMirrored);
 			} else {
 				GfxView *view = (itemEntry->viewId != 0xFFFF) ? _cache->getView(itemEntry->viewId) : NULL;
-				
+				int16 dummyX = 0;
+
 				if (view && view->isSci2Hires()) {
-					int16 dummyX = 0;
 					view->adjustToUpscaledCoordinates(itemEntry->y, itemEntry->x);
 					view->adjustToUpscaledCoordinates(itemEntry->z, dummyX);
-				} else if (getSciVersion() == SCI_VERSION_2_1) {
-					itemEntry->x = upscaleHorizontalCoordinate(itemEntry->x);
-					itemEntry->y = upscaleVerticalCoordinate(itemEntry->y);
-					itemEntry->z = upscaleVerticalCoordinate(itemEntry->z);
+				} else if (getSciVersion() >= SCI_VERSION_2_1) {
+					_coordAdjuster->fromScriptToDisplay(itemEntry->y, itemEntry->x);
+					_coordAdjuster->fromScriptToDisplay(itemEntry->z, dummyX);
 				}
 
 				// Adjust according to current scroll position
@@ -703,13 +699,13 @@ void GfxFrameout::kernelFrameout() {
 					// TODO: maybe we should clip the cels rect with this, i'm not sure
 					//  the only currently known usage is game menu of gk1
 				} else if (view) {
-						if ((itemEntry->scaleX == 128) && (itemEntry->scaleY == 128))
-							view->getCelRect(itemEntry->loopNo, itemEntry->celNo,
-								itemEntry->x, itemEntry->y, itemEntry->z, itemEntry->celRect);
-						else
-							view->getCelScaledRect(itemEntry->loopNo, itemEntry->celNo, 
-								itemEntry->x, itemEntry->y, itemEntry->z, itemEntry->scaleX,
-								itemEntry->scaleY, itemEntry->celRect);
+					if ((itemEntry->scaleX == 128) && (itemEntry->scaleY == 128))
+						view->getCelRect(itemEntry->loopNo, itemEntry->celNo,
+							itemEntry->x, itemEntry->y, itemEntry->z, itemEntry->celRect);
+					else
+						view->getCelScaledRect(itemEntry->loopNo, itemEntry->celNo, 
+							itemEntry->x, itemEntry->y, itemEntry->z, itemEntry->scaleX,
+							itemEntry->scaleY, itemEntry->celRect);
 
 					Common::Rect nsRect = itemEntry->celRect;
 					// Translate back to actual coordinate within scrollable plane
@@ -718,8 +714,9 @@ void GfxFrameout::kernelFrameout() {
 					if (view && view->isSci2Hires()) {
 						view->adjustBackUpscaledCoordinates(nsRect.top, nsRect.left);
 						view->adjustBackUpscaledCoordinates(nsRect.bottom, nsRect.right);
-					} else if (getSciVersion() == SCI_VERSION_2_1) {
-						nsRect = upscaleRect(nsRect);
+					} else if (getSciVersion() >= SCI_VERSION_2_1) {
+						_coordAdjuster->fromDisplayToScript(nsRect.top, nsRect.left);
+						_coordAdjuster->fromDisplayToScript(nsRect.bottom, nsRect.right);
 					}
 
 					if (g_sci->getGameId() == GID_PHANTASMAGORIA2) {
@@ -732,17 +729,11 @@ void GfxFrameout::kernelFrameout() {
 					g_sci->_gfxCompare->setNSRect(itemEntry->object, nsRect);
 				}
 
-				int16 screenHeight = _screen->getHeight();
-				int16 screenWidth = _screen->getWidth();
-				if (view && view->isSci2Hires()) {
-					screenHeight = _screen->getDisplayHeight();
-					screenWidth = _screen->getDisplayWidth();
-				}
-
-				if (itemEntry->celRect.bottom < 0 || itemEntry->celRect.top >= screenHeight)
-					continue;
-
-				if (itemEntry->celRect.right < 0 || itemEntry->celRect.left >= screenWidth)
+				// Don't attempt to draw sprites that are outside the visible
+				// screen area. An example is the random people walking in
+				// Jackson Square in GK1.
+				if (itemEntry->celRect.bottom < 0 || itemEntry->celRect.top  >= _screen->getDisplayHeight() ||
+				    itemEntry->celRect.right  < 0 || itemEntry->celRect.left >= _screen->getDisplayWidth())
 					continue;
 
 				Common::Rect clipRect, translatedClipRect;
@@ -753,6 +744,9 @@ void GfxFrameout::kernelFrameout() {
 					translatedClipRect = clipRect;
 					translatedClipRect.translate(it->upscaledPlaneRect.left, it->upscaledPlaneRect.top);
 				} else {
+					// QFG4 passes invalid rectangles when a battle is starting
+					if (!clipRect.isValidRect())
+						continue;
 					clipRect.clip(it->planeClipRect);
 					translatedClipRect = clipRect;
 					translatedClipRect.translate(it->planeRect.left, it->planeRect.top);
