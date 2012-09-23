@@ -972,19 +972,6 @@ void SurfaceSdlGraphicsManager::updateScreen() {
 	internUpdateScreen();
 }
 
-/**
- * Simple blit function. Copies a rectangle from one surface to another.
- *
- * @param byteWidth   The width of the region to copy in bytes.
- */
-static void blitSurface(byte *srcPtr, int srcPitch, byte *dstPtr, int dstPitch, int byteWidth, int height) {
-	while (height--) {
-		memcpy(dstPtr, srcPtr, byteWidth);
-		dstPtr += dstPitch;
-		srcPtr += srcPitch;
-	}
-}
-
 void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	SDL_Surface *srcSurf, *origSurf;
 	int height, width;
@@ -1043,18 +1030,20 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	}
 #endif
 
+	int oldScaleFactor;
 	if (!_overlayVisible) {
 		origSurf = _screen;
 		srcSurf = _tmpscreen;
 		width = _videoMode.screenWidth;
 		height = _videoMode.screenHeight;
-		scale1 = _videoMode.scaleFactor;
+		oldScaleFactor = scale1 = _videoMode.scaleFactor;
 	} else {
 		origSurf = _overlayscreen;
 		srcSurf = _tmpscreen2;
 		width = _videoMode.overlayWidth;
 		height = _videoMode.overlayHeight;
 		scale1 = 1;
+		oldScaleFactor = (*_scalerPlugin)->setFactor(1);
 	}
 
 	// Add the area covered by the mouse cursor to the list of dirty rects if
@@ -1114,17 +1103,13 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 					dst_y = real2Aspect(dst_y);
 
-				if (_overlayVisible) {
-					blitSurface((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
-					            (byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w * 2, dst_h);
+				if (_useOldSrc && !_overlayVisible) {
+					// scale into _destbuffer instead of _hwscreen to avoid AR problems
+					(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
+						(byte *)_destbuffer->pixels + rx1 * 2 + orig_dst_y * scale1 * _destbuffer->pitch, _destbuffer->pitch, r->w, dst_h, r->x, r->y);
 				} else {
-					if (_useOldSrc) {
-						// scale into _destbuffer instead of _hwscreen to avoid AR problems
-						(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
-							(byte *)_destbuffer->pixels + rx1 * 2 + orig_dst_y * scale1 * _destbuffer->pitch, _destbuffer->pitch, r->w, dst_h, r->x, r->y);
-					} else
-						(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
-							(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h, r->x, r->y);
+					(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
+						(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h, r->x, r->y);
 				}
 			}
 
@@ -1255,6 +1240,9 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		// Finally, blit all our changes to the screen
 		SDL_UpdateRects(_hwscreen, _numDirtyRects, _dirtyRectList);
 	}
+
+	// Set up the old scale factor
+	(*_scalerPlugin)->setFactor(oldScaleFactor);
 
 	_numDirtyRects = 0;
 	_forceFull = false;
@@ -2000,10 +1988,12 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 			(*_normalPlugin)->setFactor(oldFactor);
 		}
 	} else {
-		blitSurface(
+		int oldScaleFactor = (*_scalerPlugin)->setFactor(1);
+		(*_scalerPlugin)->scale(
 			(byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel,
 			_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
-			_mouseCurState.w * 2, _mouseCurState.h);
+			_mouseCurState.w, _mouseCurState.h, 0, 0);
+		(*_scalerPlugin)->setFactor(oldScaleFactor);
 	}
 
 #ifdef USE_ASPECT
