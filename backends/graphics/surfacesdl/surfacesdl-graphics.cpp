@@ -1150,10 +1150,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 
 #ifdef USE_ASPECT
 			if (_videoMode.aspectRatioCorrection && orig_dst_y < height && !_overlayVisible) {
-				if (_useOldSrc)
-					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
-				else
-					r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
+				r->h = stretch200To240((uint8 *)_hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
 			}
 #endif
 		}
