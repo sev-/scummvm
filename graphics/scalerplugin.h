@@ -217,6 +217,11 @@ public:
 	 * to surfaces.
 	 */
 	uint getMaxExtraPixels() const;
+
+	/**
+	 * Search the scaler plugins for a special plugin based on its name.
+	 */
+	ScalerPlugin *findScalerPlugin(const char *name) const;
 };
 
 /** Convenience shortcut for accessing singleton */

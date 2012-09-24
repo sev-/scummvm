@@ -614,3 +614,14 @@ uint ScalerManager::getMaxExtraPixels() const {
 	}
 	return maxPixels;
 }
+
+ScalerPlugin *ScalerManager::findScalerPlugin(const char *name) const {
+	const ScalerPlugin::List &plugins = getPlugins();
+	for (ScalerPlugin::List::const_iterator i = plugins.begin(); i != plugins.end(); ++i) {
+		if (!strcmp((**i)->getName(), name)) {
+			return *i;
+		}
+	}
+
+	return 0;
+}
