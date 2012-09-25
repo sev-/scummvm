@@ -594,6 +594,7 @@ void SurfaceSdlGraphicsManager::changeScaler() {
 	}
 
 	(*_scalerPlugin)->setFactor(_videoMode.scaleFactor);
+	(*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
 }
 
 void SurfaceSdlGraphicsManager::setGraphicsModeIntern() {
@@ -666,10 +667,7 @@ void SurfaceSdlGraphicsManager::initSize(uint w, uint h, const Graphics::PixelFo
 }
 
 int SurfaceSdlGraphicsManager::effectiveScreenHeight() const {
-	return (*_scalerPlugin)->scaleYCoordinate(
-				(_videoMode.aspectRatioCorrection
-					? real2Aspect(_videoMode.screenHeight)
-					: _videoMode.screenHeight));
+	return (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
 }
 
 static void fixupResolutionForAspectRatio(AspectRatio desiredAspectRatio, int &width, int &height) {
@@ -717,14 +715,11 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	_forceFull = true;
 
 #if !defined(__MAEMO__) && !defined(DINGUX) && !defined(GPH_DEVICE) && !defined(LINUXMOTO) && !defined(OPENPANDORA)
-	_videoMode.overlayWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
-	_videoMode.overlayHeight = (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
-
 	if (_videoMode.screenHeight != 200 && _videoMode.screenHeight != 400)
 		_videoMode.aspectRatioCorrection = false;
 
-	if (_videoMode.aspectRatioCorrection)
-		_videoMode.overlayHeight = real2Aspect(_videoMode.overlayHeight);
+	_videoMode.overlayWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
+	_videoMode.overlayHeight = (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
 
 	_videoMode.hardwareWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
 	_videoMode.hardwareHeight = effectiveScreenHeight();
@@ -973,10 +968,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		blackrect.x = 0;
 		blackrect.y = 0;
 		blackrect.w = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
-		blackrect.h = (*_scalerPlugin)->scaleYCoordinate(_newShakePos);
-
-		if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-			blackrect.h = real2Aspect(blackrect.h - 1) + 1;
+		blackrect.h = (*_scalerPlugin)->scaleYCoordinate(_newShakePos - 1) + 1;
 
 		SDL_FillRect(_hwscreen, &blackrect, 0);
 
@@ -1030,6 +1022,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		width = _videoMode.overlayWidth;
 		height = _videoMode.overlayHeight;
 		oldScaleFactor = (*_scalerPlugin)->setFactor(1);
+		(*_scalerPlugin)->setAspectRatio(false);
 	}
 
 	// Add the area covered by the mouse cursor to the list of dirty rects if
@@ -1072,7 +1065,6 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		for (r = _dirtyRectList; r != lastRect; ++r) {
 			register int dst_y = r->y + _currentShakePos;
 			register int dst_h = 0;
-			register int orig_dst_y = 0;
 			register int rx1 = (*_scalerPlugin)->scaleXCoordinate(r->x);
 
 			if (dst_y < height) {
@@ -1080,11 +1072,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 				if (dst_h > height - dst_y)
 					dst_h = height - dst_y;
 
-				orig_dst_y = dst_y;
 				dst_y = (*_scalerPlugin)->scaleYCoordinate(dst_y);
-
-				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-					dst_y = real2Aspect(dst_y);
 
 				(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
 					(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h, r->x, r->y);
@@ -1093,13 +1081,7 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 			r->x = rx1;
 			r->y = dst_y;
 			r->w = (*_scalerPlugin)->scaleXCoordinate(r->w);
-			r->h = (*_scalerPlugin)->scaleYCoordinate(dst_h);
-
-#ifdef USE_ASPECT
-			if (_videoMode.aspectRatioCorrection && orig_dst_y < height && !_overlayVisible) {
-				r->h = stretch200To240((uint8 *)_hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, (*_scalerPlugin)->scaleYCoordinate(orig_dst_y));
-			}
-#endif
+			r->h = (*_scalerPlugin)->scaleYCoordinate(dst_h - 1) + 1;
 		}
 		SDL_UnlockSurface(srcSurf);
 		SDL_UnlockSurface(_hwscreen);
@@ -1109,8 +1091,10 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		if (_forceFull) {
 			_dirtyRectList[0].y = 0;
 			int tmpScale = (*_scalerPlugin)->setFactor(oldScaleFactor);
+			bool tmpAR = (*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
 			_dirtyRectList[0].h = effectiveScreenHeight();
 			(*_scalerPlugin)->setFactor(tmpScale);
+			(*_scalerPlugin)->setAspectRatio(tmpAR);
 		}
 
 		drawMouse();
@@ -1137,9 +1121,6 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 					h = height - y;
 
 				y = (*_scalerPlugin)->scaleYCoordinate(y);
-
-				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-					y = real2Aspect(y);
 
 				if (h > 0 && w > 0) {
 					SDL_LockSurface(_hwscreen);
@@ -1197,8 +1178,9 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		SDL_UpdateRects(_hwscreen, _numDirtyRects, _dirtyRectList);
 	}
 
-	// Set up the old scale factor
+	// Set up the old scale factor + AR state
 	(*_scalerPlugin)->setFactor(oldScaleFactor);
+	(*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
 
 	_numDirtyRects = 0;
 	_forceFull = false;
@@ -1541,12 +1523,7 @@ void SurfaceSdlGraphicsManager::showOverlay() {
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
 	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x);
-	if (_videoMode.aspectRatioCorrection)
-		y = real2Aspect(_mouseCurState.y);
-	else
-		y = _mouseCurState.y;
-
-	y = (*_scalerPlugin)->scaleYCoordinate(y);
+	y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y);
 
 	warpMouse(x, y);
 
@@ -1567,8 +1544,6 @@ void SurfaceSdlGraphicsManager::hideOverlay() {
 	// Fixes bug #1349059
 	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x, true);
 	y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y, true);
-	if (_videoMode.aspectRatioCorrection)
-		y = aspect2Real(y);
 
 	warpMouse(x, y);
 
@@ -1600,11 +1575,6 @@ void SurfaceSdlGraphicsManager::clearOverlay() {
 	(*_scalerPlugin)->scale((byte *)(_tmpscreen->pixels) + _tmpscreen->pitch + 2, _tmpscreen->pitch,
 	(byte *)_overlayscreen->pixels, _overlayscreen->pitch, _videoMode.screenWidth, _videoMode.screenHeight, 0, 0);
 
-#ifdef USE_ASPECT
-	if (_videoMode.aspectRatioCorrection)
-		stretch200To240((uint8 *)_overlayscreen->pixels, _overlayscreen->pitch,
-						_videoMode.overlayWidth, (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight), 0, 0, 0);
-#endif
 	SDL_UnlockSurface(_tmpscreen);
 	SDL_UnlockSurface(_overlayscreen);
 
@@ -1712,9 +1682,6 @@ void SurfaceSdlGraphicsManager::warpMouse(int x, int y) {
 		setMousePos(x, y); // but change game cursor position
 		return;
 	}
-
-	if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-		y1 = real2Aspect(y);
 
 	if (_mouseCurState.x != x || _mouseCurState.y != y) {
 		if (!_overlayVisible)
@@ -1920,6 +1887,9 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 
 	SDL_LockSurface(_mouseSurface);
 
+	// Disable AR
+	bool oldAR = (*_scalerPlugin)->setAspectRatio(false);
+
 	// Only apply scaling, when the user allows it.
 	if (!_cursorDontScale) {
 		// If possible, use the same scaler for the cursor as for the rest of
@@ -1932,11 +1902,13 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 				_mouseCurState.w, _mouseCurState.h, 0, 0);
 		} else {
 			int oldFactor = (*_normalPlugin)->setFactor(_videoMode.scaleFactor);
+			bool oldARNormal = (*_normalPlugin)->setAspectRatio(false);
 			(*_normalPlugin)->scale(
 				(byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel,
 				_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
 				_mouseCurState.w, _mouseCurState.h, 0, 0);
 			(*_normalPlugin)->setFactor(oldFactor);
+			(*_normalPlugin)->setAspectRatio(oldARNormal);
 		}
 	} else {
 		int oldScaleFactor = (*_scalerPlugin)->setFactor(1);
@@ -1946,6 +1918,8 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 			_mouseCurState.w, _mouseCurState.h, 0, 0);
 		(*_scalerPlugin)->setFactor(oldScaleFactor);
 	}
+
+	(*_scalerPlugin)->setAspectRatio(oldAR);
 
 #ifdef USE_ASPECT
 	if (!_cursorDontScale && _videoMode.aspectRatioCorrection)
@@ -2336,8 +2310,6 @@ void SurfaceSdlGraphicsManager::transformMouseCoordinates(Common::Point &point) 
 	if (!_overlayVisible) {
 		point.x = (*_scalerPlugin)->scaleXCoordinate(point.x, true);
 		point.y = (*_scalerPlugin)->scaleYCoordinate(point.y, true);
-		if (_videoMode.aspectRatioCorrection)
-			point.y = aspect2Real(point.y);
 	}
 }
 

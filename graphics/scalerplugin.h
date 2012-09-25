@@ -28,7 +28,7 @@
 
 class ScalerPluginObject : public PluginObject {
 public:
-
+	ScalerPluginObject();
 	virtual ~ScalerPluginObject() {}
 
 	/**
@@ -98,6 +98,12 @@ public:
 		return oldFactor;
 	}
 
+	bool setAspectRatio(bool doAspectRatio) {
+		bool curState = _aspectRatio;
+		_aspectRatio = doAspectRatio;
+		return curState;
+	}
+
 	/**
 	 * Indicates how far outside the scaling region this scaler "looks"
 	 * @return The number of pixels in any direction
@@ -155,6 +161,9 @@ protected:
 	virtual void scaleIntern(const uint8 *srcPtr, uint32 srcPitch, uint8 *dstPtr,
 	                         uint32 dstPitch, int width, int height, int x, int y) = 0;
 
+	virtual void correctAspect(uint8 *buffer, uint32 pitch, int width, int height, int x, int y);
+
+	bool _aspectRatio;
 	uint _factor;
 	Common::Array<uint> _factors;
 	Graphics::PixelFormat _format;

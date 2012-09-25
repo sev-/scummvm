@@ -21,6 +21,12 @@
 
 #include "graphics/scalerplugin.h"
 
+#include "graphics/scaler/aspect.h"
+
+ScalerPluginObject::ScalerPluginObject()
+	: _factor(1), _aspectRatio(false) {
+}
+
 void ScalerPluginObject::initialize(const Graphics::PixelFormat &format) {
 	_format = format;
 }
@@ -35,9 +41,17 @@ int ScalerPluginObject::scaleXCoordinate(int coord, bool inverse) const {
 
 int ScalerPluginObject::scaleYCoordinate(int coord, bool inverse) const {
 	if (inverse) {
-		return coord / _factor;
+		int result = coord / _factor;
+		if (_aspectRatio) {
+			result = aspect2Real(result);
+		}
+		return result;
 	} else {
-		return coord * _factor;
+		int result = coord * _factor;
+		if (_aspectRatio) {
+			result = real2Aspect(result);
+		}
+		return result;
 	}
 }
 
@@ -74,6 +88,14 @@ void ScalerPluginObject::scale(const uint8 *srcPtr, uint32 srcPitch, uint8 *dstP
 	} else {
 		scaleIntern(srcPtr, srcPitch, dstPtr, dstPitch, width, height, x, y);
 	}
+
+	if (_aspectRatio) {
+		correctAspect(dstPtr, dstPitch, width, height, x, y);
+	}
+}
+
+void ScalerPluginObject::correctAspect(uint8 *buffer, uint32 pitch, int width, int height, int x, int y) {
+	stretch200To240(buffer, pitch, width * _factor, height * _factor, 0, 0, 0);
 }
 
 SourceScaler::SourceScaler() : _oldSrc(NULL), _enable(false) {
