@@ -1513,8 +1513,6 @@ void SurfaceSdlGraphicsManager::clearFocusRectangle() {
 void SurfaceSdlGraphicsManager::showOverlay() {
 	assert(_transactionMode == kTransactionNone);
 
-	int x, y;
-
 	if (_overlayVisible)
 		return;
 
@@ -1522,8 +1520,8 @@ void SurfaceSdlGraphicsManager::showOverlay() {
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x);
-	y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y);
+	int x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x);
+	int y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y);
 
 	warpMouse(x, y);
 
@@ -1536,14 +1534,12 @@ void SurfaceSdlGraphicsManager::hideOverlay() {
 	if (!_overlayVisible)
 		return;
 
-	int x, y;
-
 	_overlayVisible = false;
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x, true);
-	y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y, true);
+	int x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x, true);
+	int y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y, true);
 
 	warpMouse(x, y);
 
