@@ -390,9 +390,8 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 void ScriptInterpreter::runAllScripts() {
 	debugC(2, kDebugScript, "ScriptInterpreter::runAllScripts()");
 	// Run all scripts except the main script
-	for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++) {
+	for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++)
 		runScript(scriptNumber);
-	}
 }
 
 int16 *ScriptInterpreter::getVarPointer(int varIndex) {
@@ -443,10 +442,9 @@ void ScriptInterpreter::o1_nop(Script *script) {
 void ScriptInterpreter::o1_actorSetDirection(Script *script) {
 	debugC(2, kDebugScript, "o1_actorSetDirection");
 
-	int direction = script->readByte();
+	ARG_BYTE(direction);
 	script->actor()->status = 0;
 	_vm->actorSetDirection(script->actor(), direction);
-
 }
 
 void ScriptInterpreter::o1_break(Script *script) {
@@ -521,11 +519,10 @@ void ScriptInterpreter::o1_if(Script *script) {
 }
 
 void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
-	if (!isHeroInZone(script)) {
+	if (!isHeroInZone(script))
 		script->jump();
-	} else {
+	else
 		script->ip += 2;
-	}
 }
 
 void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
@@ -565,8 +562,8 @@ void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 }
 
 void ScriptInterpreter::o1_blockInput(Script *script) {
-	ARG_BYTE(flagIndex);
-	_vm->blockInput(flagIndex);
+	ARG_BYTE(inputTypes);
+	_vm->blockInput(inputTypes);
 }
 
 void ScriptInterpreter::o1_unblockInput(Script *script) {

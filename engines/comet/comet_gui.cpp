@@ -61,7 +61,6 @@ Gui::~Gui() {
 }
 
 int Gui::run(GuiPageIdent page) {
-	debug("Gui::run(%d)", page);
 	int result;
 	if (_currPage)
 		_stack.push_back(_currPage);
@@ -104,7 +103,6 @@ int Gui::run(GuiPageIdent page) {
 			(*it)->draw();
 	} else
 		_currPage = NULL;
-	debug("Gui::run(%d) leave", page);
 	return result;
 }
 
@@ -159,12 +157,10 @@ int GuiInventory::run() {
 		_vm->handleEvents();
 
 		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_mouseX, _vm->_mouseY, MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
-
 		if (mouseSelectedItem >= 0)
 			currentItem = firstItem + mouseSelectedItem;
 
 		drawInventory(items, firstItem, currentItem, animFrameCounter++);
-
 		_vm->syncUpdate();
 
 		if (_vm->_rightButton) {
@@ -200,7 +196,7 @@ int GuiInventory::run() {
 		case kIANone:
 			break;
 		case kIADown:
-			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && (currentItem + 1 < items.size())) {
+			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && currentItem + 1 < items.size()) {
 				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
 				currentItem++;
 			} else if (firstItem + kMaxItemsOnScreen < items.size()) {
@@ -247,36 +243,28 @@ int GuiInventory::run() {
 	return 2 - inventoryStatus;;
 }
 
-void GuiInventory::draw() {
-}
-
 void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
 	const uint kMaxItemsOnScreen = 10;
-
-	uint xadd = 74, yadd = 64, itemHeight = 12;
+	const uint xadd = 74, yadd = 64, itemHeight = 12;
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 16, 0, 0);
-
 	// Draw up arrow
 	if (firstItem > 0)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 53, 0, 0);
-
 	// Draw down arrow
 	if (firstItem + kMaxItemsOnScreen < items.size())
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 52, 0, 0);
-
 	for (uint itemIndex = 0; (itemIndex < kMaxItemsOnScreen) && (firstItem + itemIndex < items.size()); itemIndex++) {
 		byte *itemName = _vm->_inventoryItemNames->getString(items[firstItem + itemIndex]);
-		int itemX = xadd + 21, itemY = yadd + itemHeight * itemIndex;
+		const int itemX = xadd + 21, itemY = yadd + itemHeight * itemIndex;
 		_vm->_screen->setFontColor(120);
 		_vm->_screen->drawText(itemX, itemY, itemName);
 		_vm->_screen->setFontColor(119);
 		_vm->_screen->drawText(itemX + 1, itemY + 1, itemName);
 		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
 	}
-
 	if (items.size() > 0) {
-		int selectionY = yadd + (currentItem - firstItem) * itemHeight - 1;
+		const int selectionY = yadd + (currentItem - firstItem) * itemHeight - 1;
 		_vm->_screen->frameRect(xadd + 16, selectionY, 253, selectionY + itemHeight - 1, _selectionColor);
 		_selectionColor++;
 		if (_selectionColor >= 96)
@@ -300,7 +288,6 @@ void GuiCommandBar::drawCommandBar(int selectedItem) {
 
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 0, 0, 0);
 	_vm->_screen->drawAnimationElement(_vm->_iconSprite, selectedItem + 1, 0, 0);
-
 	if (_vm->_currentInventoryItem >= 0 && _vm->_inventoryItemStatus[_vm->_currentInventoryItem] == 0) {
 		_vm->_currentInventoryItem = -1;
 		for (int inventoryItem = 0; inventoryItem <= 255 && _vm->_currentInventoryItem == -1; inventoryItem++) {
@@ -308,7 +295,6 @@ void GuiCommandBar::drawCommandBar(int selectedItem) {
 				_vm->_currentInventoryItem = inventoryItem;
 		}
 	}
-
 	if (_vm->_currentInventoryItem >= 0)
 		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, _vm->_currentInventoryItem, x, y, _animFrameCounter);
 }
@@ -334,52 +320,65 @@ int GuiCommandBar::handleCommandBar() {
 		{276, 4, 311, 34, kCBAMenu}};
 	const int commandBarItemCount = 6; // Intentionally doesn't match actual count!
 
+    // The Lovecraft Museum that comes with the CD version needs some special handling
+	const bool isMuseum = _vm->getGameID() == GID_MUSEUM;
+
 	int commandBarStatus = 0;
 	_animFrameCounter = 0;
 	
 	_vm->waitForKeys();
 	_vm->setMouseCursor(NULL);
 
+	if (isMuseum && (_commandBarSelectedItem != kCBAVerbLook || _commandBarSelectedItem != kCBAMenu))
+		_commandBarSelectedItem = kCBAVerbLook;
+
 	while (commandBarStatus == 0 && !_vm->_quitGame) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
 		bool doWarpMouse = false;
 
 		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
+
+		if (isMuseum && (mouseSelectedItem != kCBAVerbLook || mouseSelectedItem != kCBAMenu))
+			mouseSelectedItem = kCBANone;
+
 		if (mouseSelectedItem != kCBANone)
 			_commandBarSelectedItem = mouseSelectedItem;
-
+			
 		drawCommandBar(_commandBarSelectedItem);
 		_animFrameCounter++;
-		
 		_vm->syncUpdate();
-
 		_vm->handleEvents();
 
 		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
 			continue;
 
-		if (_vm->_rightButton) {
+		if (_vm->_rightButton)
 			commandBarAction = kCBAExit;
-		} else if (_vm->_leftButton && _commandBarSelectedItem != kCBANone) {
+		else if (_vm->_leftButton && _commandBarSelectedItem != kCBANone)
 			commandBarAction = _commandBarSelectedItem;
+
+		if (isMuseum && (_vm->_keyScancode == Common::KEYCODE_RIGHT || _vm->_keyScancode == Common::KEYCODE_LEFT)) {
+			if (_commandBarSelectedItem == kCBAVerbLook)
+				_commandBarSelectedItem = kCBAMenu;
+			else if (_commandBarSelectedItem == kCBAMenu)
+				_commandBarSelectedItem = kCBAVerbLook;
+			_vm->_keyScancode = Common::KEYCODE_INVALID;
 		}
 
 		switch (_vm->_keyScancode) {
 		case Common::KEYCODE_RIGHT:
 			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
-			if (_commandBarSelectedItem == commandBarItemCount) {
+			if (_commandBarSelectedItem == commandBarItemCount)
 				_commandBarSelectedItem = 0;
-			} else {
+			else
 				_commandBarSelectedItem++;
-			}
 			break;
 		case Common::KEYCODE_LEFT:
 			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
-			if (_commandBarSelectedItem == 0) {
+			if (_commandBarSelectedItem == 0)
 				_commandBarSelectedItem = commandBarItemCount;
-			} else {
+			else
 				_commandBarSelectedItem--;
-			}
 			break;
 		case Common::KEYCODE_ESCAPE:
 		case Common::KEYCODE_TAB:
@@ -457,7 +456,6 @@ int GuiCommandBar::handleCommandBar() {
 		}
 
 		_vm->waitForKeys();
-	
 	}
 
 	_vm->waitForKeys();
@@ -645,9 +643,8 @@ int GuiOptionsMenu::run() {
 	musicVolumeDiv = ConfMan.getInt("music_volume") / kVolumeConversionFactor;
 	digiVolumeDiv = ConfMan.getInt("sfx_volume") / kVolumeConversionFactor;
 	currMusicVolumeDiv = musicVolumeDiv;
-	// TODO: Save/load these three
-	textSpeed = 0;
-	gameSpeed = 2;
+	textSpeed = ConfMan.getInt("text_speed");
+	gameSpeed = ConfMan.getInt("game_speed");
 	language = 1;
 	
 	_vm->waitForKeys();
@@ -816,6 +813,10 @@ int GuiOptionsMenu::run() {
 
 	if (optionsMenuStatus == 1) {
 		// TODO Also save game speed, text speed
+		_vm->_textSpeed = textSpeed;
+		_vm->_gameSpeed = gameSpeed;
+		ConfMan.setInt("text_speed", textSpeed);
+		ConfMan.setInt("text_speed", gameSpeed);
 		ConfMan.setInt("music_volume", musicVolumeDiv * kVolumeConversionFactor);
 		ConfMan.setInt("sfx_volume", digiVolumeDiv * kVolumeConversionFactor);
 		ConfMan.flushToDisk();
