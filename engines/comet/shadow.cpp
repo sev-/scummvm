@@ -134,12 +134,12 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 }
 
 void CometEngine::loadSceneBackground() {
-	_res->loadFromPak(_sceneBackgroundResource, DName, _backgroundFileIndex);
+	_res->loadFromPak(_sceneBackgroundResource, _scenePakName.c_str(), _backgroundFileIndex);
 }
 
 void CometEngine::loadSceneDecoration() {
 	delete _sceneDecorationSprite;
-	_sceneDecorationSprite = _animationMan->loadAnimationResource(DName, _backgroundFileIndex + 1);
+	_sceneDecorationSprite = _animationMan->loadAnimationResource(_scenePakName.c_str(), _backgroundFileIndex + 1);
 }
 
 void CometEngine::drawSceneDecoration() {
@@ -234,11 +234,9 @@ void CometEngine::initData() {
 void CometEngine::setModuleAndScene(int moduleNumber, int sceneNumber) {
 	_moduleNumber = moduleNumber;
 	_sceneNumber = sceneNumber;
-
-	//FIXME
-	sprintf(AName, "A%d%d.PAK", _moduleNumber / 10, _moduleNumber % 10);
-	sprintf(DName, "D%d%d.PAK", _moduleNumber / 10, _moduleNumber % 10);
-	sprintf(RName, "R%d%d.CC4", _moduleNumber / 10, _moduleNumber % 10);
+    _animPakName = Common::String::format("a%02d.pak", _moduleNumber);
+	_scenePakName = Common::String::format("d%02d.pak", _moduleNumber);
+	_scriptFileName = Common::String::format("r%02d.cc4", _moduleNumber);
 }
 
 void CometEngine::updateGame() {
@@ -383,7 +381,7 @@ void CometEngine::lookAtItemInSight(bool showText) {
 					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 				} else {
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
-					warning("sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
+					warning("CometEngine::lookAtItemInSight() sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
 					// NOTE: Probably only used in Eternam
 					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 				}
@@ -393,11 +391,10 @@ void CometEngine::lookAtItemInSight(bool showText) {
 }
 
 void CometEngine::updateActorAnimations() {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
 		if (_actors[i].life != 0)
 			updateActorAnimation(&_actors[i]);
-	}
-	updatePortraitAnimation(&_actors[10]);
+	updatePortraitAnimation(&_actors[kActorPortrait]);
 }
 
 void CometEngine::updateActorMovement() {
@@ -438,34 +435,27 @@ void CometEngine::enqueueSceneDecorationForDrawing() {
 }
 
 void CometEngine::enqueueActorsForDrawing() {
-	for (int i = 0; i < 11; i++) {
-		if (_actors[i].visible && _actors[i].life > 0) {
+	for (int i = 0; i < 11; i++)
+		if (_actors[i].visible && _actors[i].life > 0)
 			enqueueActorForDrawing(_actors[i].y, i);
-		}
-	}
 }
 
 void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
 	uint insertIndex = 0;
-	for (insertIndex = 0; insertIndex < _spriteDrawQueue.size(); insertIndex++) {
+	for (insertIndex = 0; insertIndex < _spriteDrawQueue.size(); insertIndex++)
 		if (_spriteDrawQueue[insertIndex].y > y)
 			break;
-	}
 	addToSpriteDrawQueue(y, actorIndex, insertIndex);
 }
 
 void CometEngine::updateHeroLife() {
-	if (_actors[0].life > 0 && _actors[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0) {
+	if (_actors[0].life > 0 && _actors[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0)
 		_actors[0].life++;
-	}
 }
 
 void CometEngine::drawSpriteQueue() {
-
 	int objectCmdIndex = 0;
-
 	_screen->setClipRect(0, 0, 320, 200);
-
 	for (uint32 i = 0; i < _spriteDrawQueue.size(); i++) {
 		if (_spriteDrawQueue[i].index < 16) {
 			drawActor(_spriteDrawQueue[i].index);
@@ -475,10 +465,8 @@ void CometEngine::drawSpriteQueue() {
 			objectCmdIndex++;
 		}
 	}
-
 	if (_itemInSight && _actors[0].direction != 1)
 		drawLineOfSight();
-	
 }
 
 void CometEngine::drawActor(int actorIndex) {
@@ -596,8 +584,7 @@ void CometEngine::resetVars() {
 }
 
 void CometEngine::loadAndRunScript(bool loadingGame) {
-	_script->loadScript(RName, _currentSceneNumber);
-
+	_script->loadScript(_scriptFileName.c_str(), _currentSceneNumber);
 	if (!loadingGame) {
 		resetVars();
 		resetActorsLife();
@@ -1394,7 +1381,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	stopVoice();
 	stopText();
 
-	cutsceneSprite = _animationMan->loadAnimationResource(AName, fileIndex);
+	cutsceneSprite = _animationMan->loadAnimationResource(_animPakName.c_str(), fileIndex);
 	frameList = cutsceneSprite->_anims[frameListIndex];
 	animFrameCount = frameList->frames.size();
 

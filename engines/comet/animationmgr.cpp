@@ -52,17 +52,9 @@ AnimationManager::~AnimationManager() {
 	}
 }
 
-void AnimationManager::saveState(Common::WriteStream *out) {
-}
-
-void AnimationManager::loadState(Common::ReadStream *in) {
-}
-
 AnimationResource *AnimationManager::loadAnimationResource(const char *pakFilename, int fileIndex) {
-	debug(0, "AnimationManager::loadAnimationResource([%s], %d)", pakFilename, fileIndex);
 	AnimationResource *animation = new AnimationResource();
 	_vm->_res->loadFromPak(animation, pakFilename, fileIndex);
-	debug(0, "AnimationManager::loadAnimationResource([%s], %d) ok", pakFilename, fileIndex);
 	return animation;
 }
 
@@ -92,7 +84,6 @@ void AnimationManager::purgeAnimationSlots() {
 
 int AnimationManager::getAnimationResource(int16 animationType, int16 fileIndex) {
 	int16 animationSlot = findAnimationSlot(animationType, fileIndex);
-
 	if (animationSlot == -1) {
 		animationSlot = findFreeAnimationSlot();
 		if (animationSlot == -1) {
@@ -100,15 +91,12 @@ int AnimationManager::getAnimationResource(int16 animationType, int16 fileIndex)
 			animationSlot = findFreeAnimationSlot();
 		}
 	}
-
 	_animationSlots[animationSlot].animationType = animationType;
 	_animationSlots[animationSlot].fileIndex = fileIndex;
-
 	if (animationType != 0)
 		_animationSlots[animationSlot].anim = _vm->getGlobalAnimationResource(animationType);
 	else if (!_animationSlots[animationSlot].anim)
-		_animationSlots[animationSlot].anim = loadAnimationResource(_vm->AName, fileIndex);
-
+		_animationSlots[animationSlot].anim = loadAnimationResource(_vm->_animPakName.c_str(), fileIndex);
 	return animationSlot;
 }
 
@@ -126,7 +114,7 @@ void AnimationManager::restoreAnimationSlots() {
 		if (_animationSlots[i].fileIndex != -1) {
 			if (_animationSlots[i].animationType == 0) {
 				delete _animationSlots[i].anim;
-				_animationSlots[i].anim = loadAnimationResource(_vm->AName, _animationSlots[i].fileIndex);
+				_animationSlots[i].anim = loadAnimationResource(_vm->_animPakName.c_str(), _animationSlots[i].fileIndex);
 			} else
 				_animationSlots[i].anim = _vm->getGlobalAnimationResource(_animationSlots[i].animationType);
 		} else

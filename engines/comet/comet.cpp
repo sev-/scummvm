@@ -170,7 +170,11 @@ Common::Error CometEngine::run() {
 	initGraphics(320, 200, false);
 	
 	syncSoundSettings();
-
+	
+	// Default values
+	ConfMan.registerDefault("text_speed", 1);
+	ConfMan.registerDefault("game_speed", 2);
+	
 	_console = new CometConsole(this);
 
 	// Any music driver gets Adlib music except for 'No sound'
@@ -207,7 +211,7 @@ Common::Error CometEngine::run() {
 			langText += "E";
 			break;
 	}
-	langText += ".CC4";
+	langText += ".cc4";
 	_textReader->setTextFilename(langText.c_str());  
 
 	_gui = new Gui(this);
@@ -288,8 +292,11 @@ Common::Error CometEngine::run() {
 
 	initAndLoadGlobalData();
 
-	CursorMan.showMouse(!isFloppy());
-	setMouseCursor(_mouseCursors[0]);
+	if (!isFloppy()) {
+		CursorMan.showMouse(true);
+		setMouseCursor(_mouseCursors[0]);
+	} else
+		CursorMan.showMouse(false);
 
 	if (ConfMan.hasKey("save_slot")) {
 		int saveSlot = ConfMan.getInt("save_slot");

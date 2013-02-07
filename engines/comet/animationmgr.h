@@ -50,7 +50,6 @@ class AnimationManager {
 public:
 	AnimationManager(CometEngine *vm);
 	~AnimationManager();
-
 	AnimationResource *loadAnimationResource(const char *pakFilename, int fileIndex);
 	AnimationResource *loadAnimationResourceFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
 	void purgeUnusedAnimationSlots();
@@ -60,13 +59,9 @@ public:
 	void restoreAnimationSlots();
 	AnimationSlot *getAnimationSlot(uint index) { return &_animationSlots[index]; }
 	AnimationResource *getAnimation(uint index) { return _animationSlots[index].anim; }
-	void saveState(Common::WriteStream *out);
-	void loadState(Common::ReadStream *in);
-
 private:
 	CometEngine *_vm;
 	AnimationSlot _animationSlots[kAnimationSlotCount];
-
 	int findAnimationSlot(int16 animationType, int16 fileIndex);
 	int findFreeAnimationSlot();
 };

@@ -49,7 +49,8 @@ public:
 	GuiPage(CometEngine *vm) : _vm(vm) {};
 	virtual ~GuiPage() {};
 	virtual int run() = 0;
-	virtual void draw() = 0;
+	virtual void draw() {
+	};
 protected:
 	CometEngine *_vm;
 };
@@ -58,7 +59,6 @@ class GuiInventory : public GuiPage {
 public:
 	GuiInventory(CometEngine *vm) : GuiPage(vm) {};
 	int run();
-	void draw();
 protected:
 	byte _selectionColor;
 	void drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter);

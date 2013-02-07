@@ -106,6 +106,10 @@ enum {
 	kCollisionDisabled	= 8
 };
 
+enum {
+	kActorPortrait	=	10
+};
+
 #define COLLISION(type, index) (((type) << 8) | (index))
 #define COLLISION_TYPE(collision) (((collision) >> 8) & 0xFF)
 #define COLLISION_INDEX(collision) ((collision) & 0xFF)
@@ -239,6 +243,9 @@ public:
 	int _textSpeed;
 	int _textMaxTextHeight, _textMaxTextWidth, _textDuration, _textOriginalDuration;
 
+	// TODO Game speed is currently not yet implemented
+	int _gameSpeed;
+
 	// Input related
 	Common::KeyCode _keyScancode;
 	char _keyAscii;
@@ -295,7 +302,7 @@ public:
 	Common::Array<SpriteDraw> _spriteDrawQueue;
 
 	// Filenames
-	char AName[16], DName[16], RName[16];
+	Common::String _animPakName, _scenePakName, _scriptFileName;
 
 	Audio::SoundHandle _sampleHandle;
 	SoundResource *_soundResource;
