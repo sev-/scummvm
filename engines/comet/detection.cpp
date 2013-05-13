@@ -85,7 +85,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "e.cc4", 0, "5a5eeea3a5112a32009a3ec9c540554a", -1},
 			 AD_LISTEND},
 			Common::EN_ANY,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -104,7 +104,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "e.cc4", 0, "494620a4e5c27ca0b350f9a8b07911e8", -1},
 			 AD_LISTEND},
 			Common::EN_ANY,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -123,7 +123,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "d.cc4", 0, "84546199e56cb461cf6e130a052a72d8", -1},
 			 AD_LISTEND},
 			Common::DE_DEU,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -142,7 +142,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "i.cc4", 0, "542351b71e06e8610b6cc145b3123db2", -1},
 			 AD_LISTEND},
 			Common::IT_ITA,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -161,7 +161,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "s.cc4", 0, "95d64f493878dd222864371f16d29ca7", -1},
 			 AD_LISTEND},
 			Common::ES_ESP,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -180,7 +180,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "t.cc4", 0, "3f9be4f98216f425c24fad1c3d306dcb", -1},
 			 AD_LISTEND},
 			Common::FR_FRA,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
@@ -199,7 +199,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 {  "e.cc4", 0, "420714a8cd2528095f11607ef470f9d4", -1},
 			 AD_LISTEND},
 			Common::EN_ANY,
-			Common::kPlatformPC,
+			Common::kPlatformDOS,
 			ADGF_NO_FLAGS,
 			GUIO1(GUIO_NONE)
 		},
