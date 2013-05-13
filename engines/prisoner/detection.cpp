@@ -184,7 +184,7 @@ static PrisonerGameDescription g_fallbackDesc = {
 		"",
 		AD_ENTRY1(0, 0), // This should always be AD_ENTRY1(0, 0) in the fallback descriptor
 		Common::UNK_LANG,
-		Common::kPlatformPC,
+		Common::kPlatformDOS,
 		ADGF_NO_FLAGS,
 		GUIO1(GUIO_NONE)
 	},
@@ -249,7 +249,7 @@ bool PrisonerMetaEngine::createInstance(OSystem *syst, Engine **engine, const AD
 const ADGameDescription *PrisonerMetaEngine::fallbackDetect(const Common::FSList &fslist) const {
 	// Set the default values for the fallback descriptor's ADGameDescription part.
 	Prisoner::g_fallbackDesc.desc.language = Common::UNK_LANG;
-	Prisoner::g_fallbackDesc.desc.platform = Common::kPlatformPC;
+	Prisoner::g_fallbackDesc.desc.platform = Common::kPlatformDOS;
 	Prisoner::g_fallbackDesc.desc.flags = ADGF_NO_FLAGS;
 
 	// Set default values for the fallback descriptor's PrisonerGameDescription part.
