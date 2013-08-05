@@ -1,0 +1,42 @@
+Index: configure
+===================================================================
+--- configure	(revision 55684)
++++ configure	(working copy)
+@@ -82,6 +82,7 @@
+ add_engine agos "AGOS" yes "agos2"
+ add_engine agos2 "AGOS 2 games" yes
+ add_engine cine "Cinematique evo 1" yes
++add_engine comet "Comet" no
+ add_engine cruise "Cinematique evo 2" yes
+ add_engine draci "Dragon History" yes
+ add_engine drascula "Drascula: The Vampire Strikes Back" yes
+Index: base/plugins.cpp
+===================================================================
+--- base/plugins.cpp	(revision 55684)
++++ base/plugins.cpp	(working copy)
+@@ -100,6 +100,9 @@
+ 		#if PLUGIN_ENABLED_STATIC(CINE)
+ 		LINK_PLUGIN(CINE)
+ 		#endif
++		#if PLUGIN_ENABLED_STATIC(COMET)
++		LINK_PLUGIN(COMET)
++		#endif
+ 		#if PLUGIN_ENABLED_STATIC(CRUISE)
+ 		LINK_PLUGIN(CRUISE)
+ 		#endif
+Index: engines/engines.mk
+===================================================================
+--- engines/engines.mk	(revision 55684)
++++ engines/engines.mk	(working copy)
+@@ -31,6 +31,11 @@
+ MODULES += engines/cine
+ endif
+ 
++ifdef ENABLE_COMET
++DEFINES += -DENABLE_COMET=$(ENABLE_COMET)
++MODULES += engines/comet
++endif
++
+ ifdef ENABLE_CRUISE
+ DEFINES += -DENABLE_CRUISE=$(ENABLE_CRUISE)
+ MODULES += engines/cruise

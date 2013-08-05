@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9,00"
+	Name="comet"
+	ProjectGUID="{6E990CA0-0B0C-11DD-BD0B-0800200C9A66}"
+	RootNamespace="comet"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="131072"
+	>
+	<Platforms>
+		<Platform Name="Win32" />
+	</Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32" ConfigurationType="4" InheritedPropertySheets=".\ScummVM_Debug.vsprops" />
+		<Configuration Name="Release|Win32" ConfigurationType="4" InheritedPropertySheets=".\ScummVM_Release.vsprops" />
+	</Configurations>
+	<Files>
+		<File RelativePath="..\..\engines\comet\animation.cpp" />
+		<File RelativePath="..\..\engines\comet\animation.h" />
+		<File RelativePath="..\..\engines\comet\comet.cpp" />
+		<File RelativePath="..\..\engines\comet\comet.h" />
+		<File RelativePath="..\..\engines\comet\detection.cpp" />
+		<File RelativePath="..\..\engines\comet\dialog.cpp" />
+		<File RelativePath="..\..\engines\comet\dialog.h" />
+		<File RelativePath="..\..\engines\comet\font.cpp" />
+		<File RelativePath="..\..\engines\comet\font.h" />
+		<File RelativePath="..\..\engines\comet\marche.cpp" />
+		<File RelativePath="..\..\engines\comet\music.cpp" />
+		<File RelativePath="..\..\engines\comet\music.h" />
+		<File RelativePath="..\..\engines\comet\pak.cpp" />
+		<File RelativePath="..\..\engines\comet\pak.h" />
+		<File RelativePath="..\..\engines\comet\scene.cpp" />
+		<File RelativePath="..\..\engines\comet\scene.h" />
+		<File RelativePath="..\..\engines\comet\sceneobjects.cpp" />
+		<File RelativePath="..\..\engines\comet\screen.cpp" />
+		<File RelativePath="..\..\engines\comet\screen.h" />
+		<File RelativePath="..\..\engines\comet\script.cpp" />
+		<File RelativePath="..\..\engines\comet\script.h" />
+		<File RelativePath="..\..\engines\comet\shadow.cpp" />
+		<File RelativePath="..\..\engines\comet\sound.cpp" />
+		<File RelativePath="..\..\engines\comet\sound.h" />
+		<File RelativePath="..\..\engines\comet\text.cpp" />
+		<File RelativePath="..\..\engines\comet\text.h" />
+		<File RelativePath="..\..\engines\comet\unpack.cpp" />
+		<File RelativePath="..\..\engines\comet\unpack.h" />
+	</Files>
+</VisualStudioProject>
