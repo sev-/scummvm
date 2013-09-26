@@ -1054,6 +1054,23 @@ static const struct ADGameDescription SciGameDescriptions[] = {
 		AD_LISTEND},
 	 	Common::EN_ANY, Common::kPlatformWindows, ADGF_CD, GUIO4(GUIO_MIDIGM, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_FB01_MIDI, GAMEOPTION_JONES_CDAUDIO)	},
 
+	// Jones in the Fast Lane - English DOS US CD (alternate version)
+	// Supplied by collector9 in bug #3614668
+	{"jones", "CD", {
+		{"resource.map", 0, "4344ff3f796707843b992adec2c87663", 4878},
+		{"resource.001", 0, "3876da2ce16fb7dea2f5d943d946fa84", 1652062},
+		AD_LISTEND},
+	 	Common::EN_ANY, Common::kPlatformDOS, ADGF_CD, GUIO1(GAMEOPTION_JONES_CDAUDIO)	},
+
+	// Jones in the Fast Lane - English DOS US CD (alternate version)
+	// Same entry as the DOS version above. This one is used for the alternate
+	// General MIDI music tracks in the Windows version
+	{"jones", "CD", {
+		{"resource.map", 0, "4344ff3f796707843b992adec2c87663", 4878},
+		{"resource.001", 0, "3876da2ce16fb7dea2f5d943d946fa84", 1652062},
+		AD_LISTEND},
+	 	Common::EN_ANY, Common::kPlatformWindows, ADGF_CD, GUIO4(GUIO_MIDIGM, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_FB01_MIDI, GAMEOPTION_JONES_CDAUDIO)	},
+
 	// King's Quest 1 SCI Remake - English Amiga (from www.back2roots.org)
 	// Executable scanning reports "1.003.007"
 	// SCI interpreter version 0.001.010
@@ -1638,6 +1655,14 @@ static const struct ADGameDescription SciGameDescriptions[] = {
 		{"resource.000", 0, "bad61d50aaa64298fa57a7c6ccd3bccf", 84020382},
 		AD_LISTEND},
 	 	Common::EN_ANY, Common::kPlatformWindows, ADGF_DEMO | ADGF_UNSTABLE, GUIO5(GUIO_NOSPEECH, GUIO_NOASPECT, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_ORIGINAL_SAVELOAD, GAMEOPTION_FB01_MIDI)	},
+
+	// King's Questions mini-game from the King's Quest Collection
+	// SCI interpreter version 2.000.000
+	{"kquestions", "", {
+		{"resource.000", 0, "9b1cddecd4f0720d83661ba7aed28891", 162697},
+		{"resource.map", 0, "93a2251fa64e729d7a7d2fe56b217c8e", 502},
+		AD_LISTEND},
+	 	Common::EN_ANY, Common::kPlatformDOS, ADGF_UNSTABLE, GUIO3(GUIO_NOSPEECH, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_FB01_MIDI)	},
 
 #endif // ENABLE_SCI32
 
@@ -3271,6 +3296,17 @@ static const struct ADGameDescription SciGameDescriptions[] = {
 		{"ressci.003", 0, "2a68edd064e5e4937b5e9c74b38f2082", 6870356},
 		AD_LISTEND},
 	 	Common::EN_ANY, Common::kPlatformWindows, ADGF_UNSTABLE, GUIO4(GUIO_NOASPECT, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_ORIGINAL_SAVELOAD, GAMEOPTION_FB01_MIDI)	},
+
+	// RAMA - German Windows CD (from farmboy0, in pull request 397)
+	{"rama", "", {
+		{"resmap.001", 0, "f68cd73308c46977a9632dfc618e1e38", 8338},
+	 	{"ressci.001", 0, "2a68edd064e5e4937b5e9c74b38f2082", 70595521},
+	 	{"resmap.002", 0, "891fc2f5d9e23e7d9a9454acc7aaae52", 12082},
+	 	{"ressci.002", 0, "2a68edd064e5e4937b5e9c74b38f2082", 128508558},
+	 	{"resmap.003", 0, "222096000bd83a1d56577114a452cccf", 1636},
+	 	{"ressci.003", 0, "2a68edd064e5e4937b5e9c74b38f2082", 6954219},
+		AD_LISTEND},
+	 	Common::DE_DEU, Common::kPlatformWindows, ADGF_UNSTABLE, GUIO4(GUIO_NOASPECT, GAMEOPTION_PREFER_DIGITAL_SFX, GAMEOPTION_ORIGINAL_SAVELOAD, GAMEOPTION_FB01_MIDI)	},
 
 	// RAMA - Italian Windows CD (from glorifindel)
 	// SCI interpreter version 3.000.000 (a guess?)

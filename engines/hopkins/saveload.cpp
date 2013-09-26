@@ -55,6 +55,13 @@ bool SaveLoadManager::save(const Common::String &file, const void *buf, size_t n
 		return false;
 }
 
+bool SaveLoadManager::saveExists(const Common::String &file) {
+	Common::InSaveFile *savefile = g_system->getSavefileManager()->openForLoading(file);
+	bool result = savefile != NULL;
+	delete savefile;
+	return result;
+}
+
 // Save File
 bool SaveLoadManager::saveFile(const Common::String &file, const void *buf, size_t n) {
 	return save(file, buf, n);
@@ -226,14 +233,14 @@ void SaveLoadManager::createThumbnail(Graphics::Surface *s) {
 	Graphics::Surface thumb8;
 	thumb8.create(w, h, Graphics::PixelFormat::createFormatCLUT8());
 
-	_vm->_graphicsMan->reduceScreenPart(_vm->_graphicsMan->_frontBuffer, (byte *)thumb8.pixels,
+	_vm->_graphicsMan->reduceScreenPart(_vm->_graphicsMan->_frontBuffer, (byte *)thumb8.getPixels(),
 		_vm->_events->_startPos.x, 20, SCREEN_WIDTH, SCREEN_HEIGHT - 40, 80);
 
 	// Convert the 8-bit pixel to 16 bit surface
 	s->create(w, h, Graphics::PixelFormat(2, 5, 6, 5, 0, 11, 5, 0, 0));
 
-	const byte *srcP = (const byte *)thumb8.pixels;
-	uint16 *destP = (uint16 *)s->pixels;
+	const byte *srcP = (const byte *)thumb8.getPixels();
+	uint16 *destP = (uint16 *)s->getPixels();
 
 	for (int yp = 0; yp < h; ++yp) {
 		// Copy over the line, using the source pixels as lookups into the pixels palette
@@ -251,9 +258,9 @@ void SaveLoadManager::createThumbnail(Graphics::Surface *s) {
 }
 
 void SaveLoadManager::syncSavegameData(Common::Serializer &s, int version) {
-	if (version >= 3)
-		// Sync embedded Breakout game high score data
-		s.syncBytes(&_vm->_globals->_highScoreData[0], 100);
+	// The brief version 3 had the highscores embedded. They're in a separate file now, so skip
+	if (version == 3 && s.isLoading())
+		s.skip(100);
 
 	s.syncBytes(&_vm->_globals->_saveData->_data[0], 2050);
 	syncCharacterLocation(s, _vm->_globals->_saveData->_cloneHopkins);
@@ -292,8 +299,8 @@ void SaveLoadManager::convertThumb16To8(Graphics::Surface *thumb16, Graphics::Su
 		pixelFormat16.colorToRGB(p, paletteR[palIndex], paletteG[palIndex], paletteB[palIndex]);
 	}
 
-	const uint16 *srcP = (const uint16 *)thumb16->pixels;
-	byte *destP = (byte *)thumb8->pixels;
+	const uint16 *srcP = (const uint16 *)thumb16->getPixels();
+	byte *destP = (byte *)thumb8->getPixels();
 
 	for (int yp = 0; yp < thumb16->h; ++yp) {
 		const uint16 *lineSrcP = srcP;

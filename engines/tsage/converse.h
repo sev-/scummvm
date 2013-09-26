@@ -94,6 +94,7 @@ public:
 	virtual void proc12(Action *action);
 	virtual void setText(const Common::String &msg);
 	virtual void removeText();
+	virtual void proc16() {}
 
 	void setTextPos(const Common::Point &pt) { _textPos = pt; }
 };
@@ -145,6 +146,10 @@ public:
 };
 
 class ConversationChoiceDialog : public ModalDialog {
+private:
+	int textLeft() const;
+	int textMaxWidth() const;
+	int numberLeft() const;
 public:
 	int _stdColor;
 	int _highlightColor;
@@ -164,7 +169,6 @@ public:
 	int execute(const Common::StringArray &choiceList);
 
 	virtual void draw();
-	virtual void remove();
 };
 
 class Obj0A : public Serialisable {
@@ -190,7 +194,7 @@ public:
 
 	// Return to Ringworld specific field
 	int _mode;
-	int _lookupValue, _lookupIndex, _field6;
+	int _lookupValue, _lookupIndex, _exitMode;
 	int _speakerMode;
 	int _field16[11];
 public:
@@ -219,6 +223,7 @@ public:
 	bool _textShown;
 	bool _field2E6;
 	int _field2E8;
+	int _exitMode;
 	Common::Array<Obj44> _obj44List;
 	Common::Array<byte> _script;
 	StripProc _onBegin;

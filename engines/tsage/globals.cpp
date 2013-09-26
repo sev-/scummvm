@@ -26,6 +26,7 @@
 #include "tsage/ringworld/ringworld_demo.h"
 #include "tsage/ringworld/ringworld_logic.h"
 #include "tsage/ringworld2/ringworld2_logic.h"
+#include "tsage/staticres.h"
 
 namespace TsAGE {
 
@@ -380,6 +381,9 @@ void Ringworld2Globals::reset() {
 	if (!_scannerDialog)
 		_scannerDialog = new ScannerDialog();
 
+	// Default to Quinn as the active character
+	T2_GLOBALS._player._characterIndex = R2_QUINN;
+
 	// Reset the inventory
 	R2_INVENTORY.reset();
 	T2_GLOBALS._uiElements.updateInventory();
@@ -389,7 +393,7 @@ void Ringworld2Globals::reset() {
 	_scrollFollower = &_player;
 
 	// Reset fields
-	Common::fill(&_fadePaletteMap[0][0], &_fadePaletteMap[10][256], 0);
+	Common::fill(&_fadePaletteMap[0][0], &_fadePaletteMap[9][256], 0);
 	Common::fill(&_paletteMap[0], &_paletteMap[4096], 0);
 
 	_fadePaletteFlag = false;
@@ -404,67 +408,65 @@ void Ringworld2Globals::reset() {
 	_v565E7 = 0;
 	_v565E9 = -5;
 	_v565EB = 26;
-	_v565F5 = 0;
-	_v565F6 = 0;
-	_v565F8 = 0;
-	_v565FA = 0;
+	_foodCount = 0;
+	_rimLocation = 0;
+	_rimTransportLocation = 0;
 	_v565AE = 0;
-	_v56605[0] = 0;
-	_v56605[1] = 3;
-	_v56605[2] = 5;
-	_v56605[3] = 1;
-	_v56605[4] = 2;
-	_v56605[5] = 5;
-	_v56605[6] = 9;
-	_v56605[7] = 14;
-	_v56605[8] = 15;
-	_v56605[9] = 18;
-	_v56605[10] = 20;
-	_v56605[11] = 25;
-	_v56605[12] = 27;
-	_v56605[13] = 31;
+	_spillLocation[0] = 0;
+	_spillLocation[1] = 3;
+	_spillLocation[R2_SEEKER] = 5;
+	_spillLocation[3] = 1;
+	_spillLocation[4] = 2;
+	_spillLocation[5] = 5;
+	_spillLocation[6] = 9;
+	_spillLocation[7] = 14;
+	_spillLocation[8] = 15;
+	_spillLocation[9] = 18;
+	_spillLocation[10] = 20;
+	_spillLocation[11] = 25;
+	_spillLocation[12] = 27;
+	_spillLocation[13] = 31;
 
+	// Initialise the vampire data within the Flub maze
 	for (int i = 0; i < 18; i++) {
-		_v56613[(i * 4)    ] = 1;
-		_v56613[(i * 4) + 2] = 0;
-		_v56613[(i * 4) + 3] = 0;
+		_vampireData[i]._isAlive = true;
+		_vampireData[i]._position = Common::Point();
 	}
-	_v56613[( 0 * 4) + 1] = 1;
-	_v56613[( 1 * 4) + 1] = 2;
-	_v56613[( 2 * 4) + 1] = 2;
-	_v56613[( 3 * 4) + 1] = 3;
-	_v56613[( 4 * 4) + 1] = 2;
-	_v56613[( 5 * 4) + 1] = 2;
-	_v56613[( 6 * 4) + 1] = 3;
-	_v56613[( 7 * 4) + 1] = 1;
-	_v56613[( 8 * 4) + 1] = 1;
-	_v56613[( 9 * 4) + 1] = 3;
-	_v56613[(10 * 4) + 1] = 3;
-	_v56613[(11 * 4) + 1] = 1;
-	_v56613[(12 * 4) + 1] = 2;
-	_v56613[(13 * 4) + 1] = 3;
-	_v56613[(14 * 4) + 1] = 2;
-	_v56613[(15 * 4) + 1] = 3;
-	_v56613[(16 * 4) + 1] = 1;
-	_v56613[(17 * 4) + 1] = 1;
+	_vampireData[0]._shotsRequired = 1;
+	_vampireData[1]._shotsRequired = 2;
+	_vampireData[2]._shotsRequired = 2;
+	_vampireData[3]._shotsRequired = 3;
+	_vampireData[4]._shotsRequired = 2;
+	_vampireData[5]._shotsRequired = 2;
+	_vampireData[6]._shotsRequired = 3;
+	_vampireData[7]._shotsRequired = 1;
+	_vampireData[8]._shotsRequired = 1;
+	_vampireData[9]._shotsRequired = 3;
+	_vampireData[10]._shotsRequired = 3;
+	_vampireData[11]._shotsRequired = 1;
+	_vampireData[12]._shotsRequired = 2;
+	_vampireData[13]._shotsRequired = 3;
+	_vampireData[14]._shotsRequired = 2;
+	_vampireData[15]._shotsRequired = 3;
+	_vampireData[16]._shotsRequired = 1;
+	_vampireData[17]._shotsRequired = 1;
 
 	_v566A6 = 3800;
-	_v566A3 = 2;
-	_v566A4 = 1;
-	_v566A5 = 0;
-	_v566A8 = 5;
-	_v566A9 = 0;
-	_v566AA = 0;
+	_landerSuitNumber = 2;
+	_flubMazeArea = 1;
+	_flubMazeEntryDirection = 0;
+	_desertStepsRemaining = 5;
+	_desertCorrectDirection = 0;
+	_desertPreviousDirection = 0;
 	for (int i = 0; i < 1000; i++)
-		_v566AB[i] = 0;
-	_v56A93 = -1;
-	_v56A99 = 5;
+		_desertMovements[i] = 0;
+	_desertWrongDirCtr = -1;
+	_balloonAltitude = 5;
 	_scene1925CurrLevel = 0; //_v56A9C
-	_v56A9E = 0;
+	_walkwaySceneNumber = 0;
 	_v56AA0 = 0;
-	_v56AA1 = 0;
-	_v56AA2 = 60;
-	_v56AA4 = 660;
+	_scientistConvIndex = 0;
+	_ventCellPos = Common::Point(60, 660);
 	_v56AA6 = 1;
 	_v56AA7 = 1;
 	_v56AA8 = 1;
@@ -475,15 +477,12 @@ void Ringworld2Globals::reset() {
 	_v5780E = 0;
 	_v57810 = 0;
 	_v57C2C = 0;
-	_v565EC[0] = 0;
-	_v565EC[1] = 27;
-	_v565EC[2] = 27;
-	_v565EC[3] = 4;
-	_v565EC[4] = 4;
+	_s1550PlayerArea[R2_QUINN] = Common::Point(27, 4);
+	_s1550PlayerArea[R2_SEEKER] = Common::Point(27, 4);
 	Common::fill(&_scannerFrequencies[0], &_scannerFrequencies[MAX_CHARACTERS], 1);
 	_speechSubtitles = SPEECH_VOICE | SPEECH_TEXT;
 	_insetUp = 0;
-	_frameEdgeColour = 2;
+	_frameEdgeColor = 2;
 	Common::fill(&_stripManager_lookupList[0], &_stripManager_lookupList[12], 0);
 	_stripManager_lookupList[0] = 1;
 	_stripManager_lookupList[1] = 1;
@@ -496,11 +495,15 @@ void Ringworld2Globals::reset() {
 	_stripManager_lookupList[10] = 1;
 	_stripManager_lookupList[11] = 1;
 
+	// Reset junk/component data in scene 1550
+	Common::copy(&scene1550JunkLocationsDefault[0], &scene1550JunkLocationsDefault[508],
+		&_scene1550JunkLocations[0]);
+
 	// Reset fields stored in the player class
 	_player._characterIndex = R2_QUINN;
-	_player._characterScene[1] = 100;
-	_player._characterScene[2] = 300;
-	_player._characterScene[3] = 300;
+	_player._characterScene[R2_QUINN] = 100;
+	_player._characterScene[R2_SEEKER] = 300;
+	_player._characterScene[R2_MIRANDA] = 300;
 }
 
 void Ringworld2Globals::synchronize(Serializer &s) {
@@ -519,17 +522,16 @@ void Ringworld2Globals::synchronize(Serializer &s) {
 	s.syncAsSint16LE(_v565E7);
 	s.syncAsSint16LE(_v565E9);
 	s.syncAsSint16LE(_v565EB);
-	s.syncAsSint16LE(_v565F5);
-	s.syncAsSint16LE(_v565F6);
-	s.syncAsSint16LE(_v565F8);
-	s.syncAsSint16LE(_v565FA);
-	s.syncAsSint16LE(_v566A3);
+	s.syncAsSint16LE(_foodCount);
+	s.syncAsSint32LE(_rimLocation);
+	s.syncAsSint16LE(_rimTransportLocation);
+	s.syncAsSint16LE(_landerSuitNumber);
 	s.syncAsSint16LE(_v566A6);
-	s.syncAsSint16LE(_v56A93);
+	s.syncAsSint16LE(_desertWrongDirCtr);
 	s.syncAsSint16LE(_scene1925CurrLevel); // _v56A9C
-	s.syncAsSint16LE(_v56A9E);
-	s.syncAsSint16LE(_v56AA2);
-	s.syncAsSint16LE(_v56AA4);
+	s.syncAsSint16LE(_walkwaySceneNumber);
+	s.syncAsSint16LE(_ventCellPos.x);
+	s.syncAsSint16LE(_ventCellPos.y);
 	s.syncAsSint16LE(_v56AAB);
 	s.syncAsSint16LE(_scene180Mode);
 	s.syncAsSint16LE(_v57709);
@@ -539,34 +541,52 @@ void Ringworld2Globals::synchronize(Serializer &s) {
 	s.syncAsSint16LE(_v57C2C);
 	s.syncAsSint16LE(_speechSubtitles);
 
-	for (i = 0; i < 5; i++)
-		s.syncAsByte(_v565EC[i]);
+	byte temp;
+	s.syncAsByte(temp);
+	s.syncAsByte(_s1550PlayerArea[R2_QUINN].x);
+	s.syncAsByte(_s1550PlayerArea[R2_SEEKER].x);
+	s.syncAsByte(_s1550PlayerArea[R2_QUINN].y);
+	s.syncAsByte(_s1550PlayerArea[R2_SEEKER].y);
 
 	for (i = 0; i < MAX_CHARACTERS; ++i)
 		s.syncAsByte(_scannerFrequencies[i]);
 
 	s.syncAsByte(_v565AE);
-	s.syncAsByte(_v566A4);
-	s.syncAsByte(_v566A5);
-	s.syncAsByte(_v566A8);
-	s.syncAsByte(_v566A9);
-	s.syncAsByte(_v566AA);
+	s.syncAsByte(_flubMazeArea);
+	s.syncAsByte(_flubMazeEntryDirection);
+	s.syncAsByte(_desertStepsRemaining);
+	s.syncAsByte(_desertCorrectDirection);
+	s.syncAsByte(_desertPreviousDirection);
 	s.syncAsByte(_v56AA0);
-	s.syncAsByte(_v56AA1);
+	s.syncAsByte(_scientistConvIndex);
 	s.syncAsByte(_v56AA6);
 	s.syncAsByte(_v56AA7);
 	s.syncAsByte(_v56AA8);
 
 	for (i = 0; i < 14; ++i)
-		s.syncAsByte(_v56605[i]);
+		s.syncAsByte(_spillLocation[i]);
 	for (i = 0; i < 1000; ++i)
-		s.syncAsByte(_v566AB[i]);
-	s.syncAsByte(_v56A99);
+		s.syncAsByte(_desertMovements[i]);
+	s.syncAsByte(_balloonAltitude);
 	for (i = 0; i < 12; ++i)
 		s.syncAsByte(_stripManager_lookupList[i]);
 
 	s.syncAsSint16LE(_insetUp);
-	s.syncAsByte(_frameEdgeColour);
+	s.syncAsByte(_frameEdgeColor);
+
+	for (i = 0; i < 508; i += 4)
+		s.syncAsByte(_scene1550JunkLocations[i + 2]);
+
+	s.syncAsSint16LE(_balloonPosition.x);
+	s.syncAsSint16LE(_balloonPosition.y);
+
+	// Synchronise Flub maze vampire data
+	for (i = 0; i < 18; ++i) {
+		s.syncAsSint16LE(_vampireData[i]._isAlive);
+		s.syncAsSint16LE(_vampireData[i]._shotsRequired);
+		s.syncAsSint16LE(_vampireData[i]._position.x);
+		s.syncAsSint16LE(_vampireData[i]._position.y);
+	}
 }
 
 } // end of namespace Ringworld2

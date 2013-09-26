@@ -52,7 +52,7 @@ public:
 	void putDWORD(uint32 val);
 	char *getString();
 	Common::String getStringObj();
-	void putString(const Common::String &val);
+	void putString(const char *val);
 	float getFloat();
 	void putFloat(float val);
 	double getDouble();
@@ -76,7 +76,7 @@ public:
 	bool transferPtr(const char *name, void *val);
 	bool transfer(const char *name, int32 *val);
 	bool transfer(const char *name, uint32 *val);
-	bool transfer(const char *name, float *val);
+	bool transferFloat(const char *name, float *val);
 	bool transfer(const char *name, double *val);
 	bool transfer(const char *name, bool *val);
 	bool transfer(const char *name, byte *val);
@@ -115,6 +115,6 @@ private:
 	BaseGame *_gameRef;
 };
 
-} // end of namespace Wintermute
+} // End of namespace Wintermute
 
 #endif

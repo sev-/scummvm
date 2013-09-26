@@ -76,7 +76,7 @@ void VisualSpeaker::signal() {
 
 		if ((R2_GLOBALS._speechSubtitles & SPEECH_VOICE) && _soundId) {
 			// TODO: Check global that is passed
-			setFrame2(/* word_55F90 */ 0);
+			setFrame2(/* word_55F90 */ 1);
 		}
 	} else if (_action && _object2) {
 		_action->setDelay(1);
@@ -204,13 +204,12 @@ void VisualSpeaker::setText(const Common::String &msg) {
 	_sceneText._textMode = _textMode;
 	_sceneText.setup(s);
 
-	//_sceneText.clone();
-
 	_sceneText.setPosition(_textPos);
 	_sceneText.fixPriority(256);
 
 	// If subtitles are turned off, don't show the text
-	if (!(R2_GLOBALS._speechSubtitles & SPEECH_TEXT)) {
+	if ((R2_GLOBALS._speechSubtitles & SPEECH_VOICE) &&  
+			!(R2_GLOBALS._speechSubtitles & SPEECH_TEXT)) {
 		_sceneText.hide();
 	}
 
@@ -252,8 +251,8 @@ void VisualSpeaker::proc16() {
 	_speakerMode = 0;
 	_object1.remove();
 
-	assert(_object2);
-	_object2->show();
+	if (_object2)
+		_object2->show();
 	_object2 = NULL;
 	_fieldF8 = 0;
 }
@@ -360,7 +359,7 @@ void SpeakerChief1100::proc15() {
 	Scene1100 *scene = (Scene1100 *)R2_GLOBALS._sceneManager._scene;
 
 	if (!_object2) {
-		_object2 = &scene->_actor18;
+		_object2 = &scene->_chief;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -415,10 +414,10 @@ SpeakerGuard::SpeakerGuard() {
 
 void SpeakerGuard2800::proc15() {
 	int v = _speakerMode;
-	Scene2750 *scene = (Scene2750 *)R2_GLOBALS._sceneManager._scene;
+	Scene2800 *scene = (Scene2800 *)R2_GLOBALS._sceneManager._scene;
 
 	if (!_object2) {
-		_object2 = &scene->_actor1;
+		_object2 = &scene->_guard;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -542,7 +541,7 @@ void SpeakerMiranda300::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3) {
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
 			Scene300 *scene = (Scene300 *)R2_GLOBALS._sceneManager._scene;
@@ -628,10 +627,10 @@ void SpeakerMiranda3375::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3)
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -640,7 +639,7 @@ void SpeakerMiranda3375::proc15() {
 		_object1._effect = 1;
 		_object1.changeZoom(-1);
 
-		if (scene->_actor1._position.y != 163)
+		if (scene->_companion1._position.y != 163)
 			R2_GLOBALS._player.setStrip(8);
 		else
 			R2_GLOBALS._player.setStrip(2);
@@ -678,10 +677,10 @@ void SpeakerMiranda3385::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3)
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -727,10 +726,10 @@ void SpeakerMiranda3395::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3)
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -777,10 +776,10 @@ void SpeakerMiranda3400::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3)
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -802,12 +801,12 @@ void SpeakerMiranda3400::proc15() {
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4051, 5, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 2:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4050, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	default:
 		signal();
@@ -821,7 +820,7 @@ void SpeakerMiranda3600::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3)
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA)
 			_object2 = &R2_GLOBALS._player;
 		else
 			_object2 = &scene->_actor12;
@@ -934,7 +933,7 @@ void SpeakerNej2700::proc15() {
 	Scene2700 *scene = (Scene2700 *)R2_GLOBALS._sceneManager._scene;
 
 	if (!_object2) {
-		_object2 = &scene->_actor1;
+		_object2 = &scene->_nej;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -969,7 +968,7 @@ void SpeakerNej2750::proc15() {
 	Scene2750 *scene = (Scene2750 *)R2_GLOBALS._sceneManager._scene;
 
 	if (!_object2) {
-		_object2 = &scene->_actor1;
+		_object2 = &scene->_nej;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -1042,7 +1041,7 @@ void SpeakerPharisha2435::proc15() {
 	Scene2435 *scene = (Scene2435 *)R2_GLOBALS._sceneManager._scene;
 
 	if (!_object2) {
-		_object2 = &scene->_actor2;
+		_object2 = &scene->_astor;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -1177,9 +1176,10 @@ void SpeakerQuinn300::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3) {
+		if (R2_GLOBALS._player._characterIndex == R2_MIRANDA) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 300);
 			Scene300 *scene = (Scene300 *)R2_GLOBALS._sceneManager._scene;
 			_object2 = &scene->_quinn;
 		}
@@ -1220,6 +1220,51 @@ void SpeakerQuinn300::proc15() {
 	}
 }
 
+void SpeakerQuinn500::proc15() {
+	int v = _speakerMode;
+
+	if (!_object2) {
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN) {
+			_object2 = &R2_GLOBALS._player;
+		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 500);
+			Scene500 *scene = (Scene500 *)R2_GLOBALS._sceneManager._scene;
+			_object2 = &scene->_seeker;
+		}
+
+		_object2->hide();
+
+		_object1.postInit();
+		_object1._effect = _object2->_effect;
+		_object1._shade = _object2->_shade;
+		_object1.setPosition(_object2->_position);
+
+		if (_object2->_mover)
+			_object2->addMover(NULL);
+	}
+
+	if (v == 0) {
+		_object1.animate(ANIM_MODE_2, NULL);
+	} else {
+		((SceneItem *)_action)->_sceneRegionId = 0;
+
+		switch (_object2->_visage) {
+		case 10:
+			_object1.setup(4021, (v == 1) ? 5 : 7, 1);
+			break;
+
+		case 1500:
+			_object1.setup(4021, (v == 1) ? 1 : 3, 1);
+			break;
+
+		default:
+			break;
+		}
+
+		_object1.animate(ANIM_MODE_5, this);
+	}
+}
+
 void SpeakerQuinn1100::proc15() {
 	int v = _speakerMode;
 
@@ -1227,11 +1272,12 @@ void SpeakerQuinn1100::proc15() {
 		if (v == 0)
 			return;
 
-		if (R2_GLOBALS._player._characterIndex == 1) {
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 1100);
 			Scene1100 *scene = (Scene1100 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor16;
+			_object2 = &scene->_seeker;
 		}
 
 		_object2->hide();
@@ -1272,11 +1318,12 @@ void SpeakerQuinn2435::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1) {
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 2435);
 			Scene2435 *scene = (Scene2435 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion;
 		}
 
 		_object2->hide();
@@ -1298,11 +1345,12 @@ void SpeakerQuinn2450::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1) {
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 2435);
 			Scene2435 *scene = (Scene2435 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion;
 		}
 
 		_object2->hide();
@@ -1429,7 +1477,7 @@ void SpeakerQuinn3255::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor4;
+		_object2 = &scene->_quinn;
 		_object2->hide();
 		_object1.postInit();
 		_object1._effect = _object2->_effect;
@@ -1452,12 +1500,12 @@ void SpeakerQuinn3375::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1)
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN)
 			_object2 = &R2_GLOBALS._player;
-		else if (R2_GLOBALS._player._characterIndex == 2)
-			_object2 = &scene->_actor1;
+		else if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
+			_object2 = &scene->_companion1;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -1466,7 +1514,7 @@ void SpeakerQuinn3375::proc15() {
 		_object1._effect = 1;
 		_object1.changeZoom(-1);
 
-		if (scene->_actor1._position.y != 163)
+		if (scene->_companion1._position.y != 163)
 			R2_GLOBALS._player.setStrip(8);
 		else
 			R2_GLOBALS._player.setStrip(2);
@@ -1503,12 +1551,12 @@ void SpeakerQuinn3385::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1)
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN)
 			_object2 = &R2_GLOBALS._player;
-		else if (R2_GLOBALS._player._characterIndex == 2)
-			_object2 = &scene->_actor1;
+		else if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
+			_object2 = &scene->_companion1;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -1539,7 +1587,7 @@ void SpeakerQuinn3385::proc15() {
 		break;
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object1.setup(4010, 3, 1);
 		else
 			_object1.setup(4010, 5, 1);
@@ -1558,12 +1606,12 @@ void SpeakerQuinn3395::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1)
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN)
 			_object2 = &R2_GLOBALS._player;
-		else if (R2_GLOBALS._player._characterIndex == 2)
-			_object2 = &scene->_actor1;
+		else if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
+			_object2 = &scene->_companion1;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -1594,7 +1642,7 @@ void SpeakerQuinn3395::proc15() {
 		break;
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object1.setup(4010, 3, 1);
 		else
 			_object1.setup(4010, 5, 1);
@@ -1613,12 +1661,12 @@ void SpeakerQuinn3400::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1)
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN)
 			_object2 = &R2_GLOBALS._player;
-		else if (R2_GLOBALS._player._characterIndex == 2)
-			_object2 = &scene->_actor1;
+		else if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
+			_object2 = &scene->_companion1;
 		else
-			_object2 = &scene->_actor2;
+			_object2 = &scene->_companion2;
 
 		_object2->hide();
 		_object1.postInit();
@@ -1643,12 +1691,12 @@ void SpeakerQuinn3400::proc15() {
 	case 2:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4010, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 3:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4012, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	default:
 		signal();
@@ -1662,7 +1710,7 @@ void SpeakerQuinn3600::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 1)
+		if (R2_GLOBALS._player._characterIndex == R2_QUINN)
 			_object2 = &R2_GLOBALS._player;
 		else
 			_object2 = &scene->_actor10;
@@ -1948,9 +1996,9 @@ void SpeakerSeeker300::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 3) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
 			_object2 = &R2_GLOBALS._player;
-		} else {
+		} else {assert(R2_GLOBALS._sceneManager._sceneNumber == 300);
 			Scene300 *scene = (Scene300 *)R2_GLOBALS._sceneManager._scene;
 			_object2 = &scene->_seeker;
 		}
@@ -1980,6 +2028,43 @@ void SpeakerSeeker300::proc15() {
 	}
 }
 
+void SpeakerSeeker500::proc15() {
+	int v = _speakerMode;
+
+	if (!_object2) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
+			_object2 = &R2_GLOBALS._player;
+		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 500);
+			Scene500 *scene = (Scene500 *)R2_GLOBALS._sceneManager._scene;
+			_object2 = &scene->_seeker;
+		}
+
+		_object2->hide();
+		_object1.postInit();
+
+		_object1._effect = _object2->_effect;
+		_object1._shade = _object2->_shade;
+		_object1.setPosition(_object2->_position);
+
+		if (_object2->_mover)
+			_object2->addMover(NULL);
+	}
+
+	if (v == 0) {
+		_object1.animate(ANIM_MODE_2, NULL);
+	} else {
+		((SceneItem *)_action)->_sceneRegionId = 0;
+
+		if (v == 1)
+			_object1.setup(4041, 3, 1);
+		else
+			_object1.setup(4041, 1, 1);
+
+		_object1.animate(ANIM_MODE_5, this);
+	}
+}
+
 void SpeakerSeeker1100::proc15() {
 	int v = _speakerMode;
 
@@ -1987,11 +2072,12 @@ void SpeakerSeeker1100::proc15() {
 		if (v == 0)
 			return;
 
-		if (R2_GLOBALS._player._characterIndex == 2) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 1100);
 			Scene1100 *scene = (Scene1100 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor16;
+			_object2 = &scene->_seeker;
 		}
 
 		_object2->hide();
@@ -2043,9 +2129,10 @@ void SpeakerSeeker1900::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 1900);
 			Scene1900 *scene = (Scene1900 *)R2_GLOBALS._sceneManager._scene;
 			_object2 = &scene->_actor1;
 		}
@@ -2073,11 +2160,12 @@ void SpeakerSeeker2435::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 2435);
 			Scene2435 *scene = (Scene2435 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion;
 		}
 
 		_object2->hide();
@@ -2099,11 +2187,12 @@ void SpeakerSeeker2450::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2) {
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER) {
 			_object2 = &R2_GLOBALS._player;
 		} else {
+			assert(R2_GLOBALS._sceneManager._sceneNumber == 2450);
 			Scene2450 *scene = (Scene2450 *)R2_GLOBALS._sceneManager._scene;
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion;
 		}
 
 		_object2->hide();
@@ -2126,10 +2215,10 @@ void SpeakerSeeker3375::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion1;
 
 		_object2->hide();
 		_object1.postInit();
@@ -2138,7 +2227,7 @@ void SpeakerSeeker3375::proc15() {
 		_object1._effect = 1;
 		_object1.changeZoom(-1);
 
-		if (scene->_actor1._position.y != 163)
+		if (scene->_companion1._position.y != 163)
 			R2_GLOBALS._player.setStrip(8);
 		else
 			R2_GLOBALS._player.setStrip(2);
@@ -2175,10 +2264,10 @@ void SpeakerSeeker3385::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion1;
 
 		_object2->hide();
 		_object1.postInit();
@@ -2224,10 +2313,10 @@ void SpeakerSeeker3395::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion1;
 
 		_object2->hide();
 		_object1.postInit();
@@ -2273,10 +2362,10 @@ void SpeakerSeeker3400::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object2 = &R2_GLOBALS._player;
 		else
-			_object2 = &scene->_actor1;
+			_object2 = &scene->_companion1;
 
 		_object2->hide();
 		_object1.postInit();
@@ -2298,27 +2387,27 @@ void SpeakerSeeker3400::proc15() {
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4031, 1, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 2:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4031, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 3:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4030, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 4:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4031, 7, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 5:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4033, 1, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	default:
 		signal();
@@ -2332,7 +2421,7 @@ void SpeakerSeeker3600::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		if (R2_GLOBALS._player._characterIndex == 2)
+		if (R2_GLOBALS._player._characterIndex == R2_SEEKER)
 			_object2 = &R2_GLOBALS._player;
 		else
 			_object2 = &scene->_actor11;
@@ -2492,9 +2581,9 @@ void SpeakerSocko3200::proc15() {
 // Classes related to SOLDIER
 //----------------------------------------------------------------------------
 
-SpeakerSoldier::SpeakerSoldier(int colour) {
+SpeakerSoldier::SpeakerSoldier(int color) {
 	_speakerName = "SOLDIER";
-	_color1 = colour;
+	_color1 = color;
 	_color2 = 0;
 	_speakerMode = 0;
 	_textWidth = 300;
@@ -2577,7 +2666,7 @@ void SpeakerTeal1625::proc15() {
 
 	if (!_object2) {
 		Scene1625 *scene = (Scene1625 *)R2_GLOBALS._sceneManager._scene;
-		_object2 = &scene->_actor2;
+		_object2 = &scene->_tealHead;
 		_object2->hide();
 
 		_object1.postInit();
@@ -2625,7 +2714,7 @@ void SpeakerTeal3400::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor4;
+		_object2 = &scene->_teal;
 		_object2->hide();
 		_object1.postInit();
 		_object1._numFrames = 7;
@@ -2642,8 +2731,8 @@ void SpeakerTeal3400::proc15() {
 
 	if (scene ->_sceneMode == 3305) {
 		R2_GLOBALS._player.setStrip(6);
-		scene->_actor1.setStrip(6);
-		scene->_actor2.setStrip(6);
+		scene->_companion1.setStrip(6);
+		scene->_companion2.setStrip(6);
 	}
 
 	switch (v) {
@@ -2653,22 +2742,22 @@ void SpeakerTeal3400::proc15() {
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4107, 5, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 2:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4107, 1, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 3:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4107, 7, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 4:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4107, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	default:
 		signal();
@@ -2788,9 +2877,9 @@ void SpeakerTomko3245::proc15() {
 // Classes related to WEBBSTER
 //----------------------------------------------------------------------------
 
-SpeakerWebbster::SpeakerWebbster(int colour) {
+SpeakerWebbster::SpeakerWebbster(int color) {
 	_speakerName = "WEBBSTER";
-	_color1 = colour;
+	_color1 = color;
 	_color2 = 0;
 	_speakerMode = 0;
 	_textWidth = 300;
@@ -2829,7 +2918,7 @@ void SpeakerWebbster3375::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor3;
+		_object2 = &scene->_webbster;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -2837,7 +2926,7 @@ void SpeakerWebbster3375::proc15() {
 		_object1._effect = 1;
 		_object1.changeZoom(-1);
 
-		if (scene->_actor1._position.y != 163)
+		if (scene->_companion1._position.y != 163)
 			R2_GLOBALS._player.setStrip(8);
 		else
 			R2_GLOBALS._player.setStrip(2);
@@ -2873,7 +2962,7 @@ void SpeakerWebbster3385::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor3;
+		_object2 = &scene->_webbster;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -2917,7 +3006,7 @@ void SpeakerWebbster3395::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor3;
+		_object2 = &scene->_webbster;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -2961,7 +3050,7 @@ void SpeakerWebbster3400::proc15() {
 	int v = _speakerMode;
 
 	if (!_object2) {
-		_object2 = &scene->_actor3;
+		_object2 = &scene->_webbster;
 		_object2->hide();
 		_object1.postInit();
 		_object1.setPosition(_object2->_position);
@@ -2982,17 +3071,17 @@ void SpeakerWebbster3400::proc15() {
 	case 1:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4110, 5, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 2:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4110, 7, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	case 3:
 		((SceneItem *)_action)->_sceneRegionId = 0;
 		_object1.setup(4110, 3, 1);
-		_object1.animate(ANIM_MODE_5, NULL);
+		_object1.animate(ANIM_MODE_5, this);
 		break;
 	default:
 		signal();

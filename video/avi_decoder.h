@@ -20,10 +20,10 @@
  *
  */
 
-#ifndef VIDEO_AVI_PLAYER_H
-#define VIDEO_AVI_PLAYER_H
+#ifndef VIDEO_AVI_DECODER_H
+#define VIDEO_AVI_DECODER_H
 
-#include "common/endian.h"
+#include "common/array.h"
 #include "common/rational.h"
 #include "common/rect.h"
 #include "common/str.h"
@@ -66,8 +66,13 @@ public:
 	uint16 getWidth() const { return _header.width; }
 	uint16 getHeight() const { return _header.height; }
 
+	bool rewind();
+	bool isRewindable() const { return true; }
+	bool isSeekable() const;
+
 protected:
 	 void readNextPacket();
+	 bool seekIntern(const Audio::Timestamp &time);
 
 private:
 	struct BitmapInfoHeader {
@@ -102,13 +107,10 @@ private:
 	};
 
 	struct OldIndex {
+		uint32 id;
+		uint32 flags;
+		uint32 offset;
 		uint32 size;
-		struct Index {
-			uint32 id;
-			uint32 flags;
-			uint32 offset;
-			uint32 size;
-		} *indices;
 	};
 
 	// Index Flags
@@ -160,7 +162,7 @@ private:
 
 	class AVIVideoTrack : public FixedRateVideoTrack {
 	public:
-		AVIVideoTrack(int frameCount, const AVIStreamHeader &streamHeader, const BitmapInfoHeader &bitmapInfoHeader);
+		AVIVideoTrack(int frameCount, const AVIStreamHeader &streamHeader, const BitmapInfoHeader &bitmapInfoHeader, byte *initialPalette = 0);
 		~AVIVideoTrack();
 
 		void decodeFrame(Common::SeekableReadStream *stream);
@@ -173,7 +175,12 @@ private:
 		const Graphics::Surface *decodeNextFrame() { return _lastFrame; }
 		const byte *getPalette() const { _dirtyPalette = false; return _palette; }
 		bool hasDirtyPalette() const { return _dirtyPalette; }
-		void markPaletteDirty() { _dirtyPalette = true; }
+		void setCurFrame(int frame) { _curFrame = frame; }
+		void loadPaletteFromChunk(Common::SeekableReadStream *chunk);
+		void useInitialPalette();
+
+		bool isRewindable() const { return true; }
+		bool rewind();
 
 	protected:
 		Common::Rational getFrameRate() const { return Common::Rational(_vidsHeader.rate, _vidsHeader.scale); }
@@ -182,6 +189,7 @@ private:
 		AVIStreamHeader _vidsHeader;
 		BitmapInfoHeader _bmInfo;
 		byte _palette[3 * 256];
+		byte *_initialPalette;
 		mutable bool _dirtyPalette;
 		int _frameCount, _curFrame;
 
@@ -197,6 +205,11 @@ private:
 
 		void queueSound(Common::SeekableReadStream *stream);
 		Audio::Mixer::SoundType getSoundType() const { return _soundType; }
+		void skipAudio(const Audio::Timestamp &time, const Audio::Timestamp &frameTime);
+		void resetStream();
+
+		bool isRewindable() const { return true; }
+		bool rewind();
 
 	protected:
 		Audio::AudioStream *getAudioStream() const;
@@ -218,19 +231,24 @@ private:
 		Audio::QueuingAudioStream *createAudioStream();
 	};
 
-	OldIndex _ixInfo;
+	Common::Array<OldIndex> _indexEntries;
 	AVIHeader _header;
 
 	Common::SeekableReadStream *_fileStream;
-	bool _decodedHeader, _foundMovieList;
+	bool _decodedHeader;
+	bool _foundMovieList;
+	uint32 _movieListStart;
 
 	Audio::Mixer::SoundType _soundType;
 	Common::Rational _frameRateOverride;
 	void initCommon();
 
-	void runHandle(uint32 tag);
-	void handleList();
-	void handleStreamHeader();
+	bool parseNextChunk();
+	void skipChunk(uint32 size);
+	void handleList(uint32 listSize);
+	void handleStreamHeader(uint32 size);
+	uint16 getStreamType(uint32 tag) const { return tag & 0xFFFF; }
+	byte getStreamIndex(uint32 tag) const;
 };
 
 } // End of namespace Video

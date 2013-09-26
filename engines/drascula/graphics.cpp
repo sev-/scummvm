@@ -82,7 +82,7 @@ void DrasculaEngine::moveCursor() {
 	} else if (!_menuScreen && _color != kColorLightGreen)
 		color_abc(kColorLightGreen);
 	if (_hasName && !_menuScreen)
-		centerText(textName, mouseX, mouseY);
+		centerText(textName, _mouseX, _mouseY);
 	if (_menuScreen)
 		showMenu();
 	else if (_menuBar)
@@ -132,7 +132,7 @@ void DrasculaEngine::showFrame(Common::SeekableReadStream *stream, bool firstFra
 
 	byte *prevFrame = (byte *)malloc(64000);
 	Graphics::Surface *screenSurf = _system->lockScreen();
-	byte *screenBuffer = (byte *)screenSurf->pixels;
+	byte *screenBuffer = (byte *)screenSurf->getPixels();
 	uint16 screenPitch = screenSurf->pitch;
 	for (int y = 0; y < 200; y++) {
 		memcpy(prevFrame+y*320, screenBuffer+y*screenPitch, 320);
@@ -417,8 +417,8 @@ void DrasculaEngine::screenSaver() {
 	delete stream;
 
 	updateEvents();
-	xr = mouseX;
-	yr = mouseY;
+	xr = _mouseX;
+	yr = _mouseY;
 
 	while (!shouldQuit()) {
 		// efecto(bgSurface);
@@ -449,7 +449,7 @@ void DrasculaEngine::screenSaver() {
 		int x1_, y1_, off1, off2;
 
 		Graphics::Surface *screenSurf = _system->lockScreen();
-		byte *screenBuffer = (byte *)screenSurf->pixels;
+		byte *screenBuffer = (byte *)screenSurf->getPixels();
 		uint16 screenPitch = screenSurf->pitch;
 		for (int i = 0; i < 200; i++) {
 			for (int j = 0; j < 320; j++) {
@@ -480,18 +480,18 @@ void DrasculaEngine::screenSaver() {
 		// end of efecto()
 
 		updateEvents();
-		if (rightMouseButton == 1 || leftMouseButton == 1)
+		if (_rightMouseButton == 1 || _leftMouseButton == 1)
 			break;
-		if (mouseX != xr)
+		if (_mouseX != xr)
 			break;
-		if (mouseY != yr)
+		if (_mouseY != yr)
 			break;
 	}
 	// fin_ghost();
 	free(copia);
 	free(ghost);
 
-	loadPic(roomNumber, bgSurface, HALF_PAL);
+	loadPic(_roomNumber, bgSurface, HALF_PAL);
 	showCursor();
 }
 
@@ -538,7 +538,7 @@ int DrasculaEngine::playFrameSSN(Common::SeekableReadStream *stream) {
 			waitFrameSSN();
 
 			Graphics::Surface *screenSurf = _system->lockScreen();
-			byte *screenBuffer = (byte *)screenSurf->pixels;
+			byte *screenBuffer = (byte *)screenSurf->getPixels();
 			uint16 screenPitch = screenSurf->pitch;
 			if (FrameSSN)
 				mixVideo(screenBuffer, screenSurface, screenPitch);
@@ -557,7 +557,7 @@ int DrasculaEngine::playFrameSSN(Common::SeekableReadStream *stream) {
 				free(BufferSSN);
 				waitFrameSSN();
 				Graphics::Surface *screenSurf = _system->lockScreen();
-				byte *screenBuffer = (byte *)screenSurf->pixels;
+				byte *screenBuffer = (byte *)screenSurf->getPixels();
 				uint16 screenPitch = screenSurf->pitch;
 				if (FrameSSN)
 					mixVideo(screenBuffer, screenSurface, screenPitch);

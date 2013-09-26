@@ -1179,7 +1179,7 @@ void PaletteRotation::signal() {
 		int count = _end - _currIndex;
 		g_system->getPaletteManager()->setPalette((const byte *)&_palette[_currIndex * 3], _start, count);
 
-		if (count2) {
+		if (count2 > 0) {
 			g_system->getPaletteManager()->setPalette((const byte *)&_palette[_start * 3], _start + count, count2);
 		}
 	}
@@ -1516,6 +1516,10 @@ void ScenePalette::changeBackground(const Rect &bounds, FadeMode fadeMode) {
 
 	g_globals->_screenSurface.copyFrom(g_globals->_sceneManager._scene->_backSurface,
 		tempRect, Rect(0, 0, tempRect.width(), tempRect.height()), NULL);
+	if (g_vm->getGameID() == GType_Ringworld2 && !GLOBALS._player._uiEnabled
+			&& T2_GLOBALS._interfaceY == UI_INTERFACE_Y) {
+		g_globals->_screenSurface.fillRect(Rect(0, UI_INTERFACE_Y, SCREEN_WIDTH, SCREEN_HEIGHT - 1), 0);
+	}
 
 	for (SynchronizedList<PaletteModifier *>::iterator i = tempPalette._listeners.begin(); i != tempPalette._listeners.end(); ++i)
 		delete *i;
@@ -2111,8 +2115,13 @@ int SceneObject::getFrameCount() {
 
 void SceneObject::animEnded() {
 	_animateMode = ANIM_MODE_NONE;
-	if (_endAction)
-		_endAction->signal();
+	if (_endAction) {
+		Action *endAction = _endAction;
+		if (g_vm->getGameID() == GType_Ringworld2)
+			_endAction = NULL;
+
+		endAction->signal();
+	}
 }
 
 int SceneObject::changeFrame() {
@@ -2361,12 +2370,17 @@ void SceneObject::animate(AnimateMode animMode, ...) {
 
 	case ANIM_MODE_8:
 	case ANIM_MODE_9:
-		_field68 = va_arg(va, int);
-		_endAction = va_arg(va, Action *);
-		_frameChange = 1;
-		_endFrame = getFrameCount();
-		if (_frame == _endFrame)
-			setFrame(getNewFrame());
+		if (_animateMode == ANIM_MODE_9 && g_vm->getGameID() == GType_Ringworld2) {
+			_frameChange = -1;
+			_field2E = _position;
+		} else {
+			_field68 = va_arg(va, int);
+			_endAction = va_arg(va, Action *);
+			_frameChange = 1;
+			_endFrame = getFrameCount();
+			if (_frame == _endFrame)
+				setFrame(getNewFrame());
+		}
 		break;
 	}
 	va_end(va);
@@ -2752,18 +2766,34 @@ void BackgroundSceneObject::draw() {
 	g_globals->_sceneManager._scene->_backSurface.copyFrom(frame, destRect, priorityRegion);
 }
 
-void BackgroundSceneObject::setup2(int visage, int stripFrameNum, int frameNum, int posX, int posY, int priority, int32 arg10) {
-	warning("TODO: Implement properly BackgroundSceneObject::setup2()");
+SceneObject *BackgroundSceneObject::clone() const {
+	BackgroundSceneObject *obj = new BackgroundSceneObject(*this);
+	return obj;
+}
+
+void BackgroundSceneObject::setup2(int visage, int stripFrameNum, int frameNum, int posX, int posY, int priority, int effect) {
+	// Check if the given object is already in the background object list
+	if (R2_GLOBALS._sceneManager._scene->_bgSceneObjects.contains(this)) {
+		_flags |= OBJFLAG_REMOVE;
+
+		// Clone the item
+		SceneObject *obj = clone();
+		obj->_flags |= OBJFLAG_CLONED;
+		R2_GLOBALS._sceneManager._scene->_bgSceneObjects.push_back(obj);
+
+		_flags |= ~OBJFLAG_REMOVE;
+	}
+
 	postInit();
 	setVisage(visage);
 	setStrip(stripFrameNum);
 	setFrame(frameNum);
-	setPosition(Common::Point(posX, posY), 0);
+	setPosition(Common::Point(posX, posY));
 	fixPriority(priority);
 }
 
-void BackgroundSceneObject::proc27() {
-	warning("STUB: BackgroundSceneObject::proc27()");
+void BackgroundSceneObject::copySceneToBackground() {
+	GLOBALS._sceneManager._scene->_backSurface.copyFrom(g_globals->gfxManager().getSurface(), 0, 0);
 }
 
 /*--------------------------------------------------------------------------*/
@@ -3262,6 +3292,7 @@ void Player::postInit(SceneObjectList *OwnerList) {
 		_moveDiff.y = 2;
 		_effect = 1;
 		_shade = 0;
+		_linkedActor = NULL;
 
 		setObjectWrapper(new SceneObjectWrapper());
 		setPosition(_characterPos[_characterIndex]);
@@ -3992,7 +4023,7 @@ int WalkRegions::indexOf(const Common::Point &pt, const Common::List<int> *index
 }
 
 void WalkRegions::synchronize(Serializer &s) {
-	// Synchronise the list of disabled regions as a list of values terminated with a '-1'
+	// Synchronize the list of disabled regions as a list of values terminated with a '-1'
 	int regionId = 0;
 	if (s.isLoading()) {
 		_disabledRegions.clear();
@@ -4242,9 +4273,10 @@ void SceneHandler::process(Event &event) {
 			// Scan the item list to find one the mouse is within
 			SynchronizedList<SceneItem *>::iterator i;
 			for (i = g_globals->_sceneItems.begin(); i != g_globals->_sceneItems.end(); ++i) {
-				if ((*i)->contains(event.mousePos)) {
+				SceneItem *item = *i;				
+				if (item->contains(event.mousePos)) {
 					// Pass the action to the item
-					bool handled = (*i)->startAction(g_globals->_events.getCursor(), event);
+					bool handled = item->startAction(g_globals->_events.getCursor(), event);
 					if (!handled)
 						// Item wasn't handled, keep scanning
 						continue;

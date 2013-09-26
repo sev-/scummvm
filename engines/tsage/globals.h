@@ -242,12 +242,13 @@ namespace Ringworld2 {
 #define SPEECH_TEXT 1
 #define SPEECH_VOICE 2
 
-#define k5A78C 15
-#define k5A78D 16
-#define k5A790 18
-#define k5A791 17
-
 class ScannerDialog;
+
+struct VampireData {
+	bool _isAlive;
+	int _shotsRequired;
+	Common::Point _position;
+};
 
 class Ringworld2Globals: public TsAGE2Globals {
 public:
@@ -258,7 +259,7 @@ public:
 	byte _fadePaletteMap[10][256];
 	byte _paletteMap[4096];
 	int _insetUp;
-	int _frameEdgeColour;	// _v421e
+	int _frameEdgeColor;	// _v421e
 	Rect _v5589E;
 	Rect _v558B6;
 	int _v558C2;
@@ -269,29 +270,28 @@ public:
 	int _v565E7;
 	int _v565E9;
 	int _v565EB;
-	int _v565F5;
-	int _v565F6;
-	int _v565F8;
-	int _v565FA;
+	int _foodCount;
+	int _rimLocation;
+	int _rimTransportLocation;
 	int _v5657C;
 	byte _v565AE;
-	byte _v56605[14];
-	int _v56613[76];
-	byte _v566A4;
-	byte _v566A5;
+	byte _spillLocation[14];
+	VampireData _vampireData[18];
+	byte _flubMazeArea;
+	byte _flubMazeEntryDirection;
 	int _v566A6;
-	byte _v566A3;
-	byte _v566A8;
-	byte _v566A9;
-	byte _v566AA;
-	byte _v566AB[1000];
-	int _v56A93;
-	byte _v56A99;
+	byte _landerSuitNumber;
+	byte _desertStepsRemaining;
+	byte _desertCorrectDirection;
+	byte _desertPreviousDirection;
+	byte _desertMovements[1000];
+	int _desertWrongDirCtr;
+	byte _balloonAltitude;
 	int _scene1925CurrLevel; //_v56A9C
-	int _v56A9E;
+	int _walkwaySceneNumber;
 	byte _v56AA0;
-	byte _v56AA1;
-	int _v56AA2;
+	byte _scientistConvIndex;
+	Common::Point _ventCellPos;
 	int _v56AA4;
 	byte _v56AA6;
 	byte _v56AA7;
@@ -304,9 +304,12 @@ public:
 	int _v57810;
 	int _v57C2C;
 	int _speechSubtitles;
-	byte _v565EC[5];
+	Common::Point _s1550PlayerArea[3]; // only used for Quinn and Seeker
 	byte _scannerFrequencies[4];
 	byte _stripManager_lookupList[12];
+	byte _scene1550JunkLocations[508];
+	Common::Point _balloonPosition;
+
 	ScannerDialog *_scannerDialog;
 
 	Ringworld2Globals();

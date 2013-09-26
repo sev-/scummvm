@@ -39,7 +39,7 @@ SpriteResource::~SpriteResource() {
 
 void SpriteResource::draw(Graphics::Surface *destSurface, bool flipX, bool flipY) {
 	if (_pixels) {
-		byte *dest = (byte*)destSurface->pixels;
+		byte *dest = (byte*)destSurface->getPixels();
 		const int destPitch = destSurface->pitch;
 		if (_rle)
 			unpackSpriteRle(_pixels, _dimensions.width, _dimensions.height, dest, destPitch, flipX, flipY);
@@ -53,7 +53,7 @@ bool SpriteResource::load(uint32 fileHash, bool doLoadPosition) {
 	unload();
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeBitmap) {
-		_vm->_res->loadResource(_resourceHandle);
+		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
 		const byte *spriteData = _resourceHandle.data();
 		NPoint *position = doLoadPosition ? &_position : NULL;
 		parseBitmapResource(spriteData, &_rle, &_dimensions, position, NULL, &_pixels);
@@ -83,7 +83,7 @@ bool PaletteResource::load(uint32 fileHash) {
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() &&
 		(_resourceHandle.type() == kResTypeBitmap || _resourceHandle.type() == kResTypePalette)) {
-		_vm->_res->loadResource(_resourceHandle);
+		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
 		_palette = _resourceHandle.data();
 		// Check if the palette is stored in a bitmap
 		if (_resourceHandle.type() == kResTypeBitmap)
@@ -116,7 +116,7 @@ AnimResource::~AnimResource() {
 
 void AnimResource::draw(uint frameIndex, Graphics::Surface *destSurface, bool flipX, bool flipY) {
 	const AnimFrameInfo frameInfo = _frames[frameIndex];
-	byte *dest = (byte*)destSurface->pixels;
+	byte *dest = (byte*)destSurface->getPixels();
 	const int destPitch = destSurface->pitch;
 	_currSpriteData = _spriteData + frameInfo.spriteDataOffs;
 	_width = frameInfo.drawOffset.width;
@@ -144,7 +144,7 @@ bool AnimResource::load(uint32 fileHash) {
 	uint16 frameListStartOfs, frameCount;
 	uint32 spriteDataOfs, paletteDataOfs;
 
-	_vm->_res->loadResource(_resourceHandle);
+	_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
 	resourceData = _resourceHandle.data();
 
 	animListCount = READ_LE_UINT16(resourceData);
@@ -298,7 +298,7 @@ void MouseCursorResource::draw(int frameNum, Graphics::Surface *destSurface) {
 		const int sourcePitch = (_cursorSprite.getDimensions().width + 3) & 0xFFFC; // 4 byte alignment
 		const int destPitch = destSurface->pitch;
 		const byte *source = _cursorSprite.getPixels() + _cursorNum * (sourcePitch * 32) + frameNum * 32;
-		byte *dest = (byte*)destSurface->pixels;
+		byte *dest = (byte*)destSurface->getPixels();
 		for (int16 yc = 0; yc < 32; yc++) {
 			memcpy(dest, source, 32);
 			source += sourcePitch;
@@ -323,7 +323,7 @@ void TextResource::load(uint32 fileHash) {
 	unload();
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeText) {
-		_vm->_res->loadResource(_resourceHandle);
+		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
 		_textData = _resourceHandle.data();
 		_count = READ_LE_UINT32(_textData);
 	}
@@ -359,7 +359,7 @@ void DataResource::load(uint32 fileHash) {
 	unload();
 	_vm->_res->queryResource(fileHash, _resourceHandle);
 	if (_resourceHandle.isValid() && _resourceHandle.type() == kResTypeData) {
-		_vm->_res->loadResource(_resourceHandle);
+		_vm->_res->loadResource(_resourceHandle, _vm->applyResourceFixes());
 		data = _resourceHandle.data();
 		dataSize = _resourceHandle.size();
 	}
