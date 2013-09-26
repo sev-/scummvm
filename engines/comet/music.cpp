@@ -424,6 +424,7 @@ void MusicPlayer::changeOuputLevel(uint8 value, uint8 *data, int bp) {
   	outputLevel = (*data) & 0x3F;
   	outputLevel = 0x3F - ((((outputLevel * bp)*2) + 0x7F) / 0xFE);
   	keyScaleLevel = data[0] & 0xC0;
+	debug(5, "MusicPlayer::changeOutputLevel() unused keyScaleLevel: %d", keyScaleLevel);
   	writeOPL(0x40 + value, (data[0] & 0xC0) | (outputLevel & 0x3F));
 }
 
