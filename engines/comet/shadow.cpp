@@ -684,7 +684,7 @@ void CometEngine::setMouseCursor(AnimationCel *cursorSprite) {
 
 	if (_currCursorSprite != data) {
 		Graphics::Surface *cursor = _screen->decompressAnimationCel(data, width, height);
-		CursorMan.replaceCursor((const byte *)cursor->pixels, cursor->w, cursor->h, 0, 0, 0);
+		CursorMan.replaceCursor((const byte *)cursor->getPixels(), cursor->w, cursor->h, 0, 0, 0);
 		cursor->free();
 		delete cursor;
 		_currCursorSprite = data;

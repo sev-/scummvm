@@ -292,7 +292,7 @@ void Screen::screenTransitionEffect() {
 	byte *vgaScreen = new byte[64000];
 
 	Graphics::Surface *screen = _vm->_system->lockScreen();
-	memcpy(vgaScreen, screen->pixels, 320 * 200);
+	memcpy(vgaScreen, screen->getPixels(), 320 * 200);
 	_vm->_system->unlockScreen();
 
 	for (int i = 0; i < 7; i++) {
@@ -319,7 +319,7 @@ void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
 	const int kScrollStripWidth = 40;
 
 	Graphics::Surface *screen = _vm->_system->lockScreen();
-	memcpy(_workScreen, screen->pixels, 320 * 200);
+	memcpy(_workScreen, screen->getPixels(), 320 * 200);
 	_vm->_system->unlockScreen();
 
 	int copyOfs = 0;
@@ -864,7 +864,7 @@ Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 wid
 	Graphics::Surface *surface = new Graphics::Surface();
 	surface->create(width, height, Graphics::PixelFormat::createFormatCLUT8());
 	const byte *src = celData;
-	byte *dst = (byte*)surface->pixels;
+	byte *dst = (byte*)surface->getPixels();
 	while (height--) {
 		byte *row = dst;
 		byte chunks = *src++;
