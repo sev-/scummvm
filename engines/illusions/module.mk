@@ -1,13 +1,16 @@
 MODULE := engines/illusions
 
 MODULE_OBJS := \
+    abortablethread.o \
 	actor.o \
 	actorresource.o \
 	backgroundresource.o \
 	camera.o \
+	cursor.o \
 	detection.o \
 	dictionary.o \
 	fixedpoint.o \
+	fontresource.o \
 	graphics.o \
 	illusions.o \
 	input.o \
@@ -18,8 +21,10 @@ MODULE_OBJS := \
 	scriptresource.o \
 	scriptthread.o \
 	sequenceopcodes.o \
+	soundresource.o \
 	spritedecompressqueue.o \
 	spritedrawqueue.o \
+	talkresource.o \
 	thread.o \
 	time.o \
 	timerthread.o \

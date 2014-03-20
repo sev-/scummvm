@@ -20,41 +20,28 @@
  *
  */
 
-#ifndef ILLUSIONS_SCREEN_H
-#define ILLUSIONS_SCREEN_H
+#ifndef ILLUSIONS_SOUNDRESOURCE_H
+#define ILLUSIONS_SOUNDRESOURCE_H
 
-#include "illusions/spritedrawqueue.h"
-#include "illusions/spritedecompressqueue.h"
-#include "graphics/surface.h"
+#include "illusions/graphics.h"
+#include "illusions/resourcesystem.h"
 
 namespace Illusions {
 
 class IllusionsEngine;
 
-class Screen {
+class SoundGroupResourceLoader : public BaseResourceLoader {
 public:
-	Screen(IllusionsEngine *vm);
-	~Screen();
-	Graphics::Surface *allocSurface(int16 width, int16 height);
-	Graphics::Surface *allocSurface(SurfInfo &surfInfo);
-	bool isDisplayOn();
-	void setDisplayOn(bool isOn);
-	uint16 getColorKey2();
-	void updateSprites();
-	void drawSurface10(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface11(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect);
-	void drawSurface20(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface21(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect);
-public:
+	SoundGroupResourceLoader(IllusionsEngine *vm) : _vm(vm) {}
+	virtual ~SoundGroupResourceLoader() {}
+	virtual void load(Resource *resource);
+	virtual void unload(Resource *resource);
+	virtual void buildFilename(Resource *resource);
+	virtual bool isFlag(int flag);
+protected:
 	IllusionsEngine *_vm;
-	bool _displayOn;
-	uint16 _colorKey1;
-	uint16 _colorKey2;
-	SpriteDecompressQueue *_decompressQueue;
-	SpriteDrawQueue *_drawQueue;
-	Graphics::Surface *_backSurface;
 };
 
 } // End of namespace Illusions
 
-#endif // ILLUSIONS_SCREEN_H
+#endif // ILLUSIONS_SOUNDRESOURCE_H

@@ -21,6 +21,8 @@
  */
 
 #include "illusions/illusions.h"
+#include "illusions/abortablethread.h"
+#include "illusions/actor.h"
 #include "illusions/scriptman.h"
 #include "illusions/scriptthread.h"
 #include "illusions/scriptopcodes.h"
@@ -116,6 +118,10 @@ int16 ScriptStack::peek() {
 	return value;
 }
 
+int16 *ScriptStack::topPtr() {
+	return &_stack[_stackPos];
+}
+
 // ScriptMan
 
 ScriptMan::ScriptMan(IllusionsEngine *vm)
@@ -166,8 +172,23 @@ uint32 ScriptMan::startTimerThread(uint32 duration, uint32 threadId) {
 	return newTimerThread(duration, threadId, false);
 }
 
+uint32 ScriptMan::startAbortableThread(byte *scriptCodeIp1, byte *scriptCodeIp2, uint32 callingThreadId) {
+	debug("Starting abortable thread");
+	uint32 tempThreadId = newTempThreadId();
+	uint32 scriptThreadId = startTempScriptThread(scriptCodeIp1, tempThreadId, 0, 0, 0);
+	AbortableThread *abortableThread = new AbortableThread(_vm, tempThreadId, callingThreadId, 0, scriptThreadId, scriptCodeIp2);
+	_threads->startThread(abortableThread);
+	return tempThreadId;
+}
+
 void ScriptMan::setCurrFontId(uint32 fontId) {
 	_fontId = fontId;
+}
+
+void ScriptMan::reset() {
+	// TODO _scriptResource->_blockCounters.clear();
+	// TODO _scriptResource->_properties.clear();
+	// TODO script_sub_417FF0(1, 0);
 }
 
 bool ScriptMan::enterScene(uint32 sceneId, uint32 threadId) {
@@ -178,6 +199,17 @@ bool ScriptMan::enterScene(uint32 sceneId, uint32 threadId) {
 	}
 	_activeScenes.push(sceneId);
 	return progInfo != 0;
+}
+
+void ScriptMan::exitScene(uint32 threadId) {
+	uint32 sceneId = _activeScenes.getCurrentScene();
+	// TODO krnfileDump(sceneId);
+	// TODO UpdateFunctions_disableByTag__TODO_maybe(sceneId);
+	_threads->terminateThreadsByTag(sceneId, threadId);
+	_vm->_controls->destroyControlsByTag(sceneId);
+	// TODO causeFunc_removeBySceneId(sceneId);
+	_vm->_resSys->unloadResourcesByTag(sceneId);
+	_activeScenes.pop();
 }
 
 void ScriptMan::newScriptThread(uint32 threadId, uint32 callingThreadId, uint notifyFlags,

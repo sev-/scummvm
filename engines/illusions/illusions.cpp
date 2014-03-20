@@ -21,20 +21,24 @@
  */
 
 #include "illusions/illusions.h"
-#include "illusions/resourcesystem.h"
-#include "illusions/backgroundresource.h"
-#include "illusions/camera.h"
-#include "illusions/graphics.h"
-#include "illusions/input.h"
-#include "illusions/updatefunctions.h"
 #include "illusions/actor.h"
 #include "illusions/actorresource.h"
-#include "illusions/thread.h"
+#include "illusions/backgroundresource.h"
+#include "illusions/camera.h"
+#include "illusions/cursor.h"
+#include "illusions/dictionary.h"
+#include "illusions/fontresource.h"
+#include "illusions/graphics.h"
+#include "illusions/input.h"
+#include "illusions/resourcesystem.h"
 #include "illusions/screen.h"
 #include "illusions/scriptresource.h"
 #include "illusions/scriptman.h"
+#include "illusions/soundresource.h"
+#include "illusions/talkresource.h"
+#include "illusions/thread.h"
 #include "illusions/time.h"
-#include "illusions/dictionary.h"
+#include "illusions/updatefunctions.h"
 
 #include "audio/audiostream.h"
 #include "common/config-manager.h"
@@ -85,9 +89,12 @@ Common::Error IllusionsEngine::run() {
 
 	_resSys = new ResourceSystem();
 	_resSys->addResourceLoader(0x00060000, new ActorResourceLoader(this));
+	_resSys->addResourceLoader(0x00080000, new SoundGroupResourceLoader(this));
 	_resSys->addResourceLoader(0x000D0000, new ScriptResourceLoader(this));
+	_resSys->addResourceLoader(0x000F0000, new TalkResourceLoader(this));
 	_resSys->addResourceLoader(0x00100000, new ActorResourceLoader(this));
 	_resSys->addResourceLoader(0x00110000, new BackgroundResourceLoader(this));
+	_resSys->addResourceLoader(0x00120000, new FontResourceLoader(this));
 
 	_screen = new Screen(this);
 	_input = new Input();	
@@ -96,6 +103,7 @@ Common::Error IllusionsEngine::run() {
 	_backgroundItems = new BackgroundItems(this);
 	_camera = new Camera(this);
 	_controls = new Controls(this);
+	_cursor = new Cursor(this);
 	
 	// TODO Move to own class
 	_resGetCtr = 0;
@@ -144,6 +152,8 @@ Common::Error IllusionsEngine::run() {
 	*/	
 	
 	_resSys->loadResource(0x000D0001, 0, 0);
+
+#if 0	
 	_resSys->loadResource(0x0011000B, 0, 0);
 	_resSys->loadResource(0x0010000B, 0, 0);
 
@@ -152,6 +162,7 @@ Common::Error IllusionsEngine::run() {
 	Control *control = *_controls->_controls.begin();
 	control->setActorFrameIndex(1);
 	control->appearActor();
+#endif
 #endif
 
 	_scriptMan->startScriptThread(0x00020004, 0, 0, 0, 0);
@@ -170,6 +181,7 @@ Common::Error IllusionsEngine::run() {
 	}
 #endif
 
+	delete _cursor;
 	delete _controls;
 	delete _camera;
 	delete _backgroundItems;
@@ -179,6 +191,8 @@ Common::Error IllusionsEngine::run() {
 	delete _screen;
 	delete _resSys;
 	delete _dict;
+	
+	debug("Ok");
 	
 	return Common::kNoError;
 }
@@ -232,28 +246,6 @@ void IllusionsEngine::notifyThreadId(uint32 &threadId) {
 		threadId = 0;
 		_scriptMan->_threads->notifyId(tempThreadId);
 	}
-}
-
-void IllusionsEngine::setCursorControl(Control *control) {
-	// TODO Dummy, to be replaced later
-}
-
-void IllusionsEngine::placeCursor(Control *control, uint32 sequenceId) {
-	// TODO Dummy, to be replaced later
-}
-
-bool IllusionsEngine::showCursor() {
-	// TODO Dummy, to be replaced later
-	// TODO ++cursor._visibleCtr;
-	// TODO if (cursor._visibleCtr > 0)
-	return false;
-}
-
-bool IllusionsEngine::hideCursor() {
-	// TODO Dummy, to be replaced later
-	// TODO --cursor._visibleCtr;
-	// TODO if (cursor.visibleCtr <= 0) 
-	return false;
 }
 
 uint32 IllusionsEngine::getElapsedUpdateTime() {
@@ -369,7 +361,7 @@ int IllusionsEngine::convertPanXCoord(int16 x) {
 
 Common::Point IllusionsEngine::getNamedPointPosition(uint32 namedPointId) {
 	// TODO
-	return Common::Point(320, 240);
+	return Common::Point(0, 0);
 }
 
 void IllusionsEngine::playVideo(uint32 videoId, uint32 objectId, uint32 priority, uint32 threadId) {

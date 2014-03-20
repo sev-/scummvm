@@ -23,6 +23,7 @@
 #include "illusions/illusions.h"
 #include "illusions/actor.h"
 #include "illusions/camera.h"
+#include "illusions/cursor.h"
 #include "illusions/dictionary.h"
 #include "illusions/input.h"
 #include "illusions/screen.h"
@@ -73,6 +74,7 @@ Actor::Actor(IllusionsEngine *vm)
 	_position2.y = 0;
 	_facing = 64;
 	_fontId = 0;
+	_actorIndex = 0;
 	_parentObjectId = 0;
 	_linkIndex = 0;
 	_linkIndex2 = 0;
@@ -104,7 +106,6 @@ Actor::Actor(IllusionsEngine *vm)
 	_pathInitialPosFlag = 1;
 	_pathInitialPos.x = 0;
 	_pathInitialPos.y = 0;
-	_actorIndex = 0;
 	_namedPointsCount = 0;
 	_namedPoints = 0;
 	_field164 = 0;
@@ -210,7 +211,7 @@ void Control::pause() {
 	_vm->_dict->setObjectControl(_objectId, 0);
 
 	if (_objectId == 0x40004)
-		_vm->setCursorControl(0);
+		_vm->_cursor->setControl(0);
 
 	if (_actor && !(_actor->_flags & 0x0200))
 		_actor->destroySurface();
@@ -222,7 +223,7 @@ void Control::unpause() {
 	_vm->_dict->setObjectControl(_objectId, this);
 
 	if (_objectId == 0x40004)
-		_vm->setCursorControl(this);
+		_vm->_cursor->setControl(this);
   
 	if (_actor && !(_actor->_flags & 0x0200)) {
 		SurfInfo surfInfo;
@@ -238,15 +239,7 @@ void Control::unpause() {
 
 void Control::appearActor() {
 	if (_objectId == 0x40004) {
-		if (_vm->showCursor()) {
-			_flags |= 1;
-			_actor->_flags |= 1;
-			if (_actor->_frameIndex) {
-				_actor->_flags |= 0x2000;
-				_actor->_flags |= 0x4000;
-			}
-			_vm->_input->discardButtons(0xFFFF);
-		}
+		_vm->_cursor->show();
 	} else {
 		if (_actor->_frameIndex || _actorTypeId == 0x50004)
 			_actor->_flags |= 1;
@@ -262,13 +255,10 @@ void Control::appearActor() {
 
 void Control::disappearActor() {
 	if (_objectId == 0x40004) {
-		if (_vm->hideCursor()) {
-			_flags &= ~1;
-			_actor->_flags &= ~1;
-		}
+		_vm->_cursor->hide();
 	} else {
-		_actor->_flags |= ~1;
-		_actor->_flags |= ~0x1000;
+		_actor->_flags &= ~1;
+		_actor->_flags &= ~0x1000;
 		for (uint i = 0; i < kSubObjectsCount; ++i)
 			if (_actor->_subobjects[i]) {
 				Control *subControl = _vm->_dict->getObjectControl(_actor->_subobjects[i]);
@@ -283,39 +273,43 @@ bool Control::isActorVisible() {
 
 void Control::activateObject() {
 	_flags |= 1;
-	for (uint i = 0; i < kSubObjectsCount; ++i)
-		if (_actor->_subobjects[i]) {
-			Control *subControl = _vm->_dict->getObjectControl(_actor->_subobjects[i]);
-			subControl->activateObject();
-		}
+	if (_actor) {
+		for (uint i = 0; i < kSubObjectsCount; ++i)
+			if (_actor->_subobjects[i]) {
+				Control *subControl = _vm->_dict->getObjectControl(_actor->_subobjects[i]);
+				subControl->activateObject();
+			}
+	}
 }
 
 void Control::deactivateObject() {
 	_flags |= ~1;
-	for (uint i = 0; i < kSubObjectsCount; ++i)
-		if (_actor->_subobjects[i]) {
-			Control *subControl = _vm->_dict->getObjectControl(_actor->_subobjects[i]);
-			subControl->deactivateObject();
-		}
+	if (_actor) {
+		for (uint i = 0; i < kSubObjectsCount; ++i)
+			if (_actor->_subobjects[i]) {
+				Control *subControl = _vm->_dict->getObjectControl(_actor->_subobjects[i]);
+				subControl->deactivateObject();
+			}
+	}
 }
 
 void Control::readPointsConfig(byte *pointsConfig) {
 	_unkPt.x = READ_LE_UINT16(pointsConfig + 0);
 	_unkPt.y = READ_LE_UINT16(pointsConfig + 2);
-	pointsConfig += 2;
+	pointsConfig += 4;
 	_pt.x = READ_LE_UINT16(pointsConfig + 0);
 	_pt.y = READ_LE_UINT16(pointsConfig + 2);
-	pointsConfig += 2;
+	pointsConfig += 4;
 	_feetPt.x = READ_LE_UINT16(pointsConfig + 0);
 	_feetPt.y = READ_LE_UINT16(pointsConfig + 2);
-	pointsConfig += 2;
+	pointsConfig += 4;
 	_position.x = READ_LE_UINT16(pointsConfig + 0);
 	_position.y = READ_LE_UINT16(pointsConfig + 2);
-	pointsConfig += 2;
+	pointsConfig += 4;
 	for (uint i = 0; i < kSubObjectsCount; ++i) {
 		_subobjectsPos[i].x = READ_LE_UINT16(pointsConfig + 0);
 		_subobjectsPos[i].y = READ_LE_UINT16(pointsConfig + 2);
-		pointsConfig += 2;
+		pointsConfig += 4;
 	}
 }
 
@@ -553,7 +547,7 @@ void Control::sequenceActor() {
 	while (_actor->_seqCodeValue3 <= 0 && !sequenceFinished) {
 		bool breakInner = false;
 		while (!breakInner) {
-			debug("op: %08X", _actor->_seqCodeIp[0]);
+			debug(1, "SEQ op: %08X", _actor->_seqCodeIp[0]);
 			opCall._op = _actor->_seqCodeIp[0] & 0x7F;
 			opCall._opSize = _actor->_seqCodeIp[1];
 			opCall._code = _actor->_seqCodeIp + 2;
@@ -573,7 +567,7 @@ void Control::sequenceActor() {
 	}
 
 	if (_actor->_newFrameIndex != 0) {
-		debug("New frame %d", _actor->_newFrameIndex);
+		debug(1, "New frame %d", _actor->_newFrameIndex);
 		setActorFrameIndex(_actor->_newFrameIndex);
 		if (!(_actor->_flags & 1) && (_actor->_flags & 0x1000) && (_objectId != 0x40004)) {
 			appearActor();
@@ -582,7 +576,7 @@ void Control::sequenceActor() {
 	}
 	
 	if (sequenceFinished) {
-		debug("Sequence has finished");
+		debug(1, "Sequence has finished");
 		_actor->_seqCodeIp = 0;
 	}
 	
@@ -604,12 +598,10 @@ void Control::startSequenceActorIntern(uint32 sequenceId, int value, int value2,
 	_actor->_path40 = 0;
 	
 	Sequence *sequence = _vm->_dict->findSequence(sequenceId);
-	debug("Control::startSequenceActorIntern() sequence = %p", (void*)sequence);
+	debug(1, "Control::startSequenceActorIntern() sequence = %p", (void*)sequence);
 	
 	_actor->_seqCodeIp = sequence->_sequenceCode;
 	_actor->_frames = _vm->_actorItems->findSequenceFrames(sequence);
-	debug("Control::startSequenceActorIntern() _actor->_seqCodeIp = %p", (void*)_actor->_seqCodeIp);
-	debug("Control::startSequenceActorIntern() _actor->_frames = %p", (void*)_actor->_frames);
 	
 	_actor->_seqCodeValue3 = 0;
 	_actor->_seqCodeValue1 = 0;
@@ -644,21 +636,30 @@ Controls::~Controls() {
 	delete _sequenceOpcodes;
 }
 
+void Controls::placeBackgroundObject(BackgroundObject *backgroundObject) {
+	Control *control = newControl();
+	control->_objectId = backgroundObject->_objectId;
+	control->_flags = backgroundObject->_flags;
+	control->_priority = backgroundObject->_priority;
+	control->readPointsConfig(backgroundObject->_pointsConfig);
+	control->activateObject();
+	_controls.push_back(control);
+	_vm->_dict->setObjectControl(control->_objectId, control);
+}
+
 void Controls::placeActor(uint32 actorTypeId, Common::Point placePt, uint32 sequenceId, uint32 objectId, uint32 notifyThreadId) {
 	Control *control = newControl();
 	Actor *actor = newActor();
 
 	ActorType *actorType = _vm->_dict->findActorType(actorTypeId);
+	control->_objectId = objectId;
 	control->_flags = actorType->_flags;
 	control->_priority = actorType->_priority;
-	control->_objectId = objectId;
 	control->readPointsConfig(actorType->_pointsConfig);
 	control->_actorTypeId = actorTypeId;
 	control->_actor = actor;
-	/* TODO
 	if (actorTypeId == 0x50001 && objectId == 0x40004)
-		actor->setControlRoutine(Cursor_controlRoutine);
-	*/
+		actor->setControlRoutine(new Common::Functor2Mem<Control*, uint32, void, Cursor>(_vm->_cursor, &Cursor::cursorControlRoutine));
 	if (actorType->_surfInfo._dimensions._width > 0 || actorType->_surfInfo._dimensions._height > 0) {
 		actor->createSurface(actorType->_surfInfo);
 	} else {
@@ -705,7 +706,7 @@ void Controls::placeActor(uint32 actorTypeId, Common::Point placePt, uint32 sequ
 	_vm->_dict->setObjectControl(objectId, control);
 
 	if (actorTypeId == 0x50001 && objectId == 0x40004)
-		_vm->placeCursor(control, sequenceId);
+		_vm->_cursor->place(control, sequenceId);
 
 	control->_flags |= 0x01;
 	actor->_flags |= 0x1000;
@@ -762,6 +763,17 @@ void Controls::placeActorLessObject(uint32 objectId, Common::Point feetPt, Commo
 	_vm->_dict->setObjectControl(objectId, control);
 }
 
+void Controls::destroyControlsByTag(uint32 tag) {
+	ItemsIterator it = _controls.begin();
+	while (it != _controls.end()) {
+		if ((*it)->_tag == tag) {
+			destroyControl(*it);
+			it = _controls.erase(it);
+		} else
+			++it;			
+	}
+}
+
 Actor *Controls::newActor() {
 	return new Actor(_vm);
 }
@@ -771,13 +783,12 @@ Control *Controls::newControl() {
 }
 
 void Controls::destroyControl(Control *control) {
-	_controls.remove(control);
 
 	if (control->_pauseCtr <= 0)
 		_vm->_dict->setObjectControl(control->_objectId, 0);
 
 	if (control->_objectId == 0x40004 && control->_pauseCtr <= 0)
-		_vm->setCursorControl(0);
+		_vm->_cursor->setControl(0);
 	
 	if (control->_actor) {
 		/* TODO
@@ -801,7 +812,6 @@ void Controls::destroyControl(Control *control) {
 }
 
 void Controls::actorControlRouine(Control *control, uint32 deltaTime) {
-	//debug("Controls::actorControlRouine()");
 
 	Actor *actor = control->_actor;
 

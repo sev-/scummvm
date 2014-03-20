@@ -91,7 +91,6 @@ int Thread::update() {
 	int status = kTSYield;
 	if (!_terminated && _pauseCtr <= 0) {
 		status = onUpdate();
-		debug("Thread status: %d", status);
 		if (status == kTSTerminate)
 			terminate();
 		else if (status == kTSSuspend)
@@ -230,6 +229,14 @@ void ThreadList::resumeThreads(uint32 threadId) {
 	}
 }
 
+void ThreadList::endTalkThreads() {
+	for (Iterator it = _threads.begin(); it != _threads.end(); ++it) {
+		Thread *thread = *it;
+		if (thread->_type == kTTTalkThread)
+			thread->terminate();
+	}
+}
+
 void ThreadList::killThread(uint32 threadId) {
 
 	if (!threadId)
@@ -254,6 +261,17 @@ void ThreadList::killThread(uint32 threadId) {
 		thread->terminate();
 	}
 
+}
+
+void ThreadList::setThreadSceneId(uint32 threadId, uint32 sceneId) {
+	Thread *thread = findThread(threadId);
+	if (thread)
+		thread->_tag = sceneId;
+}
+
+uint32 ThreadList::getThreadSceneId(uint32 threadId) {
+	Thread *thread = findThread(threadId);
+	return thread ? thread->_tag : 0;
 }
 
 } // End of namespace Illusions

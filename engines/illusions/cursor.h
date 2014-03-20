@@ -20,41 +20,34 @@
  *
  */
 
-#ifndef ILLUSIONS_SCREEN_H
-#define ILLUSIONS_SCREEN_H
-
-#include "illusions/spritedrawqueue.h"
-#include "illusions/spritedecompressqueue.h"
-#include "graphics/surface.h"
+#ifndef ILLUSIONS_CURSOR_H
+#define ILLUSIONS_CURSOR_H
 
 namespace Illusions {
 
+class Control;
 class IllusionsEngine;
 
-class Screen {
+class Cursor {
 public:
-	Screen(IllusionsEngine *vm);
-	~Screen();
-	Graphics::Surface *allocSurface(int16 width, int16 height);
-	Graphics::Surface *allocSurface(SurfInfo &surfInfo);
-	bool isDisplayOn();
-	void setDisplayOn(bool isOn);
-	uint16 getColorKey2();
-	void updateSprites();
-	void drawSurface10(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface11(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect);
-	void drawSurface20(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface21(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect);
-public:
+	Cursor(IllusionsEngine *vm);
+	void place(Control *control, uint32 sequenceId);
+	void setActorIndex(int a2, int a3, int a4);
+	void setControl(Control *control);
+	void show();
+	void hide();
+	void cursorControlRoutine(Control *control, uint32 deltaTime);
+protected:
 	IllusionsEngine *_vm;
-	bool _displayOn;
-	uint16 _colorKey1;
-	uint16 _colorKey2;
-	SpriteDecompressQueue *_decompressQueue;
-	SpriteDrawQueue *_drawQueue;
-	Graphics::Surface *_backSurface;
+	Control *_control;
+	uint32 _sequenceId;
+	int _status;
+	int _cursorNum;
+	int _field_10;
+	int _visibleCtr;
+	int16 _x, _y;
 };
 
 } // End of namespace Illusions
 
-#endif // ILLUSIONS_SCREEN_H
+#endif // ILLUSIONS_CURSOR_H
