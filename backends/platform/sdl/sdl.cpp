@@ -134,15 +134,6 @@ OSystem_SDL::~OSystem_SDL() {
 	delete _mutexManager;
 	_mutexManager = 0;
 
-#ifdef USE_OPENGL
-	for (int i = 0; i < _sdlModesCount; ++i) {
-		// SurfaceSDL needs us to free these
-		free(const_cast<char *>(_graphicsModes[i].name));
-		free(const_cast<char *>(_graphicsModes[i].description));
-	}
-	delete[] _graphicsModes;
-#endif
-
 	delete _logger;
 	_logger = 0;
 
@@ -224,18 +215,18 @@ void OSystem_SDL::initBackend() {
 		}
 	}
 	// Look in all game domains as well
-	Common::ConfigManager::DomainMap &dm = ConfMan.getGameDomains();
-	for (Common::ConfigManager::DomainMap::iterator domain = dm.begin(); domain != dm.end(); ++domain) {
-		Common::ConfigManager::Domain::iterator gm = domain->_value.find("gfx_mode");
-		if (gm != domain->_value.end()) {
-			for (uint i = 0; i < ARRAYSIZE(s_legacyGraphicsModes); ++i) {
-				if (gm->_value == s_legacyGraphicsModes[i].oldName) {
-					gm->_value = s_legacyGraphicsModes[i].name;
-					break;
-				}
-			}
-		}
-	}
+	//Common::ConfigManager::DomainMap dm = ConfMan.getGameDomains();
+	//for (Common::ConfigManager::DomainMap::iterator domain = dm.begin(); domain != dm.end(); ++domain) {
+	//	Common::ConfigManager::Domain::iterator gm = domain->_value.find("gfx_mode");
+	//	if (gm != domain->_value.end()) {
+	//		for (uint i = 0; i < ARRAYSIZE(s_legacyGraphicsModes); ++i) {
+	//			if (gm->_value == s_legacyGraphicsModes[i].oldName) {
+	//				gm->_value = s_legacyGraphicsModes[i].name;
+	//				break;
+	//			}
+	//		}
+	//	}
+	//}
 
 	if (_graphicsManager == 0) {
 #ifdef USE_OPENGL
@@ -614,20 +605,6 @@ int OSystem_SDL::getDefaultGraphicsMode() const {
 }
 
 bool OSystem_SDL::setGraphicsMode(int mode) {
-	const OSystem::GraphicsMode *srcMode;
-	int i, offset;
-
-	// Check if mode is from SDL or OpenGL
-	if (mode < _sdlModesCount) {
-		srcMode = _graphicsModes;
-		i = 0;
-		offset = 0;
-	} else {
-		srcMode = _graphicsModes + _sdlModesCount;
-		i = _sdlModesCount;
-		offset = _sdlModesCount;
-	}
-
 	if (_graphicsModes.empty()) {
 		return _graphicsManager->setGraphicsMode(mode);
 	}
@@ -707,9 +684,9 @@ bool OSystem_SDL::setGraphicsMode(int mode) {
 
 		_graphicsManager->beginGFXTransaction();
 		// Oh my god if this failed the client code might just explode.
-		return _graphicsManager->setGraphicsMode(_graphicsModeIds[mode] - offset);
+		return _graphicsManager->setGraphicsMode(_graphicsModeIds[mode]);
 	} else {
-		return _graphicsManager->setGraphicsMode(_graphicsModeIds[mode] - offset);
+		return _graphicsManager->setGraphicsMode(_graphicsModeIds[mode]);
 	}
 }
 
@@ -771,9 +748,6 @@ void OSystem_SDL::setupGraphicsModes() {
 		mode->id = i++;
 		mode++;
 	}
-
-	// SurfaceSDLGraphicsManager expects us to delete[] this
-	delete[] sdlGraphicsModes;
 }
 
 #endif

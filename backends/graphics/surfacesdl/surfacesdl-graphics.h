@@ -89,6 +89,7 @@ public:
 	virtual bool getFeatureState(OSystem::Feature f);
 
 	virtual const OSystem::GraphicsMode *getSupportedGraphicsModes() const;
+	const OSystem::GraphicsMode *supportedGraphicsModes() const;
 	virtual int getDefaultGraphicsMode() const;
 	virtual bool setGraphicsMode(int mode);
 	virtual int getGraphicsMode() const;

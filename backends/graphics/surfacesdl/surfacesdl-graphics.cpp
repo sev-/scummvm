@@ -296,7 +296,7 @@ static void initGraphicsModes() {
 	s_supportedGraphicsModes->push_back(gm);
 }
 
-const OSystem::GraphicsMode *SurfaceSdlGraphicsManager::supportedGraphicsModes() {
+const OSystem::GraphicsMode *SurfaceSdlGraphicsManager::supportedGraphicsModes() const {
 	if (!s_supportedGraphicsModes)
 		initGraphicsModes();
 
