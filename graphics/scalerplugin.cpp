@@ -95,7 +95,9 @@ void ScalerPluginObject::scale(const uint8 *srcPtr, uint32 srcPitch, uint8 *dstP
 }
 
 void ScalerPluginObject::correctAspect(uint8 *buffer, uint32 pitch, int width, int height, int x, int y) {
+#ifdef USE_ASPECT
 	stretch200To240(buffer, pitch, width * _factor, height * _factor, 0, 0, 0);
+#endif
 }
 
 SourceScaler::SourceScaler() : _oldSrc(NULL), _enable(false) {
