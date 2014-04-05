@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 // Disable symbol overrides so that we can use system headers.
@@ -81,7 +82,7 @@ void MidiDriver_Sndio::send(uint32 b) {
 
 	if (!hdl)
 		return;
-	buf[0] = b & 0xff;	
+	buf[0] = b & 0xff;
 	buf[1] = (b >> 8) & 0xff;
 	buf[2] = (b >> 16) & 0xff;
 	buf[3] = (b >> 24) & 0xff;
@@ -101,7 +102,7 @@ void MidiDriver_Sndio::send(uint32 b) {
 void MidiDriver_Sndio::sysEx(const byte *msg, uint16 length) {
 	if (!hdl)
 		return;
-	
+
 	unsigned char buf[266];
 
 	assert(length + 2 <= ARRAYSIZE(buf));

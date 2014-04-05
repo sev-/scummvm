@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -234,7 +234,7 @@ int SoundGenPCJr::getNextNote(int ch)
 // if tone isn't touched.. it should be inited so it just plays silence
 // return 0 if it's passing more data
 // return -1 if it's passing nothing (end of data)
-int SoundGenPCJr::getNextNote_v2(int ch) { 
+int SoundGenPCJr::getNextNote_v2(int ch) {
 	ToneChan *tpcm;
 	SndGenChan *chan;
 	const byte *data;
@@ -308,7 +308,7 @@ int SoundGenPCJr::getNextNote_v1(int ch) {
 		_channel[ch].attenuationCopy = 0x0F;
 		return -1;
 	}
-	
+
 	// In the V1 player the default duration for a row is 3 ticks
 	if (duration > 0) {
 		duration--;

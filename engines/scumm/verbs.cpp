@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -84,7 +84,7 @@ int ScummEngine_v0::verbPrepIdType(int verbid) {
 	switch (verbid) {
 	case kVerbUse: // depends on object1
 		return kVerbPrepObject;
-	case kVerbGive: 
+	case kVerbGive:
 		return kVerbPrepTo;
 	case kVerbUnlock: case kVerbFix:
 		return kVerbPrepWith;
@@ -693,7 +693,7 @@ void ScummEngine_v0::verbExec() {
 
 	if (_activeVerb == kVerbWhatIs)
 		return;
-		
+
 	if (!(_activeVerb == kVerbWalkTo && _activeObject == 0)) {
 		doSentence(_activeVerb, _activeObject, _activeObject2);
 		if (_activeVerb != kVerbWalkTo) {

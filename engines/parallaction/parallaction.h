@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -104,17 +104,17 @@ struct PARALLACTIONGameDescription;
 
 
 
-extern uint32		_engineFlags;
-extern char			_saveData1[];
-extern uint32		_globalFlags;
-extern const char	*_dinoName;
-extern const char	*_donnaName;
-extern const char	*_doughName;
-extern const char	*_drkiName;
-extern const char	*_minidinoName;
-extern const char	*_minidonnaName;
-extern const char	*_minidoughName;
-extern const char	*_minidrkiName;
+extern uint32		g_engineFlags;
+extern char			g_saveData1[];
+extern uint32		g_globalFlags;
+extern const char	*g_dinoName;
+extern const char	*g_donnaName;
+extern const char	*g_doughName;
+extern const char	*g_drkiName;
+extern const char	*g_minidinoName;
+extern const char	*g_minidonnaName;
+extern const char	*g_minidoughName;
+extern const char	*g_minidrkiName;
 
 
 
@@ -360,7 +360,7 @@ public:
 	uint32		getLocationFlags();
 	bool		checkSpecialZoneBox(ZonePtr z, uint32 type, uint x, uint y);
 	bool		checkZoneBox(ZonePtr z, uint32 type, uint x, uint y);
-	bool 		checkZoneType(ZonePtr z, uint32 type);
+	bool		checkZoneType(ZonePtr z, uint32 type);
 	bool		checkLinkedAnimBox(ZonePtr z, uint32 type, uint x, uint y);
 	ZonePtr		hitZone(uint32 type, uint16 x, uint16 y);
 	void		runZone(ZonePtr z);
@@ -579,7 +579,7 @@ private:
 	void	freeLocation(bool removeAll);
 	void	loadProgram(AnimationPtr a, const char *filename);
 	void	startGui(bool showSplash);
-	void 	startIngameMenu();
+	void	startIngameMenu();
 	void	freeCharacter();
 
 	typedef void (Parallaction_br::*Callable)(void *);
@@ -601,7 +601,7 @@ private:
 	void _c_password(void *);
 };
 
-extern Parallaction *_vm;
+extern Parallaction *g_vm;
 
 
 } // End of namespace Parallaction

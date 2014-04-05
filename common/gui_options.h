@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -55,7 +55,7 @@
 #define GUIO_RENDERPC9821	"\037"
 #define GUIO_RENDERPC9801	"\040"
 
-// Special GUIO flags for the AdvancedDetector's caching of game specific 
+// Special GUIO flags for the AdvancedDetector's caching of game specific
 // options.
 #define GUIO_GAMEOPTIONS1	"\041"
 #define GUIO_GAMEOPTIONS2	"\042"

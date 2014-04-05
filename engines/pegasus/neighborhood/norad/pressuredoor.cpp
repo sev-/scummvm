@@ -138,7 +138,7 @@ void PressureDoor::openInteraction() {
 	_levelsMovie.setTime(kLevelsSplashStart * _levelsScale);
 	_levelsMovie.redrawMovieWorld();
 	_levelsMovie.show();
-	
+
 	_pressureCallBack.setNotification(&_pressureNotification);
 	_pressureCallBack.initCallBack(&_levelsMovie, kCallBackAtExtremes);
 	_pressureCallBack.setCallBackFlag(kSplashFinished);
@@ -226,11 +226,11 @@ void PressureDoor::openInteraction() {
 	else
 		_neighborhoodNotification->notifyMe(this, kDelayCompletedFlag | kSpotSoundCompletedFlag,
 				kDelayCompletedFlag | kSpotSoundCompletedFlag);
-	
+
 	_gameState = kPlayingSplash;
 }
 
-void PressureDoor::initInteraction() {	
+void PressureDoor::initInteraction() {
 	_levelsMovie.start();
 
 	if (_playingAgainstRobot) {
@@ -249,7 +249,7 @@ void PressureDoor::initInteraction() {
 	_levelsMovie.redrawMovieWorld();
 }
 
-void PressureDoor::closeInteraction() {	
+void PressureDoor::closeInteraction() {
 	_pressureNotification.cancelNotification(this);
 	_pressureCallBack.releaseCallBack();
 	_utilityNotification.cancelNotification(this);
@@ -323,7 +323,8 @@ void PressureDoor::receiveNotification(Notification *notification, const Notific
 				_robotState = kRobotDead;
 				_levelsMovie.stop();
 				_levelsMovie.setSegment((kNormalSubRoomPressure + kPressureBase) * _levelsScale,
-						(GameState.getNoradSubRoomPressure() + kPressureBase) * _levelsScale);
+						(GameState.getNoradSubRoomPressure() + kPressureBase) * _levelsScale + 1);
+				_levelsMovie.setTime((GameState.getNoradSubRoomPressure() + kPressureBase) * _levelsScale);
 				_pressureCallBack.setCallBackFlag(kPressureDroppingFlag);
 				_pressureCallBack.scheduleCallBack(kTriggerAtStart, 0, 0);
 				_typeMovie.stop();
@@ -335,7 +336,7 @@ void PressureDoor::receiveNotification(Notification *notification, const Notific
 				_downButton.setCurrentFrameIndex(1);
 				_gameState = kGameOver;
 				allowInput(false);
-				_levelsMovie.setRate(Common::Rational(0x5555, 0x10000) - 1); // Should match door tracker.
+				_levelsMovie.setRate(Common::Rational(-4, 3)); // Should match door tracker.
 				break;
 			case kRobotDead:
 				allowInput(true);
@@ -526,7 +527,7 @@ bool PressureDoor::canSolve() {
 	return GameState.getNoradSubRoomPressure() != kNormalSubRoomPressure;
 }
 
-void PressureDoor::doSolve() {	
+void PressureDoor::doSolve() {
 	if (_playingAgainstRobot) {
 		GameState.setNoradSubRoomPressure(11);
 		_levelsMovie.setTime((11 + kPressureBase) * _levelsScale);

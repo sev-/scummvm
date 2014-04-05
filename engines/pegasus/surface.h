@@ -52,7 +52,7 @@ class Surface {
 public:
 	Surface();
 	virtual ~Surface();
-	
+
 	virtual void allocateSurface(const Common::Rect &);
 	virtual void deallocateSurface();
 	virtual void shareSurface(Surface *surface);
@@ -84,7 +84,7 @@ protected:
 	Common::Rect _bounds;
 
 private:
-	void getImageFromPICTStream(Common::SeekableReadStream *stream);
+	bool getImageFromPICTStream(Common::SeekableReadStream *stream);
 
 	uint32 getGlowColor(uint32 color) const;
 	bool isTransparent(uint32 color) const;
@@ -99,7 +99,7 @@ public:
 
 protected:
 	virtual void setTransparent(bool transparent) { _transparent = transparent; }
-	
+
 	bool _transparent;
 };
 

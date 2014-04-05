@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 // The code in this file is currently only used in KYRA and SCI.
@@ -169,7 +170,7 @@ protected:
 	bool _flippedMode;
 	int _fontWidth, _fontHeight;
 	uint8 _bitPosNewLineMask;
-	
+
 	bool isASCII(uint16 ch) const;
 
 	virtual const uint8 *getCharData(uint16 c) const = 0;

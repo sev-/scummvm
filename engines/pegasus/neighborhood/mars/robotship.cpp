@@ -53,7 +53,7 @@ static const CoordType kRovingTop = kShuttleWindowTop + 20;
 static const CoordType kRovingWidth = kShuttleWindowMidH - kRovingLeft;
 static const CoordType kRovingHeight = kShuttleWindowMidV - kRovingTop;
 
-RobotShip* g_robotShip = 0;
+RobotShip *g_robotShip = 0;
 
 RobotShip::RobotShip() : _spritesMovie(kNoDisplayElement) {
 	g_robotShip = this;
@@ -64,13 +64,14 @@ RobotShip::RobotShip() : _spritesMovie(kNoDisplayElement) {
 	_currentLocation.y = 0;
 	_snaring = false;
 	_dropJunkFuse.setFunctor(new Common::Functor0Mem<void, RobotShip>(this, &RobotShip::timeToDropJunk));
+	_duration = 0xFFFFFFFF;
 }
 
 RobotShip::~RobotShip() {
 	g_robotShip = 0;
 }
 
-void RobotShip::initRobotShip() {	
+void RobotShip::initRobotShip() {
 	_spritesMovie.initFromMovieFile("Images/Mars/Ship.movie", true);
 	_spritesMovie.setDisplayOrder(kShuttleRobotShipOrder);
 	_spritesMovie.moveElementTo(kPlanetStartLeft, kPlanetStartTop);
@@ -123,7 +124,7 @@ void RobotShip::setUpNextDropTime() {
 	}
 }
 
-void RobotShip::timeToDropJunk() {	
+void RobotShip::timeToDropJunk() {
 	if (g_spaceJunk) {
 		CoordType x, y;
 		_spritesMovie.getCenter(x, y);
@@ -155,7 +156,7 @@ void RobotShip::newDestination() {
 				_p4.y += kRovingHeight;
 		}
 	}
-	
+
 	makeVelocityVector(_p4.x, _p4.y, kShuttleWindowLeft + kShuttleWindowWidth / 2,
 			kShuttleWindowTop + kShuttleWindowHeight / 2, _r4);
 	stop();
@@ -221,7 +222,7 @@ void RobotShip::hitByGravitonCannon(Common::Point impactPoint) {
 	((Mars *)g_neighborhood)->decreaseRobotShuttleEnergy(6, impactPoint);
 }
 
-void RobotShip::snareByTractorBeam() {	
+void RobotShip::snareByTractorBeam() {
 	_dropJunkFuse.stopFuse();
 	stop();
 
@@ -254,7 +255,7 @@ void RobotShip::timeChanged(const TimeValue) {
 	}
 }
 
-void RobotShip::makeVelocityVector(CoordType x1, CoordType y1, CoordType x2, CoordType y2, Common::Point &vector) {	
+void RobotShip::makeVelocityVector(CoordType x1, CoordType y1, CoordType x2, CoordType y2, Common::Point &vector) {
 	CoordType length = ((PegasusEngine *)g_engine)->getRandomNumber(kVelocityVectorSlop - 1) + kVelocityVectorLength;
 	vector.x = x2 - x1;
 	vector.y = y2 - y1;

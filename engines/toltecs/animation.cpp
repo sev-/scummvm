@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -53,7 +52,7 @@ void AnimationPlayer::start(uint resIndex) {
 	_vm->_arc->closeResource();
 
 	debug(1, "AnimationPlayer::start() width = %d; height = %d; frameCount = %d", _width, _height, _frameCount);
-	
+
 	_vm->_sceneWidth = _width;
 	_vm->_sceneHeight = _height;
 
@@ -63,7 +62,7 @@ void AnimationPlayer::start(uint resIndex) {
 	_frameNumber = 0;
 	// TODO mov screenFlag01, 0FFFFh
 	// TODO mov animDrawFrameFlag, 0FFFFh
-	
+
 	_firstNextFrameOffset = _nextFrameOffset;
 	_firstCurFrameSize = _curFrameSize;
 	_firstNextFrameSize = _nextFrameSize;
@@ -81,25 +80,25 @@ void AnimationPlayer::nextFrame() {
 	} else {
 		_frameNumber++;
 	}
-	
+
 	debug(1, "AnimationPlayer::nextFrame() frameNumber = %d", _frameNumber);
 
 	if (_keepFrameCounter > 0) {
 		_keepFrameCounter--;
 		return;
 	}
-	
+
 	_vm->_arc->openResource(_resIndex);
 	_vm->_arc->seek(_nextFrameOffset, SEEK_CUR);
 	_curFrameSize = _nextFrameSize;
-	
+
 	if (_curFrameSize == 0)
 		_curFrameSize = 1;
-	
+
 	_vm->_arc->read(_animBuffer, _curFrameSize);
 	_nextFrameSize = _vm->_arc->readUint32LE();
 	_nextFrameOffset += _curFrameSize + 4;
-	
+
 	if (_curFrameSize > 1) {
 		unpackFrame();
 		// TODO mov animDrawFrameFlag, 0FFFFh

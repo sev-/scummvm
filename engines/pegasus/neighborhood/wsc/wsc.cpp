@@ -481,7 +481,7 @@ WSC::WSC(InputHandler *nextHandler, PegasusEngine *owner) : Neighborhood(nextHan
 	setIsItemTaken(kAntidote);
 	setIsItemTaken(kMachineGun);
 	setIsItemTaken(kStunGun);
-	
+
 	GameState.setTakenItemID(kArgonPickup, GameState.isTakenItemID(kArgonCanister) &&
 			GameState.isTakenItemID(kSinclairKey));
 }
@@ -492,10 +492,10 @@ uint16 WSC::getDateResID() const {
 
 void WSC::init() {
 	Neighborhood::init();
-	
+
 	_cachedZoomSpot = 0;
 	_argonSprite = 0;
-	
+
 	// HACK: Fix the drag item for picking up the Sinclair Key Card
 	HotspotInfoTable::Entry *entry = findHotspotEntry(kWSC02SouthTakeArgonSpotID);
 	entry->hotspotItem = kArgonPickup;
@@ -512,10 +512,10 @@ void WSC::start() {
 		_vm->resetEnergyDeathReason();
 		g_energyMonitor->startEnergyDraining();
 	}
-	
+
 	if (!GameState.getWSCDidPlasmaDodge())
 		forceStridingStop(kWSC58, kSouth, kAltWSCNormal);
-	
+
 	Neighborhood::start();
 }
 
@@ -547,59 +547,59 @@ void WSC::setUpAIRules() {
 		locCondition->addLocation(MakeRoomView(kWSC06, kNorth));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC10, kWest));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC28, kWest));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC49, kWest));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC65, kSouth));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC73, kSouth));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB5A", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC79, kWest));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/WSC/XW59SD1", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC58, kSouth));
 		rule = new AIRule(locCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		PryDoorMessage *pryDoorMessage = new PryDoorMessage();
 		AIDoorOpenedCondition *doorCondition = new AIDoorOpenedCondition(MakeRoomView(kWSC58, kSouth));
 		rule = new AIRule(doorCondition, pryDoorMessage);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/WSC/XW61E", false);
 		AIHasItemCondition *itemCondition = new AIHasItemCondition(kMachineGun);
 		rule = new AIRule(itemCondition, messageAction);
 		g_AIArea->addAIRule(rule);
-		
+
 		messageAction = new AIPlayMessageAction("Images/AI/Globals/XGLOB1E", false);
 		locCondition = new AILocationCondition(1);
 		locCondition->addLocation(MakeRoomView(kWSC95, kWest));
@@ -614,7 +614,7 @@ Common::String WSC::getBriefingMovie() {
 
 Common::String WSC::getEnvScanMovie() {
 	RoomID room = GameState.getCurrentRoom();
-	
+
 	if (room >= kWSC01 && room <= kWSC04)
 		return "Images/AI/WSC/XWE1";
 	else if (room >= kWSC06 && room <= kWSC58)
@@ -646,11 +646,13 @@ uint WSC::getNumHints() {
 			return 1;
 		break;
 	case MakeRoomView(kWSC03, kNorth):
-		if (inSynthesizerGame() || (_vm->getEnergyDeathReason() == kDeathDidntStopPoison &&
-				!_privateFlags.getFlag(kWSCPrivateInMoleculeGameFlag) &&
-				!GameState.getWSCDesignedAntidote()))
-			return 3;
-		break;
+		// WORKAROUND: The original game is missing the first two hint movies and
+		// just plays nothing in its stead. We'll just return that we have one
+		// hint available.
+		if (inSynthesizerGame())
+			return 1;
+
+		// fall through
 	case MakeRoomView(kWSC01, kNorth):
 	case MakeRoomView(kWSC01, kSouth):
 	case MakeRoomView(kWSC01, kEast):
@@ -779,10 +781,12 @@ Common::String WSC::getHintMovie(uint hintNum) {
 		}
 		break;
 	case MakeRoomView(kWSC03, kNorth):
+		// WORKAROUND: The original game is missing the first two hint movies and
+		// just plays nothing in its stead. We just make it the first hint.
 		if (inSynthesizerGame())
-			return Common::String::format("Images/AI/WSC/XW03NH%d", hintNum);
+			return "Images/AI/WSC/XW03NH3";
 
-		return Common::String::format("Images/AI/WSC/XWPH%d", hintNum);
+		// fall through
 	case MakeRoomView(kWSC01, kNorth):
 	case MakeRoomView(kWSC01, kSouth):
 	case MakeRoomView(kWSC01, kEast):
@@ -831,7 +835,7 @@ void WSC::cleanUpAfterAIHint(const Common::String &movieName) {
 		resumeTimer();
 }
 
-bool WSC::okayToJump() {	
+bool WSC::okayToJump() {
 	if (GameState.getWSCPoisoned()) {
 		die(kDeathDidntStopPoison);
 		return false;
@@ -1427,7 +1431,7 @@ void WSC::checkContinuePoint(const RoomID room, const DirectionConstant directio
 	}
 }
 
-void WSC::arriveAt(const RoomID room, const DirectionConstant dir) {	
+void WSC::arriveAt(const RoomID room, const DirectionConstant dir) {
 	switch (MakeRoomView(room, dir)) {
 	case MakeRoomView(kWSC60, kNorth):
 	case MakeRoomView(kWSC60, kSouth):
@@ -1537,7 +1541,7 @@ void WSC::arriveAt(const RoomID room, const DirectionConstant dir) {
 		if (!GameState.getWSCSeenSinclairLecture()) {
 			GameState.setWSCSeenSinclairLecture(true);
 			startExtraSequence(kW65SouthSinclairLecture, kExtraCompletedFlag, kFilterAllInput);
-		}	
+		}
 		break;
 	case MakeRoomView(kWSC66, kWest):
 	case MakeRoomView(kWSC67, kEast):
@@ -1647,7 +1651,7 @@ void WSC::turnTo(const DirectionConstant direction) {
 void WSC::receiveNotification(Notification *notification, const NotificationFlags flags) {
 	int32 currentEnergy;
 	Item *item;
-	
+
 	if (flags & kExtraCompletedFlag) {
 		_interruptionFilter = kFilterAllInput;
 
@@ -2195,7 +2199,7 @@ void WSC::clickInHotspot(const Input &input, const Hotspot *clickedSpot) {
 	} else {
 		Neighborhood::clickInHotspot(input, clickedSpot);
 	}
-	
+
 	GameState.setEasterEgg(false);
 }
 
@@ -2295,7 +2299,7 @@ void WSC::takeItemFromRoom(Item *item) {
 
 Hotspot *WSC::getItemScreenSpot(Item *item, DisplayElement *element) {
 	HotSpotID destSpotID;
-	
+
 	switch (item->getObjectID()) {
 	case kNitrogenCanister:
 		destSpotID = kWSC02SouthTakeNitrogenSpotID;
@@ -2329,16 +2333,19 @@ Hotspot *WSC::getItemScreenSpot(Item *item, DisplayElement *element) {
 	return _vm->getAllHotspots().findHotspotByID(destSpotID);
 }
 
-void WSC::pickedUpItem(Item *item) {	
+void WSC::pickedUpItem(Item *item) {
 	switch (item->getObjectID()) {
 	case kAntidote:
+		// WORKAROUND: Make sure the poison is cleared separately from deactivating
+		// the synthesizer video.
+		GameState.setWSCPoisoned(false);
+		GameState.setWSCRemovedDart(false);
+		_privateFlags.setFlag(kWSCDraggingAntidoteFlag, false);
+		playSpotSoundSync(kDrinkAntidoteIn, kDrinkAntidoteOut);
+		setUpPoison();
+
 		if (!GameState.getWSCPickedUpAntidote()) {
-			GameState.setWSCPoisoned(false);
-			GameState.setWSCRemovedDart(false);
 			GameState.setWSCPickedUpAntidote(true);
-			_privateFlags.setFlag(kWSCDraggingAntidoteFlag, false);
-			playSpotSoundSync(kDrinkAntidoteIn, kDrinkAntidoteOut);
-			setUpPoison();
 			startExtraSequence(kW03SouthDeactivate, kExtraCompletedFlag, kFilterNoInput);
 		}
 		break;

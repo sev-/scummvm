@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -95,7 +95,7 @@ reg_t file_open(EngineState *s, const Common::String &filename, int mode, bool u
 		outFile = saveFileMan->openForSaving(wrappedName, isCompressed);
 		if (!outFile)
 			debugC(kDebugLevelFile, "  -> file_open(_K_FILE_MODE_CREATE): failed to create file '%s'", englishName.c_str());
-		
+
 		// QfG1 opens the character export file with _K_FILE_MODE_CREATE first,
 		// closes it immediately and opens it again with this here. Perhaps
 		// other games use this for read access as well. I guess changing this
@@ -387,7 +387,7 @@ uint32 VirtualIndexFile::read(char *buffer, uint32 size) {
 uint32 VirtualIndexFile::write(const char *buffer, uint32 size) {
 	_changed = true;
 	uint32 curPos = _ptr - _buffer;
-	
+
 	// Check if the buffer needs to be resized
 	if (curPos + size >= _bufferSize) {
 		_bufferSize = curPos + size + 1;

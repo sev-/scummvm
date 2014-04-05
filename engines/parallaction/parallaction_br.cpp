@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -45,6 +45,18 @@ const char *Parallaction_br::_partNames[] = {
 
 Parallaction_br::Parallaction_br(OSystem* syst, const PARALLACTIONGameDescription *gameDesc) : Parallaction(syst, gameDesc),
 	_locationParser(0), _programParser(0), _soundManI(0) {
+	_audioCommandsNamesRes = 0;
+	_part = 0;
+	_nextPart = 0;
+	_subtitleY = 0;
+	_subtitle[0] = 0;
+	_subtitle[1] = 0;
+	_charInventories[0] = 0;
+	_charInventories[1] = 0;
+	_charInventories[2] = 0;
+	_countersNames = 0;
+	_callables = 0;
+	_walker = 0;
 }
 
 Common::Error Parallaction_br::init() {
@@ -52,7 +64,7 @@ Common::Error Parallaction_br::init() {
 	_screenWidth = 640;
 	_screenHeight = 400;
 
-	if (getPlatform() == Common::kPlatformPC) {
+	if (getPlatform() == Common::kPlatformDOS) {
 		if (getFeatures() & GF_DEMO) {
 			_disk = new DosDemoDisk_br(this);
 		} else {
@@ -79,7 +91,7 @@ Common::Error Parallaction_br::init() {
 	_cmdExec = new CommandExec_br(this);
 	_programExec = new ProgramExec_br(this);
 
-	_walker = new PathWalker_BR;
+	_walker = new PathWalker_BR(this);
 
 	_part = -1;
 	_nextPart = -1;
@@ -161,10 +173,10 @@ Common::Error Parallaction_br::go() {
 
 //		initCharacter();
 
-		while (((_engineFlags & kEngineReturn) == 0) && (!shouldQuit())) {
+		while (((g_engineFlags & kEngineReturn) == 0) && (!shouldQuit())) {
 			runGame();
 		}
-		_engineFlags &= ~kEngineReturn;
+		g_engineFlags &= ~kEngineReturn;
 
 		cleanupGame();
 	}
@@ -259,7 +271,7 @@ void Parallaction_br::cleanupGame() {
 	_countersNames = 0;
 
 	_numLocations = 0;
-	_globalFlags = 0;
+	g_globalFlags = 0;
 	memset(_localFlags, 0, sizeof(_localFlags));
 	memset(_locationNames, 0, sizeof(_locationNames));
 	memset(_zoneFlags, 0, sizeof(_zoneFlags));
@@ -275,7 +287,7 @@ void Parallaction_br::changeLocation() {
 		cleanupGame();
 
 		// more cleanup needed for part changes (see also saveload)
-		_globalFlags = 0;
+		g_globalFlags = 0;
 		cleanInventory(true);
 		strcpy(_characterName1, "null");
 
@@ -297,7 +309,7 @@ void Parallaction_br::changeLocation() {
 
 		// TODO: maybe handle this into Disk
 		delete _objects;
-		if (getPlatform() == Common::kPlatformPC) {
+		if (getPlatform() == Common::kPlatformDOS) {
 			_objects = _disk->loadObjects("icone.ico");
 		} else {
 			_objects = _disk->loadObjects("icons.ico", _part);
@@ -358,7 +370,7 @@ void Parallaction_br::changeLocation() {
 	// TODO: implement the music commands which control music execution
 	_soundMan->execute(SC_PLAYMUSIC);
 
-	_engineFlags &= ~kEngineChangeLocation;
+	g_engineFlags &= ~kEngineChangeLocation;
 	_newLocationName.clear();
 	_nextPart = -1;
 }
@@ -548,7 +560,7 @@ void Parallaction_br::scheduleWalk(int16 x, int16 y, bool fromUser) {
 		}
 	}
 
-	_engineFlags |= kEngineWalking;
+	g_engineFlags |= kEngineWalking;
 }
 
 void Parallaction_br::setFollower(const Common::String &name) {

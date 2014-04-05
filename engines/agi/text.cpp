@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -64,7 +64,7 @@ void AgiEngine::printText2(int l, const char *msg, int foff, int xoff, int yoff,
 
 			// Note: there were extra checks for *m being a cursor character
 			// here (1, 2 or 3), which have been removed, as the cursor
-			// character is no longer printed via this function. 
+			// character is no longer printed via this function.
 			if (*m >= 0x20) {
 				int ypos = (y1 * CHAR_LINES) + yoff;
 
@@ -73,7 +73,7 @@ void AgiEngine::printText2(int l, const char *msg, int foff, int xoff, int yoff,
 
 					if (xpos >= GFX_WIDTH)
 						continue;
-					 
+
 					_gfx->putTextCharacter(l, xpos, ypos, *m, fg, bg, checkerboard);
 
 					if (x1 > maxx)

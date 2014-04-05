@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -69,9 +69,9 @@ enum {
 PredictiveDialog::PredictiveDialog() : Dialog("Predictive") {
 	new StaticTextWidget(this, "Predictive.Headline", "Enter Text");
 
-	_btns = (ButtonWidget **)calloc(1, sizeof(ButtonWidget *) * 16);
+	_btns = (ButtonWidget **)calloc(16, sizeof(ButtonWidget *));
 
-	_btns[kCancelAct] = new ButtonWidget(this, "Predictive.Cancel",  _("Cancel")   , 0, kCancelCmd); 
+	_btns[kCancelAct] = new ButtonWidget(this, "Predictive.Cancel",  _("Cancel")   , 0, kCancelCmd);
 	_btns[kOkAct] = 	new ButtonWidget(this, "Predictive.OK",      _("Ok")       , 0, kOkCmd);
 	_btns[kBtn1Act] = 	new ButtonWidget(this, "Predictive.Button1", "1  `-.&" , 0, kBut1Cmd);
 	_btns[kBtn2Act] = 	new ButtonWidget(this, "Predictive.Button2", "2  abc"     , 0, kBut2Cmd);
@@ -84,10 +84,10 @@ PredictiveDialog::PredictiveDialog() : Dialog("Predictive") {
 	_btns[kBtn9Act] = 	new ButtonWidget(this, "Predictive.Button9", "9  wxyz"    , 0, kBut9Cmd);
 	_btns[kBtn0Act] = 	new ButtonWidget(this, "Predictive.Button0", "0"        , 0, kBut0Cmd);
   	// I18N: You must leave "#" as is, only word 'next' is translatable
-	_btns[kNextAct] = 	new ButtonWidget(this, "Predictive.Next",    _("#  next") , 0, kNextCmd); 
+	_btns[kNextAct] = 	new ButtonWidget(this, "Predictive.Next",    _("#  next") , 0, kNextCmd);
 	_btns[kAddAct] = 	new ButtonWidget(this, "Predictive.Add",     _("add") , 0, kAddCmd);
 	_btns[kAddAct]->setEnabled(false);
-  
+
   #ifndef DISABLE_FANCY_THEMES
 	_btns[kDelAct] = new PicButtonWidget(this, "Predictive.Delete", _("Delete char"), kDelCmd);
 	((PicButtonWidget *)_btns[kDelAct])->useThemeTransparency(true);
@@ -144,6 +144,7 @@ PredictiveDialog::PredictiveDialog() : Dialog("Predictive") {
 	_currentWord.clear();
 	_wordNumber = 0;
 	_numMatchingWords = 0;
+	memset(_predictiveResult, 0, sizeof(_predictiveResult));
 
 	_lastbutton = kNoAct;
 	_mode = kModePre;
@@ -214,7 +215,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 		_navigationwithkeys = true;
 		if (_lastbutton == kBtn1Act || _lastbutton == kBtn4Act || _lastbutton == kBtn7Act)
 			_currBtn = ButtonId(_lastbutton + 2);
-		else if (_lastbutton == kDelAct) 
+		else if (_lastbutton == kDelAct)
 			_currBtn = kBtn1Act;
 		else if (_lastbutton == kModeAct)
 			_currBtn = kNextAct;
@@ -227,7 +228,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 		else
 			_currBtn = ButtonId(_lastbutton - 1);
 
-		
+
 		if (_mode != kModeAbc && _lastbutton == kCancelAct)
 			_currBtn = kOkAct;
 
@@ -237,7 +238,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 		_navigationwithkeys = true;
 		if (_lastbutton == kBtn3Act || _lastbutton == kBtn6Act || _lastbutton == kBtn9Act || _lastbutton == kOkAct)
 			_currBtn = ButtonId(_lastbutton - 2);
-		else if (_lastbutton == kDelAct) 
+		else if (_lastbutton == kDelAct)
 			_currBtn = kBtn3Act;
 		else if (_lastbutton == kBtn0Act)
 			_currBtn = kNextAct;
@@ -249,7 +250,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 			_currBtn = kAddAct;
 		else
 			_currBtn = ButtonId(_lastbutton + 1);
-		
+
 		if (_mode != kModeAbc && _lastbutton == kOkAct)
 			_currBtn = kCancelAct;
 		_needRefresh = true;
@@ -260,7 +261,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 			_currBtn = kDelAct;
 		else if (_lastbutton == kDelAct)
 			_currBtn = kOkAct;
-		else if (_lastbutton == kModeAct) 
+		else if (_lastbutton == kModeAct)
 			_currBtn = kBtn7Act;
 		else if (_lastbutton == kBtn0Act)
 			_currBtn = kBtn8Act;
@@ -286,7 +287,7 @@ void PredictiveDialog::handleKeyDown(Common::KeyState state) {
 			_currBtn = kBtn0Act;
 		else if (_lastbutton == kBtn9Act)
 			_currBtn = kNextAct;
-		else if (_lastbutton == kModeAct) 
+		else if (_lastbutton == kModeAct)
 			_currBtn = kAddAct;
 		else if (_lastbutton == kBtn0Act)
 			_currBtn = kCancelAct;
@@ -420,6 +421,9 @@ void PredictiveDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 d
 	case kCancelCmd:
 		saveUserDictToFile();
 		close();
+		// When we cancel the dialog no result should be returned. Thus, we
+		// will invalidate any result here.
+		_predictiveResult[0] = 0;
 		return;
 	case kOkCmd:
 		_currBtn = kOkAct;
@@ -614,7 +618,7 @@ void PredictiveDialog::handleTickle() {
 
 void PredictiveDialog::mergeDicts() {
 	_unitedDict.dictLineCount  = _predictiveDict.dictLineCount + _userDict.dictLineCount;
-	_unitedDict.dictLine = (char **)calloc(1, sizeof(char *) * _unitedDict.dictLineCount);
+	_unitedDict.dictLine = (char **)calloc(_unitedDict.dictLineCount, sizeof(char *));
 
 	if (!_unitedDict.dictLine) {
 		debug("Predictive Dialog: cannot allocate memory for united dic");
@@ -748,7 +752,8 @@ bool PredictiveDialog::matchWord() {
 		char tmp[kMaxLineLen];
 		strncpy(tmp, _unitedDict.dictLine[line], kMaxLineLen);
 		tmp[kMaxLineLen - 1] = 0;
-		char *tok = strtok(tmp, " ");
+		char *tok;
+		strtok(tmp, " ");
 		tok = strtok(NULL, " ");
 		_currentWord = Common::String(tok, _currentCode.size());
 		return true;
@@ -779,7 +784,7 @@ bool PredictiveDialog::searchWord(const char *const where, const Common::String 
 }
 
 void PredictiveDialog::addWord(Dict &dict, const Common::String &word, const Common::String &code) {
-	char *newLine;
+	char *newLine = 0;
 	Common::String tmpCode = code + ' ';
 	int line = binarySearch(dict.dictLine, tmpCode, dict.dictLineCount);
 	if (line >= 0) {
@@ -853,12 +858,14 @@ void PredictiveDialog::addWord(Dict &dict, const Common::String &word, const Com
 	}
 
 	// start from here are INSERTING new line to dictionaty ( dict )
-	char **newDictLine = (char **)calloc(1, sizeof(char *) * (dict.dictLineCount + 1));
+	char **newDictLine = (char **)calloc(dict.dictLineCount + 1, sizeof(char *));
 	if (!newDictLine) {
 		warning("Predictive Dialog: cannot allocate memory for index buffer");
+
+		free(newLine);
+
 		return;
 	}
-	newDictLine[dict.dictLineCount] = '\0';
 
 	int k = 0;
 	bool inserted = false;
@@ -880,7 +887,7 @@ void PredictiveDialog::addWord(Dict &dict, const Common::String &word, const Com
 
 	free(dict.dictLine);
 	dict.dictLineCount += 1;
-	dict.dictLine = (char **)calloc(1, sizeof(char *) * dict.dictLineCount);
+	dict.dictLine = (char **)calloc(dict.dictLineCount, sizeof(char *));
 	if (!dict.dictLine) {
 		warning("Predictive Dialog: cannot allocate memory for index buffer");
 		free(newDictLine);
@@ -932,7 +939,7 @@ void PredictiveDialog::loadDictionary(Common::SeekableReadStream *in, Dict &dict
 		ptr++;
 	}
 
-	dict.dictLine = (char **)calloc(1, sizeof(char *) * lines);
+	dict.dictLine = (char **)calloc(lines, sizeof(char *));
 	if (dict.dictLine == NULL) {
 		warning("Predictive Dialog: Cannot allocate memory for line index buffer");
 		return;

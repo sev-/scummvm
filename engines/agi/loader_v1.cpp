@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -64,7 +64,7 @@ int AgiLoader_v1::detectGame() {
 
 int AgiLoader_v1::loadDir_DDP(AgiDir *agid, int offset, int max) {
 	Common::File fp;
-	
+
 	if (!fp.open(_filenameDisk0))
 		return errBadFileOpen;
 
@@ -73,13 +73,13 @@ int AgiLoader_v1::loadDir_DDP(AgiDir *agid, int offset, int max) {
 		agid[i].volume = 0xFF;
 		agid[i].offset = _EMPTY;
 	}
-	
+
 	fp.seek(offset, SEEK_SET);
 	for (int i = 0; i <= max; i++) {
 		int b0 = fp.readByte();
 		int b1 = fp.readByte();
 		int b2 = fp.readByte();
-		
+
 		if (b0 == 0xFF && b1 == 0xFF && b2 == 0xFF) {
 			agid[i].volume = 0xFF;
 			agid[i].offset = _EMPTY;
@@ -98,7 +98,7 @@ int AgiLoader_v1::loadDir_DDP(AgiDir *agid, int offset, int max) {
 
 int AgiLoader_v1::loadDir_BC(AgiDir *agid, int offset, int max) {
 	Common::File fp;
-	
+
 	if (!fp.open(_filenameDisk0))
 		return errBadFileOpen;
 
@@ -107,13 +107,13 @@ int AgiLoader_v1::loadDir_BC(AgiDir *agid, int offset, int max) {
 		agid[i].volume = 0xFF;
 		agid[i].offset = _EMPTY;
 	}
-	
+
 	fp.seek(offset, SEEK_SET);
 	for (int i = 0; i <= max; i++) {
 		int b0 = fp.readByte();
 		int b1 = fp.readByte();
 		int b2 = fp.readByte();
-		
+
 		if (b0 == 0xFF && b1 == 0xFF && b2 == 0xFF) {
 			agid[i].volume = 0xFF;
 			agid[i].offset = _EMPTY;
@@ -171,7 +171,7 @@ uint8 *AgiLoader_v1::loadVolRes(struct AgiDir *agid) {
 
 	if (offset == _EMPTY)
 		return NULL;
-	
+
 	if (offset > IMAGE_SIZE) {
 		fp.open(_filenameDisk1);
 		offset -= IMAGE_SIZE;
@@ -191,7 +191,7 @@ uint8 *AgiLoader_v1::loadVolRes(struct AgiDir *agid) {
 	agid->len = fp.readUint16LE();
 	data = (uint8 *)calloc(1, agid->len + 32);
 	fp.read(data, agid->len);
-	
+
 	fp.close();
 
 	return data;
@@ -202,7 +202,7 @@ int AgiLoader_v1::loadResource(int t, int n) {
 	uint8 *data = NULL;
 
 	debugC(3, kDebugLevelResources, "(t = %d, n = %d)", t, n);
-	if (n > MAX_DIRS)
+	if (n >= MAX_DIRS)
 		return errBadResource;
 
 	switch (t) {
@@ -254,7 +254,7 @@ int AgiLoader_v1::loadResource(int t, int n) {
 
 		if (data != NULL) {
 			// Freeing of the raw resource from memory is delegated to the createFromRawResource-function
-			_vm->_game.sounds[n] = AgiSound::createFromRawResource(data, _vm->_game.dirSound[n].len, n, *_vm->_sound, _vm->_soundemu);
+			_vm->_game.sounds[n] = AgiSound::createFromRawResource(data, _vm->_game.dirSound[n].len, n, _vm->_soundemu);
 			_vm->_game.dirSound[n].flags |= RES_LOADED;
 		} else {
 			ec = errBadResource;

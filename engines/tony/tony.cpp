@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -55,6 +55,7 @@ TonyEngine::TonyEngine(OSystem *syst, const TonyGameDescription *gameDesc) : Eng
 	SearchMan.addSubDirectoryMatching(gameDataDir, "Roasted");
 	SearchMan.addSubDirectoryMatching(gameDataDir, "Music");
 	SearchMan.addSubDirectoryMatching(gameDataDir, "Music/utilsfx");
+	SearchMan.addSubDirectoryMatching(gameDataDir, "Music/Layer");
 
 	// Set up load slot number
 	_initialLoadSlotNumber = -1;
@@ -244,16 +245,16 @@ bool TonyEngine::loadTonyDat() {
 		expectedLangVariant = 0;
 		break;
 	}
-	
+
 	int numVariant = in.readUint16BE();
-	if (expectedLangVariant > numVariant) {
+	if (expectedLangVariant > numVariant - 1) {
 		msg = Common::String::format("Font variant not present in 'tony.dat'. Get it from the ScummVM website");
 		GUIErrorMessage(msg);
 		warning("%s", msg.c_str());
-		
+
 		return false;
 	}
-	
+
 	in.seek(in.pos() + (2 * 256 * 8 * expectedLangVariant));
 	for (int i = 0; i < 256; i++) {
 		_cTableDialog[i] = in.readSint16BE();
@@ -323,7 +324,7 @@ void TonyEngine::playMusic(int nChannel, const Common::String &fname, int nFX, b
 
 		if (!getIsDemo()) {
 			if (!_stream[GLOBALS._nextChannel]->loadFile(fname, FPCODEC_ADPCM, nSync))
-				g_vm->abortGame();
+				error("failed to open music file '%s'", fname.c_str());
 		} else {
 			_stream[GLOBALS._nextChannel]->loadFile(fname, FPCODEC_ADPCM, nSync);
 		}
@@ -335,7 +336,7 @@ void TonyEngine::playMusic(int nChannel, const Common::String &fname, int nFX, b
 	} else {
 		if (!getIsDemo()) {
 			if (!_stream[nChannel]->loadFile(fname, FPCODEC_ADPCM, nSync))
-				g_vm->abortGame();
+				error("failed to open music file '%s'", fname.c_str());
 		} else {
 			_stream[nChannel]->loadFile(fname, FPCODEC_ADPCM, nSync);
 		}
@@ -356,7 +357,7 @@ void TonyEngine::doNextMusic(CORO_PARAM, const void *param) {
 
 	if (!g_vm->getIsDemo()) {
 		if (!streams[GLOBALS._nextChannel]->loadFile(GLOBALS._nextMusic, FPCODEC_ADPCM, GLOBALS._nextSync))
-			g_vm->abortGame();
+			error("failed to open next music file '%s'", GLOBALS._nextMusic.c_str());
 	} else {
 		streams[GLOBALS._nextChannel]->loadFile(GLOBALS._nextMusic, FPCODEC_ADPCM, GLOBALS._nextSync);
 	}
@@ -631,10 +632,6 @@ void TonyEngine::openInitOptions(CORO_PARAM) {
 	_theEngine.openOptionScreen(coroParam, 2);
 }
 
-void TonyEngine::abortGame() {
-	_bQuitNow = true;
-}
-
 /**
  * Main process for playing the game.
  *
@@ -735,6 +732,7 @@ uint32 TonyEngine::getTime() {
 bool TonyEngine::canLoadGameStateCurrently() {
 	return GLOBALS._gfxEngine != NULL && GLOBALS._gfxEngine->canLoadSave();
 }
+
 bool TonyEngine::canSaveGameStateCurrently() {
 	return GLOBALS._gfxEngine != NULL && GLOBALS._gfxEngine->canLoadSave();
 }
@@ -772,9 +770,9 @@ void TonyEngine::syncSoundSettings() {
 }
 
 void TonyEngine::saveSoundSettings() {
-	ConfMan.setBool("speech_mute", GLOBALS._bCfgDubbing);
-	ConfMan.setBool("sfx_mute", GLOBALS._bCfgSFX);
-	ConfMan.setBool("music_mute", GLOBALS._bCfgMusic);
+	ConfMan.setBool("speech_mute", !GLOBALS._bCfgDubbing);
+	ConfMan.setBool("sfx_mute", !GLOBALS._bCfgSFX);
+	ConfMan.setBool("music_mute", !GLOBALS._bCfgMusic);
 
 	ConfMan.setInt("speech_volume", GLOBALS._nCfgDubbingVolume * 256 / 10);
 	ConfMan.setInt("sfx_volume", GLOBALS._nCfgSFXVolume * 256 / 10);

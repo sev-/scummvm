@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -146,6 +146,7 @@ void MidiParser_MSC::parseNextEvent(EventInfo &info) {
 		return;
 	}
 
+	info.length = 0;
 	info.delta = readVLQ(_position._playPos);
 	info.event = read1(_position._playPos);
 
@@ -206,6 +207,7 @@ public:
 
 	void play(Common::SeekableReadStream *stream);
 	virtual void pause(bool p);
+	virtual void pause() { assert(0); } // overridden
 	virtual void setVolume(int volume);
 	virtual void onTimer();
 
@@ -224,7 +226,12 @@ MidiPlayer_MSC::MidiPlayer_MSC()
 	: _paused(false) {
 
 	MidiDriver::DeviceHandle dev = MidiDriver::detectDevice(MDT_MIDI | MDT_ADLIB | MDT_PREFER_GM);
-	_driver = MidiDriver::createMidi(dev);
+	const MusicType musicType = MidiDriver::getMusicType(dev);
+	if (musicType == MT_ADLIB) {
+		_driver = createAdLibDriver();
+	} else {
+		_driver = MidiDriver::createMidi(dev);
+	}
 	assert(_driver);
 
 	int ret = _driver->open();
@@ -501,10 +508,14 @@ void SoundMan_br::execute(int command, const char *parm) {
 		stopMusic();
 		break;
 	case SC_SETMUSICFILE:
+		if (!parm)
+			error("no parameter passed to SC_SETMUSICFILE");
 		setMusicFile(parm);
 		break;
 
 	case SC_PLAYSFX:
+		if (!parm)
+			error("no parameter passed to SC_PLAYSFX");
 		playSfx(parm, _sfxChannel, _sfxLooping, _sfxVolume);
 		break;
 	case SC_STOPSFX:

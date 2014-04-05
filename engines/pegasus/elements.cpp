@@ -259,8 +259,8 @@ void FrameSequence::openFrameSequence() {
 	_frameTimes.clear();
 	for (uint32 i = 0; i < _numFrames; i++) {
 		TimeValue time = res->readUint32BE();
-		_duration += time;
 		_frameTimes.push_back(_duration);
+		_duration += time;
 	}
 
 	setScale(scale);
@@ -397,7 +397,7 @@ void Sprite::removeFrame(const uint32 frameNum) {
 		--_currentFrameNum;
 }
 
-void Sprite::setCurrentFrameIndex(const int32 frameNum) {	
+void Sprite::setCurrentFrameIndex(const int32 frameNum) {
 	if (frameNum < 0) {
 		if (_currentFrameNum != 0xffffffff) {
 			_currentFrameNum = 0xffffffff;
@@ -440,7 +440,7 @@ SpriteSequence::SpriteSequence(const DisplayElementID id, const DisplayElementID
 		FrameSequence(id), _sprite(spriteID), _transparent(false) {
 }
 
-void SpriteSequence::openFrameSequence() {	
+void SpriteSequence::openFrameSequence() {
 	if (!isSequenceOpen()) {
 		FrameSequence::openFrameSequence();
 

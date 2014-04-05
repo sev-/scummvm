@@ -170,7 +170,7 @@ void Interface::throwAwayAIArea() {
 	delete g_AIArea;
 }
 
-void Interface::validateInventoryPanel() {	
+void Interface::validateInventoryPanel() {
 	if (!_inventoryPanel.isSurfaceValid()) {
 		_inventoryPanel.initInventoryImage(&_inventoryPush);
 		_inventoryPanel.moveElementTo(kInventoryPushLeft, kInventoryPushTop);
@@ -185,6 +185,11 @@ void Interface::validateInventoryPanel() {
 		_inventoryLid.moveElementTo(kInventoryLidLeft, kInventoryLidTop);
 		_inventoryLid.setDisplayOrder(kInventoryLidOrder);
 		_inventoryLid.startDisplaying();
+
+		if (((PegasusEngine *)g_engine)->isDVD()) {
+			_inventoryOpenSound.initFromAIFFFile("Sounds/Items/Inventory Panel Open.aif");
+			_inventoryCloseSound.initFromAIFFFile("Sounds/Items/Inventory Panel Close.aif");
+		}
 
 		_inventoryPushCallBack.initCallBack(&_inventoryPush, kCallBackAtExtremes);
 		_inventoryLidCallBack.initCallBack(&_inventoryLid, kCallBackAtExtremes);
@@ -215,7 +220,7 @@ void Interface::throwAwayInventoryPanel() {
 	_inventoryRaised = false;
 }
 
-void Interface::validateBiochipPanel() {	
+void Interface::validateBiochipPanel() {
 	if (!_biochipPanel.isSurfaceValid()) {
 		_biochipPanel.initInventoryImage(&_biochipPush);
 		_biochipPanel.moveElementTo(kBiochipPushLeft, kBiochipPushTop);
@@ -231,6 +236,11 @@ void Interface::validateBiochipPanel() {
 		_biochipLid.setDisplayOrder(kBiochipLidOrder);
 		_biochipLid.startDisplaying();
 
+		if (((PegasusEngine *)g_engine)->isDVD()) {
+			_biochipOpenSound.initFromAIFFFile("Sounds/Items/Biochip Panel Open.aif");
+			_biochipCloseSound.initFromAIFFFile("Sounds/Items/Biochip Panel Close.aif");
+		}
+
 		_biochipPushCallBack.initCallBack(&_biochipPush, kCallBackAtExtremes);
 		_biochipLidCallBack.initCallBack(&_biochipLid, kCallBackAtExtremes);
 
@@ -243,7 +253,7 @@ void Interface::validateBiochipPanel() {
 	}
 }
 
-void Interface::throwAwayBiochipPanel() {	
+void Interface::throwAwayBiochipPanel() {
 	_biochipPanel.stopDisplaying();
 	_biochipPanel.throwAwayInventoryImage();
 	_biochipPush.stopDisplaying();
@@ -251,11 +261,11 @@ void Interface::throwAwayBiochipPanel() {
 	_biochipLid.closeFrameSequence();
 	_biochipPushCallBack.releaseCallBack();
 	_biochipLidCallBack.releaseCallBack();
-	
+
 	Item *item = getCurrentBiochip();
 	if (item)
 		item->deselect();
-	
+
 	_biochipUp = false;
 	_biochipRaised = false;
 }
@@ -369,7 +379,7 @@ void Interface::receiveNotification(Notification *notification, const Notificati
 	}
 }
 
-void Interface::raiseInventoryDrawer(const bool doCallBacks) {	
+void Interface::raiseInventoryDrawer(const bool doCallBacks) {
 	if (!_biochipUp)
 		_previousHandler = InputHandler::getCurrentHandler();
 
@@ -385,6 +395,11 @@ void Interface::raiseInventoryDrawer(const bool doCallBacks) {
 	_inventoryLid.show();
 	_inventoryPush.show();
 	_inventoryLid.start();
+
+	if (((PegasusEngine *)g_engine)->isDVD()) {
+		_inventoryCloseSound.stopSound();
+		_inventoryOpenSound.playSound();
+	}
 }
 
 void Interface::playEndMessage() {
@@ -431,7 +446,7 @@ bool Interface::isInventoryDown() {
 	return !_inventoryUp;
 }
 
-void Interface::lowerInventoryDrawer(const bool doCallBacks) {	
+void Interface::lowerInventoryDrawer(const bool doCallBacks) {
 	if (_inventoryRaised) {
 		_inventoryRaised = false;
 
@@ -446,6 +461,11 @@ void Interface::lowerInventoryDrawer(const bool doCallBacks) {
 		FaderMoveSpec moveSpec;
 		moveSpec.makeTwoKnotFaderSpec(60, 0, 1000, 15, 0);
 		_inventoryPush.startFader(moveSpec);
+
+		if (((PegasusEngine *)g_engine)->isDVD()) {
+			_inventoryOpenSound.stopSound();
+			_inventoryCloseSound.playSound();
+		}
 	}
 }
 
@@ -471,7 +491,7 @@ void Interface::inventoryLidClosed() {
 	_inventoryUp = false;
 }
 
-void Interface::raiseBiochipDrawer(const bool doCallBacks) {	
+void Interface::raiseBiochipDrawer(const bool doCallBacks) {
 	if (!_inventoryUp)
 		_previousHandler = InputHandler::getCurrentHandler();
 
@@ -487,6 +507,11 @@ void Interface::raiseBiochipDrawer(const bool doCallBacks) {
 	_biochipLid.show();
 	_biochipPush.show();
 	_biochipLid.start();
+
+	if (((PegasusEngine *)g_engine)->isDVD()) {
+		_biochipCloseSound.stopSound();
+		_biochipOpenSound.playSound();
+	}
 }
 
 void Interface::biochipLidOpen(const bool doCallBacks) {
@@ -508,7 +533,7 @@ void Interface::biochipDrawerUp() {
 	_biochipRaised = true;
 }
 
-void Interface::lowerBiochipDrawer(const bool doCallBacks) {	
+void Interface::lowerBiochipDrawer(const bool doCallBacks) {
 	if (_biochipRaised) {
 		_biochipRaised = false;
 		_biochipPanel.deactivateInventoryPicture();
@@ -521,6 +546,11 @@ void Interface::lowerBiochipDrawer(const bool doCallBacks) {
 		FaderMoveSpec moveSpec;
 		moveSpec.makeTwoKnotFaderSpec(60, 0, 1000, 9, 0);
 		_biochipPush.startFader(moveSpec);
+
+		if (((PegasusEngine *)g_engine)->isDVD()) {
+			_biochipOpenSound.stopSound();
+			_biochipCloseSound.playSound();
+		}
 	}
 }
 
@@ -650,7 +680,7 @@ void Interface::lowerBiochipDrawerSync() {
 		vm->refreshDisplay();
 		g_system->delayMillis(10);
 	}
-	
+
 	vm->refreshDisplay();
 	biochipDrawerDown(false);
 

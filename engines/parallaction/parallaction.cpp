@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -33,12 +33,12 @@
 #include "parallaction/walk.h"
 
 namespace Parallaction {
-Parallaction *_vm = NULL;
+Parallaction *g_vm = NULL;
 // public stuff
 
-char		_saveData1[30] = { '\0' };
-uint32		_engineFlags = 0;
-uint32		_globalFlags = 0;
+char		g_saveData1[30] = { '\0' };
+uint32		g_engineFlags = 0;
+uint32		g_globalFlags = 0;
 
 // private stuff
 
@@ -48,7 +48,7 @@ Parallaction::Parallaction(OSystem *syst, const PARALLACTIONGameDescription *gam
 	// Setup mixer
 	syncSoundSettings();
 
-	_vm = this;
+	g_vm = this;
 	DebugMan.addDebugChannel(kDebugDialogue, "dialogue", "Dialogues debug level");
 	DebugMan.addDebugChannel(kDebugParser, "parser", "Parser debug level");
 	DebugMan.addDebugChannel(kDebugDisk, "disk", "Disk debug level");
@@ -59,6 +59,33 @@ Parallaction::Parallaction(OSystem *syst, const PARALLACTIONGameDescription *gam
 	DebugMan.addDebugChannel(kDebugAudio, "audio", "Audio debug level");
 	DebugMan.addDebugChannel(kDebugMenu, "menu", "Menu debug level");
 	DebugMan.addDebugChannel(kDebugInventory, "inventory", "Inventory debug level");
+
+	_screenHeight = 0;
+	_screenSize = 0;
+	_gameType = 0;
+	_gfx = 0;
+	_disk = 0;
+	_input = 0;
+	_debugger = 0;
+	_saveLoad = 0;
+	_menuHelper = 0;
+	_soundMan = 0;
+	_labelFont = 0;
+	_menuFont = 0;
+	_introFont = 0;
+	_dialogueFont = 0;
+	_globalFlagsNames = 0;
+	_objectsNames = 0;
+	_objects = 0;
+	_callableNames = 0;
+	_localFlagNames = 0;
+	_cmdExec = 0;
+	_programExec = 0;
+	_balloonMan = 0;
+	_inventoryRenderer = 0;
+	_inventory = 0;
+	_currentLocationIndex = 0;
+	_numLocations = 0;
 }
 
 Parallaction::~Parallaction() {
@@ -87,7 +114,7 @@ Parallaction::~Parallaction() {
 
 Common::Error Parallaction::init() {
 	_gameType = getGameType();
-	_engineFlags = 0;
+	g_engineFlags = 0;
 	_objectsNames = NULL;
 	_globalFlagsNames = NULL;
 	_location._hasSound = false;
@@ -129,13 +156,9 @@ GUI::Debugger *Parallaction::getDebugger() {
 	return _debugger;
 }
 
-bool canScroll() {
-	return (_vm->_gfx->_backgroundInfo->width > _vm->_screenWidth);
-}
-
 void Parallaction::updateView() {
 
-	if ((_engineFlags & kEnginePauseJobs) && (_input->_inputMode != Input::kInputModeInventory)) {
+	if ((g_engineFlags & kEnginePauseJobs) && (_input->_inputMode != Input::kInputModeInventory)) {
 		return;
 	}
 
@@ -147,14 +170,14 @@ void Parallaction::updateView() {
 void Parallaction::pauseJobs() {
 	debugC(9, kDebugExec, "pausing jobs execution");
 
-	_engineFlags |= kEnginePauseJobs;
+	g_engineFlags |= kEnginePauseJobs;
 	return;
 }
 
 void Parallaction::resumeJobs() {
 	debugC(9, kDebugExec, "resuming jobs execution");
 
-	_engineFlags &= ~kEnginePauseJobs;
+	g_engineFlags &= ~kEnginePauseJobs;
 	return;
 }
 
@@ -265,7 +288,7 @@ void Parallaction::runGameFrame(int event) {
 	if (shouldQuit())
 		return;
 
-	if (_engineFlags & kEngineChangeLocation) {
+	if (g_engineFlags & kEngineChangeLocation) {
 		changeLocation();
 	}
 
@@ -587,7 +610,10 @@ void Parallaction::runZone(ZonePtr z) {
 //	ZONE TYPE: DOOR
 
 void Parallaction::updateDoor(ZonePtr z, bool close) {
-	z->_flags = close ? (z->_flags |= kFlagsClosed) : (z->_flags &= ~kFlagsClosed);
+	if (close)
+		z->_flags |= kFlagsClosed;
+	else
+		z->_flags &= ~kFlagsClosed;
 
 	if (z->u._gfxobj) {
 		uint frame = (close ? 0 : 1);
@@ -883,6 +909,9 @@ void CharacterName::dummify() {
 
 CharacterName::CharacterName() {
 	dummify();
+
+	_suffix = 0;
+	_prefix = 0;
 }
 
 CharacterName::CharacterName(const char *name) {
@@ -900,14 +929,14 @@ void CharacterName::bind(const char *name) {
 
 	if (!_dummy) {
 		if (!strcmp(name, "donna")) {
-			_engineFlags &= ~kEngineTransformedDonna;
+			g_engineFlags &= ~kEngineTransformedDonna;
 		} else {
-			if (_engineFlags & kEngineTransformedDonna) {
+			if (g_engineFlags & kEngineTransformedDonna) {
 				_suffix = _suffixTras;
 			} else {
 				const char *s = strstr(name, "tras");
 				if (s) {
-					_engineFlags |= kEngineTransformedDonna;
+					g_engineFlags |= kEngineTransformedDonna;
 					_suffix = _suffixTras;
 					end = s;
 				}
@@ -953,7 +982,7 @@ void Parallaction::beep() {
 void Parallaction::scheduleLocationSwitch(const char *location) {
 	debugC(9, kDebugExec, "scheduleLocationSwitch(%s)\n", location);
 	_newLocationName = location;
-	_engineFlags |= kEngineChangeLocation;
+	g_engineFlags |= kEngineChangeLocation;
 }
 
 } // End of namespace Parallaction

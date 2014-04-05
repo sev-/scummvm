@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -88,7 +88,7 @@ void SaveLoad_ns::doLoadGame(uint16 slot) {
 	_vm->_score = atoi(s.c_str());
 
 	s = f->readLine();
-	_globalFlags = atoi(s.c_str());
+	g_globalFlags = atoi(s.c_str());
 
 	s = f->readLine();
 	_vm->_numLocations = atoi(s.c_str());
@@ -151,7 +151,7 @@ void SaveLoad_ns::doSaveGame(uint16 slot, const char* name) {
 	sprintf(s, "%s\n", _vm->_char.getFullName());
 	f->writeString(s);
 
-	sprintf(s, "%s\n", _saveData1);
+	sprintf(s, "%s\n", g_saveData1);
 	f->writeString(s);
 	sprintf(s, "%d\n", _vm->_char._ani->getX());
 	f->writeString(s);
@@ -159,7 +159,7 @@ void SaveLoad_ns::doSaveGame(uint16 slot, const char* name) {
 	f->writeString(s);
 	sprintf(s, "%d\n", _vm->_score);
 	f->writeString(s);
-	sprintf(s, "%u\n", _globalFlags);
+	sprintf(s, "%u\n", g_globalFlags);
 	f->writeString(s);
 
 	sprintf(s, "%d\n", _vm->_numLocations);

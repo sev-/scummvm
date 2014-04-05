@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -51,12 +51,13 @@ public:
 	bool _editorSelected;
 	BaseSubFrame(BaseGame *inGame);
 	virtual ~BaseSubFrame();
-	bool loadBuffer(byte *buffer, int lifeTime, bool keepLoaded);
-	bool draw(int x, int y, BaseObject *registerOwner = NULL, float zoomX = 100, float zoomY = 100, bool precise = true, uint32 alpha = 0xFFFFFFFF, float rotate = 0.0f, TSpriteBlendMode blendMode = BLEND_NORMAL);
+	bool loadBuffer(char *buffer, int lifeTime, bool keepLoaded);
+	bool draw(int x, int y, BaseObject *registerOwner = nullptr, float zoomX = 100, float zoomY = 100, bool precise = true, uint32 alpha = 0xFFFFFFFF, float rotate = 0.0f, TSpriteBlendMode blendMode = BLEND_NORMAL);
 	bool getBoundingRect(Rect32 *rect, int x, int y, float scaleX = 100, float scaleY = 100);
+	const char* getSurfaceFilename();
 
-	int _hotspotX;
-	int _hotspotY;
+	int32 _hotspotX;
+	int32 _hotspotY;
 	uint32 _alpha;
 	// These two setters and getters are rather usefull, as they allow _rect to be lazily defined
 	// Thus we don't need to load the actual graphics before the rect is actually needed.
@@ -65,14 +66,14 @@ public:
 private:
 	bool _wantsDefaultRect;
 	Rect32 _rect;
+	char *_surfaceFilename;
 public:
 	bool _cKDefault;
 	byte _cKRed;
 	byte _cKGreen;
 	byte _cKBlue;
-	int _lifeTime;
+	int32 _lifeTime;
 	bool _keepLoaded;
-	char *_surfaceFilename;
 
 	bool _2DOnly;
 	bool _3DOnly;
@@ -80,13 +81,13 @@ public:
 	BaseSurface *_surface;
 
 	// scripting interface
-	virtual ScValue *scGetProperty(const char *name);
+	virtual ScValue *scGetProperty(const Common::String &name);
 	virtual bool scSetProperty(const char *name, ScValue *value);
 	virtual bool scCallMethod(ScScript *script, ScStack *stack, ScStack *thisStack, const char *name);
 	virtual const char *scToString();
 
 };
 
-} // end of namespace Wintermute
+} // End of namespace Wintermute
 
 #endif

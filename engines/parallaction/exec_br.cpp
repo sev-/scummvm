@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -307,7 +307,7 @@ DECLARE_COMMAND_OPCODE(testsfx) {
 
 
 DECLARE_COMMAND_OPCODE(ret) {
-	_engineFlags |= kEngineReturn;
+	g_engineFlags |= kEngineReturn;
 }
 
 
@@ -327,7 +327,7 @@ DECLARE_INSTRUCTION_OPCODE(invalid) {
 DECLARE_COMMAND_OPCODE(clear) {
 	if (ctxt._cmd->_flags & kFlagsGlobal) {
 		ctxt._cmd->_flags &= ~kFlagsGlobal;
-		_globalFlags &= ~ctxt._cmd->_flags;
+		g_globalFlags &= ~ctxt._cmd->_flags;
 	} else {
 		_vm->clearLocationFlags(ctxt._cmd->_flags);
 	}
@@ -356,7 +356,7 @@ DECLARE_COMMAND_OPCODE(get) {
 DECLARE_COMMAND_OPCODE(toggle) {
 	if (ctxt._cmd->_flags & kFlagsGlobal) {
 		ctxt._cmd->_flags &= ~kFlagsGlobal;
-		_globalFlags ^= ctxt._cmd->_flags;
+		g_globalFlags ^= ctxt._cmd->_flags;
 	} else {
 		_vm->toggleLocationFlags(ctxt._cmd->_flags);
 	}
@@ -373,7 +373,7 @@ DECLARE_COMMAND_OPCODE(invalid) {
 DECLARE_COMMAND_OPCODE(set) {
 	if (ctxt._cmd->_flags & kFlagsGlobal) {
 		ctxt._cmd->_flags &= ~kFlagsGlobal;
-		_globalFlags |= ctxt._cmd->_flags;
+		g_globalFlags |= ctxt._cmd->_flags;
 	} else {
 		_vm->setLocationFlags(ctxt._cmd->_flags);
 	}

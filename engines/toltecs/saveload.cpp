@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -92,7 +91,7 @@ void ToltecsEngine::savegame(const char *filename, const char *description) {
 	byte descriptionLen = strlen(description);
 	out->writeByte(descriptionLen);
 	out->write(description, descriptionLen);
-	
+
 	Graphics::saveThumbnail(*out);
 
 	// Not used yet, reserved for future usage
@@ -149,13 +148,13 @@ void ToltecsEngine::loadgame(const char *filename) {
 	SaveHeader header;
 
 	kReadSaveHeaderError errorCode = readSaveHeader(in, false, header);
-	
+
 	if (errorCode != kRSHENoError) {
 		warning("Error loading savegame '%s'", filename);
 		delete in;
 		return;
 	}
-	
+
 	_sound->stopAll();
 	_music->stopSequence();
 	g_engine->setTotalPlayTime(header.playTime * 1000);
@@ -181,9 +180,9 @@ void ToltecsEngine::loadgame(const char *filename) {
 	_mouseX = in->readUint16LE();
 	_mouseY = in->readUint16LE();
 	_mouseDisabled = in->readUint16LE();
-	
+
 	_system->warpMouse(_mouseX, _mouseY);
- 	_system->showMouse(_mouseDisabled == 0);
+	_system->showMouse(_mouseDisabled == 0);
 
 	_palette->loadState(in);
 	_script->loadState(in);

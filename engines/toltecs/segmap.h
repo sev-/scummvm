@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -61,14 +60,14 @@ public:
 	void getRgbModifiertAtPoint(int16 x, int16 y, int16 id, byte &r, byte &g, byte &b);
 
 	void addMasksToRenderQueue();
-	
+
 //protected:
 public: // for debugging purposes
 
 	struct SegmapPathRect {
 		int16 x1, y1, x2, y2;
 	};
-	
+
 	struct SegmapInfoRect {
 		int16 y, x;
 		int16 height, width;
@@ -78,11 +77,11 @@ public: // for debugging purposes
 			return py >= y && py <= y + height && px >= x && px <= x + width;
 		}
 	};
-	
+
 	struct PathPoint {
 		int16 y, x;
 	};
-	
+
 	typedef Common::Array<SegmapMaskRect> SegmapMaskRectArray;
 	typedef Common::Array<SegmapPathRect> SegmapPathRectArray;
 	typedef Common::Array<SegmapInfoRect> SegmapInfoRectArray;

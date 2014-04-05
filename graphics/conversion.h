@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -59,15 +59,18 @@ inline static void RGB2YUV(byte r, byte g, byte b, byte &y, byte &u, byte &v) {
  * @return			true if conversion completes successfully,
  *					false if there is an error.
  *
- * @note This implementation currently arbitrarily requires that the
- *		 destination's format have at least as high a bytedepth as
- *		 the source's.
- * @note This can convert a rectangle in place, if the source and
- *		 destination format have the same bytedepth.
- *
+ * @note Blitting to a 3Bpp destination is not supported
+ * @note This can convert a surface in place, regardless of the
+ *       source and destination format, as long as there is enough
+ *       space for the destination. The dstPitch / srcPitch ratio
+ *       must at least equal the dstBpp / srcBpp ratio for
+ *       dstPitch >= srcPitch and at most dstBpp / srcBpp for
+ *       dstPitch < srcPitch though.
  */
-bool crossBlit(byte *dst, const byte *src, int dstpitch, int srcpitch,
-						int w, int h, const Graphics::PixelFormat &dstFmt, const Graphics::PixelFormat &srcFmt);
+bool crossBlit(byte *dst, const byte *src,
+               const uint dstPitch, const uint srcPitch,
+               const uint w, const uint h,
+               const Graphics::PixelFormat &dstFmt, const Graphics::PixelFormat &srcFmt);
 
 } // End of namespace Graphics
 

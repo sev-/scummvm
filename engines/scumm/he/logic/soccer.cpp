@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -303,7 +303,7 @@ int LogicHEsoccer::op_1008(int outArray, int srcX, int srcY, int srcZ, int vecX,
 				putInArray(outArray, segmentsSoFar, 5, vecX);
 				putInArray(outArray, segmentsSoFar, 6, vecY);
 				putInArray(outArray, segmentsSoFar++, 7, vecZ);
-			} 
+			}
 		} else {
 			srcY = 0;
 			int thisVecX = vecX;
@@ -566,7 +566,7 @@ int LogicHEsoccer::addCollisionTreeChild(int depth, int index, int parent) {
 }
 
 int LogicHEsoccer::op_1013(int32 a1, int32 a2, int32 a3) {
-	// Initialises _collisionTree, a tree used for collision detection.
+	// Initializes _collisionTree, a tree used for collision detection.
 	// It is used by op_1014 to work out which objects to check.
 
 	_collisionTree = new uint32[585 * 11];
@@ -628,7 +628,7 @@ int LogicHEsoccer::op_1014(int32 srcX, int32 srcY, int32 srcZ, int32 velX, int32
 		adjustedVelZ = ((double)srcZ - 3869.0) / 100.0;
 		break;
 	}
-	
+
 	int foundCollision = 0;
 
 	// work out which collision objects we might collide with (if any)

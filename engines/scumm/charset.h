@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 #ifndef SCUMM_CHARSET_H
@@ -112,7 +113,7 @@ public:
 class CharsetRendererClassic : public CharsetRendererCommon {
 protected:
 	virtual void drawBitsN(const Graphics::Surface &s, byte *dst, const byte *src, byte bpp, int drawTop, int width, int height);
-	void printCharIntern(bool is2byte, const byte *charPtr, int origWidth, int origHeight, int width, int height, VirtScreen *vs, bool ignoreCharsetMask);	
+	void printCharIntern(bool is2byte, const byte *charPtr, int origWidth, int origHeight, int width, int height, VirtScreen *vs, bool ignoreCharsetMask);
 	virtual bool prepareDraw(uint16 chr);
 
 	int _width, _height, _origWidth, _origHeight;
@@ -195,7 +196,7 @@ public:
 
 	int getCharWidth(uint16 chr);
 	int getFontHeight();
-	
+
 private:
 	void enableShadow(bool enable);
 	void drawBits1(Graphics::Surface &dest, int x, int y, const byte *src, int drawTop, int width, int height);

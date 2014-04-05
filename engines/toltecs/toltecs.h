@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -35,6 +34,10 @@
 #include "engines/engine.h"
 
 #include "graphics/surface.h"
+
+#include "gui/debugger.h"
+
+#include "toltecs/console.h"
 
 namespace Toltecs {
 
@@ -109,6 +112,8 @@ public:
 	const Common::String& getTargetName() const { return _targetName; }
 	void syncSoundSettings();
 
+	GUI::Debugger *getDebugger() { return _console; }
+
 	void setupSysStrings();
 	void requestSavegame(int slotNum, Common::String &description);
 	void requestLoadgame(int slotNum);
@@ -134,8 +139,8 @@ public:
 	void talk(int16 slotIndex, int16 slotOffset);
 
 	void walk(byte *walkData);
-	
-	int16 findRectAtPoint(byte *rectData, int16 x, int16 y, int16 index, int16 itemSize, 
+
+	int16 findRectAtPoint(byte *rectData, int16 x, int16 y, int16 index, int16 itemSize,
 		byte *rectDataEnd);
 
 	int _cfgVoicesVolume, _cfgMusicVolume, _cfgSoundFXVolume;
@@ -144,6 +149,7 @@ public:
 
 	AnimationPlayer *_anim;
 	ArchiveReader *_arc;
+	Console *_console;
 	Input *_input;
 	MenuSystem *_menuSystem;
 	MoviePlayer *_moviePlayer;
@@ -163,7 +169,7 @@ public:
 
 	uint _sceneResIndex;
 	int16 _sceneWidth, _sceneHeight;
-	
+
 	int _counter01, _counter02;
 	bool _movieSceneFlag;
 	byte _flag01;
@@ -174,7 +180,7 @@ public:
 	int16 _guiHeight;
 
 	bool _doSpeech, _doText;
-	
+
 	int16 _walkSpeedY, _walkSpeedX;
 
 	Common::KeyState _keyState;

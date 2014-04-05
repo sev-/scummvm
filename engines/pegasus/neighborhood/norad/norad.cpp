@@ -123,7 +123,7 @@ void Norad::start() {
 	Neighborhood::start();
 }
 
-void Norad::activateHotspots() {	
+void Norad::activateHotspots() {
 	Neighborhood::activateHotspots();
 
 	RoomID room = GameState.getCurrentRoom();
@@ -172,7 +172,7 @@ void Norad::arriveAtSubPlatformRoom() {
 	newInteraction(kNoradSubPlatformInteractionID);
 }
 
-void Norad::arriveAtSubControlRoom() { 
+void Norad::arriveAtSubControlRoom() {
 	newInteraction(kNoradSubControlRoomInteractionID);
 }
 
@@ -229,7 +229,7 @@ void Norad::upButton(const Input &input) {
 		Neighborhood::upButton(input);
 }
 
-void Norad::setUpAirMask() {	
+void Norad::setUpAirMask() {
 	_airMaskCallBack.setNotification(&_neighborhoodNotification);
 	_airMaskCallBack.initCallBack(&_airMaskTimer, kCallBackAtExtremes);
 	_airMaskCallBack.setCallBackFlag(kAirTimerExpiredFlag);
@@ -241,7 +241,9 @@ void Norad::setUpAirMask() {
 }
 
 void Norad::checkAirMask() {
-	if (g_airMask && g_airMask->isAirFilterOn()) {
+	// WORKAROUND: The original game forgot to handle the case where the canister would
+	// be removed, leading to the timer remaining active.
+	if (!GameState.getNoradGassed() || (g_airMask && g_airMask->isAirFilterOn())) {
 		_airMaskTimer.stop();
 	} else if (GameState.getNoradGassed() && !_airMaskTimer.isRunning()) {
 		_airMaskTimer.setTime(0);
@@ -251,7 +253,7 @@ void Norad::checkAirMask() {
 	loadAmbientLoops();
 }
 
-void Norad::receiveNotification(Notification *notification, const NotificationFlags flags) {	
+void Norad::receiveNotification(Notification *notification, const NotificationFlags flags) {
 	if (notification == &_neighborhoodNotification && (flags & kAirTimerExpiredFlag) != 0)
 		((PegasusEngine *)g_engine)->die(kDeathGassedInNorad);
 

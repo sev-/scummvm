@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -192,7 +192,7 @@ void DialogueManager::transitionToState(DialogueState newState) {
 bool DialogueManager::testAnswerFlags(Answer *a) {
 	uint32 flags = _vm->getLocationFlags();
 	if (a->_yesFlags & kFlagsGlobal)
-		flags = _globalFlags | kFlagsGlobal;
+		flags = g_globalFlags | kFlagsGlobal;
 	return ((a->_yesFlags & flags) == a->_yesFlags) && ((a->_noFlags & ~flags) == a->_noFlags);
 }
 
@@ -238,7 +238,7 @@ int16 DialogueManager::selectAnswerN() {
 
 	_selection = _balloonMan->hitTestDialogueBalloon(_mousePos.x, _mousePos.y);
 
-	VisibleAnswer *oldAnswer = &_visAnswers[_oldSelection];
+	VisibleAnswer *oldAnswer = (_oldSelection == NO_ANSWER_SELECTED) ? NULL : &_visAnswers[_oldSelection];
 	VisibleAnswer *answer = &_visAnswers[_selection];
 
 	if (_selection != _oldSelection) {
@@ -370,9 +370,9 @@ protected:
 	bool			_askPassword;
 
 	bool checkPassword() {
-		return ((!scumm_stricmp(_vm->_char.getBaseName(), _doughName) && _vm->_password.hasPrefix("1732461")) ||
-			   (!scumm_stricmp(_vm->_char.getBaseName(), _donnaName) && _vm->_password.hasPrefix("1622")) ||
-			   (!scumm_stricmp(_vm->_char.getBaseName(), _dinoName) && _vm->_password.hasPrefix("179")));
+		return ((!scumm_stricmp(_vm->_char.getBaseName(), g_doughName) && _vm->_password.hasPrefix("1732461")) ||
+			   (!scumm_stricmp(_vm->_char.getBaseName(), g_donnaName) && _vm->_password.hasPrefix("1622")) ||
+			   (!scumm_stricmp(_vm->_char.getBaseName(), g_dinoName) && _vm->_password.hasPrefix("179")));
 	}
 
 	void resetPassword() {

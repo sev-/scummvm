@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -103,13 +103,13 @@ bool BaseKeyboardState::scCallMethod(ScScript *script, ScStack *stack, ScStack *
 
 
 //////////////////////////////////////////////////////////////////////////
-ScValue *BaseKeyboardState::scGetProperty(const char *name) {
+ScValue *BaseKeyboardState::scGetProperty(const Common::String &name) {
 	_scValue->setNULL();
 
 	//////////////////////////////////////////////////////////////////////////
 	// Type
 	//////////////////////////////////////////////////////////////////////////
-	if (strcmp(name, "Type") == 0) {
+	if (name == "Type") {
 		_scValue->setString("keyboard");
 		return _scValue;
 	}
@@ -117,7 +117,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// Key
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "Key") == 0) {
+	else if (name == "Key") {
 		if (_currentPrintable) {
 			char key[2];
 			key[0] = (char)_currentCharCode;
@@ -133,7 +133,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// Printable
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "Printable") == 0) {
+	else if (name == "Printable") {
 		_scValue->setBool(_currentPrintable);
 		return _scValue;
 	}
@@ -141,7 +141,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// KeyCode
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "KeyCode") == 0) {
+	else if (name == "KeyCode") {
 		_scValue->setInt(_currentCharCode);
 		return _scValue;
 	}
@@ -149,7 +149,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// IsShift
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "IsShift") == 0) {
+	else if (name == "IsShift") {
 		_scValue->setBool(_currentShift);
 		return _scValue;
 	}
@@ -157,7 +157,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// IsAlt
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "IsAlt") == 0) {
+	else if (name == "IsAlt") {
 		_scValue->setBool(_currentAlt);
 		return _scValue;
 	}
@@ -165,7 +165,7 @@ ScValue *BaseKeyboardState::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// IsControl
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "IsControl") == 0) {
+	else if (name == "IsControl") {
 		_scValue->setBool(_currentControl);
 		return _scValue;
 	} else {
@@ -200,9 +200,8 @@ const char *BaseKeyboardState::scToString() {
 bool BaseKeyboardState::readKey(Common::Event *event) {
 	//_currentPrintable = (event->type == SDL_TEXTINPUT); // TODO
 	_currentCharCode = keyCodeToVKey(event);
-	if ((_currentCharCode <= Common::KEYCODE_z && _currentCharCode >= Common::KEYCODE_a) ||
-	        (_currentCharCode <= Common::KEYCODE_9 && _currentCharCode >= Common::KEYCODE_0) ||
-			(_currentCharCode == Common::KEYCODE_SPACE)) {
+	// Verify that this is a printable ISO-8859-character (including the upper charset)
+	if ((_currentCharCode <= 0x7E && _currentCharCode >= 0x20) || (_currentCharCode <= 0xFF && _currentCharCode >= 0xA0)) {
 		_currentPrintable = true;
 	} else {
 		_currentPrintable = false;
@@ -222,12 +221,12 @@ bool BaseKeyboardState::persist(BasePersistenceManager *persistMgr) {
 	//if (!persistMgr->getIsSaving()) cleanup();
 	BaseScriptable::persist(persistMgr);
 
-	persistMgr->transfer(TMEMBER(_currentAlt));
-	persistMgr->transfer(TMEMBER(_currentCharCode));
-	persistMgr->transfer(TMEMBER(_currentControl));
-	persistMgr->transfer(TMEMBER(_currentKeyData));
-	persistMgr->transfer(TMEMBER(_currentPrintable));
-	persistMgr->transfer(TMEMBER(_currentShift));
+	persistMgr->transferBool(TMEMBER(_currentAlt));
+	persistMgr->transferUint32(TMEMBER(_currentCharCode));
+	persistMgr->transferBool(TMEMBER(_currentControl));
+	persistMgr->transferUint32(TMEMBER(_currentKeyData));
+	persistMgr->transferBool(TMEMBER(_currentPrintable));
+	persistMgr->transferBool(TMEMBER(_currentShift));
 
 	if (!persistMgr->getIsSaving()) {
 		_keyStates = new uint8[323]; // Hardcoded size for the common/keyboard.h enum
@@ -258,6 +257,11 @@ bool BaseKeyboardState::isAltDown() {
 }
 
 //////////////////////////////////////////////////////////////////////////
+bool BaseKeyboardState::isCurrentPrintable() const {
+	return _currentPrintable;
+}
+
+//////////////////////////////////////////////////////////////////////////
 uint32 BaseKeyboardState::keyCodeToVKey(Common::Event *event) {
 	if (event->type != Common::EVENT_KEYDOWN) {
 		return 0;
@@ -267,22 +271,26 @@ uint32 BaseKeyboardState::keyCodeToVKey(Common::Event *event) {
 	case Common::KEYCODE_KP_ENTER:
 		return Common::KEYCODE_RETURN;
 	default:
-		return (uint32)event->kbd.keycode;
+		return (uint32)event->kbd.ascii;
 	}
 }
 
 enum VKeyCodes {
-	kVkSpace = 32,
-	kVkLeft  = 37,
-	kVkUp    = 38,
-	kVkRight = 39,
-	kVkDown  = 40
+	kVkEscape = 27,
+	kVkSpace  = 32,
+	kVkLeft   = 37,
+	kVkUp     = 38,
+	kVkRight  = 39,
+	kVkDown   = 40
 };
 
 //////////////////////////////////////////////////////////////////////////
 Common::KeyCode BaseKeyboardState::vKeyToKeyCode(uint32 vkey) {
 	// todo
 	switch (vkey) {
+	case kVkEscape:
+		return Common::KEYCODE_ESCAPE;
+		break;
 	case kVkSpace:
 		return Common::KEYCODE_SPACE;
 		break;
@@ -306,4 +314,4 @@ Common::KeyCode BaseKeyboardState::vKeyToKeyCode(uint32 vkey) {
 
 }
 
-} // end of namespace Wintermute
+} // End of namespace Wintermute

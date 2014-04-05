@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -31,7 +30,9 @@ namespace Toltecs {
 
 Palette::Palette(ToltecsEngine *vm) : _vm(vm) {
 	clearFragments();
-	
+
+	memset(_mainPalette, 0, sizeof(_mainPalette));
+	memset(_animPalette, 0, sizeof(_animPalette));
 	memset(_colorTransTable, 0, sizeof(_colorTransTable));
 }
 
@@ -81,7 +82,7 @@ void Palette::setDeltaPalette(byte *palette, byte mask, int8 deltaValue, int16 c
 		if (mask & 4) colors[index * 3 + 2] = CLIP<int>(rgb + deltaValue, 0, 63) << 2;
 		index++;
 	}
-	
+
 	debug(0, "startIndex = %d; colorCount = %d", startIndex, colorCount);
 
 	_vm->_system->getPaletteManager()->setPalette((const byte *)colors, 0, 256);
@@ -101,9 +102,9 @@ void Palette::addFragment(uint resIndex, int16 id) {
 
 	Resource *fragmentResource = _vm->_res->load(resIndex);
 	byte count = fragmentResource->size / 3;
-	
+
 	memcpy(&_mainPalette[_fragmentIndex * 3], fragmentResource->data, count * 3);
-	
+
 	PaletteFragment fragment;
 	fragment.id = id;
 	fragment.index = _fragmentIndex;
@@ -119,14 +120,14 @@ uint16 Palette::findFragment(int16 id) {
 	debug(0, "Palette::findFragment(%d)", id);
 
 	uint16 result = 0;
-	for (PaletteFragmentArray::iterator iter = _fragments.begin(); iter != _fragments.end(); iter++) {
+	for (PaletteFragmentArray::iterator iter = _fragments.begin(); iter != _fragments.end(); ++iter) {
 		PaletteFragment fragment = *iter;
 		if (fragment.id == id) {
 			result = (fragment.count << 8) | fragment.index;
 			break;
 		}
 	}
-	
+
 	debug(0, "Palette::findFragment() result = %04X", result);
 
 	return result;
@@ -138,50 +139,46 @@ void Palette::clearFragments() {
 	_fragments.clear();
 }
 
-void Palette::buildColorTransTable(byte limit, int8 deltaValue, byte mask) {
-	byte r = 0, g = 0, b = 0;
-	
-	mask &= 7;
-	
-	for (int i = 0; i < 256; i++) {
+byte Palette::getMatchingColor(byte r, byte g, byte b) {
+	int bestIndex = 0;
+	uint16 bestMatch = 0xFFFF;
 
-		if (deltaValue < 0) {
-			// TODO (probably unused)
-			warning("Palette::buildColorTransTable(%d, %d, %02X) not yet implemented!", limit, deltaValue, mask);
-		} else {
-			r = _mainPalette[i * 3 + 0];
-			g = _mainPalette[i * 3 + 1];
-			b = _mainPalette[i * 3 + 2];
-			if (MAX(r, MAX(b, g)) >= limit) {
-				if ((mask & 1) && r >= deltaValue)
-					r -= deltaValue;
-				if ((mask & 2) && g >= deltaValue)
-					g -= deltaValue;
-				if ((mask & 4) && b >= deltaValue)
-					b -= deltaValue;
-			}
+	for (int j = 0; j < 256; j++) {
+		byte distance = ABS(_mainPalette[j * 3 + 0] - r) + ABS(_mainPalette[j * 3 + 1] - g) + ABS(_mainPalette[j * 3 + 2] - b);
+		byte maxColor = MAX(_mainPalette[j * 3 + 0], MAX(_mainPalette[j * 3 + 1], _mainPalette[j * 3 + 2]));
+		uint16 match = (distance << 8) | maxColor;
+		if (match < bestMatch) {
+			bestMatch = match;
+			bestIndex = j;
 		}
-		
-		int bestIndex = 0;
-		uint16 bestMatch = 0xFFFF;
-
-		for (int j = 0; j < 256; j++) {
-			byte distance = ABS(_mainPalette[j * 3 + 0] - r) + ABS(_mainPalette[j * 3 + 1] - g) + ABS(_mainPalette[j * 3 + 2] - b);
-			byte maxColor = MAX(_mainPalette[j * 3 + 0], MAX(_mainPalette[j * 3 + 1], _mainPalette[j * 3 + 2]));
-			uint16 match = (distance << 8) | maxColor;
-			if (match < bestMatch) {
-				bestMatch = match;
-				bestIndex = j;
-			}
-		}
-		
-		_colorTransTable[i] = bestIndex;
-
 	}
+
+	return bestIndex;
 }
 
-void Palette::buildColorTransTable2(byte limit, int8 deltaValue, byte mask) {
-	// TODO
+void Palette::buildColorTransTable(byte limit, int8 deltaValue, byte mask) {
+	byte r = 0, g = 0, b = 0;
+
+	mask &= 7;
+
+	if (deltaValue < 0)	// unused
+		error("buildColorTransTable called with a negative delta value(limit %d, delta %d, mask %02X)", limit, deltaValue, mask);
+
+	for (int i = 0; i < 256; i++) {
+		r = _mainPalette[i * 3 + 0];
+		g = _mainPalette[i * 3 + 1];
+		b = _mainPalette[i * 3 + 2];
+		if (MAX(r, MAX(b, g)) >= limit) {
+			if ((mask & 1) && r >= deltaValue)
+				r -= deltaValue;
+			if ((mask & 2) && g >= deltaValue)
+				g -= deltaValue;
+			if ((mask & 4) && b >= deltaValue)
+				b -= deltaValue;
+		}
+
+		_colorTransTable[i] = getMatchingColor(r, g, b);
+	}
 }
 
 void Palette::saveState(Common::WriteStream *out) {
@@ -196,7 +193,7 @@ void Palette::saveState(Common::WriteStream *out) {
 
 	uint16 fragmentCount = _fragments.size();
 	out->writeUint16LE(fragmentCount);
-	for (PaletteFragmentArray::iterator iter = _fragments.begin(); iter != _fragments.end(); iter++) {
+	for (PaletteFragmentArray::iterator iter = _fragments.begin(); iter != _fragments.end(); ++iter) {
 		PaletteFragment fragment = *iter;
 		out->writeUint16LE(fragment.id);
 		out->writeByte(fragment.index);

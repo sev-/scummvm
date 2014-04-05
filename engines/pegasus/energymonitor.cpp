@@ -245,7 +245,7 @@ void EnergyMonitor::draw(const Common::Rect &r) {
 
 void EnergyMonitor::calibrateEnergyBar() {
 	PegasusEngine *vm = (PegasusEngine *)g_engine;
-	
+
 	_calibrating = true;
 
 	vm->setEnergyDeathReason(-1);
@@ -262,9 +262,9 @@ void EnergyMonitor::calibrateEnergyBar() {
 	_energyLight.setCurrentFrameIndex(0);
 	_energyLight.hide();
 
-	show();
 	setEnergyValue(0);
 	setEnergyDrainRate(-(int32)kMaxJMPEnergy / 2);
+	show();
 
 	// Make sure warning light is hidden...
 	_energyLight.hide();

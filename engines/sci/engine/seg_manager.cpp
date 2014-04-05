@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -28,7 +28,8 @@
 namespace Sci {
 
 
-SegManager::SegManager(ResourceManager *resMan) {
+SegManager::SegManager(ResourceManager *resMan, ScriptPatcher *scriptPatcher)
+	: _resMan(resMan), _scriptPatcher(scriptPatcher) {
 	_heap.push_back(0);
 
 	_clonesSegId = 0;
@@ -36,12 +37,13 @@ SegManager::SegManager(ResourceManager *resMan) {
 	_nodesSegId = 0;
 	_hunksSegId = 0;
 
+	_saveDirPtr = NULL_REG;
+	_parserPtr = NULL_REG;
+
 #ifdef ENABLE_SCI32
 	_arraysSegId = 0;
 	_stringSegId = 0;
 #endif
-
-	_resMan = resMan;
 
 	createClassTable();
 }
@@ -259,8 +261,14 @@ const char *SegManager::getObjectName(reg_t pos) {
 	const char *name = 0;
 	if (nameReg.getSegment())
 		name  = derefString(nameReg);
-	if (!name)
-		return "<invalid name>";
+	if (!name) {
+		// Crazy Nick Laura Bow is missing some object names needed for the static
+		// selector vocabulary
+		if (g_sci->getGameId() == GID_CNICK_LAURABOW && pos == make_reg(1, 0x2267))
+			return "Character";
+		else
+			return "<invalid name>";
+	}
 
 	return name;
 }
@@ -825,7 +833,7 @@ byte *SegManager::allocDynmem(int size, const char *descr, reg_t *addr) {
 }
 
 bool SegManager::freeDynmem(reg_t addr) {
-	if (addr.getSegment() < 1 || addr.getSegment() >= _heap.size() || 
+	if (addr.getSegment() < 1 || addr.getSegment() >= _heap.size() ||
 		!_heap[addr.getSegment()] || _heap[addr.getSegment()]->getType() != SEG_TYPE_DYNMEM)
 		return false; // error
 
@@ -974,7 +982,7 @@ int SegManager::instantiateScript(int scriptNum) {
 		scr = allocateScript(scriptNum, &segmentId);
 	}
 
-	scr->load(scriptNum, _resMan);
+	scr->load(scriptNum, _resMan, _scriptPatcher);
 	scr->initializeLocals(this);
 	scr->initializeClasses(this);
 	scr->initializeObjects(this, segmentId);

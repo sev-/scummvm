@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -145,6 +145,18 @@ void LocationName::bind(const char *s) {
 
 Parallaction_ns::Parallaction_ns(OSystem* syst, const PARALLACTIONGameDescription *gameDesc) : Parallaction(syst, gameDesc),
 	_locationParser(0), _programParser(0), _walker(0) {
+	_soundManI = 0;
+	_score = 0;
+	_inTestResult = 0;
+	_callables = 0;
+	num_foglie = 0;
+	_sarcophagusDeltaX = 0;
+	_movingSarcophagus = 0;
+	_freeSarcophagusSlotX = 0;
+	_intro = 0;
+
+	_testResultLabels[0] = 0;
+	_testResultLabels[1] = 0;
 }
 
 Common::Error Parallaction_ns::init() {
@@ -152,7 +164,7 @@ Common::Error Parallaction_ns::init() {
 	_screenWidth = 320;
 	_screenHeight = 200;
 
-	if (getPlatform() == Common::kPlatformPC) {
+	if (getPlatform() == Common::kPlatformDOS) {
 		_disk = new DosDisk_ns(this);
 	} else {
 		if (getFeatures() & GF_DEMO) {
@@ -163,7 +175,7 @@ Common::Error Parallaction_ns::init() {
 
 	_disk->init();
 
-	if (getPlatform() == Common::kPlatformPC) {
+	if (getPlatform() == Common::kPlatformDOS) {
 		_soundManI = new DosSoundMan_ns(this);
 		_soundManI->setMusicVolume(ConfMan.getInt("music_volume"));
 	} else {
@@ -182,7 +194,7 @@ Common::Error Parallaction_ns::init() {
 	_cmdExec = new CommandExec_ns(this);
 	_programExec = new ProgramExec_ns(this);
 
-	_walker = new PathWalker_NS;
+	_walker = new PathWalker_NS(this);
 
 	_sarcophagusDeltaX = 0;
 	_movingSarcophagus = false;
@@ -310,6 +322,7 @@ void Parallaction_ns::changeBackground(const char* background, const char* mask,
 		_system->delayMillis(20);
 		_gfx->setPalette(pal);
 		_gfx->updateScreen();
+		return;
 	}
 
 	if (path == 0) {
@@ -382,8 +395,8 @@ void Parallaction_ns::changeLocation() {
 		changeCharacter(locname.character());
 	}
 
-	strcpy(_saveData1, locname.location());
-	parseLocation(_saveData1);
+	strcpy(g_saveData1, locname.location());
+	parseLocation(g_saveData1);
 
 	if (_location._startPosition.x != -1000) {
 		_char._ani->setX(_location._startPosition.x);
@@ -399,7 +412,7 @@ void Parallaction_ns::changeLocation() {
 
 	// BUG #1837503: kEngineChangeLocation flag must be cleared *before* commands
 	// and acommands are executed, so that it can be set again if needed.
-	_engineFlags &= ~kEngineChangeLocation;
+	g_engineFlags &= ~kEngineChangeLocation;
 
 	_cmdExec->run(_location._commands);
 
@@ -412,6 +425,11 @@ void Parallaction_ns::changeLocation() {
 
 	if (!_intro) {
 		_input->setMouseState(oldMouseState);
+		// WORKAROUND: Fix a script bug in the Multilingual DOS version of
+		// Nippon Safes: the mouse cursor is incorrectly hidden outside the
+		// cave at the end of the game. Fix it here.
+		if (!strcmp(_location._name, "ingressocav"))
+			_input->setMouseState(MOUSE_ENABLED_SHOW);
 	}
 
 	debugC(1, kDebugExec, "changeLocation() done");
@@ -526,10 +544,10 @@ void Parallaction_ns::cleanupGame() {
 	_soundManI->stopMusic();
 
 	_inTestResult = false;
-	_engineFlags &= ~kEngineTransformedDonna;
+	g_engineFlags &= ~kEngineTransformedDonna;
 
 	_numLocations = 0;
-	_globalFlags = 0;
+	g_globalFlags = 0;
 	memset(_localFlags, 0, sizeof(_localFlags));
 	memset(_locationNames, 0, sizeof(_locationNames));
 
@@ -553,7 +571,7 @@ void Parallaction_ns::scheduleWalk(int16 x, int16 y, bool fromUser) {
 	}
 
 	_walker->buildPath(a, x, y);
-	_engineFlags |= kEngineWalking;
+	g_engineFlags |= kEngineWalking;
 }
 
 }// namespace Parallaction

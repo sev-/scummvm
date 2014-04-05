@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -43,6 +43,7 @@ public:
 
 	void play(Common::SeekableReadStream *stream);
 	void pause(bool p);
+	virtual void pause() { assert(0); } // overridden
 	virtual void onTimer();
 
 private:
@@ -168,13 +169,13 @@ void DosSoundMan_ns::playCharacterMusic(const char *character) {
 	char *name = const_cast<char *>(character);
 	const char *newMusicFile = 0;
 
-	if (!scumm_stricmp(name, _dinoName)) {
+	if (!scumm_stricmp(name, g_dinoName)) {
 		newMusicFile = "dino";
 	} else
-	if (!scumm_stricmp(name, _donnaName)) {
+	if (!scumm_stricmp(name, g_donnaName)) {
 		newMusicFile = "donna";
 	} else
-	if (!scumm_stricmp(name, _doughName)) {
+	if (!scumm_stricmp(name, g_doughName)) {
 		newMusicFile = "nuts";
 	} else {
 		warning("unknown character '%s' in DosSoundMan_ns_ns::playCharacterMusic", character);

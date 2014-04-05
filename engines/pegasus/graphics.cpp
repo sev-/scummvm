@@ -50,7 +50,7 @@ GraphicsManager::GraphicsManager(PegasusEngine *vm) : _vm(vm) {
 	_updatesEnabled = true;
 	_screenFader = new ScreenFader();
 }
-	
+
 GraphicsManager::~GraphicsManager() {
 	_workArea.free();
 	delete _screenFader;
@@ -270,7 +270,7 @@ void GraphicsManager::shakeTheWorld(TimeValue duration, TimeScale scale) {
 
 	// Convert to millis
 	duration = duration * 1000 / scale;
-	
+
 	uint32 startTime = g_system->getMillis();
 
 	while (g_system->getMillis() < startTime + duration) {
@@ -318,7 +318,7 @@ void GraphicsManager::shakeTheWorld(TimeValue duration, TimeScale scale) {
 	}
 
 	if (lastOffset.x != 0 || lastOffset.y != 0) {
-		g_system->copyRectToScreen((byte *)oldScreen.pixels, oldScreen.pitch, 0, 0, 640, 480);
+		g_system->copyRectToScreen((byte *)oldScreen.getPixels(), oldScreen.pitch, 0, 0, 640, 480);
 		g_system->updateScreen();
 	}
 

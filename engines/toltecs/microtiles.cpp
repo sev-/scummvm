@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -119,12 +118,7 @@ Common::Rect * MicroTileArray::getRectangles(int *num_rects, int min_x, int min_
 
 	for (y = 0; y < _tilesH; ++y) {
 		for (x = 0; x < _tilesW; ++x) {
-
-			int start;
-			int finish = 0;
-			BoundingBox boundingBox;
-
-			boundingBox = _tiles[i];
+			BoundingBox boundingBox = _tiles[i];
 
 			if (isBoundingBoxEmpty(boundingBox)) {
 				++i;
@@ -138,12 +132,11 @@ Common::Rect * MicroTileArray::getRectangles(int *num_rects, int min_x, int min_
 			x0 = CLIP (x0, min_x, max_x);
 			y0 = CLIP (y0, min_y, max_y);
 			y1 = CLIP (y1, min_y, max_y);
-			
+
 			// FIXME: Why is the following code in an #if block?
 #if 1
-			start = i;
-
 			if (TileX1(boundingBox) == TileSize - 1 && x != _tilesW - 1) {	// check if the tile continues
+				bool finish = false;
 				while (!finish) {
 					++x;
 					++i;
@@ -155,13 +148,12 @@ Common::Rect * MicroTileArray::getRectangles(int *num_rects, int min_x, int min_
 					{
 						--x;
 						--i;
-						finish = 1;
+						finish = true;
 					}
 				}
 			}
 #endif
 			x1 = (x * TileSize) + TileX1(_tiles[i]);
-
 			x1 = CLIP (x1, min_x, max_x);
 
 			// FIXME: Why is the following code in an #if block?

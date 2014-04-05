@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -79,7 +79,7 @@ reg_t disassemble(EngineState *s, reg32_t pos, bool printBWTag, bool printByteco
 	Kernel *kernel = g_sci->getKernel();
 
 	if (!mobj) {
-		warning("Disassembly failed: Segment %04x non-existant or not a script", pos.getSegment());
+		warning("Disassembly failed: Segment %04x non-existent or not a script", pos.getSegment());
 		return retval;
 	} else
 		script_entity = (Script *)mobj;
@@ -514,7 +514,7 @@ void Kernel::dissectScript(int scriptNumber, Vocabulary *vocab) {
 
 		if (!objType) {
 			debugN("End of script object (#0) encountered.\n");
-			debugN("Classes: %i, Objects: %i, Export: %i,\n Var: %i (all base 10)",
+			debugN("Classes: %i, Objects: %i, Export: %i,\n Var: %i (all base 10)\n",
 			          objectctr[6], objectctr[1], objectctr[7], objectctr[10]);
 			return;
 		}
@@ -527,7 +527,8 @@ void Kernel::dissectScript(int scriptNumber, Vocabulary *vocab) {
 
 		_seeker += objsize;
 
-		objectctr[objType]++;
+		if (objType >= 0 && objType < ARRAYSIZE(objectctr))
+			objectctr[objType]++;
 
 		switch (objType) {
 		case SCI_OBJ_OBJECT:
@@ -736,37 +737,39 @@ void logKernelCall(const KernelFunction *kernelCall, const KernelSubFunction *ke
 			case SIG_TYPE_REFERENCE:
 			{
 				SegmentObj *mobj = s->_segMan->getSegmentObj(argv[parmNr].getSegment());
-				switch (mobj->getType()) {
-				case SEG_TYPE_HUNK:
-				{
-					HunkTable *ht = (HunkTable *)mobj;
-					int index = argv[parmNr].getOffset();
-					if (ht->isValidEntry(index)) {
-						// NOTE: This ", deleted" isn't as useful as it could
-						// be because it prints the status _after_ the kernel
-						// call.
-						debugN(" ('%s' hunk%s)", ht->_table[index].type, ht->_table[index].mem ? "" : ", deleted");
-					} else
-						debugN(" (INVALID hunk ref)");
-					break;
-				}
-				default:
-					// TODO: Any other segment types which could
-					// use special handling?
-
-					if (kernelCall->function == kSaid) {
-						SegmentRef saidSpec = s->_segMan->dereference(argv[parmNr]);
-						if (saidSpec.isRaw) {
-							debugN(" ('");
-							g_sci->getVocabulary()->debugDecipherSaidBlock(saidSpec.raw);
-							debugN("')");
-						} else {
-							debugN(" (non-raw said-spec)");
-						}
-					} else {
-						debugN(" ('%s')", s->_segMan->getString(argv[parmNr]).c_str());
+				if (mobj) {
+					switch (mobj->getType()) {
+					case SEG_TYPE_HUNK:
+					{
+						HunkTable *ht = (HunkTable *)mobj;
+						int index = argv[parmNr].getOffset();
+						if (ht->isValidEntry(index)) {
+							// NOTE: This ", deleted" isn't as useful as it could
+							// be because it prints the status _after_ the kernel
+							// call.
+							debugN(" ('%s' hunk%s)", ht->_table[index].type, ht->_table[index].mem ? "" : ", deleted");
+						} else
+							debugN(" (INVALID hunk ref)");
+						break;
 					}
-					break;
+					default:
+						// TODO: Any other segment types which could
+						// use special handling?
+
+						if (kernelCall->function == kSaid) {
+							SegmentRef saidSpec = s->_segMan->dereference(argv[parmNr]);
+							if (saidSpec.isRaw) {
+								debugN(" ('");
+								g_sci->getVocabulary()->debugDecipherSaidBlock(saidSpec.raw);
+								debugN("')");
+							} else {
+								debugN(" (non-raw said-spec)");
+							}
+						} else {
+							debugN(" ('%s')", s->_segMan->getString(argv[parmNr]).c_str());
+						}
+						break;
+					}
 				}
 			}
 			default:

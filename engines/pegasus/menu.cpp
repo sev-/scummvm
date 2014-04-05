@@ -149,10 +149,14 @@ MainMenu::MainMenu() : GameMenu(kMainMenuID), _menuBackground(0), _overviewButto
 
 	bool isDemo = ((PegasusEngine *)g_engine)->isDemo();
 
-	if (isDemo)
-		_menuBackground.initFromPICTFile("Images/Demo/DemoMenu.pict");
-	else
+	if (isDemo) {
+		if (((PegasusEngine *)g_engine)->isWindows())
+			_menuBackground.initFromPICTFile("Images/Demo/DemoMenuPC.pict");
+		else
+			_menuBackground.initFromPICTFile("Images/Demo/DemoMenu.pict");
+	} else {
 		_menuBackground.initFromPICTFile("Images/Main Menu/MainMenu.mac");
+	}
 	_menuBackground.setDisplayOrder(0);
 	_menuBackground.startDisplaying();
 	_menuBackground.show();
@@ -242,7 +246,7 @@ void MainMenu::startMainMenuLoop() {
 
 void MainMenu::stopMainMenuLoop() {
 	FaderMoveSpec spec;
-	
+
 	spec.makeTwoKnotFaderSpec(30, 0, 255, 30, 0);
 	_menuFader.startFaderSync(spec);
 	_menuLoop.stopSound();
@@ -409,7 +413,7 @@ enum {
 	kCreditsMenuTalent,
 	kCreditsMenuOtherTitles,
 	kCreditsMenuMainMenu,
-	
+
 	kCreditsFirstSelection = kCreditsMenuCoreTeam,
 	kCreditsLastSelection = kCreditsMenuMainMenu
 };
@@ -476,9 +480,9 @@ CreditsMenu::CreditsMenu() : GameMenu(kCreditsMenuID), _menuBackground(0), _cred
 	_smallSelect.setDisplayOrder(2);
 	_smallSelect.show();
 	_smallSelect.startDisplaying();
-	
+
 	_menuSelection = -1;
-	
+
 	newMenuSelection(kCreditsMenuCoreTeam);
 }
 
@@ -610,14 +614,14 @@ enum {
 	kDeathScreenContinueDemo = 0,
 	kDeathScreenMainMenuDemo,
 	kDeathScreenQuitDemo,
-	
+
 	kFirstDeathSelectionDemo = kDeathScreenContinueDemo,
 	kLastDeathSelectionDemo = kDeathScreenQuitDemo,
 
 	kDeathScreenContinue = 0,
 	kDeathScreenRestore,
 	kDeathScreenMainMenu,
-	
+
 	kFirstDeathSelection = kDeathScreenContinue,
 	kLastDeathSelection = kDeathScreenMainMenu
 };
@@ -922,7 +926,7 @@ enum {
 	kPauseMenuAmbience,
 	kPauseMenuWalkthru,
 	kPauseMenuQuitToMainMenu,
-	
+
 	kFirstPauseSelection = kPauseMenuSave,
 	kLastPauseSelection = kPauseMenuQuitToMainMenu
 };

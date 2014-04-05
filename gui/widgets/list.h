@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 #ifndef GUI_WIDGETS_LIST_H
@@ -105,6 +106,7 @@ public:
 
 	void scrollTo(int item);
 	void scrollToEnd();
+	int getCurrentScrollPos() const { return _currentPos; }
 
 	void enableQuickSelect(bool enable) 		{ _quickSelect = enable; }
 	String getQuickSelectString() const 		{ return _quickSelectStr; }
@@ -144,6 +146,7 @@ protected:
 
 	void receivedFocusWidget();
 	void lostFocusWidget();
+	void checkBounds();
 	void scrollToCurrent();
 
 	int *_textWidth;

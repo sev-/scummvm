@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 #include "common/algorithm.h"
@@ -26,6 +27,7 @@
 #include "common/textconsole.h"
 #include "graphics/primitives.h"
 #include "graphics/surface.h"
+#include "graphics/conversion.h"
 
 namespace Graphics {
 
@@ -81,9 +83,79 @@ void Surface::free() {
 	format = PixelFormat();
 }
 
+void Surface::init(uint16 width, uint16 height, uint16 newPitch, void *newPixels, const PixelFormat &f) {
+	w = width;
+	h = height;
+	pitch = newPitch;
+	pixels = newPixels;
+	format = f;
+}
+
 void Surface::copyFrom(const Surface &surf) {
 	create(surf.w, surf.h, surf.format);
-	memcpy(pixels, surf.pixels, h * pitch);
+	if (surf.pitch == pitch) {
+		memcpy(pixels, surf.pixels, h * pitch);
+	} else {
+		const byte *src = (const byte *)surf.pixels;
+		byte *dst = (byte *)pixels;
+		for (int y = h; y > 0; --y) {
+			memcpy(dst, src, w * format.bytesPerPixel);
+			src += surf.pitch;
+			dst += pitch;
+		}
+	}
+}
+
+Surface Surface::getSubArea(const Common::Rect &area) {
+	Common::Rect effectiveArea(area);
+	effectiveArea.clip(w, h);
+
+	Surface subSurface;
+	subSurface.w = effectiveArea.width();
+	subSurface.h = effectiveArea.height();
+	subSurface.pitch = pitch;
+	subSurface.pixels = getBasePtr(area.left, area.top);
+	subSurface.format = format;
+	return subSurface;
+}
+
+const Surface Surface::getSubArea(const Common::Rect &area) const {
+	Common::Rect effectiveArea(area);
+	effectiveArea.clip(w, h);
+
+	Surface subSurface;
+	subSurface.w = effectiveArea.width();
+	subSurface.h = effectiveArea.height();
+	subSurface.pitch = pitch;
+	// We need to cast the const away here because a Surface always has a
+	// pointer to modifiable pixel data.
+	subSurface.pixels = const_cast<void *>(getBasePtr(area.left, area.top));
+	subSurface.format = format;
+	return subSurface;
+}
+
+void Surface::copyRectToSurface(const void *buffer, int srcPitch, int destX, int destY, int width, int height) {
+	assert(buffer);
+
+	assert(destX >= 0 && destX < w);
+	assert(destY >= 0 && destY < h);
+	assert(height > 0 && destY + height <= h);
+	assert(width > 0 && destX + width <= w);
+
+	// Copy buffer data to internal buffer
+	const byte *src = (const byte *)buffer;
+	byte *dst = (byte *)getBasePtr(destX, destY);
+	for (int i = 0; i < height; i++) {
+		memcpy(dst, src, width * format.bytesPerPixel);
+		src += srcPitch;
+		dst += pitch;
+	}
+}
+
+void Surface::copyRectToSurface(const Graphics::Surface &srcSurface, int destX, int destY, const Common::Rect subRect) {
+	assert(srcSurface.format == format);
+
+	copyRectToSurface(srcSurface.getBasePtr(subRect.left, subRect.top), srcSurface.pitch, destX, destY, subRect.width(), subRect.height());
 }
 
 void Surface::hLine(int x, int y, int x2, uint32 color) {
@@ -280,6 +352,72 @@ void Surface::move(int dx, int dy, int height) {
 			dst += pitch - (pitch + dx * format.bytesPerPixel);
 		}
 	}
+}
+
+void Surface::convertToInPlace(const PixelFormat &dstFormat, const byte *palette) {
+	// Do not convert to the same format and ignore empty surfaces.
+	if (format == dstFormat || pixels == 0) {
+		return;
+	}
+
+	if (format.bytesPerPixel == 0 || format.bytesPerPixel > 4)
+		error("Surface::convertToInPlace(): Can only convert from 1Bpp, 2Bpp, 3Bpp, and 4Bpp");
+
+	if (dstFormat.bytesPerPixel != 2 && dstFormat.bytesPerPixel != 4)
+		error("Surface::convertToInPlace(): Can only convert to 2Bpp and 4Bpp");
+
+	// In case the surface data needs more space allocate it.
+	if (dstFormat.bytesPerPixel > format.bytesPerPixel) {
+		void *const newPixels = realloc(pixels, w * h * dstFormat.bytesPerPixel);
+		if (!newPixels) {
+			error("Surface::convertToInPlace(): Out of memory");
+		}
+		pixels = newPixels;
+	}
+
+	// We take advantage of the fact that pitch is always w * format.bytesPerPixel.
+	// This is assured by the logic of Surface::create.
+
+	// We need to handle 1 Bpp surfaces special here.
+	if (format.bytesPerPixel == 1) {
+		assert(palette);
+
+		for (int y = h; y > 0; --y) {
+			const byte *srcRow = (const byte *)pixels + y * pitch - 1;
+			byte *dstRow = (byte *)pixels + y * w * dstFormat.bytesPerPixel - dstFormat.bytesPerPixel;
+
+			for (int x = 0; x < w; x++) {
+				byte index = *srcRow--;
+				byte r = palette[index * 3];
+				byte g = palette[index * 3 + 1];
+				byte b = palette[index * 3 + 2];
+
+				uint32 color = dstFormat.RGBToColor(r, g, b);
+
+				if (dstFormat.bytesPerPixel == 2)
+					*((uint16 *)dstRow) = color;
+				else
+					*((uint32 *)dstRow) = color;
+
+				dstRow -= dstFormat.bytesPerPixel;
+			}
+		}
+	} else {
+		crossBlit((byte *)pixels, (const byte *)pixels, w * dstFormat.bytesPerPixel, pitch, w, h, dstFormat, format);
+	}
+
+	// In case the surface data got smaller, free up some memory.
+	if (dstFormat.bytesPerPixel < format.bytesPerPixel) {
+		void *const newPixels = realloc(pixels, w * h * dstFormat.bytesPerPixel);
+		if (!newPixels) {
+			error("Surface::convertToInPlace(): Freeing memory failed");
+		}
+		pixels = newPixels;
+	}
+
+	// Update the surface specific data.
+	format = dstFormat;
+	pitch = w * dstFormat.bytesPerPixel;
 }
 
 Graphics::Surface *Surface::convertTo(const PixelFormat &dstFormat, const byte *palette) const {

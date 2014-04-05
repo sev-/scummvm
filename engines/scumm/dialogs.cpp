@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 #include "common/config-manager.h"
@@ -180,7 +181,7 @@ static const ResString string_map_table_v345[] = {
 	// "Moechten Sie wirklich neu starten?  (J/N)J"
 	// Will react to J as 'Yes'
 	{5, _s("Are you sure you want to restart?  (Y/N)")},
-	// I18N: you may specify 'Yes' symbol at the end of the line. See previous comment 
+	// I18N: you may specify 'Yes' symbol at the end of the line. See previous comment
 	{6, _s("Are you sure you want to quit?  (Y/N)")},
 
 	// Added in SCUMM4

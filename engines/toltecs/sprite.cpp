@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -199,7 +198,7 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 	sprite.frameNum = frameNum;
 
 	spriteData = _vm->_res->load(drawRequest.resIndex)->data;
-	
+
 	if (drawRequest.flags & 0x1000) {
 		sprite.flags |= 4;
 	}
@@ -207,7 +206,7 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 	if (drawRequest.flags & 0x2000) {
 		sprite.flags |= 0x10;
 	}
-	
+
 	if (drawRequest.flags & 0x4000) {
 		sprite.flags |= 0x40;
 	}
@@ -218,7 +217,7 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 
 	if (spriteFrameEntry.w == 0 || spriteFrameEntry.h == 0)
 		return false;
-	
+
 	sprite.offset = spriteFrameEntry.offset;
 
 	sprite.width = spriteFrameEntry.w;
@@ -263,12 +262,12 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 			xoffs -= (xoffs * scaleValue) / 100;
 			yoffs -= (yoffs * scaleValue) / 100;
 		}
-		
+
 	}
-	
+
 	sprite.x -= xoffs;
 	sprite.y -= yoffs;
-	
+
 	sprite.yerror = sprite.ydelta;
 
 	// Now we check if the sprite needs to be clipped
@@ -283,7 +282,7 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 		sprite.height -= clipHeight;
 		if (sprite.height <= 0)
 			return false;
-		
+
 		sprite.y = _vm->_cameraY;
 
 		// If the sprite is scaled
@@ -311,7 +310,7 @@ bool Screen::createSpriteDrawItem(const DrawRequest &drawRequest, SpriteDrawItem
 			}
 			sprite.yerror = chopHeight;
 		}
-		
+
 		spriteFrameData = spriteData + sprite.offset;
 		// Now the sprite's offset is adjusted to point to the starting line
 		if ((sprite.flags & 0x10) == 0) {
@@ -439,7 +438,7 @@ void Screen::drawSpriteCore(byte *dest, SpriteFilter &reader, const SpriteDrawIt
 
 	SpriteReaderStatus status;
 	PixelPacket packet;
-	
+
 	byte *destp = dest;
 	int16 skipX = sprite.skipX;
 
@@ -459,7 +458,7 @@ void Screen::drawSpriteCore(byte *dest, SpriteFilter &reader, const SpriteDrawIt
 				status = reader.readPacket(packet);
 			}
 		}
-		
+
 		if (w - packet.count < 0)
 			packet.count = w;
 

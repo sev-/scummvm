@@ -8,12 +8,12 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
@@ -140,8 +140,6 @@ void RMOptionButton::setActiveState(bool bState) {
 \****************************************************************************/
 
 RMOptionSlide::RMOptionSlide(const RMPoint &pt, int nRange, int nStartValue, int slideSize) {
-	RMResRaw *raw;
-
 	_pos = pt;
 	_nSlideSize = slideSize;
 	_nMax = nRange;
@@ -154,6 +152,7 @@ RMOptionSlide::RMOptionSlide(const RMPoint &pt, int nRange, int nStartValue, int
 	_sliderSingle = NULL;
 
 	// Sliders
+	RMResRaw *raw;
 	INIT_GFX16_FROMRAW(20029, _sliderCenter);
 	INIT_GFX16_FROMRAW(20030, _sliderLeft);
 	INIT_GFX16_FROMRAW(20031, _sliderRight);
@@ -163,7 +162,6 @@ RMOptionSlide::RMOptionSlide(const RMPoint &pt, int nRange, int nStartValue, int
 	_pushLeft = new RMOptionButton(RMRect(pt._x - 23, pt._y, pt._x - 23 + 22, pt._y + 26));
 	_pushRight = new RMOptionButton(RMRect(pt._x + _nSlideSize, pt._y, pt._x + _nSlideSize + 5 + 22, pt._y + 26));
 }
-
 
 RMOptionSlide::~RMOptionSlide() {
 	delete _sliderCenter;
@@ -509,7 +507,8 @@ void RMOptionScreen::refreshThumbnails() {
 			_curThumb[i] = NULL;
 			_curThumbName[i].clear();
 			_curThumbDiff[i] = 11;
-		}
+		} else
+			_curThumb[i]->prepareImage();
 	}
 }
 
@@ -966,6 +965,8 @@ void RMOptionScreen::changeState(CORO_PARAM, OptionScreenState newState) {
 void RMOptionScreen::doFrame(CORO_PARAM, RMInput *input) {
 	CORO_BEGIN_CONTEXT;
 	bool bLeftClick, bRightClick;
+	RMResRaw *raw;
+
 	RMPoint mousePos;
 	bool bRefresh;
 	int i;
@@ -973,8 +974,7 @@ void RMOptionScreen::doFrame(CORO_PARAM, RMInput *input) {
 
 	CORO_BEGIN_CODE(_ctx);
 
-
-	// If it is fully open, do nothing
+	// If it is not fully open, do nothing
 	if (_fadeStep != 6)
 		return;
 
@@ -1043,8 +1043,8 @@ void RMOptionScreen::doFrame(CORO_PARAM, RMInput *input) {
 		}
 	}
 
-#define KEYPRESS(c)     (g_vm->getEngine()->getInput().getAsyncKeyState(c))
-#define PROCESS_CHAR(cod, c)  if (KEYPRESS(cod)) { \
+#define KEYPRESS(c) (g_vm->getEngine()->getInput().getAsyncKeyState(c))
+#define PROCESS_CHAR(cod, c) if (KEYPRESS(cod)) { \
 		_editName[strlen(_editName) + 1] = '\0'; _editName[strlen(_editName)] = c; _ctx->bRefresh = true; }
 
 	// State Buttons
@@ -1058,7 +1058,7 @@ void RMOptionScreen::doFrame(CORO_PARAM, RMInput *input) {
 
 		for (_ctx->i = 0; _ctx->i < 26 && strlen(_editName) < 12; _ctx->i++) {
 			if (KEYPRESS(Common::KEYCODE_LSHIFT) ||
-			        KEYPRESS(Common::KEYCODE_RSHIFT)) {
+			    KEYPRESS(Common::KEYCODE_RSHIFT)) {
 				PROCESS_CHAR((Common::KeyCode)((int)'a' + _ctx->i), _ctx->i + 'A');
 			} else {
 				PROCESS_CHAR((Common::KeyCode)((int)'a' + _ctx->i), _ctx->i + 'a');
@@ -1222,7 +1222,6 @@ void RMOptionScreen::doFrame(CORO_PARAM, RMInput *input) {
 	CORO_END_CODE;
 }
 
-
 void RMOptionScreen::draw(CORO_PARAM, RMGfxTargetBuffer &bigBuf, RMGfxPrimitive *prim) {
 	CORO_BEGIN_CONTEXT;
 	int curTime;
@@ -1233,7 +1232,7 @@ void RMOptionScreen::draw(CORO_PARAM, RMGfxTargetBuffer &bigBuf, RMGfxPrimitive 
 	_ctx->curTime = g_vm->getTime();
 
 #define FADE_SPEED 20
-#define SYNC    (_ctx->curTime - _fadeTime) / 25
+#define SYNC (_ctx->curTime - _fadeTime) / 25
 
 	if (_bExit)
 		return;
@@ -1333,7 +1332,6 @@ void RMOptionScreen::removeThis(CORO_PARAM, bool &result) {
 	else
 		result = false;
 }
-
 
 bool RMOptionScreen::loadThumbnailFromSaveState(int nState, byte *lpDestBuf, Common::String &name, byte &diff) {
 	char namebuf[256];

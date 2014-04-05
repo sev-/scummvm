@@ -8,16 +8,15 @@
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
-
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
-
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
- *
  *
  */
 
@@ -80,10 +79,11 @@ public:
 	int run(MenuID menuId);
 	void update();
 	void handleEvents();
-	
+
 protected:
 
 	struct Item {
+		bool enabled;
 		Common::Rect rect;
 		ItemID id;
 		Common::String caption;
@@ -91,7 +91,7 @@ protected:
 		int x, y, w;
 		uint fontNum;
 	};
-	
+
 	struct SavegameItem {
 		int _slotNum;
 		Common::String _description;
@@ -116,20 +116,23 @@ protected:
 
 	Common::Array<Item> _items;
 	Common::Array<SavegameItem> _savegames;
-	
+
 	void addClickTextItem(ItemID id, int x, int y, int w, uint fontNum, const char *caption, byte defaultColor, byte activeColor);
 
 	void drawItem(ItemID itemID, bool active);
 	void handleMouseMove(int x, int y);
 	void handleMouseClick(int x, int y);
 	void handleKeyDown(const Common::KeyState& kbd);
-	
+
 	ItemID findItemAt(int x, int y);
 	Item *getItem(ItemID id);
 	void setItemCaption(Item *item, const char *caption);
 
 	void initMenu(MenuID menuID);
-	
+
+	void enableItem(ItemID id);
+	void disableItem(ItemID id);
+
 	void enterItem(ItemID id);
 	void leaveItem(ItemID id);
 	void clickItem(ItemID id);
@@ -141,7 +144,7 @@ protected:
 	SavegameItem *getSavegameItemByID(ItemID id);
 
 	int loadSavegamesList();
-	void setSavegameCaptions();
+	void setSavegameCaptions(bool scrollToBottom);
 	void scrollSavegames(int delta);
 	void clickSavegameItem(ItemID id);
 	void setCfgText(bool value, bool active);

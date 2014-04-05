@@ -17,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
  */
 
 #include "common/coroutines.h"
@@ -717,12 +718,12 @@ void CoroutineScheduler::pulseEvent(uint32 pidEvent) {
 	EVENT *evt = getEvent(pidEvent);
 	if (!evt)
 		return;
-	
+
 	// Set the event as signalled and pulsing
 	evt->signalled = true;
 	evt->pulsing = true;
 
-	// If there's an active process, and it's not the first in the queue, then reschedule all 
+	// If there's an active process, and it's not the first in the queue, then reschedule all
 	// the other prcoesses in the queue to run again this frame
 	if (pCurrent && pCurrent != active->pNext)
 		rescheduleAll();
