@@ -591,7 +591,11 @@ void SurfaceSdlGraphicsManager::changeScaler() {
 	Common::StackLock lock(_graphicsMutex);
 
 	// If the _scalerIndex has changed, change scaler plugins
-	if (_scalerPlugins[_scalerIndex] != _scalerPlugin || _transactionDetails.formatChanged) {
+	if (_scalerPlugins[_scalerIndex] != _scalerPlugin
+#ifdef USE_RGB_COLOR
+	|| _transactionDetails.formatChanged
+#endif
+	) {
 		if (_scalerPlugin)
 			(*_scalerPlugin)->deinitialize();
 
