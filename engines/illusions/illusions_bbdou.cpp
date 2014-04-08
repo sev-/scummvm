@@ -32,6 +32,7 @@
 #include "illusions/input.h"
 #include "illusions/resourcesystem.h"
 #include "illusions/screen.h"
+#include "illusions/screentext.h"
 #include "illusions/scriptopcodes_bbdou.h"
 #include "illusions/scriptresource.h"
 #include "illusions/scriptman.h"
@@ -172,7 +173,7 @@ bool ActiveScenes::isSceneActive(uint32 sceneId) {
 
 // IllusionsEngine_BBDOU
 
-IllusionsEngine_BBDOU::IllusionsEngine_BBDOU(OSystem *syst, const ADGameDescription *gd)
+IllusionsEngine_BBDOU::IllusionsEngine_BBDOU(OSystem *syst, const IllusionsGameDescription *gd)
 	: IllusionsEngine(syst, gd) {
 }
 
@@ -188,12 +189,9 @@ Common::Error IllusionsEngine_BBDOU::run() {
 	SearchMan.addSubDirectoryMatching(gameDataDir, "video");
 	SearchMan.addSubDirectoryMatching(gameDataDir, "voice");
 
-	Graphics::PixelFormat pixelFormat16(2, 5, 6, 5, 0, 11, 5, 0, 0);
-	initGraphics(640, 480, true, &pixelFormat16);
-	
 	_dict = new Dictionary();
 
-	_resSys = new ResourceSystem();
+	_resSys = new ResourceSystem(this);
 	_resSys->addResourceLoader(0x00060000, new ActorResourceLoader(this));
 	_resSys->addResourceLoader(0x00080000, new SoundGroupResourceLoader(this));
 	_resSys->addResourceLoader(0x000D0000, new ScriptResourceLoader(this));
@@ -203,7 +201,8 @@ Common::Error IllusionsEngine_BBDOU::run() {
 	_resSys->addResourceLoader(0x00120000, new FontResourceLoader(this));
 	_resSys->addResourceLoader(0x00170000, new SpecialCodeLoader(this));
 
-	_screen = new Screen(this);
+	_screen = new Screen(this, 640, 480, 16);
+	_screenText = new ScreenText(this);
 	_input = new Input();	
 	_scriptMan = new ScriptMan(this);
 	_actorItems = new ActorItems(this);
@@ -224,15 +223,17 @@ Common::Error IllusionsEngine_BBDOU::run() {
 	_lastUpdateTime = 0;
 
 	_pauseCtr = 0;
-	_doScriptThreadInit = false;
 	_field8 = 1;
 	_fieldA = 0;
 	_fieldE = 240;
 	
 	_globalSceneId = 0x00010003;	
 	
+    setDefaultTextCoords();
+	
 	_resSys->loadResource(0x000D0001, 0, 0);
 
+	_doScriptThreadInit = false;
 	startScriptThread(0x00020004, 0, 0, 0, 0);
 	_doScriptThreadInit = true;
 
@@ -260,6 +261,7 @@ Common::Error IllusionsEngine_BBDOU::run() {
 	delete _actorItems;
 	delete _scriptMan;
 	delete _input;
+	delete _screenText;
 	delete _screen;
 	delete _resSys;
 	delete _dict;
@@ -281,12 +283,9 @@ bool IllusionsEngine_BBDOU::hasFeature(EngineFeature f) const {
 
 bool IllusionsEngine_BBDOU::causeIsDeclared(uint32 sceneId, uint32 verbId, uint32 objectId2, uint32 objectId) {
 	uint32 codeOffs;
-	bool r =
+	return 
 		_triggerFunctions->find(sceneId, verbId, objectId2, objectId) ||
 		findTriggerCause(sceneId, verbId, objectId2, objectId, codeOffs);
-	debug(3, "causeIsDeclared() sceneId: %08X; verbId: %08X; objectId2: %08X; objectId: %08X -> %d",
-		sceneId, verbId, objectId2, objectId, r);
-	return r;
 }
 
 void IllusionsEngine_BBDOU::causeDeclare(uint32 verbId, uint32 objectId2, uint32 objectId, TriggerFunctionCallback *callback) {
@@ -307,6 +306,15 @@ uint32 IllusionsEngine_BBDOU::causeTrigger(uint32 sceneId, uint32 verbId, uint32
 	return causeThreadId;
 }
 
+void IllusionsEngine_BBDOU::setDefaultTextCoords() {
+	WidthHeight dimensions;
+	dimensions._width = 480;
+	dimensions._height = 48;
+	Common::Point pt(320, 448);
+	setDefaultTextDimensions(dimensions);
+	setDefaultTextPosition(pt);
+}
+
 void IllusionsEngine_BBDOU::loadSpecialCode(uint32 resId) {
 	_specialCode = new BbdouSpecialCode(this);
 	_specialCode->init();
@@ -323,6 +331,15 @@ void IllusionsEngine_BBDOU::notifyThreadId(uint32 &threadId) {
 		threadId = 0;
 		_threads->notifyId(tempThreadId);
 	}
+}
+
+bool IllusionsEngine_BBDOU::testMainActorFastWalk(Control *control) {
+	return false;
+}
+
+bool IllusionsEngine_BBDOU::testMainActorCollision(Control *control) {
+	// Not used in BBDOU
+	return false;
 }
 
 Control *IllusionsEngine_BBDOU::getObjectControl(uint32 objectId) {
@@ -350,6 +367,45 @@ uint32 IllusionsEngine_BBDOU::getCurrentScene() {
 
 uint32 IllusionsEngine_BBDOU::getPrevScene() {
 	return _prevSceneId;
+}
+
+bool IllusionsEngine_BBDOU::isCursorObject(uint32 actorTypeId, uint32 objectId) {
+	return actorTypeId == 0x50001 && objectId == 0x40004;
+}
+
+void IllusionsEngine_BBDOU::setCursorControlRoutine(Control *control) {
+	control->_actor->setControlRoutine(new Common::Functor2Mem<Control*, uint32, void, IllusionsEngine_BBDOU>
+		(this, &IllusionsEngine_BBDOU::cursorControlRoutine));
+}
+
+void IllusionsEngine_BBDOU::placeCursorControl(Control *control, uint32 sequenceId) {
+	_cursor->place(control, sequenceId);
+}
+
+void IllusionsEngine_BBDOU::setCursorControl(Control *control) {
+	_cursor->setControl(control);
+}
+
+void IllusionsEngine_BBDOU::showCursor() {
+	_cursor->show();
+}
+
+void IllusionsEngine_BBDOU::hideCursor() {
+	_cursor->hide();
+}
+
+void IllusionsEngine_BBDOU::cursorControlRoutine(Control *control, uint32 deltaTime) {
+	control->_actor->_seqCodeValue1 = 100 * deltaTime;
+	if (control->_actor->_flags & 1) {
+		switch (_cursor->_status) {
+		case 2:
+			// Unused nullsub_1(control);
+			break;
+		case 3:
+			// TODO _vm->_shellMgr->handleMouse(control);
+			break;
+		}
+	}
 }
 
 void IllusionsEngine_BBDOU::startScriptThreadSimple(uint32 threadId, uint32 callingThreadId) {

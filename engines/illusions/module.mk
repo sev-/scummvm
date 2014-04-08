@@ -10,6 +10,7 @@ MODULE_OBJS := \
 	bbdou/bbdou_inventory.o \
 	bbdou/bbdou_specialcode.o \
 	camera.o \
+	causethread_duckman.o \
 	cursor.o \
 	detection.o \
 	dictionary.o \
@@ -18,12 +19,16 @@ MODULE_OBJS := \
 	graphics.o \
 	illusions.o \
 	illusions_bbdou.o \
+	illusions_duckman.o \
 	input.o \
+	midiresource.o \
 	resourcesystem.o \
 	screen.o \
+	screentext.o \
 	scriptman.o \
 	scriptopcodes.o \
 	scriptopcodes_bbdou.o \
+	scriptopcodes_duckman.o \
 	scriptresource.o \
 	scriptthread.o \
 	sequenceopcodes.o \
@@ -31,6 +36,8 @@ MODULE_OBJS := \
 	specialcode.o \
 	talkresource.o \
 	talkthread.o \
+	talkthread_duckman.o \
+	textdrawer.o \
 	thread.o \
 	time.o \
 	timerthread.o \

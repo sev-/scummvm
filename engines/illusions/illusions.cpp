@@ -32,6 +32,7 @@
 #include "illusions/input.h"
 #include "illusions/resourcesystem.h"
 #include "illusions/screen.h"
+#include "illusions/screentext.h"
 #include "illusions/scriptresource.h"
 #include "illusions/scriptman.h"
 #include "illusions/soundresource.h"
@@ -58,7 +59,7 @@
 
 namespace Illusions {
 
-IllusionsEngine::IllusionsEngine(OSystem *syst, const ADGameDescription *gd) :
+IllusionsEngine::IllusionsEngine(OSystem *syst, const IllusionsGameDescription *gd) :
 	Engine(syst), _gameDescription(gd) {
 	
 	_random = new Common::RandomSource("illusions");
@@ -159,7 +160,6 @@ int IllusionsEngine::updateGraphics() {
 	for (Controls::ItemsIterator it = _controls->_controls.begin(); it != _controls->_controls.end(); ++it) {
 		Control *control = *it;
 		Actor *actor = control->_actor;
-		
 		if (control->_pauseCtr == 0 && actor && (actor->_flags & 1) && !(actor->_flags & 0x0200)) {
 			Common::Point drawPosition = control->calcPosition(panPoint);
 			if (actor->_flags & 0x2000) {
@@ -177,6 +177,8 @@ int IllusionsEngine::updateGraphics() {
 			*/
 			if (actor->_surfInfo._dimensions._width && actor->_surfInfo._dimensions._height) {
 				uint32 priority = control->getPriority();
+//if (control->_objectId == 0x0004001B) continue;
+//debug("objectId: %08X; priority: %d (%d)", control->_objectId, priority, control->_priority);				
 				_screen->_drawQueue->insertSprite(&actor->_drawFlags, actor->_surface,
 					actor->_surfInfo._dimensions, drawPosition, control->_position,
 					priority, actor->_scale, actor->_spriteFlags);
@@ -184,13 +186,11 @@ int IllusionsEngine::updateGraphics() {
 		}
 	}
 
-#if 0 // TODO
-	if (_textInfo._surface) {
+	if (_screenText->_surface) {
 		int16 priority = getPriorityFromBase(99);
-		_screen->_drawQueue->insertTextSurface(_textInfo._surface, _textInfo._dimensions,
-			_textInfo._position, priority);
+		_screen->_drawQueue->insertTextSurface(_screenText->_surface, _screenText->_dimensions,
+			_screenText->_position, priority);
 	}
-#endif
 
 	return 1;
 }
@@ -292,6 +292,22 @@ uint32 IllusionsEngine::clipTextDuration(uint32 duration) {
 		break;
 	}
 	return duration;
+}
+
+void IllusionsEngine::getDefaultTextDimensions(WidthHeight &dimensions) {
+	dimensions = _defaultTextDimensions;
+}
+
+void IllusionsEngine::setDefaultTextDimensions(WidthHeight &dimensions) {
+	_defaultTextDimensions = dimensions;
+}
+
+void IllusionsEngine::getDefaultTextPosition(Common::Point &position) {
+	position = _defaultTextPosition;
+}
+
+void IllusionsEngine::setDefaultTextPosition(Common::Point &position) {
+	_defaultTextPosition = position;
 }
 
 } // End of namespace Illusions

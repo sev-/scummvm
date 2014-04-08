@@ -74,14 +74,20 @@ void SequenceOpcodes::initOpcodes() {
 	OPCODE(17, opDisappearActor);
 	OPCODE(18, opAppearForeignActor);
 	OPCODE(19, opDisappearForeignActor);
+	OPCODE(21, opMoveDelta);
+	OPCODE(25, opFaceActor);
 	OPCODE(28, opNotifyThreadId1);
 	OPCODE(29, opSetPathCtrY);
 	OPCODE(33, opSetPathWalkPoints);
+	OPCODE(34, opDisableAutoScale);
 	OPCODE(35, opSetScale);
 	OPCODE(36, opSetScaleLayer);
+	OPCODE(37, opDeactivatePathWalkRects);
 	OPCODE(38, opSetPathWalkRects);
 	OPCODE(39, opSetPriority);
 	OPCODE(40, opSetPriorityLayer);
+	OPCODE(41, opDisableAutoRegionLayer);
+	OPCODE(42, opSetRegionLayer);
 	OPCODE(50, opPlaySound);
 	OPCODE(51, opStopSound);
 	OPCODE(52, opStartScriptThread);
@@ -243,6 +249,19 @@ void SequenceOpcodes::opDisappearForeignActor(Control *control, OpCall &opCall) 
 	foreignControl->disappearActor();
 }
 
+void SequenceOpcodes::opMoveDelta(Control *control, OpCall &opCall) {
+	ARG_SKIP(2);
+	ARG_INT16(deltaX);
+	ARG_INT16(deltaY);
+	control->_actor->_position.x += deltaX;
+	control->_actor->_position.y += deltaY;
+}
+
+void SequenceOpcodes::opFaceActor(Control *control, OpCall &opCall) {
+	ARG_INT16(facing);
+	control->_actor->_facing = facing;
+}
+
 void SequenceOpcodes::opNotifyThreadId1(Control *control, OpCall &opCall) {
 	_vm->notifyThreadId(control->_actor->_notifyThreadId1);
 }
@@ -257,6 +276,11 @@ void SequenceOpcodes::opSetPathWalkPoints(Control *control, OpCall &opCall) {
 	BackgroundResource *bgRes = _vm->_backgroundItems->getActiveBgResource();
 	control->_actor->_flags |= 2;
 	// TODO control->_actor->_pathWalkPoints = bgRes->getPathWalkPoints(pathWalkPointsIndex - 1);
+}
+
+void SequenceOpcodes::opDisableAutoScale(Control *control, OpCall &opCall) {
+	// Keep current scale but don't autoscale
+	control->_actor->_flags &= ~4;
 }
 
 void SequenceOpcodes::opSetScale(Control *control, OpCall &opCall) {
@@ -274,10 +298,14 @@ void SequenceOpcodes::opSetScaleLayer(Control *control, OpCall &opCall) {
 	control->setActorScale(scale);
 }
 
+void SequenceOpcodes::opDeactivatePathWalkRects(Control *control, OpCall &opCall) {
+	control->_actor->_flags &= ~0x0010;
+}
+
 void SequenceOpcodes::opSetPathWalkRects(Control *control, OpCall &opCall) {
 	ARG_INT16(pathWalkRectsIndex);
 	BackgroundResource *bgRes = _vm->_backgroundItems->getActiveBgResource();
-	control->_actor->_flags |= 0x10;
+	control->_actor->_flags |= 0x0010;
 	// TODO control->_actor->_pathWalkRects = bgRes->getPathWalkRects(pathWalkRectsIndex - 1);
 }
 
@@ -294,6 +322,17 @@ void SequenceOpcodes::opSetPriorityLayer(Control *control, OpCall &opCall) {
 	control->_actor->_priorityLayer = bgRes->getPriorityLayer(priorityLayerIndex - 1);
 	int priority = control->_actor->_priorityLayer->getPriority(control->_actor->_position);
 	control->setPriority(priority);
+}
+
+void SequenceOpcodes::opDisableAutoRegionLayer(Control *control, OpCall &opCall) {
+	control->_actor->_flags &= ~0x20;
+}
+
+void SequenceOpcodes::opSetRegionLayer(Control *control, OpCall &opCall) {
+	ARG_INT16(regionLayerIndex);
+	BackgroundResource *bgRes = _vm->_backgroundItems->getActiveBgResource();
+	control->_actor->_flags |= 0x20;
+//TODO	control->_actor->_regionLayer = bgRes->getRegionLayer(regionLayerIndex - 1);
 }
 
 void SequenceOpcodes::opPlaySound(Control *control, OpCall &opCall) {

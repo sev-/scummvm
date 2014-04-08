@@ -83,13 +83,14 @@ protected:
 
 class IllusionsEngine_BBDOU : public IllusionsEngine {
 public:
-	IllusionsEngine_BBDOU(OSystem *syst, const ADGameDescription *gd);
+	IllusionsEngine_BBDOU(OSystem *syst, const IllusionsGameDescription *gd);
 protected:
 	virtual Common::Error run();
 	virtual bool hasFeature(EngineFeature f) const;
 public:	
 	ScriptMan *_scriptMan;
 	TriggerFunctions *_triggerFunctions;
+	Cursor *_cursor;
 
 	ActiveScenes _activeScenes;
 	uint32 _prevSceneId;
@@ -107,14 +108,26 @@ public:
 	void causeDeclare(uint32 verbId, uint32 objectId2, uint32 objectId, TriggerFunctionCallback *callback);
 	uint32 causeTrigger(uint32 sceneId, uint32 verbId, uint32 objectId2, uint32 objectId, uint32 callingThreadId);
 
+    void setDefaultTextCoords();
+
 	void loadSpecialCode(uint32 resId);
 	void unloadSpecialCode(uint32 resId);
 	void notifyThreadId(uint32 &threadId);
+	bool testMainActorFastWalk(Control *control);
+	bool testMainActorCollision(Control *control);
 	Control *getObjectControl(uint32 objectId);
 	Common::Point getNamedPointPosition(uint32 namedPointId);
 	uint32 getPriorityFromBase(int16 priority);
-	uint32 getPrevScene();	
 	uint32 getCurrentScene();
+	uint32 getPrevScene();	
+	
+	bool isCursorObject(uint32 actorTypeId, uint32 objectId);
+	void setCursorControlRoutine(Control *control);
+	void placeCursorControl(Control *control, uint32 sequenceId);
+	void setCursorControl(Control *control);
+	void showCursor();
+	void hideCursor();
+	void cursorControlRoutine(Control *control, uint32 deltaTime);
 
 	void startScriptThreadSimple(uint32 threadId, uint32 callingThreadId);
 	void startScriptThread(uint32 threadId, uint32 callingThreadId,

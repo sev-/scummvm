@@ -20,31 +20,26 @@
  *
  */
 
-#ifndef ILLUSIONS_SCRIPTTHREAD_H
-#define ILLUSIONS_SCRIPTTHREAD_H
+#ifndef ILLUSIONS_CAUSETHREAD_DUCKMAN_H
+#define ILLUSIONS_CAUSETHREAD_DUCKMAN_H
 
 #include "illusions/thread.h"
 
 namespace Illusions {
 
-class IllusionsEngine;
-struct OpCall;
+class IllusionsEngine_Duckman;
 
-class ScriptThread : public Thread {
+class CauseThread_Duckman : public Thread {
 public:
-	ScriptThread(IllusionsEngine *vm, uint32 threadId, uint32 callingThreadId, uint notifyFlags,
-		byte *scriptCodeIp, uint32 value8, uint32 valueC, uint32 value10);
+	CauseThread_Duckman(IllusionsEngine_Duckman *vm, uint32 threadId, uint32 callingThreadId, uint notifyFlags,
+		uint32 triggerThreadId);
 	virtual int onUpdate();
 public:
-	int16 _sequenceStalled;
-	byte *_scriptCodeIp;
-	uint32 _value8;
-	uint32 _valueC;
-	uint32 _value10;
-	void loadOpcode(OpCall &opCall);
-	void execOpcode(OpCall &opCall);
+	IllusionsEngine_Duckman *_vm;
+	bool _flag;
+	uint32 _triggerThreadId;
 };
 
 } // End of namespace Illusions
 
-#endif // ILLUSIONS_SCRIPTTHREAD_H
+#endif // ILLUSIONS_CAUSETHREAD_DUCKMAN_H

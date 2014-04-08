@@ -61,6 +61,8 @@ public:
 	void clear();
 	byte get(uint index);
 	void set(uint index, byte value);
+	byte getC0(uint index);
+	void setC0(uint index, byte value);
 public:
 	uint _count;
 	byte *_blockCounters;
@@ -79,6 +81,7 @@ public:
 	~TriggerObject();
 	void load(byte *dataStart, Common::SeekableReadStream &stream);
 	bool findTriggerCause(uint32 verbId, uint32 objectId2, uint32 &codeOffs);
+	void fixupProgInfosDuckman();
 public:
 	uint32 _objectId;
 	uint _causesCount;
@@ -91,12 +94,16 @@ public:
 	~ProgInfo();
 	void load(byte *dataStart, Common::SeekableReadStream &stream);
 	bool findTriggerCause(uint32 verbId, uint32 objectId2, uint32 objectId, uint32 &codeOffs);
+	void getResources(uint &resourcesCount, uint32 *&resources);
+	void fixupProgInfosDuckman();
 protected:
 	uint16 _id;
 	uint16 _unk;
 	byte *_name;
 	uint _triggerObjectsCount;
 	TriggerObject *_triggerObjects;
+	uint _resourcesCount;
+	uint32 *_resources;
 	TriggerObject *findTriggerObject(uint32 objectId);
 };
 
@@ -104,10 +111,12 @@ class ScriptResource {
 public:
 	ScriptResource();
 	~ScriptResource();
-	void load(byte *data, uint32 dataSize);
+	void load(Resource *resource);
 	byte *getThreadCode(uint32 threadId);
 	byte *getCode(uint32 codeOffs);
 	ProgInfo *getProgInfo(uint32 index);
+	uint32 getObjectActorTypeId(uint32 objectId);
+	uint32 getMainActorObjectId() const { return _mainActorObjectId; }
 public:
 	byte *_data;
 	uint32 _dataSize;
@@ -117,6 +126,12 @@ public:
 	uint32 *_codeOffsets;
 	uint _progInfosCount;
 	ProgInfo *_progInfos;
+	// Duckman specific
+	uint32 _soundIds[27];
+	uint _objectMapCount;
+	uint32 *_objectMap;
+	uint32 _mainActorObjectId;
+	void fixupProgInfosDuckman();
 };
 
 } // End of namespace Illusions

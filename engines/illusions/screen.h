@@ -31,7 +31,7 @@
 namespace Illusions {
 
 class IllusionsEngine;
-class Screen;
+class FontResource;
 
 struct SpriteDecompressQueueItem {
 	byte *_drawFlags;
@@ -44,7 +44,7 @@ struct SpriteDecompressQueueItem {
 
 class SpriteDecompressQueue {
 public:
-	SpriteDecompressQueue();
+	SpriteDecompressQueue(Screen *screen);
 	~SpriteDecompressQueue();
 	void insert(byte *drawFlags, uint32 flags, uint32 field8, WidthHeight &dimensions,
 		byte *compressedPixels, Graphics::Surface *surface);
@@ -52,6 +52,7 @@ public:
 protected:
 	typedef Common::List<SpriteDecompressQueueItem*> SpriteDecompressQueueList;
 	typedef SpriteDecompressQueueList::iterator SpriteDecompressQueueListIterator;
+	Screen *_screen;
 	SpriteDecompressQueueList _queue;
 	void decompress(SpriteDecompressQueueItem *item);
 };
@@ -96,9 +97,11 @@ protected:
 	bool calcItemRect(SpriteDrawQueueItem *item, Common::Rect &srcRect, Common::Rect &dstRect);
 };
 
+// TODO Split into two classes (8bit and 16bit)?
+
 class Screen {
 public:
-	Screen(IllusionsEngine *vm);
+	Screen(IllusionsEngine *vm, int16 width, int16 height, int bpp);
 	~Screen();
 	Graphics::Surface *allocSurface(int16 width, int16 height);
 	Graphics::Surface *allocSurface(SurfInfo &surfInfo);
@@ -106,11 +109,16 @@ public:
 	void setDisplayOn(bool isOn);
 	uint16 getColorKey2();
 	void updateSprites();
+	void decompressSprite(SpriteDecompressQueueItem *item);
 	void drawSurface(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags);
-	void drawSurface10(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface11(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect);
-	void drawSurface20(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
-	void drawSurface21(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect);
+	void setPalette(byte *colors, uint start, uint count);
+	void setPaletteEntry(int16 index, byte r, byte g, byte b);
+	void getPalette(byte *colors);
+	void updatePalette();
+	void drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count);
+	int16 drawChar(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 c);
+	int16 getScreenWidth() const { return _backSurface->w; }
+	int16 getScreenHeight() const { return _backSurface->h; }
 public:
 	IllusionsEngine *_vm;
 	bool _displayOn;
@@ -119,6 +127,23 @@ public:
 	SpriteDecompressQueue *_decompressQueue;
 	SpriteDrawQueue *_drawQueue;
 	Graphics::Surface *_backSurface;
+	
+	bool _needRefreshPalette;
+	byte _mainPalette[768];
+	
+	void setSystemPalette(byte *palette);
+
+	void decompressSprite8(SpriteDecompressQueueItem *item);
+	void drawSurface8(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags);
+	void drawSurface81(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect);
+	void drawSurface82(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect);
+
+	void decompressSprite16(SpriteDecompressQueueItem *item);
+	void drawSurface16(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags);
+	void drawSurface10(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
+	void drawSurface11(int16 destX, int16 destY, Graphics::Surface *surface, Common::Rect &srcRect);
+	void drawSurface20(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, uint16 colorKey);
+	void drawSurface21(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect);
 };
 
 } // End of namespace Illusions

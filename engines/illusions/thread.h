@@ -34,7 +34,8 @@ enum ThreadType {
 	kTTTimerThread       = 2,
 	kTTTalkThread        = 3,
 	kTTAbortableThread   = 4,
-	kTTSpecialThread     = 5
+	kTTSpecialThread     = 5,
+	kTTCauseThread       = 6
 };
 
 enum ThreadStatus {
@@ -86,10 +87,13 @@ public:
 	void notifyTimerThreads(uint32 callingThreadId);
 	void suspendTimerThreads(uint32 callingThreadId);
 	void terminateThreads(uint32 threadId);
+	void terminateActiveThreads(uint32 threadId);
 	void terminateThreadsByTag(uint32 tag, uint32 threadId);
 	void suspendThreadsByTag(uint32 tag, uint32 threadId);
+	void notifyThreads(uint32 threadId);
 	void notifyThreadsByTag(uint32 tag, uint32 threadId);
 	void pauseThreads(uint32 threadId);
+	void suspendThreads(uint32 threadId);
 	void resumeThreads(uint32 threadId);
 	void endTalkThreads();
 	void endTalkThreadsNoNotify();
