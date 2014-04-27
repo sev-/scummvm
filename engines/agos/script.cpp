@@ -29,9 +29,13 @@
 #include "agos/animation.h"
 #include "agos/agos.h"
 
+//#include "backends/platform/android/AndroidPortAdditions.h"
+
 #ifdef _WIN32_WCE
 extern bool isSmartphone();
 #endif
+
+#define SIMON_IDLE_COUNTER_VAR 116
 
 namespace AGOS {
 
@@ -596,6 +600,9 @@ void AGOSEngine::o_loadZone() {
 	}
 
 	_videoLockOut &= ~0x80;
+
+	// Disable Simon1 end game workaround when switching a zone
+	mSimon1EndGameWorkaround = false;
 }
 
 void AGOSEngine::o_killAnimate() {
@@ -974,6 +981,14 @@ void AGOSEngine::writeVariable(uint16 variable, uint16 contents) {
 	if (variable >= _numVars)
 		error("writeVariable: Variable %d out of range", variable);
 
+	// In Simon1, prevent Simon from going idle by resetting the idle counter
+	if (getGameType() == GType_SIMON1 && variable == SIMON_IDLE_COUNTER_VAR
+			&& contents <= 14) {
+
+		// AndroidPortAdditions::instance()->onGameIdleCounter(); // XXX
+		contents = 15;
+	}
+
 	if (getGameType() == GType_FF && getBitFlag(83))
 		_variableArray2[variable] = contents;
 	else
@@ -1067,8 +1082,19 @@ void AGOSEngine::stopAnimate(uint16 a) {
 	_videoLockOut &= ~0x8000;
 }
 
+bool AGOSEngine::canSkip() {
+
+	return mCanSkip;
+}
+
 void AGOSEngine::waitForSync(uint a) {
-	const uint maxCount = (getGameType() == GType_SIMON1) ? 1000 : 2500;
+	uint maxCount = (getGameType() == GType_SIMON1) ? 1000 : 2500;
+
+
+	// If we use the workaround for Simon1 end game, reduce max time for sync to make the ending move more quickly
+	if (mSimon1EndGameWorkaround) {
+		maxCount = 50;
+	}
 
 	if (getGameType() == GType_SIMON1 && (getFeatures() & GF_TALKIE)) {
 		if (a != 200) {
@@ -1085,6 +1111,12 @@ void AGOSEngine::waitForSync(uint a) {
 	_rightButtonDown = false;
 
 	while (_vgaWaitFor != 0 && !shouldQuit()) {
+
+
+		mCanSkip = getBitFlag(9)
+				|| (_vgaWaitFor == 200
+						&& (getGameType() == GType_FF || !getBitFlag(14)));
+
 		if (_rightButtonDown) {
 			if (_vgaWaitFor == 200 && (getGameType() == GType_FF || !getBitFlag(14))) {
 				skipSpeech();

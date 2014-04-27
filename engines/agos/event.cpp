@@ -153,6 +153,18 @@ bool AGOSEngine::kickoffTimeEvents() {
 	return result;
 }
 
+int32 AGOSEngine::getTimerEventCount() {
+	TimeEvent *te;
+	int32 i = 0;
+	for (te = _firstTimeStruct; te; te = te->next)
+	{
+		i++;
+
+	}
+
+	return i;
+}
+
 bool AGOSEngine::isVgaQueueEmpty() {
 	VgaTimerEntry *vte = _vgaTimerList;
 	bool result = false;
@@ -429,7 +441,7 @@ void AGOSEngine::delay(uint amount) {
 
 	_system->getAudioCDManager()->updateCD();
 
-	_debugger->onFrame();
+//	_debugger->onFrame();
 
 	vgaPeriod = (_fastMode) ? 10 : _vgaPeriod;
 	if (getGameType() == GType_PP && getGameId() != GID_DIMP) {
@@ -484,7 +496,7 @@ void AGOSEngine::delay(uint amount) {
 					} else if (event.kbd.keycode == Common::KEYCODE_f) {
 						_fastMode = !_fastMode;
 					} else if (event.kbd.keycode == Common::KEYCODE_d) {
-						_debugger->attach();
+						//_debugger->attach();
 					}
 				}
 

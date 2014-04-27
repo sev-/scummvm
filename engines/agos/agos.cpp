@@ -144,11 +144,23 @@ AGOSEngine_Elvira1::AGOSEngine_Elvira1(OSystem *system, const AGOSGameDescriptio
 AGOSEngine::AGOSEngine(OSystem *system, const AGOSGameDescription *gd)
 	: Engine(system), _rnd("agos"), _gameDescription(gd) {
 
+	mSimon1EndGameWorkaround = false;
+
+	// Check the config for "enhanced music"
+	if (ConfMan.hasKey("use-music")) {
+		_useMusic = ConfMan.getInt("use-music");
+	} else {
+		warning("%s", "no key for use-music");
+		_useMusic = 0;
+	}
+
 	_vcPtr = 0;
 	_vcGetOutOfCode = 0;
 	_gameOffsetsPtr = 0;
 
-	_debugger = 0;
+//	_debugger = 0;
+
+	mCanSkip = false;
 
 	_gameFile = 0;
 	_opcode = 0;
@@ -1087,5 +1099,108 @@ void AGOSEngine::syncSoundSettings() {
 	if (_midiEnabled)
 		_midi->setVolume((mute ? 0 : soundVolumeMusic), (mute ? 0 : soundVolumeSFX));
 }
+
+
+void AGOSEngine::stopWalking() {
+
+	// Check if Simon is walking, and stop when required
+	if (getGameType() == GType_SIMON1 && getBitFlag(11)) {
+
+		vcStopAnimation(11, 1122);
+		animate(4, 11, 1122, 0, 0, 2);
+		waitForSync(1122);
+	} else if (getGameType() == GType_SIMON2 && getBitFlag(11)) {
+		vcStopAnimation(11, 232);
+		animate(4, 11, 232, 0, 0, 2);
+		waitForSync(1122);
+	}
+}
+
+/**
+ * This implementation is copied from displayBoxStars, except it just counts the relevant hit areas.
+ */
+void AGOSEngine::getChatHitAreas(Rect* rectArray, uint16& hitAreaCount) {
+
+	HitArea *ha, *dha;
+	uint count;
+	uint y_, x_;
+
+	hitAreaCount = 0;
+
+	ha = _hitAreas;
+	count = ARRAYSIZE(_hitAreas);
+
+	do {
+
+		if (ha->id != 0 && (ha->flags & kBFInvertTouch)
+				&& (ha->flags & kBFBoxInUse) && !(ha->flags & kBFBoxDead)) {
+
+			if (ha->y <= 135 || ha->width != 320)
+				continue;
+
+			// If we got here, we add the hit area to the result
+			rectArray->left = ha->x;
+			rectArray->top = ha->y;
+			rectArray->right = ha->x + ha->width;
+			rectArray->bottom = ha->y + ha->height;
+			++hitAreaCount;
+			++rectArray;
+		}
+	} while (ha++, --count);
+}
+
+/**
+ * This implementation is copied from displayBoxStars, except it just counts the relevant hit areas.
+ */
+void AGOSEngine::getInteractionHitAreas(Rect* rectArray, uint16& hitAreaCount) {
+
+	HitArea *ha, *dha;
+	uint count;
+	uint y_, x_;
+
+	hitAreaCount = 0;
+
+	uint curHeight = (getGameType() == GType_SIMON2) ? _boxStarHeight : 134;
+
+	ha = _hitAreas;
+	count = ARRAYSIZE(_hitAreas);
+
+	do {
+		if (ha->id != 0 && (ha->flags & kBFBoxInUse)
+				&& !(ha->flags & kBFBoxDead)) {
+
+			dha = _hitAreas;
+			if (ha->flags & kBFTextBox) {
+				while (dha != ha && dha->flags != ha->flags)
+					++dha;
+				if (dha != ha && dha->flags == ha->flags)
+					continue;
+			} else {
+				dha = _hitAreas;
+				while (dha != ha && dha->itemPtr != ha->itemPtr)
+					++dha;
+				if (dha != ha && dha->itemPtr == ha->itemPtr)
+					continue;
+			}
+
+			if (ha->y >= curHeight)
+				continue;
+
+			x_ = (ha->width / 2) - 4 + ha->x - (_scrollX * 8);
+
+			if (x_ >= 311)
+				continue;
+
+			// If we got here, we add the hit area to the result
+			rectArray->left = ha->x;
+			rectArray->top = ha->y;
+			rectArray->right = ha->x + ha->width;
+			rectArray->bottom = ha->y + ha->height;
+			++hitAreaCount;
+			++rectArray;
+		}
+	} while (ha++, --count);
+}
+
 
 } // End of namespace AGOS

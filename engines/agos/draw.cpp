@@ -29,6 +29,8 @@
 #include "agos/agos.h"
 #include "agos/intern.h"
 
+//#include "backends/platform/android/AndroidPortAdditions.h"
+
 namespace AGOS {
 
 byte *AGOSEngine::getBackBuf() {
@@ -853,6 +855,10 @@ void AGOSEngine::displayScreen() {
 }
 
 void AGOSEngine::fastFadeIn() {
+
+
+	// AndroidPortAdditions::instance()->onFastFadeInStarted(); // XXX
+
 	if (_fastFadeInFlag & 0x8000) {
 		slowFadeIn();
 	} else {

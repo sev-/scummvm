@@ -632,6 +632,15 @@ void AGOSEngine_Feeble::setVerb(HitArea *ha) {
 }
 #endif
 
+uint16 AGOSEngine::getCurrentActionId() {
+	if (_currentVerbBox == NULL) {
+		// default
+		return 101;
+	}
+
+	return _currentVerbBox->id;
+}
+
 void AGOSEngine::setVerb(HitArea *ha) {
 	HitArea *tmp = _currentVerbBox;
 
@@ -667,6 +676,10 @@ void AGOSEngine::setVerb(HitArea *ha) {
 		_needHitAreaRecalc++;
 	}
 	_currentVerbBox = ha;
+
+	if (_currentVerbBox != NULL) {
+		// AndroidPortAdditions::instance()->onActionChanged(_currentVerbBox->id); // XXX
+	}
 }
 
 #ifdef ENABLE_AGOS2

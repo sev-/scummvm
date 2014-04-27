@@ -195,6 +195,8 @@ void registerDefaults() {
 	ConfMan.registerDefault("enable_gs", false);
 	ConfMan.registerDefault("midi_gain", 100);
 
+	ConfMan.registerDefault("touchpad_mode", false);
+
 	ConfMan.registerDefault("music_driver", "auto");
 	ConfMan.registerDefault("mt32_device", "null");
 	ConfMan.registerDefault("gm_device", "null");
@@ -208,6 +210,8 @@ void registerDefaults() {
 	ConfMan.registerDefault("platform", Common::kPlatformDOS);
 	ConfMan.registerDefault("language", "en");
 	ConfMan.registerDefault("subtitles", false);
+	ConfMan.registerDefault("use-music", 0);
+
 	ConfMan.registerDefault("boot_param", 0);
 	ConfMan.registerDefault("dump_scripts", false);
 	ConfMan.registerDefault("save_slot", -1);
@@ -452,6 +456,15 @@ Common::String parseCommandLine(Common::StringMap &settings, int argc, const cha
 
 			DO_OPTION_BOOL('n', "subtitles")
 			END_OPTION
+
+			DO_LONG_OPTION_BOOL("speech_mute")
+				END_OPTION
+
+			DO_LONG_OPTION_BOOL("touchpad_mode")
+				END_OPTION
+
+			DO_LONG_OPTION_INT("use-music")
+				END_OPTION
 
 			DO_OPTION('p', "path")
 				Common::FSNode path(option);
@@ -987,13 +1000,7 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 
 #endif // DISABLE_COMMAND_LINE
 
-
-	// If a target was specified, check whether there is either a game
-	// domain (i.e. a target) matching this argument, or alternatively
-	// whether there is a gameid matching that name.
 	if (!command.empty()) {
-		GameDescriptor gd = EngineMan.findGame(command);
-		if (ConfMan.hasGameDomain(command) || !gd.gameid().empty()) {
 			bool idCameFromCommandLine = false;
 
 			// WORKAROUND: Fix for bug #1719463: "DETECTOR: Launching
@@ -1007,15 +1014,10 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 			}
 
 			ConfMan.setActiveDomain(command);
+			ConfMan.set("gameid", command);
 
 			if (idCameFromCommandLine)
 				ConfMan.set("id_came_from_command_line", "1");
-
-		} else {
-#ifndef DISABLE_COMMAND_LINE
-			usage("Unrecognized game target '%s'", command.c_str());
-#endif // DISABLE_COMMAND_LINE
-		}
 	}
 
 

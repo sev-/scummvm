@@ -385,6 +385,12 @@ void Engine::checkCD() {
 #endif
 }
 
+bool Engine::canSkip() {
+}
+
+uint16 Engine::getCurrentActionId() {
+}
+
 bool Engine::shouldPerformAutoSave(int lastSaveTime) {
 	const int diff = _system->getMillis() - lastSaveTime;
 	const int autosavePeriod = ConfMan.getInt("autosave_period");
@@ -536,6 +542,12 @@ void Engine::flipMute() {
 	syncSoundSettings();
 }
 
+void Engine::generateSaveSlotName(char* string, int32 slot)
+{
+	// Default implementation
+	sprintf(string, "default%d", slot);
+}
+
 Common::Error Engine::loadGameState(int slot) {
 	// Do nothing by default
 	return Common::kNoError;
@@ -568,6 +580,22 @@ bool Engine::shouldQuit() {
 	return (eventMan->shouldQuit() || eventMan->shouldRTL());
 }
 
+void Engine::preventIdleMode()
+{
+	// Not implemented
+}
+
+int32 Engine::getTimerEventCount()
+{
+	// Not implemented
+	return 0;
+}
+
+void Engine::stopWalking()
+{
+	// Not implemented
+}
+
 /*
 EnginePlugin *Engine::getMetaEnginePlugin() const {
 
@@ -579,3 +607,18 @@ EnginePlugin *Engine::getMetaEnginePlugin() const {
 }
 
 */
+void Engine::getInteractionHitAreas(Rect* rectArray, uint16& count)
+{
+	// Empty implementation.
+	count = 0;
+}
+
+
+
+void Engine::getChatHitAreas(Rect* rectArray, uint16& count)
+{
+	// Empty implementation.
+	count = 0;
+}
+
+

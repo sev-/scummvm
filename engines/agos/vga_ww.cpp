@@ -31,6 +31,8 @@
 #include "graphics/surface.h"
 #include "graphics/palette.h"
 
+//#include "backends/platform/android/AndroidPortAdditions.h"
+
 namespace AGOS {
 
 void AGOSEngine_Waxworks::setupVideoOpcodes(VgaOpcodeProc *op) {
@@ -216,8 +218,18 @@ void AGOSEngine::vc62_fastFadeOut() {
 				fadeSize = 8;
 			}
 		} else {
-			fadeCount = 64;
-			fadeSize = 4;
+			// fadeCount = 64;
+			// fadeSize = 4;
+
+			// Modification to reduce the Simon1 fade times
+			fadeCount = 8;
+			fadeSize = 32;
+
+			if (/* AndroidPortAdditions::instance()->isInAutoloadState() */ 0) { // XXX
+				// If needed, completely disable fade-out
+				fadeCount = 0;
+				fadeSize = 0;
+			}
 		}
 
 		for (i = fadeCount; i != 0; --i) {

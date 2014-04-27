@@ -28,6 +28,9 @@
 #include "agos/midi.h"
 #include "agos/vga.h"
 
+//#include "backends/platform/android/AndroidPortAdditions.h"
+
+
 namespace AGOS {
 
 uint AGOSEngine::setVerbText(HitArea *ha) {
@@ -262,6 +265,10 @@ void AGOSEngine::waitForInput() {
 			(ha->id >= 101 && ha->id < 113)) {
 			_verbHitArea = ha->verb;
 			setVerb(ha);
+
+			// Notify of verb click
+			// AndroidPortAdditions::instance()->onActionClicked(ha->id); // XXX
+
 			_defaultVerb = 0;
 		} else {
 			if (getGameType() == GType_WW) {

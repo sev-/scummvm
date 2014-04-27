@@ -24,6 +24,7 @@
 #define AGOS_AGOS_H
 
 #include "engines/engine.h"
+#include "engines/metaengine.h"
 
 #include "common/array.h"
 #include "common/error.h"
@@ -32,6 +33,7 @@
 #include "common/rect.h"
 #include "common/stack.h"
 #include "common/util.h"
+#include "common/error.h"
 
 #include "agos/sound.h"
 #include "agos/vga.h"
@@ -217,6 +219,9 @@ protected:
 	virtual void setupVideoOpcodes(VgaOpcodeProc *op);
 
 	const AGOSGameDescription * const _gameDescription;
+
+	bool mSimon1EndGameWorkaround;
+
 
 public:
 	virtual void setupGame();
@@ -605,6 +610,12 @@ public:
 	uint32 _curSfxFileSize;
 	uint16 _sampleEnd, _sampleWait;
 
+#define USE_MUSIC_ENHANCED 0
+#define USE_MUSIC_ORIGINAL 1
+#define USE_MUSIC_NONE 2
+
+	uint32 _useMusic;
+
 protected:
 	virtual uint16 to16Wrapper(uint value);
 	virtual uint16 readUint16Wrapper(const void *src);
@@ -900,6 +911,23 @@ protected:
 	void runVgaScript();
 
 public:
+
+	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
+	virtual void getChatHitAreas(Rect* rectArray, uint16& count);
+
+	virtual bool canSkip();
+
+	/**
+	 * Return a game-specific id for the currently chosen action
+	 */
+	virtual uint16 getCurrentActionId();
+
+private:
+
+	bool mCanSkip;
+
+public:
+
 	bool getBitFlag(uint bit);
 	void setBitFlag(uint bit, bool value);
 
@@ -1254,6 +1282,16 @@ protected:
 
 	virtual bool loadGame(const Common::String &filename, bool restartMode = false);
 	virtual bool saveGame(uint slot, const char *caption);
+
+	// String must be at least 20 chars long
+	virtual void generateSaveSlotName(char* string, int32 slot);
+
+	virtual Common::Error loadGameState(int slot);
+	virtual Common::Error saveGameState(int slot, const Common::String &desc);
+
+	virtual int32 getTimerEventCount();
+
+	virtual void stopWalking();
 
 	void openTextWindow();
 	void tidyIconArray(uint i);
@@ -2165,6 +2203,8 @@ protected:
 
 };
 #endif
+
+MetaEngine* agosEnginePlugin();
 
 } // End of namespace AGOS
 

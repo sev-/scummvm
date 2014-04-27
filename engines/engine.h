@@ -27,6 +27,9 @@
 #include "common/str.h"
 #include "common/language.h"
 #include "common/platform.h"
+#include "common/rect.h"
+
+using Common::Rect;
 
 class OSystem;
 
@@ -209,6 +212,9 @@ public:
 	 */
 	virtual void flipMute();
 
+	// String must be at least 20 chars long
+	virtual void generateSaveSlotName(char* string, int32 slot);
+
 	/**
 	 * Load a game state.
 	 * @param slot	the slot from which a savestate should be loaded
@@ -242,6 +248,41 @@ public:
 	 * Indicates whether a game state can be saved.
 	 */
 	virtual bool canSaveGameStateCurrently();
+
+	/**
+	 * Prevent the game from going into idle mode after a certain time
+	 */
+	virtual void preventIdleMode();
+
+	/**
+	 * The number of pending game events
+	 */
+	virtual int32 getTimerEventCount();
+
+	// Stops the character if it walks
+	virtual void stopWalking();
+
+	/**
+	 * Writes an array of hit areas into rectArray.
+	 * count is an output variable containing the number of hit areas written.
+	 */
+	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
+
+	/**
+	 * Writes an array of hit areas into rectArray.
+	 * count is an output variable containing the number of hit areas written.
+	 */
+	virtual void getChatHitAreas(Rect* rectArray, uint16& count);
+
+	/**
+	 * Whether the game can skip now
+	 */
+	virtual bool canSkip();
+
+	/**
+	 * Return a game-specific id for the currently chosen action
+	 */
+	virtual uint16 getCurrentActionId();
 
 protected:
 

@@ -33,6 +33,8 @@
 
 #include "gui/message.h"
 
+#include "backends/platform/android/Constants.h"
+
 void BaseBackend::displayMessageOnOSD(const char *msg) {
 	// Display the message for 1.5 seconds
 	GUI::TimedMessageDialog dialog(msg, 1500);
@@ -49,7 +51,10 @@ void BaseBackend::initBackend() {
 	// Init audio CD manager
 #ifndef DISABLE_DEFAULT_AUDIOCD_MANAGER
 	if (!_audiocdManager)
+	{
 		_audiocdManager = new DefaultAudioCDManager();
+		_audiocdManager->setVolume(ENHANCED_MUSIC_VOLUME);
+	}
 #endif
 
 	OSystem::initBackend();

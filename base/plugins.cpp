@@ -35,6 +35,7 @@
 int pluginTypeVersions[PLUGIN_TYPE_MAX] = {
 	PLUGIN_TYPE_ENGINE_VERSION,
 	PLUGIN_TYPE_MUSIC_VERSION,
+	PLUGIN_TYPE_SCALER_VERSION,
 };
 
 
@@ -378,6 +379,30 @@ void PluginManager::loadAllPlugins() {
 	}
 }
 
+void PluginManager::loadAllPluginsOfType(PluginType type) {
+	for (ProviderList::iterator pp = _providers.begin();
+	                            pp != _providers.end();
+	                            ++pp) {
+		PluginList pl((*pp)->getPlugins());
+		for (PluginList::iterator p = pl.begin();
+				                  p != pl.end();
+								  ++p) {
+			if ((*p)->loadPlugin()) {
+				if ((*p)->getType() == type) {
+					addToPluginsInMemList((*p));
+				} else {
+					// Plugin is wrong type
+					(*p)->unloadPlugin();
+					delete (*p);
+				}
+			} else {
+				// Plugin did not load
+				delete (*p);
+			}
+		}
+	}
+}
+
 void PluginManager::unloadAllPlugins() {
 	for (int i = 0; i < PLUGIN_TYPE_MAX; i++)
 		unloadPluginsExcept((PluginType)i, NULL);
@@ -545,4 +570,40 @@ DECLARE_SINGLETON(MusicManager);
 
 const MusicPlugin::List &MusicManager::getPlugins() const {
 	return (const MusicPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_MUSIC);
+}
+
+// Scaler plugins
+
+#include "graphics/scalerplugin.h"
+
+namespace Common {
+DECLARE_SINGLETON(ScalerManager);
+}
+
+const ScalerPlugin::List &ScalerManager::getPlugins() const {
+	return (const ScalerPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_SCALER);
+}
+
+uint ScalerManager::getMaxExtraPixels() const {
+	uint maxPixels = 0;
+	ScalerPlugin::List plugins = getPlugins();
+	ScalerPlugin::List::iterator i = plugins.begin();
+	for (; i != plugins.end(); ++i) {
+		uint n = (**i)->extraPixels();
+		if (n > maxPixels) {
+			maxPixels = n;
+		}
+	}
+	return maxPixels;
+}
+
+ScalerPlugin *ScalerManager::findScalerPlugin(const char *name) const {
+	const ScalerPlugin::List &plugins = getPlugins();
+	for (ScalerPlugin::List::const_iterator i = plugins.begin(); i != plugins.end(); ++i) {
+		if (!strcmp((**i)->getName(), name)) {
+			return *i;
+		}
+	}
+
+	return 0;
 }

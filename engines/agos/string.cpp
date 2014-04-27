@@ -478,6 +478,21 @@ void AGOSEngine::printScreenText(uint vgaSpriteId, uint color, const char *strin
 	int padding, lettersPerRow, lettersPerRowJustified;
 	const int textHeight = 10;
 
+
+	// Limit subtitle position so it won't overlap with the port overlay
+	if (x < 32 && y < 32)
+	{
+		x = 32;
+	}
+	if (y < 32 && (x + width > 288))
+	{
+		x = MAX(288 - width, 32);
+		if (x + width > 288)
+		{
+			width =  288 - x;
+		}
+	}
+
 	height = textHeight;
 	lettersPerRow = width / 6;
 	lettersPerRowJustified = stringLength / (stringLength / lettersPerRow + 1) + 1;

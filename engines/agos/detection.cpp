@@ -281,4 +281,10 @@ void AGOSEngine::loadArchives() {
 }
 #endif
 
+MetaEngine* agosEnginePlugin()
+{
+	return new AgosMetaEngine();
+}
+
+
 } // End of namespace AGOS

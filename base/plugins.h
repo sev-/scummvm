@@ -58,7 +58,7 @@
 enum PluginType {
 	PLUGIN_TYPE_ENGINE = 0,
 	PLUGIN_TYPE_MUSIC,
-	/* PLUGIN_TYPE_SCALER, */	// TODO: Add graphics scaler plugins
+	PLUGIN_TYPE_SCALER,
 
 	PLUGIN_TYPE_MAX
 };
@@ -67,6 +67,7 @@ enum PluginType {
 // because of the backlinking (posibly from the checkout revision)
 #define PLUGIN_TYPE_ENGINE_VERSION 1
 #define PLUGIN_TYPE_MUSIC_VERSION 1
+#define PLUGIN_TYPE_SCALER_VERSION 1
 
 extern int pluginTypeVersions[PLUGIN_TYPE_MAX];
 
@@ -335,6 +336,7 @@ public:
 
 	// Functions used only by the cached PluginManager
 	virtual void loadAllPlugins();
+	virtual void loadAllPluginsOfType(PluginType type);
 	void unloadAllPlugins();
 
 	void unloadPluginsExcept(PluginType type, const Plugin *plugin, bool deletePlugin = true);
@@ -362,7 +364,8 @@ public:
 	virtual bool loadPluginFromGameId(const Common::String &gameId);
 	virtual void updateConfigWithFileName(const Common::String &gameId);
 
-	virtual void loadAllPlugins() {} 	// we don't allow this
+	virtual void loadAllPlugins() {} 	// we don't allow these
+	virtual void loadAllPluginsOfType(PluginType type) {}
 };
 
 #endif

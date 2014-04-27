@@ -332,6 +332,10 @@ void AGOSEngine_Simon1::os1_screenTextBox() {
 	tl->width = getVarOrWord();
 }
 
+// Used for workaround
+const char* simon1EndGameString = "I guess I must have dropped off.";
+
+
 void AGOSEngine_Simon1::os1_screenTextMsg() {
 	// 162: print string
 	uint vgaSpriteId = getVarOrByte();
@@ -371,8 +375,20 @@ void AGOSEngine_Simon1::os1_screenTextMsg() {
 			tl->width = 96;
 	}
 
-	if (stringPtr != NULL && stringPtr[0] != 0 && (speechId == 0 || _subtitles))
-		printScreenText(vgaSpriteId, color, (const char *)stringPtr, tl->x, tl->y, tl->width);
+	if (stringPtr != NULL && stringPtr[0] != 0
+			&& (speechId == 0 || _subtitles)) {
+	
+		// Nasty workaround for Simon1 script bug on English subtitle version.
+		// Set a flag when identifying a part in the game's ending.
+		if (getGameType() == GType_SIMON1 && _language == Common::EN_ANY
+				&& _subtitles && tl->x == 0 && tl->y == 20 && tl->width == 128
+				&& strcmp((const char*) stringPtr, simon1EndGameString) == 0) {
+			mSimon1EndGameWorkaround = true;
+		}
+
+		printScreenText(vgaSpriteId, color, (const char *) stringPtr, tl->x,
+				tl->y, tl->width);
+	}
 
 }
 

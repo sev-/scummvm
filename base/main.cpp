@@ -61,6 +61,9 @@
 #include "graphics/cursorman.h"
 #include "graphics/fontman.h"
 #include "graphics/yuv_to_rgb.h"
+
+#include "engines/agos/agos.h"
+
 #ifdef USE_FREETYPE2
 #include "graphics/fonts/ttf.h"
 #endif
@@ -75,6 +78,8 @@
 #include "gui/launcher.h"
 #endif
 
+//#include "backends/platform/android/AndroidPortAdditions.h"
+#include "backends/platform/android/Constants.h"
 
 static bool launcherDialog() {
 
@@ -151,9 +156,27 @@ static Common::Error runGame(const EnginePlugin *plugin, OSystem &system, const 
 	if (!(dir.exists() && dir.isDirectory()))
 		err = Common::kPathNotDirectory;
 
-	// Create the game engine
+			MetaEngine* metaEngine;
+
+	// Create the game engine according to game type
 	if (err.getCode() == Common::kNoError)
-		err = (*plugin)->createInstance(&system, &engine);
+			{
+				uint16 gameType = GAME_TYPE_SIMON1; // AndroidPortAdditions::instance()->getGameType(); // XXX
+				//LOGD("runGame: gameType %d", gameType);
+				switch (gameType)
+				{
+					case GAME_TYPE_SIMON1:
+					case GAME_TYPE_SIMON2:
+					metaEngine = AGOS::agosEnginePlugin();
+					break;
+
+					default:
+					error("runGame: unknown game type %d", gameType);
+				}
+
+				err = metaEngine->createInstance(&system, &engine);
+				delete metaEngine;
+			}
 
 	// Check for errors
 	if (!engine || err.getCode() != Common::kNoError) {
@@ -403,6 +426,13 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 		return res.getCode();
 	}
 
+	// FIXME: add the "use-music" setting to ConfMan. For some reason it doesn't get added.
+	if (settings.contains("use-music")) {
+		ConfMan.setInt("use-music", (int)strtol(settings["use-music"].c_str(), 0, 10));
+	}
+
+	ConfMan.setBool("touchpad_mode", settings.contains("touchpad_mode"));
+
 	// Init the backend. Must take place after all config data (including
 	// the command line params) was read.
 	system.initBackend();
@@ -462,11 +492,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	// cleanly, so this is now enabled to encourage people to fix bits :)
 	while (0 != ConfMan.getActiveDomain()) {
 		// Try to find a plugin which feels responsible for the specified game.
-		const EnginePlugin *plugin = detectPlugin();
-		if (plugin) {
+			const EnginePlugin *plugin = 0;
+			//	if (plugin) {
 			// Unload all plugins not needed for this game,
 			// to save memory
-			PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
+			//		PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
 
 #ifdef ENABLE_EVENTRECORDER
 			Common::String recordMode = ConfMan.get("record_mode");
@@ -528,11 +558,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 			// Clear the active config domain
 			ConfMan.setActiveDomain("");
 
-			PluginManager::instance().loadAllPlugins(); // only for cached manager
+			PluginManager::instance().loadAllPlugins();// only for cached manager
 
-		} else {
-			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
-		}
+//		} else {
+//			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
+//		}
 
 		// reset the graphics to default
 		setupGraphics(system);

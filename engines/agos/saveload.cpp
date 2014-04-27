@@ -1018,6 +1018,22 @@ void writeItemID(Common::WriteStream *f, uint16 val) {
 		f->writeUint32BE(val - 1);
 }
 
+void AGOSEngine::generateSaveSlotName(char* string, int32 slot) {
+	sprintf(string, "simon1slot%d", slot);
+}
+  
+Common::Error AGOSEngine::loadGameState(int slot) {
+	stopWalking();
+	bool result = loadGame(genSaveName(slot));
+	drawIconArray(2, me(), 0, 0);
+	setBitFlag(97, true);
+	Subroutine* sub;
+	sub = getSubroutineByID(100);
+	startSubroutine(sub);
+	mouseOn();
+	return result ? Common::kNoError : Common::kUnknownError;
+}
+
 bool AGOSEngine::loadGame(const Common::String &filename, bool restartMode) {
 	char ident[100];
 	Common::SeekableReadStream *f = NULL;
@@ -1118,8 +1134,14 @@ bool AGOSEngine::loadGame(const Common::String &filename, bool restartMode) {
 	return true;
 }
 
-bool AGOSEngine::saveGame(uint slot, const char *caption) {
-	Common::OutSaveFile *f;
+Common::Error AGOSEngine::saveGameState(int slot, const Common::String& desc) {
+	stopWalking();
+	bool result = saveGame(slot, desc.c_str());
+	return result ? Common::kNoError : Common::kUnknownError;
+}
+
+bool AGOSEngine::saveGame(uint slot, const char* caption) {
+	Common::OutSaveFile* f;
 	uint item_index, num_item, i;
 	TimeEvent *te;
 	uint32 curTime = getTime();
