@@ -224,6 +224,7 @@ public:
 
 	void useAlpha(int alpha) { _alpha = alpha; }
 	void useThemeTransparency(bool enable) { _transparency = enable; }
+	void setButtonDisplay(bool enable) {_showButton = enable; }
 
 protected:
 	void drawWidget();
@@ -231,6 +232,7 @@ protected:
 	Graphics::Surface _gfx;
 	int _alpha;
 	bool _transparency;
+	bool _showButton;
 };
 
 /* CheckboxWidget */
