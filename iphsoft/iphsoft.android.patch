@@ -1,0 +1,3921 @@
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidBitmap.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortAdditions.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortAdditions.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortGlTextureHelper.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortGlTextureHelper.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortUtils.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: AndroidPortUtils.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: Constants.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: GameAreaIdentifier.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: GameAreaIdentifier.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: HitAreaHelper.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: HitAreaHelper.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: OpenGLESDebug.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: OpenGLESHelper.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: OpenGLESHelper.h
+diff -rbu ./backends/platform/android/android.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/android.cpp
+--- ./backends/platform/android/android.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/android.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -60,7 +60,9 @@
+ #include "backends/platform/android/jni.h"
+ #include "backends/platform/android/android.h"
+ 
+-const char *android_log_tag = "ScummVM";
++#include "backends/platform/android/AndroidPortAdditions.h"
++
++const char *android_log_tag = "Simon";
+ 
+ // This replaces the bionic libc assert functions with something that
+ // actually prints the assertion failure before aborting.
+@@ -79,74 +81,38 @@
+ 	}
+ }
+ 
+-#ifdef ANDROID_DEBUG_GL
+-static const char *getGlErrStr(GLenum error) {
+-	switch (error) {
+-	case GL_INVALID_ENUM:
+-		return "GL_INVALID_ENUM";
+-	case GL_INVALID_VALUE:
+-		return "GL_INVALID_VALUE";
+-	case GL_INVALID_OPERATION:
+-		return "GL_INVALID_OPERATION";
+-	case GL_STACK_OVERFLOW:
+-		return "GL_STACK_OVERFLOW";
+-	case GL_STACK_UNDERFLOW:
+-		return "GL_STACK_UNDERFLOW";
+-	case GL_OUT_OF_MEMORY:
+-		return "GL_OUT_OF_MEMORY";
+-	}
+-
+-	static char buf[40];
+-	snprintf(buf, sizeof(buf), "(Unknown GL error code 0x%x)", error);
+-
+-	return buf;
+-}
+-
+-void checkGlError(const char *expr, const char *file, int line) {
+-	GLenum error = glGetError();
+-
+-	if (error != GL_NO_ERROR)
+-		LOGE("GL ERROR: %s on %s (%s:%d)", getGlErrStr(error), expr, file, line);
+-}
+-#endif
+-
+ OSystem_Android::OSystem_Android(int audio_sample_rate, int audio_buffer_size) :
+-	_audio_sample_rate(audio_sample_rate),
+-	_audio_buffer_size(audio_buffer_size),
+-	_screen_changeid(0),
+-	_egl_surface_width(0),
+-	_egl_surface_height(0),
+-	_htc_fail(false),
+-	_force_redraw(false),
+-	_game_texture(0),
+-	_overlay_texture(0),
+-	_mouse_texture(0),
+-	_mouse_texture_palette(0),
+-	_mouse_texture_rgb(0),
+-	_mouse_hotspot(),
+-	_mouse_keycolor(0),
+-	_use_mouse_palette(false),
+-	_graphicsMode(0),
+-	_fullscreen(true),
+-	_ar_correction(true),
+-	_show_mouse(false),
+-	_show_overlay(false),
+-	_enable_zoning(false),
+-	_mixer(0),
+-	_shake_offset(0),
+-	_queuedEventTime(0),
+-	_event_queue_lock(createMutex()),
+-	_touch_pt_down(),
+-	_touch_pt_scroll(),
+-	_touch_pt_dt(),
+-	_eventScaleX(100),
+-	_eventScaleY(100),
+-	// TODO put these values in some option dlg?
+-	_touchpad_mode(true),
+-	_touchpad_scale(66),
+-	_dpad_scale(4),
+-	_fingersDown(0),
+-	_trackball_scale(2) {
++_audio_sample_rate(audio_sample_rate),
++_audio_buffer_size(audio_buffer_size),
++_screen_changeid(0),
++_egl_surface_width(0),
++_egl_surface_height(0),
++_htc_fail(false),
++_force_redraw(false),
++_game_texture(0),
++_mouse_hotspot(),
++_mouse_keycolor(0),
++_use_mouse_palette(false),
++_graphicsMode(0),
++_fullscreen(true),
++_ar_correction(true),
++_show_mouse(false),
++_show_overlay(false),
++_enable_zoning(false),
++_mixer(0),
++_shake_offset(0),
++_queuedEventTime(0),
++_event_queue_lock(createMutex()),
++_touch_pt_down(),
++_touch_pt_scroll(),
++_touch_pt_dt(),
++_eventScaleX(100),
++_eventScaleY(100),
++// TODO put these values in some option dlg?
++_touchpad_scale(66),
++_dpad_scale(4),
++_fingersDown(0),
++_trackball_scale(2) {
+ 
+ 	_fsFactory = new POSIXFilesystemFactory();
+ 
+@@ -193,7 +159,7 @@
+ 
+ 	struct timespec tv;
+ 	tv.tv_sec = 0;
+-	tv.tv_nsec = 10 * 1000 * 1000; // 10ms
++	tv.tv_nsec = 10 * 1000 * 1000;// 10ms
+ 
+ 	while (!system->_timer_thread_exit) {
+ 		if (JNI::pause) {
+@@ -259,6 +225,15 @@
+ 
+ 		samples = mixer->mixCallback(buf, buf_size);
+ 
++		// Force silence samples on auto-load state
++		if (AndroidPortAdditions::instance()->isInAutoloadState())
++		{
++			for (uint32 b = 0; b < buf_size; ++b)
++			{
++				buf[b] = 0;
++			}
++		}
++
+ 		silence = samples < 1;
+ 
+ 		// looks stupid, and it is, but currently there's no way to detect
+@@ -351,10 +326,6 @@
+ 	ConfMan.setBool("FM_high_quality", false);
+ 	ConfMan.setBool("FM_medium_quality", true);
+ 
+-	// TODO hackity hack
+-	if (ConfMan.hasKey("multi_midi"))
+-		_touchpad_mode = !ConfMan.getBool("multi_midi");
+-
+ 	// must happen before creating TimerManager to avoid race in
+ 	// creating EventManager
+ 	setupKeymapper();
+@@ -380,12 +351,13 @@
+ 	initViewport();
+ 
+ 	_game_texture = new GLESFakePalette565Texture();
+-	_overlay_texture = new GLES4444Texture();
+-	_mouse_texture_palette = new GLESFakePalette5551Texture();
+-	_mouse_texture = _mouse_texture_palette;
++	_game_texture->setIsGameTexture(true);
+ 
+ 	initOverlay();
+ 
++	// Set the touchpadMode setting in AndroidPortAdditions
++//	AndroidPortAdditions::instance()->setTouchpadMode(ConfMan.getBool("touchpad_mode"));
++
+ 	// renice this thread to boost the audio thread
+ 	if (setpriority(PRIO_PROCESS, 0, 19) < 0)
+ 		warning("couldn't renice the main thread");
+@@ -513,9 +485,6 @@
+ 	pthread_join(_timer_thread, 0);
+ 
+ 	delete _game_texture;
+-	delete _overlay_texture;
+-	delete _mouse_texture_palette;
+-	delete _mouse_texture_rgb;
+ 
+ 	deinitSurface();
+ }
+@@ -561,7 +530,8 @@
+ 												int priority) {
+ 	ENTER("");
+ 
+-	JNI::addSysArchivesToSearchSet(s, priority);
++	// Commented out to prevent ScummVM from using game files inside the APK assets - there's no need for that anymore.
++//	JNI::addSysArchivesToSearchSet(s, priority);
+ }
+ 
+ void OSystem_Android::logMessage(LogMessageType::Type type,
+diff -rbu ./backends/platform/android/android.h ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/android.h
+--- ./backends/platform/android/android.h	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/android.h	2014-02-16 10:45:26.000000000 +0200
+@@ -27,6 +27,7 @@
+ 
+ #include "common/fs.h"
+ #include "common/archive.h"
++
+ #include "audio/mixer_intern.h"
+ #include "graphics/palette.h"
+ #include "graphics/surface.h"
+@@ -34,14 +35,18 @@
+ #include "backends/plugins/posix/posix-provider.h"
+ #include "backends/fs/posix/posix-fs-factory.h"
+ 
++
++
+ #include "backends/platform/android/texture.h"
++#include "backends/platform/android/loghelper.h"
+ 
+ #include <pthread.h>
+ 
+-#include <android/log.h>
+ 
+-#include <GLES/gl.h>
+-#include <GLES/glext.h>
++#include <GLES2/gl2.h>
++#include <GLES2/gl2ext.h>
++
++#include <backends/platform/android/OpenGLESHelper.h>
+ 
+ // toggles start
+ //#define ANDROID_DEBUG_ENTER
+@@ -49,13 +54,6 @@
+ //#define ANDROID_DEBUG_GL_CALLS
+ // toggles end
+ 
+-extern const char *android_log_tag;
+-
+-#define _ANDROID_LOG(prio, fmt, args...) __android_log_print(prio, android_log_tag, fmt, ## args)
+-#define LOGD(fmt, args...) _ANDROID_LOG(ANDROID_LOG_DEBUG, fmt, ##args)
+-#define LOGI(fmt, args...) _ANDROID_LOG(ANDROID_LOG_INFO, fmt, ##args)
+-#define LOGW(fmt, args...) _ANDROID_LOG(ANDROID_LOG_WARN, fmt, ##args)
+-#define LOGE(fmt, args...) _ANDROID_LOG(ANDROID_LOG_ERROR, fmt, ##args)
+ 
+ #ifdef ANDROID_DEBUG_ENTER
+ #define ENTER(fmt, args...) LOGD("%s(" fmt ")", __FUNCTION__, ##args)
+@@ -63,38 +61,6 @@
+ #define ENTER(fmt, args...) do {  } while (false)
+ #endif
+ 
+-#ifdef ANDROID_DEBUG_GL
+-extern void checkGlError(const char *expr, const char *file, int line);
+-
+-#ifdef ANDROID_DEBUG_GL_CALLS
+-#define GLCALLLOG(x, before) \
+-	do { \
+-		if (before) \
+-			LOGD("calling '%s' (%s:%d)", x, __FILE__, __LINE__); \
+-		else \
+-			LOGD("returned from '%s' (%s:%d)", x, __FILE__, __LINE__); \
+-	} while (false)
+-#else
+-#define GLCALLLOG(x, before) do {  } while (false)
+-#endif
+-
+-#define GLCALL(x) \
+-	do { \
+-		GLCALLLOG(#x, true); \
+-		(x); \
+-		GLCALLLOG(#x, false); \
+-		checkGlError(#x, __FILE__, __LINE__); \
+-	} while (false)
+-
+-#define GLTHREADCHECK \
+-	do { \
+-		assert(pthread_self() == _main_thread); \
+-	} while (false)
+-
+-#else
+-#define GLCALL(x) do { (x); } while (false)
+-#define GLTHREADCHECK do {  } while (false)
+-#endif
+ 
+ #ifdef DYNAMIC_MODULES
+ class AndroidPluginProvider : public POSIXPluginProvider {
+@@ -103,6 +69,8 @@
+ };
+ #endif
+ 
++
++
+ class OSystem_Android : public EventsBaseBackend, public PaletteManager {
+ private:
+ 	// passed from the dark side
+@@ -122,13 +90,9 @@
+ 	Common::Rect _focus_rect;
+ 
+ 	// Overlay layer
+-	GLES4444Texture *_overlay_texture;
+ 	bool _show_overlay;
+ 
+ 	// Mouse layer
+-	GLESBaseTexture *_mouse_texture;
+-	GLESBaseTexture *_mouse_texture_palette;
+-	GLES5551Texture *_mouse_texture_rgb;
+ 	Common::Point _mouse_hotspot;
+ 	uint32 _mouse_keycolor;
+ 	int _mouse_targetscale;
+@@ -157,6 +121,7 @@
+ 
+ 	Common::String getSystemProperty(const char *name) const;
+ 
++
+ 	void initSurface();
+ 	void deinitSurface();
+ 	void initViewport();
+@@ -197,6 +162,8 @@
+ 	virtual void initSize(uint width, uint height,
+ 							const Graphics::PixelFormat *format);
+ 
++	virtual void reinitGameTextureSize(uint16 w, uint16 h);
++
+ 	enum FixupType {
+ 		kClear = 0,		// glClear
+ 		kClearSwap,		// glClear + swapBuffers
+@@ -218,6 +185,12 @@
+ public:
+ 	void pushEvent(int type, int arg1, int arg2, int arg3, int arg4, int arg5);
+ 
++	void forceEvent(Common::Event e);
++
++	void pushClick(uint32 x, uint32 y);
++	void pushScroll(uint32 x, uint32 y);
++
++
+ private:
+ 	Common::Queue<Common::Event> _event_queue;
+ 	Common::Event _queuedEvent;
+@@ -227,7 +200,6 @@
+ 	Common::Point _touch_pt_down, _touch_pt_scroll, _touch_pt_dt;
+ 	int _eventScaleX;
+ 	int _eventScaleY;
+-	bool _touchpad_mode;
+ 	int _touchpad_scale;
+ 	int _trackball_scale;
+ 	int _dpad_scale;
+@@ -294,6 +266,8 @@
+ 	virtual void addSysArchivesToSearchSet(Common::SearchSet &s,
+ 											int priority = 0);
+ 	virtual Common::String getSystemLanguage() const;
++
++
+ };
+ 
+ #endif
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: event_types.h
+diff -rbu ./backends/platform/android/events.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/events.cpp
+--- ./backends/platform/android/events.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/events.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -40,180 +40,19 @@
+ #define FORBIDDEN_SYMBOL_EXCEPTION_printf
+ 
+ #include "common/events.h"
+-
++#include "common/error.h"
+ #include "backends/platform/android/android.h"
+ #include "backends/platform/android/jni.h"
+ 
++#include "engine.h"
++
++#include "backends/platform/android/AndroidPortAdditions.h"
++
+ // $ANDROID_NDK/platforms/android-9/arch-arm/usr/include/android/keycodes.h
+ // http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=libs/ui/Input.cpp
+ // http://android.git.kernel.org/?p=platform/frameworks/base.git;a=blob;f=core/java/android/view/KeyEvent.java
+ 
+-// event type
+-enum {
+-	JE_SYS_KEY = 0,
+-	JE_KEY = 1,
+-	JE_DPAD = 2,
+-	JE_DOWN = 3,
+-	JE_SCROLL = 4,
+-	JE_TAP = 5,
+-	JE_DOUBLE_TAP = 6,
+-	JE_MULTI = 7,
+-	JE_BALL = 8,
+-	JE_LMB_DOWN = 9,
+-	JE_LMB_UP = 10,
+-	JE_RMB_DOWN = 11,
+-	JE_RMB_UP = 12,
+-	JE_MOUSE_MOVE = 13,
+-	JE_QUIT = 0x1000
+-};
+-
+-// action type
+-enum {
+-	JACTION_DOWN = 0,
+-	JACTION_UP = 1,
+-	JACTION_MULTIPLE = 2,
+-	JACTION_POINTER_DOWN = 5,
+-	JACTION_POINTER_UP = 6
+-};
+-
+-// system keys
+-enum {
+-	JKEYCODE_SOFT_RIGHT = 2,
+-	JKEYCODE_HOME = 3,
+-	JKEYCODE_BACK = 4,
+-	JKEYCODE_CALL = 5,
+-	JKEYCODE_ENDCALL = 6,
+-	JKEYCODE_VOLUME_UP = 24,
+-	JKEYCODE_VOLUME_DOWN = 25,
+-	JKEYCODE_POWER = 26,
+-	JKEYCODE_CAMERA = 27,
+-	JKEYCODE_HEADSETHOOK = 79,
+-	JKEYCODE_FOCUS = 80,
+-	JKEYCODE_MENU = 82,
+-	JKEYCODE_SEARCH = 84,
+-	JKEYCODE_MUTE = 91,
+-	JKEYCODE_MEDIA_PLAY_PAUSE = 85,
+-	JKEYCODE_MEDIA_STOP = 86,
+-	JKEYCODE_MEDIA_NEXT = 87,
+-	JKEYCODE_MEDIA_PREVIOUS = 88,
+-	JKEYCODE_MEDIA_REWIND = 89,
+-	JKEYCODE_MEDIA_FAST_FORWARD = 90
+-};
+-
+-// five-way navigation control
+-enum {
+-	JKEYCODE_DPAD_UP = 19,
+-	JKEYCODE_DPAD_DOWN = 20,
+-	JKEYCODE_DPAD_LEFT = 21,
+-	JKEYCODE_DPAD_RIGHT = 22,
+-	JKEYCODE_DPAD_CENTER = 23
+-};
+-
+-// meta modifier
+-enum {
+-	JMETA_SHIFT = 0x01,
+-	JMETA_ALT = 0x02,
+-	JMETA_SYM = 0x04,
+-	JMETA_CTRL = 0x1000
+-};
+-
+-// map android key codes to our kbd codes
+-static const Common::KeyCode jkeymap[] = {
+-	Common::KEYCODE_INVALID, // KEYCODE_UNKNOWN
+-	Common::KEYCODE_INVALID, // KEYCODE_SOFT_LEFT
+-	Common::KEYCODE_INVALID, // KEYCODE_SOFT_RIGHT
+-	Common::KEYCODE_INVALID, // KEYCODE_HOME
+-	Common::KEYCODE_INVALID, // KEYCODE_BACK
+-	Common::KEYCODE_INVALID, // KEYCODE_CALL
+-	Common::KEYCODE_INVALID, // KEYCODE_ENDCALL
+-	Common::KEYCODE_0, // KEYCODE_0
+-	Common::KEYCODE_1, // KEYCODE_1
+-	Common::KEYCODE_2, // KEYCODE_2
+-	Common::KEYCODE_3, // KEYCODE_3
+-	Common::KEYCODE_4, // KEYCODE_4
+-	Common::KEYCODE_5, // KEYCODE_5
+-	Common::KEYCODE_6, // KEYCODE_6
+-	Common::KEYCODE_7, // KEYCODE_7
+-	Common::KEYCODE_8, // KEYCODE_8
+-	Common::KEYCODE_9, // KEYCODE_9
+-	Common::KEYCODE_ASTERISK, // KEYCODE_STAR
+-	Common::KEYCODE_HASH, // KEYCODE_POUND
+-	Common::KEYCODE_INVALID, // KEYCODE_DPAD_UP
+-	Common::KEYCODE_INVALID, // KEYCODE_DPAD_DOWN
+-	Common::KEYCODE_INVALID, // KEYCODE_DPAD_LEFT
+-	Common::KEYCODE_INVALID, // KEYCODE_DPAD_RIGHT
+-	Common::KEYCODE_INVALID, // KEYCODE_DPAD_CENTER
+-	Common::KEYCODE_INVALID, // KEYCODE_VOLUME_UP
+-	Common::KEYCODE_INVALID, // KEYCODE_VOLUME_DOWN
+-	Common::KEYCODE_INVALID, // KEYCODE_POWER
+-	Common::KEYCODE_INVALID, // KEYCODE_CAMERA
+-	Common::KEYCODE_INVALID, // KEYCODE_CLEAR
+-	Common::KEYCODE_a, // KEYCODE_A
+-	Common::KEYCODE_b, // KEYCODE_B
+-	Common::KEYCODE_c, // KEYCODE_C
+-	Common::KEYCODE_d, // KEYCODE_D
+-	Common::KEYCODE_e, // KEYCODE_E
+-	Common::KEYCODE_f, // KEYCODE_F
+-	Common::KEYCODE_g, // KEYCODE_G
+-	Common::KEYCODE_h, // KEYCODE_H
+-	Common::KEYCODE_i, // KEYCODE_I
+-	Common::KEYCODE_j, // KEYCODE_J
+-	Common::KEYCODE_k, // KEYCODE_K
+-	Common::KEYCODE_l, // KEYCODE_L
+-	Common::KEYCODE_m, // KEYCODE_M
+-	Common::KEYCODE_n, // KEYCODE_N
+-	Common::KEYCODE_o, // KEYCODE_O
+-	Common::KEYCODE_p, // KEYCODE_P
+-	Common::KEYCODE_q, // KEYCODE_Q
+-	Common::KEYCODE_r, // KEYCODE_R
+-	Common::KEYCODE_s, // KEYCODE_S
+-	Common::KEYCODE_t, // KEYCODE_T
+-	Common::KEYCODE_u, // KEYCODE_U
+-	Common::KEYCODE_v, // KEYCODE_V
+-	Common::KEYCODE_w, // KEYCODE_W
+-	Common::KEYCODE_x, // KEYCODE_X
+-	Common::KEYCODE_y, // KEYCODE_Y
+-	Common::KEYCODE_z, // KEYCODE_Z
+-	Common::KEYCODE_COMMA, // KEYCODE_COMMA
+-	Common::KEYCODE_PERIOD, // KEYCODE_PERIOD
+-	Common::KEYCODE_LALT, // KEYCODE_ALT_LEFT
+-	Common::KEYCODE_RALT, // KEYCODE_ALT_RIGHT
+-	Common::KEYCODE_LSHIFT, // KEYCODE_SHIFT_LEFT
+-	Common::KEYCODE_RSHIFT, // KEYCODE_SHIFT_RIGHT
+-	Common::KEYCODE_TAB, // KEYCODE_TAB
+-	Common::KEYCODE_SPACE, // KEYCODE_SPACE
+-	Common::KEYCODE_LCTRL, // KEYCODE_SYM
+-	Common::KEYCODE_INVALID, // KEYCODE_EXPLORER
+-	Common::KEYCODE_INVALID, // KEYCODE_ENVELOPE
+-	Common::KEYCODE_RETURN, // KEYCODE_ENTER
+-	Common::KEYCODE_BACKSPACE, // KEYCODE_DEL
+-	Common::KEYCODE_BACKQUOTE, // KEYCODE_GRAVE
+-	Common::KEYCODE_MINUS, // KEYCODE_MINUS
+-	Common::KEYCODE_EQUALS, // KEYCODE_EQUALS
+-	Common::KEYCODE_LEFTPAREN, // KEYCODE_LEFT_BRACKET
+-	Common::KEYCODE_RIGHTPAREN, // KEYCODE_RIGHT_BRACKET
+-	Common::KEYCODE_BACKSLASH, // KEYCODE_BACKSLASH
+-	Common::KEYCODE_SEMICOLON, // KEYCODE_SEMICOLON
+-	Common::KEYCODE_QUOTE, // KEYCODE_APOSTROPHE
+-	Common::KEYCODE_SLASH, // KEYCODE_SLASH
+-	Common::KEYCODE_AT, // KEYCODE_AT
+-	Common::KEYCODE_INVALID, // KEYCODE_NUM
+-	Common::KEYCODE_INVALID, // KEYCODE_HEADSETHOOK
+-	Common::KEYCODE_INVALID, // KEYCODE_FOCUS
+-	Common::KEYCODE_PLUS, // KEYCODE_PLUS
+-	Common::KEYCODE_INVALID, // KEYCODE_MENU
+-	Common::KEYCODE_INVALID, // KEYCODE_NOTIFICATION
+-	Common::KEYCODE_INVALID, // KEYCODE_SEARCH
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_PLAY_PAUSE
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_STOP
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_NEXT
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_PREVIOUS
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_REWIND
+-	Common::KEYCODE_INVALID, // KEYCODE_MEDIA_FAST_FORWARD
+-	Common::KEYCODE_INVALID, // KEYCODE_MUTE
+-	Common::KEYCODE_PAGEUP, // KEYCODE_PAGE_UP
+-	Common::KEYCODE_PAGEDOWN // KEYCODE_PAGE_DOWN
+-};
++#include "event_types.h"
+ 
+ // floating point. use sparingly
+ template<class T>
+@@ -267,9 +106,6 @@
+ void OSystem_Android::clipMouse(Common::Point &p) {
+ 	const GLESBaseTexture *tex;
+ 
+-	if (_show_overlay)
+-		tex = _overlay_texture;
+-	else
+ 		tex = _game_texture;
+ 
+ 	p.x = CLIP(p.x, int16(0), int16(tex->width() - 1));
+@@ -280,9 +116,6 @@
+ 									bool deductDrawRect, bool touchpadMode) {
+ 	const GLESBaseTexture *tex;
+ 
+-	if (_show_overlay)
+-		tex = _overlay_texture;
+-	else
+ 		tex = _game_texture;
+ 
+ 	const Common::Rect &r = tex->getDrawRect();
+@@ -304,9 +137,6 @@
+ void OSystem_Android::updateEventScale() {
+ 	const GLESBaseTexture *tex;
+ 
+-	if (_show_overlay)
+-		tex = _overlay_texture;
+-	else
+ 		tex = _game_texture;
+ 
+ 	_eventScaleY = 100 * 480 / tex->height();
+@@ -318,245 +148,75 @@
+ 	Common::Event e;
+ 
+ 	switch (type) {
+-	case JE_SYS_KEY:
+-		switch (arg1) {
+-		case JACTION_DOWN:
+-			e.type = Common::EVENT_KEYDOWN;
+-			break;
+-		case JACTION_UP:
+-			e.type = Common::EVENT_KEYUP;
+-			break;
+-		default:
+-			LOGE("unhandled jaction on system key: %d", arg1);
+-			return;
+-		}
+ 
+-		switch (arg2) {
++	case JE_DOWN:
+ 
+-		// special case. we'll only get it's up event
+-		case JKEYCODE_BACK:
+-			e.kbd.keycode = Common::KEYCODE_ESCAPE;
+-			e.kbd.ascii = Common::ASCII_ESCAPE;
++		AndroidPortAdditions::instance()->onDownEvent(arg1, arg2);
+ 
+-			lockMutex(_event_queue_lock);
+-			e.type = Common::EVENT_KEYDOWN;
+-			_event_queue.push(e);
+-			e.type = Common::EVENT_KEYUP;
+-			_event_queue.push(e);
+-			unlockMutex(_event_queue_lock);
++		_touch_pt_down = getEventManager()->getMousePos();
++		_touch_pt_scroll.x = -1;
++		_touch_pt_scroll.y = -1;
++		break;
+ 
+-			return;
++	case JE_UP:
+ 
+-		// special case. we'll only get it's up event
+-		case JKEYCODE_MENU:
+-			e.type = Common::EVENT_MAINMENU;
++		LOGD("OSystem_Android::pushEvent: UP: %d %d", arg1, arg2);
+ 
+-			lockMutex(_event_queue_lock);
+-			_event_queue.push(e);
+-			unlockMutex(_event_queue_lock);
++		AndroidPortAdditions::instance()->onUpEvent(arg1, arg2);
+ 
+-			return;
++		break;
+ 
+-		case JKEYCODE_CAMERA:
+-		case JKEYCODE_SEARCH:
+-			if (arg1 == JACTION_DOWN)
+-				e.type = Common::EVENT_RBUTTONDOWN;
+-			else
+-				e.type = Common::EVENT_RBUTTONUP;
++	case JE_LONG_CLICK:
+ 
+-			e.mouse = getEventManager()->getMousePos();
++		AndroidPortAdditions::instance()->onLongClickEvent(arg1, arg2);
+ 
+-			lockMutex(_event_queue_lock);
+-			_event_queue.push(e);
+-			unlockMutex(_event_queue_lock);
++		break;
+ 
+-			return;
++	case JE_SCROLL:
+ 
+-		default:
+-			LOGW("unmapped system key: %d", arg2);
++		if (AndroidPortAdditions::instance()->onScrollEvent(arg3, arg4)) {
+ 			return;
+ 		}
+ 
+-		break;
++		e.type = Common::EVENT_MOUSEMOVE;
+ 
+-	case JE_KEY:
+-		switch (arg1) {
+-		case JACTION_DOWN:
+-			e.type = Common::EVENT_KEYDOWN;
+-			break;
+-		case JACTION_UP:
+-			e.type = Common::EVENT_KEYUP;
+-			break;
+-		default:
+-			LOGE("unhandled jaction on key: %d", arg1);
++		if (AndroidPortAdditions::instance()->getTouchpadMode()) {
++			if (_touch_pt_scroll.x == -1 && _touch_pt_scroll.y == -1) {
++				_touch_pt_scroll.x = arg3;
++				_touch_pt_scroll.y = arg4;
+ 			return;
+ 		}
+ 
+-		if (arg2 < 1 || arg2 > ARRAYSIZE(jkeymap)) {
+-			if (arg3 < 1) {
+-				LOGE("received invalid keycode: %d (%d)", arg2, arg3);
+-				return;
+-			} else {
+-				// lets bet on the ascii code
+-				e.kbd.keycode = Common::KEYCODE_INVALID;
+-			}
++			scaleMouse(e.mouse, arg3 - _touch_pt_scroll.x,
++					arg4 - _touch_pt_scroll.y, false, true);
++			e.mouse += _touch_pt_down;
++			clipMouse(e.mouse);
+ 		} else {
+-			e.kbd.keycode = jkeymap[arg2];
+-		}
++			//		AndroidPortAdditions::instance()->translateTouchCoordinates(arg3, arg4);
+ 
+-		if (arg5 > 0)
+-			e.synthetic = true;
+-
+-		// map special keys to 'our' ascii codes
+-		switch (e.kbd.keycode) {
+-		case Common::KEYCODE_BACKSPACE:
+-			e.kbd.ascii = Common::ASCII_BACKSPACE;
+-			break;
+-		case Common::KEYCODE_TAB:
+-			e.kbd.ascii = Common::ASCII_TAB;
+-			break;
+-		case Common::KEYCODE_RETURN:
+-			e.kbd.ascii = Common::ASCII_RETURN;
+-			break;
+-		case Common::KEYCODE_ESCAPE:
+-			e.kbd.ascii = Common::ASCII_ESCAPE;
+-			break;
+-		case Common::KEYCODE_SPACE:
+-			e.kbd.ascii = Common::ASCII_SPACE;
+-			break;
+-		case Common::KEYCODE_F1:
+-			e.kbd.ascii = Common::ASCII_F1;
+-			break;
+-		case Common::KEYCODE_F2:
+-			e.kbd.ascii = Common::ASCII_F2;
+-			break;
+-		case Common::KEYCODE_F3:
+-			e.kbd.ascii = Common::ASCII_F3;
+-			break;
+-		case Common::KEYCODE_F4:
+-			e.kbd.ascii = Common::ASCII_F4;
+-			break;
+-		case Common::KEYCODE_F5:
+-			e.kbd.ascii = Common::ASCII_F5;
+-			break;
+-		case Common::KEYCODE_F6:
+-			e.kbd.ascii = Common::ASCII_F6;
+-			break;
+-		case Common::KEYCODE_F7:
+-			e.kbd.ascii = Common::ASCII_F7;
+-			break;
+-		case Common::KEYCODE_F8:
+-			e.kbd.ascii = Common::ASCII_F8;
+-			break;
+-		case Common::KEYCODE_F9:
+-			e.kbd.ascii = Common::ASCII_F9;
+-			break;
+-		case Common::KEYCODE_F10:
+-			e.kbd.ascii = Common::ASCII_F10;
+-			break;
+-		case Common::KEYCODE_F11:
+-			e.kbd.ascii = Common::ASCII_F11;
+-			break;
+-		case Common::KEYCODE_F12:
+-			e.kbd.ascii = Common::ASCII_F12;
+-			break;
+-		default:
+-			e.kbd.ascii = arg3;
+-			break;
+-		}
+-
+-		if (arg4 & JMETA_SHIFT)
+-			e.kbd.flags |= Common::KBD_SHIFT;
+-		// JMETA_ALT is Fn on physical keyboards!
+-		// when mapping this to ALT - as we know it from PC keyboards - all
+-		// Fn combos will be broken (like Fn+q, which needs to end as 1 and
+-		// not ALT+1). Do not want.
+-		//if (arg4 & JMETA_ALT)
+-		//	e.kbd.flags |= Common::KBD_ALT;
+-		if (arg4 & (JMETA_SYM | JMETA_CTRL))
+-			e.kbd.flags |= Common::KBD_CTRL;
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
++			//		scaleMouse(e.mouse, arg3, arg4);
++			//		clipMouse(e.mouse);
+ 
++			// Scroll event in touch control mode is handled inside AndroidPortAdditions
+ 		return;
+ 
+-	case JE_DPAD:
+-		switch (arg2) {
+-		case JKEYCODE_DPAD_UP:
+-		case JKEYCODE_DPAD_DOWN:
+-		case JKEYCODE_DPAD_LEFT:
+-		case JKEYCODE_DPAD_RIGHT:
+-			if (arg1 != JACTION_DOWN)
+-				return;
+-
+-			e.type = Common::EVENT_MOUSEMOVE;
+-
+-			e.mouse = getEventManager()->getMousePos();
+-
+-			{
+-				int16 *c;
+-				int s;
+-
+-				if (arg2 == JKEYCODE_DPAD_UP || arg2 == JKEYCODE_DPAD_DOWN) {
+-					c = &e.mouse.y;
+-					s = _eventScaleY;
+-				} else {
+-					c = &e.mouse.x;
+-					s = _eventScaleX;
+-				}
+-
+-				// the longer the button held, the faster the pointer is
+-				// TODO put these values in some option dlg?
+-				int f = CLIP(arg4, 1, 8) * _dpad_scale * 100 / s;
+-
+-				if (arg2 == JKEYCODE_DPAD_UP || arg2 == JKEYCODE_DPAD_LEFT)
+-					*c -= f;
+-				else
+-					*c += f;
+ 			}
+ 
+-			clipMouse(e.mouse);
+-
+ 			lockMutex(_event_queue_lock);
+ 			_event_queue.push(e);
+ 			unlockMutex(_event_queue_lock);
+ 
+ 			return;
+ 
+-		case JKEYCODE_DPAD_CENTER:
+-			switch (arg1) {
+-			case JACTION_DOWN:
+-				e.type = Common::EVENT_LBUTTONDOWN;
+-				break;
+-			case JACTION_UP:
+-				e.type = Common::EVENT_LBUTTONUP;
+-				break;
+-			default:
+-				LOGE("unhandled jaction on dpad key: %d", arg1);
+-				return;
+-			}
+-
+-			e.mouse = getEventManager()->getMousePos();
+-
+-			lockMutex(_event_queue_lock);
+-			_event_queue.push(e);
+-			unlockMutex(_event_queue_lock);
++	case JE_FLING:
+ 
++		if (AndroidPortAdditions::instance()->onFlingEvent(arg1, arg2, arg3, arg4)) {
+ 			return;
+ 		}
+ 
+-	case JE_DOWN:
+-		_touch_pt_down = getEventManager()->getMousePos();
+-		_touch_pt_scroll.x = -1;
+-		_touch_pt_scroll.y = -1;
+-		break;
+-
+-	case JE_SCROLL:
+ 		e.type = Common::EVENT_MOUSEMOVE;
+ 
+-		if (_touchpad_mode) {
++		if (AndroidPortAdditions::instance()->getTouchpadMode()) {
+ 			if (_touch_pt_scroll.x == -1 && _touch_pt_scroll.y == -1) {
+ 				_touch_pt_scroll.x = arg3;
+ 				_touch_pt_scroll.y = arg4;
+@@ -568,8 +228,14 @@
+ 			e.mouse += _touch_pt_down;
+ 			clipMouse(e.mouse);
+ 		} else {
+-			scaleMouse(e.mouse, arg3, arg4);
+-			clipMouse(e.mouse);
++			//		AndroidPortAdditions::instance()->translateTouchCoordinates(arg3, arg4);
++
++			//		scaleMouse(e.mouse, arg3, arg4);
++			//		clipMouse(e.mouse);
++
++			// Scroll event in touch control mode is handled inside AndroidPortAdditions
++			return;
++
+ 		}
+ 
+ 		lockMutex(_event_queue_lock);
+@@ -579,6 +245,10 @@
+ 		return;
+ 
+ 	case JE_TAP:
++
++		if (AndroidPortAdditions::instance()->onTapEvent(arg1, arg2))
++			return;
++
+ 		if (_fingersDown > 0) {
+ 			_fingersDown = 0;
+ 			return;
+@@ -586,34 +256,38 @@
+ 
+ 		e.type = Common::EVENT_MOUSEMOVE;
+ 
+-		if (_touchpad_mode) {
++		if (AndroidPortAdditions::instance()->getTouchpadMode()) {
+ 			e.mouse = getEventManager()->getMousePos();
++
++			AndroidPortAdditions::instance()->onMouseClick(e.mouse.x,
++					e.mouse.y);
+ 		} else {
+-			scaleMouse(e.mouse, arg1, arg2);
+-			clipMouse(e.mouse);
++			return;
++
+ 		}
+ 
+ 		{
+ 			Common::EventType down, up;
+ 
+-			// TODO put these values in some option dlg?
+-			if (arg3 > 1000) {
++			// Commented out the section below to allow only left mouse clicks
++
++			/*	if (arg3 > 1000) {
+ 				down = Common::EVENT_MBUTTONDOWN;
+ 				up = Common::EVENT_MBUTTONUP;
+ 			} else if (arg3 > 500) {
+ 				down = Common::EVENT_RBUTTONDOWN;
+ 				up = Common::EVENT_RBUTTONUP;
+-			} else {
++			 } else {*/
+ 				down = Common::EVENT_LBUTTONDOWN;
+ 				up = Common::EVENT_LBUTTONUP;
+-			}
++			//	}
+ 
+ 			lockMutex(_event_queue_lock);
+ 
+ 			if (_queuedEventTime)
+ 				_event_queue.push(_queuedEvent);
+ 
+-			if (!_touchpad_mode)
++			if (!AndroidPortAdditions::instance()->getTouchpadMode())
+ 				_event_queue.push(e);
+ 
+ 			e.type = down;
+@@ -629,13 +303,21 @@
+ 		return;
+ 
+ 	case JE_DOUBLE_TAP:
++
++		if (AndroidPortAdditions::instance()->onTapEvent(arg1, arg2, true))
++			return;
++
+ 		e.type = Common::EVENT_MOUSEMOVE;
+ 
+-		if (_touchpad_mode) {
++		if (AndroidPortAdditions::instance()->getTouchpadMode()) {
+ 			e.mouse = getEventManager()->getMousePos();
++
++			AndroidPortAdditions::instance()->onMouseClick(e.mouse.x,
++					e.mouse.y);
++
+ 		} else {
+-			scaleMouse(e.mouse, arg1, arg2);
+-			clipMouse(e.mouse);
++			return;
++
+ 		}
+ 
+ 		{
+@@ -660,7 +342,7 @@
+ 
+ 				dptype = Common::EVENT_MOUSEMOVE;
+ 
+-				if (_touchpad_mode) {
++				if (AndroidPortAdditions::instance()->getTouchpadMode()) {
+ 					scaleMouse(e.mouse, arg1 - _touch_pt_dt.x,
+ 								arg2 - _touch_pt_dt.y, false, true);
+ 					e.mouse += _touch_pt_down;
+@@ -683,150 +365,6 @@
+ 
+ 		return;
+ 
+-	case JE_MULTI:
+-		switch (arg2) {
+-		case JACTION_POINTER_DOWN:
+-			if (arg1 > _fingersDown)
+-				_fingersDown = arg1;
+-
+-			return;
+-
+-		case JACTION_POINTER_UP:
+-			if (arg1 != _fingersDown)
+-				return;
+-
+-			{
+-				Common::EventType up;
+-
+-				switch (_fingersDown) {
+-				case 1:
+-					e.type = Common::EVENT_RBUTTONDOWN;
+-					up = Common::EVENT_RBUTTONUP;
+-					break;
+-				case 2:
+-					e.type = Common::EVENT_MBUTTONDOWN;
+-					up = Common::EVENT_MBUTTONUP;
+-					break;
+-				default:
+-					LOGD("unmapped multi tap: %d", _fingersDown);
+-					return;
+-				}
+-
+-				e.mouse = getEventManager()->getMousePos();
+-
+-				lockMutex(_event_queue_lock);
+-
+-				if (_queuedEventTime)
+-					_event_queue.push(_queuedEvent);
+-
+-				_event_queue.push(e);
+-
+-				e.type = up;
+-				_queuedEvent = e;
+-				_queuedEventTime = getMillis() + kQueuedInputEventDelay;
+-
+-				unlockMutex(_event_queue_lock);
+-				return;
+-
+-			default:
+-				LOGE("unhandled jaction on multi tap: %d", arg2);
+-				return;
+-			}
+-		}
+-
+-		return;
+-
+-	case JE_BALL:
+-		e.mouse = getEventManager()->getMousePos();
+-
+-		switch (arg1) {
+-		case JACTION_DOWN:
+-			e.type = Common::EVENT_LBUTTONDOWN;
+-			break;
+-		case JACTION_UP:
+-			e.type = Common::EVENT_LBUTTONUP;
+-			break;
+-		case JACTION_MULTIPLE:
+-			e.type = Common::EVENT_MOUSEMOVE;
+-
+-			// already multiplied by 100
+-			e.mouse.x += arg2 * _trackball_scale / _eventScaleX;
+-			e.mouse.y += arg3 * _trackball_scale / _eventScaleY;
+-
+-			clipMouse(e.mouse);
+-
+-			break;
+-		default:
+-			LOGE("unhandled jaction on system key: %d", arg1);
+-			return;
+-		}
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+-	case JE_MOUSE_MOVE:
+-		e.type = Common::EVENT_MOUSEMOVE;
+-
+-		scaleMouse(e.mouse, arg1, arg2);
+-		clipMouse(e.mouse);
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+-	case JE_LMB_DOWN:
+-		e.type = Common::EVENT_LBUTTONDOWN;
+-
+-		scaleMouse(e.mouse, arg1, arg2);
+-		clipMouse(e.mouse);
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+-	case JE_LMB_UP:
+-		e.type = Common::EVENT_LBUTTONUP;
+-
+-		scaleMouse(e.mouse, arg1, arg2);
+-		clipMouse(e.mouse);
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+-	case JE_RMB_DOWN:
+-		e.type = Common::EVENT_RBUTTONDOWN;
+-
+-		scaleMouse(e.mouse, arg1, arg2);
+-		clipMouse(e.mouse);
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+-	case JE_RMB_UP:
+-		e.type = Common::EVENT_RBUTTONUP;
+-
+-		scaleMouse(e.mouse, arg1, arg2);
+-		clipMouse(e.mouse);
+-
+-		lockMutex(_event_queue_lock);
+-		_event_queue.push(e);
+-		unlockMutex(_event_queue_lock);
+-
+-		return;
+-
+ 	case JE_QUIT:
+ 		e.type = Common::EVENT_QUIT;
+ 
+@@ -905,4 +443,41 @@
+ 	return true;
+ }
+ 
++void OSystem_Android::forceEvent(Common::Event e) {
++	lockMutex(_event_queue_lock);
++	_event_queue.push(e);
++	unlockMutex(_event_queue_lock);
++}
++
++void OSystem_Android::pushClick(uint32 x, uint32 y) {
++	LOGD("OSystem_Android::pushClick: %d %d", x, y);
++
++	Common::Event e;
++	e.type = Common::EVENT_MOUSEMOVE;
++
++	e.mouse.x = x;
++	e.mouse.y = y;
++
++	Common::EventType down, up;
++
++	down = Common::EVENT_LBUTTONDOWN;
++	up = Common::EVENT_LBUTTONUP;
++
++	lockMutex(_event_queue_lock);
++
++	if (_queuedEventTime)
++		_event_queue.push(_queuedEvent);
++
++	_event_queue.push(e);
++
++	e.type = down;
++	_event_queue.push(e);
++
++	e.type = up;
++	_queuedEvent = e;
++	_queuedEventTime = getMillis() + kQueuedInputEventDelay;
++
++	unlockMutex(_event_queue_lock);
++}
++
+ #endif
+diff -rbu ./backends/platform/android/gfx.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/gfx.cpp
+--- ./backends/platform/android/gfx.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/gfx.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -40,22 +40,26 @@
+ #define FORBIDDEN_SYMBOL_EXCEPTION_printf
+ 
+ #include "common/endian.h"
++#include "common/file.h"
++#include "common/memstream.h"
++
+ #include "graphics/conversion.h"
++#include "graphics/decoders/png.h"
+ 
+ #include "backends/platform/android/android.h"
+ #include "backends/platform/android/jni.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
++
+ static inline GLfixed xdiv(int numerator, int denominator) {
+ 	assert(numerator < (1 << 16));
+ 	return (numerator << 16) / denominator;
+ }
+ 
+ const OSystem::GraphicsMode *OSystem_Android::getSupportedGraphicsModes() const {
+-	static const OSystem::GraphicsMode s_supportedGraphicsModes[] = {
+-		{ "default", "Default", 0 },
+-		{ "filter", "Linear filtering", 1 },
+-		{ 0, 0, 0 },
+-	};
++	static const OSystem::GraphicsMode s_supportedGraphicsModes[] = { {
++			"default", "Default", 0 }, { "filter", "Linear filtering", 1 }, { 0,
++			0, 0 }, };
+ 
+ 	return s_supportedGraphicsModes;
+ }
+@@ -70,12 +74,6 @@
+ 	if (_game_texture)
+ 		_game_texture->setLinearFilter(mode == 1);
+ 
+-	if (_overlay_texture)
+-		_overlay_texture->setLinearFilter(mode == 1);
+-
+-	if (_mouse_texture)
+-		_mouse_texture->setLinearFilter(mode == 1);
+-
+ 	_graphicsMode = mode;
+ 
+ 	return true;
+@@ -93,33 +91,27 @@
+ Common::List<Graphics::PixelFormat> OSystem_Android::getSupportedFormats() const {
+ 	Common::List<Graphics::PixelFormat> res;
+ 	res.push_back(GLES565Texture::pixelFormat());
+-	res.push_back(GLES5551Texture::pixelFormat());
+-	res.push_back(GLES4444Texture::pixelFormat());
++
+ 	res.push_back(Graphics::PixelFormat::createFormatCLUT8());
+ 
+ 	return res;
+ }
+ 
+-Common::String OSystem_Android::getPixelFormatName(const Graphics::PixelFormat &format) const {
++Common::String OSystem_Android::getPixelFormatName(
++		const Graphics::PixelFormat &format) const {
+ 	if (format.bytesPerPixel == 1)
+ 		return "CLUT8";
+ 
+ 	if (format.aLoss == 8)
+-		return Common::String::format("RGB%u%u%u",
+-										8 - format.rLoss,
+-										8 - format.gLoss,
+-										8 - format.bLoss);
+-
+-	return Common::String::format("RGBA%u%u%u%u",
+-									8 - format.rLoss,
+-									8 - format.gLoss,
+-									8 - format.bLoss,
+-									8 - format.aLoss);
++		return Common::String::format("RGB%u%u%u", 8 - format.rLoss,
++				8 - format.gLoss, 8 - format.bLoss);
++
++	return Common::String::format("RGBA%u%u%u%u", 8 - format.rLoss,
++			8 - format.gLoss, 8 - format.bLoss, 8 - format.aLoss);
+ }
+ 
+-void OSystem_Android::initTexture(GLESBaseTexture **texture,
+-									uint width, uint height,
+-									const Graphics::PixelFormat *format) {
++void OSystem_Android::initTexture(GLESBaseTexture **texture, uint width,
++		uint height, const Graphics::PixelFormat *format) {
+ 	assert(texture);
+ 	Graphics::PixelFormat format_clut8 =
+ 		Graphics::PixelFormat::createFormatCLUT8();
+@@ -141,22 +133,7 @@
+ 			LOGD("switching pixel format from: %s",
+ 					getPixelFormatName((*texture)->getPixelFormat()).c_str());
+ 
+-		delete *texture;
+-
+-		if (format_new == GLES565Texture::pixelFormat())
+-			*texture = new GLES565Texture();
+-		else if (format_new == GLES5551Texture::pixelFormat())
+-			*texture = new GLES5551Texture();
+-		else if (format_new == GLES4444Texture::pixelFormat())
+-			*texture = new GLES4444Texture();
+-		else {
+-			// TODO what now?
+-			if (format_new != format_clut8)
+-				LOGE("unsupported pixel format: %s",
+-					getPixelFormatName(format_new).c_str());
+-
+ 			*texture = new GLESFakePalette565Texture;
+-		}
+ 
+ 		LOGD("new pixel format: %s",
+ 				getPixelFormatName((*texture)->getPixelFormat()).c_str());
+@@ -180,18 +157,12 @@
+ 	JNI::initSurface();
+ 
+ 	// Initialize OpenGLES context.
+-	GLESTexture::initGLExtensions();
++	GLESBaseTexture::initGLExtensions();
+ 
+-	if (_game_texture)
++	if (_game_texture) {
+ 		_game_texture->reinit();
+-
+-	if (_overlay_texture) {
+-		_overlay_texture->reinit();
+-		initOverlay();
++		_game_texture->initFramebuffer(_egl_surface_width, _egl_surface_height);
+ 	}
+-
+-	if (_mouse_texture)
+-		_mouse_texture->reinit();
+ }
+ 
+ void OSystem_Android::deinitSurface() {
+@@ -208,12 +179,6 @@
+ 	if (_game_texture)
+ 		_game_texture->release();
+ 
+-	if (_overlay_texture)
+-		_overlay_texture->release();
+-
+-	if (_mouse_texture)
+-		_mouse_texture->release();
+-
+ 	JNI::deinitSurface();
+ }
+ 
+@@ -225,29 +190,13 @@
+ 	// Turn off anything that looks like 3D ;)
+ 	GLCALL(glDisable(GL_CULL_FACE));
+ 	GLCALL(glDisable(GL_DEPTH_TEST));
+-	GLCALL(glDisable(GL_LIGHTING));
+-	GLCALL(glDisable(GL_FOG));
+ 	GLCALL(glDisable(GL_DITHER));
+ 
+-	GLCALL(glShadeModel(GL_FLAT));
+-	GLCALL(glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST));
+-
+-	GLCALL(glEnable(GL_BLEND));
+ 	GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+-
+-	GLCALL(glEnableClientState(GL_VERTEX_ARRAY));
+-	GLCALL(glEnableClientState(GL_TEXTURE_COORD_ARRAY));
+-
+-	GLCALL(glEnable(GL_TEXTURE_2D));
++	GLCALL(glEnable(GL_BLEND));
+ 
+ 	GLCALL(glViewport(0, 0, _egl_surface_width, _egl_surface_height));
+ 
+-	GLCALL(glMatrixMode(GL_PROJECTION));
+-	GLCALL(glLoadIdentity());
+-	GLCALL(glOrthof(0, _egl_surface_width, _egl_surface_height, 0, -1, 1));
+-	GLCALL(glMatrixMode(GL_MODELVIEW));
+-	GLCALL(glLoadIdentity());
+-
+ 	clearFocusRectangle();
+ }
+ 
+@@ -270,9 +219,12 @@
+ 
+ 	LOGI("overlay size is %ux%u", overlay_width, overlay_height);
+ 
+-	_overlay_texture->allocBuffer(overlay_width, overlay_height);
+-	_overlay_texture->setDrawRect(0, 0,
+-									_egl_surface_width, _egl_surface_height);
++}
++
++void OSystem_Android::reinitGameTextureSize(uint16 w, uint16 h) {
++	// Force the game texture to reallocate itself
++	_game_texture->initTextureSize();
++	_game_texture->setDirty();
+ }
+ 
+ void OSystem_Android::initSize(uint width, uint height,
+@@ -290,16 +242,15 @@
+ 	updateScreenRect();
+ 	updateEventScale();
+ 
+-	// Don't know mouse size yet - it gets reallocated in
+-	// setMouseCursor.  We need the palette allocated before
+-	// setMouseCursor however, so just take a guess at the desired
+-	// size (it's small).
+-	_mouse_texture_palette->allocBuffer(20, 20);
+-
+ 	clearScreen(kClear);
++
++	_game_texture->initFramebuffer(_egl_surface_width, _egl_surface_height);
+ }
+ 
+ void OSystem_Android::clearScreen(FixupType type, byte count) {
++
++	LOGD("OSystem_Android::clearScreen: ");
++
+ 	assert(count > 0);
+ 
+ 	bool sm = _show_mouse;
+@@ -309,7 +260,7 @@
+ 
+ 	for (byte i = 0; i < count; ++i) {
+ 		// clear screen
+-		GLCALL(glClearColorx(0, 0, 0, 1 << 16));
++		GLCALL(glClearColor(0, 0, 0, 1));
+ 		GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+ 
+ 		switch (type) {
+@@ -327,17 +278,18 @@
+ 		}
+ 	}
+ 
+-	if (!_show_overlay)
+-		GLCALL(glEnable(GL_SCISSOR_TEST));
++	//if (!_show_overlay)
++	//	GLCALL(glEnable(GL_SCISSOR_TEST));
+ 
+ 	_show_mouse = sm;
+ 	_force_redraw = true;
+ }
+ 
+ void OSystem_Android::updateScreenRect() {
+-	Common::Rect rect(0, 0, _egl_surface_width, _egl_surface_height);
+ 
+-	_overlay_texture->setDrawRect(rect);
++	LOGD("OSystem_Android::updateScreenRect: ");
++
++	Common::Rect rect(0, 0, _egl_surface_width, _egl_surface_height);
+ 
+ 	uint16 w = _game_texture->width();
+ 	uint16 h = _game_texture->height();
+@@ -352,8 +304,8 @@
+ 		float screen_ar;
+ 		if (dpi[0] != 0.0 && dpi[1] != 0.0) {
+ 			// horizontal orientation
+-			screen_ar = (dpi[1] * _egl_surface_width) /
+-						(dpi[0] * _egl_surface_height);
++			screen_ar = (dpi[1] * _egl_surface_width)
++					/ (dpi[0] * _egl_surface_height);
+ 		} else {
+ 			screen_ar = float(_egl_surface_width) / float(_egl_surface_height);
+ 		}
+@@ -369,7 +321,7 @@
+ 		}
+ 	}
+ 
+-	glScissor(rect.left, rect.top, rect.width(), rect.height());
++//	GLCALL(glScissor(rect.left, rect.top, rect.width(), rect.height()));
+ 
+ 	_game_texture->setDrawRect(rect);
+ }
+@@ -421,8 +373,11 @@
+ 		pf.colorToRGB(READ_UINT16(p), colors[0], colors[1], colors[2]);
+ }
+ 
+-void OSystem_Android::copyRectToScreen(const void *buf, int pitch,
+-										int x, int y, int w, int h) {
++void OSystem_Android::copyRectToScreen(const void *buf, int pitch, int x, int y,
++		int w, int h) {
++
++	LOGD("OSystem_Android::copyRectToScreen %d %d %d %d", x, y, w, h);
++
+ 	ENTER("%p, %d, %d, %d, %d, %d", buf, pitch, x, y, w, h);
+ 
+ 	GLTHREADCHECK;
+@@ -431,6 +386,9 @@
+ }
+ 
+ void OSystem_Android::updateScreen() {
++
++//	LOGD("OSystem_Android::updateScreen: ");
++
+ 	//ENTER();
+ 
+ 	GLTHREADCHECK;
+@@ -438,11 +396,9 @@
+ 	if (!JNI::haveSurface())
+ 		return;
+ 
+-	if (!_force_redraw &&
+-			!_game_texture->dirty() &&
+-			!_overlay_texture->dirty() &&
+-			!_mouse_texture->dirty())
+-		return;
++//	if (!_force_redraw &&
++//			!_game_texture->dirty())
++//	return;
+ 
+ 	_force_redraw = false;
+ 
+@@ -452,101 +408,46 @@
+ 	if ((_show_overlay || _htc_fail) && !_fullscreen)
+ 		clearScreen(kClear);
+ 
+-	GLCALL(glPushMatrix());
+-
+-	if (_shake_offset != 0 ||
+-			(!_focus_rect.isEmpty() &&
+-			!Common::Rect(_game_texture->width(),
+-							_game_texture->height()).contains(_focus_rect))) {
+-		// These are the only cases where _game_texture doesn't
+-		// cover the entire screen.
+-		clearScreen(kClear);
+-
+-		// Move everything up by _shake_offset (game) pixels
+-		GLCALL(glTranslatex(0, -_shake_offset << 16, 0));
+-	}
+-
+ // TODO this doesnt work on those sucky drivers, do it differently
+ //	if (_show_overlay)
+ //		GLCALL(glColor4ub(0x9f, 0x9f, 0x9f, 0x9f));
+ 
+-	if (_focus_rect.isEmpty()) {
+-		_game_texture->drawTextureRect();
+-	} else {
+-		GLCALL(glPushMatrix());
+-
+-		GLCALL(glScalex(xdiv(_egl_surface_width, _focus_rect.width()),
+-						xdiv(_egl_surface_height, _focus_rect.height()),
+-						1 << 16));
+-		GLCALL(glTranslatex(-_focus_rect.left << 16,
+-							-_focus_rect.top << 16, 0));
+-		GLCALL(glScalex(xdiv(_game_texture->width(), _egl_surface_width),
+-						xdiv(_game_texture->height(), _egl_surface_height),
+-						1 << 16));
++#ifdef ANDROID_DEBUG_GL_MEASURE_RENDER_TIME
++	bool shouldMeasure = _game_texture->dirty();
++#else
++	bool shouldMeasure = _game_texture->dirty()
++	&& AndroidPortAdditions::instance()->shouldMeasureRenderTime() && !AndroidPortAdditions::instance()->isInAutoloadState();
++#endif
+ 
+-		_game_texture->drawTextureRect();
++	// Measure render time if needed
++	uint64 startTimestamp;
++	if (shouldMeasure) {
++		startTimestamp = AndroidPortUtils::getTimeOfDayMillis();
+ 
+-		GLCALL(glPopMatrix());
+ 	}
+ 
+-	int cs = _mouse_targetscale;
++	_game_texture->drawTextureRect();
+ 
+-	if (_show_overlay) {
+-// TODO see above
+-//		GLCALL(glColor4ub(0xff, 0xff, 0xff, 0xff));
+ 
+-		// ugly, but the modern theme sets a wacko factor, only god knows why
+-		cs = 1;
++	// If we are in auto-load state, skip swapBuffers (causes a crash if no drawing occured)
++	if (AndroidPortAdditions::instance()->isInAutoloadState()) {
+ 
+-		GLCALL(_overlay_texture->drawTextureRect());
++		return;
+ 	}
+ 
+-	if (_show_mouse && !_mouse_texture->isEmpty()) {
+-		GLCALL(glPushMatrix());
+-
+-		const Common::Point &mouse = getEventManager()->getMousePos();
+-
+-		// Scale up ScummVM -> OpenGL (pixel) coordinates
+-		if (_show_overlay) {
+-			GLCALL(glScalex(xdiv(_egl_surface_width,
+-									_overlay_texture->width()),
+-							xdiv(_egl_surface_height,
+-									_overlay_texture->height()),
+-							1 << 16));
+-		} else {
+-			const Common::Rect &r = _game_texture->getDrawRect();
+-
+-			GLCALL(glTranslatex(r.left << 16,
+-								r.top << 16,
+-								0));
+-			GLCALL(glScalex(xdiv(r.width(), _game_texture->width()),
+-							xdiv(r.height(), _game_texture->height()),
+-							1 << 16));
++	if (!JNI::swapBuffers()) {
++		LOGW("swapBuffers failed: 0x%x", glGetError());
+ 		}
+ 
+-		GLCALL(glTranslatex((-_mouse_hotspot.x * cs) << 16,
+-							(-_mouse_hotspot.y * cs) << 16,
+-							0));
+-
+-		// Note the extra half texel to position the mouse in
+-		// the middle of the x,y square:
+-		GLCALL(glTranslatex((mouse.x << 16) | 1 << 15,
+-							(mouse.y << 16) | 1 << 15, 0));
+-
+-		GLCALL(glScalex(cs << 16, cs << 16, 1 << 16));
+-
+-		_mouse_texture->drawTextureOrigin();
+-
+-		GLCALL(glPopMatrix());
++	if (shouldMeasure) {
++		AndroidPortAdditions::instance()->onRenderTimeMeasure(
++				AndroidPortUtils::getTimeOfDayMillis() - startTimestamp);
+ 	}
+ 
+-	GLCALL(glPopMatrix());
+-
+-	if (!JNI::swapBuffers())
+-		LOGW("swapBuffers failed: 0x%x", glGetError());
+ }
+ 
+ Graphics::Surface *OSystem_Android::lockScreen() {
++
+ 	ENTER();
+ 
+ 	GLTHREADCHECK;
+@@ -554,15 +455,19 @@
+ 	Graphics::Surface *surface = _game_texture->surface();
+ 	assert(surface->pixels);
+ 
++	_game_texture->setDirty();
++
+ 	return surface;
+ }
+ 
+ void OSystem_Android::unlockScreen() {
++
+ 	ENTER();
+ 
+ 	GLTHREADCHECK;
+ 
+ 	assert(_game_texture->dirty());
++
+ }
+ 
+ void OSystem_Android::setShakePos(int shake_offset) {
+@@ -603,77 +508,37 @@
+ void OSystem_Android::showOverlay() {
+ 	ENTER();
+ 
+-	_show_overlay = true;
+-	_force_redraw = true;
+-
+-	updateEventScale();
+-
+-	warpMouse(_overlay_texture->width() / 2, _overlay_texture->height() / 2);
+-
+-	GLCALL(glDisable(GL_SCISSOR_TEST));
+ }
+ 
+ void OSystem_Android::hideOverlay() {
+ 	ENTER();
+-
+-	_show_overlay = false;
+-
+-	updateEventScale();
+-
+-	warpMouse(_game_texture->width() / 2, _game_texture->height() / 2);
+-
+-	// double buffered, flip twice
+-	clearScreen(kClearUpdate, 2);
+-
+-	GLCALL(glEnable(GL_SCISSOR_TEST));
+ }
+ 
+ void OSystem_Android::clearOverlay() {
+ 	ENTER();
+-
+-	GLTHREADCHECK;
+-
+-	_overlay_texture->fillBuffer(0);
+ }
+ 
+ void OSystem_Android::grabOverlay(void *buf, int pitch) {
+ 	ENTER("%p, %d", buf, pitch);
+ 
+-	GLTHREADCHECK;
+-
+-	const Graphics::Surface *surface = _overlay_texture->surface_const();
+-	assert(surface->format.bytesPerPixel == sizeof(uint16));
+-
+-	byte *dst = (byte *)buf;
+-	const byte *src = (const byte *)surface->pixels;
+-	uint h = surface->h;
+-
+-	do {
+-		memcpy(dst, src, surface->w * surface->format.bytesPerPixel);
+-		src += surface->pitch;
+-		dst += pitch;
+-	} while (--h);
+ }
+ 
+-void OSystem_Android::copyRectToOverlay(const void *buf, int pitch,
+-										int x, int y, int w, int h) {
++void OSystem_Android::copyRectToOverlay(const void *buf, int pitch, int x,
++		int y, int w, int h) {
+ 	ENTER("%p, %d, %d, %d, %d, %d", buf, pitch, x, y, w, h);
+ 
+-	GLTHREADCHECK;
+-
+-	_overlay_texture->updateBuffer(x, y, w, h, buf, pitch);
+ }
+ 
+ int16 OSystem_Android::getOverlayHeight() {
+-	return _overlay_texture->height();
++	return _game_texture->height();
+ }
+ 
+ int16 OSystem_Android::getOverlayWidth() {
+-	return _overlay_texture->width();
++	return _game_texture->width();
+ }
+ 
+ Graphics::PixelFormat OSystem_Android::getOverlayFormat() const {
+-	return _overlay_texture->getPixelFormat();
++	return _game_texture->getPixelFormat();
+ }
+ 
+ bool OSystem_Android::showMouse(bool visible) {
+@@ -681,148 +546,32 @@
+ 
+ 	_show_mouse = visible;
+ 
++	AndroidPortAdditions::instance()->onShowMouse(visible);
++
+ 	return true;
+ }
+ 
+ void OSystem_Android::setMouseCursor(const void *buf, uint w, uint h,
+-										int hotspotX, int hotspotY,
+-										uint32 keycolor, bool dontScale,
++		int hotspotX, int hotspotY, uint32 keycolor, bool dontScale,
+ 										const Graphics::PixelFormat *format) {
+-	ENTER("%p, %u, %u, %d, %d, %u, %d, %p", buf, w, h, hotspotX, hotspotY,
+-			keycolor, dontScale, format);
+-
+-	GLTHREADCHECK;
+-
+-#ifdef USE_RGB_COLOR
+-	if (format && format->bytesPerPixel > 1) {
+-		if (_mouse_texture != _mouse_texture_rgb) {
+-			LOGD("switching to rgb mouse cursor");
+-
+-			assert(!_mouse_texture_rgb);
+-			_mouse_texture_rgb = new GLES5551Texture();
+-			_mouse_texture_rgb->setLinearFilter(_graphicsMode == 1);
+-		}
+-
+-		_mouse_texture = _mouse_texture_rgb;
+-	} else {
+-		if (_mouse_texture != _mouse_texture_palette)
+-			LOGD("switching to paletted mouse cursor");
+-
+-		_mouse_texture = _mouse_texture_palette;
+-
+-		delete _mouse_texture_rgb;
+-		_mouse_texture_rgb = 0;
+-	}
+-#endif
++	ENTER("%p, %u, %u, %d, %d, %u, %d, %p",
++			buf, w, h, hotspotX, hotspotY, keycolor, dontScale, format);
+ 
+-	_mouse_texture->allocBuffer(w, h);
+-
+-	if (_mouse_texture == _mouse_texture_palette) {
+-		assert(keycolor < 256);
+-
+-		byte *p = _mouse_texture_palette->palette() + _mouse_keycolor * 2;
+-		WRITE_UINT16(p, READ_UINT16(p) | 1);
+-
+-		_mouse_keycolor = keycolor;
+-
+-		p = _mouse_texture_palette->palette() + _mouse_keycolor * 2;
+-		WRITE_UINT16(p, READ_UINT16(p) & ~1);
+-	}
+-
+-	if (w == 0 || h == 0)
+-		return;
+-
+-	if (_mouse_texture == _mouse_texture_palette) {
+-		_mouse_texture->updateBuffer(0, 0, w, h, buf, w);
+-	} else {
+-		uint16 pitch = _mouse_texture->pitch();
+-
+-		byte *tmp = new byte[pitch * h];
+-
+-		// meh, a 16bit cursor without alpha bits... this is so silly
+-		if (!crossBlit(tmp, (const byte *)buf, pitch, w * 2, w, h,
+-						_mouse_texture->getPixelFormat(),
+-						*format)) {
+-			LOGE("crossblit failed");
+-
+-			delete[] tmp;
+-
+-			_mouse_texture->allocBuffer(0, 0);
+-
+-			return;
+-		}
+-
+-		uint16 *s = (uint16 *)buf;
+-		uint16 *d = (uint16 *)tmp;
+-		for (uint16 y = 0; y < h; ++y, d += pitch / 2 - w)
+-			for (uint16 x = 0; x < w; ++x, d++)
+-				if (*s++ != (keycolor & 0xffff))
+-					*d |= 1;
+-
+-		_mouse_texture->updateBuffer(0, 0, w, h, tmp, pitch);
+-
+-		delete[] tmp;
+-	}
+-
+-	_mouse_hotspot = Common::Point(hotspotX, hotspotY);
+-	// TODO: Adapt to the new "do not scale" cursor logic.
+-	_mouse_targetscale = 1;
+ }
+ 
+-void OSystem_Android::setCursorPaletteInternal(const byte *colors,
+-												uint start, uint num) {
+-	const Graphics::PixelFormat &pf =
+-		_mouse_texture_palette->getPalettePixelFormat();
+-	byte *p = _mouse_texture_palette->palette() + start * 2;
++void OSystem_Android::setCursorPaletteInternal(const byte *colors, uint start,
++		uint num) {
+ 
+-	for (uint i = 0; i < num; ++i, colors += 3, p += 2)
+-		WRITE_UINT16(p, pf.RGBToColor(colors[0], colors[1], colors[2]));
+-
+-	p = _mouse_texture_palette->palette() + _mouse_keycolor * 2;
+-	WRITE_UINT16(p, READ_UINT16(p) & ~1);
+ }
+ 
+-void OSystem_Android::setCursorPalette(const byte *colors,
+-										uint start, uint num) {
++void OSystem_Android::setCursorPalette(const byte *colors, uint start,
++		uint num) {
+ 	ENTER("%p, %u, %u", colors, start, num);
+ 
+-	GLTHREADCHECK;
+-
+-	if (!_mouse_texture->hasPalette()) {
+-		LOGD("switching to paletted mouse cursor");
+-
+-		_mouse_texture = _mouse_texture_palette;
+-
+-		delete _mouse_texture_rgb;
+-		_mouse_texture_rgb = 0;
+-	}
+-
+-	setCursorPaletteInternal(colors, start, num);
+-	_use_mouse_palette = true;
+ }
+ 
+ void OSystem_Android::disableCursorPalette() {
+-	// when disabling the cursor palette, and we're running a clut8 game,
+-	// it expects the game palette to be used for the cursor
+-	if (_game_texture->hasPalette()) {
+-		const byte *src = _game_texture->palette_const();
+-		byte *dst = _mouse_texture_palette->palette();
+-
+-		const Graphics::PixelFormat &pf_src =
+-			_game_texture->getPalettePixelFormat();
+-		const Graphics::PixelFormat &pf_dst =
+-			_mouse_texture_palette->getPalettePixelFormat();
+-
+-		uint8 r, g, b;
+-
+-		for (uint i = 0; i < 256; ++i, src += 2, dst += 2) {
+-			pf_src.colorToRGB(READ_UINT16(src), r, g, b);
+-			WRITE_UINT16(dst, pf_dst.RGBToColor(r, g, b));
+-		}
+ 
+-		byte *p = _mouse_texture_palette->palette() + _mouse_keycolor * 2;
+-		WRITE_UINT16(p, READ_UINT16(p) & ~1);
+-	}
+ }
+ 
+ #endif
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: graphics
+diff -rbu ./backends/platform/android/jni.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/jni.cpp
+--- ./backends/platform/android/jni.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/jni.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -51,6 +51,8 @@
+ #include "backends/platform/android/asset-archive.h"
+ #include "backends/platform/android/jni.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
++
+ __attribute__ ((visibility("default")))
+ jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
+ 	return JNI::onLoad(vm);
+@@ -67,7 +69,7 @@
+ OSystem_Android *JNI::_system = 0;
+ 
+ bool JNI::pause = false;
+-sem_t JNI::pause_sem = { 0 };
++sem_t JNI::pause_sem = {0};
+ 
+ int JNI::surface_changeid = 0;
+ int JNI::egl_surface_width = 0;
+@@ -82,6 +84,10 @@
+ jmethodID JNI::_MID_getPluginDirectories = 0;
+ jmethodID JNI::_MID_initSurface = 0;
+ jmethodID JNI::_MID_deinitSurface = 0;
++jmethodID JNI::_MID_onGameOption = 0;
++jmethodID JNI::_MID_onGameDisplayStarted = 0;
++jmethodID JNI::_MID_gameEventJNIToJava = 0;
++
+ 
+ jmethodID JNI::_MID_EGL10_eglSwapBuffers = 0;
+ 
+@@ -95,20 +101,40 @@
+ 	{ "create", "(Landroid/content/res/AssetManager;"
+ 				"Ljavax/microedition/khronos/egl/EGL10;"
+ 				"Ljavax/microedition/khronos/egl/EGLDisplay;"
+-				"Landroid/media/AudioTrack;II)V",
+-		(void *)JNI::create },
++		"Landroid/media/AudioTrack;IIII)V",
++		(void *)JNI::create},
+ 	{ "destroy", "()V",
+-		(void *)JNI::destroy },
++		(void *)JNI::destroy},
+ 	{ "setSurface", "(II)V",
+-		(void *)JNI::setSurface },
++		(void *)JNI::setSurface},
+ 	{ "main", "([Ljava/lang/String;)I",
+-		(void *)JNI::main },
++		(void *)JNI::main},
+ 	{ "pushEvent", "(IIIIII)V",
+-		(void *)JNI::pushEvent },
++		(void *)JNI::pushEvent},
+ 	{ "enableZoning", "(Z)V",
+-		(void *)JNI::enableZoning },
++		(void *)JNI::enableZoning},
+ 	{ "setPause", "(Z)V",
+-		(void *)JNI::setPause }
++		(void *)JNI::setPause},
++	{	"addBitmapResource", "(Ljava/lang/String;Ljava/lang/Object;)V",
++		(void *)JNI::addBitmapResource},
++	{	"saveGame", "(IZ)V",
++		(void *)JNI::saveGame},
++	{	"loadGame", "(I)V",
++		(void *)JNI::loadGame},
++	{	"setAutoLoadSlot", "(I)V",
++		(void *)JNI::setAutoLoadSlot},
++	{	"addShaderSource", "([BII)V",
++		(void *)JNI::addShaderSource
++	},
++	{	"gameEventJavaToJNI", "(I)V",
++			(void *)JNI::gameEventJavaToJNI
++		},
++	{	"checkLoadConditions", "()Z",
++				(void *)JNI::checkLoadConditions
++			},
++			{ "setTouchpadMode", "(Z)V",
++					(void *)JNI::setTouchpadMode
++			}
+ };
+ 
+ JNI::JNI() {
+@@ -125,7 +151,7 @@
+ 	if (_vm->GetEnv((void **)&env, JNI_VERSION_1_2))
+ 		return JNI_ERR;
+ 
+-	jclass cls = env->FindClass("org/scummvm/scummvm/ScummVM");
++	jclass cls = env->FindClass("org/iphsoft/simon1/ScummVM");
+ 	if (cls == 0)
+ 		return JNI_ERR;
+ 
+@@ -262,6 +288,51 @@
+ 	}
+ }
+ 
++void JNI::onGameOption(int option) {
++	JNIEnv *env = JNI::getEnv();
++
++	env->CallVoidMethod(_jobj, _MID_onGameOption, option);
++
++	if (env->ExceptionCheck()) {
++		LOGE("Error after game option selected");
++
++		env->ExceptionDescribe();
++		env->ExceptionClear();
++	}
++}
++
++void JNI::onGameDisplayStarted() {
++
++	LOGD("JNI::onGameDisplayStarted");
++
++	JNIEnv *env = JNI::getEnv();
++
++	env->CallVoidMethod(_jobj, _MID_onGameDisplayStarted);
++
++	if (env->ExceptionCheck()) {
++		LOGE("Error after notifying on display start");
++
++		env->ExceptionDescribe();
++		env->ExceptionClear();
++	}
++}
++
++void JNI::gameEventJNIToJava(int type) {
++
++	LOGD("JNI::gameEventJNIToJava");
++
++	JNIEnv *env = JNI::getEnv();
++
++	env->CallVoidMethod(_jobj, _MID_gameEventJNIToJava, type);
++
++	if (env->ExceptionCheck()) {
++		LOGE("Error after notifying on game event");
++
++		env->ExceptionDescribe();
++		env->ExceptionClear();
++	}
++}
++
+ void JNI::addSysArchivesToSearchSet(Common::SearchSet &s, int priority) {
+ 	JNIEnv *env = JNI::getEnv();
+ 
+@@ -420,8 +491,7 @@
+ 
+ void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
+ 				jobject egl, jobject egl_display,
+-				jobject at, jint audio_sample_rate, jint audio_buffer_size) {
+-	LOGI(gScummVMFullVersion);
++		jobject at, jint audio_sample_rate, jint audio_buffer_size, jint scaler_option, jint gameType) {
+ 
+ 	assert(!_system);
+ 
+@@ -457,6 +527,10 @@
+ 	FIND_METHOD(, getPluginDirectories, "()[Ljava/lang/String;");
+ 	FIND_METHOD(, initSurface, "()Ljavax/microedition/khronos/egl/EGLSurface;");
+ 	FIND_METHOD(, deinitSurface, "()V");
++	FIND_METHOD(, onGameOption, "(I)V");
++	FIND_METHOD(, onGameDisplayStarted, "()V");
++	FIND_METHOD(, gameEventJNIToJava, "(I)V");
++
+ 
+ 	_jobj_egl = env->NewGlobalRef(egl);
+ 	_jobj_egl_display = env->NewGlobalRef(egl_display);
+@@ -480,9 +554,20 @@
+ #undef FIND_METHOD
+ 
+ 	g_system = _system;
++
++	AndroidPortAdditions::instance()->setGameType(gameType);
++
++	AndroidPortAdditions::instance()->onSystemInitialized();
++
++	AndroidPortAdditions::instance()->setScalingOption(scaler_option);
+ }
+ 
+ void JNI::destroy(JNIEnv *env, jobject self) {
++
++	LOGD("jni: destroy:");
++
++	AndroidPortAdditions::release();
++
+ 	delete _asset_archive;
+ 	_asset_archive = 0;
+ 
+@@ -499,11 +584,29 @@
+ 	JNI::getEnv()->DeleteGlobalRef(_jobj_egl);
+ 	JNI::getEnv()->DeleteGlobalRef(_jobj_audio_track);
+ 	JNI::getEnv()->DeleteGlobalRef(_jobj);
++
++	_jobj = NULL;
++
++	_jobj_egl = NULL;
++	_jobj_egl_display = NULL;
++
++	_jobj_audio_track = NULL;
++
++	surface_changeid = 0;
++	egl_surface_width = 0;
++	egl_surface_height = 0;
+ }
+ 
+ void JNI::setSurface(JNIEnv *env, jobject self, jint width, jint height) {
+ 	egl_surface_width = width;
+ 	egl_surface_height = height;
++	LOGD("jni: setSurface: %d %d", width, height);
++
++	if (width > 0 && height > 0)
++	{
++		AndroidPortAdditions::instance()->setDisplayDimensions(width, height);
++	}
++
+ 	surface_changeid++;
+ }
+ 
+@@ -555,7 +658,7 @@
+ 
+ 	_system->quit();
+ 
+-cleanup:
++	cleanup:
+ 	nargs--;
+ 
+ 	for (int i = 0; i < nargs; ++i) {
+@@ -618,4 +721,116 @@
+ 	}
+ }
+ 
++void JNI::saveGame(JNIEnv *env, jobject self, jint slot, jboolean force)
++{
++	AndroidPortAdditions::instance()->setSlotToSave(slot, force);
++}
++
++void JNI::loadGame(JNIEnv *env, jobject self, jint slot)
++{
++	AndroidPortAdditions::instance()->setSlotToLoad(slot);
++}
++
++void JNI::setAutoLoadSlot(JNIEnv *env, jobject self, jint slot)
++{
++	AndroidPortAdditions::instance()->setAutoLoadSlot(slot);
++}
++
++void JNI::addBitmapResource(JNIEnv *env, jobject self, jstring key, jobject jbitmap) {
++
++	// Obtain the C string
++	char keyStr[128];
++	int len = env->GetStringLength(key);
++	env->GetStringUTFRegion(key, 0, len, keyStr);
++
++	// HACK: When using ART runtime, GetStringUTFRegion doesn't add a null terminator to the string.
++	// Add it manually.
++	keyStr[len] = '\0';
++
++	LOGD("addBitmapResource: %s", keyStr);
++
++	// Extract all the bitmap information
++	AndroidBitmap* androidBitmap = new AndroidBitmap;
++	AndroidBitmapInfo* info = new AndroidBitmapInfo;
++	if (AndroidBitmap_getInfo(env, jbitmap,
++					info)!= ANDROID_BITMAP_RESUT_SUCCESS)
++	{
++		throwRuntimeException(env, "Unable to obtain bitmap pixels");
++		return;
++	}
++
++	uint32_t width, height, stride;
++	width = info->width;
++	height = info->height;
++	stride = info->stride;
++
++	//
++	// Copy bitmap pixels (assuming ARGB_8888)
++	//
++	androidBitmap->pixels = new byte[width * height * 4];
++
++	// Lock pixels from Java layer
++	byte* srcPixels;
++	if (AndroidBitmap_lockPixels(env, jbitmap, (void**)&srcPixels) != ANDROID_BITMAP_RESUT_SUCCESS)
++	{
++		throwRuntimeException(env, "Unable to obtain bitmap pixels");
++		return;
++	}
++
++	// Copy rows
++	for (uint32 row = 0; row < height; ++row)
++	{
++		byte* srcRow = srcPixels + row * stride;
++		byte* dstRow = androidBitmap->pixels + row * width * 4;
++		memcpy(dstRow, srcRow, width * 4);
++	}
++
++	// Unlock the pixels
++	if (AndroidBitmap_unlockPixels(env, jbitmap) != ANDROID_BITMAP_RESUT_SUCCESS)
++	{
++		throwRuntimeException(env, "Unable to obtain bitmap pixels");
++		return;
++	}
++
++	androidBitmap->width = width;
++	androidBitmap->height = height;
++
++	androidBitmap->bitmapName = keyStr;
++
++	// Store the bitmap
++	AndroidPortAdditions::instance()->addBitmapResource(keyStr, androidBitmap);
++
++	delete info;
++}
++
++void JNI::addShaderSource(JNIEnv *env, jobject self, jbyteArray source, jint length, jint type)
++{
++	// Obtain the C array (reserve for null-terminator)
++	 jbyte* cSource = new jbyte[length + 1];
++	 env->GetByteArrayRegion(source, 0, length, cSource);
++	 cSource[length] = '\0';
++
++		AndroidPortAdditions::instance()->addShaderSource((const char*)cSource, type);
++
++		LOGD("addShaderSource: length %d type %d", length, type);
++	//	LOGD("addShaderSource: source: \n%s", cSource);
++
++}
++
++void JNI::gameEventJavaToJNI(JNIEnv *env, jobject self, jint type)
++{
++	AndroidPortAdditions::instance()->gameEvent(type);
++}
++
++jboolean JNI::checkLoadConditions(JNIEnv *env, jobject self)
++{
++	return AndroidPortAdditions::instance()->checkLoadConditions();
++}
++
++void JNI::setTouchpadMode(JNIEnv *env, jobject self, jboolean touchpadMode)
++{
++	AndroidPortAdditions::instance()->setTouchpadMode(touchpadMode);
++}
++
++
+ #endif
+diff -rbu ./backends/platform/android/jni.h ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/jni.h
+--- ./backends/platform/android/jni.h	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/jni.h	2014-02-16 10:45:26.000000000 +0200
+@@ -28,9 +28,13 @@
+ #include <jni.h>
+ #include <semaphore.h>
+ 
++#include <android/bitmap.h>
++
+ #include "common/fs.h"
+ #include "common/archive.h"
+ 
++
++
+ class OSystem_Android;
+ 
+ class JNI {
+@@ -61,6 +65,11 @@
+ 	static void displayMessageOnOSD(const char *msg);
+ 	static void showVirtualKeyboard(bool enable);
+ 	static void addSysArchivesToSearchSet(Common::SearchSet &s, int priority);
++	static void onGameOption(int option);
++	static void onGameDisplayStarted();
++	static void gameEventJNIToJava(int type);
++
++
+ 
+ 	static inline bool haveSurface();
+ 	static inline bool swapBuffers();
+@@ -96,6 +105,10 @@
+ 	static jmethodID _MID_getPluginDirectories;
+ 	static jmethodID _MID_initSurface;
+ 	static jmethodID _MID_deinitSurface;
++	static jmethodID _MID_onGameOption;
++	static jmethodID _MID_onGameDisplayStarted;
++	static jmethodID _MID_gameEventJNIToJava;
++
+ 
+ 	static jmethodID _MID_EGL10_eglSwapBuffers;
+ 
+@@ -107,6 +120,8 @@
+ 
+ 	static const JNINativeMethod _natives[];
+ 
++
++
+ 	static void throwByName(JNIEnv *env, const char *name, const char *msg);
+ 	static void throwRuntimeException(JNIEnv *env, const char *msg);
+ 
+@@ -114,7 +129,7 @@
+ 	static void create(JNIEnv *env, jobject self, jobject asset_manager,
+ 						jobject egl, jobject egl_display,
+ 						jobject at, jint audio_sample_rate,
+-						jint audio_buffer_size);
++						jint audio_buffer_size, jint scaler_option, jint gameType);
+ 	static void destroy(JNIEnv *env, jobject self);
+ 
+ 	static void setSurface(JNIEnv *env, jobject self, jint width, jint height);
+@@ -125,6 +140,23 @@
+ 	static void enableZoning(JNIEnv *env, jobject self, jboolean enable);
+ 
+ 	static void setPause(JNIEnv *env, jobject self, jboolean value);
++
++	static void addBitmapResource(JNIEnv *env, jobject self, jstring key, jobject bitmap);
++
++	static void saveGame(JNIEnv *env, jobject self, jint slot, jboolean force);
++
++	static void loadGame(JNIEnv *env, jobject self, jint slot);
++
++	static void setAutoLoadSlot(JNIEnv *env, jobject self, jint slot);
++
++	static void addShaderSource(JNIEnv *env, jobject self, jbyteArray source, jint length, jint type);
++
++	static void gameEventJavaToJNI(JNIEnv *env, jobject self, jint type);
++
++	static jboolean checkLoadConditions(JNIEnv *env, jobject self);
++
++	static void setTouchpadMode(JNIEnv *env, jobject self, jboolean touchpadMode);
++
+ };
+ 
+ inline bool JNI::haveSurface() {
+@@ -139,9 +171,13 @@
+ }
+ 
+ inline int JNI::writeAudio(JNIEnv *env, jbyteArray &data, int offset, int size) {
++
+ 	return env->CallIntMethod(_jobj_audio_track, _MID_AudioTrack_write, data,
+ 								offset, size);
+ }
+ 
++
++
++
+ #endif
+ #endif
+Only in ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android: loghelper.h
+diff -rbu ./backends/platform/android/texture.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/texture.cpp
+--- ./backends/platform/android/texture.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/texture.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -49,6 +49,9 @@
+ 
+ #include "backends/platform/android/texture.h"
+ #include "backends/platform/android/android.h"
++#include "backends/platform/android/jni.h"
++
++#include "backends/platform/android/AndroidPortAdditions.h"
+ 
+ // Supported GL extensions
+ static bool npot_supported = false;
+@@ -71,10 +74,13 @@
+ }
+ 
+ void GLESBaseTexture::initGLExtensions() {
+-	const char *ext_string =
+-		reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
++	const char *ext_string = reinterpret_cast<const char *>(glGetString(
++			GL_EXTENSIONS));
++	const char *renderer = reinterpret_cast<const char *>(glGetString(
++			GL_RENDERER));
+ 
+ 	LOGI("Extensions: %s", ext_string);
++	LOGI("Renderer: %s", renderer);
+ 
+ 	Common::StringTokenizer tokenizer(ext_string, " ");
+ 	while (!tokenizer.empty()) {
+@@ -83,10 +89,13 @@
+ 		if (token == "GL_ARB_texture_non_power_of_two")
+ 			npot_supported = true;
+ 	}
++
++	LOGD("initGLExtensions:: %s", glGetString(GL_VERSION));
+ }
+ 
+ GLESBaseTexture::GLESBaseTexture(GLenum glFormat, GLenum glType,
+-									Graphics::PixelFormat pixelFormat) :
++		Graphics::PixelFormat pixelFormat)
++		:
+ 	_glFormat(glFormat),
+ 	_glType(glType),
+ 	_glFilter(GL_NEAREST),
+@@ -94,13 +103,22 @@
+ 	_surface(),
+ 	_texture_width(0),
+ 	_texture_height(0),
++				mScaledTextureWidth(0),
++				mScaledTextureHeight(0),
+ 	_draw_rect(),
+ 	_all_dirty(false),
+ 	_dirty_rect(),
+ 	_pixelFormat(pixelFormat),
+-	_palettePixelFormat()
+-{
++				mIsGameTexture(false),
++				mDefaultProgram(0),
++				mFramebuffer(0),
++				mScaledTexture(0),
++
++				_palettePixelFormat() {
+ 	GLCALL(glGenTextures(1, &_texture_name));
++	GLCALL(glActiveTexture(GL_TEXTURE0));
++
++	AndroidPortAdditions::instance()->initGLESResources();
+ }
+ 
+ GLESBaseTexture::~GLESBaseTexture() {
+@@ -114,6 +132,16 @@
+ 		GLCALL(glDeleteTextures(1, &_texture_name));
+ 		_texture_name = 0;
+ 	}
++
++	if (mFramebuffer) {
++		GLCALL(glDeleteFramebuffers(1, &mFramebuffer));
++		mFramebuffer = 0;
++	}
++
++	if (mScaledTexture) {
++		GLCALL(glDeleteTextures(1, &mScaledTexture));
++		mScaledTexture = 0;
++	}
+ }
+ 
+ void GLESBaseTexture::reinit() {
+@@ -125,6 +153,10 @@
+ }
+ 
+ void GLESBaseTexture::initSize() {
++
++	// TODO
++	//	setLinearFilter(true);
++
+ 	// Allocate room for the texture now, but pixel data gets uploaded
+ 	// later (perhaps with multiple TexSubImage2D operations).
+ 	GLCALL(glBindTexture(GL_TEXTURE_2D, _texture_name));
+@@ -133,9 +165,15 @@
+ 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _glFilter));
+ 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+ 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+-	GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, _glFormat,
+-						_texture_width, _texture_height,
+-						0, _glFormat, _glType, 0));
++
++	LOGD("GLESBaseTexture::initSize(): %d %d", _texture_width, _texture_height);
++
++	GLCALL(
++			glTexImage2D(GL_TEXTURE_2D, 0, _glFormat, _texture_width, _texture_height, 0, _glFormat, _glType, 0));
++
++	AndroidPortAdditions::instance()->setGameTextureInfo(_texture_name,
++			_texture_width, _texture_height);
++
+ }
+ 
+ void GLESBaseTexture::setLinearFilter(bool value) {
+@@ -158,189 +196,295 @@
+ 	if (w == _texture_width && h == _texture_height)
+ 		return;
+ 
++	initTextureSize();
++}
++
++void GLESBaseTexture::initFramebuffer(GLuint w, GLuint h) {
++	LOGD("GLESBaseTexture::initFramebuffer: %d %d", w, h);
++
++	if (mFramebuffer != 0) {
++		return;
++	}
++
++	// Generate framebuffer and target texture
++	GLCALL(glGenFramebuffers(1, &mFramebuffer));
++	GLCALL(glGenTextures(1, &mScaledTexture));
++
++	GLCALL(glBindTexture(GL_TEXTURE_2D, mScaledTexture));
++
++	// The minimum framebuffer size should also match the LQ shader scaling factor
++	float lqScalingFactor = AndroidPortAdditions::instance()
++			->getLQShaderScalingFactor();
++	w = MAX(w, (GLuint) (lqScalingFactor * GAME_SCREEN_WIDTH));
++	h = MAX(h, (GLuint) (lqScalingFactor * GAME_SCREEN_HEIGHT));
++
++	// Limit the max resolution
++	w = MIN(w, (GLuint)AndroidPortAdditions::instance()->getShaderScalingMaxResolutionW());
++	h = MIN(h, (GLuint)AndroidPortAdditions::instance()->getShaderScalingMaxResolutionH());
++
++	// Init the target texture size
+ 	if (npot_supported) {
+-		_texture_width = _surface.w;
+-		_texture_height = _surface.h;
++		mScaledTextureWidth = w;
++		mScaledTextureHeight = h;
+ 	} else {
+-		_texture_width = nextHigher2(_surface.w);
+-		_texture_height = nextHigher2(_surface.h);
++		mScaledTextureWidth = nextHigher2(w);
++		mScaledTextureHeight = nextHigher2(h);
+ 	}
+ 
+-	initSize();
+-}
+-
+-void GLESBaseTexture::drawTexture(GLshort x, GLshort y, GLshort w, GLshort h) {
+-	GLCALL(glBindTexture(GL_TEXTURE_2D, _texture_name));
++	GLCALL(
++			glTexImage2D(GL_TEXTURE_2D, 0, _glFormat, mScaledTextureWidth, mScaledTextureHeight, 0, _glFormat, _glType, 0));
+ 
+-	const GLfixed tex_width = xdiv(_surface.w, _texture_width);
+-	const GLfixed tex_height = xdiv(_surface.h, _texture_height);
+-	const GLfixed texcoords[] = {
+-		0, 0,
+-		tex_width, 0,
+-		0, tex_height,
+-		tex_width, tex_height,
+-	};
+-
+-	GLCALL(glTexCoordPointer(2, GL_FIXED, 0, texcoords));
+-
+-	const GLshort vertices[] = {
+-		x, y,
+-		x + w, y,
+-		x, y + h,
+-		x + w, y + h,
+-	};
++	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
++	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
++	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
++	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+ 
+-	GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
++	// Attach the texture to the framebuffer
++	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, mFramebuffer));
++	GLCALL(
++			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mScaledTexture, 0));
+ 
+-	assert(ARRAYSIZE(vertices) == ARRAYSIZE(texcoords));
+-	GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, ARRAYSIZE(vertices) / 2));
++	// check for framebuffer completion
++	GLuint status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
++	if (status != GL_FRAMEBUFFER_COMPLETE) {
++		LOGE("Unable to create framebuffer");
++	}
+ 
+-	clearDirty();
++	LOGD("GLESBaseTexture::initFramebuffer: scaled texture size: %d %d",
++			mScaledTextureWidth, mScaledTextureHeight);
+ }
+ 
+-const Graphics::PixelFormat &GLESBaseTexture::getPixelFormat() const {
+-	return _pixelFormat;
+-}
++void GLESBaseTexture::initTextureSize() {
++	int scalingFactor = AndroidPortAdditions::instance()->getScalingFactor();
++	if (AndroidPortAdditions::instance()->getScalingOption() != SCALING_OPTION_SOFT) {
++		scalingFactor = 1;
++	}
+ 
+-GLESTexture::GLESTexture(GLenum glFormat, GLenum glType,
+-							Graphics::PixelFormat pixelFormat) :
+-	GLESBaseTexture(glFormat, glType, pixelFormat),
+-	_pixels(0),
+-	_buf(0) {
+-}
++	if (npot_supported) {
++		_texture_width = _surface.w * scalingFactor;
++		_texture_height = _surface.h * scalingFactor;
++	} else {
++		_texture_width = nextHigher2(_surface.w * scalingFactor);
++		_texture_height = nextHigher2(_surface.h * scalingFactor);
++	}
+ 
+-GLESTexture::~GLESTexture() {
+-	delete[] _buf;
+-	delete[] _pixels;
++	initSize();
+ }
+ 
+-void GLESTexture::allocBuffer(GLuint w, GLuint h) {
+-	GLuint oldw = _surface.w;
+-	GLuint oldh = _surface.h;
++void GLESBaseTexture::drawTexture(GLshort x, GLshort y, GLshort w, GLshort h) {
+ 
+-	GLESBaseTexture::allocBuffer(w, h);
++//	LOGD("GLESBaseTexture::drawTexture %d %d %d %d", x ,y ,w ,h);
+ 
+-	_surface.pitch = w * _pixelFormat.bytesPerPixel;
++	ShaderProgram* shader;
+ 
+-	if (_surface.w == oldw && _surface.h == oldh) {
+-		fillBuffer(0);
++	int scalingFactor = AndroidPortAdditions::instance()->getScalingFactor();
++	int scalingOption = AndroidPortAdditions::instance()->getScalingOption();
++	if (scalingOption == SCALING_OPTION_NONE) {
++		scalingFactor = 1;
++		shader = AndroidPortAdditions::instance()->getDefaultShaderProgram();
++	} else if (scalingOption == SCALING_OPTION_SOFT) {
++		shader = AndroidPortAdditions::instance()->getDefaultShaderProgram();
++	} else if (scalingOption == SCALING_OPTION_SHADER
++			|| scalingOption == SCALING_OPTION_LQ_SHADER) {
++		scalingFactor = 1;
++		shader = AndroidPortAdditions::instance()->getScalerShaderProgram();
++	} else {
++		LOGE("GLESBaseTexture::drawTexture: invalid scaling option");
+ 		return;
+ 	}
+ 
+-	delete[] _buf;
+-	delete[] _pixels;
++	GLfloat dirtyRectLeft, dirtyRectTop, dirtyRectWidth, dirtyRectHeight;
++	if (scalingOption == SCALING_OPTION_SHADER
++			|| scalingOption == SCALING_OPTION_LQ_SHADER) {
++		dirtyRectLeft = _dirty_rect.left / (float) _surface.w;
++		dirtyRectTop = _dirty_rect.top / (float) _surface.h;
++		dirtyRectWidth = _dirty_rect.width() / (float) _surface.w;
++		dirtyRectHeight = _dirty_rect.height() / (float) _surface.h;
++	} else {
++		dirtyRectLeft = 0;
++		dirtyRectTop = 0;
++		dirtyRectWidth = 1;
++		dirtyRectHeight = 1;
++	}
++
++	const GLfloat tex_width = _surface.w * scalingFactor
++			/ (GLfloat) _texture_width;
++	const GLfloat tex_height = _surface.h * scalingFactor
++			/ (GLfloat) _texture_height;
++
++	GLfloat texRectX = dirtyRectLeft * tex_width;
++	GLfloat texRectY = dirtyRectTop * tex_height;
++	GLfloat texRectW = dirtyRectWidth * tex_width;
++	GLfloat texRectH = dirtyRectHeight * tex_height;
++
++	const GLfloat texcoords[] = { texRectX, texRectY, texRectX + texRectW,
++			texRectY, texRectX, texRectY + texRectH, texRectX + texRectW,
++			texRectY + texRectH, };
++
++	GLfloat vX = dirtyRectLeft * 2.0 - 1.0;
++	GLfloat vY = dirtyRectTop * (-2.0) + 1.0;
++	GLfloat vW = dirtyRectWidth * 2.0;
++	GLfloat vH = dirtyRectHeight * 2.0;
+ 
+-	_pixels = new byte[w * h * _surface.format.bytesPerPixel];
+-	assert(_pixels);
++	const GLfloat vertices[] = { vX, vY, vX + vW, vY, vX, vY - vH, vX + vW, vY
++			- vH };
+ 
+-	_surface.pixels = _pixels;
++	//LOGD("GLESBaseTexture::drawTexture texcoords %f %f %f %f", texRectX ,texRectY ,texRectW ,texRectH);
++	//LOGD("GLESBaseTexture::drawTexture vertices %f %f %f %f", vX ,vY ,vW ,vH);
+ 
+-	fillBuffer(0);
++	// Bind the source texture
++	GLCALL(glBindTexture(GL_TEXTURE_2D, _texture_name));
+ 
+-	_buf = new byte[w * h * _surface.format.bytesPerPixel];
+-	assert(_buf);
+-}
++	// Bind the framebuffer
++	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, mFramebuffer));
+ 
+-void GLESTexture::updateBuffer(GLuint x, GLuint y, GLuint w, GLuint h,
+-								const void *buf, int pitch_buf) {
+-	setDirtyRect(Common::Rect(x, y, x + w, y + h));
++	uint16 maxResW = AndroidPortAdditions::instance()->getShaderScalingMaxResolutionW();
++	uint16 maxResH = AndroidPortAdditions::instance()->getShaderScalingMaxResolutionH();
+ 
+-	const byte *src = (const byte *)buf;
+-	byte *dst = _pixels + y * _surface.pitch + x * _surface.format.bytesPerPixel;
++	if (scalingOption != SCALING_OPTION_LQ_SHADER) {
++		// Hard limit on HQ hardware scaling resolution - render to a limited part of the framebuffer
+ 
+-	do {
+-		memcpy(dst, src, w * _surface.format.bytesPerPixel);
+-		dst += _surface.pitch;
+-		src += pitch_buf;
+-	} while (--h);
+-}
++		if (w > maxResW
++				|| h > maxResH) {
++			GLCALL(
++					glViewport(0, 0, MIN(w, (GLshort)maxResW), MIN(h, (GLshort)maxResH)));
++		}
++	} else {
++		// limit on LQ hardware scaling resolution - render according to a whole scale factor
++		float lqScaleFactor = AndroidPortAdditions::instance()
++				->getLQShaderScalingFactor();
++		uint16 limitWidth = MIN((int)(GAME_SCREEN_WIDTH * lqScaleFactor),
++				(int)maxResW);
++		uint16 limitHeight = MIN((int)(GAME_SCREEN_HEIGHT * lqScaleFactor),
++				(int)maxResH);
++
++		GLCALL( glViewport(0, 0, limitWidth, limitHeight));
+ 
+-void GLESTexture::fillBuffer(uint32 color) {
+-	assert(_surface.pixels);
++	}
+ 
+-	if (_pixelFormat.bytesPerPixel == 1 ||
+-			((color & 0xff) == ((color >> 8) & 0xff)))
+-		memset(_pixels, color & 0xff, _surface.pitch * _surface.h);
+-	else
+-		Common::fill(_pixels, _pixels + _surface.pitch * _surface.h,
+-						(uint16)color);
++	// Use the program
++	GLCALL(glUseProgram(shader->mProgramHandle));
++
++	// Set uniforms
++	GLCALL(glUniform1i(shader->mTextureUniformHandle, 0));
++	GLCALL(
++			glUniform2f(shader->mTextureSizeUniformHandle, _texture_width, _texture_height));
++	GLCALL(
++			glUniform2f(shader->mTextureFractUniformHandle, 1 / (GLfloat)_texture_width, 1 / (GLfloat)_texture_height));
++
++	GLCALL(
++			glUniform2f(shader->mInputSizeUniformHandle, _surface.w, _surface.h));
++	GLCALL(glUniform2f(shader->mOutputSizeUniformHandle, w, h));
++	GLCALL(glUniform1f(shader->mAlphaFactorUniformHandle, 1.0));
++
++	// Pass the position attributes
++	GLCALL(
++			glVertexAttribPointer(shader->mPositionAttributeHandle, 2, GL_FLOAT, false, 0, vertices));
++
++	// Pass the texture attributes
++	GLCALL(
++			glVertexAttribPointer(shader->mTexCoordAttributeHandle, 2, GL_FLOAT, false, 0, texcoords));
+ 
+-	setDirty();
++	GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
++
++	clearDirty();
+ }
+ 
+-void GLESTexture::drawTexture(GLshort x, GLshort y, GLshort w, GLshort h) {
+-	if (_all_dirty) {
+-		_dirty_rect.top = 0;
+-		_dirty_rect.left = 0;
+-		_dirty_rect.bottom = _surface.h;
+-		_dirty_rect.right = _surface.w;
++void GLESBaseTexture::flushFramebuffer(GLshort x, GLshort y, GLshort w,
++		GLshort h) {
+ 
+-		_all_dirty = false;
+-	}
++//	LOGD("GLESBaseTexture::flushFramebuffer %d %d %d %d", x ,y ,w ,h);
++	int scalingOption = AndroidPortAdditions::instance()->getScalingOption();
+ 
+-	if (!_dirty_rect.isEmpty()) {
+-		byte *_tex;
++	uint16 maxResW = AndroidPortAdditions::instance()->getShaderScalingMaxResolutionW();
++	uint16 maxResH = AndroidPortAdditions::instance()->getShaderScalingMaxResolutionH();
+ 
+-		int16 dwidth = _dirty_rect.width();
+-		int16 dheight = _dirty_rect.height();
++	// Hard limit on hardware scaling resolution - render only the needed part of the framebuffer (our limit)
++	GLshort framebufferTextureW = w;
++	GLshort framebufferTextureH = h;
++	bool hardLimitResolution = false;
++	if (scalingOption != SCALING_OPTION_LQ_SHADER) {
++		if (w > maxResW
++				|| h > maxResH) {
++
++			framebufferTextureW = MIN(w,
++					(GLshort) maxResW);
++			framebufferTextureH = MIN(h,
++					(GLshort) maxResH);
+ 
+-		if (dwidth == _surface.w) {
+-			_tex = _pixels + _dirty_rect.top * _surface.pitch;
+-		} else {
+-			_tex = _buf;
++			hardLimitResolution = true;
+ 
+-			byte *src = _pixels + _dirty_rect.top * _surface.pitch +
+-						_dirty_rect.left * _surface.format.bytesPerPixel;
+-			byte *dst = _buf;
+-
+-			uint16 l = dwidth * _surface.format.bytesPerPixel;
+-
+-			for (uint16 i = 0; i < dheight; ++i) {
+-				memcpy(dst, src, l);
+-				src += _surface.pitch;
+-				dst += l;
+ 			}
++	} else  {
++		// limit on LQ hardware scaling resolution - render according to a whole scale factor
++		float lqScaleFactor = AndroidPortAdditions::instance()
++				->getLQShaderScalingFactor();
++		framebufferTextureW = MIN((int)(GAME_SCREEN_WIDTH * lqScaleFactor),
++				(int)maxResW);
++		framebufferTextureH = MIN((int)(GAME_SCREEN_HEIGHT * lqScaleFactor),
++				(int)maxResH);
++
++		hardLimitResolution = true;
+ 		}
+ 
+-		GLCALL(glBindTexture(GL_TEXTURE_2D, _texture_name));
+-		GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
++	const GLfloat tex_width = framebufferTextureW
++			/ (GLfloat) mScaledTextureWidth;
++	const GLfloat tex_height = framebufferTextureH
++			/ (GLfloat) mScaledTextureHeight;
++
++//	LOGD("GLESBaseTexture::flushFramebuffer: w h  %f %f", tex_width, tex_height);
++
++	const GLfloat texcoords[] = { 0, 0, tex_width, 0, 0, tex_height, tex_width,
++			tex_height, };
+ 
+-		GLCALL(glTexSubImage2D(GL_TEXTURE_2D, 0,
+-								_dirty_rect.left, _dirty_rect.top,
+-								dwidth, dheight, _glFormat, _glType, _tex));
++	const GLfloat vertices[] = { -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0 };
++
++	// Restore viewport back to normal (if we limited resolution)
++	if (hardLimitResolution) {
++		GLCALL(glViewport(0, 0, w, h));
+ 	}
+ 
+-	GLESBaseTexture::drawTexture(x, y, w, h);
+-}
++	// Bind the source texture (scaled)
++	GLCALL(glBindTexture(GL_TEXTURE_2D, mScaledTexture));
+ 
+-GLES4444Texture::GLES4444Texture() :
+-	GLESTexture(GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, pixelFormat()) {
+-}
++	// Use the program
++	ShaderProgram* shader = AndroidPortAdditions::instance()
++			->getDefaultShaderProgram();
++	GLCALL(glUseProgram(shader->mProgramHandle));
+ 
+-GLES4444Texture::~GLES4444Texture() {
+-}
++	// Set uniforms
++	GLCALL(glUniform1i(shader->mTextureUniformHandle, 0));
++	GLCALL(
++			glUniform2f(shader->mTextureSizeUniformHandle, mScaledTextureWidth, mScaledTextureHeight));
++	GLCALL(glUniform2f(shader->mInputSizeUniformHandle, w, h));
++	GLCALL(glUniform2f(shader->mOutputSizeUniformHandle, w, h));
++	GLCALL(glUniform1f(shader->mAlphaFactorUniformHandle, 1.0));
+ 
+-GLES5551Texture::GLES5551Texture() :
+-	GLESTexture(GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1, pixelFormat()) {
+-}
++	// Pass the position attributes
++	GLCALL(
++			glVertexAttribPointer(shader->mPositionAttributeHandle, 2, GL_FLOAT, false, 0, vertices));
+ 
+-GLES5551Texture::~GLES5551Texture() {
+-}
++	// Pass the texture attributes
++	GLCALL(
++			glVertexAttribPointer(shader->mTexCoordAttributeHandle, 2, GL_FLOAT, false, 0, texcoords));
+ 
+-GLES565Texture::GLES565Texture() :
+-	GLESTexture(GL_RGB, GL_UNSIGNED_SHORT_5_6_5, pixelFormat()) {
++	GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
+ }
+ 
+-GLES565Texture::~GLES565Texture() {
++const Graphics::PixelFormat &GLESBaseTexture::getPixelFormat() const {
++	return _pixelFormat;
+ }
+ 
+ GLESFakePaletteTexture::GLESFakePaletteTexture(GLenum glFormat, GLenum glType,
+-									Graphics::PixelFormat pixelFormat) :
++		Graphics::PixelFormat pixelFormat)
++		:
+ 	GLESBaseTexture(glFormat, glType, pixelFormat),
+ 	_palette(0),
+ 	_pixels(0),
+-	_buf(0)
+-{
++				_oldPixels(0),
++				_buf(0),
++				_bufMemory(0),
++				mFirstFrame(true) {
+ 	_palettePixelFormat = pixelFormat;
+ 	_fake_format = Graphics::PixelFormat::createFormatCLUT8();
+ 
+@@ -351,12 +495,20 @@
+ }
+ 
+ GLESFakePaletteTexture::~GLESFakePaletteTexture() {
+-	delete[] _buf;
++	delete[] _bufMemory;
+ 	delete[] _pixels;
++	delete[] _oldPixels;
+ 	delete[] _palette;
+ }
+ 
++void GLESFakePaletteTexture::initSize() {
++	GLESBaseTexture::initSize();
++
++	mFirstFrame = true;
++}
++
+ void GLESFakePaletteTexture::allocBuffer(GLuint w, GLuint h) {
++
+ 	GLuint oldw = _surface.w;
+ 	GLuint oldh = _surface.h;
+ 
+@@ -370,10 +522,12 @@
+ 		return;
+ 	}
+ 
+-	delete[] _buf;
++	delete[] _bufMemory;
+ 	delete[] _pixels;
++	delete[] _oldPixels;
+ 
+ 	_pixels = new byte[w * h];
++
+ 	assert(_pixels);
+ 
+ 	// fixup surface, for the outside this is a CLUT8 surface
+@@ -381,22 +535,39 @@
+ 
+ 	fillBuffer(0);
+ 
+-	_buf = new uint16[w * h];
++	// The pixel buffer memory is initialized with 2 additional extended rows.
++	// The actual used buffer is w * h, inside the initialized memory.
++	// The reason for that is that the software scaler assumes 1 pixel padding, and might access memory out of bounds.
++	// We don't care about the pixel padding content, and we don't want to check bounds during the SW scaler operation in order to optimize performance.
++	uint32 bufMemoryLength = w * h + (w + 2) * 2;
++	_bufMemory = new uint16[bufMemoryLength];
++	memset(_bufMemory, 0, bufMemoryLength);
++
++	// Set the actual buffer to point inside the allocated memory
++	_buf = _bufMemory + w + 2;
++
++	_oldPixels = new uint16[w * h];
+ 	assert(_buf);
++	assert(_oldPixels);
+ }
+ 
+ void GLESFakePaletteTexture::fillBuffer(uint32 color) {
++
++	LOGD("GLESFakePaletteTexture::fillBuffer");
++
+ 	assert(_surface.pixels);
+ 	memset(_surface.pixels, color & 0xff, _surface.pitch * _surface.h);
+ 	setDirty();
+ }
+ 
+ void GLESFakePaletteTexture::updateBuffer(GLuint x, GLuint y, GLuint w,
+-											GLuint h, const void *buf,
+-											int pitch_buf) {
++		GLuint h, const void *buf, int pitch_buf) {
++
++	LOGD("GLESFakePaletteTexture::updateBuffer");
++
+ 	setDirtyRect(Common::Rect(x, y, x + w, y + h));
+ 
+-	const byte *src = (const byte *)buf;
++	const byte *src = (const byte *) buf;
+ 	byte *dst = _pixels + y * _surface.pitch + x;
+ 
+ 	do {
+@@ -408,6 +579,21 @@
+ 
+ void GLESFakePaletteTexture::drawTexture(GLshort x, GLshort y, GLshort w,
+ 										GLshort h) {
++
++//	LOGD("GLESFakePaletteTexture: drawTexture: %d, %d, %d, %d", x, y, w ,h);
++
++	// Solves an Adreno issue:
++	// http://stackoverflow.com/questions/5161784/gldepthmaskgl-false-trashes-the-frame-buffer-on-some-gpus
++	GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
++
++	if (mIsGameTexture)
++		AndroidPortAdditions::instance()->beforeDrawTextureToScreen(surface());
++
++	// If we are in auto-load state, we don't draw anything
++	if (AndroidPortAdditions::instance()->isInAutoloadState()) {
++		return;
++	}
++
+ 	if (_all_dirty) {
+ 		_dirty_rect.top = 0;
+ 		_dirty_rect.left = 0;
+@@ -418,11 +604,27 @@
+ 	}
+ 
+ 	if (!_dirty_rect.isEmpty()) {
++
++		int scalingOption =
++				AndroidPortAdditions::instance()->getScalingOption();
++
++		// Either use the normal pixels, or the android port's modified pixels if needed
++		byte* pixelsToDraw;
++		if (mIsGameTexture
++				&& AndroidPortAdditions::instance()->shouldUseModifiedGamePixels()) {
++			pixelsToDraw = AndroidPortAdditions::instance()
++					->getModifiedGamePixels();
++		} else {
++			pixelsToDraw = (byte*) _surface.pixels;
++		}
++
++		//	LOGD("GLESFakePaletteTexture::drawTexture: dirty rect before: %d %d %d %d", _dirty_rect.left, _dirty_rect.top, _dirty_rect.right, _dirty_rect.bottom);
++
+ 		int16 dwidth = _dirty_rect.width();
+ 		int16 dheight = _dirty_rect.height();
+ 
+-		byte *src = _pixels + _dirty_rect.top * _surface.pitch +
+-					_dirty_rect.left;
++		byte *src = pixelsToDraw + _dirty_rect.top * _surface.pitch
++				+ _dirty_rect.left;
+ 		uint16 *dst = _buf;
+ 		uint pitch_delta = _surface.pitch - dwidth;
+ 
+@@ -432,21 +634,107 @@
+ 			src += pitch_delta;
+ 		}
+ 
++		if (mFirstFrame
++				|| AndroidPortAdditions::instance()->shouldMeasureRenderTime()) {
++
++			// On the first frame (or when doing the shader test, or autoload), we don't calculate the dirty rect
++			memcpy(_oldPixels, _buf, _surface.w * _surface.h * 2);
++			mFirstFrame = false;
++		} else if (scalingOption != SCALING_OPTION_NONE) {
++			// Otherwise calculate the dirty part (optimization)
++			calculateDirtyRect(_buf);
++		}
++
++		// Bind the texture
+ 		GLCALL(glBindTexture(GL_TEXTURE_2D, _texture_name));
+ 
+-		GLCALL(glTexSubImage2D(GL_TEXTURE_2D, 0,
+-								_dirty_rect.left, _dirty_rect.top,
+-								dwidth, dheight, _glFormat, _glType, _buf));
++		if (scalingOption == SCALING_OPTION_SOFT) {
++			// Scale with soft scaler
++			uint16* scaledOutput = AndroidPortAdditions::instance()->scale(
++					(uint8*) _buf, _dirty_rect.left, _dirty_rect.top,
++					_dirty_rect.width(), _dirty_rect.height());
++
++			int scalingFactor = AndroidPortAdditions::instance()
++					->getScalingFactor();
++
++			// Adjust pointer to Y offset
++			//		uint32 outputPitch = _surface.w * scalingFactor;
++			//	scaledOutput += _dirty_rect.top * scalingFactor * outputPitch;
++
++			GLCALL(
++					glTexSubImage2D(GL_TEXTURE_2D, 0, _dirty_rect.left * scalingFactor, _dirty_rect.top * scalingFactor, _dirty_rect.width() * scalingFactor, _dirty_rect.height() * scalingFactor, _glFormat, _glType, scaledOutput));
++
++		} else {
++			GLCALL(
++					glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _surface.w, _surface.h, _glFormat, _glType, _buf));
++		}
++
+ 	}
+ 
++	// Draw the game texture to the framebuffer if needed
++	if (!_dirty_rect.isEmpty()) {
+ 	GLESBaseTexture::drawTexture(x, y, w, h);
++	}
++
++	// Bind the screen framebuffer
++	GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
++
++	// Flush the framebuffer content to the screen
++	GLESBaseTexture::flushFramebuffer(x, y, w, h);
++
++	if (mIsGameTexture) {
++		AndroidPortAdditions::instance()->onDrawTextureToScreen(x, y, w, h);
++	}
++
++}
++
++void GLESFakePaletteTexture::calculateDirtyRect(uint16* pixels) {
++
++	int gameWidth = _surface.w;
++	int gameHeight = _surface.h;
++
++	int left = gameWidth, right = 0, top = gameHeight, bottom = 0;
++
++	for (int i = 0; i < gameHeight; ++i) {
++		for (int j = 0; j < gameWidth; ++j) {
++			// Compare pixels
++			uint16 pNew = pixels[i * gameWidth + j];
++			uint16 pOld = _oldPixels[i * gameWidth + j];
++
++			if (pNew != pOld) {
++				// Copy
++				_oldPixels[i * gameWidth + j] = pNew;
++
++				// Update dirty rect
++				left = MIN(left, j);
++				right = MAX(right, j);
++				top = MIN(top, i);
++				bottom = MAX(bottom, i);
++			}
++		}
++	}
++
++//	LOGD("GLESFakePaletteTexture::calculateDirtyRect: result: %d %d %d %d", left, top, right, bottom);
++
++	if (right == 0 || bottom == 0) {
++		_dirty_rect = Rect();
++	} else {
++		_dirty_rect = Rect(left, top, right, bottom);
++
++		// Grow the rect by 2 pixels on each side to account for shader sampling (but maintain game screen dimension)
++		_dirty_rect.grow(2);
++		_dirty_rect.clip(gameWidth, gameHeight);
++	}
++
++//	LOGD("GLESFakePaletteTexture::calculateDirtyRect: dirty rect: %d %d %d %d", _dirty_rect.left, _dirty_rect.top, _dirty_rect.right, _dirty_rect.bottom);
+ }
+ 
+ const Graphics::PixelFormat &GLESFakePaletteTexture::getPixelFormat() const {
+ 	return _fake_format;
+ }
+ 
+-GLESFakePalette565Texture::GLESFakePalette565Texture() :
++GLESFakePalette565Texture::GLESFakePalette565Texture()
++		:
+ 	GLESFakePaletteTexture(GL_RGB, GL_UNSIGNED_SHORT_5_6_5,
+ 							GLES565Texture::pixelFormat()) {
+ }
+@@ -454,12 +742,4 @@
+ GLESFakePalette565Texture::~GLESFakePalette565Texture() {
+ }
+ 
+-GLESFakePalette5551Texture::GLESFakePalette5551Texture() :
+-	GLESFakePaletteTexture(GL_RGBA, GL_UNSIGNED_SHORT_5_5_5_1,
+-							GLES5551Texture::pixelFormat()) {
+-}
+-
+-GLESFakePalette5551Texture::~GLESFakePalette5551Texture() {
+-}
+-
+ #endif
+diff -rbu ./backends/platform/android/texture.h ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/texture.h
+--- ./backends/platform/android/texture.h	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/platform/android/texture.h	2014-02-16 10:45:26.000000000 +0200
+@@ -25,7 +25,7 @@
+ 
+ #if defined(__ANDROID__)
+ 
+-#include <GLES/gl.h>
++#include <GLES2/gl2.h>
+ 
+ #include "graphics/surface.h"
+ #include "graphics/pixelformat.h"
+@@ -46,18 +46,24 @@
+ 
+ 	void release();
+ 	void reinit();
+-	void initSize();
++	virtual void initSize();
+ 
+ 	void setLinearFilter(bool value);
+ 
+ 	virtual void allocBuffer(GLuint w, GLuint h);
+ 
++	virtual void initTextureSize();
++
++	virtual void initFramebuffer(GLuint w, GLuint h);
++
+ 	virtual void updateBuffer(GLuint x, GLuint y, GLuint width, GLuint height,
+ 								const void *buf, int pitch_buf) = 0;
+ 	virtual void fillBuffer(uint32 color) = 0;
+ 
+ 	virtual void drawTexture(GLshort x, GLshort y, GLshort w, GLshort h);
+ 
++	virtual void flushFramebuffer(GLshort x, GLshort y, GLshort w, GLshort h);
++
+ 	inline void setDrawRect(const Common::Rect &rect) {
+ 		_draw_rect = rect;
+ 	}
+@@ -104,7 +110,6 @@
+ 	}
+ 
+ 	inline Graphics::Surface *surface() {
+-		setDirty();
+ 		return &_surface;
+ 	}
+ 
+@@ -130,11 +135,18 @@
+ 		return _palettePixelFormat;
+ 	}
+ 
+-protected:
++	inline void setIsGameTexture(bool value)
++	{
++		mIsGameTexture = value;
++	}
++
+ 	inline void setDirty() {
+ 		_all_dirty = true;
+ 	}
+ 
++protected:
++
++
+ 	inline void clearDirty() {
+ 		_all_dirty = false;
+ 		_dirty_rect.top = 0;
+@@ -168,31 +180,24 @@
+ 
+ 	Graphics::PixelFormat _pixelFormat;
+ 	Graphics::PixelFormat _palettePixelFormat;
+-};
+ 
+-class GLESTexture : public GLESBaseTexture {
+-protected:
+-	GLESTexture(GLenum glFormat, GLenum glType,
+-				Graphics::PixelFormat pixelFormat);
++	bool mIsGameTexture;
+ 
+-public:
+-	virtual ~GLESTexture();
+ 
+-	virtual void allocBuffer(GLuint w, GLuint h);
++	GLuint mDefaultProgram;
+ 
+-	virtual void updateBuffer(GLuint x, GLuint y, GLuint width, GLuint height,
+-								const void *buf, int pitch_buf);
+-	virtual void fillBuffer(uint32 color);
+-
+-	virtual void drawTexture(GLshort x, GLshort y, GLshort w, GLshort h);
++	GLuint mAttrPositionHandle;
++	GLuint mAttrTexCoordinateHandle;
++	GLuint mUniformTextureHandle;
+ 
+-protected:
+-	byte *_pixels;
+-	byte *_buf;
++	GLuint mFramebuffer;
++	GLuint mScaledTexture;
++	GLuint mScaledTextureWidth;
++	GLuint mScaledTextureHeight;
+ };
+ 
+ // RGBA4444 texture
+-class GLES4444Texture : public GLESTexture {
++class GLES4444Texture{
+ public:
+ 	GLES4444Texture();
+ 	virtual ~GLES4444Texture();
+@@ -203,7 +208,7 @@
+ };
+ 
+ // RGBA5551 texture
+-class GLES5551Texture : public GLESTexture {
++class GLES5551Texture{
+ public:
+ 	GLES5551Texture();
+ 	virtual ~GLES5551Texture();
+@@ -214,7 +219,7 @@
+ };
+ 
+ // RGB565 texture
+-class GLES565Texture : public GLESTexture {
++class GLES565Texture{
+ public:
+ 	GLES565Texture();
+ 	virtual ~GLES565Texture();
+@@ -231,7 +236,7 @@
+ 
+ public:
+ 	virtual ~GLESFakePaletteTexture();
+-
++	virtual void initSize();
+ 	virtual void allocBuffer(GLuint w, GLuint h);
+ 	virtual void updateBuffer(GLuint x, GLuint y, GLuint width, GLuint height,
+ 								const void *buf, int pitch_buf);
+@@ -254,7 +259,17 @@
+ 	Graphics::PixelFormat _fake_format;
+ 	uint16 *_palette;
+ 	byte *_pixels;
++	bool mFirstFrame;
++
+ 	uint16 *_buf;
++	uint16 *_bufMemory;
++
++	uint16 *_oldPixels;
++
++
++private:
++
++	void calculateDirtyRect(uint16* pixels);
+ };
+ 
+ class GLESFakePalette565Texture : public GLESFakePaletteTexture {
+@@ -263,11 +278,5 @@
+ 	virtual ~GLESFakePalette565Texture();
+ };
+ 
+-class GLESFakePalette5551Texture : public GLESFakePaletteTexture {
+-public:
+-	GLESFakePalette5551Texture();
+-	virtual ~GLESFakePalette5551Texture();
+-};
+-
+ #endif
+ #endif
+diff -rbu ./graphics/colormasks.h ../simon/source_1_0_3_5/jni/scummvm/graphics/colormasks.h
+--- ./graphics/colormasks.h	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/colormasks.h	2014-02-16 10:45:26.000000000 +0200
+@@ -59,8 +59,8 @@
+  To be specific: They pack the masks for two 16 bit pixels at once. The pixels
+  are split into "high" and "low" bits, which are then separately interpolated
+  and finally re-composed. That way, 2x2 pixels or even 4x2 pixels can
+- be interpolated in one go.
+-
++ be interpolated in one go. They are also included in 888 and 8888 to make
++ the same functions compatible when interpolating 2 32-bit pixels.
+ */
+ 
+ 
+@@ -96,6 +96,8 @@
+ 		kLow2Bits   = (3 << kRedShift) | (3 << kGreenShift) | (3 << kBlueShift),
+ 		kLow3Bits   = (7 << kRedShift) | (7 << kGreenShift) | (7 << kBlueShift)
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ 
+ template<>
+@@ -138,6 +140,8 @@
+ 		kLow2Bits   = (3 << kRedShift) | (3 << kGreenShift) | (3 << kBlueShift),
+ 		kLow3Bits   = (7 << kRedShift) | (7 << kGreenShift) | (7 << kBlueShift)
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ 
+ template<>
+@@ -162,6 +166,8 @@
+ 
+ 		kRedBlueMask = kRedMask | kBlueMask
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ 
+ template<>
+@@ -186,6 +192,8 @@
+ 
+ 		kRedBlueMask = kRedMask | kBlueMask
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ 
+ template<>
+@@ -217,6 +225,8 @@
+ 
+ 		kRedBlueMask = kRedMask | kBlueMask
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ 
+ template<>
+@@ -239,8 +249,21 @@
+ 		kGreenMask = ((1 << kGreenBits) - 1) << kGreenShift,
+ 		kBlueMask  = ((1 << kBlueBits) - 1) << kBlueShift,
+ 
+-		kRedBlueMask = kRedMask | kBlueMask
++		kRedBlueMask = kRedMask | kBlueMask,
++
++		kLowBits    = (1 << kRedShift) | (1 << kGreenShift) | (1 << kBlueShift),
++		kLow2Bits   = (3 << kRedShift) | (3 << kGreenShift) | (3 << kBlueShift),
++		kLow3Bits   = (7 << kRedShift) | (7 << kGreenShift) | (7 << kBlueShift),
++		kLow4Bits   = (15 << kRedShift) | (15 << kGreenShift) | (15 << kBlueShift),
++
++		kLowBitsMask = kLowBits,
++		// Prevent mask from including padding byte
++		kHighBitsMask = (~kLowBits) & (kRedMask | kBlueMask | kGreenMask),
++		qlowBits = kLow2Bits,
++		qhighBits = (~kLowBits) & (kRedMask | kBlueMask | kGreenMask)
+ 	};
++
++	typedef uint32 PixelType;
+ };
+ 
+ template<>
+@@ -263,8 +286,20 @@
+ 		kGreenMask = ((1 << kGreenBits) - 1) << kGreenShift,
+ 		kBlueMask  = ((1 << kBlueBits) - 1) << kBlueShift,
+ 
+-		kRedBlueMask = kRedMask | kBlueMask
++		kRedBlueMask = kRedMask | kBlueMask,
++
++		kLowBits    = (1 << kRedShift) | (1 << kGreenShift) | (1 << kBlueShift) | (1 << kAlphaShift),
++		kLow2Bits   = (3 << kRedShift) | (3 << kGreenShift) | (3 << kBlueShift) | (3 << kAlphaShift),
++		kLow3Bits   = (7 << kRedShift) | (7 << kGreenShift) | (7 << kBlueShift) | (7 << kAlphaShift),
++		kLow4Bits   = (15 << kRedShift) | (15 << kGreenShift) | (15 << kBlueShift) | (15 << kAlphaShift),
++
++		kLowBitsMask = kLowBits,
++		kHighBitsMask = ~kLowBits,
++		qlowBits = kLow2Bits,
++		qhighBits = ~kLow2Bits
+ 	};
++
++	typedef uint32 PixelType;
+ };
+ 
+ #ifdef __WII__
+@@ -291,6 +326,8 @@
+ 
+ 		kRedBlueMask = kRedMask | kBlueMask
+ 	};
++
++	typedef uint16 PixelType;
+ };
+ #endif
+ 
+diff -rbu ./graphics/module.mk ../simon/source_1_0_3_5/jni/scummvm/graphics/module.mk
+--- ./graphics/module.mk	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/module.mk	2014-02-16 10:45:26.000000000 +0200
+@@ -28,38 +28,17 @@
+ 	decoders/pcx.o \
+ 	decoders/pict.o \
+ 	decoders/png.o \
+-	decoders/tga.o
+-
+-ifdef USE_SCALERS
+-MODULE_OBJS += \
+-	scaler/2xsai.o \
++	decoders/tga.o \
++	scaler/hq.o \
++	scalerplugin.o \
++	scaler/Normal2xARM.o \
++	scaler/pm.o \
+ 	scaler/aspect.o \
+-	scaler/downscaler.o \
++	scaler/edge.o \
+ 	scaler/scale2x.o \
+-	scaler/scale3x.o \
+-	scaler/scalebit.o
+-
+-ifdef USE_ARM_SCALER_ASM
+-MODULE_OBJS += \
+-	scaler/downscalerARM.o \
+ 	scaler/scale2xARM.o \
+-	scaler/Normal2xARM.o
+-endif
+-
+-ifdef USE_HQ_SCALERS
+-MODULE_OBJS += \
+-	scaler/hq2x.o \
+-	scaler/hq3x.o
+-
+-ifdef USE_NASM
+-MODULE_OBJS += \
+-	scaler/hq2x_i386.o \
+-	scaler/hq3x_i386.o
+-endif
+-
+-endif
+-
+-endif
++	scaler/scalebit.o \
++	scaler/scale3x.o
+ 
+ # Include common rules
+ include $(srcdir)/rules.mk
+diff -rbu ./graphics/scaler/aspect.cpp ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/aspect.cpp
+--- ./graphics/scaler/aspect.cpp	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/aspect.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -23,7 +23,11 @@
+ #include "graphics/scaler/intern.h"
+ #include "graphics/scaler/aspect.h"
+ 
+-#ifdef USE_ARM_NEON_ASPECT_CORRECTOR
++#ifdef OPENPANDORA
++#define NEON_ASPECT_CORRECTOR
++#endif
++
++#ifdef NEON_ASPECT_CORRECTOR
+ #include <arm_neon.h>
+ #endif
+ 
+@@ -58,7 +62,7 @@
+ 
+ #if ASPECT_MODE == kVeryFastAndGoodAspectMode
+ 
+-#ifdef USE_ARM_NEON_ASPECT_CORRECTOR
++#ifdef NEON_ASPECT_CORRECTOR
+ 
+ template<typename ColorMask>
+ static void interpolate5LineNeon(uint16 *dst, const uint16 *srcA, const uint16 *srcB, int width, int k1, int k2) {
+@@ -159,16 +163,14 @@
+ #endif
+ 
+ void makeRectStretchable(int &x, int &y, int &w, int &h) {
+-#if ASPECT_MODE != kSuperFastAndUglyAspectMode
+-	int m = real2Aspect(y) % 6;
+-
+ 	// Ensure that the rect will start on a line that won't have its
+-	// colors changed by the stretching function.
+-	if (m != 0 && m != 5) {
++	// colors changed by the stretching function and that furthermore
++	// does not affect the height of the aspect corrected rect.
++	int m = y % 5;
+ 		y -= m;
+ 		h += m;
+-	}
+ 
++#if ASPECT_MODE != kSuperFastAndUglyAspectMode
+   #if ASPECT_MODE == kVeryFastAndGoodAspectMode
+ 	// Force x to be even, to ensure aligned memory access (this assumes
+ 	// that each line starts at an even memory location, but that should
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: dotmatrix.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: dotmatrix.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: edge.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: edge.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: hq.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: hq.h
+diff -rbu ./graphics/scaler/intern.h ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/intern.h
+--- ./graphics/scaler/intern.h	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/intern.h	2014-02-16 10:45:26.000000000 +0200
+@@ -31,9 +31,15 @@
+  * Interpolate two 16 bit pixel *pairs* at once with equal weights 1.
+  * In particular, p1 and p2 can contain two pixels each in the upper
+  * and lower halves.
++ *
++ * This also works for 32 bit pixels.
+  */
+ template<typename ColorMask>
+ static inline uint32 interpolate32_1_1(uint32 p1, uint32 p2) {
++	// Clear the low bit of each channel,
++	// divide each channel by 2,
++	// add the two pixels together,
++	// add 1 to each channel if the lowbits would have added to 2
+ 	return (((p1 & ColorMask::kHighBitsMask) >> 1) +
+ 	        ((p2 & ColorMask::kHighBitsMask) >> 1) +
+ 	         (p1 & p2 & ColorMask::kLowBitsMask));
+@@ -43,17 +49,267 @@
+  * Interpolate two 16 bit pixel *pairs* at once with weights 3 resp. 1.
+  * In particular, p1 and p2 can contain two pixels/each in the upper
+  * and lower halves.
++ *
++ * This also works for 32 bit pixels.
+  */
+ template<typename ColorMask>
+ static inline uint32 interpolate32_3_1(uint32 p1, uint32 p2) {
++	// Clear the 2 lowest bits of each channel,
++	// divide each channel by 4, multiply p1 by 3
++	// add the two pixels together,
+ 	register uint32 x = ((p1 & ColorMask::qhighBits) >> 2) * 3 + ((p2 & ColorMask::qhighBits) >> 2);
++	// Get 2 lowest bits of each channel,
++	// multiply p1 by 3, add them together, then divide by 4
+ 	register uint32 y = ((p1 & ColorMask::qlowBits) * 3 + (p2 & ColorMask::qlowBits)) >> 2;
+ 
++	// Use only the low bits of the second result to add to the first result
+ 	y &= ColorMask::qlowBits;
+ 	return x + y;
+ }
+ 
+ /**
++ * Interpolate two 32 bit pixels with weights 2 and 1 and 1, i.e., (2*p1+p2)/3.
++ */
++template<typename ColorMask>
++uint32 interpolate32_2_1(uint32 pixel1, uint32 pixel2) {
++	uint32 rsum, gsum, bsum, asum;
++
++	rsum =  ((pixel1 & ColorMask::kRedMask) >> ColorMask::kRedShift) << 1;
++	rsum += ((pixel2 & ColorMask::kRedMask) >> ColorMask::kRedShift);
++	rsum /= 3;
++	rsum <<= ColorMask::kRedShift;
++
++	gsum =  ((pixel1 & ColorMask::kGreenMask) >> ColorMask::kGreenShift) << 1;
++	gsum += ((pixel2 & ColorMask::kGreenMask) >> ColorMask::kGreenShift);
++	gsum /= 3;
++	gsum <<= ColorMask::kGreenShift;
++
++	bsum =  ((pixel1 & ColorMask::kBlueMask) >> ColorMask::kBlueShift) << 1;
++	bsum += ((pixel2 & ColorMask::kBlueMask) >> ColorMask::kBlueShift);
++	bsum /= 3;
++	bsum <<= ColorMask::kBlueShift;
++
++	asum =  ((pixel1 & ColorMask::kAlphaMask) >> ColorMask::kAlphaShift) << 1;
++	asum += ((pixel2 & ColorMask::kAlphaMask) >> ColorMask::kAlphaShift);
++	asum /= 3;
++	asum <<= ColorMask::kAlphaShift;
++
++	return (rsum & ColorMask::kRedMask) | (gsum & ColorMask::kGreenMask) | (bsum & ColorMask::kBlueMask) | (asum & ColorMask::kAlphaMask);
++}
++
++/**
++ * Interpolate two 32 bit pixels with weights 5 and 3 and 1, i.e., (5*p1+3*p2)/8.
++ * @see interpolate_32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_5_3(uint32 p1, uint32 p2) {
++	register uint32 x = ((p1 & ~ColorMask::kLow3Bits) >> 3) * 5 + ((p2 & ~ColorMask::kLow3Bits) >> 3) * 3;
++	register uint32 y = ((p1 & ColorMask::kLow3Bits) * 5 + (p2 & ColorMask::kLow3Bits) * 3) >> 3;
++
++	y &= ColorMask::kLow3Bits;
++	return x + y;
++}
++
++/**
++ * Interpolate two 32 bit pixels with weights 7 and 1, i.e., (7*p1+p2)/8.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_7_1(uint32 p1, uint32 p2) {
++	register uint32 x = ((p1 & ~ColorMask::kLow3Bits) >> 3) * 7 + ((p2 & ~ColorMask::kLow3Bits) >> 3);
++	register uint32 y = ((p1 & ColorMask::kLow3Bits) * 7 + (p2 & ColorMask::kLow3Bits)) >> 3;
++
++	y &= ColorMask::kLow3Bits;
++	return x + y;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 2, 1, and 1, i.e., (2*p1+p2+p3)/4.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_2_1_1(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ColorMask::qhighBits) >> 1)
++		              + ((p2 & ColorMask::qhighBits) >> 2)
++		              + ((p3 & ColorMask::qhighBits) >> 2);
++	register uint32 y = ((p1 & ColorMask::qlowBits) <<  1)
++			          +  (p2 & ColorMask::qlowBits)
++			          +  (p2 & ColorMask::qlowBits);
++	y >>= 2;
++	y &= ColorMask::qlowBits;
++	return x + y;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 5, 2, and 1, i.e., (5*p1+2*p2+p3)/8.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_5_2_1(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ~ColorMask::kLow3Bits) >> 3) * 5
++		              + ((p2 & ~ColorMask::kLow3Bits) >> 3) * 2
++		              + ((p3 & ~ColorMask::kLow3Bits) >> 3);
++	register uint32 y = (p1 & ColorMask::kLow3Bits) * 5
++			          + (p2 & ColorMask::kLow3Bits) * 2
++			          + (p2 & ColorMask::kLow3Bits);
++	y >>= 3;
++	y &= ColorMask::kLow3Bits;
++	return x + y;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 6, 1, and 1, i.e., (6*p1+p2+p3)/8.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_6_1_1(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ~ColorMask::kLow3Bits) >> 3) * 6
++		              + ((p2 & ~ColorMask::kLow3Bits) >> 3)
++		              + ((p3 & ~ColorMask::kLow3Bits) >> 3);
++	register uint32 y = (p1 & ColorMask::kLow3Bits) * 6
++			          + (p2 & ColorMask::kLow3Bits)
++			          + (p2 & ColorMask::kLow3Bits);
++	y >>= 3;
++	y &= ColorMask::kLow3Bits;
++	return x + y;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 2, 3, and 3, i.e., (2*p1+3*(p2+p3))/8.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_2_3_3(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ~ColorMask::kLow3Bits) >> 2)
++		              + (((p2 & ~ColorMask::kLow3Bits) >> 3)
++		              + ((p3 & ~ColorMask::kLow3Bits) >> 3)) * 3;
++	register uint32 y = (p1 & ColorMask::kLow3Bits) * 2
++			          + ((p2 & ColorMask::kLow3Bits)
++			          + (p2 & ColorMask::kLow3Bits)) * 3;
++	y >>= 3;
++	y &= ColorMask::kLow3Bits;
++	return x + y;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 2, 7, and 7, i.e., (2*p1+7*(p2+p3))/16.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++inline uint32 interpolate32_2_7_7(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ~ColorMask::kLow4Bits) >> 3)
++		              + (((p2 & ~ColorMask::kLow4Bits) >> 4)
++		              +  ((p3 & ~ColorMask::kLow4Bits) >> 4)) * 7;
++	register uint32 y = (p1 & ColorMask::kLow4Bits) * 2
++			          + ((p2 & ColorMask::kLow4Bits)
++			          + (p2 & ColorMask::kLow4Bits)) * 7;
++	y >>= 4;
++	y &= ColorMask::kLow4Bits;
++	return x + y;
++}
++
++// Dummy specializations.
++template<>
++inline uint32 interpolate32_2_7_7<Graphics::ColorMasks<555> >(uint32 p1, uint32 p2, uint32 p3) {
++	assert(0);
++	return 0;
++}
++
++template<>
++inline uint32 interpolate32_2_7_7<Graphics::ColorMasks<565> >(uint32 p1, uint32 p2, uint32 p3) {
++	assert(0);
++	return 0;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 14, 1, and 1, i.e., (14*p1+p2+p3)/16.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++inline uint32 interpolate32_14_1_1(uint32 p1, uint32 p2, uint32 p3) {
++	register uint32 x = ((p1 & ~ColorMask::kLow4Bits) >> 4) * 14
++		              + ((p2 & ~ColorMask::kLow4Bits) >> 4)
++		              + ((p3 & ~ColorMask::kLow4Bits) >> 4);
++	register uint32 y = (p1 & ColorMask::kLow4Bits) * 14
++			          + (p2 & ColorMask::kLow4Bits)
++			          + (p2 & ColorMask::kLow4Bits);
++	y >>= 4;
++	y &= ColorMask::kLow4Bits;
++	return x + y;
++}
++
++
++// Dummy specializations.
++template<>
++inline uint32 interpolate32_14_1_1<Graphics::ColorMasks<555> >(uint32 p1, uint32 p2, uint32 p3) {
++	assert(0);
++	return 0;
++}
++
++template<>
++inline uint32 interpolate32_14_1_1<Graphics::ColorMasks<565> >(uint32 p1, uint32 p2, uint32 p3) {
++	assert(0);
++	return 0;
++}
++
++/**
++ * Interpolate three 32 bit pixels with weights 1, 1, and 1, i.e., (p1+p2+p3)/3.
++ */
++
++template<typename ColorMask>
++uint32 interpolate32_1_1_1(uint32 pixel1, uint32 pixel2, uint32 pixel3) {
++	uint32 rsum, gsum, bsum;
++
++	rsum =  ((pixel1 & ColorMask::kRedMask) >> ColorMask::kRedShift);
++	rsum += ((pixel2 & ColorMask::kRedMask) >> ColorMask::kRedShift);
++	rsum += ((pixel3 & ColorMask::kRedMask) >> ColorMask::kRedShift);
++	rsum /= 3;
++	rsum <<= ColorMask::kRedShift;
++
++	gsum =  ((pixel1 & ColorMask::kGreenMask) >> ColorMask::kGreenShift);
++	gsum += ((pixel2 & ColorMask::kGreenMask) >> ColorMask::kGreenShift);
++	gsum += ((pixel3 & ColorMask::kGreenMask) >> ColorMask::kGreenShift);
++	gsum /= 3;
++	gsum <<= ColorMask::kGreenShift;
++
++	bsum =  ((pixel1 & ColorMask::kBlueMask) >> ColorMask::kBlueShift);
++	bsum += ((pixel2 & ColorMask::kBlueMask) >> ColorMask::kBlueShift);
++	bsum += ((pixel3 & ColorMask::kBlueMask) >> ColorMask::kBlueShift);
++	bsum /= 3;
++	bsum <<= ColorMask::kBlueShift;
++
++	return (rsum & ColorMask::kRedMask) | (gsum & ColorMask::kGreenMask) | (bsum & ColorMask::kBlueMask);
++}
++
++/**
++ * Interpolate four 32 bit pixels with weights 1, 1, 1, and 1, i.e., (p1+p2+p3+p4)/4.
++ *
++ * @see interpolate32_3_1 for similar method
++ */
++template<typename ColorMask>
++static inline uint32 interpolate32_1_1_1_1(uint32 p1, uint32 p2, uint32 p3, uint32 p4) {
++	register uint32 x = ((p1 & ~ColorMask::kLow2Bits) >> 2)
++		              + ((p2 & ~ColorMask::kLow2Bits) >> 2)
++		              + ((p3 & ~ColorMask::kLow2Bits) >> 2)
++		              + ((p4 & ~ColorMask::kLow2Bits) >> 2);
++	register uint32 y = (p1 & ColorMask::kLow2Bits)
++			          + (p2 & ColorMask::kLow2Bits)
++			          + (p3 & ColorMask::kLow2Bits)
++			          + (p4 & ColorMask::kLow2Bits);
++	y >>= 2;
++	y &= ColorMask::kLow2Bits;
++	return x + y;
++}
++
++
++/**
+  * Interpolate two 16 bit pixels with weights 1 and 1, i.e., (p1+p2)/2.
+  * See <http://www.slack.net/~ant/info/rgb_mixing.html> for details on how this works.
+  */
+@@ -74,6 +330,29 @@
+ }
+ 
+ /**
++ * Interpolate two 16 bit pixels with weights 2 and 1, i.e., (2*p1+p2)/3.
++ */
++template<typename ColorMask>
++uint16 interpolate16_2_1(uint16 pixel1, uint16 pixel2) {
++	uint32 rsum;
++	uint16 gsum, bsum;
++
++	rsum =  (pixel1 & ColorMask::kRedMask) << 1;
++	rsum += (pixel2 & ColorMask::kRedMask);
++	rsum /= 3;
++
++	gsum =  (pixel1 & ColorMask::kGreenMask) << 1;
++	gsum += (pixel2 & ColorMask::kGreenMask);
++	gsum /= 3;
++
++	bsum =  (pixel1 & ColorMask::kBlueMask) << 1;
++	bsum += (pixel2 & ColorMask::kBlueMask);
++	bsum /= 3;
++
++	return (rsum & ColorMask::kRedMask) | (gsum & ColorMask::kGreenMask) | (bsum & ColorMask::kBlueMask);
++}
++
++/**
+  * Interpolate two 16 bit pixels with weights 5 and 3 and 1, i.e., (5*p1+3*p2)/8.
+  */
+ template<typename ColorMask>
+@@ -168,6 +447,33 @@
+ }
+ 
+ /**
++ * Interpolate three 16 bit pixels with weights 1, 1, and 1, i.e., (p1+p2+p3)/3.
++ */
++template<typename ColorMask>
++uint16 interpolate16_1_1_1(uint16 pixel1, uint16 pixel2, uint16 pixel3)
++{
++	uint32 rsum;
++	uint16 gsum, bsum;
++
++	rsum =  (pixel1 & ColorMask::kRedMask);
++	rsum += (pixel2 & ColorMask::kRedMask);
++	rsum += (pixel3 & ColorMask::kRedMask);
++	rsum /= 3;
++
++	gsum =  (pixel1 & ColorMask::kGreenMask);
++	gsum += (pixel2 & ColorMask::kGreenMask);
++	gsum += (pixel3 & ColorMask::kGreenMask);
++	gsum /= 3;
++
++	bsum =  (pixel1 & ColorMask::kBlueMask);
++	bsum += (pixel2 & ColorMask::kBlueMask);
++	bsum += (pixel3 & ColorMask::kBlueMask);
++	bsum /= 3;
++
++	return (rsum & ColorMask::kRedMask) | (gsum & ColorMask::kGreenMask) | (bsum & ColorMask::kBlueMask);
++}
++
++/**
+  * Interpolate four 16 bit pixels with weights 1, 1, 1, and 1, i.e., (p1+p2+p3+p4)/4.
+  */
+ template<typename ColorMask>
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: normal.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: normal.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: pm.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: pm.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: sai.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: sai.h
+diff -rbu ./graphics/scaler/scalebit.cpp ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/scalebit.cpp
+--- ./graphics/scaler/scalebit.cpp	2013-05-26 09:49:02.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/scalebit.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -37,6 +37,7 @@
+ 
+ #include "graphics/scaler/scale2x.h"
+ #include "graphics/scaler/scale3x.h"
++#include "graphics/scaler/scalebit.h"
+ 
+ #define DST(bits, num)	(scale2x_uint ## bits *)dst ## num
+ #define SRC(bits, num)	(const scale2x_uint ## bits *)src ## num
+@@ -194,6 +195,8 @@
+ 	mid[4] = mid[3] + mid_slice;
+ 	mid[5] = mid[4] + mid_slice;
+ 
++	stage_scale2x(SCMID(0), SCMID(1), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
++	stage_scale2x(SCMID(2), SCMID(3), SCSRC(1), SCSRC(2), SCSRC(3), pixel, width);
+ 	while (count) {
+ 		unsigned char* tmp;
+ 
+@@ -340,3 +343,40 @@
+ 		break;
+ 	}
+ }
++
++AdvMamePlugin::AdvMamePlugin() {
++	_factor = 2;
++	_factors.push_back(2);
++	_factors.push_back(3);
++	_factors.push_back(4);
++}
++
++void AdvMamePlugin::scaleIntern(const uint8 *srcPtr, uint32 srcPitch,
++							uint8 *dstPtr, uint32 dstPitch, int width, int height, int x, int y) {
++	if (_factor != 4)
++		::scale(_factor, dstPtr, dstPitch, srcPtr - srcPitch, srcPitch, _format.bytesPerPixel, width, height);
++	else
++		::scale(_factor, dstPtr, dstPitch, srcPtr - srcPitch * 2, srcPitch, _format.bytesPerPixel, width, height);
++}
++
++uint AdvMamePlugin::increaseFactor() {
++	if (_factor < 4)
++		++_factor;
++	return _factor;
++}
++
++uint AdvMamePlugin::decreaseFactor() {
++	if (_factor > 2)
++		--_factor;
++	return _factor;
++}
++
++const char *AdvMamePlugin::getName() const {
++	return "advmame";
++}
++
++const char *AdvMamePlugin::getPrettyName() const {
++	return "AdvMame";
++}
++
++REGISTER_PLUGIN_STATIC(ADVMAME, PLUGIN_TYPE_SCALER, AdvMamePlugin);
+diff -rbu ./graphics/scaler/scalebit.h ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/scalebit.h
+--- ./graphics/scaler/scalebit.h	2013-05-26 09:49:02.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler/scalebit.h	2014-02-16 10:45:26.000000000 +0200
+@@ -36,7 +36,24 @@
+ #ifndef SCALER_SCALEBIT_H
+ #define SCALER_SCALEBIT_H
+ 
++#include "graphics/scalerplugin.h"
++
++#define USE_ARM_SCALER_ASM
++
+ int scale_precondition(unsigned scale, unsigned pixel, unsigned width, unsigned height);
+ void scale(unsigned scale, void* void_dst, unsigned dst_slice, const void* void_src, unsigned src_slice, unsigned pixel, unsigned width, unsigned height);
+ 
++class AdvMamePlugin : public ScalerPluginObject {
++public:
++	AdvMamePlugin();
++	virtual void scaleIntern(const uint8 *srcPtr, uint32 srcPitch,
++							uint8 *dstPtr, uint32 dstPitch, int width, int height, int x, int y);
++	virtual uint increaseFactor();
++	virtual uint decreaseFactor();
++	virtual bool canDrawCursor() const { return true; }
++	virtual uint extraPixels() const { return 2; }
++	virtual const char *getName() const;
++	virtual const char *getPrettyName() const;
++};
++
+ #endif
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: tv.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics/scaler: tv.h
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics: scalerplugin.cpp
+Only in ../simon/source_1_0_3_5/jni/scummvm/graphics: scalerplugin.h

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal" android:layout_gravity="center_horizontal">
+
+    <TableRow android:gravity="center_horizontal" >
+
+        <ImageView
+            android:id="@+id/separator1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/seperator" />
+    </TableRow>
+
+    <TableRow android:gravity="center_horizontal" >
+
+        <org.iphsoft.simon1.ui.ExtendedTextView
+            android:id="@+id/txtSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/menu_subtitle_shadow"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="6.0"
+            android:text="@string/menu_subtitle"
+            android:textColor="@color/menu_subtitle"
+            android:textSize="@dimen/menu_subtitle_text_size" />
+
+    </TableRow>
+
+    <TableRow android:gravity="center_horizontal" >
+
+        <ImageView
+            android:id="@+id/separator1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/seperator" />
+    </TableRow>
+
+</TableLayout>

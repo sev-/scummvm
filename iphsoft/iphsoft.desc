@@ -1,0 +1,19 @@
+[12/08/2013 20:21:19] Liron Barzilai: Here is a short technical summary:
+
+1. Great new touch-controls – very easy to play on touch screens.
+2. Improved graphics using scalers in 3 levels: software, hardware-low, hardware-high.
+3. Completely new menus and a new save/load system.
+4. Enhanced Stereo Music for the entire game (from James)
+5. Six languages including English with both voice and subtitles, German voice or German subtitles.
+[12/08/2013 20:22:20] Eugene Sandulenko: hope those touch controls are not hacks into the engine like what was done with FOTAQ
+[12/08/2013 20:23:38] Liron Barzilai: Don't know really about the code itself but it was done by a skilled, different, developer.
+[12/08/2013 20:24:29] Liron Barzilai: But i know we did detect things that happens in the engine and probably even modify them
+[12/08/2013 20:28:03] Liron Barzilai: That reminds me about the other thing I wanted to ask. How can we co-operate the same way as you and DotEmu ? Which I guess you are good with the way the publish their code.
+
+[05/03/2014 10:11:04] Liron Barzilai: As always, if you want to look over it - you can find the latest sources here:
+[05/03/2014 10:11:05] Liron Barzilai: http://mojo-touch.com/GPL/
+
+[05/03/2014 10:18:50] Liron Barzilai: https://play.google.com/store/apps/details?id=com.mojotouch.simon&hl=en
+[05/03/2014 10:21:27] Liron Barzilai: And here is the tutorial video that explain the UX: https://www.youtube.com/watch?v=JFp03nw_yyA&hd=1
+
+

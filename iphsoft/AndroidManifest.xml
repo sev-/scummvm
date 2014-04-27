@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NB: android:versionCode needs to be bumped for formal releases -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mojotouch.simon"
+    android:installLocation="preferExternal"
+    android:versionCode="18"
+    android:versionName="1.0.3.5">
+
+    <!--
+         This version works on Android 1.5 (SDK 3) and newer, but we
+			want Android 2.2 (SDK 8) defaults and features.
+    -->
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="11" />
+    <supports-screens android:smallScreens="false" android:largeScreens="true" android:normalScreens="true" android:xlargeScreens="true"/>
+
+    <application
+        android:name="org.iphsoft.simon1.ScummVMApplication"
+        android:description="@string/app_desc"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" android:debuggable="false">
+        <activity
+            android:name="org.iphsoft.simon1.ScummVMActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.AboutActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.util.TestGLActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+         <activity
+            android:name="org.iphsoft.simon1.ui.VideoActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.GameMenuActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            >
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.SplashActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.PrepareGameFilesActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" 
+                        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
+        </activity>
+        <activity
+            android:name="org.iphsoft.simon1.SampleDownloaderActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale"
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop" 
+                        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+         In order to start the service, it must be uniquely registered with
+         the package manager here. 
+        -->
+        <service android:name="org.iphsoft.simon1.SampleDownloaderService" />
+
+        <!--
+         In order for the alarm manager to contact the downloader script, the receiver
+         must be uniquely registered with the package manager here. 
+        -->
+        <receiver android:name="org.iphsoft.simon1.SampleAlarmReceiver" />
+    </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Required to access Google Analytics and Google Play Licensing -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- The permissions below apply to Google Play -->
+    
+    <!-- Required to access Google Play Licensing -->
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    
+    <!-- Required to check whether Wi-Fi is enabled -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature android:glEsVersion="0x00020000" >
+    </uses-feature>
+
+</manifest>

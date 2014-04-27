@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="appirator_days_until_prompt">4</integer>
+    <integer name="appirator_launches_until_prompt">6</integer>
+    <!-- Set this to 0 to remind every launch -->
+    <integer name="appirator_days_before_reminding">1</integer>
+    <!-- Change to true to show every time, for testing -->
+    <bool name="appirator_test_mode">false</bool>
+    <!-- Change modify button colors -->
+    <color name="appirator_button_start_color">#ff449def</color>
+    <color name="appirator_button_end_color">#ff2f6699</color>
+    <color name="appirator_button_text_color">#ffffffff</color>
+</resources>

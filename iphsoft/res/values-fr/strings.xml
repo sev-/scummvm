@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">Simon</string>
+    <string name="app_desc">Graphic adventure game</string>
+    <string name="quit">EXIT</string>
+    <string name="no_sdcard">CANNOT ACCESS YOUR EXTERNAL STORAGE.</string>
+    <string name="restart_needed">YOUR CHANGES WILL APPLY AFTER \'NEW GAME\' OR \'LOAD\'.</string>
+    <string name="music_mode_no_music">NO MUSIC</string>
+    <string name="music_mode_original">ORIGINAL MUSIC</string>
+    <string name="music_mode_enhanced">ENHANCED MUSIC</string>
+    <string name="voice_mode_voice_subtitles">VOICE AND SUBTITLES</string>
+    <string name="voice_mode_voice_only">VOICE ONLY</string>
+    <string name="voice_mode_subtitles_only">SUBTITLES ONLY</string>
+    <string name="scaling_option_lq_shader">MEDIUM</string>
+    <string name="scaling_option_shader">HIGH</string>
+    <string name="scaling_option_shader_native_res">ULTRA</string>
+    <string name="scaling_option_software">LOW</string>
+    <string name="scaling_option_none">ORIGINAL</string>
+    <string name="control_mode_touch">TOUCH</string>
+    <string name="control_mode_classic">CLASSIC</string>
+    <string name="english">English</string>
+    <string name="german">Deutsch</string>
+    <string name="hebrew">כתוביות בעברית</string>
+    <string name="spanish">Subtítulos en Español</string>
+    <string name="french">Sous-titres Français</string>
+    <string name="italian">Sottotitoli Italiano</string>
+    <string name="music_mode">MUSIC</string>
+    <string name="voice_mode">VOICE</string>
+    <string name="language">LANGUAGE</string>
+    <string name="scaling_option">GRAPHICS</string>
+    <string name="unable_to_create_game_files_connect_external_storage">Unable to create game files. Is your external storage accessible?</string>
+    <string name="unable_to_create_game_files_error_dialog">The local game files are corrupt. Would you like to download the game files again?</string>
+    <string name="ok">OK</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string-array name="music_mode_entries">
+        <item>@string/music_mode_enhanced</item>
+        <item>@string/music_mode_original</item>
+        <item>@string/music_mode_no_music</item>
+    </string-array>
+    <string-array name="language_entries">
+        <item>@string/english</item>
+        <item>@string/german</item>
+        <item>@string/spanish</item>
+        <item>@string/french</item>
+        <item>@string/italian</item>
+        <item>@string/hebrew</item>
+    </string-array>
+    <string-array name="voice_mode_entries">
+        <item>@string/voice_mode_voice_subtitles</item>
+        <item>@string/voice_mode_voice_only</item>
+        <item>@string/voice_mode_subtitles_only</item>
+    </string-array>
+    <string-array name="scaling_option_entries">
+        <item>@string/scaling_option_shader</item>
+        <item>@string/scaling_option_lq_shader</item>
+        <item>@string/scaling_option_software</item>
+        <item>@string/scaling_option_none</item>
+    </string-array>
+    <string-array name="control_mode_entries">
+        <item>@string/control_mode_touch</item>
+        <item>@string/control_mode_classic</item>
+    </string-array>
+    <string name="text_validation_failed">Expansion file validation failed. The file is corrupted and needs to be downloaded again.</string>
+    <string name="text_button_pause">PAUSE</string>
+    <string name="text_button_resume">RESUME</string>
+    <string name="text_button_cancel">CANCEL</string>
+    <string name="text_button_cancel_verify">CANCEL</string>
+    <string name="failure_message_unknown">FAILED TO START DOWNLOADING GAME FILES.</string>
+    <string name="failure_message_cancelled">THE DOWNLOAD WAS CANCELLED.</string>
+    <string name="failure_message_connection">COULD NOT CONNECT TO GOOGLE PLAY\'S SERVERS.\nPLEASE TRY AGAIN LATER.</string>
+    <string name="failure_message_license">ACCORDING TO GOOGLE PLAY, THIS GAME CLIENT IS UNLICENSED.</string>
+    <string name="failure_message_sdcard">STORAGE IS FULL, FREE UP SOME SPACE.</string>
+    <string name="preparing_game_files">PREPARING GAME FILES...</string>
+    <string name="cancel">CANCEL</string>
+    <string name="exit_confirmation_message">EXIT NOW?\n\nUNSAVED PROGRESS WILL BE LOST.</string>
+    <string name="expansion_downloader_upper_text">DOWNLOADING GAME FILES</string>
+    <string name="expansion_downloader_upper_text_validating">VALIDATING GAME FILES</string>
+    <string name="choose_save_slot">CHOOSE SAVE SLOT</string>
+    <string name="choose_load_slot">CHOOSE SLOT TO LOAD</string>
+    <string name="enter_save_name">ENTER SAVE NAME:</string>
+    <string name="save_success">Saved game successfully</string>
+    <string name="save_failure">Cannot save the game at this time</string>
+    <string name="load_success">Loaded game successfully</string>
+    <string name="load_failure">Cannot load at this time</string>
+    <string name="save_game_reminder">%s is paused - it is recommended that you save your game from time to time.</string>
+    <string name="files_fraction">%1$s / %2$s files</string>
+    <string name="graphic_setting_fallback_toast">"The game\'s graphic settings have been adjusted to support your 
+device\'s capabilities"</string>
+    <string name="save_progress_dialog">SAVING, PLEASE WAIT...</string>
+    <string name="load_progress_dialog">LOADING, PLEASE WAIT...</string>
+    <string name="no_saved_games">There are no saved games</string>
+    <string name="continue_">CONTINUE</string>
+    <string name="save_game">SAVE</string>
+    <string name="load_game">LOAD</string>
+    <string name="new_game">NEW GAME</string>
+    <string name="settings">SETTINGS</string>
+    <string name="tutorial">TUTORIAL</string>
+    <string name="game_tutorial">GAME TUTORIAL</string>
+    <string name="exit_button">QUIT</string>
+    <string name="controls">CONTROLS</string>
+    <string name="about">ABOUT</string>
+    <string name="back">BACK</string>
+    <string name="menu_subtitle">20TH ANNIVERSARY EDITION</string>
+    <string name="shader_test_message">Testing graphics performance (first time only)</string>
+      <string name="appirator_app_title">Simon The Sorcerer</string>
+    <string name="rate_message">We hope that you enjoy playing %s. Please rate it!</string>
+    <string name="rate">YES, RATE NOW!</string>
+    <string name="rate_later">REMIND ME LATER</string>
+    <string name="rate_cancel">NO, THANKS</string>
+</resources>

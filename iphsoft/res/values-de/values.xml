@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_music_mode_values">
+        <item>"enhanced"</item>
+        <item>"original"</item>
+        <item>"none"</item>
+    </string-array>
+    <string-array name="pref_voice_mode_values">
+        <item>"voice_subtitles"</item>
+        <item>"voice"</item>
+        <item>"subtitles"</item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>"en"</item>
+        <item>"de"</item>
+        <item>"es"</item>
+        <item>"fr"</item>
+        <item>"it"</item>
+        <item>"he"</item>
+    </string-array>
+    <string-array name="pref_scaling_option_values">
+        <item>scaling_option_shader</item>
+        <item>scaling_option_lq_shader</item>
+        <item>scaling_option_software</item>
+        <item>scaling_option_none</item>
+    </string-array>
+    <string-array name="pref_control_mode_values">
+        <item>control_mode_touch</item>
+        <item>control_mode_classic</item>
+    </string-array>
+
+</resources>

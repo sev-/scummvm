@@ -1,0 +1,1056 @@
+Only in ../simon/source_1_0_3_5/jni/scummvm: Android.mk
+Only in ../simon/source_1_0_3_5/jni/scummvm: android-4-eabi.sh
+diff -rbu ./backends/base-backend.cpp ../simon/source_1_0_3_5/jni/scummvm/backends/base-backend.cpp
+--- ./backends/base-backend.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/backends/base-backend.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -33,6 +33,8 @@
+ 
+ #include "gui/message.h"
+ 
++#include "backends/platform/android/Constants.h"
++
+ void BaseBackend::displayMessageOnOSD(const char *msg) {
+ 	// Display the message for 1.5 seconds
+ 	GUI::TimedMessageDialog dialog(msg, 1500);
+@@ -49,7 +51,10 @@
+ 	// Init audio CD manager
+ #ifndef DISABLE_DEFAULT_AUDIOCD_MANAGER
+ 	if (!_audiocdManager)
++	{
+ 		_audiocdManager = new DefaultAudioCDManager();
++		_audiocdManager->setVolume(ENHANCED_MUSIC_VOLUME);
++	}
+ #endif
+ 
+ 	OSystem::initBackend();
+diff -rbu ./base/commandLine.cpp ../simon/source_1_0_3_5/jni/scummvm/base/commandLine.cpp
+--- ./base/commandLine.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/base/commandLine.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -188,6 +187,8 @@
+ 	ConfMan.registerDefault("enable_gs", false);
+ 	ConfMan.registerDefault("midi_gain", 100);
+ 
++	ConfMan.registerDefault("touchpad_mode", false);
++
+ 	ConfMan.registerDefault("music_driver", "auto");
+ 	ConfMan.registerDefault("mt32_device", "null");
+ 	ConfMan.registerDefault("gm_device", "null");
+@@ -201,6 +202,8 @@
+ 	ConfMan.registerDefault("platform", Common::kPlatformPC);
+ 	ConfMan.registerDefault("language", "en");
+ 	ConfMan.registerDefault("subtitles", false);
++	ConfMan.registerDefault("use-music", 0);
++
+ 	ConfMan.registerDefault("boot_param", 0);
+ 	ConfMan.registerDefault("dump_scripts", false);
+ 	ConfMan.registerDefault("save_slot", -1);
+@@ -407,6 +407,15 @@
+ 			DO_OPTION_BOOL('n', "subtitles")
+ 			END_OPTION
+ 
++			DO_LONG_OPTION_BOOL("speech_mute")
++				END_OPTION
++
++			DO_LONG_OPTION_BOOL("touchpad_mode")
++				END_OPTION
++
++			DO_LONG_OPTION_INT("use-music")
++				END_OPTION
++
+ 			DO_OPTION('p', "path")
+ 				Common::FSNode path(option);
+ 				if (!path.exists()) {
+@@ -955,13 +983,7 @@
+ 
+ #endif // DISABLE_COMMAND_LINE
+ 
+-
+-	// If a target was specified, check whether there is either a game
+-	// domain (i.e. a target) matching this argument, or alternatively
+-	// whether there is a gameid matching that name.
+ 	if (!command.empty()) {
+-		GameDescriptor gd = EngineMan.findGame(command);
+-		if (ConfMan.hasGameDomain(command) || !gd.gameid().empty()) {
+ 			bool idCameFromCommandLine = false;
+ 
+ 			// WORKAROUND: Fix for bug #1719463: "DETECTOR: Launching
+@@ -975,13 +997,8 @@
+ 			}
+ 
+ 			ConfMan.setActiveDomain(command);
++			ConfMan.set("gameid", command);
+ 
+ 			if (idCameFromCommandLine)
+ 				ConfMan.set("id_came_from_command_line", "1");
+-
+-		} else {
+-#ifndef DISABLE_COMMAND_LINE
+-			usage("Unrecognized game target '%s'", command.c_str());
+-#endif // DISABLE_COMMAND_LINE
+-		}
+ 	}
+diff -rbu ./base/main.cpp ../simon/source_1_0_3_5/jni/scummvm/base/main.cpp
+--- ./base/main.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/base/main.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -58,6 +58,10 @@
+ #include "graphics/cursorman.h"
+ #include "graphics/fontman.h"
+ #include "graphics/yuv_to_rgb.h"
++
++#include "engines/agos/agos.h"
++//#include "engines/scumm/scumm.h"
++
+ #ifdef USE_FREETYPE2
+ #include "graphics/fonts/ttf.h"
+ #endif
+@@ -72,6 +76,10 @@
+ #include "gui/launcher.h"
+ #endif
+ 
++//#include "backends/platform/android/loghelper.h"
++
++#include "backends/platform/android/AndroidPortAdditions.h"
++#include "backends/platform/android/Constants.h"
+ 
+ static bool launcherDialog() {
+ 
+@@ -135,8 +148,30 @@
+ 	if (!(dir.exists() && dir.isDirectory()))
+ 		err = Common::kPathNotDirectory;
+ 
+-	// Create the game engine
++			MetaEngine* metaEngine;
++
++	// Create the game engine according to game type
+ 	if (err.getCode() == Common::kNoError)
+-		err = (*plugin)->createInstance(&system, &engine);
++			{
++				uint16 gameType = GAME_TYPE_SIMON1; // AndroidPortAdditions::instance()->getGameType(); // XXX
++				//LOGD("runGame: gameType %d", gameType);
++				switch (gameType)
++				{
++					case GAME_TYPE_SIMON1:
++					case GAME_TYPE_SIMON2:
++					metaEngine = AGOS::agosEnginePlugin();
++					break;
++
++					case GAME_TYPE_INDY_FOA:
++					metaEngine = Scumm::scummEnginePlugin();
++					break;
++
++					default:
++					LOGE("runGame: unknown game type %d", gameType);
++				}
++
++				err = metaEngine->createInstance(&system, &engine);
++				delete metaEngine;
++			}
+ 
+ 	// Check for errors
+@@ -387,6 +422,13 @@
+ 		return res.getCode();
+ 	}
+ 
++	// FIXME: add the "use-music" setting to ConfMan. For some reason it doesn't get added.
++	if (settings.contains("use-music")) {
++		ConfMan.setInt("use-music", (int)strtol(settings["use-music"].c_str(), 0, 10));
++	}
++
++	ConfMan.setBool("touchpad_mode", settings.contains("touchpad_mode"));
++
+ 	// Init the backend. Must take place after all config data (including
+ 	// the command line params) was read.
+ 	system.initBackend();
+@@ -442,11 +486,11 @@
+ 	// cleanly, so this is now enabled to encourage people to fix bits :)
+ 	while (0 != ConfMan.getActiveDomain()) {
+ 		// Try to find a plugin which feels responsible for the specified game.
+-		const EnginePlugin *plugin = detectPlugin();
+-		if (plugin) {
++			const EnginePlugin *plugin = 0;
++			//	if (plugin) {
+ 			// Unload all plugins not needed for this game,
+ 			// to save memory
+-			PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
++			//		PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
+ 
+ 			// Try to run the game
+ 			Common::Error result = runGame(plugin, system, specialDebug);
+@@ -486,11 +534,11 @@
+ 			// Clear the active config domain
+ 			ConfMan.setActiveDomain("");
+ 
+-			PluginManager::instance().loadAllPlugins(); // only for cached manager
++			PluginManager::instance().loadAllPlugins();// only for cached manager
+ 
+-		} else {
+-			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
+-		}
++//		} else {
++//			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
++//		}
+ 
+ 		// reset the graphics to default
+ 		setupGraphics(system);
+diff -rbu ./base/plugins.cpp ../simon/source_1_0_3_5/jni/scummvm/base/plugins.cpp
+--- ./base/plugins.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/base/plugins.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -35,6 +35,7 @@
+ int pluginTypeVersions[PLUGIN_TYPE_MAX] = {
+ 	PLUGIN_TYPE_ENGINE_VERSION,
+ 	PLUGIN_TYPE_MUSIC_VERSION,
++	PLUGIN_TYPE_SCALER_VERSION,
+ };
+ 
+ 
+@@ -378,6 +380,30 @@
+ 	}
+ }
+ 
++void PluginManager::loadAllPluginsOfType(PluginType type) {
++	for (ProviderList::iterator pp = _providers.begin();
++	                            pp != _providers.end();
++	                            ++pp) {
++		PluginList pl((*pp)->getPlugins());
++		for (PluginList::iterator p = pl.begin();
++				                  p != pl.end();
++								  ++p) {
++			if ((*p)->loadPlugin()) {
++				if ((*p)->getType() == type) {
++					addToPluginsInMemList((*p));
++				} else {
++					// Plugin is wrong type
++					(*p)->unloadPlugin();
++					delete (*p);
++				}
++			} else {
++				// Plugin did not load
++				delete (*p);
++			}
++		}
++	}
++}
++
+ void PluginManager::unloadAllPlugins() {
+ 	for (int i = 0; i < PLUGIN_TYPE_MAX; i++)
+ 		unloadPluginsExcept((PluginType)i, NULL);
+@@ -546,3 +572,39 @@
+ const MusicPlugin::List &MusicManager::getPlugins() const {
+ 	return (const MusicPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_MUSIC);
+ }
++
++// Scaler plugins
++
++#include "graphics/scalerplugin.h"
++
++namespace Common {
++DECLARE_SINGLETON(ScalerManager);
++}
++
++const ScalerPlugin::List &ScalerManager::getPlugins() const {
++	return (const ScalerPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_SCALER);
++}
++
++uint ScalerManager::getMaxExtraPixels() const {
++	uint maxPixels = 0;
++	ScalerPlugin::List plugins = getPlugins();
++	ScalerPlugin::List::iterator i = plugins.begin();
++	for (; i != plugins.end(); ++i) {
++		uint n = (**i)->extraPixels();
++		if (n > maxPixels) {
++			maxPixels = n;
++		}
++	}
++	return maxPixels;
++}
++
++ScalerPlugin *ScalerManager::findScalerPlugin(const char *name) const {
++	const ScalerPlugin::List &plugins = getPlugins();
++	for (ScalerPlugin::List::const_iterator i = plugins.begin(); i != plugins.end(); ++i) {
++		if (!strcmp((**i)->getName(), name)) {
++			return *i;
++		}
++	}
++
++	return 0;
++}
+diff -rbu ./base/plugins.h ../simon/source_1_0_3_5/jni/scummvm/base/plugins.h
+--- ./base/plugins.h	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/base/plugins.h	2014-02-16 10:45:26.000000000 +0200
+@@ -58,7 +58,7 @@
+ enum PluginType {
+ 	PLUGIN_TYPE_ENGINE = 0,
+ 	PLUGIN_TYPE_MUSIC,
+-	/* PLUGIN_TYPE_SCALER, */	// TODO: Add graphics scaler plugins
++	PLUGIN_TYPE_SCALER,
+ 
+ 	PLUGIN_TYPE_MAX
+ };
+@@ -67,6 +67,7 @@
+ // because of the backlinking (posibly from the checkout revision)
+ #define PLUGIN_TYPE_ENGINE_VERSION 1
+ #define PLUGIN_TYPE_MUSIC_VERSION 1
++#define PLUGIN_TYPE_SCALER_VERSION 1
+ 
+ extern int pluginTypeVersions[PLUGIN_TYPE_MAX];
+ 
+@@ -335,6 +336,7 @@
+ 
+ 	// Functions used only by the cached PluginManager
+ 	virtual void loadAllPlugins();
++	virtual void loadAllPluginsOfType(PluginType type);
+ 	void unloadAllPlugins();
+ 
+ 	void unloadPluginsExcept(PluginType type, const Plugin *plugin, bool deletePlugin = true);
+@@ -362,7 +364,8 @@
+ 	virtual bool loadPluginFromGameId(const Common::String &gameId);
+ 	virtual void updateConfigWithFileName(const Common::String &gameId);
+ 
+-	virtual void loadAllPlugins() {} 	// we don't allow this
++	virtual void loadAllPlugins() {} 	// we don't allow these
++	virtual void loadAllPluginsOfType(PluginType type) {}
+ };
+ 
+ #endif
+diff -rbu ./engines/agos/agos.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/agos.cpp
+--- ./engines/agos/agos.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/agos.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -144,11 +146,25 @@
+ AGOSEngine::AGOSEngine(OSystem *system, const AGOSGameDescription *gd)
+ 	: Engine(system), _rnd("agos"), _gameDescription(gd) {
+ 
++//	LOGD("AGOSEngine::AGOSEngine: %d %s %d", getGameId(), getExtra(), getPlatform());
++
++	mSimon1EndGameWorkaround = false;
++
++	// Check the config for "enhanced music"
++	if (ConfMan.hasKey("use-music")) {
++		_useMusic = ConfMan.getInt("use-music");
++	} else {
++		warning("%s", "no key for use-music");
++		_useMusic = 0;
++	}
++
+ 	_vcPtr = 0;
+ 	_vcGetOutOfCode = 0;
+ 	_gameOffsetsPtr = 0;
+ 
+-	_debugger = 0;
++//	_debugger = 0;
++
++	mCanSkip = false;
+ 
+ 	_gameFile = 0;
+ 	_opcode = 0;
+@@ -1088,3 +1118,109 @@
++
++void AGOSEngine::stopWalking() {
++
++	LOGD("AGOSEngine::stopWalking");
++
++	// Check if Simon is walking, and stop when required
++	if (getGameType() == GType_SIMON1 && getBitFlag(11)) {
++
++		vcStopAnimation(11, 1122);
++		animate(4, 11, 1122, 0, 0, 2);
++		waitForSync(1122);
++	} else if (getGameType() == GType_SIMON2 && getBitFlag(11)) {
++		vcStopAnimation(11, 232);
++		animate(4, 11, 232, 0, 0, 2);
++		waitForSync(1122);
++	}
++}
++
++/**
++ * This implementation is copied from displayBoxStars, except it just counts the relevant hit areas.
++ */
++void AGOSEngine::getChatHitAreas(Rect* rectArray, uint16& hitAreaCount) {
++
++	HitArea *ha, *dha;
++	uint count;
++	uint y_, x_;
++
++	hitAreaCount = 0;
++
++	ha = _hitAreas;
++	count = ARRAYSIZE(_hitAreas);
++
++	do {
++
++		//	LOGD("AGOSEngine::getChatHitAreas: id %d flags %d y %d", ha->id, ha->flags, ha->y);
++
++		if (ha->id != 0 && (ha->flags & kBFInvertTouch)
++				&& (ha->flags & kBFBoxInUse) && !(ha->flags & kBFBoxDead)) {
++
++			if (ha->y <= 135 || ha->width != 320)
++				continue;
++
++			// If we got here, we add the hit area to the result
++			rectArray->left = ha->x;
++			rectArray->top = ha->y;
++			rectArray->right = ha->x + ha->width;
++			rectArray->bottom = ha->y + ha->height;
++			++hitAreaCount;
++			++rectArray;
++		}
++	} while (ha++, --count);
++}
++
++/**
++ * This implementation is copied from displayBoxStars, except it just counts the relevant hit areas.
++ */
++void AGOSEngine::getInteractionHitAreas(Rect* rectArray, uint16& hitAreaCount) {
++
++	//LOGD("AGOSEngine::getHitAreas");
++
++	HitArea *ha, *dha;
++	uint count;
++	uint y_, x_;
++
++	hitAreaCount = 0;
++
++	uint curHeight = (getGameType() == GType_SIMON2) ? _boxStarHeight : 134;
++
++	ha = _hitAreas;
++	count = ARRAYSIZE(_hitAreas);
++
++	do {
++		if (ha->id != 0 && (ha->flags & kBFBoxInUse)
++				&& !(ha->flags & kBFBoxDead)) {
++
++			dha = _hitAreas;
++			if (ha->flags & kBFTextBox) {
++				while (dha != ha && dha->flags != ha->flags)
++					++dha;
++				if (dha != ha && dha->flags == ha->flags)
++					continue;
++			} else {
++				dha = _hitAreas;
++				while (dha != ha && dha->itemPtr != ha->itemPtr)
++					++dha;
++				if (dha != ha && dha->itemPtr == ha->itemPtr)
++					continue;
++			}
++
++			if (ha->y >= curHeight)
++				continue;
++
++			x_ = (ha->width / 2) - 4 + ha->x - (_scrollX * 8);
++
++			if (x_ >= 311)
++				continue;
++
++			// If we got here, we add the hit area to the result
++			rectArray->left = ha->x;
++			rectArray->top = ha->y;
++			rectArray->right = ha->x + ha->width;
++			rectArray->bottom = ha->y + ha->height;
++			++hitAreaCount;
++			++rectArray;
++		}
++	} while (ha++, --count);
+ }
+ 
+ } // End of namespace AGOS
+diff -rbu ./engines/agos/agos.h ../simon/source_1_0_3_5/jni/scummvm/engines/agos/agos.h
+--- ./engines/agos/agos.h	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/agos.h	2014-02-16 10:45:26.000000000 +0200
+@@ -25,6 +25,8 @@
+ 
+ #include "engines/engine.h"
+ 
++#include "engines/metaengine.h"
++
+ #include "common/archive.h"
+ #include "common/array.h"
+ #include "common/error.h"
+@@ -33,6 +35,7 @@
+ #include "common/rect.h"
+ #include "common/stack.h"
+ #include "common/util.h"
++#include "common/error.h"
+ 
+ #include "agos/sound.h"
+ #include "agos/vga.h"
+@@ -240,6 +263,9 @@
+ 
+ 	const AGOSGameDescription * const _gameDescription;
+ 
++	bool mSimon1EndGameWorkaround;
++
++
+ public:
+ 	virtual void setupGame();
+ 
+@@ -628,6 +653,12 @@
+ 	uint32 _curSfxFileSize;
+ 	uint16 _sampleEnd, _sampleWait;
+ 
++#define USE_MUSIC_ENHANCED 0
++#define USE_MUSIC_ORIGINAL 1
++#define USE_MUSIC_NONE 2
++
++	uint32 _useMusic;
++
+ protected:
+ 	virtual uint16 to16Wrapper(uint value);
+ 	virtual uint16 readUint16Wrapper(const void *src);
+@@ -920,6 +968,23 @@
+ 	void runVgaScript();
+ 
+ public:
++
++	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
++	virtual void getChatHitAreas(Rect* rectArray, uint16& count);
++
++	virtual bool canSkip();
++
++	/**
++	 * Return a game-specific id for the currently chosen action
++	 */
++	virtual uint16 getCurrentActionId();
++
++private:
++
++	bool mCanSkip;
++
++public:
++
+ 	bool getBitFlag(uint bit);
+ 	void setBitFlag(uint bit, bool value);
+ 
+@@ -1275,6 +1345,16 @@
+ 	virtual bool loadGame(const char *filename, bool restartMode = false);
+ 	virtual bool saveGame(uint slot, const char *caption);
+ 
++	// String must be at least 20 chars long
++	virtual void generateSaveSlotName(char* string, int32 slot);
++
++	virtual Common::Error loadGameState(int slot);
++	virtual Common::Error saveGameState(int slot, const Common::String &desc);
++
++	virtual int32 getTimerEventCount();
++
++	virtual void stopWalking();
++
+ 	void openTextWindow();
+ 	void tidyIconArray(uint i);
+ 
+@@ -2174,6 +2262,8 @@
+ };
+ #endif
+ 
++MetaEngine* agosEnginePlugin();
++
+ } // End of namespace AGOS
+ 
+ #endif
+diff -rbu ./engines/agos/detection.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/detection.cpp
+--- ./engines/agos/detection.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/detection.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -276,4 +279,10 @@
+ }
+ #endif
+ 
++MetaEngine* agosEnginePlugin()
++{
++	return new AgosMetaEngine();
++}
++
++
+ } // End of namespace AGOS
+diff -rbu ./engines/agos/draw.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/draw.cpp
+--- ./engines/agos/draw.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/draw.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -29,6 +29,8 @@
+ #include "agos/agos.h"
+ #include "agos/intern.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
++
+ namespace AGOS {
+ 
+ byte *AGOSEngine::getBackBuf() {
+@@ -853,6 +855,10 @@
+ }
+ 
+ void AGOSEngine::fastFadeIn() {
++
++
++	// AndroidPortAdditions::instance()->onFastFadeInStarted(); // XXX
++
+ 	if (_fastFadeInFlag & 0x8000) {
+ 		slowFadeIn();
+ 	} else {
+diff -rbu ./engines/agos/event.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/event.cpp
+--- ./engines/agos/event.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/event.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -153,6 +157,19 @@
+ 	return result;
+ }
+ 
++int32 AGOSEngine::getTimerEventCount() {
++	TimeEvent *te;
++	int32 i = 0;
++	for (te = _firstTimeStruct; te; te = te->next)
++	{
++		i++;
++
++		LOGD("AGOSEngine::getTimerEventCount: index %d time %d opcode %d", i, te->time, te->subroutine_id);
++	}
++
++	return i;
++}
++
+ bool AGOSEngine::isVgaQueueEmpty() {
+ 	VgaTimerEntry *vte = _vgaTimerList;
+ 	bool result = false;
+@@ -429,7 +428,7 @@
+ 
+ 	_system->getAudioCDManager()->updateCD();
+ 
+-	_debugger->onFrame();
++//	_debugger->onFrame();
+ 
+ 	vgaPeriod = (_fastMode) ? 10 : _vgaPeriod;
+ 	if (getGameType() == GType_PP && getGameId() != GID_DIMP) {
+@@ -476,7 +478,7 @@
+ 					} else if (event.kbd.keycode == Common::KEYCODE_f) {
+ 						_fastMode = !_fastMode;
+ 					} else if (event.kbd.keycode == Common::KEYCODE_d) {
+-						_debugger->attach();
++						//				_debugger->attach();
+ 					} else if (event.kbd.keycode == Common::KEYCODE_s) {
+ 						dumpAllSubroutines();
+ 					} else if (event.kbd.keycode == Common::KEYCODE_i) {
+diff -rbu ./engines/agos/input.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/input.cpp
+--- ./engines/agos/input.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/input.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -28,6 +28,9 @@
+ #include "agos/midi.h"
+ #include "agos/vga.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
++
++
+ namespace AGOS {
+ 
+ uint AGOSEngine::setVerbText(HitArea *ha) {
+@@ -263,5 +267,9 @@
+ 			_verbHitArea = ha->verb;
+ 			setVerb(ha);
++
++			// Notify of verb click
++			// AndroidPortAdditions::instance()->onActionClicked(ha->id); // XXX
++
+ 			_defaultVerb = 0;
+ 		} else {
+ 			if (getGameType() == GType_WW) {
+diff -rbu ./engines/agos/res_snd.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/res_snd.cpp
+--- ./engines/agos/res_snd.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/res_snd.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -228,8 +229,15 @@
+ 	// Support for compressed music from the ScummVM Music Enhancement Project
+ 	_system->getAudioCDManager()->stop();
++	if (_useMusic == USE_MUSIC_ENHANCED) {
+ 	_system->getAudioCDManager()->play(music + 1, -1, 0, 0);
+ 	if (_system->getAudioCDManager()->isPlaying())
+ 		return;
++	}
++	else if (_useMusic == USE_MUSIC_NONE)
++	{
++		// Don't play anything
++		return;
++	}
+ 
+ 	if (getPlatform() == Common::kPlatformAmiga) {
+ 		playModule(music);
+diff -rbu ./engines/agos/saveload.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/saveload.cpp
+--- ./engines/agos/saveload.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/saveload.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -1041,6 +941,23 @@
+ 		f->writeUint32BE(val - 1);
+ }
++void AGOSEngine::generateSaveSlotName(char* string, int32 slot) {
++	sprintf(string, "simon1slot%d", slot);
++}
+ 
+-bool AGOSEngine::loadGame(const char *filename, bool restartMode) {
++Common::Error AGOSEngine::loadGameState(int slot) {
++	stopWalking();
++	bool result = loadGame(genSaveName(slot));
++	LOGD("AGOSEngine::loadGameState: %d result %d", slot, result);
++	drawIconArray(2, me(), 0, 0);
++	setBitFlag(97, true);
++	Subroutine* sub;
++	sub = getSubroutineByID(100);
++	startSubroutine(sub);
++	mouseOn();
++	return result ? Common::kNoError : Common::kUnknownError;
++}
++
++bool AGOSEngine::loadGame(const char* filename, bool restartMode) {
++	LOGD("loadGame: %s", filename);
+ 	char ident[100];
+ 	Common::SeekableReadStream *f = NULL;
+@@ -1136,6 +1041,13 @@
+ 	return true;
+ }
+ 
+-bool AGOSEngine::saveGame(uint slot, const char *caption) {
+-	Common::OutSaveFile *f;
++Common::Error AGOSEngine::saveGameState(int slot, const Common::String& desc) {
++	stopWalking();
++	bool result = saveGame(slot, desc.c_str());
++	LOGD("AGOSEngine::saveGameState: %d", result);
++	return result ? Common::kNoError : Common::kUnknownError;
++}
++
++bool AGOSEngine::saveGame(uint slot, const char* caption) {
++	Common::OutSaveFile* f;
+ 	uint item_index, num_item, i;
+diff -rbu ./engines/agos/script.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/script.cpp
+--- ./engines/agos/script.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/script.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -29,3 +28,4 @@
+ #include "agos/animation.h"
+ #include "agos/agos.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
+@@ -33,6 +35,8 @@
+ extern bool isSmartphone();
+ #endif
+ 
++#define SIMON_IDLE_COUNTER_VAR 116
++
+ namespace AGOS {
+ 
+ void AGOSEngine::setupOpcodes() {
+@@ -596,6 +607,9 @@
+ 	}
+ 
+ 	_videoLockOut &= ~0x80;
++
++	// Disable Simon1 end game workaround when switching a zone
++	mSimon1EndGameWorkaround = false;
+ }
+ 
+ void AGOSEngine::o_killAnimate() {
+@@ -974,7 +989,15 @@
+ 	if (variable >= _numVars)
+ 		error("writeVariable: Variable %d out of range", variable);
+ 
++	// In Simon1, prevent Simon from going idle by resetting the idle counter
++	if (getGameType() == GType_SIMON1 && variable == SIMON_IDLE_COUNTER_VAR
++			&& contents <= 14) {
++
++		// AndroidPortAdditions::instance()->onGameIdleCounter(); // XXX
++		contents = 15;
++	}
++
+ 	if (getGameType() == GType_FF && getBitFlag(83))
+ 		_variableArray2[variable] = contents;
+ 	else
+ 		_variableArray[variable] = contents;
+@@ -1067,4 +1093,9 @@
+ 	_videoLockOut &= ~0x8000;
+ }
+ 
++bool AGOSEngine::canSkip() {
++
++	return mCanSkip;
++}
++
+ void AGOSEngine::waitForSync(uint a) {
+@@ -1072,3 +1104,9 @@
++
++	// If we use the workaround for Simon1 end game, reduce max time for sync to make the ending move more quickly
++	if (mSimon1EndGameWorkaround)
++	{
++		maxCount = 50;
++	}
+ 
+ 	if (getGameType() == GType_SIMON1 && (getFeatures() & GF_TALKIE)) {
+ 		if (a != 200) {
+@@ -1085,4 +1123,10 @@
+ 	_rightButtonDown = false;
+ 
+ 	while (_vgaWaitFor != 0 && !shouldQuit()) {
++
++
++		mCanSkip = getBitFlag(9)
++				|| (_vgaWaitFor == 200
++						&& (getGameType() == GType_FF || !getBitFlag(14)));
++
+ 		if (_rightButtonDown) {
+diff -rbu ./engines/agos/script_s1.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/script_s1.cpp
+--- ./engines/agos/script_s1.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/script_s1.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -27,6 +27,8 @@
+ 
+ #include "agos/agos.h"
+ 
++#include "backends/platform/android/loghelper.h"
++
+ #ifdef _WIN32_WCE
+ extern bool isSmartphone();
+ #endif
+@@ -332,6 +335,10 @@
+ 	tl->width = getVarOrWord();
+ }
+ 
++// Used for workaround
++const char* simon1EndGameString = "I guess I must have dropped off.";
++
++
+ void AGOSEngine_Simon1::os1_screenTextMsg() {
+ 	// 162: print string
+ 	uint vgaSpriteId = getVarOrByte();
+@@ -371,8 +378,24 @@
+ 			tl->width = 96;
+ 	}
+ 
+-	if (stringPtr != NULL && stringPtr[0] != 0 && (speechId == 0 || _subtitles))
+-		printScreenText(vgaSpriteId, color, (const char *)stringPtr, tl->x, tl->y, tl->width);
++	if (stringPtr != NULL && stringPtr[0] != 0
++			&& (speechId == 0 || _subtitles)) {
++	//	LOGD("AGOSEngine_Simon1::os1_screenTextMsg: %s x %d y %d w %d",
++	//			stringPtr, tl->x, tl->y, tl->width);
++
++		// Nasty workaround for Simon1 script bug on English subtitle version.
++		// Set a flag when identifying a part in the game's ending.
++		if (getGameType() == GType_SIMON1 && _language == Common::EN_ANY
++				&& _subtitles && tl->x == 0 && tl->y == 20 && tl->width == 128
++				&& strcmp((const char*) stringPtr, simon1EndGameString) == 0) {
++			LOGD(
++					"AGOSEngine_Simon1::os1_screenTextMsg: Simon1 ending workaround active");
++			mSimon1EndGameWorkaround = true;
++		}
++
++		printScreenText(vgaSpriteId, color, (const char *) stringPtr, tl->x,
++				tl->y, tl->width);
++	}
+ 
+ }
+ 
+diff -rbu ./engines/agos/string.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/string.cpp
+--- ./engines/agos/string.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/string.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -478,6 +478,21 @@
+ 	int padding, lettersPerRow, lettersPerRowJustified;
+ 	const int textHeight = 10;
+ 
++
++	// Limit subtitle position so it won't overlap with the port overlay
++	if (x < 32 && y < 32)
++	{
++		x = 32;
++	}
++	if (y < 32 && (x + width > 288))
++	{
++		x = MAX(288 - width, 32);
++		if (x + width > 288)
++		{
++			width =  288 - x;
++		}
++	}
++
+ 	height = textHeight;
+ 	lettersPerRow = width / 6;
+ 	lettersPerRowJustified = stringLength / (stringLength / lettersPerRow + 1) + 1;
+diff -rbu ./engines/agos/verb.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/verb.cpp
+--- ./engines/agos/verb.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/verb.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -619,4 +513,13 @@
+ }
+ #endif
+ 
++uint16 AGOSEngine::getCurrentActionId() {
++	if (_currentVerbBox == NULL) {
++		// default
++		return 101;
++	}
++
++	return _currentVerbBox->id;
++}
++
+ void AGOSEngine::setVerb(HitArea *ha) {
+@@ -654,6 +560,10 @@
+ 		_needHitAreaRecalc++;
+ 	}
+ 	_currentVerbBox = ha;
++
++	if (_currentVerbBox != NULL) {
++		// AndroidPortAdditions::instance()->onActionChanged(_currentVerbBox->id); // XXX
++	}
+ }
+ 
+ #ifdef ENABLE_AGOS2
+diff -rbu ./engines/agos/vga_ww.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/agos/vga_ww.cpp
+--- ./engines/agos/vga_ww.cpp	2014-04-22 21:53:46.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/agos/vga_ww.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -31,6 +29,8 @@
+ #include "graphics/surface.h"
+ #include "graphics/palette.h"
+ 
++#include "backends/platform/android/AndroidPortAdditions.h"
++
+ namespace AGOS {
+ 
+ void AGOSEngine_Waxworks::setupVideoOpcodes(VgaOpcodeProc *op) {
+@@ -216,9 +216,19 @@
+ 				fadeSize = 8;
+ 			}
+ 		} else {
+-			fadeCount = 64;
+-			fadeSize = 4;
++			// fadeCount = 64;
++			// fadeSize = 4;
++
++			// Modification to reduce the Simon1 fade times
++			fadeCount = 8;
++			fadeSize = 32;
++
++			if (/* AndroidPortAdditions::instance()->isInAutoloadState() */ 0) { // XXX
++				// If needed, completely disable fade-out
++				fadeCount = 0;
++				fadeSize = 0;
++			}
+ 		}
+ 
+ 		for (i = fadeCount; i != 0; --i) {
+ 			paletteFadeOut(_currentPalette, _fastFadeCount, fadeSize);
+diff -rbu ./engines/engine.cpp ../simon/source_1_0_3_5/jni/scummvm/engines/engine.cpp
+--- ./engines/engine.cpp	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/engine.cpp	2014-02-16 10:45:26.000000000 +0200
+@@ -375,6 +378,12 @@
+ #endif
+ }
+ 
++bool Engine::canSkip() {
++}
++
++uint16 Engine::getCurrentActionId() {
++}
++
+ bool Engine::shouldPerformAutoSave(int lastSaveTime) {
+ 	const int diff = _system->getMillis() - lastSaveTime;
+ 	const int autosavePeriod = ConfMan.getInt("autosave_period");
+@@ -526,6 +535,12 @@
+ 	syncSoundSettings();
+ }
+ 
++void Engine::generateSaveSlotName(char* string, int32 slot)
++{
++	// Default implementation
++	sprintf(string, "default%d", slot);
++}
++
+ Common::Error Engine::loadGameState(int slot) {
+ 	// Do nothing by default
+ 	return Common::kNoError;
+@@ -558,6 +573,22 @@
+ 	return (eventMan->shouldQuit() || eventMan->shouldRTL());
+ }
+ 
++void Engine::preventIdleMode()
++{
++	// Not implemented
++}
++
++int32 Engine::getTimerEventCount()
++{
++	// Not implemented
++	return 0;
++}
++
++void Engine::stopWalking()
++{
++	// Not implemented
++}
++
+ /*
+ EnginePlugin *Engine::getMetaEnginePlugin() const {
+ 
+@@ -571,1 +601,16 @@
+ */
++void Engine::getInteractionHitAreas(Rect* rectArray, uint16& count)
++{
++	// Empty implementation.
++	count = 0;
++}
++
++
++
++void Engine::getChatHitAreas(Rect* rectArray, uint16& count)
++{
++	// Empty implementation.
++	count = 0;
++}
++
++
+diff -rbu ./engines/engine.h ../simon/source_1_0_3_5/jni/scummvm/engines/engine.h
+--- ./engines/engine.h	2014-04-22 21:53:47.000000000 +0300
++++ ../simon/source_1_0_3_5/jni/scummvm/engines/engine.h	2014-02-16 10:45:26.000000000 +0200
+@@ -26,6 +26,9 @@
+ #include "common/str.h"
+ #include "common/language.h"
+ #include "common/platform.h"
++#include "common/rect.h"
++
++using Common::Rect;
+ 
+ class OSystem;
+ 
+@@ -197,6 +201,9 @@
+ 	 */
+ 	virtual void flipMute();
+ 
++	// String must be at least 20 chars long
++	virtual void generateSaveSlotName(char* string, int32 slot);
++
+ 	/**
+ 	 * Load a game state.
+ 	 * @param slot	the slot from which a savestate should be loaded
+@@ -231,6 +238,41 @@
+ 	 */
+ 	virtual bool canSaveGameStateCurrently();
+ 
++	/**
++	 * Prevent the game from going into idle mode after a certain time
++	 */
++	virtual void preventIdleMode();
++
++	/**
++	 * The number of pending game events
++	 */
++	virtual int32 getTimerEventCount();
++
++	// Stops the character if it walks
++	virtual void stopWalking();
++
++	/**
++	 * Writes an array of hit areas into rectArray.
++	 * count is an output variable containing the number of hit areas written.
++	 */
++	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
++
++	/**
++	 * Writes an array of hit areas into rectArray.
++	 * count is an output variable containing the number of hit areas written.
++	 */
++	virtual void getChatHitAreas(Rect* rectArray, uint16& count);
++
++	/**
++	 * Whether the game can skip now
++	 */
++	virtual bool canSkip();
++
++	/**
++	 * Return a game-specific id for the currently chosen action
++	 */
++	virtual uint16 getCurrentActionId();
++
+ protected:
+ 
+ 	/**

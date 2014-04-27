@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">Simon</string>
+    <string name="app_desc">Graphic adventure game</string>
+    <string name="quit">BEENDEN</string>
+    <string name="no_sdcard">KANN AUF EXTERNEN SPEICHER NICHT ZUGREIFEN.</string>
+    <string name="restart_needed">ÄNDERUNGEN WERDEN WIRKSAM NACH DEM START EINES NEUEN SPIELS ODER DURCH LADEN EINES SPIELSTANDS.</string>
+    <string name="music_mode_no_music">KEINE MUSIK</string>
+    <string name="music_mode_original">ORIGINALE MUSIK</string>
+    <string name="music_mode_enhanced">VERBESSERTE MUSIK</string>
+    <string name="voice_mode_voice_subtitles">SPRACHAUSGABE UND UNTERTITEL</string>
+    <string name="voice_mode_voice_only">NUR SPRACHAUSGABE</string>
+    <string name="voice_mode_subtitles_only">NUR UNTERTITEL</string>
+    <string name="scaling_option_lq_shader">MITTEL</string>
+    <string name="scaling_option_shader">HOCH</string>
+    <string name="scaling_option_shader_native_res">ULTRA</string>
+    <string name="scaling_option_software">NIEDRIG</string>
+    <string name="scaling_option_none">ORIGINAL</string>
+    <string name="control_mode_touch">BERÜHRUNG</string>
+    <string name="control_mode_classic">KLASSISCH</string>
+    <string name="english">English</string>
+    <string name="german">Deutsch</string>
+    <string name="hebrew">כתוביות בעברית</string>
+    <string name="spanish">Subtítulos en Español</string>
+    <string name="french">Sous-titres Français</string>
+    <string name="italian">Sottotitoli Italiano</string>
+    <string name="music_mode">MUSIK</string>
+    <string name="voice_mode">SPRACHAUSGABE</string>
+    <string name="language">SPRACHE</string>
+    <string name="scaling_option">GRAFIK</string>
+    <string name="unable_to_create_game_files_connect_external_storage">Kann Spieldateien nicht erstellen. Ist externer Speicherplatz verfügbar?</string>
+    <string name="unable_to_create_game_files_error_dialog">Die lokalen Spieldateien sind beschädigt. Sollen die Spieldateien erneut heruntergeladen werden?</string>
+    <string name="ok">OK</string>
+    <string name="yes">JA</string>
+    <string name="no">NEIN</string>
+    <string-array name="music_mode_entries">
+        <item>@string/music_mode_enhanced</item>
+        <item>@string/music_mode_original</item>
+        <item>@string/music_mode_no_music</item>
+    </string-array>
+    <string-array name="language_entries">
+        <item>@string/english</item>
+        <item>@string/german</item>
+        <item>@string/spanish</item>
+        <item>@string/french</item>
+        <item>@string/italian</item>
+        <item>@string/hebrew</item>
+    </string-array>
+    <string-array name="voice_mode_entries">
+        <item>@string/voice_mode_voice_subtitles</item>
+        <item>@string/voice_mode_voice_only</item>
+        <item>@string/voice_mode_subtitles_only</item>
+    </string-array>
+    <string-array name="scaling_option_entries">
+        <item>@string/scaling_option_shader</item>
+        <item>@string/scaling_option_lq_shader</item>
+        <item>@string/scaling_option_software</item>
+        <item>@string/scaling_option_none</item>
+    </string-array>
+    <string-array name="control_mode_entries">
+        <item>@string/control_mode_touch</item>
+        <item>@string/control_mode_classic</item>
+    </string-array>
+    <string name="text_validation_failed">Gültigkeitsprüfung der Erweiterungsdatei gescheitert. Die Datei ist beschädigt und muss erneut heruntergeladen werden.</string>
+    <string name="text_button_pause">PAUSE</string>
+    <string name="text_button_resume">FORTSETZEN</string>
+    <string name="text_button_cancel">ABBRECHEN</string>
+    <string name="text_button_cancel_verify">ABBRECHEN</string>
+    <string name="failure_message_unknown">HERUNTERLADEN DER SPIELDATEIEN KONNTE NICHT GESTARTET WERDEN.</string>
+    <string name="failure_message_cancelled">DER DOWNLOAD WURDE ABGEBROCHEN.</string>
+    <string name="failure_message_connection">KONNTE NICHT MIT DEN SERVERN VON GOOGLE PLAY VERBINDEN. BITTE SPÄTER ERNEUT VERSUCHEN.</string>
+    <string name="failure_message_license">GEMÄSS GOOGLE PLAY IST DIESE KOPIE DES SPIELES NICHT LIZENSIERT.</string>
+    <string name="failure_message_sdcard">SPEICHER IST VOLL, BITTE SPEICHERPLATZ SCHAFFEN.</string>
+    <string name="preparing_game_files">SPIELDATEIEN WERDEN VORBEREITET...</string>
+    <string name="cancel">ABBRECHEN</string>
+    <string name="exit_confirmation_message">JETZT BEENDEN? NICHT GESPEICHERTER FORTSCHRITT GEHT VERLOREN.</string>
+    <string name="expansion_downloader_upper_text">SPIELDATEIEN WERDEN HERUNTERGELADEN</string>
+    <string name="expansion_downloader_upper_text_validating">SPIELEDATEIEN WERDEN AUF GÜLTIGKEIT GEPRÜFT</string>
+    <string name="choose_save_slot">SPEICHERPLATZ ZUM SPEICHERN WÄHLEN</string>
+    <string name="choose_load_slot">SPEICHERPLATZ ZUM LADEN WÄHLEN</string>
+    <string name="enter_save_name">NAMEN FÜR DEN SPIELSTAND EINGEBEN:</string>
+    <string name="save_success">Spiel erfolgreich gespeichert.</string>
+    <string name="save_failure">Kann Spiel zurzeit nicht speichern.</string>
+    <string name="load_success">Spiel erfolgreich geladen.</string>
+    <string name="load_failure">Kann Spiel zurzeit nicht laden.</string>
+    <string name="save_game_reminder">%s ist pausiert – es wird empfohlen, dass Spiel von Zeit zu Zeit zu speichern.</string>
+    <string name="files_fraction">%1$s / %2$s Dateien</string>
+    <string name="graphic_setting_fallback_toast">Die Grafik-Einstellungen wurden angepasst, um die Leistungsfähigkeit des Gerätes zu unterstützen</string>
+    <string name="save_progress_dialog">SPEICHERT GERADE, BITTE WARTEN ...</string>
+    <string name="load_progress_dialog">LÄDT GERADE, BITTE WARTEN ...</string>
+    <string name="no_saved_games">Es gibt keine gespeicherten Spielstände.</string>
+    <string name="continue_">FORTFAHREN</string>
+    <string name="save_game">SPEICHERN</string>
+    <string name="load_game">LADEN</string>
+    <string name="new_game">NEUES SPIEL</string>
+    <string name="settings">EINSTELLUNGEN</string>
+    <string name="tutorial">ANLEITUNG</string>
+    <string name="exit_button">BEENDEN</string>
+    <string name="controls">SPIELSTEUERUNG</string>
+    <string name="about">ÜBER</string>
+    <string name="back">ZURÜCK</string>
+    <string name="menu_subtitle">20TH ANNIVERSARY EDITION</string>
+    <string name="shader_test_message">Grafik-Leistung wird getestet (nur beim ersten Mal)</string>
+    <string name="appirator_app_title">Simon The Sorcerer</string>
+    <string name="rate_message">Wir hoffen, dass Sie viel Freude dabei haben, %s zu spielen. Bitte bewerten Sie das Spiel!</string>
+    <string name="rate">JA, JETZT BEWERTEN</string>
+    <string name="rate_later">SPÄTER DARAN ERINNERN</string>
+    <string name="rate_cancel">NEIN, DANKE</string>
+    <string name="tutorial_prompt">MÖCHTEST DU DIE VIDEO-ANLEITUNG SEHEN ?</string>
+    <string name="graphic_setting_message">Um ruckelfrei spielen zu können, erhöhe nicht die standardmäßigen Grafikeinstellungen - sie basieren auf der Grafikleistung (GPU) des Geräts.</string>
+    <string name="prepare_game_files_no_space_message">AUF DEM GERÄT IST KEIN FREIER SPEICHER VERFÜGBAR. BITTE MACHE 100 MB FREI UND STARTE DANN ERNEUT.</string>
+    <string name="storage_unavailable">DER GERÄTESPEICHER IST NICHT VERFÜBAR - IST ER ALS USB-GERÄT ANGESCHLOSSEN?</string>
+    <string name="new_game_confirmation">MÖCHTEST DU WIRKLICH EIN NEUES SPIEL STARTEN? DEIN NICHT GESPEICHERTER SPIELSTAND GEHT VERLOREN.</string>
+</resources>

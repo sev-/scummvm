@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="grey">#666666</color>
+    <color name="black">#000000</color>
+    <color name="button_normal">#786432</color>
+    <color name="button_pressed">#ebebeb</color>
+    <color name="button_disabled">#aa8b50</color>
+    <color name="button_shadow">#4c786432</color>
+    <color name="text_default">#463214</color>
+    <color name="menu_subtitle">#FAF0D7</color>
+    <color name="menu_subtitle_shadow">#AA000000</color>
+    
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="pref_music_mode"
+        android:title="@string/music_mode"
+        android:dialogTitle="@string/music_mode"
+        android:entries="@array/music_mode_entries"
+        android:entryValues="@array/pref_music_mode_values"
+        android:defaultValue="enhanced"
+        android:persistent="true"
+         />
+    
+    <ListPreference
+        android:key="pref_voice_mode"
+        android:title="@string/voice_mode"
+        android:dialogTitle="@string/voice_mode"
+        android:entries="@array/voice_mode_entries"
+        android:entryValues="@array/pref_voice_mode_values"
+        android:defaultValue="voice_subtitles"
+        android:persistent="true"
+         />
+    
+    <ListPreference
+        android:key="pref_language"
+        android:title="@string/language"
+        android:dialogTitle="@string/language"
+        android:entries="@array/language_entries"
+        android:entryValues="@array/pref_language_values"
+        android:defaultValue="en"
+        android:persistent="true"
+         />
+    <ListPreference
+        android:key="pref_scaler_option"
+        android:title="@string/scaling_option"
+        android:dialogTitle="@string/scaling_option"
+        android:entries="@array/scaling_option_entries"
+        android:entryValues="@array/pref_scaling_option_values"
+        android:defaultValue="scaling_option_shader"
+        android:persistent="true"
+         />
+    <ListPreference
+        android:key="pref_control_mode"
+        android:title="@string/controls"
+        android:dialogTitle="@string/controls"
+        android:entries="@array/control_mode_entries"
+        android:entryValues="@array/pref_control_mode_values"
+        android:defaultValue="control_mode_touch"
+        android:persistent="true"
+         />
+</PreferenceScreen>
