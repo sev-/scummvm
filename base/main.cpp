@@ -75,7 +75,7 @@
 #elif defined(__DC__)
 #include "backends/platform/dc/DCLauncherDialog.h"
 #else
-#include "gui/launcher.h"
+#include "gui/s_mainmenu.h"
 #endif
 
 //#include "backends/platform/android/AndroidPortAdditions.h"
@@ -93,7 +93,7 @@ static bool launcherDialog() {
 #elif defined(__DC__)
 	DCLauncherDialog dlg;
 #else
-	GUI::LauncherDialog dlg;
+	GUI::MainMenuDialog dlg;
 #endif
 	return (dlg.runModal() != -1);
 }
