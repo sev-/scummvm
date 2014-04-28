@@ -182,14 +182,14 @@
 	</dialog>
 
 	<dialog name = 'MainMenu' overlays = 'screen_center'>
-		<layout type = 'vertical' padding = '16, 16, 16, 16' center = 'true'>
+		<layout type = 'vertical' padding = '16, 8, 16, 8' center = 'true'>
 			<widget name = 'Logo'
-					width = '210'
-					height = '40'
+					width = '227'
+					height = '118'
 			/>
 			<widget name = 'Title'
 					width = '210'
-					height = '40'
+					height = '30'
 			/>
 			<layout type = 'horizontal' padding = '16, 16, 16, 16' center = 'true'>
 			      <widget name = 'NewGameButton'
