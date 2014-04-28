@@ -572,6 +572,7 @@ const MusicPlugin::List &MusicManager::getPlugins() const {
 	return (const MusicPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_MUSIC);
 }
 
+/*
 // Scaler plugins
 
 #include "graphics/scalerplugin.h"
@@ -607,3 +608,5 @@ ScalerPlugin *ScalerManager::findScalerPlugin(const char *name) const {
 
 	return 0;
 }
+
+*/
