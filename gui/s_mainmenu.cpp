@@ -68,6 +68,10 @@ MainMenuDialog::MainMenuDialog()
 	_w = screenW;
 	_h = screenH;
 
+	GraphicsWidget *_logo = new GraphicsWidget(this, "MainMenu.Logo");
+	_logo->useThemeTransparency(true);
+	_logo->setGfx(g_gui.theme()->getImageSurface(ThemeEngine::kImageLogo));
+
 	new StaticTextWidget(this, "MainMenu.Title", _("20TH ANNIVERSARY EDITION"));
 
 	new ButtonWidget(this, "MainMenu.NewGameButton", _("~N~EW GAME"), _("Start new game"), kNewGameCmd);
