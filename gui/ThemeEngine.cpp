@@ -650,13 +650,18 @@ bool ThemeEngine::addBitmap(const Common::String &filename) {
 		for (Common::ArchiveMemberList::const_iterator i = members.begin(), end = members.end(); i != end; ++i) {
 			Common::SeekableReadStream *stream = (*i)->createReadStream();
 			if (stream) {
-				decoder.loadStream(*stream);
+				if (!decoder.loadStream(*stream))
+					error("Error decoding PNG");
+
 				srcSurface = decoder.getSurface();
 				delete stream;
 				if (srcSurface)
 					break;
 			}
 		}
+
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
 #else
 		error("No PNG support compiled in");
 #endif
@@ -675,10 +680,10 @@ bool ThemeEngine::addBitmap(const Common::String &filename) {
 					break;
 			}
 		}
-	}
 
-	if (srcSurface && srcSurface->format.bytesPerPixel != 1)
-		surf = srcSurface->convertTo(_overlayFormat);
+		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
+			surf = srcSurface->convertTo(_overlayFormat);
+	}
 
 	// Store the surface into our hashmap (attention, may store NULL entries!)
 	_bitmaps[filename] = surf;
