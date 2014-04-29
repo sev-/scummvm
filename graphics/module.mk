@@ -18,6 +18,9 @@ MODULE_OBJS := \
 	sjis.o \
 	surface.o \
 	thumbnail.o \
+	transform_struct.o \
+	transform_tools.o \
+	transparent_surface.o \
 	VectorRenderer.o \
 	VectorRendererSpec.o \
 	wincursor.o \
