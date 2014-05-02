@@ -25,6 +25,7 @@
 #include "common/frac.h"
 
 #include "graphics/surface.h"
+#include "graphics/transparent_surface.h"
 #include "graphics/colormasks.h"
 
 #include "gui/ThemeEngine.h"
@@ -554,7 +555,7 @@ blitSubSurface(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) {
+blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 	int16 x = r.left;
 	int16 y = r.top;
 
@@ -586,6 +587,12 @@ blitAlphaBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 		dst_ptr = dst_ptr - source->w + dst_pitch;
 		src_ptr = src_ptr - source->w + src_pitch;
 	}
+}
+
+template<typename PixelType>
+void VectorRendererSpec<PixelType>::
+blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r) {
+	source->blit(*_activeSurface, r.left, r.top);
 }
 
 template<typename PixelType>
