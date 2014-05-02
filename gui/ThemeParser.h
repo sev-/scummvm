@@ -224,6 +224,7 @@ protected:
 	bool parserCallback_drawdata(ParserNode *node);
 	bool parserCallback_bitmaps(ParserNode *node) { return true; }
 	bool parserCallback_bitmap(ParserNode *node);
+	bool parserCallback_alphabitmap(ParserNode *node);
 	bool parserCallback_cursor(ParserNode *node);
 
 
