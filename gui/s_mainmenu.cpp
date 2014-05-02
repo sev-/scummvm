@@ -70,7 +70,7 @@ MainMenuDialog::MainMenuDialog()
 
 	GraphicsWidget *_logo = new GraphicsWidget(this, "MainMenu.Logo");
 	_logo->useThemeTransparency(true);
-	_logo->setGfx(g_gui.theme()->getImageSurface(ThemeEngine::kImageLogo));
+	_logo->setAGfx(g_gui.theme()->getAImageSurface(ThemeEngine::kImageLogo));
 
 	new StaticTextWidget(this, "MainMenu.Title", _("20TH ANNIVERSARY EDITION"));
 
