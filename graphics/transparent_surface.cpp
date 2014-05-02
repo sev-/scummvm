@@ -447,7 +447,7 @@ Common::Rect TransparentSurface::blit(Graphics::Surface &target, int posX, int p
 	TransparentSurface srcImage(*this, false);
 	// TODO: Is the data really in the screen format?
 	if (format.bytesPerPixel != 4) {
-		warning("TransparentSurface can only blit 32 bpp images");
+		warning("TransparentSurface can only blit 32 bpp images and I got %d", format.bytesPerPixel * 8);
 		return retSize;
 	}
 

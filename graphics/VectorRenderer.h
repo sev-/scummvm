@@ -479,7 +479,7 @@ public:
 
 	virtual void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
 
-	virtual void blitAlphaBitmap(const Graphics::TransparentSurface *source, const Common::Rect &r) = 0;
+	virtual void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r) = 0;
 
 	/**
 	 * Draws a string into the screen. Wrapper for the Graphics::Font string drawing

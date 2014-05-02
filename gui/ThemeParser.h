@@ -80,6 +80,10 @@ protected:
 					XML_PROP(filename, true)
 					XML_PROP(resolution, false)
 				KEY_END()
+				XML_KEY(alphabitmap)
+					XML_PROP(filename, true)
+					XML_PROP(resolution, false)
+				KEY_END()
 			KEY_END()
 
 			XML_KEY(cursor)

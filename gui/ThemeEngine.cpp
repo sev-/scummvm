@@ -336,7 +336,7 @@ ThemeEngine::~ThemeEngine() {
 	_bitmaps.clear();
 
 	for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
-		Graphics::Surface *surf = i->_value;
+		Graphics::TransparentSurface *surf = i->_value;
 		if (surf) {
 			surf->free();
 			delete surf;
@@ -470,7 +470,7 @@ void ThemeEngine::refresh() {
 		_bitmaps.clear();
 
 		for (AImagesMap::iterator i = _abitmaps.begin(); i != _abitmaps.end(); ++i) {
-			Graphics::Surface *surf = i->_value;
+			Graphics::TransparentSurface *surf = i->_value;
 			if (surf) {
 				surf->free();
 				delete surf;

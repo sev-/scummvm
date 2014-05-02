@@ -590,38 +590,8 @@ blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-blitAlphaBitmap(const Graphics::TransparentSurface *source, const Common::Rect &r) {
-	int16 x = r.left;
-	int16 y = r.top;
-
-	if (r.width() > source->w)
-		x = x + (r.width() >> 1) - (source->w >> 1);
-
-	if (r.height() > source->h)
-		y = y + (r.height() >> 1) - (source->h >> 1);
-
-	PixelType *dst_ptr = (PixelType *)_activeSurface->getBasePtr(x, y);
-	const PixelType *src_ptr = (const PixelType *)source->getPixels();
-
-	int dst_pitch = _activeSurface->pitch / _activeSurface->format.bytesPerPixel;
-	int src_pitch = source->pitch / source->format.bytesPerPixel;
-
-	int w, h = source->h;
-
-	while (h--) {
-		w = source->w;
-
-		while (w--) {
-			if (*src_ptr != _bitmapAlphaColor)
-				*dst_ptr = *src_ptr;
-
-			dst_ptr++;
-			src_ptr++;
-		}
-
-		dst_ptr = dst_ptr - source->w + dst_pitch;
-		src_ptr = src_ptr - source->w + src_pitch;
-	}
+blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r) {
+	source->blit(*_activeSurface, r.left, r.top);
 }
 
 template<typename PixelType>
