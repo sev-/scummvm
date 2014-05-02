@@ -363,6 +363,7 @@ public:
 
 	void setGfx(const Graphics::Surface *gfx);
 	void setGfx(int w, int h, int r, int g, int b);
+	void setAGfx(const Graphics::TransparentSurface *gfx);
 
 	void useAlpha(int alpha) { _alpha = alpha; }
 	void useThemeTransparency(bool enable) { _transparency = enable; }
@@ -371,6 +372,7 @@ protected:
 	void drawWidget();
 
 	Graphics::Surface _gfx;
+	Graphics::TransparentSurface _agfx;
 	int _alpha;
 	bool _transparency;
 };

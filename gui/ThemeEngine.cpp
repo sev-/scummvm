@@ -157,6 +157,18 @@ protected:
 	bool _alpha;
 };
 
+class ThemeItemABitmap : public ThemeItem {
+public:
+	ThemeItemABitmap(ThemeEngine *engine, const Common::Rect &area, Graphics::TransparentSurface *bitmap, bool alpha) :
+		ThemeItem(engine, area), _bitmap(bitmap), _alpha(alpha) {}
+
+	void drawSelf(bool draw, bool restore);
+
+protected:
+	Graphics::TransparentSurface *_bitmap;
+	bool _alpha;
+};
+
 
 
 /**********************************************************
@@ -263,6 +275,20 @@ void ThemeItemBitmap::drawSelf(bool draw, bool restore) {
 	if (draw) {
 		if (_alpha)
 			_engine->renderer()->blitKeyBitmap(_bitmap, _area);
+		else
+			_engine->renderer()->blitSubSurface(_bitmap, _area);
+	}
+
+	_engine->addDirtyRect(_area);
+}
+
+void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
+	if (restore)
+		_engine->restoreBackground(_area);
+
+	if (draw) {
+		if (_alpha)
+			_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
 		else
 			_engine->renderer()->blitSubSurface(_bitmap, _area);
 	}
@@ -966,6 +992,21 @@ void ThemeEngine::queueBitmap(const Graphics::Surface *bitmap, const Common::Rec
 	}
 }
 
+void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, bool alpha) {
+
+	Common::Rect area = r;
+	area.clip(_screen.w, _screen.h);
+
+	ThemeItemABitmap *q = new ThemeItemABitmap(this, area, bitmap, alpha);
+
+	if (_buffering) {
+		_screenQueue.push_back(q);
+	} else {
+		q->drawSelf(true, false);
+		delete q;
+	}
+}
+
 
 
 /**********************************************************
@@ -1159,6 +1200,13 @@ void ThemeEngine::drawSurface(const Common::Rect &r, const Graphics::Surface &su
 		return;
 
 	queueBitmap(&surface, r, themeTrans);
+}
+
+void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, WidgetStateInfo state, int alpha, bool themeTrans) {
+	if (!ready())
+		return;
+
+	queueABitmap(&surface, r, themeTrans);
 }
 
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {

@@ -349,6 +349,9 @@ public:
 	void drawSurface(const Common::Rect &r, const Graphics::Surface &surface,
 	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
 
+	void drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface,
+	                 WidgetStateInfo state = kStateEnabled, int alpha = 256, bool themeTrans = false);
+
 	void drawSlider(const Common::Rect &r, int width,
 	                WidgetStateInfo state = kStateEnabled);
 
@@ -519,6 +522,10 @@ public:
 		return _bitmaps.contains(name) ? _bitmaps[name] : 0;
 	}
 
+	const Graphics::TransparentSurface *getAImageSurface(const Common::String &name) const {
+		return _abitmaps.contains(name) ? _abitmaps[name] : 0;
+	}
+
 	/**
 	 * Interface for the Theme Parser: Creates a new cursor by loading the given
 	 * bitmap and sets it as the active cursor.
@@ -601,6 +608,7 @@ protected:
 	void queueDDText(TextData type, TextColor color, const Common::Rect &r, const Common::String &text, bool restoreBg,
 	                 bool elipsis, Graphics::TextAlign alignH = Graphics::kTextAlignLeft, TextAlignVertical alignV = kTextAlignVTop, int deltax = 0, const Common::Rect &drawableTextArea = Common::Rect(0, 0, 0, 0));
 	void queueBitmap(const Graphics::Surface *bitmap, const Common::Rect &r, bool alpha);
+	void queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, bool alpha);
 
 	/**
 	 * DEBUG: Draws a white square and writes some text next to it.
