@@ -96,6 +96,10 @@
 		<bitmap filename = 'radiobutton.bmp'/>
 		<bitmap filename = 'radiobutton_empty.bmp'/>
 		<bitmap filename = 'circle_logo.png'/>
+
+		<alphabitmap filename = 'button.9.png'/>
+		<alphabitmap filename = 'buttonover.9.png'/>
+		<alphabitmap filename = 'buttondisable.9.png'/>
 	</bitmaps>
 
 	<fonts>
@@ -725,17 +729,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'center'
 		/>
-		<drawstep	func = 'roundedsq'
-					radius = '5'
-					stroke = '1'
-					fill = 'foreground'
-					shadow = '0'
-					factor = '0'
-					fg_color = '120, 40, 16'
-					gradient_start = '255, 0, 0'
-					gradient_end = '255, 0, 0'
-					bevel = '1'
-					bevel_color = 'black'
+		<drawstep	func = 'alphabitmap'
+					file = 'buttondisable.9.png'
 		/>
 	</drawdata> 
 
@@ -746,16 +741,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'center'
 		/>
-		<drawstep	func = 'roundedsq'
-					radius = '5'
-					stroke = '1'
-					fill = 'gradient'
-					shadow = '0'
-					fg_color = 'shadowcolor'
-					gradient_start = 'brightred'
-					gradient_end = 'darkred'
-					bevel = '1'
-					bevel_color = '237, 169, 72'
+		<drawstep	func = 'alphabitmap'
+					file = 'button.9.png'
 		/>
 	</drawdata>
 
@@ -766,16 +753,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'center'
 		/>
-		<drawstep	func = 'roundedsq'
-					radius = '5'
-					stroke = '1'
-					fill = 'gradient'
-					shadow = '0'
-					fg_color = 'shadowcolor'
-					gradient_start = 'brightpink'
-					gradient_end = 'darkpink'
-					bevel = '1'
-					bevel_color = 'xtrabrightred'
+		<drawstep	func = 'alphabitmap'
+					file = 'buttonover.9.png'
 		/>
 	</drawdata>
 
@@ -786,16 +765,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'center'
 		/>
-		<drawstep	func = 'roundedsq'
-					radius = '5'
-					stroke = '1'
-					fill = 'gradient'
-					shadow = '0'
-					fg_color = 'shadowcolor'
-					gradient_start = 'darkenedbrightred'
-					gradient_end = 'darkeneddarkred'
-					bevel = '1'
-					bevel_color = 'darkgray'
+		<drawstep	func = 'alphabitmap'
+					file = 'buttondisable.9.png'
 		/>
 	</drawdata>
 
