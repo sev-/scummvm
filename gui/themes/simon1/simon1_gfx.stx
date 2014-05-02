@@ -95,8 +95,8 @@
 		<bitmap filename = 'checkbox_empty.bmp'/>
 		<bitmap filename = 'radiobutton.bmp'/>
 		<bitmap filename = 'radiobutton_empty.bmp'/>
-		<bitmap filename = 'circle_logo.png'/>
 
+		<alphabitmap filename = 'circle_logo.png'/>
 		<alphabitmap filename = 'button.9.png'/>
 		<alphabitmap filename = 'buttonover.9.png'/>
 		<alphabitmap filename = 'buttondisable.9.png'/>
