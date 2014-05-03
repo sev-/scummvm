@@ -732,8 +732,8 @@ void GraphicsWidget::drawWidget() {
 			_agfx.convertToInPlace(requiredFormat);
 		}
 
-		const int x = _x + (_w - _gfx.w) / 2;
-		const int y = _y + (_h - _gfx.h) / 2;
+		const int x = _x + (_w - _agfx.w) / 2;
+		const int y = _y + (_h - _agfx.h) / 2;
 
 		g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _state, _alpha, _transparency);
 	}

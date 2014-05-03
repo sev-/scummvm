@@ -286,12 +286,8 @@ void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
 	if (restore)
 		_engine->restoreBackground(_area);
 
-	if (draw) {
-		if (_alpha)
-			_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
-		else
-			_engine->renderer()->blitSubSurface(_bitmap, _area);
-	}
+	if (draw)
+		_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
 
 	_engine->addDirtyRect(_area);
 }
