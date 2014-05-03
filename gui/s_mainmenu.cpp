@@ -68,6 +68,19 @@ MainMenuDialog::MainMenuDialog()
 	_w = screenW;
 	_h = screenH;
 
+	(new GraphicsWidget(this, "MainMenu.Red"))->setAGfx(g_gui.theme()->getAImageSurface("red.png"));
+	(new GraphicsWidget(this, "MainMenu.Green"))->setAGfx(g_gui.theme()->getAImageSurface("green.png"));
+	(new GraphicsWidget(this, "MainMenu.Blue"))->setAGfx(g_gui.theme()->getAImageSurface("blue.png"));
+	(new GraphicsWidget(this, "MainMenu.White"))->setAGfx(g_gui.theme()->getAImageSurface("white.png"));
+	(new GraphicsWidget(this, "MainMenu.Black"))->setAGfx(g_gui.theme()->getAImageSurface("black.png"));
+
+	(new GraphicsWidget(this, "MainMenu.Red50"))->setAGfx(g_gui.theme()->getAImageSurface("red50.png"));
+	(new GraphicsWidget(this, "MainMenu.Green50"))->setAGfx(g_gui.theme()->getAImageSurface("green50.png"));
+	(new GraphicsWidget(this, "MainMenu.Blue50"))->setAGfx(g_gui.theme()->getAImageSurface("blue50.png"));
+	(new GraphicsWidget(this, "MainMenu.White50"))->setAGfx(g_gui.theme()->getAImageSurface("white50.png"));
+	(new GraphicsWidget(this, "MainMenu.Black50"))->setAGfx(g_gui.theme()->getAImageSurface("black50.png"));
+
+
 	GraphicsWidget *_logo = new GraphicsWidget(this, "MainMenu.Logo");
 	_logo->useThemeTransparency(true);
 	_logo->setAGfx(g_gui.theme()->getAImageSurface(ThemeEngine::kImageLogo));

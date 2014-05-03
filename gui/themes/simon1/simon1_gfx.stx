@@ -100,6 +100,16 @@
 		<alphabitmap filename = 'button.9.png'/>
 		<alphabitmap filename = 'buttonover.9.png'/>
 		<alphabitmap filename = 'buttondisable.9.png'/>
+		<alphabitmap filename = 'red.png'/>
+		<alphabitmap filename = 'green.png'/>
+		<alphabitmap filename = 'blue.png'/>
+		<alphabitmap filename = 'white.png'/>
+		<alphabitmap filename = 'black.png'/>
+		<alphabitmap filename = 'red50.png'/>
+		<alphabitmap filename = 'green50.png'/>
+		<alphabitmap filename = 'blue50.png'/>
+		<alphabitmap filename = 'white50.png'/>
+		<alphabitmap filename = 'black50.png'/>
 	</bitmaps>
 
 	<fonts>
