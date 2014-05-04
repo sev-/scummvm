@@ -590,8 +590,14 @@ blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) {
 
 template<typename PixelType>
 void VectorRendererSpec<PixelType>::
-blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r) {
-	source->blit(*_activeSurface, r.left, r.top);
+blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, bool autoscale) {
+	if (autoscale)
+		source->blit(*_activeSurface, r.left, r.top, TransparentSurface::FLIP_NONE,
+			nullptr, BS_ARGB(255, 255, 255, 255),
+	                  r.width(), r.height());
+	else
+		source->blit(*_activeSurface, r.left, r.top);
+
 }
 
 template<typename PixelType>
