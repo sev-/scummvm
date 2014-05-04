@@ -75,10 +75,10 @@ struct TransparentSurface : public Graphics::Surface {
 	};
 
 #ifdef SCUMM_LITTLE_ENDIAN
-	static const int kAIndex = 0;
-	static const int kBIndex = 1;
-	static const int kGIndex = 2;
-	static const int kRIndex = 3;
+	static const int kAIndex = 3;	// HACK
+	static const int kBIndex = 2;
+	static const int kGIndex = 1;
+	static const int kRIndex = 0;
 #else
 	static const int kAIndex = 3;
 	static const int kBIndex = 2;
