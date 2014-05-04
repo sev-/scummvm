@@ -100,6 +100,7 @@
 		<alphabitmap filename = 'button.9.png'/>
 		<alphabitmap filename = 'buttonover.9.png'/>
 		<alphabitmap filename = 'buttondisable.9.png'/>
+		<alphabitmap filename = 'bg.png'/>
 	</bitmaps>
 
 	<fonts>
@@ -189,10 +190,9 @@
 
 	<!-- Main background -->
 	<drawdata id = 'mainmenu_bg' cache = 'false'>
-		<drawstep	func = 'fill'
-					fill = 'gradient'
-					gradient_start = 'darkorange'
-					gradient_end = 'brightorange'
+		<drawstep	func = 'alphabitmap'
+					file = 'bg.png'
+					autoscale = 'true'
 		/>
 	</drawdata>
 
