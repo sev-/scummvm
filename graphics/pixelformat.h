@@ -142,6 +142,14 @@ struct PixelFormat {
 	inline uint aMax() const {
 		return (1 << aBits()) - 1;
 	}
+
+	const char *toString() const {
+		static char str[256];
+
+		snprintf(str, 256, "%dbpp, %d%d%d%d (%d %d %d %d | %d %d %d %d)", bytesPerPixel * 8, rBits(), gBits(), bBits(), aBits(), rShift, gShift, bShift, aShift, aLoss, gLoss, bLoss, aLoss);
+
+		return str;
+	}
 };
 
 } // End of namespace Graphics
