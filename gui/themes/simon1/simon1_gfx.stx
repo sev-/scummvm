@@ -171,7 +171,6 @@
 	<!-- <defaults fill = 'gradient' fg_color = 'white'/> -->
 
 	<cursor file = 'cursor.bmp' hotspot = '0, 0'/>
-	<cursor resolution = 'y<400' file = 'cursor_small.bmp' hotspot = '0, 0'/>
 
 	<!-- Selection (text or list items) -->
 	<drawdata id = 'text_selection' cache = 'false'>
@@ -192,7 +191,7 @@
 	<drawdata id = 'mainmenu_bg' cache = 'false'>
 		<drawstep	func = 'alphabitmap'
 					file = 'bg.png'
-					autoscale = 'true'
+					autoscale = 'fit'
 		/>
 	</drawdata>
 
