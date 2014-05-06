@@ -65,7 +65,7 @@ class NinePatchSide {
    NinePatchSide() : _fix(0) {}
    ~NinePatchSide();
 
-   bool init(ALLEGRO_BITMAP *bmp, int vertical);
+   bool init(Graphics::TransparentSurface *bmp, bool vertical);
    void calcOffsets(int len);
 };
 
