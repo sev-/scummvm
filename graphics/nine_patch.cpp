@@ -51,15 +51,21 @@
 
 namespace Graphics {
 
-static bool init_nine_patch_side(NINE_PATCH_SIDE *ps, ALLEGRO_BITMAP *bmp, int vertical) {
+~NinePatchSide::NinePatchSide() {
+	for (uint i = 0; i < _m.size(); i++)
+		delete _m[i];
+
+	_m.clear();
+}
+
+
+bool NinePatchSide::init(ALLEGRO_BITMAP *bmp, int vertical) {
 	const int len = vertical ? al_get_bitmap_height(bmp) : al_get_bitmap_width(bmp);
 	int i, s, t, n, z;
 	ALLEGRO_COLOR c;
+
+	_m.clear();
 	
-	int alloc = 8;
-	
-	ps->m = al_malloc(alloc * sizeof(*ps->m));
-		
 	for (i = 1, s = -1, t = 0, n = 0, z = -1; i < len; ++i) {
 		int zz;
 		uint8_t r, g, b, a;
@@ -77,60 +83,72 @@ static bool init_nine_patch_side(NINE_PATCH_SIDE *ps, ALLEGRO_BITMAP *bmp, int v
 			
 		if (z != zz) {
 			if (s != -1) {
-				ps->m[n].offset = s;
-				ps->m[n].length = i - s;
+				NinePatchMark *mrk = new NinePatchMark;
+
+				mrk->offset = s;
+				mrk->length = i - s;
 				if (z == 0) {
-					ps->m[n].ratio = 1;
-					t += ps->m[n].length;
+					mrk->ratio = 1;
+					t += mrk->length;
 				} else {
-					ps->m[n].ratio = 0;					
+					mrk->ratio = 0;
 				}
-				++n;
+				_m->push_back(mrk);
 			}
 			s = i;
 			z = zz;
 		}	
-		
-		if (n == alloc) {
-			alloc *= 2;
-			ps->m = al_realloc(ps->m, alloc * sizeof(*ps->m));
-		}
 	}
 	
-	if (n != alloc) {
-		ps->m = al_realloc(ps->m, n * sizeof(*ps->m));
-	}
-	
-	ps->count = n;
-	
-	ps->fix = len - 2 - t;
-	for (i = 0; i < n; ++i) {
-		if (ps->m[i].ratio)
-			ps->m[i].ratio = ps->m[i].length / (float) t;
+	_fix = len - 2 - t;
+	for (i = 0; i < _m.size(); ++i) {
+		if (_m[i].ratio)
+			_m[i].ratio = _m[i].length / (float) t;
 	}
 	
 	return true;
 }
 
-NINE_PATCH_BITMAP *create_nine_patch_bitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
+void NinePatchSide::calcOffsets(int len) {
+	int i, j;
+	int dest_offset = 0;
+	int remaining_stretch = len - _fix;
+	
+	for (i = 0, j = 0; i < _m.size(); ++i) {
+		_m[i].dest_offset = dest_offset;
+		if (_m[i].ratio == 0) {
+			_m[i].dest_length = _m[i].length;
+		} else {
+			_m[i].dest_length = (len - _fix) * _m[i].ratio;
+			remaining_stretch -= _m[i].dest_length;
+			j = i;
+		}
+
+		dest_offset += _m[i].dest_length;
+	}
+
+	if (remaining_stretch) {
+		_m[j].dest_length += remaining_stretch;
+		if (j + 1 < _m.size())
+			_m[j + 1].dest_offset += remaining_stretch;
+	}
+}
+
+NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
 	int i;
-	NINE_PATCH_BITMAP *p9;
+	NinePatchBitmap *p9;
 	ALLEGRO_COLOR c;
 	
-	p9 = al_malloc(sizeof(*p9));
-	p9->bmp = bmp;
-	p9->destroy_bmp = owns_bitmap;
-	p9->h.m = NULL;
-	p9->v.m = NULL;
-	p9->cached_dw = 0;
-	p9->cached_dh = 0;
-	p9->mutex = al_create_mutex();
-	p9->width = al_get_bitmap_width(bmp) - 2;
-	p9->height = al_get_bitmap_height(bmp) - 2;
+	_bmp = bmp;
+	_destroy_bmp = owns_bitmap;
+	_h.m = NULL;
+	_v.m = NULL;
+	_cached_dw = 0;
+	_cached_dh = 0;
+	_width = al_get_bitmap_width(bmp) - 2;
+	_height = al_get_bitmap_height(bmp) - 2;
 			
-	al_lock_bitmap(bmp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
-	
-	if (p9->width <= 0 || p9->height <= 0)
+	if (_width <= 0 || _height <= 0)
 		goto bad_bitmap;
 	
 	/* make sure all four corners are transparent */
@@ -144,20 +162,20 @@ NINE_PATCH_BITMAP *create_nine_patch_bitmap(ALLEGRO_BITMAP *bmp, bool owns_bitma
 	_check_pixel(al_get_bitmap_width(bmp) - 1, al_get_bitmap_height(bmp) - 1);	
 #undef _check_pixel
 
-	p9->padding.top = p9->padding.right = p9->padding.bottom = p9->padding.left = -1;
+	_padding.top = _padding.right = _padding.bottom = _padding.left = -1;
 	
 	i = 1;
 	while (i < al_get_bitmap_width(bmp)) {
 		c = al_get_pixel(bmp, i, al_get_bitmap_height(bmp) - 1);
 		
 		if (c.r + c.g + c.b == 0 && c.a == 1) {
-			if (p9->padding.left == -1)
-				p9->padding.left = i - 1;
-			else if (p9->padding.right != -1)
+			if (_padding.left == -1)
+				_padding.left = i - 1;
+			else if (_padding.right != -1)
 				goto bad_bitmap;
 		} else if (c.a == 0 || c.r + c.g + c.b + c.a == 4) {
-			if (p9->padding.left != -1 && p9->padding.right == -1)
-				p9->padding.right = al_get_bitmap_width(bmp) - i - 1;
+			if (_padding.left != -1 && _padding.right == -1)
+				_padding.right = al_get_bitmap_width(bmp) - i - 1;
 		}
 		++i;
 	}
@@ -167,106 +185,63 @@ NINE_PATCH_BITMAP *create_nine_patch_bitmap(ALLEGRO_BITMAP *bmp, bool owns_bitma
 		c = al_get_pixel(bmp, al_get_bitmap_width(bmp) - 1, i);
 		
 		if (c.r + c.g + c.b == 0 && c.a == 1) {
-			if (p9->padding.top == -1)
-				p9->padding.top = i - 1;
-			else if (p9->padding.bottom != -1)
+			if (_padding.top == -1)
+				_padding.top = i - 1;
+			else if (_padding.bottom != -1)
 				goto bad_bitmap;
 		} else if (c.a == 0 || c.r + c.g + c.b + c.a == 4) {
-			if (p9->padding.top != -1 && p9->padding.bottom == -1)
-				p9->padding.bottom = al_get_bitmap_height(bmp) - i - 1;
+			if (_padding.top != -1 && _padding.bottom == -1)
+				_padding.bottom = al_get_bitmap_height(bmp) - i - 1;
 		}
 		++i;
 	}
 	
-	if (!init_nine_patch_side(&p9->h, bmp, 0) || !init_nine_patch_side(&p9->v, bmp, 1)) {		
+	if (!_h.init(bmp, 0) || !_v.init(bmp, 1)) {
 bad_bitmap:
-		al_destroy_mutex(p9->mutex);
-		if (p9->h.m) al_free(p9->h.m);
-		if (p9->v.m) al_free(p9->v.m);
-		al_free(p9);
-		p9 = NULL;
-	}
-	
-	al_unlock_bitmap(bmp);	
-	return p9;
-}
+		if (_h.m) al_free(_h.m);
+		if (_v.m) al_free(_v.m);
 
-void calc_nine_patch_offsets(NINE_PATCH_SIDE *ps, int len) {
-	int i, j;
-	int dest_offset = 0;
-	int remaining_stretch = len - ps->fix;
-	
-	for (i = 0, j = 0; i < ps->count; ++i) {
-		ps->m[i].dest_offset = dest_offset;
-		if (ps->m[i].ratio == 0) {
-			ps->m[i].dest_length = ps->m[i].length;
-		} else {
-			ps->m[i].dest_length = (len - ps->fix) * ps->m[i].ratio;
-			remaining_stretch -= ps->m[i].dest_length;
-			j = i;
-		}
-		
-		dest_offset += ps->m[i].dest_length;
-	}
-	
-	if (remaining_stretch) {
-		ps->m[j].dest_length += remaining_stretch;
-		if (j + 1 < ps->count)
-			ps->m[j + 1].dest_offset += remaining_stretch;
+		return NULL;
 	}
 }
 
-void draw_nine_patch_bitmap(NINE_PATCH_BITMAP *p9, int dx, int dy, int dw, int dh) {
+void NinePatchBitmap::draw(int dx, int dy, int dw, int dh) {
 	int i, j;
-	bool release_drawing = false;
 	
 	/* don't draw bitmaps that are smaller than the fixed area */
-	if (dw < p9->h.fix || dh < p9->v.fix)
+	if (dw < _h.fix || dh < _v.fix)
 		return;
 
 	/* if the bitmap is the same size as the origin, then draw it as-is */		
-	if (dw == p9->width && dh == p9->height) {
-		al_draw_bitmap_region(p9->bmp, 1, 1, dw, dh, dx, dy, 0);
+	if (dw == _width && dh == _height) {
+		al_draw_bitmap_region(_bmp, 1, 1, dw, dh, dx, dy, 0);
 		return;
 	}
 		
-	/* due to the caching mechanism, multiple threads cannot draw this image at the same time */
-	al_lock_mutex(p9->mutex);
-	
 	/* only recalculate the offsets if they have changed since the last draw */
-	if (p9->cached_dw != dw || p9->cached_dh != dh) {
-		calc_nine_patch_offsets(&p9->h, dw);
-		calc_nine_patch_offsets(&p9->v, dh);
+	if (_cached_dw != dw || _cached_dh != dh) {
+		_h.calcOffsets(dw);
+		_v.calcOffsets(dh);
 		
-		p9->cached_dw = dw;
-		p9->cached_dh = dh;
-	}
-	
-	if (!al_is_bitmap_drawing_held()) {
-		release_drawing = true;
-		al_hold_bitmap_drawing(true);
+		_cached_dw = dw;
+		_cached_dh = dh;
 	}
 	
 	/* draw each region */
-	for (i = 0; i < p9->v.count; ++i) {
-		for (j = 0; j < p9->h.count; ++j) {
-			al_draw_scaled_bitmap(p9->bmp,
-				p9->h.m[j].offset, p9->v.m[i].offset,
-				p9->h.m[j].length, p9->v.m[i].length,
-				dx + p9->h.m[j].dest_offset, dy + p9->v.m[i].dest_offset,
-				p9->h.m[j].dest_length, p9->v.m[i].dest_length,
+	for (i = 0; i < _v.count; ++i) {
+		for (j = 0; j < _h.count; ++j) {
+			al_draw_scaled_bitmap(_bmp,
+				_h.m[j].offset, _v.m[i].offset,
+				_h.m[j].length, _v.m[i].length,
+				dx + _h.m[j].dest_offset, dy + _v.m[i].dest_offset,
+				_h.m[j].dest_length, _v.m[i].dest_length,
 				0
 			);
 		}
 	}
-	
-	al_unlock_mutex(p9->mutex);
-	
-	if (release_drawing) 
-		al_hold_bitmap_drawing(false);
 }
 
-ALLEGRO_BITMAP *create_bitmap_from_nine_patch(NINE_PATCH_BITMAP *p9, int w, int h) {
+ALLEGRO_BITMAP *NinePatch::createBitmap(int w, int h) {
 	ALLEGRO_BITMAP *bmp = al_create_bitmap(w, h);
 	ALLEGRO_STATE s;
 	
@@ -276,48 +251,21 @@ ALLEGRO_BITMAP *create_bitmap_from_nine_patch(NINE_PATCH_BITMAP *p9, int w, int 
 	al_store_state(&s, ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_target_bitmap(bmp);
 	al_clear_to_color(al_map_rgba(0,0,0,0));
-	draw_nine_patch_bitmap(p9, 0, 0, w, h);
+	draw(0, 0, w, h);
 	al_restore_state(&s);
 	
 	return bmp;
 }
 
-NINE_PATCH_BITMAP *load_nine_patch_bitmap(const char *filename) {
+NinePatchBitmap::NinePatchBitmap(const char *filename) {
 	ALLEGRO_BITMAP *bmp = al_load_bitmap(filename);
 	
-	return bmp ? create_nine_patch_bitmap(bmp, true) : NULL;
+	return bmp ? create_NinePatchBitmap(bmp, true) : NULL;
 }
 
-int get_nine_patch_bitmap_width(const NINE_PATCH_BITMAP *p9) {
-	return p9->width;
-}
-
-int get_nine_patch_bitmap_height(const NINE_PATCH_BITMAP *p9) {
-	return p9->height;
-}
-
-int get_nine_patch_bitmap_min_width(const NINE_PATCH_BITMAP *p9) {
-	return p9->h.fix;
-}
-
-int get_nine_patch_bitmap_min_height(const NINE_PATCH_BITMAP *p9) {
-	return p9->v.fix;
-}
-
-ALLEGRO_BITMAP *get_nine_patch_bitmap_source(const NINE_PATCH_BITMAP *p9) {
-	return p9->bmp;
-}
-
-NINE_PATCH_PADDING get_nine_patch_padding(const NINE_PATCH_BITMAP *p9) {
-	return p9->padding;
-}
-
-void destroy_nine_patch_bitmap(NINE_PATCH_BITMAP *p9) {
-	if (p9->destroy_bmp) al_destroy_bitmap(p9->bmp);
-	al_destroy_mutex(p9->mutex);
-	al_free(p9->h.m);
-	al_free(p9->v.m);	
-	al_free(p9);
+void NinePatchBitmap::~NinePatchBitmap() {
+	if (_destroy_bmp)
+		al_destroy_bitmap(_bmp);
 }
 
 } // end of namespace Graphics

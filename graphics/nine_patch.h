@@ -50,27 +50,48 @@
 
 namespace Graphics {
 
-struct NINE_PATCH_BITMAP;
-
-struct NINE_PATCH_PADDING {
-	int top, right, bottom, left;
+struct NinePatchMark {
+   int offset;
+   int length;
+   int dest_offset;
+   int dest_length;
+   float ratio;
 };
 
-NINE_PATCH_BITMAP *create_nine_patch_bitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap);
-NINE_PATCH_BITMAP *load_nine_patch_bitmap(const char *filename);
-void draw_nine_patch_bitmap(NINE_PATCH_BITMAP *p9, int dx, int dy, int dw, int dh);
-ALLEGRO_BITMAP *create_bitmap_from_nine_patch(NINE_PATCH_BITMAP *p9, int w, int h);
+class NinePatchSide {
+   Common::Array<NinePatchMark *> _m;
+   int _fix;
 
-int get_nine_patch_bitmap_width(const NINE_PATCH_BITMAP *p9);
-int get_nine_patch_bitmap_height(const NINE_PATCH_BITMAP *p9);
+   NinePatchSide() : _fix(0) {}
+   ~NinePatchSide();
 
-int get_nine_patch_bitmap_min_width(const NINE_PATCH_BITMAP *p9);
-int get_nine_patch_bitmap_min_height(const NINE_PATCH_BITMAP *p9);
+   bool init(ALLEGRO_BITMAP *bmp, int vertical);
+   void calcOffsets(int len);
+};
 
-ALLEGRO_BITMAP *get_nine_patch_bitmap_source(const NINE_PATCH_BITMAP *p9);
-NINE_PATCH_PADDING get_nine_patch_padding(const NINE_PATCH_BITMAP *p9);
+class NinePatchBitmap {
+   ALLEGRO_BITMAP *_bmp;
+   NinePatchSide _h, _v;
+   Common::Rect _padding;
+   bool _destroy_bmp;
+   int _width, _height;
+   int _cached_dw, _cached_dh;
 
-void destroy_nine_patch_bitmap(NINE_PATCH_BITMAP *p9);
+public:
+   NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap);
+   NinePatchBitmap(const char *filename);
+   ~NinePatchBitmap();
+
+   void draw(int dx, int dy, int dw, int dh);
+   ALLEGRO_BITMAP *createBitmap(int w, int h);
+
+   int getWidth() { return _width; }
+   int getHeight() { return _height; }
+   int getMinWidth() { return _h.fix; }
+   int getMinHeight() { return _v.fix; }
+   ALLEGRO_BITMAP *getSource() { return _bmp; }
+   NinePatchPadding &getPadding() { return _padding; }
+};
 
 } // end of namespace Graphics
 
