@@ -609,7 +609,7 @@ blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, Gra
 
 	} else if (autoscale == Graphics::DrawStep::kAutoScaleNinePatch) {
 		Graphics::NinePatchBitmap nine(source, false);
-		nine.blit(*_activeSurface, r.left, r.right, r.width(), r.height());
+		nine.blit(*_activeSurface, r.left, r.top, r.width(), r.height());
 	} else {
 		source->blit(*_activeSurface, r.left, r.top);
 	}
