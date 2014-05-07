@@ -201,7 +201,7 @@ bad_bitmap:
 	}
 }
 
-void NinePatchBitmap::draw(Graphics::Surface &target, int dx, int dy, int dw, int dh) {
+void NinePatchBitmap::blit(Graphics::Surface &target, int dx, int dy, int dw, int dh) {
 	/* don't draw bitmaps that are smaller than the fixed area */
 	if (dw < _h._fix || dh < _v._fix)
 		return;

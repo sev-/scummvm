@@ -46,6 +46,8 @@
 #ifndef GRAPHICS_NINE_PATCH_H
 #define GRAPHICS_NINE_PATCH_H
 
+#include "common/array.h"
+
 namespace Graphics {
 
 struct NinePatchMark {
@@ -81,7 +83,7 @@ public:
 	//NinePatchBitmap(const char *filename);
 	~NinePatchBitmap();
 
-	void draw(Graphics::Surface &target, int dx, int dy, int dw, int dh);
+	void blit(Graphics::Surface &target, int dx, int dy, int dw, int dh);
 	//Graphics::TransparentSurface *createBitmap(int w, int h);
 
 	int getWidth() { return _width; }
