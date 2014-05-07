@@ -46,51 +46,50 @@
 #ifndef GRAPHICS_NINE_PATCH_H
 #define GRAPHICS_NINE_PATCH_H
 
-#include <allegro5/allegro.h>
-
 namespace Graphics {
 
 struct NinePatchMark {
-   int offset;
-   int length;
-   int dest_offset;
-   int dest_length;
-   float ratio;
+	int offset;
+	int length;
+	int dest_offset;
+	int dest_length;
+	float ratio;
 };
 
 class NinePatchSide {
-   Common::Array<NinePatchMark *> _m;
-   int _fix;
+public:
+	Common::Array<NinePatchMark *> _m;
+	int _fix;
 
-   NinePatchSide() : _fix(0) {}
-   ~NinePatchSide();
+	NinePatchSide() : _fix(0) {}
+	~NinePatchSide();
 
-   bool init(Graphics::TransparentSurface *bmp, bool vertical);
-   void calcOffsets(int len);
+	bool init(Graphics::TransparentSurface *bmp, bool vertical);
+	void calcOffsets(int len);
 };
 
 class NinePatchBitmap {
-   ALLEGRO_BITMAP *_bmp;
-   NinePatchSide _h, _v;
-   Common::Rect _padding;
-   bool _destroy_bmp;
-   int _width, _height;
-   int _cached_dw, _cached_dh;
+	Graphics::TransparentSurface *_bmp;
+	NinePatchSide _h, _v;
+	Common::Rect _padding;
+	bool _destroy_bmp;
+	int _width, _height;
+	int _cached_dw, _cached_dh;
 
 public:
-   NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap);
-   NinePatchBitmap(const char *filename);
-   ~NinePatchBitmap();
+	NinePatchBitmap(Graphics::TransparentSurface *bmp, bool owns_bitmap);
+	//NinePatchBitmap(const char *filename);
+	~NinePatchBitmap();
 
-   void draw(int dx, int dy, int dw, int dh);
-   ALLEGRO_BITMAP *createBitmap(int w, int h);
+	void draw(Graphics::Surface &target, int dx, int dy, int dw, int dh);
+	//Graphics::TransparentSurface *createBitmap(int w, int h);
 
-   int getWidth() { return _width; }
-   int getHeight() { return _height; }
-   int getMinWidth() { return _h.fix; }
-   int getMinHeight() { return _v.fix; }
-   ALLEGRO_BITMAP *getSource() { return _bmp; }
-   NinePatchPadding &getPadding() { return _padding; }
+	int getWidth() { return _width; }
+	int getHeight() { return _height; }
+	int getMinWidth() { return _h._fix; }
+	int getMinHeight() { return _v._fix; }
+	Graphics::TransparentSurface *getSource() { return _bmp; }
+	Common::Rect &getPadding() { return _padding; }
 };
 
 } // end of namespace Graphics

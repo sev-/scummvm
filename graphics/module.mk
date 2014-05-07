@@ -12,6 +12,7 @@ MODULE_OBJS := \
 	fonts/ttf.o \
 	fonts/winfont.o \
 	maccursor.o \
+	nine_patch.o \
 	primitives.o \
 	scaler.o \
 	scaler/thumbnail_intern.o \

@@ -44,14 +44,13 @@
  */
 
 
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
-
+#include "common/array.h"
+#include "graphics/transparent_surface.h"
 #include "graphics/nine_patch.h"
 
 namespace Graphics {
 
-~NinePatchSide::NinePatchSide() {
+NinePatchSide::~NinePatchSide() {
 	for (uint i = 0; i < _m.size(); i++)
 		delete _m[i];
 
@@ -61,16 +60,16 @@ namespace Graphics {
 
 bool NinePatchSide::init(Graphics::TransparentSurface *bmp, bool vertical) {
 	const int len = vertical ? bmp->h : bmp->w;
-	int i, s, t, n, z;
-	uint32 c;
+	uint i;
+	int s, t, n, z;
 
 	_m.clear();
 	
 	for (i = 1, s = -1, t = 0, n = 0, z = -1; i < len; ++i) {
 		int zz;
-		byte r, g, b, a;
-		uint32 *color = vertical ? bmp->getBasePtr(0, i) : bmp->getBasePtr(i, 0);
-		bmp->format.colorToARGB(*color, &a, &r, &g, &b);
+		uint8 r, g, b, a;
+		uint32 *color = vertical ? (uint32 *)bmp->getBasePtr(0, i) : (uint32 *)bmp->getBasePtr(i, 0);
+		bmp->format.colorToARGB(*color, a, r, g, b);
 		
 		if (i == len - 1)
 			zz = -1;
@@ -93,7 +92,7 @@ bool NinePatchSide::init(Graphics::TransparentSurface *bmp, bool vertical) {
 				} else {
 					mrk->ratio = 0;
 				}
-				_m->push_back(mrk);
+				_m.push_back(mrk);
 			}
 			s = i;
 			z = zz;
@@ -102,8 +101,8 @@ bool NinePatchSide::init(Graphics::TransparentSurface *bmp, bool vertical) {
 	
 	_fix = len - 2 - t;
 	for (i = 0; i < _m.size(); ++i) {
-		if (_m[i].ratio)
-			_m[i].ratio = _m[i].length / (float)t;
+		if (_m[i]->ratio)
+			_m[i]->ratio = _m[i]->length / (float)t;
 	}
 	
 	return true;
@@ -115,34 +114,33 @@ void NinePatchSide::calcOffsets(int len) {
 	int remaining_stretch = len - _fix;
 	
 	for (i = 0, j = 0; i < _m.size(); ++i) {
-		_m[i].dest_offset = dest_offset;
-		if (_m[i].ratio == 0) {
-			_m[i].dest_length = _m[i].length;
+		_m[i]->dest_offset = dest_offset;
+		if (_m[i]->ratio == 0) {
+			_m[i]->dest_length = _m[i]->length;
 		} else {
-			_m[i].dest_length = (len - _fix) * _m[i].ratio;
-			remaining_stretch -= _m[i].dest_length;
+			_m[i]->dest_length = (len - _fix) * _m[i]->ratio;
+			remaining_stretch -= _m[i]->dest_length;
 			j = i;
 		}
 
-		dest_offset += _m[i].dest_length;
+		dest_offset += _m[i]->dest_length;
 	}
 
 	if (remaining_stretch) {
-		_m[j].dest_length += remaining_stretch;
+		_m[j]->dest_length += remaining_stretch;
 		if (j + 1 < _m.size())
-			_m[j + 1].dest_offset += remaining_stretch;
+			_m[j + 1]->dest_offset += remaining_stretch;
 	}
 }
 
-NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
+NinePatchBitmap::NinePatchBitmap(Graphics::TransparentSurface *bmp, bool owns_bitmap) {
 	int i;
-	NinePatchBitmap *p9;
-	byte r, g, b, a;
+	uint8 r, g, b, a;
 	
 	_bmp = bmp;
 	_destroy_bmp = owns_bitmap;
-	_h.m = NULL;
-	_v.m = NULL;
+	_h._m.clear();
+	_v._m.clear();
 	_cached_dw = 0;
 	_cached_dh = 0;
 	_width = bmp->w - 2;
@@ -153,8 +151,7 @@ NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
 	
 	/* make sure all four corners are transparent */
 #define _check_pixel(x, y) \
-	bmp->format.colorToARGB(bmp->getBasePtr(x, y), &a, &r, &g, &b)); \
-
+	bmp->format.colorToARGB(*(uint32 *)bmp->getBasePtr(x, y), a, r, g, b); \
 	if (a != 0 && r + g + b + a != 4) goto bad_bitmap;
 	
 	_check_pixel(0,0);
@@ -166,8 +163,8 @@ NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
 	_padding.top = _padding.right = _padding.bottom = _padding.left = -1;
 	
 	i = 1;
-	while (i < al_get_bitmap_width(bmp)) {
-		bmp->format.colorToARGB(bmp->getBasePtr(i, bmp->h - 1), &a, &r, &g, &b));
+	while (i < bmp->w) {
+		bmp->format.colorToARGB(*(uint32 *)bmp->getBasePtr(i, bmp->h - 1), a, r, g, b);
 		
 		if (r + g + b == 0 && a == 1) {
 			if (_padding.left == -1)
@@ -176,14 +173,14 @@ NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
 				goto bad_bitmap;
 		} else if (a == 0 || r + g + b + a == 4) {
 			if (_padding.left != -1 && _padding.right == -1)
-				_padding.right = al_get_bitmap_width(bmp) - i - 1;
+				_padding.right = bmp->w - i - 1;
 		}
 		++i;
 	}
 	
 	i = 1;
-	while (i < al_get_bitmap_height(bmp)) {
-		bmp->format.colorToARGB(bmp->getBasePtr(bmp->w - 1, i), &a, &r, &g, &b));
+	while (i < bmp->h) {
+		bmp->format.colorToARGB(*(uint32 *)bmp->getBasePtr(bmp->w - 1, i), a, r, g, b);
 		
 		if (r + g + b == 0 && a == 1) {
 			if (_padding.top == -1)
@@ -199,23 +196,21 @@ NinePatchBitmap::NinePatchBitmap(ALLEGRO_BITMAP *bmp, bool owns_bitmap) {
 	
 	if (!_h.init(bmp, false) || !_v.init(bmp, true)) {
 bad_bitmap:
-		if (_h.m) al_free(_h.m);
-		if (_v.m) al_free(_v.m);
-
-		return NULL;
+		_h._m.clear();
+		_v._m.clear();
 	}
 }
 
-void NinePatchBitmap::draw(int dx, int dy, int dw, int dh) {
-	int i, j;
-	
+void NinePatchBitmap::draw(Graphics::Surface &target, int dx, int dy, int dw, int dh) {
 	/* don't draw bitmaps that are smaller than the fixed area */
-	if (dw < _h.fix || dh < _v.fix)
+	if (dw < _h._fix || dh < _v._fix)
 		return;
 
 	/* if the bitmap is the same size as the origin, then draw it as-is */		
 	if (dw == _width && dh == _height) {
-		al_draw_bitmap_region(_bmp, 1, 1, dw, dh, dx, dy, 0);
+		Common::Rect r(1, 1, dw, dh);
+
+		_bmp->blit(target, dx, dy, TransparentSurface::FLIP_NONE, &r);
 		return;
 	}
 		
@@ -227,22 +222,22 @@ void NinePatchBitmap::draw(int dx, int dy, int dw, int dh) {
 		_cached_dw = dw;
 		_cached_dh = dh;
 	}
-	
+
 	/* draw each region */
-	for (i = 0; i < _v.count; ++i) {
-		for (j = 0; j < _h.count; ++j) {
-			al_draw_scaled_bitmap(_bmp,
-				_h.m[j].offset, _v.m[i].offset,
-				_h.m[j].length, _v.m[i].length,
-				dx + _h.m[j].dest_offset, dy + _v.m[i].dest_offset,
-				_h.m[j].dest_length, _v.m[i].dest_length,
-				0
-			);
+	for (uint i = 0; i < _v._m.size(); ++i) {
+		for (uint j = 0; j < _h._m.size(); ++j) {
+			Common::Rect r(_h._m[j]->offset, _v._m[i]->offset, 
+						_h._m[j]->length, _v._m[i]->length);
+
+			_bmp->blit(target, dx + _h._m[j]->dest_offset, dy + _v._m[i]->dest_offset,
+					TransparentSurface::FLIP_NONE, &r, BS_ARGB(255, 255, 255, 255),
+					_h._m[j]->dest_length, _v._m[i]->dest_length);
 		}
 	}
 }
 
-ALLEGRO_BITMAP *NinePatch::createBitmap(int w, int h) {
+#if 0
+Graphics::TransparentSurface *NinePatch::createBitmap(int w, int h) {
 	ALLEGRO_BITMAP *bmp = al_create_bitmap(w, h);
 	ALLEGRO_STATE s;
 	
@@ -259,14 +254,15 @@ ALLEGRO_BITMAP *NinePatch::createBitmap(int w, int h) {
 }
 
 NinePatchBitmap::NinePatchBitmap(const char *filename) {
-	ALLEGRO_BITMAP *bmp = al_load_bitmap(filename);
+	Graphics::TransparentSurface *bmp = al_load_bitmap(filename);
 	
 	return bmp ? create_NinePatchBitmap(bmp, true) : NULL;
 }
+#endif
 
-void NinePatchBitmap::~NinePatchBitmap() {
+NinePatchBitmap::~NinePatchBitmap() {
 	if (_destroy_bmp)
-		al_destroy_bitmap(_bmp);
+		delete _bmp;
 }
 
 } // end of namespace Graphics
