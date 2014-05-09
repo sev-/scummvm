@@ -101,6 +101,7 @@
 		<alphabitmap filename = 'buttonover.9.png'/>
 		<alphabitmap filename = 'buttondisable.9.png'/>
 		<alphabitmap filename = 'bg.png'/>
+		<alphabitmap filename = 'seperator.png'/>
 	</bitmaps>
 
 	<fonts>
@@ -156,11 +157,11 @@
 		/>
 
 		<text_color	id = 'color_button'
-				color = 'white'
+				color = 'black'
 		/>
 
 		<text_color	id = 'color_button_hover'
-				color = '255, 214, 84'
+				color = '127, 127, 127'
 		/>
 
 		<text_color	id = 'color_button_disabled'

@@ -59,13 +59,17 @@
 
 	<dialog name = 'MainMenu' overlays = 'screen_center'>
 		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
-			<widget name = 'Logo'
-					width = '227'
-					height = '118'
+			<widget name = 'sep1'
+					width = '210'
+					height = '3'
 			/>
 			<widget name = 'Title'
 					width = '210'
 					height = '30'
+			/>
+			<widget name = 'sep2'
+					width = '210'
+					height = '3'
 			/>
 			<layout type = 'horizontal' padding = '16, 0, 16, 0' center = 'true'>
 			      <widget name = 'NewGameButton'

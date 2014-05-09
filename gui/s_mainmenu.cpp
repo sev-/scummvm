@@ -68,11 +68,13 @@ MainMenuDialog::MainMenuDialog()
 	_w = screenW;
 	_h = screenH;
 
-	GraphicsWidget *_logo = new GraphicsWidget(this, "MainMenu.Logo");
-	_logo->useThemeTransparency(true);
-	_logo->setAGfx(g_gui.theme()->getAImageSurface(ThemeEngine::kImageLogo));
+	GraphicsWidget *sep1 = new GraphicsWidget(this, "MainMenu.sep1");
+	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleFit);
 
 	new StaticTextWidget(this, "MainMenu.Title", _("20TH ANNIVERSARY EDITION"));
+
+	GraphicsWidget *sep2 = new GraphicsWidget(this, "MainMenu.sep2");
+	sep2->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleFit);
 
 	new ButtonWidget(this, "MainMenu.NewGameButton", _("~N~EW GAME"), _("Start new game"), kNewGameCmd);
 	new ButtonWidget(this, "MainMenu.QuitButton", _("~Q~UIT"), _("Quit"), kQuitCmd);
