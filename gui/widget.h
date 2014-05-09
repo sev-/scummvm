@@ -363,7 +363,7 @@ public:
 
 	void setGfx(const Graphics::Surface *gfx);
 	void setGfx(int w, int h, int r, int g, int b);
-	void setAGfx(const Graphics::TransparentSurface *gfx);
+	void setAGfx(const Graphics::TransparentSurface *gfx, ThemeEngine::AutoScaleMode mode = ThemeEngine::kAutoScaleNone);
 
 	void useAlpha(int alpha) { _alpha = alpha; }
 	void useThemeTransparency(bool enable) { _transparency = enable; }
@@ -375,6 +375,7 @@ protected:
 	Graphics::TransparentSurface _agfx;
 	int _alpha;
 	bool _transparency;
+	ThemeEngine::AutoScaleMode _mode;
 };
 
 /* ContainerWidget */

@@ -679,7 +679,7 @@ void GraphicsWidget::setGfx(const Graphics::Surface *gfx) {
 	_gfx.copyFrom(*gfx);
 }
 
-void GraphicsWidget::setAGfx(const Graphics::TransparentSurface *gfx) {
+void GraphicsWidget::setAGfx(const Graphics::TransparentSurface *gfx, ThemeEngine::AutoScaleMode mode) {
 	_agfx.free();
 
 	if (!gfx || !gfx->getPixels())
@@ -690,12 +690,13 @@ void GraphicsWidget::setAGfx(const Graphics::TransparentSurface *gfx) {
 		return;
 	}
 
-	if (gfx->w > _w || gfx->h > _h) {
+	if ((gfx->w > _w || gfx->h > _h) && mode == ThemeEngine::kAutoScaleNone) {
 		warning("GraphicsWidget has size %dx%d, but a surface with %dx%d is to be set", _w, _h, gfx->w, gfx->h);
 		return;
 	}
 
 	_agfx.copyFrom(*gfx);
+	_mode = mode;
 }
 
 void GraphicsWidget::setGfx(int w, int h, int r, int g, int b) {
@@ -735,7 +736,7 @@ void GraphicsWidget::drawWidget() {
 		const int x = _x + (_w - _agfx.w) / 2;
 		const int y = _y + (_h - _agfx.h) / 2;
 
-		g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _state, _alpha, _transparency);
+		g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _mode);
 	}
 }
 

@@ -159,14 +159,14 @@ protected:
 
 class ThemeItemABitmap : public ThemeItem {
 public:
-	ThemeItemABitmap(ThemeEngine *engine, const Common::Rect &area, Graphics::TransparentSurface *bitmap, bool alpha) :
-		ThemeItem(engine, area), _bitmap(bitmap), _alpha(alpha) {}
+	ThemeItemABitmap(ThemeEngine *engine, const Common::Rect &area, Graphics::TransparentSurface *bitmap, ThemeEngine::AutoScaleMode autoscale) :
+		ThemeItem(engine, area), _bitmap(bitmap), _autoscale(autoscale) {}
 
 	void drawSelf(bool draw, bool restore);
 
 protected:
 	Graphics::TransparentSurface *_bitmap;
-	bool _alpha;
+	ThemeEngine::AutoScaleMode _autoscale;
 };
 
 
@@ -287,7 +287,7 @@ void ThemeItemABitmap::drawSelf(bool draw, bool restore) {
 		_engine->restoreBackground(_area);
 
 	if (draw)
-		_engine->renderer()->blitAlphaBitmap(_bitmap, _area);
+		_engine->renderer()->blitAlphaBitmap(_bitmap, _area, _autoscale);
 
 	_engine->addDirtyRect(_area);
 }
@@ -988,12 +988,12 @@ void ThemeEngine::queueBitmap(const Graphics::Surface *bitmap, const Common::Rec
 	}
 }
 
-void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, bool alpha) {
+void ThemeEngine::queueABitmap(Graphics::TransparentSurface *bitmap, const Common::Rect &r, AutoScaleMode autoscale) {
 
 	Common::Rect area = r;
 	area.clip(_screen.w, _screen.h);
 
-	ThemeItemABitmap *q = new ThemeItemABitmap(this, area, bitmap, alpha);
+	ThemeItemABitmap *q = new ThemeItemABitmap(this, area, bitmap, autoscale);
 
 	if (_buffering) {
 		_screenQueue.push_back(q);
@@ -1198,11 +1198,11 @@ void ThemeEngine::drawSurface(const Common::Rect &r, const Graphics::Surface &su
 	queueBitmap(&surface, r, themeTrans);
 }
 
-void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, WidgetStateInfo state, int alpha, bool themeTrans) {
+void ThemeEngine::drawASurface(const Common::Rect &r, Graphics::TransparentSurface &surface, AutoScaleMode autoscale) {
 	if (!ready())
 		return;
 
-	queueABitmap(&surface, r, themeTrans);
+	queueABitmap(&surface, r, autoscale);
 }
 
 void ThemeEngine::drawWidgetBackground(const Common::Rect &r, uint16 hints, WidgetBackground background, WidgetStateInfo state) {
