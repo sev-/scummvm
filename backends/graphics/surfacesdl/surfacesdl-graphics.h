@@ -27,6 +27,7 @@
 #include "backends/graphics/sdl/sdl-graphics.h"
 #include "graphics/pixelformat.h"
 #include "graphics/scaler.h"
+#include "graphics/scalerplugin.h"
 #include "common/events.h"
 #include "common/system.h"
 
@@ -88,6 +89,7 @@ public:
 	virtual bool getFeatureState(OSystem::Feature f);
 
 	virtual const OSystem::GraphicsMode *getSupportedGraphicsModes() const;
+	const OSystem::GraphicsMode *supportedGraphicsModes() const;
 	virtual int getDefaultGraphicsMode() const;
 	virtual bool setGraphicsMode(int mode);
 	virtual int getGraphicsMode() const;
@@ -110,6 +112,12 @@ protected:
 	virtual void setPalette(const byte *colors, uint start, uint num);
 	virtual void grabPalette(byte *colors, uint start, uint num);
 
+	/** 
+	 * Convert from the SDL pixel format to Graphics::PixelFormat
+	 * @param in    The SDL pixel format to convert
+	 * @param out   A pixel format to be written to
+	 */
+	void convertSDLPixelFormat(SDL_PixelFormat *in, Graphics::PixelFormat *out) const;
 public:
 	virtual void copyRectToScreen(const void *buf, int pitch, int x, int y, int w, int h);
 	virtual Graphics::Surface *lockScreen();
@@ -186,6 +194,7 @@ protected:
 	SDL_Surface *_tmpscreen2;
 
 	SDL_Surface *_overlayscreen;
+	bool _useOldSrc;
 	bool _overlayVisible;
 	Graphics::PixelFormat _overlayFormat;
 
@@ -228,9 +237,14 @@ protected:
 	/** Force full redraw on next updateScreen */
 	bool _forceFull;
 
-	ScalerProc *_scalerProc;
-	int _scalerType;
 	int _transactionMode;
+
+	const ScalerPlugin::List &_scalerPlugins;
+	ScalerPlugin *_scalerPlugin;
+	ScalerPlugin *_normalPlugin;
+	uint _scalerIndex;
+	uint _maxExtraPixels;
+	uint _extraPixels;
 
 	// Indicates whether it is needed to free _hwsurface in destructor
 	bool _displayDisabled;
@@ -332,6 +346,7 @@ protected:
 
 	virtual int effectiveScreenHeight() const;
 
+	virtual void changeScaler();
 	virtual void setGraphicsModeIntern();
 
 	virtual bool handleScalerHotkeys(Common::KeyCode key);

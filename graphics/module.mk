@@ -15,7 +15,9 @@ MODULE_OBJS := \
 	nine_patch.o \
 	primitives.o \
 	scaler.o \
+	scalerplugin.o \
 	scaler/thumbnail_intern.o \
+	scaler/normal.o \
 	sjis.o \
 	surface.o \
 	thumbnail.o \
@@ -27,14 +29,21 @@ MODULE_OBJS := \
 	wincursor.o \
 	yuv_to_rgb.o
 
+ifdef USE_ASPECT
+MODULE_OBJS += \
+	scaler/aspect.o
+endif
+
 ifdef USE_SCALERS
 MODULE_OBJS += \
-	scaler/2xsai.o \
-	scaler/aspect.o \
+	scaler/dotmatrix.o \
+	scaler/sai.o \
+	scaler/pm.o \
 	scaler/downscaler.o \
 	scaler/scale2x.o \
 	scaler/scale3x.o \
-	scaler/scalebit.o
+	scaler/scalebit.o \
+	scaler/tv.o
 
 ifdef USE_ARM_SCALER_ASM
 MODULE_OBJS += \
@@ -45,8 +54,7 @@ endif
 
 ifdef USE_HQ_SCALERS
 MODULE_OBJS += \
-	scaler/hq2x.o \
-	scaler/hq3x.o
+	scaler/hq.o
 
 ifdef USE_NASM
 MODULE_OBJS += \
@@ -54,6 +62,11 @@ MODULE_OBJS += \
 	scaler/hq3x_i386.o
 endif
 
+endif
+
+ifdef USE_EDGE_SCALERS
+MODULE_OBJS += \
+	scaler/edge.o
 endif
 
 endif

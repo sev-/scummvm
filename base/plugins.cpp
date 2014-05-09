@@ -142,6 +142,24 @@ public:
 		LINK_PLUGIN(TIMIDITY)
 		#endif
 
+		// Scaler plugins
+		LINK_PLUGIN(NORMAL)
+#ifdef USE_SCALERS
+#ifdef USE_HQ_SCALERS
+		LINK_PLUGIN(HQ)
+#endif
+#ifdef USE_EDGE_SCALERS
+		LINK_PLUGIN(EDGE)
+#endif
+		LINK_PLUGIN(ADVMAME)
+		LINK_PLUGIN(SAI)
+		LINK_PLUGIN(SUPERSAI)
+		LINK_PLUGIN(SUPEREAGLE)
+		LINK_PLUGIN(PM)
+		LINK_PLUGIN(DOTMATRIX)
+		LINK_PLUGIN(TV)
+#endif
+
 		return pl;
 	}
 };
@@ -572,7 +590,6 @@ const MusicPlugin::List &MusicManager::getPlugins() const {
 	return (const MusicPlugin::List &)PluginManager::instance().getPlugins(PLUGIN_TYPE_MUSIC);
 }
 
-/*
 // Scaler plugins
 
 #include "graphics/scalerplugin.h"
@@ -607,6 +624,4 @@ ScalerPlugin *ScalerManager::findScalerPlugin(const char *name) const {
 	}
 
 	return 0;
-}
-
-*/
+} 

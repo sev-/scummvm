@@ -42,49 +42,20 @@
 #include "graphics/surface.h"
 #include "gui/EventRecorder.h"
 
-static const OSystem::GraphicsMode s_supportedGraphicsModes[] = {
-	{"1x", _s("Normal (no scaling)"), GFX_NORMAL},
-#ifdef USE_SCALERS
-	{"2x", "2x", GFX_DOUBLESIZE},
-	{"3x", "3x", GFX_TRIPLESIZE},
-	{"2xsai", "2xSAI", GFX_2XSAI},
-	{"super2xsai", "Super2xSAI", GFX_SUPER2XSAI},
-	{"supereagle", "SuperEagle", GFX_SUPEREAGLE},
-	{"advmame2x", "AdvMAME2x", GFX_ADVMAME2X},
-	{"advmame3x", "AdvMAME3x", GFX_ADVMAME3X},
-#ifdef USE_HQ_SCALERS
-	{"hq2x", "HQ2x", GFX_HQ2X},
-	{"hq3x", "HQ3x", GFX_HQ3X},
-#endif
-	{"tv2x", "TV2x", GFX_TV2X},
-	{"dotmatrix", "DotMatrix", GFX_DOTMATRIX},
-#endif
-	{0, 0, 0}
+struct GraphicsModeData {
+	const char *pluginName;
+	uint scaleFactor;
 };
+
+static Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes = NULL;
+static Common::Array<GraphicsModeData> *s_supportedGraphicsModesData = NULL;
+static int s_defaultGraphicsMode;
+
+static void initGraphicsModes();
 
 DECLARE_TRANSLATION_ADDITIONAL_CONTEXT("Normal (no scaling)", "lowres")
 
-// Table of the cursor scalers [scaleFactor - 1]
-static ScalerProc *scalersMagn[3] = {
-#ifdef USE_SCALERS
-	Normal1x, AdvMame2x, AdvMame3x
-#else // remove dependencies on other scalers
-	Normal1x, Normal1x, Normal1x
-#endif
-};
-
-static const int s_gfxModeSwitchTable[][4] = {
-		{ GFX_NORMAL, GFX_DOUBLESIZE, GFX_TRIPLESIZE, -1 },
-		{ GFX_NORMAL, GFX_ADVMAME2X, GFX_ADVMAME3X, -1 },
-		{ GFX_NORMAL, GFX_HQ2X, GFX_HQ3X, -1 },
-		{ GFX_NORMAL, GFX_2XSAI, -1, -1 },
-		{ GFX_NORMAL, GFX_SUPER2XSAI, -1, -1 },
-		{ GFX_NORMAL, GFX_SUPEREAGLE, -1, -1 },
-		{ GFX_NORMAL, GFX_TV2X, -1, -1 },
-		{ GFX_NORMAL, GFX_DOTMATRIX, -1, -1 }
-	};
-
-#ifdef USE_SCALERS
+#ifdef USE_ASPECT
 static int cursorStretch200To240(uint8 *buf, uint32 pitch, int width, int height, int srcX, int srcY, int origSrcY);
 #endif
 
@@ -95,7 +66,7 @@ AspectRatio::AspectRatio(int w, int h) {
 	_kh = h;
 }
 
-#if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__) && defined(USE_SCALERS)
+#if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__) && defined(USE_ASPECT)
 static AspectRatio getDesiredAspectRatio() {
 	const size_t AR_COUNT = 4;
 	const char *desiredAspectRatioAsStrings[AR_COUNT] = {	"auto",				"4/3",				"16/9",				"16/10" };
@@ -127,9 +98,10 @@ SurfaceSdlGraphicsManager::SurfaceSdlGraphicsManager(SdlEventSource *sdlEventSou
 	_screenFormat(Graphics::PixelFormat::createFormatCLUT8()),
 	_cursorFormat(Graphics::PixelFormat::createFormatCLUT8()),
 #endif
+	_useOldSrc(false),
 	_overlayVisible(false),
 	_overlayscreen(0), _tmpscreen2(0),
-	_scalerProc(0), _screenChangeCount(0),
+	_screenChangeCount(0),
 	_mouseVisible(false), _mouseNeedsRedraw(false), _mouseData(0), _mouseSurface(0),
 	_mouseOrigSurface(0), _cursorDontScale(false), _cursorPaletteDisabled(true),
 	_currentShakePos(0), _newShakePos(0),
@@ -140,7 +112,8 @@ SurfaceSdlGraphicsManager::SurfaceSdlGraphicsManager(SdlEventSource *sdlEventSou
 #ifdef USE_SDL_DEBUG_FOCUSRECT
 	_enableFocusRectDebugCode(false), _enableFocusRect(false), _focusRect(),
 #endif
-	_transactionMode(kTransactionNone) {
+	_transactionMode(kTransactionNone),
+	_scalerPlugins(ScalerMan.getPlugins()) {
 
 	// allocate palette storage
 	_currentPalette = (SDL_Color *)calloc(sizeof(SDL_Color), 256);
@@ -161,25 +134,37 @@ SurfaceSdlGraphicsManager::SurfaceSdlGraphicsManager(SdlEventSource *sdlEventSou
 	memset(&_videoMode, 0, sizeof(_videoMode));
 	memset(&_transactionDetails, 0, sizeof(_transactionDetails));
 
-#if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__) && defined(USE_SCALERS)
+#if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__) 
+
+#if defined(USE_SCALERS)
 	_videoMode.mode = GFX_DOUBLESIZE;
 	_videoMode.scaleFactor = 2;
-	_videoMode.aspectRatioCorrection = ConfMan.getBool("aspect_ratio");
-	_videoMode.desiredAspectRatio = getDesiredAspectRatio();
-	_scalerProc = Normal2x;
 #else // for small screen platforms
 	_videoMode.mode = GFX_NORMAL;
 	_videoMode.scaleFactor = 1;
-	_videoMode.aspectRatioCorrection = false;
-	_scalerProc = Normal1x;
 #endif
-	_scalerType = 0;
+#if defined(USE_ASPECT)
+	_videoMode.aspectRatioCorrection = ConfMan.getBool("aspect_ratio");
+	_videoMode.desiredAspectRatio = getDesiredAspectRatio();
+#else // for small screen platforms
+	_videoMode.aspectRatioCorrection = false;
+#endif
+
+#endif
+	_normalPlugin = ScalerMan.findScalerPlugin("normal");
+	assert(_normalPlugin);
+	_scalerPlugin = NULL;
+	_scalerIndex = 0;
+	_maxExtraPixels = ScalerMan.getMaxExtraPixels();
 
 #if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__)
 	_videoMode.fullscreen = ConfMan.getBool("fullscreen");
 #else
 	_videoMode.fullscreen = true;
 #endif
+
+	if (!s_supportedGraphicsModes)
+		initGraphicsModes();
 }
 
 SurfaceSdlGraphicsManager::~SurfaceSdlGraphicsManager() {
@@ -195,6 +180,16 @@ SurfaceSdlGraphicsManager::~SurfaceSdlGraphicsManager() {
 	free(_currentPalette);
 	free(_cursorPalette);
 	free(_mouseData);
+
+	for (uint i = 0; i < s_supportedGraphicsModes->size() - 1; ++i) {
+		OSystem::GraphicsMode &gm = (*s_supportedGraphicsModes)[i];
+		free(const_cast<char *>(gm.name));
+		free(const_cast<char *>(gm.description));
+	}
+	delete s_supportedGraphicsModes;
+	delete s_supportedGraphicsModesData;
+	s_supportedGraphicsModes = NULL;
+	s_supportedGraphicsModesData = NULL;
 }
 
 void SurfaceSdlGraphicsManager::activateManager() {
@@ -216,7 +211,9 @@ void SurfaceSdlGraphicsManager::deactivateManager() {
 bool SurfaceSdlGraphicsManager::hasFeature(OSystem::Feature f) {
 	return
 		(f == OSystem::kFeatureFullscreenMode) ||
+#ifdef USE_ASPECT
 		(f == OSystem::kFeatureAspectRatioCorrection) ||
+#endif
 		(f == OSystem::kFeatureCursorPalette) ||
 		(f == OSystem::kFeatureIconifyWindow);
 }
@@ -226,9 +223,11 @@ void SurfaceSdlGraphicsManager::setFeatureState(OSystem::Feature f, bool enable)
 	case OSystem::kFeatureFullscreenMode:
 		setFullscreenMode(enable);
 		break;
+#ifdef USE_ASPECT
 	case OSystem::kFeatureAspectRatioCorrection:
 		setAspectRatioCorrection(enable);
 		break;
+#endif
 	case OSystem::kFeatureCursorPalette:
 		_cursorPaletteDisabled = !enable;
 		blitCursor();
@@ -251,8 +250,10 @@ bool SurfaceSdlGraphicsManager::getFeatureState(OSystem::Feature f) {
 	switch (f) {
 	case OSystem::kFeatureFullscreenMode:
 		return _videoMode.fullscreen;
+#ifdef USE_ASPECT
 	case OSystem::kFeatureAspectRatioCorrection:
 		return _videoMode.aspectRatioCorrection;
+#endif
 	case OSystem::kFeatureCursorPalette:
 		return !_cursorPaletteDisabled;
 	default:
@@ -260,20 +261,77 @@ bool SurfaceSdlGraphicsManager::getFeatureState(OSystem::Feature f) {
 	}
 }
 
+static void initGraphicsModes() {
+	s_supportedGraphicsModes = new Common::Array<OSystem::GraphicsMode>;
+	s_supportedGraphicsModesData = new Common::Array<GraphicsModeData>;
+	const ScalerPlugin::List &plugins = ScalerMan.getPlugins();
+	OSystem::GraphicsMode gm;
+	GraphicsModeData gmd;
+	// 0 should be the normal1x mode
+	s_defaultGraphicsMode = 0;
+	for (uint i = 0; i < plugins.size(); ++i) {
+		const Common::Array<uint> &factors = (*plugins[i])->getFactors();
+		const char *name = (*plugins[i])->getName();
+		const char *prettyName = (*plugins[i])->getPrettyName();
+		gmd.pluginName = name;
+		for (uint j = 0; j < factors.size(); ++j) {
+			Common::String n1 = Common::String::format("%s%dx", name, factors[j]);
+			Common::String n2 = Common::String::format("%s%dx", prettyName, factors[j]);
+			gm.name = strdup(n1.c_str());
+			gm.description = strdup(n2.c_str());
+			gm.id = s_supportedGraphicsModes->size();
+
+			// if normal2x exists, it is the default
+			if (strcmp(gm.name, "normal2x") == 0)
+				s_defaultGraphicsMode = gm.id;
+
+			s_supportedGraphicsModes->push_back(gm);
+			gmd.scaleFactor = factors[j];
+			s_supportedGraphicsModesData->push_back(gmd);
+		}
+	}
+	gm.name = 0;
+	gm.description = 0;
+	gm.id = 0;
+	s_supportedGraphicsModes->push_back(gm);
+}
+
+const OSystem::GraphicsMode *SurfaceSdlGraphicsManager::supportedGraphicsModes() const {
+	if (!s_supportedGraphicsModes)
+		initGraphicsModes();
+
+	int size = s_supportedGraphicsModes->size();
+	OSystem::GraphicsMode *modes = new OSystem::GraphicsMode[size];
+	memcpy(modes, &(*s_supportedGraphicsModes)[0], size * sizeof(OSystem::GraphicsMode));
+
+	// Do deep copy. Each can be freed independently of the other.
+	OSystem::GraphicsMode *gm = modes;
+	while (gm->name) {
+		gm->name = strdup(gm->name);
+		gm->description = strdup(gm->description);
+		++gm;
+	}
+
+	return modes;
+}
+
 const OSystem::GraphicsMode *SurfaceSdlGraphicsManager::getSupportedGraphicsModes() const {
-	return s_supportedGraphicsModes;
+	return supportedGraphicsModes();
 }
 
 int SurfaceSdlGraphicsManager::getDefaultGraphicsMode() const {
-#ifdef USE_SCALERS
-	return GFX_DOUBLESIZE;
-#else
-	return GFX_NORMAL;
-#endif
+	return s_defaultGraphicsMode;
+// FIXME - Old Code Behaviour to remove?
+//#ifdef USE_SCALERS
+//	return GFX_DOUBLESIZE;
+//#else
+//	return GFX_NORMAL;
+//#endif
 }
 
 void SurfaceSdlGraphicsManager::resetGraphicsScale() {
-	setGraphicsMode(s_gfxModeSwitchTable[_scalerType][0]);
+	// 0 will currently always be Normal1x scaling
+	setGraphicsMode(0);
 }
 
 void SurfaceSdlGraphicsManager::beginGFXTransaction() {
@@ -349,6 +407,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 	if (_transactionDetails.sizeChanged) {
 #endif
 		unloadGFXMode();
+		changeScaler();
 		if (!loadGFXMode()) {
 			if (_oldVideoMode.setup) {
 				_transactionMode = kTransactionRollback;
@@ -367,6 +426,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 			_screenChangeCount++;
 		}
 	} else if (_transactionDetails.needHotswap) {
+		changeScaler();
 		setGraphicsModeIntern();
 		if (!hotswapGFXMode()) {
 			if (_oldVideoMode.setup) {
@@ -386,6 +446,7 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 				internUpdateScreen();
 		}
 	} else if (_transactionDetails.needUpdatescreen) {
+		changeScaler();
 		setGraphicsModeIntern();
 		internUpdateScreen();
 	}
@@ -398,6 +459,17 @@ OSystem::TransactionError SurfaceSdlGraphicsManager::endGFXTransaction() {
 Common::List<Graphics::PixelFormat> SurfaceSdlGraphicsManager::getSupportedFormats() const {
 	assert(!_supportedFormats.empty());
 	return _supportedFormats;
+}
+
+void SurfaceSdlGraphicsManager::convertSDLPixelFormat(SDL_PixelFormat *in, Graphics::PixelFormat *out) const {
+	*out = Graphics::PixelFormat(in->BytesPerPixel,
+		8 - in->Rloss, 8 - in->Gloss,
+		8 - in->Bloss, 8 - in->Aloss,
+		in->Rshift, in->Gshift,
+		in->Bshift, in->Ashift);
+	// Workaround to SDL not providing an accurate Aloss value on Mac OS X.
+	if (in->Amask == 0)
+		out->aLoss = 8;
 }
 
 void SurfaceSdlGraphicsManager::detectSupportedFormats() {
@@ -446,15 +518,7 @@ void SurfaceSdlGraphicsManager::detectSupportedFormats() {
 	Graphics::PixelFormat format = Graphics::PixelFormat::createFormatCLUT8();
 	if (_hwscreen) {
 		// Get our currently set hardware format
-		format = Graphics::PixelFormat(_hwscreen->format->BytesPerPixel,
-			8 - _hwscreen->format->Rloss, 8 - _hwscreen->format->Gloss,
-			8 - _hwscreen->format->Bloss, 8 - _hwscreen->format->Aloss,
-			_hwscreen->format->Rshift, _hwscreen->format->Gshift,
-			_hwscreen->format->Bshift, _hwscreen->format->Ashift);
-
-		// Workaround to SDL not providing an accurate Aloss value on Mac OS X.
-		if (_hwscreen->format->Amask == 0)
-			format.aLoss = 8;
+		convertSDLPixelFormat(_hwscreen->format, &format);
 
 		// Push it first, as the prefered format.
 		_supportedFormats.push_back(format);
@@ -492,57 +556,26 @@ bool SurfaceSdlGraphicsManager::setGraphicsMode(int mode) {
 	if (_oldVideoMode.setup && _oldVideoMode.mode == mode)
 		return true;
 
-	int newScaleFactor = 1;
+	int newScaleFactor;
 
-	switch (mode) {
-	case GFX_NORMAL:
-		newScaleFactor = 1;
-		break;
-#ifdef USE_SCALERS
-	case GFX_DOUBLESIZE:
-		newScaleFactor = 2;
-		break;
-	case GFX_TRIPLESIZE:
-		newScaleFactor = 3;
-		break;
-
-	case GFX_2XSAI:
-		newScaleFactor = 2;
-		break;
-	case GFX_SUPER2XSAI:
-		newScaleFactor = 2;
-		break;
-	case GFX_SUPEREAGLE:
-		newScaleFactor = 2;
-		break;
-	case GFX_ADVMAME2X:
-		newScaleFactor = 2;
-		break;
-	case GFX_ADVMAME3X:
-		newScaleFactor = 3;
-		break;
-#ifdef USE_HQ_SCALERS
-	case GFX_HQ2X:
-		newScaleFactor = 2;
-		break;
-	case GFX_HQ3X:
-		newScaleFactor = 3;
-		break;
-#endif
-	case GFX_TV2X:
-		newScaleFactor = 2;
-		break;
-	case GFX_DOTMATRIX:
-		newScaleFactor = 2;
-		break;
-#endif // USE_SCALERS
-
-	default:
+	if (mode >= (int)s_supportedGraphicsModes->size()) {
 		warning("unknown gfx mode %d", mode);
 		return false;
 	}
 
-	_transactionDetails.normal1xScaler = (mode == GFX_NORMAL);
+	const char *name = (*s_supportedGraphicsModesData)[mode].pluginName;
+	newScaleFactor = (*s_supportedGraphicsModesData)[mode].scaleFactor;
+
+	// Find which plugin corresponds to the desired mode and set
+	// _scalerIndex accordingly. _scalerPlugin will be updated later.
+	while (strcmp(name, (*_scalerPlugins[_scalerIndex])->getName()) != 0) {
+		_scalerIndex++;
+		if (_scalerIndex >= _scalerPlugins.size()) {
+			_scalerIndex = 0;
+		}
+	}
+
+	_transactionDetails.normal1xScaler = (newScaleFactor == 1);
 	if (_oldVideoMode.setup && _oldVideoMode.scaleFactor != newScaleFactor)
 		_transactionDetails.needHotswap = true;
 
@@ -554,70 +587,50 @@ bool SurfaceSdlGraphicsManager::setGraphicsMode(int mode) {
 	return true;
 }
 
+void SurfaceSdlGraphicsManager::changeScaler() {
+	Common::StackLock lock(_graphicsMutex);
+
+	// If the _scalerIndex has changed, change scaler plugins
+	if (_scalerPlugins[_scalerIndex] != _scalerPlugin
+#ifdef USE_RGB_COLOR
+	|| _transactionDetails.formatChanged
+#endif
+	) {
+		if (_scalerPlugin)
+			(*_scalerPlugin)->deinitialize();
+
+		_scalerPlugin = _scalerPlugins[_scalerIndex];
+	}
+
+	(*_scalerPlugin)->setFactor(_videoMode.scaleFactor);
+	(*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
+}
+
 void SurfaceSdlGraphicsManager::setGraphicsModeIntern() {
 	Common::StackLock lock(_graphicsMutex);
-	ScalerProc *newScalerProc = 0;
-
-	switch (_videoMode.mode) {
-	case GFX_NORMAL:
-		newScalerProc = Normal1x;
-		break;
-#ifdef USE_SCALERS
-	case GFX_DOUBLESIZE:
-		newScalerProc = Normal2x;
-		break;
-	case GFX_TRIPLESIZE:
-		newScalerProc = Normal3x;
-		break;
-
-	case GFX_2XSAI:
-		newScalerProc = _2xSaI;
-		break;
-	case GFX_SUPER2XSAI:
-		newScalerProc = Super2xSaI;
-		break;
-	case GFX_SUPEREAGLE:
-		newScalerProc = SuperEagle;
-		break;
-	case GFX_ADVMAME2X:
-		newScalerProc = AdvMame2x;
-		break;
-	case GFX_ADVMAME3X:
-		newScalerProc = AdvMame3x;
-		break;
-#ifdef USE_HQ_SCALERS
-	case GFX_HQ2X:
-		newScalerProc = HQ2x;
-		break;
-	case GFX_HQ3X:
-		newScalerProc = HQ3x;
-		break;
-#endif
-	case GFX_TV2X:
-		newScalerProc = TV2x;
-		break;
-	case GFX_DOTMATRIX:
-		newScalerProc = DotMatrix;
-		break;
-#endif // USE_SCALERS
-
-	default:
-		error("Unknown gfx mode %d", _videoMode.mode);
-	}
-
-	_scalerProc = newScalerProc;
-
-	if (_videoMode.mode != GFX_NORMAL) {
-		for (int i = 0; i < ARRAYSIZE(s_gfxModeSwitchTable); i++) {
-			if (s_gfxModeSwitchTable[i][1] == _videoMode.mode || s_gfxModeSwitchTable[i][2] == _videoMode.mode) {
-				_scalerType = i;
-				break;
-			}
-		}
-	}
 
 	if (!_screen || !_hwscreen)
 		return;
+
+	// The initialization below is currently slightly wasteful, because
+	// it will reinitialize the scalers every time this function is called.
+	Graphics::PixelFormat format;
+	convertSDLPixelFormat(_hwscreen->format, &format);
+
+	if (_scalerPlugins[_scalerIndex] != _normalPlugin) {
+		// _normalPlugin might be needed and needs to be initialized
+		(*_normalPlugin)->initialize(format);
+	}
+
+	(*_scalerPlugin)->initialize(format);
+	_extraPixels = (*_scalerPlugin)->extraPixels();
+	_useOldSrc = (*_scalerPlugin)->useOldSource();
+
+	if (_useOldSrc) {
+		(*_scalerPlugin)->enableSource(true);
+		(*_scalerPlugin)->setSource((byte *)_tmpscreen->pixels, _tmpscreen->pitch,
+									_videoMode.screenWidth, _videoMode.screenHeight, _maxExtraPixels);
+	}
 
 	// Blit everything to the screen
 	_forceFull = true;
@@ -663,10 +676,7 @@ void SurfaceSdlGraphicsManager::initSize(uint w, uint h, const Graphics::PixelFo
 }
 
 int SurfaceSdlGraphicsManager::effectiveScreenHeight() const {
-	return _videoMode.scaleFactor *
-				(_videoMode.aspectRatioCorrection
-					? real2Aspect(_videoMode.screenHeight)
-					: _videoMode.screenHeight);
+	return (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
 }
 
 static void fixupResolutionForAspectRatio(AspectRatio desiredAspectRatio, int &width, int &height) {
@@ -714,16 +724,13 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	_forceFull = true;
 
 #if !defined(__MAEMO__) && !defined(DINGUX) && !defined(GPH_DEVICE) && !defined(LINUXMOTO) && !defined(OPENPANDORA)
-	_videoMode.overlayWidth = _videoMode.screenWidth * _videoMode.scaleFactor;
-	_videoMode.overlayHeight = _videoMode.screenHeight * _videoMode.scaleFactor;
-
 	if (_videoMode.screenHeight != 200 && _videoMode.screenHeight != 400)
 		_videoMode.aspectRatioCorrection = false;
 
-	if (_videoMode.aspectRatioCorrection)
-		_videoMode.overlayHeight = real2Aspect(_videoMode.overlayHeight);
+	_videoMode.overlayWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
+	_videoMode.overlayHeight = (*_scalerPlugin)->scaleYCoordinate(_videoMode.screenHeight);
 
-	_videoMode.hardwareWidth = _videoMode.screenWidth * _videoMode.scaleFactor;
+	_videoMode.hardwareWidth = (*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth);
 	_videoMode.hardwareHeight = effectiveScreenHeight();
 // On GPH devices ALL the _videoMode.hardware... are setup in GPHGraphicsManager::loadGFXMode()
 #elif !defined(GPH_DEVICE)
@@ -801,7 +808,8 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	//
 
 	// Need some extra bytes around when using 2xSaI
-	_tmpscreen = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.screenWidth + 3, _videoMode.screenHeight + 3,
+	_tmpscreen = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.screenWidth + _maxExtraPixels * 2,
+						_videoMode.screenHeight + _maxExtraPixels * 2,
 						16,
 						_hwscreen->format->Rmask,
 						_hwscreen->format->Gmask,
@@ -810,6 +818,12 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 
 	if (_tmpscreen == NULL)
 		error("allocating _tmpscreen failed");
+
+	if (_useOldSrc) {
+		// Create surface containing previous frame's data to pass to scaler
+		(*_scalerPlugin)->setSource((byte *)_tmpscreen->pixels, _tmpscreen->pitch,
+									_videoMode.screenWidth, _videoMode.screenHeight, _maxExtraPixels);
+	}
 
 	_overlayscreen = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.overlayWidth, _videoMode.overlayHeight,
 						16,
@@ -833,7 +847,8 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	_overlayFormat.bShift = _overlayscreen->format->Bshift;
 	_overlayFormat.aShift = _overlayscreen->format->Ashift;
 
-	_tmpscreen2 = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.overlayWidth + 3, _videoMode.overlayHeight + 3,
+	_tmpscreen2 = SDL_CreateRGBSurface(SDL_SWSURFACE, _videoMode.overlayWidth + _maxExtraPixels * 2,
+						_videoMode.overlayHeight + _maxExtraPixels * 2,
 						16,
 						_hwscreen->format->Rmask,
 						_hwscreen->format->Gmask,
@@ -860,12 +875,6 @@ bool SurfaceSdlGraphicsManager::loadGFXMode() {
 	_eventSource->resetKeyboadEmulation(
 		_videoMode.screenWidth * _videoMode.scaleFactor - 1,
 		effectiveScreenHeight() - 1);
-
-	// Distinguish 555 and 565 mode
-	if (_hwscreen->format->Rmask == 0x7C00)
-		InitScalers(555);
-	else
-		InitScalers(565);
 
 	return true;
 }
@@ -902,7 +911,6 @@ void SurfaceSdlGraphicsManager::unloadGFXMode() {
 		_osdSurface = NULL;
 	}
 #endif
-	DestroyScalers();
 }
 
 bool SurfaceSdlGraphicsManager::hotswapGFXMode() {
@@ -968,8 +976,6 @@ void SurfaceSdlGraphicsManager::updateScreen() {
 void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	SDL_Surface *srcSurf, *origSurf;
 	int height, width;
-	ScalerProc *scalerProc;
-	int scale1;
 
 	// definitions not available for non-DEBUG here. (needed this to compile in SYMBIAN32 & linux?)
 #if defined(DEBUG) && !defined(WIN32) && !defined(_WIN32_WCE)
@@ -979,8 +985,8 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 
 	// If the shake position changed, fill the dirty area with blackness
 	if (_currentShakePos != _newShakePos ||
-		(_mouseNeedsRedraw && _mouseBackup.y <= _currentShakePos)) {
-		SDL_Rect blackrect = {0, 0, (Uint16)(_videoMode.screenWidth * _videoMode.scaleFactor), (Uint16)(_newShakePos * _videoMode.scaleFactor)};
+	   (_mouseNeedsRedraw && _mouseBackup.y <= _currentShakePos)) {
+		SDL_Rect blackrect = {0, 0, (Uint16)(*_scalerPlugin)->scaleXCoordinate(_videoMode.screenWidth * _videoMode.scaleFactor), (Uint16)((*_scalerPlugin)->scaleYCoordinate(_newShakePos * _videoMode.scaleFactor))};
 
 		if (_videoMode.aspectRatioCorrection && !_overlayVisible)
 			blackrect.h = real2Aspect(blackrect.h - 1) + 1;
@@ -1024,21 +1030,20 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	}
 #endif
 
+	int oldScaleFactor;
 	if (!_overlayVisible) {
 		origSurf = _screen;
 		srcSurf = _tmpscreen;
 		width = _videoMode.screenWidth;
 		height = _videoMode.screenHeight;
-		scalerProc = _scalerProc;
-		scale1 = _videoMode.scaleFactor;
+		oldScaleFactor = _videoMode.scaleFactor;
 	} else {
 		origSurf = _overlayscreen;
 		srcSurf = _tmpscreen2;
 		width = _videoMode.overlayWidth;
 		height = _videoMode.overlayHeight;
-		scalerProc = Normal1x;
-
-		scale1 = 1;
+		oldScaleFactor = (*_scalerPlugin)->setFactor(1);
+		(*_scalerPlugin)->setAspectRatio(false);
 	}
 
 	// Add the area covered by the mouse cursor to the list of dirty rects if
@@ -1046,7 +1051,8 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 	if (_mouseNeedsRedraw)
 		undrawMouse();
 
-	// Force a full redraw if requested
+	// Force a full redraw if requested.
+	// If _useOldSrc, the scaler will do its own partial updates.
 	if (_forceFull) {
 		_numDirtyRects = 1;
 		_dirtyRectList[0].x = 0;
@@ -1064,8 +1070,8 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 
 		for (r = _dirtyRectList; r != lastRect; ++r) {
 			dst = *r;
-			dst.x++;	// Shift rect by one since 2xSai needs to access the data around
-			dst.y++;	// any pixel to scale it, and we want to avoid mem access crashes.
+			dst.x += _maxExtraPixels;	// Shift rect since some scalers need to access the data around
+			dst.y += _maxExtraPixels;	// any pixel to scale it, and we want to avoid mem access crashes.
 
 			if (SDL_BlitSurface(origSurf, r, srcSurf, &dst) != 0)
 				error("SDL_BlitSurface failed: %s", SDL_GetError());
@@ -1080,38 +1086,24 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		for (r = _dirtyRectList; r != lastRect; ++r) {
 			register int dst_y = r->y + _currentShakePos;
 			register int dst_h = 0;
-#ifdef USE_SCALERS
-			register int orig_dst_y = 0;
-#endif
-			register int rx1 = r->x * scale1;
+
+			register int rx1 = (*_scalerPlugin)->scaleXCoordinate(r->x);
 
 			if (dst_y < height) {
 				dst_h = r->h;
 				if (dst_h > height - dst_y)
 					dst_h = height - dst_y;
 
-#ifdef USE_SCALERS
-				orig_dst_y = dst_y;
-#endif
-				dst_y = dst_y * scale1;
+				dst_y = (*_scalerPlugin)->scaleYCoordinate(dst_y);
 
-				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-					dst_y = real2Aspect(dst_y);
-
-				assert(scalerProc != NULL);
-				scalerProc((byte *)srcSurf->pixels + (r->x * 2 + 2) + (r->y + 1) * srcPitch, srcPitch,
-					(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h);
+				(*_scalerPlugin)->scale((byte *)srcSurf->pixels + (r->x + _maxExtraPixels) * 2 + (r->y + _maxExtraPixels) * srcPitch, srcPitch,
+					(byte *)_hwscreen->pixels + rx1 * 2 + dst_y * dstPitch, dstPitch, r->w, dst_h, r->x, r->y);
 			}
 
 			r->x = rx1;
 			r->y = dst_y;
-			r->w = r->w * scale1;
-			r->h = dst_h * scale1;
-
-#ifdef USE_SCALERS
-			if (_videoMode.aspectRatioCorrection && orig_dst_y < height && !_overlayVisible)
-				r->h = stretch200To240((uint8 *) _hwscreen->pixels, dstPitch, r->w, r->h, r->x, r->y, orig_dst_y * scale1);
-#endif
+			r->w = (*_scalerPlugin)->scaleXCoordinate(r->w);
+			r->h = (*_scalerPlugin)->scaleYCoordinate(dst_h - 1) + 1;
 		}
 		SDL_UnlockSurface(srcSurf);
 		SDL_UnlockSurface(_hwscreen);
@@ -1120,7 +1112,11 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		// This is necessary if shaking is active.
 		if (_forceFull) {
 			_dirtyRectList[0].y = 0;
+			int tmpScale = (*_scalerPlugin)->setFactor(oldScaleFactor);
+			bool tmpAR = (*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
 			_dirtyRectList[0].h = effectiveScreenHeight();
+			(*_scalerPlugin)->setFactor(tmpScale);
+			(*_scalerPlugin)->setAspectRatio(tmpAR);
 		}
 
 		drawMouse();
@@ -1138,18 +1134,15 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 		if (_enableFocusRect && !_overlayVisible) {
 			int y = _focusRect.top + _currentShakePos;
 			int h = 0;
-			int x = _focusRect.left * scale1;
-			int w = _focusRect.width() * scale1;
+			int x = (*_scalerPlugin)->scaleXCoordinate(_focusRect.left);
+			int w = (*_scalerPlugin)->scaleXCoordinate(_focusRect.width());
 
 			if (y < height) {
 				h = _focusRect.height();
 				if (h > height - y)
 					h = height - y;
 
-				y *= scale1;
-
-				if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-					y = real2Aspect(y);
+				y = (*_scalerPlugin)->scaleYCoordinate(y);
 
 				if (h > 0 && w > 0) {
 					SDL_LockSurface(_hwscreen);
@@ -1208,6 +1201,10 @@ void SurfaceSdlGraphicsManager::internUpdateScreen() {
 			SDL_UpdateRects(_hwscreen, _numDirtyRects, _dirtyRectList);
 		}
 	}
+
+	// Set up the old scale factor + AR state
+	(*_scalerPlugin)->setFactor(oldScaleFactor);
+	(*_scalerPlugin)->setAspectRatio(_videoMode.aspectRatioCorrection);
 
 	_numDirtyRects = 0;
 	_forceFull = false;
@@ -1365,13 +1362,15 @@ void SurfaceSdlGraphicsManager::addDirtyRect(int x, int y, int w, int h, bool re
 		height = _videoMode.overlayHeight;
 	}
 
-	// Extend the dirty region by 1 pixel for scalers
+	// Extend the dirty region for scalers
 	// that "smear" the screen, e.g. 2xSAI
 	if (!realCoordinates) {
-		x--;
-		y--;
-		w+=2;
-		h+=2;
+		// Aspect ratio correction requires this to be at least one
+		int adjust = MAX(_extraPixels, (uint)1);
+		x -= adjust;
+		y -= adjust;
+		w += adjust * 2;
+		h += adjust * 2;
 	}
 
 	// clip
@@ -1393,7 +1392,7 @@ void SurfaceSdlGraphicsManager::addDirtyRect(int x, int y, int w, int h, bool re
 		h = height - y;
 	}
 
-#ifdef USE_SCALERS
+#ifdef USE_ASPECT
 	if (_videoMode.aspectRatioCorrection && !_overlayVisible && !realCoordinates) {
 		makeRectStretchable(x, y, w, h);
 	}
@@ -1536,8 +1535,6 @@ void SurfaceSdlGraphicsManager::clearFocusRectangle() {
 void SurfaceSdlGraphicsManager::showOverlay() {
 	assert(_transactionMode == kTransactionNone);
 
-	int x, y;
-
 	if (_overlayVisible)
 		return;
 
@@ -1545,11 +1542,8 @@ void SurfaceSdlGraphicsManager::showOverlay() {
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = _mouseCurState.x * _videoMode.scaleFactor;
-	if (_videoMode.aspectRatioCorrection)
-		y = real2Aspect(_mouseCurState.y) * _videoMode.scaleFactor;
-	else
-		y = _mouseCurState.y * _videoMode.scaleFactor;
+	int x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x);
+	int y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y);
 
 	warpMouse(x, y);
 
@@ -1562,16 +1556,12 @@ void SurfaceSdlGraphicsManager::hideOverlay() {
 	if (!_overlayVisible)
 		return;
 
-	int x, y;
-
 	_overlayVisible = false;
 
 	// Since resolution could change, put mouse to adjusted position
 	// Fixes bug #1349059
-	x = _mouseCurState.x / _videoMode.scaleFactor;
-	y = _mouseCurState.y / _videoMode.scaleFactor;
-	if (_videoMode.aspectRatioCorrection)
-		y = aspect2Real(y);
+	int x = (*_scalerPlugin)->scaleXCoordinate(_mouseCurState.x, true);
+	int y = (*_scalerPlugin)->scaleYCoordinate(_mouseCurState.y, true);
 
 	warpMouse(x, y);
 
@@ -1591,7 +1581,7 @@ void SurfaceSdlGraphicsManager::clearOverlay() {
 	// Clear the overlay by making the game screen "look through" everywhere.
 	SDL_Rect src, dst;
 	src.x = src.y = 0;
-	dst.x = dst.y = 1;
+	dst.x = dst.y = _maxExtraPixels;
 	src.w = dst.w = _videoMode.screenWidth;
 	src.h = dst.h = _videoMode.screenHeight;
 	if (SDL_BlitSurface(_screen, &src, _tmpscreen, &dst) != 0)
@@ -1599,14 +1589,10 @@ void SurfaceSdlGraphicsManager::clearOverlay() {
 
 	SDL_LockSurface(_tmpscreen);
 	SDL_LockSurface(_overlayscreen);
-	_scalerProc((byte *)(_tmpscreen->pixels) + _tmpscreen->pitch + 2, _tmpscreen->pitch,
-	(byte *)_overlayscreen->pixels, _overlayscreen->pitch, _videoMode.screenWidth, _videoMode.screenHeight);
 
-#ifdef USE_SCALERS
-	if (_videoMode.aspectRatioCorrection)
-		stretch200To240((uint8 *)_overlayscreen->pixels, _overlayscreen->pitch,
-						_videoMode.overlayWidth, _videoMode.screenHeight * _videoMode.scaleFactor, 0, 0, 0);
-#endif
+	(*_scalerPlugin)->scale((byte *)(_tmpscreen->pixels) + _maxExtraPixels * _tmpscreen->pitch + _maxExtraPixels * 2, _tmpscreen->pitch,
+	(byte *)_overlayscreen->pixels, _overlayscreen->pitch, _videoMode.screenWidth, _videoMode.screenHeight, 0, 0);
+
 	SDL_UnlockSurface(_tmpscreen);
 	SDL_UnlockSurface(_overlayscreen);
 
@@ -1715,12 +1701,9 @@ void SurfaceSdlGraphicsManager::warpMouse(int x, int y) {
 		return;
 	}
 
-	if (_videoMode.aspectRatioCorrection && !_overlayVisible)
-		y1 = real2Aspect(y);
-
 	if (_mouseCurState.x != x || _mouseCurState.y != y) {
 		if (!_overlayVisible)
-			SDL_WarpMouse(x * _videoMode.scaleFactor, y1 * _videoMode.scaleFactor);
+			SDL_WarpMouse((*_scalerPlugin)->scaleXCoordinate(x), (*_scalerPlugin)->scaleYCoordinate(y1));
 		else
 			SDL_WarpMouse(x, y1);
 
@@ -1765,10 +1748,10 @@ void SurfaceSdlGraphicsManager::setMouseCursor(const void *buf, uint w, uint h, 
 		if (_mouseOrigSurface)
 			SDL_FreeSurface(_mouseOrigSurface);
 
-		// Allocate bigger surface because AdvMame2x adds black pixel at [0,0]
+		// Allocate bigger surface because scalers will read past the boudaries.
 		_mouseOrigSurface = SDL_CreateRGBSurface(SDL_SWSURFACE | SDL_RLEACCEL | SDL_SRCCOLORKEY | SDL_SRCALPHA,
-						_mouseCurState.w + 2,
-						_mouseCurState.h + 2,
+						_mouseCurState.w + _maxExtraPixels * 2,
+						_mouseCurState.h + _maxExtraPixels * 2,
 						16,
 						_hwscreen->format->Rmask,
 						_hwscreen->format->Gmask,
@@ -1800,10 +1783,12 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 #else
 	byte color;
 #endif
-	int w, h, i, j;
+	uint w, h, i, j;
 
 	if (!_mouseOrigSurface || !_mouseData)
 		return;
+
+	int bytesPerPixel = _mouseOrigSurface->format->BytesPerPixel;
 
 	_mouseNeedsRedraw = true;
 
@@ -1813,16 +1798,16 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 	SDL_LockSurface(_mouseOrigSurface);
 
 	// Make whole surface transparent
-	for (i = 0; i < h + 2; i++) {
+	for (i = 0; i < h + _maxExtraPixels * 2; i++) {
 		dstPtr = (byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * i;
-		for (j = 0; j < w + 2; j++) {
+		for (j = 0; j < w + _maxExtraPixels * 2; j++) {
 			*(uint16 *)dstPtr = kMouseColorKey;
-			dstPtr += 2;
+			dstPtr += bytesPerPixel;
 		}
 	}
 
-	// Draw from [1,1] since AdvMame2x adds artefact at 0,0
-	dstPtr = (byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch + 2;
+	// Draw from [_maxExtraPixels,_maxExtraPixels] since scalers will read past boudaries
+	dstPtr = (byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel;
 
 	SDL_Color *palette;
 
@@ -1845,7 +1830,7 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 					*(uint16 *)dstPtr = SDL_MapRGB(_mouseOrigSurface->format,
 						r, g, b);
 				}
-				dstPtr += 2;
+				dstPtr += bytesPerPixel;
 				srcPtr += _cursorFormat.bytesPerPixel;
 			} else {
 #endif
@@ -1860,7 +1845,7 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 			}
 #endif
 		}
-		dstPtr += _mouseOrigSurface->pitch - w * 2;
+		dstPtr += _mouseOrigSurface->pitch - w * bytesPerPixel;
 	}
 
 	int rW, rH;
@@ -1887,7 +1872,7 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 	_mouseCurState.vHotX = _mouseCurState.hotX;
 	_mouseCurState.vHotY = _mouseCurState.hotY;
 
-#ifdef USE_SCALERS
+#ifdef USE_ASPECT
 	int rH1 = rH; // store original to pass to aspect-correction function later
 #endif
 
@@ -1920,26 +1905,41 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 
 	SDL_LockSurface(_mouseSurface);
 
-	ScalerProc *scalerProc;
+	// Disable AR
+	bool oldAR = (*_scalerPlugin)->setAspectRatio(false);
 
 	// Only apply scaling, when the user allows it.
 	if (!_cursorDontScale) {
 		// If possible, use the same scaler for the cursor as for the rest of
 		// the game. This only works well with the non-blurring scalers so we
-		// actually only use the 1x, 2x and AdvMame scalers.
-		if (_videoMode.mode == GFX_DOUBLESIZE || _videoMode.mode == GFX_TRIPLESIZE)
-			scalerProc = _scalerProc;
-		else
-			scalerProc = scalersMagn[_videoMode.scaleFactor - 1];
+		// otherwise use the Normal scaler
+		if ((*_scalerPlugin)->canDrawCursor()) {
+			(*_scalerPlugin)->scale(
+				(byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel,
+				_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
+				_mouseCurState.w, _mouseCurState.h, 0, 0);
+		} else {
+			int oldFactor = (*_normalPlugin)->setFactor(_videoMode.scaleFactor);
+			bool oldARNormal = (*_normalPlugin)->setAspectRatio(false);
+			(*_normalPlugin)->scale(
+				(byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel,
+				_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
+				_mouseCurState.w, _mouseCurState.h, 0, 0);
+			(*_normalPlugin)->setFactor(oldFactor);
+			(*_normalPlugin)->setAspectRatio(oldARNormal);
+		}
 	} else {
-		scalerProc = Normal1x;
+		int oldScaleFactor = (*_scalerPlugin)->setFactor(1);
+		(*_scalerPlugin)->scale(
+			(byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch * _maxExtraPixels + _maxExtraPixels * bytesPerPixel,
+			_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
+			_mouseCurState.w, _mouseCurState.h, 0, 0);
+		(*_scalerPlugin)->setFactor(oldScaleFactor);
 	}
 
-	scalerProc((byte *)_mouseOrigSurface->pixels + _mouseOrigSurface->pitch + 2,
-		_mouseOrigSurface->pitch, (byte *)_mouseSurface->pixels, _mouseSurface->pitch,
-		_mouseCurState.w, _mouseCurState.h);
+	(*_scalerPlugin)->setAspectRatio(oldAR);
 
-#ifdef USE_SCALERS
+#ifdef USE_ASPECT
 	if (!_cursorDontScale && _videoMode.aspectRatioCorrection)
 		cursorStretch200To240((uint8 *)_mouseSurface->pixels, _mouseSurface->pitch, rW, rH1, 0, 0, 0);
 #endif
@@ -1948,7 +1948,7 @@ void SurfaceSdlGraphicsManager::blitCursor() {
 	SDL_UnlockSurface(_mouseOrigSurface);
 }
 
-#ifdef USE_SCALERS
+#ifdef USE_ASPECT
 // Basically it is kVeryFastAndUglyAspectMode of stretch200To240 from
 // common/scale/aspect.cpp
 static int cursorStretch200To240(uint8 *buf, uint32 pitch, int width, int height, int srcX, int srcY, int origSrcY) {
@@ -2134,8 +2134,26 @@ void SurfaceSdlGraphicsManager::displayMessageOnOSD(const char *msg) {
 }
 #endif
 
+/**
+ * Finds what the graphics mode should be using factor and plugin
+ *
+ * @param plugin      The scaler plugin to match
+ * @param factor      The scale factor to match
+ * @return            The graphics mode
+ */
+int findGraphicsMode(uint factor, ScalerPlugin *plugin) {
+	for (uint i = 0; i < s_supportedGraphicsModesData->size(); ++i) {
+		if (strcmp((*s_supportedGraphicsModesData)[i].pluginName, (*plugin)->getName()) == 0
+				&& (*s_supportedGraphicsModesData)[i].scaleFactor == factor) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 bool SurfaceSdlGraphicsManager::handleScalerHotkeys(Common::KeyCode key) {
 
+#ifdef USE_ASPECT
 	// Ctrl-Alt-a toggles aspect ratio correction
 	if (key == 'a') {
 		beginGFXTransaction();
@@ -2160,54 +2178,56 @@ bool SurfaceSdlGraphicsManager::handleScalerHotkeys(Common::KeyCode key) {
 		internUpdateScreen();
 		return true;
 	}
+#endif
 
-	int newMode = -1;
-	int factor = _videoMode.scaleFactor - 1;
+	bool needSwitch = false;
+	uint factor = _videoMode.scaleFactor;
 	SDLKey sdlKey = (SDLKey)key;
 
 	// Increase/decrease the scale factor
 	if (sdlKey == SDLK_EQUALS || sdlKey == SDLK_PLUS || sdlKey == SDLK_MINUS ||
 		sdlKey == SDLK_KP_PLUS || sdlKey == SDLK_KP_MINUS) {
 		factor += (sdlKey == SDLK_MINUS || sdlKey == SDLK_KP_MINUS) ? -1 : +1;
-		if (0 <= factor && factor <= 3) {
-			newMode = s_gfxModeSwitchTable[_scalerType][factor];
-		}
+		if (sdlKey == SDLK_MINUS || sdlKey == SDLK_KP_MINUS)
+			factor = (*_scalerPlugin)->decreaseFactor();
+		else
+			factor = (*_scalerPlugin)->increaseFactor();
+		needSwitch = true;
 	}
 
-	const bool isNormalNumber = (SDLK_1 <= sdlKey && sdlKey <= SDLK_9);
-	const bool isKeypadNumber = (SDLK_KP1 <= sdlKey && sdlKey <= SDLK_KP9);
-	if (isNormalNumber || isKeypadNumber) {
-		_scalerType = sdlKey - (isNormalNumber ? SDLK_1 : SDLK_KP1);
-		if (_scalerType >= ARRAYSIZE(s_gfxModeSwitchTable))
-			return false;
-
-		while (s_gfxModeSwitchTable[_scalerType][factor] < 0) {
-			assert(factor > 0);
-			factor--;
+	if (sdlKey == SDLK_9) {
+		if (_scalerIndex == 0) {
+			_scalerIndex = _scalerPlugins.size();
 		}
-		newMode = s_gfxModeSwitchTable[_scalerType][factor];
+		_scalerIndex--;
+		needSwitch = true;
+		factor = (*_scalerPlugins[_scalerIndex])->getFactor();
 	}
 
-	if (newMode >= 0) {
+	if (sdlKey == SDLK_0) {
+		_scalerIndex++;
+		if (_scalerIndex >= _scalerPlugins.size()) {
+			_scalerIndex = 0;
+		}
+		needSwitch = true;
+		factor = (*_scalerPlugins[_scalerIndex])->getFactor();
+	}
+
+
+	if (needSwitch) {
+		int newMode = findGraphicsMode(factor, _scalerPlugins[_scalerIndex]);
 		beginGFXTransaction();
 			setGraphicsMode(newMode);
 		endGFXTransaction();
 #ifdef USE_OSD
 		if (_osdSurface) {
-			const char *newScalerName = 0;
-			const OSystem::GraphicsMode *g = getSupportedGraphicsModes();
-			while (g->name) {
-				if (g->id == _videoMode.mode) {
-					newScalerName = g->description;
-					break;
-				}
-				g++;
-			}
+			const char *newScalerName = (*_scalerPlugin)->getPrettyName();
 			if (newScalerName) {
 				char buffer[128];
-				sprintf(buffer, "%s %s\n%d x %d -> %d x %d",
+				sprintf(buffer, "%s %s%dx\n%d x %d -> %d x %d",
 					_("Active graphics filter:"),
 					newScalerName,
+					(*_scalerPlugin)->getFactor(),
 					_videoMode.screenWidth, _videoMode.screenHeight,
 					_hwscreen->w, _hwscreen->h
 					);
@@ -2225,16 +2245,14 @@ bool SurfaceSdlGraphicsManager::handleScalerHotkeys(Common::KeyCode key) {
 
 bool SurfaceSdlGraphicsManager::isScalerHotkey(const Common::Event &event) {
 	if ((event.kbd.flags & (Common::KBD_CTRL|Common::KBD_ALT)) == (Common::KBD_CTRL|Common::KBD_ALT)) {
-		const bool isNormalNumber = (Common::KEYCODE_1 <= event.kbd.keycode && event.kbd.keycode <= Common::KEYCODE_9);
-		const bool isKeypadNumber = (Common::KEYCODE_KP1 <= event.kbd.keycode && event.kbd.keycode <= Common::KEYCODE_KP9);
-		const bool isScaleKey = (event.kbd.keycode == Common::KEYCODE_EQUALS || event.kbd.keycode == Common::KEYCODE_PLUS || event.kbd.keycode == Common::KEYCODE_MINUS ||
-			event.kbd.keycode == Common::KEYCODE_KP_PLUS || event.kbd.keycode == Common::KEYCODE_KP_MINUS);
+		const bool isScaleKey = (event.kbd.keycode == Common::KEYCODE_EQUALS ||
+				event.kbd.keycode == Common::KEYCODE_PLUS ||
+				event.kbd.keycode == Common::KEYCODE_MINUS ||
+				event.kbd.keycode == Common::KEYCODE_KP_PLUS ||
+				event.kbd.keycode == Common::KEYCODE_KP_MINUS ||
+				event.kbd.keycode == Common::KEYCODE_9 ||
+				event.kbd.keycode == Common::KEYCODE_0);
 
-		if (isNormalNumber || isKeypadNumber) {
-			int keyValue = event.kbd.keycode - (isNormalNumber ? Common::KEYCODE_1 : Common::KEYCODE_KP1);
-			if (keyValue >= ARRAYSIZE(s_gfxModeSwitchTable))
-				return false;
-		}
 		return (isScaleKey || event.kbd.keycode == 'a');
 	}
 	return false;
@@ -2305,10 +2323,8 @@ void SurfaceSdlGraphicsManager::notifyVideoExpose() {
 
 void SurfaceSdlGraphicsManager::transformMouseCoordinates(Common::Point &point) {
 	if (!_overlayVisible) {
-		point.x /= _videoMode.scaleFactor;
-		point.y /= _videoMode.scaleFactor;
-		if (_videoMode.aspectRatioCorrection)
-			point.y = aspect2Real(point.y);
+		point.x = (*_scalerPlugin)->scaleXCoordinate(point.x, true);
+		point.y = (*_scalerPlugin)->scaleYCoordinate(point.y, true);
 	}
 }
 

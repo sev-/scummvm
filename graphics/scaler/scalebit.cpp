@@ -37,6 +37,7 @@
 
 #include "graphics/scaler/scale2x.h"
 #include "graphics/scaler/scale3x.h"
+#include "graphics/scaler/scalebit.h"
 
 #define DST(bits, num)	(scale2x_uint ## bits *)dst ## num
 #define SRC(bits, num)	(const scale2x_uint ## bits *)src ## num
@@ -194,6 +195,8 @@ static void scale4x_buf(void* void_dst, unsigned dst_slice, void* void_mid, unsi
 	mid[4] = mid[3] + mid_slice;
 	mid[5] = mid[4] + mid_slice;
 
+	stage_scale2x(SCMID(0), SCMID(1), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
+	stage_scale2x(SCMID(2), SCMID(3), SCSRC(1), SCSRC(2), SCSRC(3), pixel, width);
 	while (count) {
 		unsigned char* tmp;
 
@@ -340,3 +343,40 @@ void scale(unsigned scale, void* void_dst, unsigned dst_slice, const void* void_
 		break;
 	}
 }
+
+AdvMamePlugin::AdvMamePlugin() {
+	_factor = 2;
+	_factors.push_back(2);
+	_factors.push_back(3);
+	_factors.push_back(4);
+}
+
+void AdvMamePlugin::scaleIntern(const uint8 *srcPtr, uint32 srcPitch,
+							uint8 *dstPtr, uint32 dstPitch, int width, int height, int x, int y) {
+	if (_factor != 4)
+		::scale(_factor, dstPtr, dstPitch, srcPtr - srcPitch, srcPitch, _format.bytesPerPixel, width, height);
+	else
+		::scale(_factor, dstPtr, dstPitch, srcPtr - srcPitch * 2, srcPitch, _format.bytesPerPixel, width, height);
+}
+
+uint AdvMamePlugin::increaseFactor() {
+	if (_factor < 4)
+		++_factor;
+	return _factor;
+}
+
+uint AdvMamePlugin::decreaseFactor() {
+	if (_factor > 2)
+		--_factor;
+	return _factor;
+}
+
+const char *AdvMamePlugin::getName() const {
+	return "advmame";
+}
+
+const char *AdvMamePlugin::getPrettyName() const {
+	return "AdvMame";
+}
+
+REGISTER_PLUGIN_STATIC(ADVMAME, PLUGIN_TYPE_SCALER, AdvMamePlugin);

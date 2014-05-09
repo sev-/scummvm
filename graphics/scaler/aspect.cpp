@@ -159,16 +159,14 @@ static inline void interpolate5Line(uint16 *dst, const uint16 *srcA, const uint1
 #endif
 
 void makeRectStretchable(int &x, int &y, int &w, int &h) {
-#if ASPECT_MODE != kSuperFastAndUglyAspectMode
-	int m = real2Aspect(y) % 6;
-
 	// Ensure that the rect will start on a line that won't have its
-	// colors changed by the stretching function.
-	if (m != 0 && m != 5) {
-		y -= m;
-		h += m;
-	}
+	// colors changed by the stretching function and that furthermore
+	// does not affect the height of the aspect corrected rect.
+	int m = y % 5;
+	y -= m;
+	h += m;
 
+#if ASPECT_MODE != kSuperFastAndUglyAspectMode
   #if ASPECT_MODE == kVeryFastAndGoodAspectMode
 	// Force x to be even, to ensure aligned memory access (this assumes
 	// that each line starts at an even memory location, but that should
