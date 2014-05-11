@@ -142,7 +142,7 @@ bool OpenGLSdlGraphicsManager::setGraphicsMode(int mode) {
 	// size. It also makes small games have a reasonable size (i.e. at least
 	// 640x400). We follow the same logic here until we have a better way to
 	// give hints to our backend for that.
-	_graphicsScale = 2;
+	_graphicsScale = 1;
 
 	return OpenGLGraphicsManager::setGraphicsMode(mode);
 }
