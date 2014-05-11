@@ -82,11 +82,6 @@ enum {
 void Simon1Dialog::setSize() {
 	_w = g_system->getOverlayWidth();
 	_h = g_system->getOverlayHeight();
-
-	if (g_system->getOverlayWidth() < 1400) {
-		_w = 1280;
-		_h = 800;
-	}
 }
 
 void Simon1Dialog::reflowLayout() {

@@ -193,6 +193,8 @@
 		<drawstep	func = 'alphabitmap'
 					file = 'bg.png'
 					autoscale = 'fit'
+					xpos = 'center'
+					ypos = 'center'
 		/>
 	</drawdata>
 
