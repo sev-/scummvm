@@ -419,7 +419,7 @@ public:
 	void drawCallback_ALPHABITMAP(const Common::Rect &area, const DrawStep &step) {
 		uint16 x, y, w, h;
 		stepGetPositions(step, area, x, y, w, h);
-		blitAlphaBitmap(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), step.autoscale);
+		blitAlphaBitmap(step.blitAlphaSrc, Common::Rect(x, y, x + w, y + h), step.autoscale, step.xAlign, step.yAlign);
 	}
 
 	void drawCallback_CROSS(const Common::Rect &area, const DrawStep &step) {
@@ -481,7 +481,10 @@ public:
 
 	virtual void blitKeyBitmap(const Graphics::Surface *source, const Common::Rect &r) = 0;
 
-	virtual void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r, GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone) = 0;
+	virtual void blitAlphaBitmap(Graphics::TransparentSurface *source, const Common::Rect &r,
+			GUI::ThemeEngine::AutoScaleMode autoscale = GUI::ThemeEngine::kAutoScaleNone,
+			Graphics::DrawStep::VectorAlignment xAlign = Graphics::DrawStep::kVectorAlignManual,
+			Graphics::DrawStep::VectorAlignment yAlign = Graphics::DrawStep::kVectorAlignManual) = 0;
 
 	/**
 	 * Draws a string into the screen. Wrapper for the Graphics::Font string drawing
