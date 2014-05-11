@@ -58,7 +58,7 @@
 		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
 			<widget name = 'padding'
 					width = '250'
-					height = '80'
+					height = '180'
 			/>
 			<widget name = 'sep1'
 					width = '250'
@@ -113,7 +113,7 @@
 		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
 			<widget name = 'padding'
 					width = '250'
-					height = '80'
+					height = '180'
 			/>
 			<widget name = 'sep1'
 					width = '250'
@@ -168,7 +168,7 @@
 		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
 			<widget name = 'padding'
 					width = '250'
-					height = '80'
+					height = '200'
 			/>
 			<widget name = 'subToggleSubBoth'
 					type = 'Radiobutton'
@@ -177,6 +177,32 @@
 					type = 'Radiobutton'
 			/>
 			<widget name = 'subToggleSubOnly'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'padding2'
+					width = '250'
+					height = '40'
+			/>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
+
+	<dialog name = 'MusicDialog' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '200'
+			/>
+			<widget name = 'musicToggleEnhanced'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'musicToggleOriginal'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'musicToggleNone'
 					type = 'Radiobutton'
 			/>
 			<widget name = 'padding2'

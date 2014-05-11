@@ -43,6 +43,7 @@ enum {
 
 	kBackCmd = 'BACK',
 	kSubtitleToggle = 'sttg',
+	kMusicToggle = 'mstg',
 
 	kVoiceCmd = 'VOIC',
 	kMusicCmd = 'MUSC',
@@ -58,16 +59,32 @@ enum {
 	kSubtitlesBoth
 };
 
+enum {
+	kMusicEnhanced,
+	kMusicOriginal,
+	kMusicNone
+};
 
-MainMenuDialog::MainMenuDialog()
-	: Dialog(0, 0, 320, 200) {
+void Simon1Dialog::setSize() {
+	_w = g_system->getOverlayWidth();
+	_h = g_system->getOverlayHeight();
+
+	if (g_system->getOverlayWidth() < 1400) {
+		_w = 1280;
+		_h = 800;
+	}
+}
+
+void Simon1Dialog::reflowLayout() {
+	setSize();
+
+	Dialog::reflowLayout();
+}
+
+MainMenuDialog::MainMenuDialog() {
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
 
-	const int screenW = g_system->getOverlayWidth();
-	const int screenH = g_system->getOverlayHeight();
-
-	_w = screenW;
-	_h = screenH;
+	setSize();
 
 	GraphicsWidget *sep1 = new GraphicsWidget(this, "MainMenu.sep1");
 	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
@@ -117,27 +134,10 @@ void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 	}
 }
 
-void MainMenuDialog::reflowLayout() {
-	_w = g_system->getOverlayWidth();
-	_h = g_system->getOverlayHeight();
-
-	if (g_system->getOverlayWidth() < 1400) {
-		_w = 1280;
-		_h = 800;
-	}
-
-	Dialog::reflowLayout();
-}
-
-SettingsDialog::SettingsDialog()
-	: Dialog(0, 0, 320, 200) {
+SettingsDialog::SettingsDialog() {
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
 
-	const int screenW = g_system->getOverlayWidth();
-	const int screenH = g_system->getOverlayHeight();
-
-	_w = screenW;
-	_h = screenH;
+	setSize();
 
 	GraphicsWidget *sep1 = new GraphicsWidget(this, "Settings.sep1");
 	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
@@ -166,7 +166,10 @@ void SettingsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 			voice.runModal();
 		}
 		break;
-	case kMusicCmd:
+	case kMusicCmd: {
+			MusicDialog music;
+			music.runModal();
+		}
 		break;
 	case kLanguageCmd:
 		break;
@@ -180,28 +183,16 @@ void SettingsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 	}
 }
 
-void SettingsDialog::reflowLayout() {
-	_w = g_system->getOverlayWidth();
-	_h = g_system->getOverlayHeight();
-
-	Dialog::reflowLayout();
-}
-
-VoiceDialog::VoiceDialog()
-	: Dialog(0, 0, 320, 200) {
+VoiceDialog::VoiceDialog() {
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
 
-	const int screenW = g_system->getOverlayWidth();
-	const int screenH = g_system->getOverlayHeight();
-
-	_w = screenW;
-	_h = screenH;
+	setSize();
 
 	_subToggleGroup = new RadiobuttonGroup(this, kSubtitleToggle);
 
-	_subToggleSubBoth = new RadiobuttonWidget(this, "VoiceDialog.subToggleSubBoth", _subToggleGroup, kSubtitlesBoth, _("VOICE AND SUBTITLES"));
-	_subToggleSpeechOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSpeechOnly", _subToggleGroup, kSubtitlesSpeech, _("VOICE ONLY"));
-	_subToggleSubOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSubOnly", _subToggleGroup, kSubtitlesSubs, _("SUBTITLES ONLY"));
+	new RadiobuttonWidget(this, "VoiceDialog.subToggleSubBoth", _subToggleGroup, kSubtitlesBoth, _("VOICE AND SUBTITLES"));
+	new RadiobuttonWidget(this, "VoiceDialog.subToggleSpeechOnly", _subToggleGroup, kSubtitlesSpeech, _("VOICE ONLY"));
+	new RadiobuttonWidget(this, "VoiceDialog.subToggleSubOnly", _subToggleGroup, kSubtitlesSubs, _("SUBTITLES ONLY"));
 
 	new ButtonWidget(this, "VoiceDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
 
@@ -218,13 +209,6 @@ void VoiceDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) 
 	default:
 		Dialog::handleCommand(sender, cmd, data);
 	}
-}
-
-void VoiceDialog::reflowLayout() {
-	_w = g_system->getOverlayWidth();
-	_h = g_system->getOverlayHeight();
-
-	Dialog::reflowLayout();
 }
 
 void VoiceDialog::close() {
@@ -265,5 +249,53 @@ int VoiceDialog::getSubtitleMode(bool subtitles, bool speech_mute) {
 	return kSubtitlesSubs;
 }
 
+MusicDialog::MusicDialog() {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	setSize();
+
+	_musicToggleGroup = new RadiobuttonGroup(this, kMusicToggle);
+
+	new RadiobuttonWidget(this, "MusicDialog.musicToggleEnhanced", _musicToggleGroup, kMusicEnhanced, _("ENHANCED MUSIC"));
+	new RadiobuttonWidget(this, "MusicDialog.musicToggleOriginal", _musicToggleGroup, kMusicOriginal, _("ORIGINAL MUSIC"));
+	new RadiobuttonWidget(this, "MusicDialog.musicToggleNone", _musicToggleGroup, kMusicNone, _("NO MUSIC"));
+
+	new ButtonWidget(this, "MusicDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+
+	_musicToggleGroup->setValue(ConfMan.getInt("use-music"));
+
+}
+
+void MusicDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void MusicDialog::close() {
+	int music;
+	switch (_musicToggleGroup->getValue()) {
+	case kMusicEnhanced:
+		music = 0;
+		break;
+	case kMusicOriginal:
+		music = 1;
+		break;
+	case kMusicNone:
+	default:
+		music = 2;
+		break;
+	}
+
+	ConfMan.setInt("use-music", music);
+
+	ConfMan.flushToDisk();
+
+	Dialog::close();
+}
 
 } // End of namespace GUI

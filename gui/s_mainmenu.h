@@ -28,31 +28,34 @@
 
 namespace GUI {
 
-class MainMenuDialog : public Dialog {
+class Simon1Dialog : public Dialog {
+public:
+	Simon1Dialog() : Dialog(0, 0, 320, 200) {}
+
+protected:
+	virtual void reflowLayout();
+	void setSize();
+};
+
+class MainMenuDialog : public Simon1Dialog {
 public:
 	MainMenuDialog();
 	virtual ~MainMenuDialog() {}
 
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 
-protected:
-	virtual void reflowLayout();
-
 	void open();
 };
 
-class SettingsDialog : public Dialog {
+class SettingsDialog : public Simon1Dialog {
 public:
 	SettingsDialog();
 	virtual ~SettingsDialog() {}
 
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
-
-protected:
-	virtual void reflowLayout();
 };
 
-class VoiceDialog : public Dialog {
+class VoiceDialog : public Simon1Dialog {
 public:
 	VoiceDialog();
 	virtual ~VoiceDialog() {}
@@ -60,16 +63,23 @@ public:
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 
 protected:
-	virtual void reflowLayout();
 	void close();
 	int getSubtitleMode(bool subtitles, bool speech_mute);
 
-
 	RadiobuttonGroup *_subToggleGroup;
+};
 
-	RadiobuttonWidget *_subToggleSubBoth;
-	RadiobuttonWidget *_subToggleSpeechOnly;
-	RadiobuttonWidget *_subToggleSubOnly;
+class MusicDialog : public Simon1Dialog {
+public:
+	MusicDialog();
+	virtual ~MusicDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	void close();
+
+	RadiobuttonGroup *_musicToggleGroup;
 };
 
 } // End of namespace GUI
