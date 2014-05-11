@@ -79,6 +79,15 @@ enum {
 	kControlsClassic
 };
 
+enum {
+	kLanguageEnglish,
+	kLanguageGerman,
+	kLanguageSpanish,
+	kLanguageFrench,
+	kLanguageItalian,
+	kLanguageHebrew
+};
+
 void Simon1Dialog::setSize() {
 	_w = g_system->getOverlayWidth();
 	_h = g_system->getOverlayHeight();
@@ -180,7 +189,10 @@ void SettingsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 			music.runModal();
 		}
 		break;
-	case kLanguageCmd:
+	case kLanguageCmd: {
+			LanguageDialog language;
+			language.runModal();
+		}
 		break;
 	case kGraphicsCmd: {
 			GraphicsDialog graphics;
@@ -405,6 +417,44 @@ void ControlsDialog::close() {
 	}
 
 	ConfMan.setBool("touchpad_mode", controls);
+
+	ConfMan.flushToDisk();
+
+	Dialog::close();
+}
+
+LanguageDialog::LanguageDialog() {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	setSize();
+
+	_languageToggleGroup = new RadiobuttonGroup(this, kControlsToggle);
+
+	new RadiobuttonWidget(this, "LanguageDialog.english", _languageToggleGroup, Common::EN_ANY, _("English"));
+	new RadiobuttonWidget(this, "LanguageDialog.german", _languageToggleGroup, Common::DE_DEU, _("Deutsch"));
+	new RadiobuttonWidget(this, "LanguageDialog.spanish", _languageToggleGroup, Common::ES_ESP, _("Subtítulos en Español"));
+	new RadiobuttonWidget(this, "LanguageDialog.french", _languageToggleGroup, Common::FR_FRA, _("Sous-titres Français"));
+	new RadiobuttonWidget(this, "LanguageDialog.italian", _languageToggleGroup, Common::IT_ITA, _("Sottotitoli Italiano"));
+	new RadiobuttonWidget(this, "LanguageDialog.hebrew", _languageToggleGroup, Common::HE_ISR, _("כתוביות בעברית"));
+
+	new ButtonWidget(this, "LanguageDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+
+	_languageToggleGroup->setValue(Common::parseLanguage(ConfMan.get("language")));
+
+}
+
+void LanguageDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void LanguageDialog::close() {
+	ConfMan.set("language", Common::getLanguageCode((Common::Language)_languageToggleGroup->getValue()));
 
 	ConfMan.flushToDisk();
 

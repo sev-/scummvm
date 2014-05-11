@@ -108,6 +108,19 @@ protected:
 	RadiobuttonGroup *_controlsToggleGroup;
 };
 
+class LanguageDialog : public Simon1Dialog {
+public:
+	LanguageDialog();
+	virtual ~LanguageDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	void close();
+
+	RadiobuttonGroup *_languageToggleGroup;
+};
+
 } // End of namespace GUI
 
 #endif

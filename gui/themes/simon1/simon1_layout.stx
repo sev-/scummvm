@@ -267,4 +267,39 @@
 			/>
 		</layout>
 	</dialog>
+
+	<dialog name = 'LanguageDialog' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '200'
+			/>
+			<widget name = 'english'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'german'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'spanish'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'french'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'italian'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'hebrew'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'padding2'
+					width = '250'
+					height = '40'
+			/>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
 </layout_info>
