@@ -121,6 +121,11 @@ void MainMenuDialog::reflowLayout() {
 	_w = g_system->getOverlayWidth();
 	_h = g_system->getOverlayHeight();
 
+	if (g_system->getOverlayWidth() < 1400) {
+		_w = 1280;
+		_h = 800;
+	}
+
 	Dialog::reflowLayout();
 }
 
@@ -198,7 +203,11 @@ VoiceDialog::VoiceDialog()
 	_subToggleSpeechOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSpeechOnly", _subToggleGroup, kSubtitlesSpeech, _("VOICE ONLY"));
 	_subToggleSubOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSubOnly", _subToggleGroup, kSubtitlesSubs, _("SUBTITLES ONLY"));
 
-	new ButtonWidget(this, "Settings.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+	new ButtonWidget(this, "VoiceDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+
+	int subMode = getSubtitleMode(ConfMan.getBool("subtitles"), ConfMan.getBool("speech_mute"));
+	_subToggleGroup->setValue(subMode);
+
 }
 
 void VoiceDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
@@ -217,5 +226,44 @@ void VoiceDialog::reflowLayout() {
 
 	Dialog::reflowLayout();
 }
+
+void VoiceDialog::close() {
+	bool subtitles, speech_mute;
+
+	switch (_subToggleGroup->getValue()) {
+	case kSubtitlesSpeech:
+		subtitles = speech_mute = false;
+		break;
+	case kSubtitlesBoth:
+		subtitles = true;
+		speech_mute = false;
+		break;
+	case kSubtitlesSubs:
+	default:
+		subtitles = speech_mute = true;
+		break;
+	}
+
+	ConfMan.setBool("subtitles", subtitles);
+	ConfMan.setBool("speech_mute", speech_mute);
+
+	ConfMan.flushToDisk();
+
+	Dialog::close();
+}
+
+int VoiceDialog::getSubtitleMode(bool subtitles, bool speech_mute) {
+	if (!subtitles && !speech_mute) // Speech only
+		return kSubtitlesSpeech;
+	else if (subtitles && !speech_mute) // Speech and subtitles
+		return kSubtitlesBoth;
+	else if (subtitles && speech_mute) // Subtitles only
+		return kSubtitlesSubs;
+	else
+		warning("Wrong configuration: Both subtitles and speech are off. Assuming subtitles only");
+
+	return kSubtitlesSubs;
+}
+
 
 } // End of namespace GUI

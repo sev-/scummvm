@@ -181,7 +181,7 @@
 			/>
 			<widget name = 'padding2'
 					width = '250'
-					height = '80'
+					height = '40'
 			/>
 			<widget name = 'BackButton'
 				width = 'Globals.Button.Width'

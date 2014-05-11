@@ -61,6 +61,9 @@ public:
 
 protected:
 	virtual void reflowLayout();
+	void close();
+	int getSubtitleMode(bool subtitles, bool speech_mute);
+
 
 	RadiobuttonGroup *_subToggleGroup;
 
