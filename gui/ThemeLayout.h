@@ -27,6 +27,8 @@
 #include "common/rect.h"
 #include "graphics/font.h"
 
+//#define LAYOUT_DEBUG_DIALOG "Dialog.MainMenu"
+
 #ifdef LAYOUT_DEBUG_DIALOG
 namespace Graphics {
 struct Surface;

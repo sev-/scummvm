@@ -19,28 +19,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "base/version.h"
 
 #include "common/config-manager.h"
-#include "common/events.h"
-#include "common/fs.h"
-#include "common/gui_options.h"
-#include "common/util.h"
-#include "common/system.h"
 #include "common/translation.h"
 
-#include "gui/about.h"
-#include "gui/browser.h"
-#include "gui/chooser.h"
 #include "gui/s_mainmenu.h"
-#include "gui/message.h"
 #include "gui/gui-manager.h"
-#include "gui/options.h"
-#include "gui/widgets/edittext.h"
-#include "gui/widgets/list.h"
-#include "gui/widgets/tab.h"
-#include "gui/widgets/popup.h"
-#include "gui/ThemeEval.h"
 
 #include "graphics/cursorman.h"
 
@@ -55,8 +39,25 @@ enum {
 	kSettingsCmd = 'SETN',
 	kLoadGameCmd = 'LOAD',
 	kTutorialCmd = 'TUTR',
-	kQuitCmd = 'QUIT'
+	kQuitCmd = 'QUIT',
+
+	kBackCmd = 'BACK',
+	kSubtitleToggle = 'sttg',
+
+	kVoiceCmd = 'VOIC',
+	kMusicCmd = 'MUSC',
+	kLanguageCmd = 'LANG',
+	kGraphicsCmd = 'GRFX',
+	kControlsCmd = 'CTRL',
+	kAboutCmd = 'ABOU'
 };
+
+enum {
+	kSubtitlesSpeech,
+	kSubtitlesSubs,
+	kSubtitlesBoth
+};
+
 
 MainMenuDialog::MainMenuDialog()
 	: Dialog(0, 0, 320, 200) {
@@ -69,12 +70,12 @@ MainMenuDialog::MainMenuDialog()
 	_h = screenH;
 
 	GraphicsWidget *sep1 = new GraphicsWidget(this, "MainMenu.sep1");
-	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleFit);
+	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
 
 	new StaticTextWidget(this, "MainMenu.Title", _("20TH ANNIVERSARY EDITION"));
 
 	GraphicsWidget *sep2 = new GraphicsWidget(this, "MainMenu.sep2");
-	sep2->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleFit);
+	sep2->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
 
 	new ButtonWidget(this, "MainMenu.NewGameButton", _("~N~EW GAME"), _("Start new game"), kNewGameCmd);
 	new ButtonWidget(this, "MainMenu.QuitButton", _("~Q~UIT"), _("Quit"), kQuitCmd);
@@ -85,16 +86,9 @@ MainMenuDialog::MainMenuDialog()
 	new ButtonWidget(this, "MainMenu.TutorialButton", _("~T~UTORIAL"), _("Game tutorial"), kTutorialCmd);
 }
 
-MainMenuDialog::~MainMenuDialog() {
-}
-
 void MainMenuDialog::open() {
 	CursorMan.popAllCursors();
 	Dialog::open();
-}
-
-void MainMenuDialog::close() {
-	Dialog::close();
 }
 
 void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
@@ -103,12 +97,121 @@ void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 		setResult(-1);
 		close();
 		break;
+	case kNewGameCmd:
+		break;
+	case kContinueCmd:
+		break;
+	case kSaveGameCmd:
+		break;
+	case kLoadGameCmd:
+		break;
+	case kTutorialCmd:
+		break;
+	case kSettingsCmd: {
+			SettingsDialog settings;
+			settings.runModal();
+		}
+		break;
 	default:
 		Dialog::handleCommand(sender, cmd, data);
 	}
 }
 
 void MainMenuDialog::reflowLayout() {
+	_w = g_system->getOverlayWidth();
+	_h = g_system->getOverlayHeight();
+
+	Dialog::reflowLayout();
+}
+
+SettingsDialog::SettingsDialog()
+	: Dialog(0, 0, 320, 200) {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	const int screenW = g_system->getOverlayWidth();
+	const int screenH = g_system->getOverlayHeight();
+
+	_w = screenW;
+	_h = screenH;
+
+	GraphicsWidget *sep1 = new GraphicsWidget(this, "Settings.sep1");
+	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
+
+	new StaticTextWidget(this, "Settings.Title", _("20TH ANNIVERSARY EDITION"));
+
+	GraphicsWidget *sep2 = new GraphicsWidget(this, "Settings.sep2");
+	sep2->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
+
+	new ButtonWidget(this, "Settings.VoiceButton", _("VOICE"), _("Select game voice"), kVoiceCmd);
+	new ButtonWidget(this, "Settings.MusicButton", _("MUSIC"), _("Select game music"), kMusicCmd);
+	new ButtonWidget(this, "Settings.LanguageButton", _("LANGUAGE"), _("Select game language"), kLanguageCmd);
+	new ButtonWidget(this, "Settings.GraphicsButton", _("GRAPHICS"), _("Select game graphics"), kGraphicsCmd);
+	new ButtonWidget(this, "Settings.ControlsButton", _("CONTROLS"), _("Select game controls"), kControlsCmd);
+	new ButtonWidget(this, "Settings.AboutButton", _("ABOUT"), _("About game"), kAboutCmd);
+	new ButtonWidget(this, "Settings.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+}
+
+void SettingsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	case kVoiceCmd: {
+			VoiceDialog voice;
+			voice.runModal();
+		}
+		break;
+	case kMusicCmd:
+		break;
+	case kLanguageCmd:
+		break;
+	case kGraphicsCmd:
+		break;
+	case kControlsCmd:
+		break;
+	case kAboutCmd:
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void SettingsDialog::reflowLayout() {
+	_w = g_system->getOverlayWidth();
+	_h = g_system->getOverlayHeight();
+
+	Dialog::reflowLayout();
+}
+
+VoiceDialog::VoiceDialog()
+	: Dialog(0, 0, 320, 200) {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	const int screenW = g_system->getOverlayWidth();
+	const int screenH = g_system->getOverlayHeight();
+
+	_w = screenW;
+	_h = screenH;
+
+	_subToggleGroup = new RadiobuttonGroup(this, kSubtitleToggle);
+
+	_subToggleSubBoth = new RadiobuttonWidget(this, "VoiceDialog.subToggleSubBoth", _subToggleGroup, kSubtitlesBoth, _("VOICE AND SUBTITLES"));
+	_subToggleSpeechOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSpeechOnly", _subToggleGroup, kSubtitlesSpeech, _("VOICE ONLY"));
+	_subToggleSubOnly = new RadiobuttonWidget(this, "VoiceDialog.subToggleSubOnly", _subToggleGroup, kSubtitlesSubs, _("SUBTITLES ONLY"));
+
+	new ButtonWidget(this, "Settings.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+}
+
+void VoiceDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void VoiceDialog::reflowLayout() {
 	_w = g_system->getOverlayWidth();
 	_h = g_system->getOverlayHeight();
 

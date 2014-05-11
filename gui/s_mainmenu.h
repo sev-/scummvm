@@ -23,16 +23,15 @@
 #define GUI_MAINMENU_DIALOG_H
 
 #include "gui/dialog.h"
+#include "gui/widget.h"
 #include "engines/game.h"
 
 namespace GUI {
 
 class MainMenuDialog : public Dialog {
-	typedef Common::String String;
-	typedef Common::Array<Common::String> StringArray;
 public:
 	MainMenuDialog();
-	~MainMenuDialog();
+	virtual ~MainMenuDialog() {}
 
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 
@@ -40,7 +39,34 @@ protected:
 	virtual void reflowLayout();
 
 	void open();
-	void close();
+};
+
+class SettingsDialog : public Dialog {
+public:
+	SettingsDialog();
+	virtual ~SettingsDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	virtual void reflowLayout();
+};
+
+class VoiceDialog : public Dialog {
+public:
+	VoiceDialog();
+	virtual ~VoiceDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	virtual void reflowLayout();
+
+	RadiobuttonGroup *_subToggleGroup;
+
+	RadiobuttonWidget *_subToggleSubBoth;
+	RadiobuttonWidget *_subToggleSpeechOnly;
+	RadiobuttonWidget *_subToggleSubOnly;
 };
 
 } // End of namespace GUI

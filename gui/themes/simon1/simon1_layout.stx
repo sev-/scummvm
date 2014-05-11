@@ -49,18 +49,19 @@
 				size = '200,50'
 		/>		
 
-		<widget name = 'Checkbox'
-				size = '-1, Globals.Line.Height'
-		/>
 		<widget name = 'Radiobutton'
-				size = '-1, Globals.Line.Height'
+				size = '300, Globals.Line.Height'
 		/>
 	</globals>
 
-	<dialog name = 'MainMenu' overlays = 'screen_center'>
+	<dialog name = 'MainMenu' overlays = 'screen'>
 		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '80'
+			/>
 			<widget name = 'sep1'
-					width = '210'
+					width = '250'
 					height = '3'
 			/>
 			<widget name = 'Title'
@@ -68,10 +69,10 @@
 					height = '30'
 			/>
 			<widget name = 'sep2'
-					width = '210'
+					width = '250'
 					height = '3'
 			/>
-			<layout type = 'horizontal' padding = '16, 0, 16, 0' center = 'true'>
+			<layout type = 'horizontal' padding = '16, 16, 16, 16' center = 'true'>
 			      <widget name = 'NewGameButton'
 					width = 'Globals.Button.Width'
 					height = 'Globals.Button.Height'
@@ -108,4 +109,84 @@
 		</layout>
 	</dialog>
 
+	<dialog name = 'Settings' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '80'
+			/>
+			<widget name = 'sep1'
+					width = '250'
+					height = '3'
+			/>
+			<widget name = 'Title'
+					width = '210'
+					height = '30'
+			/>
+			<widget name = 'sep2'
+					width = '250'
+					height = '3'
+			/>
+			<layout type = 'horizontal' padding = '16, 16, 16, 16' center = 'true'>
+			      <widget name = 'VoiceButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			      <widget name = 'MusicButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			</layout>
+			<layout type = 'horizontal' padding = '16, 16, 16, 16' center = 'true'>
+			      <widget name = 'LanguageButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			      <widget name = 'GraphicsButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			</layout>
+			<layout type = 'horizontal' padding = '16, 16, 16, 16' center = 'true'>
+			      <widget name = 'ControlsButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			      <widget name = 'AboutButton'
+					width = 'Globals.Button.Width'
+					height = 'Globals.Button.Height'
+				  />
+			</layout>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
+
+	<dialog name = 'VoiceDialog' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '80'
+			/>
+			<widget name = 'subToggleSubBoth'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'subToggleSpeechOnly'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'subToggleSubOnly'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'padding2'
+					width = '250'
+					height = '80'
+			/>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
 </layout_info>
