@@ -82,6 +82,32 @@ protected:
 	RadiobuttonGroup *_musicToggleGroup;
 };
 
+class GraphicsDialog : public Simon1Dialog {
+public:
+	GraphicsDialog();
+	virtual ~GraphicsDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	void close();
+
+	RadiobuttonGroup *_graphicsToggleGroup;
+};
+
+class ControlsDialog : public Simon1Dialog {
+public:
+	ControlsDialog();
+	virtual ~ControlsDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+protected:
+	void close();
+
+	RadiobuttonGroup *_controlsToggleGroup;
+};
+
 } // End of namespace GUI
 
 #endif

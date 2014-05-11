@@ -44,6 +44,8 @@ enum {
 	kBackCmd = 'BACK',
 	kSubtitleToggle = 'sttg',
 	kMusicToggle = 'mstg',
+	kGfxToggle = 'gftg',
+	kControlsToggle = 'cntg',
 
 	kVoiceCmd = 'VOIC',
 	kMusicCmd = 'MUSC',
@@ -63,6 +65,18 @@ enum {
 	kMusicEnhanced,
 	kMusicOriginal,
 	kMusicNone
+};
+
+enum {
+	kGfxHigh,
+	kGfxMedium,
+	kGfxLow,
+	kGfxOriginal
+};
+
+enum {
+	kControlsTouch,
+	kControlsClassic
 };
 
 void Simon1Dialog::setSize() {
@@ -173,9 +187,15 @@ void SettingsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 		break;
 	case kLanguageCmd:
 		break;
-	case kGraphicsCmd:
+	case kGraphicsCmd: {
+			GraphicsDialog graphics;
+			graphics.runModal();
+		}
 		break;
-	case kControlsCmd:
+	case kControlsCmd: {
+			ControlsDialog controls;
+			controls.runModal();
+		}
 		break;
 	case kAboutCmd:
 	default:
@@ -292,6 +312,104 @@ void MusicDialog::close() {
 	}
 
 	ConfMan.setInt("use-music", music);
+
+	ConfMan.flushToDisk();
+
+	Dialog::close();
+}
+
+GraphicsDialog::GraphicsDialog() {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	setSize();
+
+	_graphicsToggleGroup = new RadiobuttonGroup(this, kGfxToggle);
+
+	new RadiobuttonWidget(this, "GraphicsDialog.gfxToggleHigh", _graphicsToggleGroup, kGfxHigh, _("HIGH"));
+	new RadiobuttonWidget(this, "GraphicsDialog.gfxToggleMedium", _graphicsToggleGroup, kGfxMedium, _("MEDIUM"));
+	new RadiobuttonWidget(this, "GraphicsDialog.gfxToggleLow", _graphicsToggleGroup, kGfxLow, _("LOW"));
+	new RadiobuttonWidget(this, "GraphicsDialog.gfxToggleOriginal", _graphicsToggleGroup, kGfxOriginal, _("ORIGINAL"));
+
+	new ButtonWidget(this, "GraphicsDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+
+	_graphicsToggleGroup->setValue(ConfMan.getInt("scaling_option"));
+
+}
+
+void GraphicsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void GraphicsDialog::close() {
+	int gfx;
+	switch (_graphicsToggleGroup->getValue()) {
+	case kGfxHigh:
+		gfx = 0;
+		break;
+	case kGfxMedium:
+		gfx = 1;
+		break;
+	case kGfxLow:
+		gfx = 2;
+		break;
+	case kGfxOriginal:
+	default:
+		gfx = 3;
+		break;
+	}
+
+	ConfMan.setInt("scaling_option", gfx);
+
+	ConfMan.flushToDisk();
+
+	Dialog::close();
+}
+
+ControlsDialog::ControlsDialog() {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	setSize();
+
+	_controlsToggleGroup = new RadiobuttonGroup(this, kControlsToggle);
+
+	new RadiobuttonWidget(this, "ControlsDialog.ctrlToggleTouch", _controlsToggleGroup, kControlsTouch, _("TOUCH"));
+	new RadiobuttonWidget(this, "ControlsDialog.ctrlToggleClassic", _controlsToggleGroup, kControlsClassic, _("CLASSIC"));
+
+	new ButtonWidget(this, "ControlsDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+
+	_controlsToggleGroup->setValue(ConfMan.getBool("touchpad_mode"));
+
+}
+
+void ControlsDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void ControlsDialog::close() {
+	bool controls;
+	switch (_controlsToggleGroup->getValue()) {
+	case kControlsTouch:
+		controls = true;
+		break;
+	case kControlsClassic:
+	default:
+		controls = false;
+		break;
+	}
+
+	ConfMan.setBool("touchpad_mode", controls);
 
 	ConfMan.flushToDisk();
 

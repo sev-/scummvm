@@ -215,4 +215,56 @@
 			/>
 		</layout>
 	</dialog>
+
+	<dialog name = 'GraphicsDialog' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '200'
+			/>
+			<widget name = 'gfxToggleHigh'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'gfxToggleMedium'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'gfxToggleLow'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'gfxToggleOriginal'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'padding2'
+					width = '250'
+					height = '40'
+			/>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
+
+	<dialog name = 'ControlsDialog' overlays = 'screen'>
+		<layout type = 'vertical' padding = '16, 2, 16, 2' center = 'true'>
+			<widget name = 'padding'
+					width = '250'
+					height = '200'
+			/>
+			<widget name = 'ctrlToggleTouch'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'ctrlToggleClassic'
+					type = 'Radiobutton'
+			/>
+			<widget name = 'padding2'
+					width = '250'
+					height = '40'
+			/>
+			<widget name = 'BackButton'
+				width = 'Globals.Button.Width'
+				height = 'Globals.Button.Height'
+			/>
+		</layout>
+	</dialog>
 </layout_info>
