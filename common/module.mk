@@ -56,5 +56,11 @@ MODULE_OBJS += \
 	recorderfile.o
 endif
 
+ifdef USE_SDL_NET
+MODULE_OBJS += \
+	network.o
+endif
+
+
 # Include common rules
 include $(srcdir)/rules.mk

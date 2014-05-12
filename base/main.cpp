@@ -78,6 +78,10 @@
 #include "gui/s_mainmenu.h"
 #endif
 
+#ifdef USE_SDL_NET
+#include "common/network.h"
+#endif
+
 //#include "backends/platform/android/AndroidPortAdditions.h"
 #include "backends/platform/android/Constants.h"
 
@@ -482,6 +486,10 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 
 	// Now as the event manager is created, setup the keymapper
 	setupKeymapper(system);
+
+#ifdef USE_SDL_NET
+	Common::sendGoogleAnalytics();
+#endif
 
 	// Unless a game was specified, show the launcher dialog
 	if (0 == ConfMan.getActiveDomain())
