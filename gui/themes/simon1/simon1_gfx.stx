@@ -91,11 +91,11 @@
 
 	<bitmaps>
 		<bitmap filename = 'cursor.bmp'/>
-		<bitmap filename = 'checkbox.bmp'/>
-		<bitmap filename = 'checkbox_empty.bmp'/>
-		<bitmap filename = 'radiobutton.bmp'/>
-		<bitmap filename = 'radiobutton_empty.bmp'/>
 
+		<alphabitmap filename = 'checkbox.png'/>
+		<alphabitmap filename = 'checkbox_empty.png'/>
+		<alphabitmap filename = 'radiobutton.png'/>
+		<alphabitmap filename = 'radiobutton_empty.png'/>
 		<alphabitmap filename = 'circle_logo.png'/>
 		<alphabitmap filename = 'button.9.png'/>
 		<alphabitmap filename = 'buttonover.9.png'/>
@@ -783,8 +783,8 @@
 				vertical_align = 'top'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'checkbox_empty.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'checkbox_empty.png'
 		/>
 	</drawdata>
 
@@ -795,8 +795,8 @@
 				vertical_align = 'top'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'checkbox.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'checkbox.png'
 		/>
 	</drawdata>
 
@@ -807,8 +807,8 @@
 				vertical_align = 'top'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'checkbox_empty.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'checkbox_empty.png'
 		/>
 	</drawdata>
 
@@ -819,8 +819,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'radiobutton_empty.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'radiobutton_empty.png'
 		/>
 	</drawdata>
 
@@ -831,8 +831,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'radiobutton.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'radiobutton.png'
 		/>
 	</drawdata>
 
@@ -843,8 +843,8 @@
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
-		<drawstep	func = 'bitmap'
-					file = 'radiobutton_empty.bmp'
+		<drawstep	func = 'alphabitmap'
+					file = 'radiobutton_empty.png'
 		/>
 	</drawdata>
 
