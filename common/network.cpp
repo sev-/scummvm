@@ -31,6 +31,8 @@ namespace Common {
 #define kHostName "www.google-analytics.com"
 
 void sendGoogleAnalytics() {
+	return;
+
 	if (SDLNet_Init() == -1)
 		error("SDLNet_Init: %s", SDLNet_GetError());
 
