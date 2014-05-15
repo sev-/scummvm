@@ -733,10 +733,15 @@ void GraphicsWidget::drawWidget() {
 			_agfx.convertToInPlace(requiredFormat);
 		}
 
-		const int x = _x + (_w - _agfx.w) / 2;
-		const int y = _y + (_h - _agfx.h) / 2;
+		if (_mode == GUI::ThemeEngine::kAutoScaleNone) {
+			const int x = _x + (_w - _agfx.w) / 2;
+			const int y = _y + (_h - _agfx.h) / 2;
 
-		g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _mode);
+			g_gui.theme()->drawASurface(Common::Rect(x, y, x + _agfx.w,  y + _agfx.h), _agfx, _mode);
+
+		} else {
+			g_gui.theme()->drawASurface(Common::Rect(_x, _y, _x + _w,  _y + _h), _agfx, _mode);
+		}
 	}
 }
 
