@@ -1001,6 +1001,8 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 #endif // DISABLE_COMMAND_LINE
 
 	if (!command.empty()) {
+		GameDescriptor gd = EngineMan.findGame(command);
+		if (ConfMan.hasGameDomain(command) || !gd.gameid().empty()) {
 			bool idCameFromCommandLine = false;
 
 			// WORKAROUND: Fix for bug #1719463: "DETECTOR: Launching
@@ -1014,10 +1016,10 @@ bool processSettings(Common::String &command, Common::StringMap &settings, Commo
 			}
 
 			ConfMan.setActiveDomain(command);
-			ConfMan.set("gameid", command);
 
 			if (idCameFromCommandLine)
 				ConfMan.set("id_came_from_command_line", "1");
+		}
 	}
 
 

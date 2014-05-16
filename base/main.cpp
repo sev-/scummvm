@@ -160,35 +160,16 @@ static Common::Error runGame(const EnginePlugin *plugin, OSystem &system, const 
 	if (!(dir.exists() && dir.isDirectory()))
 		err = Common::kPathNotDirectory;
 
-			MetaEngine* metaEngine;
-
 	// Create the game engine according to game type
 	if (err.getCode() == Common::kNoError)
-			{
-				uint16 gameType = GAME_TYPE_SIMON1; // AndroidPortAdditions::instance()->getGameType(); // XXX
-				//LOGD("runGame: gameType %d", gameType);
-				switch (gameType)
-				{
-					case GAME_TYPE_SIMON1:
-					case GAME_TYPE_SIMON2:
-					metaEngine = AGOS::agosEnginePlugin();
-					break;
-
-					default:
-					error("runGame: unknown game type %d", gameType);
-				}
-
-				err = metaEngine->createInstance(&system, &engine);
-				delete metaEngine;
-			}
+		err = (*plugin)->createInstance(&system, &engine);
 
 	// Check for errors
 	if (!engine || err.getCode() != Common::kNoError) {
 
 		// Print a warning; note that scummvm_main will also
 		// display an error dialog, so we don't have to do this here.
-		warning("%s failed to instantiate engine: %s (target '%s', path '%s')",
-			plugin->getName(),
+		warning("%s failed to instantiate engine: (target '%s', path '%s')",
 			err.getDesc().c_str(),
 			ConfMan.getActiveDomainName().c_str(),
 			dir.getPath().c_str()
@@ -500,11 +481,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	// cleanly, so this is now enabled to encourage people to fix bits :)
 	while (0 != ConfMan.getActiveDomain()) {
 		// Try to find a plugin which feels responsible for the specified game.
-			const EnginePlugin *plugin = 0;
-			//	if (plugin) {
+		const EnginePlugin *plugin = detectPlugin();
+		if (plugin) {
 			// Unload all plugins not needed for this game,
 			// to save memory
-			//		PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
+			PluginManager::instance().unloadPluginsExcept(PLUGIN_TYPE_ENGINE, plugin);
 
 #ifdef ENABLE_EVENTRECORDER
 			Common::String recordMode = ConfMan.get("record_mode");
@@ -566,11 +547,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 			// Clear the active config domain
 			ConfMan.setActiveDomain("");
 
-			PluginManager::instance().loadAllPlugins();// only for cached manager
+			PluginManager::instance().loadAllPluginsOfType(PLUGIN_TYPE_ENGINE); // only for cached manager
 
-//		} else {
-//			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
-//		}
+		} else {
+			GUI::displayErrorDialog(_("Could not find any engine capable of running the selected game"));
+		}
 
 		// reset the graphics to default
 		setupGraphics(system);
