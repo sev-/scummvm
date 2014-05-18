@@ -28,6 +28,8 @@
 
 #include "common/scummsys.h"
 
+#define GL_GLEXT_PROTOTYPES
+
 #ifdef WIN32
 #if defined(ARRAYSIZE) && !defined(_WINDOWS_)
 #undef ARRAYSIZE

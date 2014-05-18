@@ -28,6 +28,7 @@
 
 #include "common/frac.h"
 #include "common/mutex.h"
+#include "common/array.h"
 
 namespace Graphics {
 class Font;
@@ -370,6 +371,79 @@ private:
 	bool _overlayVisible;
 
 	//
+	// Shaders
+	//
+	bool _enableShaders; ///< Set based on OpenGL version
+	bool _shadersInited;
+	uint _frameCount;
+
+	struct ShaderPass {
+		// GL id for shaders
+		GLuint fragment;
+		// GL id for program
+		GLuint program;
+             // Texture filter
+		GLint filter;
+
+		enum {
+			kFixed,
+			kInput,
+			kOutput,
+			kNotSet
+		} xScaleMethod, yScaleMethod;
+
+		float xScale, yScale;
+
+               // GL ids for uniforms
+		GLuint textureLoc, textureSizeLoc, inputSizeLoc, outputSizeLoc, frameCountLoc;
+
+               // GL ids for non-standard uniforms
+		GLuint origTextureLoc, origTextureSizeLoc, origInputSizeLoc;
+	};
+
+	struct ShaderInfo {
+               // GL ids for shaders
+		GLuint vertex;
+
+		Common::Array<ShaderPass> passes;
+		Common::String name;
+	};
+
+
+	Common::Array<ShaderInfo> _shaders;
+	ShaderInfo *_currentShader, *_defaultShader;
+
+	static bool parseShader(const Common::String &filename, ShaderInfo &info);
+
+	/**
+	 * Check OpenGL version and compile shaders if supported.
+	 */
+	void initShaders();
+
+	/** 
+	* Compiles shader.
+    *
+	* @param src    The source code.
+	* @param type   Either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+	*
+	* @return       The id to pass to GL functions.
+	*/
+	static GLuint compileShader(const Common::String &src, GLenum type);
+
+	/**
+	 * Links two shaders into a shader program.
+	 *
+	 * @param vertex   The vertex shader.
+	 * @param fragment The fragment shader.
+	 *
+	 * @return         The id of the program to pass to GL functions.
+	 */
+	static GLuint linkShaders(GLuint vertex, GLuint fragment);
+
+	void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h);
+	void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info);
+
+ 	//
 	// Cursor
 	//
 

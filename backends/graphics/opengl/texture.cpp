@@ -76,8 +76,8 @@ void Texture::recreateInternalTexture() {
 	GLCALL(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _glFilter));
 	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _glFilter));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+	GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
 
 	// In case there is an actual texture setup we reinitialize it.
 	if (_textureData.getPixels()) {
@@ -166,42 +166,6 @@ void Texture::fill(uint32 color) {
 	flagDirty();
 }
 
-void Texture::draw(GLfloat x, GLfloat y, GLfloat w, GLfloat h) {
-	// Only do any processing when the Texture is initialized.
-	if (!_textureData.getPixels()) {
-		return;
-	}
-
-	// First update any potentional changes.
-	updateTexture();
-
-	// Set the texture.
-	GLCALL(glBindTexture(GL_TEXTURE_2D, _glTexture));
-
-	// Calculate the texture rect that will be drawn.
-	const GLfloat texWidth = (GLfloat)_userPixelData.w / _textureData.w;
-	const GLfloat texHeight = (GLfloat)_userPixelData.h / _textureData.h;
-	const GLfloat texcoords[4*2] = {
-		0,        0,
-		texWidth, 0,
-		0,        texHeight,
-		texWidth, texHeight
-	};
-	GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords));
-
-	// Calculate the screen rect where the texture will be drawn.
-	const GLfloat vertices[4*2] = {
-		x,     y,
-		x + w, y,
-		x,     y + h,
-		x + w, y + h
-	};
-	GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
-
-	// Draw the texture to the screen buffer.
-	GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
-}
-
 void Texture::updateTexture() {
 	if (!isDirty()) {
 		return;
@@ -260,7 +224,7 @@ void Texture::updateTexture() {
 	// 3) Use glTexSubImage2D per line changed. This is what the old OpenGL
 	//    graphics manager did but it is much slower! Thus, we do not use it.
 	GLCALL(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, dirtyArea.top, _textureData.w, dirtyArea.height(),
-	                       _glFormat, _glType, _textureData.getBasePtr(0, dirtyArea.top)));
+	                      _glFormat, _glType, _textureData.getBasePtr(0, dirtyArea.top)));
 
 	// We should have handled everything, thus not dirty anymore.
 	clearDirty();

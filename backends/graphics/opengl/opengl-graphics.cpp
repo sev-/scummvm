@@ -28,6 +28,7 @@
 
 #include "common/textconsole.h"
 #include "common/translation.h"
+#include "common/advxmlparser.h"
 #include "common/algorithm.h"
 #include "common/file.h"
 #ifdef USE_OSD
@@ -49,6 +50,7 @@ OpenGLGraphicsManager::OpenGLGraphicsManager()
       _displayWidth(0), _displayHeight(0), _defaultFormat(), _defaultFormatAlpha(),
       _gameScreen(nullptr), _gameScreenShakeOffset(0), _overlay(nullptr),
       _overlayVisible(false), _cursor(nullptr),
+      _enableShaders(false), _shadersInited(false), _frameCount(0),
       _cursorX(0), _cursorY(0), _cursorHotspotX(0), _cursorHotspotY(0), _cursorHotspotXScaled(0),
       _cursorHotspotYScaled(0), _cursorWidthScaled(0), _cursorHeightScaled(0), _cursorKeyColor(0),
       _cursorVisible(false), _cursorDontScale(false), _cursorPaletteEnabled(false)
@@ -122,36 +124,58 @@ const OSystem::GraphicsMode glGraphicsModes[] = {
 
 } // End of anonymous namespace
 
+static Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes;
+
+static void initGraphicsModes() {
+	s_supportedGraphicsModes = new Common::Array<OSystem::GraphicsMode>;
+	OSystem::GraphicsMode gm;
+	Common::ArchiveMemberList files;
+	SearchMan.listMatchingMembers(files, "*.shader");
+	int index = 1;
+
+	// No gl calls can be made since the OpenGL context has not been created yet.
+	gm.name = "opengl_nearest";
+	gm.id = 0;
+	gm.description = "OpenGL";
+	s_supportedGraphicsModes->push_back(gm);
+
+	for (Common::ArchiveMemberList::iterator i = files.begin(); i != files.end(); ++i) {
+		gm.description = gm.name = strdup((*i)->getName().c_str());
+		gm.id = index;
+		s_supportedGraphicsModes->push_back(gm);
+		index++;
+	}
+
+	gm.name = 0;
+	gm.description = 0;
+	gm.id = 0;
+	s_supportedGraphicsModes->push_back(gm);
+}
+
+
 const OSystem::GraphicsMode *OpenGLGraphicsManager::getSupportedGraphicsModes() const {
-	return glGraphicsModes;
+	if (!s_supportedGraphicsModes)
+		initGraphicsModes();
+
+	return &s_supportedGraphicsModes->front();
 }
 
 int OpenGLGraphicsManager::getDefaultGraphicsMode() const {
-	return GFX_LINEAR;
+	// First one is default
+	return 0;
 }
 
 bool OpenGLGraphicsManager::setGraphicsMode(int mode) {
 	assert(_transactionMode != kTransactionNone);
 
-	switch (mode) {
-	case GFX_LINEAR:
-	case GFX_NEAREST:
-		_currentState.graphicsMode = mode;
-
-		if (_gameScreen) {
-			_gameScreen->enableLinearFiltering(mode == GFX_LINEAR);
-		}
-
-		if (_cursor) {
-			_cursor->enableLinearFiltering(mode == GFX_LINEAR);
-		}
-
-		return true;
-
-	default:
+	if ((uint)mode >= s_supportedGraphicsModes->size() - 1) {
 		warning("OpenGLGraphicsManager::setGraphicsMode(%d): Unknown graphics mode", mode);
 		return false;
 	}
+
+	_currentState.graphicsMode = mode;
+
+	return true;
 }
 
 int OpenGLGraphicsManager::getGraphicsMode() const {
@@ -205,17 +229,17 @@ OSystem::TransactionError OpenGLGraphicsManager::endGFXTransaction() {
 
 		if (!loadVideoMode(requestedWidth, requestedHeight,
 #ifdef USE_RGB_COLOR
-		                   _currentState.gameFormat
+			_currentState.gameFormat
 #else
-		                   Graphics::PixelFormat::createFormatCLUT8()
+			Graphics::PixelFormat::createFormatCLUT8()
 #endif
-		                  )
-		   // HACK: This is really nasty but we don't have any guarantees of
-		   // a context existing before, which means we don't know the maximum
-		   // supported texture size before this. Thus, we check whether the
-		   // requested game resolution is supported over here.
-		   || (   _currentState.gameWidth  > (uint)Texture::getMaximumTextureSize()
-		       || _currentState.gameHeight > (uint)Texture::getMaximumTextureSize())) {
+			)
+			// HACK: This is really nasty but we don't have any guarantees of
+			// a context existing before, which means we don't know the maximum
+			// supported texture size before this. Thus, we check whether the
+			// requested game resolution is supported over here.
+				|| (   _currentState.gameWidth  > (uint)Texture::getMaximumTextureSize()
+				|| _currentState.gameHeight > (uint)Texture::getMaximumTextureSize())) {
 			if (_transactionMode == kTransactionActive) {
 				// Try to setup the old state in case its valid and is
 				// actually different from the new one.
@@ -292,6 +316,10 @@ OSystem::TransactionError OpenGLGraphicsManager::endGFXTransaction() {
 	// Update our display area and cursor scaling. This makes sure we pick up
 	// aspect ratio correction and game screen changes correctly.
 	recalculateDisplayArea();
+
+	// Initialize shaders if present
+	initShaders();
+
 	recalculateCursorScaling();
 
 	// Something changed, so update the screen change ID.
@@ -357,11 +385,11 @@ void OpenGLGraphicsManager::updateScreen() {
 	const GLfloat shakeOffset = _gameScreenShakeOffset * (GLfloat)_displayHeight / _gameScreen->getHeight();
 
 	// First step: Draw the (virtual) game screen.
-	_gameScreen->draw(_displayX, _displayY + shakeOffset, _displayWidth, _displayHeight);
+	drawTexture(_gameScreen, _displayX, _displayY + shakeOffset, _displayWidth, _displayHeight, _currentShader);
 
 	// Second step: Draw the overlay if visible.
 	if (_overlayVisible) {
-		_overlay->draw(0, 0, _outputScreenWidth, _outputScreenHeight);
+		drawTexture(_overlay, 0, 0, _outputScreenWidth, _outputScreenHeight);
 	}
 
 	// Third step: Draw the cursor if visible.
@@ -370,7 +398,7 @@ void OpenGLGraphicsManager::updateScreen() {
 		// visible.
 		const GLfloat cursorOffset = _overlayVisible ? 0 : shakeOffset;
 
-		_cursor->draw(_cursorX - _cursorHotspotXScaled, _cursorY - _cursorHotspotYScaled + cursorOffset,
+		drawTexture(_cursor, _cursorX - _cursorHotspotXScaled, _cursorY - _cursorHotspotYScaled + cursorOffset,
 		              _cursorWidthScaled, _cursorHeightScaled);
 	}
 
@@ -395,7 +423,7 @@ void OpenGLGraphicsManager::updateScreen() {
 		GLCALL(glColor4f(1.0f, 1.0f, 1.0f, _osdAlpha / 100.0f));
 
 		// Draw the OSD texture.
-		_osd->draw(0, 0, _outputScreenWidth, _outputScreenHeight);
+		drawTexture(_osd, 0, 0, _outputScreenWidth, _outputScreenHeight);
 
 		// Reset color.
 		GLCALL(glColor4f(1.0f, 1.0f, 1.0f, 1.0f));
@@ -1106,6 +1134,326 @@ const Graphics::Font *OpenGLGraphicsManager::getFontOSD() {
 }
 #endif
 
+bool OpenGLGraphicsManager::parseShader(const Common::String &filename, ShaderInfo &info) {
+	// FIXME
+	Common::AdvXMLParser shaderParser;
+	if (!shaderParser.loadFile(filename)) {
+		warning("Could not open file:%s", filename.c_str());
+		return false;
+	}
+
+	warning("Parsing shader: %s", filename.c_str());
+	Common::XMLTree *root, *shader = NULL, *t;
+
+	root = shaderParser.parse();
+
+	for (uint i = 0; i < root->children.size(); ++i) {
+		if (root->children[i]->type == Common::XMLTree::kKey &&
+			root->children[i]->text == "shader") {
+			shader = root->children[i];
+		}
+	}
+
+	if (!shader) {
+		warning("No shader element");
+		delete root;
+		return false;
+	}
+
+	info.vertex = 0;
+
+	for (uint i = 0; i < shader->children.size(); ++i) {
+		if (shader->children[i]->type != Common::XMLTree::kKey)
+			continue;
+		t = shader->children[i];
+
+		if (t->text == "vertex") {
+			if (t->children[0]->type != Common::XMLTree::kText) {
+				warning("Unexpected key");
+				delete root;
+				return false;
+			}
+			const Common::String &src = t->children[0]->text;
+			info.vertex = compileShader(src, GL_VERTEX_SHADER);
+		} else if (t->text == "fragment") {
+			if (t->children[0]->type != Common::XMLTree::kText) {
+				warning("Unexpected key");
+				delete root;
+				return false;
+			}
+			ShaderPass p;
+			bool x = false, y = false;
+			p.xScaleMethod = ShaderPass::kNotSet;
+			p.yScaleMethod = ShaderPass::kNotSet;
+			p.filter = GL_NEAREST;
+			if (t->attrs.contains("filter")) {
+				const Common::String &value = t->attrs["filter"];
+				if (value == "nearest") {
+					p.filter = GL_NEAREST;
+				} else if (value == "linear") {
+					p.filter = GL_LINEAR;
+				} else {
+					warning("filter must be linear or nearest");
+					delete root;
+					return false;
+				}
+			}
+			if (t->attrs.contains("size")) {
+				x = y = true;
+				p.xScaleMethod = ShaderPass::kFixed;
+				p.yScaleMethod = ShaderPass::kFixed;
+				const Common::String &value = t->attrs["size"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+				p.yScale = p.xScale;
+			}
+			if (t->attrs.contains("size_x")) {
+				if (x) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				x = true;
+				p.xScaleMethod = ShaderPass::kFixed;
+				const Common::String &value = t->attrs["size_x"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+			}
+			if (t->attrs.contains("size_y")) {
+				if (y) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				y = true;
+				p.yScaleMethod = ShaderPass::kFixed;
+				const Common::String &value = t->attrs["size_y"];
+				sscanf(value.c_str(), "%f", &p.yScale);
+			}
+			if (t->attrs.contains("scale")) {
+				if (x || y) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				x = y = true;
+				p.xScaleMethod = ShaderPass::kInput;
+				p.yScaleMethod = ShaderPass::kInput;
+				const Common::String &value = t->attrs["scale"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+				p.yScale = p.xScale;
+			}
+			if (t->attrs.contains("scale_x")) {
+				if (x) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				x = true;
+				p.xScaleMethod = ShaderPass::kInput;
+				const Common::String &value = t->attrs["scale_x"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+			}
+			if (t->attrs.contains("scale_y")) {
+				if (y) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				y = true;
+				p.yScaleMethod = ShaderPass::kInput;
+				const Common::String &value = t->attrs["scale_y"];
+				sscanf(value.c_str(), "%f", &p.yScale);
+			}
+			if (t->attrs.contains("outscale")) {
+				if (x || y) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				x = y = true;
+				p.xScaleMethod = ShaderPass::kOutput;
+				p.yScaleMethod = ShaderPass::kOutput;
+				const Common::String &value = t->attrs["outscale"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+				p.yScale = p.xScale;
+			}
+			if (t->attrs.contains("outscale_x")) {
+				if (x) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				x = true;
+				p.xScaleMethod = ShaderPass::kOutput;
+				const Common::String &value = t->attrs["outscale_x"];
+				sscanf(value.c_str(), "%f", &p.xScale);
+			}
+			if (t->attrs.contains("outscale_y")) {
+				if (y) {
+					warning("Conflicting attributes");
+					delete root;
+					return false;
+				}
+				y = true;
+				p.yScaleMethod = ShaderPass::kOutput;
+				const Common::String &value = t->attrs["outscale_y"];
+				sscanf(value.c_str(), "%f", &p.yScale);
+			}
+			const Common::String &src = t->children[0]->text;
+			p.fragment = compileShader(src, GL_FRAGMENT_SHADER);
+			info.passes.push_back(p);
+		}
+
+	}
+
+	// The vertex shader may not have been compiled when the pass was parsed.
+	// Link the programs now.
+	for (uint j = 0; j < info.passes.size(); ++j) {
+		ShaderPass &p = info.passes[j];
+		p.program = linkShaders(info.vertex, p.fragment);
+		p.textureLoc = glGetUniformLocation(p.program, "rubyTexture");
+		p.inputSizeLoc = glGetUniformLocation(p.program, "rubyInputSize");
+		p.outputSizeLoc = glGetUniformLocation(p.program, "rubyOutputSize");
+		p.textureSizeLoc = glGetUniformLocation(p.program, "rubyTextureSize");
+		p.frameCountLoc = glGetUniformLocation(p.program, "rubyFrameCount");
+
+		// Non-standard but sometimes used
+		p.origTextureLoc = glGetUniformLocation(p.program, "rubyOrigTexture");
+		p.origTextureSizeLoc = glGetUniformLocation(p.program, "rubyOrigTextureSize");
+		p.origInputSizeLoc = glGetUniformLocation(p.program, "rubyOrigInputSize");
+	}
+
+	delete root;
+
+	return true;
+}
+
+const char *s_defaultVertex = 
+"#version 110\n "
+"uniform vec2 rubyTextureSize; "
+"void main() { "
+"  gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex; "
+"  gl_TexCoord[0] = gl_MultiTexCoord0; "
+"} ";
+
+const char *s_defaultFragment =
+"#version 110\n "
+"uniform sampler2D rubyTexture; "
+"uniform vec2 rubyTextureSize; "
+"void main() { "
+"  gl_FragColor = texture2DProj(rubyTexture, gl_TexCoord[0]); "
+"} ";
+
+void OpenGLGraphicsManager::initShaders() {
+	if (_shadersInited) {
+		_currentShader = &_shaders[_currentState.graphicsMode];
+		_frameCount = 0;
+		return;
+	}
+	_shadersInited = true;
+	const char * versionStr = (const char *)glGetString(GL_VERSION);
+	Common::String version;
+	int majorVersion, minorVersion;
+	Common::StringTokenizer st(versionStr);
+	// Version number is 3rd token in OpenGL ES
+	// and 1st token in OpenGL.
+#ifdef USE_GLES
+	st.nextToken();
+	st.nextToken();
+#endif
+	version = st.nextToken();
+	sscanf(version.c_str(), "%d.%d", &majorVersion, &minorVersion);
+	_enableShaders = majorVersion >= 2;
+
+	if (!_enableShaders)
+		return;
+
+	ShaderInfo dInfo;
+	ShaderPass p;
+
+	// Initialize built-in shader
+	dInfo.vertex = compileShader(s_defaultVertex, GL_VERTEX_SHADER);
+	p.fragment = compileShader(s_defaultFragment, GL_FRAGMENT_SHADER);
+	p.program = linkShaders(dInfo.vertex, p.fragment);
+	dInfo.name = "default";
+	p.filter = GL_NEAREST;
+	p.textureLoc = glGetUniformLocation(p.program, "rubyTexture");
+	p.inputSizeLoc = glGetUniformLocation(p.program, "rubyInputSize");
+	p.outputSizeLoc = glGetUniformLocation(p.program, "rubyOutputSize");
+	p.textureSizeLoc = glGetUniformLocation(p.program, "rubyTextureSize");
+	p.origTextureSizeLoc = glGetUniformLocation(p.program, "rubyOrigTextureSize");
+	p.origTextureLoc = glGetUniformLocation(p.program, "rubyOrigTexture");
+	p.origInputSizeLoc = glGetUniformLocation(p.program, "rubyOrigInputSize");
+
+	p.xScaleMethod = ShaderPass::kNotSet;
+	p.yScaleMethod = ShaderPass::kNotSet;
+	dInfo.passes.push_back(p);
+
+	_shaders.push_back(dInfo);
+
+	for (uint i = 1; i < s_supportedGraphicsModes->size() - 1; ++i) {
+		ShaderInfo info;
+		OSystem::GraphicsMode &gm = (*s_supportedGraphicsModes)[i];
+		info.name = Common::String(gm.name);
+		if (parseShader(info.name, info)) {
+			warning("Successfully compiled %s", info.name.c_str());
+			_shaders.push_back(info);
+		} else {
+			warning("%s is not a shader file", info.name.c_str());
+		}
+	}
+
+	_defaultShader = &_shaders[0];
+	_currentShader = &_shaders[_currentState.graphicsMode];
+	_frameCount = 0;
+	//_currentShader = &_shaders[0];
+}
+
+GLuint OpenGLGraphicsManager::compileShader(const Common::String &src, GLenum type) {
+	int size = src.size();
+	const char * source = src.c_str();
+	GLuint shader = glCreateShader(type);
+	glShaderSource(shader, 1, &source, &size);
+	glCompileShader(shader);
+
+	int status;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	if (!status) {
+		char *buffer;
+		int length;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+		buffer = new char[length];
+		glGetShaderInfoLog(shader, length, NULL, buffer);
+		if (type == GL_VERTEX_SHADER)
+			error("Vertex shader compilation failed:\n%s", buffer);
+		else
+			error("Fragment shader compilation failed:\n%s", buffer);
+	}
+	return shader;
+}
+
+GLuint OpenGLGraphicsManager::linkShaders(GLuint vertex, GLuint fragment) {
+	GLuint program = glCreateProgram();
+	if (vertex)
+		glAttachShader(program, vertex);
+	if (fragment)
+		glAttachShader(program, fragment);
+
+	glLinkProgram(program);
+
+	int status;
+	glGetProgramiv(program, GL_LINK_STATUS, &status);
+
+	if (!status) {
+		char *buffer;
+		int length;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		buffer = new char[length];
+		glGetProgramInfoLog(program, length, NULL, buffer);
+		error("Shader program link failed:\n%s", buffer);
+	}
+	return program;
+}
+
 void OpenGLGraphicsManager::saveScreenshot(const Common::String &filename) const {
 	const uint width  = _outputScreenWidth;
 	const uint height = _outputScreenHeight;
@@ -1161,6 +1509,212 @@ void OpenGLGraphicsManager::saveScreenshot(const Common::String &filename) const
 
 	// Free allocated memory
 	delete[] pixels;
+}
+
+// This function performs multipass rendering using shaders.
+// TODO: check if extensions are available, test OpenGL ES, clean/split function,
+//       generate buffers on gfxmode init, use x and y (instead of implicit 0,0)
+void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info) {
+	float outputw, outputh, inputw, inputh, texw, texh,
+	origInputw, origInputh, origTexw, origTexh;
+	origInputw = inputw = texture->getWidth();
+	origInputh = inputh = texture->getHeight();
+	origTexw = texw = texture->getTextureWidth();
+	origTexh = texh = texture->getTextureHeight();
+	bool implicitPass = false;
+	GLuint currentTexture = texture->getName();
+	GLuint origTexture = currentTexture;
+	GLuint fbo, outputtex;
+
+	texture->updateTexture();
+
+	for (uint i = 0; i < info->passes.size(); ++i) {
+		bool lastPass = (i == info->passes.size() - 1);
+
+		const ShaderPass &p = info->passes[i];
+
+		switch (p.xScaleMethod) {
+		case ShaderPass::kFixed:
+			outputw = p.xScale;
+			break;
+		case ShaderPass::kInput:
+			outputw = inputw * p.xScale;
+			break;
+		case ShaderPass::kOutput:
+			outputw = w * p.xScale;
+			break;
+		case ShaderPass::kNotSet:
+			outputw = inputw;
+		}
+
+		if (lastPass) {
+			if (p.xScaleMethod == ShaderPass::kNotSet) {
+				outputw = w;
+			} else {
+				implicitPass = true;
+			}
+		}
+
+		switch (p.yScaleMethod) {
+		case ShaderPass::kFixed:
+			outputh = p.yScale;
+			break;
+		case ShaderPass::kInput:
+			outputh = inputh * p.yScale;
+			break;
+		case ShaderPass::kOutput:
+			outputh = h * p.yScale;
+			break;
+		case ShaderPass::kNotSet:
+			outputh = inputh;
+		}
+		// ChecShaderPass::k if last pass
+		if (lastPass) {
+			if (p.yScaleMethod == ShaderPass::kNotSet) {
+				outputh = h;
+			} else {
+				implicitPass = true;
+			}
+		}
+
+		if (!lastPass || implicitPass) {
+			glGenTextures(1, &outputtex);
+			glBindTexture(GL_TEXTURE_2D, outputtex);
+			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
+			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
+			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+			glTexImage2D(
+				GL_TEXTURE_2D, 0, GL_RGB,
+				outputw, outputh,
+				0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+
+			glGenFramebuffersEXT(1, &fbo);
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+			glFramebufferTexture2DEXT(
+				GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
+				GL_TEXTURE_2D, outputtex, 0);
+			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+			if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+				error("Framebuffer creation failed with %x", status);
+			}
+			glPushMatrix();
+			glPushAttrib(GL_VIEWPORT_BIT | GL_ENABLE_BIT);
+			glLoadIdentity();
+			glClear(GL_COLOR_BUFFER_BIT);
+			glViewport(0,0,outputw, outputh);
+		}
+		glDisable(GL_BLEND);
+
+		// Set up current Texture
+		GLCALL(glActiveTexture(GL_TEXTURE1));
+		GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
+		GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
+		GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
+
+		// Set up orig Texture
+		GLCALL(glActiveTexture(GL_TEXTURE0));
+		GLCALL(glBindTexture(GL_TEXTURE_2D, origTexture));
+
+		glUseProgram(p.program);
+
+		glUniform1i(p.textureLoc, 1);
+		glUniform1i(p.frameCountLoc, _frameCount);
+		glUniform2f(p.inputSizeLoc, inputw, inputh);
+		glUniform2f(p.outputSizeLoc, outputw, outputh);
+		glUniform2f(p.textureSizeLoc, texw, texh);
+
+		// Use non-standard uniforms
+		glUniform2f(p.origInputSizeLoc, origInputw, origInputh);
+		glUniform2f(p.origTextureSizeLoc, origTexw, origTexh);
+		glUniform1i(p.origTextureLoc, 0);
+
+		const GLfloat vertices[] = {
+			0, 0,
+			outputw, 0,
+			0, outputh,
+			outputw, outputh
+		};
+		const GLfloat texCoords[] = {
+			0, 0,
+			inputw/texw, 0,
+			0, inputh/texh,
+			inputw/texw, inputh/texh,
+		};
+		GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
+		GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
+
+		GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
+
+		glUseProgram(0);
+
+		inputw = outputw;
+		inputh = outputh;
+		texw = outputw;
+		texh = outputh;
+		if (i)
+			glDeleteTextures(1, &currentTexture);
+		if (!lastPass || implicitPass) {
+			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+			glDeleteFramebuffersEXT(1, &fbo);
+			glPopMatrix();
+			glPopAttrib();
+		}
+		currentTexture = outputtex;
+	}
+	if (implicitPass) {
+		const GLshort vertices[] = {
+			0, 0,
+			w, 0,
+			0, h,
+			w, h
+		};
+		const GLfloat texCoords[] = {
+			0, 0,
+			inputw/texw, 0,
+			0, inputh/texh,
+			inputw/texw, inputh/texh,
+		};
+		glBindTexture(GL_TEXTURE_2D, currentTexture);
+		GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
+		GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
+		GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
+		glDeleteTextures(1, &currentTexture);
+	}
+	glEnable(GL_BLEND);
+
+	_frameCount++;
+}
+
+void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h) {
+	// First update any potentional changes.
+	texture->updateTexture();
+
+	// Set the texture.
+	GLCALL(glBindTexture(GL_TEXTURE_2D, texture->getName()));
+
+	// Calculate the texture rect that will be drawn.
+	const GLfloat texWidth = texture->getDrawWidth();
+	const GLfloat texHeight = texture->getDrawHeight();
+	const GLfloat texcoords[4*2] = {
+		0,        0,
+		texWidth, 0,
+		0,        texHeight,
+		texWidth, texHeight
+	};
+	GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords));
+
+	// Calculate the screen rect where the texture will be drawn.
+	const GLfloat vertices[4*2] = {
+		x,     y,
+		x + w, y,
+		x,     y + h,
+		x + w, y + h
+	};
+	GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
+
+	// Draw the texture to the screen buffer.
+	GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 }
 
 } // End of namespace OpenGL
