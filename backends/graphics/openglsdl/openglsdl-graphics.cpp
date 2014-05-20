@@ -137,13 +137,6 @@ bool OpenGLSdlGraphicsManager::getFeatureState(OSystem::Feature f) {
 }
 
 bool OpenGLSdlGraphicsManager::setGraphicsMode(int mode) {
-	// HACK: This is stupid but the SurfaceSDL backend defaults to 2x. This
-	// assures that the launcher (which requests 320x200) has a reasonable
-	// size. It also makes small games have a reasonable size (i.e. at least
-	// 640x400). We follow the same logic here until we have a better way to
-	// give hints to our backend for that.
-	_graphicsScale = 1;
-
 	return OpenGLGraphicsManager::setGraphicsMode(mode);
 }
 
@@ -407,9 +400,10 @@ bool OpenGLSdlGraphicsManager::notifyEvent(const Common::Event &event) {
 			}
 		} else if (event.kbd.hasFlags(Common::KBD_CTRL | Common::KBD_ALT)) {
 			if (   event.kbd.keycode == Common::KEYCODE_PLUS || event.kbd.keycode == Common::KEYCODE_MINUS
-			    || event.kbd.keycode == Common::KEYCODE_KP_PLUS || event.kbd.keycode == Common::KEYCODE_KP_MINUS) {
+			    || event.kbd.keycode == Common::KEYCODE_KP_PLUS || event.kbd.keycode == Common::KEYCODE_KP_MINUS
+			    || event.kbd.keycode == Common::KEYCODE_EQUALS) {
 				// Ctrl+Alt+Plus/Minus Increase/decrease the size
-				const int direction = (event.kbd.keycode == Common::KEYCODE_PLUS || event.kbd.keycode == Common::KEYCODE_KP_PLUS) ? +1 : -1;
+				const int direction = (event.kbd.keycode == Common::KEYCODE_PLUS || event.kbd.keycode == Common::KEYCODE_KP_PLUS || event.kbd.keycode == Common::KEYCODE_EQUALS) ? +1 : -1;
 
 				if (getFeatureState(OSystem::kFeatureFullscreenMode)) {
 					// In case we are in fullscreen we will choose the previous
