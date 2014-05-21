@@ -317,9 +317,6 @@ OSystem::TransactionError OpenGLGraphicsManager::endGFXTransaction() {
 	// aspect ratio correction and game screen changes correctly.
 	recalculateDisplayArea();
 
-	// Initialize shaders if present
-	initShaders();
-
 	recalculateCursorScaling();
 
 	// Something changed, so update the screen change ID.
@@ -1344,7 +1341,7 @@ const char *s_defaultFragment =
 "} ";
 
 void OpenGLGraphicsManager::initShaders() {
-	if (_shadersInited) {
+	if (_shadersInited && 0) {
 		_currentShader = &_shaders[_currentState.graphicsMode];
 		_frameCount = 0;
 		return;

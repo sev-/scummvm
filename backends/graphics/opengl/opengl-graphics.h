@@ -415,11 +415,13 @@ private:
 
 	static bool parseShader(const Common::String &filename, ShaderInfo &info);
 
+public:
 	/**
 	 * Check OpenGL version and compile shaders if supported.
 	 */
 	void initShaders();
 
+private:
 	/** 
 	* Compiles shader.
     *
