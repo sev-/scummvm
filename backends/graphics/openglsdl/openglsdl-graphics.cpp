@@ -522,6 +522,7 @@ bool OpenGLSdlGraphicsManager::notifyEvent(const Common::Event &event) {
 
 				beginGFXTransaction();
 					setGraphicsMode(modeDesc->id);
+					initShaders();
 				endGFXTransaction();
 
 				// Make sure we do not ignore the next resize. This
