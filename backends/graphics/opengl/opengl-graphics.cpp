@@ -1412,17 +1412,17 @@ GLuint OpenGLGraphicsManager::compileShader(const Common::String &src, GLenum ty
 	int size = src.size();
 	const char * source = src.c_str();
 	GLuint shader = glCreateShader(type);
-	glShaderSource(shader, 1, &source, &size);
-	glCompileShader(shader);
+	GLCALL(glShaderSource(shader, 1, &source, &size));
+	GLCALL(glCompileShader(shader));
 
 	int status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	GLCALL(glGetShaderiv(shader, GL_COMPILE_STATUS, &status));
 	if (!status) {
 		char *buffer;
 		int length;
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+		GLCALL(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length));
 		buffer = new char[length];
-		glGetShaderInfoLog(shader, length, NULL, buffer);
+		GLCALL(glGetShaderInfoLog(shader, length, NULL, buffer));
 		if (type == GL_VERTEX_SHADER)
 			error("Vertex shader compilation failed:\n%s", buffer);
 		else
@@ -1434,23 +1434,24 @@ GLuint OpenGLGraphicsManager::compileShader(const Common::String &src, GLenum ty
 GLuint OpenGLGraphicsManager::linkShaders(GLuint vertex, GLuint fragment) {
 	GLuint program = glCreateProgram();
 	if (vertex)
-		glAttachShader(program, vertex);
+		GLCALL(glAttachShader(program, vertex));
 	if (fragment)
-		glAttachShader(program, fragment);
+		GLCALL(glAttachShader(program, fragment));
 
-	glLinkProgram(program);
+	GLCALL(glLinkProgram(program));
 
 	int status;
-	glGetProgramiv(program, GL_LINK_STATUS, &status);
+	GLCALL(glGetProgramiv(program, GL_LINK_STATUS, &status));
 
 	if (!status) {
 		char *buffer;
 		int length;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		GLCALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
 		buffer = new char[length];
-		glGetProgramInfoLog(program, length, NULL, buffer);
+		GLCALL(glGetProgramInfoLog(program, length, NULL, buffer));
 		error("Shader program link failed:\n%s", buffer);
 	}
+
 	return program;
 }
 
@@ -1578,33 +1579,33 @@ void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, 
 		}
 
 		if (!lastPass || implicitPass) {
-			glGenTextures(1, &outputtex);
-			glBindTexture(GL_TEXTURE_2D, outputtex);
+			GLCALL(glGenTextures(1, &outputtex));
+			GLCALL(glBindTexture(GL_TEXTURE_2D, outputtex));
 			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
 			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
 			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 			GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-			glTexImage2D(
+			GLCALL(glTexImage2D(
 				GL_TEXTURE_2D, 0, GL_RGB,
 				outputw, outputh,
-				0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+				0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
 
-			glGenFramebuffersEXT(1, &fbo);
-			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
-			glFramebufferTexture2DEXT(
+			GLCALL(glGenFramebuffersEXT(1, &fbo));
+			GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo));
+			GLCALL(glFramebufferTexture2DEXT(
 				GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
-				GL_TEXTURE_2D, outputtex, 0);
+				GL_TEXTURE_2D, outputtex, 0));
 			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
 			if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
 				error("Framebuffer creation failed with %x", status);
 			}
-			glPushMatrix();
-			glPushAttrib(GL_VIEWPORT_BIT | GL_ENABLE_BIT);
-			glLoadIdentity();
-			glClear(GL_COLOR_BUFFER_BIT);
-			glViewport(0,0,outputw, outputh);
+			GLCALL(glPushMatrix());
+			GLCALL(glPushAttrib(GL_VIEWPORT_BIT | GL_ENABLE_BIT));
+			GLCALL(glLoadIdentity());
+			GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+			GLCALL(glViewport(0,0,outputw, outputh));
 		}
-		glDisable(GL_BLEND);
+		GLCALL(glDisable(GL_BLEND));
 
 		// Set up current Texture
 		GLCALL(glActiveTexture(GL_TEXTURE1));
@@ -1616,18 +1617,18 @@ void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, 
 		GLCALL(glActiveTexture(GL_TEXTURE0));
 		GLCALL(glBindTexture(GL_TEXTURE_2D, origTexture));
 
-		glUseProgram(p.program);
+		GLCALL(glUseProgram(p.program));
 
-		glUniform1i(p.textureLoc, 1);
-		glUniform1i(p.frameCountLoc, _frameCount);
-		glUniform2f(p.inputSizeLoc, inputw, inputh);
-		glUniform2f(p.outputSizeLoc, outputw, outputh);
-		glUniform2f(p.textureSizeLoc, texw, texh);
+		GLCALL(glUniform1i(p.textureLoc, 1));
+		GLCALL(glUniform1i(p.frameCountLoc, _frameCount));
+		GLCALL(glUniform2f(p.inputSizeLoc, inputw, inputh));
+		GLCALL(glUniform2f(p.outputSizeLoc, outputw, outputh));
+		GLCALL(glUniform2f(p.textureSizeLoc, texw, texh));
 
 		// Use non-standard uniforms
-		glUniform2f(p.origInputSizeLoc, origInputw, origInputh);
-		glUniform2f(p.origTextureSizeLoc, origTexw, origTexh);
-		glUniform1i(p.origTextureLoc, 0);
+		GLCALL(glUniform2f(p.origInputSizeLoc, origInputw, origInputh));
+		GLCALL(glUniform2f(p.origTextureSizeLoc, origTexw, origTexh));
+		GLCALL(glUniform1i(p.origTextureLoc, 0));
 
 		const GLfloat vertices[] = {
 			0, 0,
@@ -1641,24 +1642,25 @@ void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, 
 			0, inputh/texh,
 			inputw/texw, inputh/texh,
 		};
+
 		GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
 		GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
 
 		GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 
-		glUseProgram(0);
+		GLCALL(glUseProgram(0));
 
 		inputw = outputw;
 		inputh = outputh;
 		texw = outputw;
 		texh = outputh;
 		if (i)
-			glDeleteTextures(1, &currentTexture);
+			GLCALL(glDeleteTextures(1, &currentTexture));
 		if (!lastPass || implicitPass) {
-			glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-			glDeleteFramebuffersEXT(1, &fbo);
-			glPopMatrix();
-			glPopAttrib();
+			GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0));
+			GLCALL(glDeleteFramebuffersEXT(1, &fbo));
+			GLCALL(glPopMatrix());
+			GLCALL(glPopAttrib());
 		}
 		currentTexture = outputtex;
 	}
@@ -1675,13 +1677,13 @@ void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, 
 			0, inputh/texh,
 			inputw/texw, inputh/texh,
 		};
-		glBindTexture(GL_TEXTURE_2D, currentTexture);
+		GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
 		GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
 		GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
 		GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 		glDeleteTextures(1, &currentTexture);
 	}
-	glEnable(GL_BLEND);
+	GLCALL(glEnable(GL_BLEND));
 
 	_frameCount++;
 }
