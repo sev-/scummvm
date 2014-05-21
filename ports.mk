@@ -62,6 +62,7 @@ endif
 	cp $(srcdir)/icons/scummvm.icns $(bundle_name)/Contents/Resources/
 	cp $(DIST_FILES_DOCS) $(bundle_name)/
 	cp $(DIST_FILES_THEMES) $(bundle_name)/Contents/Resources/
+	cp *.shader gui/themes/simon1.zip scummvm.ini $(bundle_name)/Contents/Resources/
 ifdef DIST_FILES_ENGINEDATA
 	cp $(DIST_FILES_ENGINEDATA) $(bundle_name)/Contents/Resources/
 endif
@@ -211,7 +212,7 @@ osxsnap: bundle
 	mkdir ScummVM-snapshot/doc/se
 	cp $(srcdir)/doc/se/LasMig ./ScummVM-snapshot/doc/se/LasMig
 	cp $(srcdir)/doc/se/Snabbstart ./ScummVM-snapshot/doc/se/Snabbstart
-	/Developer/Tools/SetFile -t ttro -c ttxt ./ScummVM-snapshot/*
+	SetFile -t ttro -c ttxt ./ScummVM-snapshot/*
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/cz/*
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/da/*
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/de/*
@@ -220,11 +221,11 @@ osxsnap: bundle
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/it/*
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/no-nb/*
 	xattr -w "com.apple.TextEncoding" "utf-8;134217984" ./ScummVM-snapshot/doc/se/*
-	/Developer/Tools/CpMac -r $(bundle_name) ./ScummVM-snapshot/
+	CpMac -r $(bundle_name) ./ScummVM-snapshot/
 	cp $(srcdir)/dists/macosx/DS_Store ./ScummVM-snapshot/.DS_Store
 	cp $(srcdir)/dists/macosx/background.jpg ./ScummVM-snapshot/background.jpg
-	/Developer/Tools/SetFile -a V ./ScummVM-snapshot/.DS_Store
-	/Developer/Tools/SetFile -a V ./ScummVM-snapshot/background.jpg
+	SetFile -a V ./ScummVM-snapshot/.DS_Store
+	SetFile -a V ./ScummVM-snapshot/background.jpg
 	hdiutil create -ov -format UDZO -imagekey zlib-level=9 -fs HFS+ \
 					-srcfolder ScummVM-snapshot \
 					-volname "ScummVM" \
