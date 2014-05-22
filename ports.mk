@@ -100,6 +100,8 @@ ifneq ($(BACKEND), iphone)
 OSX_STATIC_LIBS := `$(STATICLIBPATH)/bin/sdl-config --static-libs`
 endif
 
+OSX_STATIC_LIBS := -L/opt/local/lib /opt/local/lib/libSDLmain.a -Wl,-framework,AppKit /opt/local/lib/libSDL.a -L/opt/local/lib $(STATICLIBPATH)/lib/libX11.a $(STATICLIBPATH)/lib/libXext.a $(STATICLIBPATH)/lib/libXrandr.a $(STATICLIBPATH)/lib/libXrender.a $(STATICLIBPATH)/lib/libxcb.a $(STATICLIBPATH)/lib/libXau.a $(STATICLIBPATH)/lib/libXdmcp.a -Wl,-framework,OpenGL -Wl,-framework,Cocoa -Wl,-framework,ApplicationServices -Wl,-framework,Carbon -Wl,-framework,AudioToolbox -Wl,-framework,AudioUnit -Wl,-framework,IOKit
+
 ifdef USE_FREETYPE2
 OSX_STATIC_LIBS += $(STATICLIBPATH)/lib/libfreetype.a $(STATICLIBPATH)/lib/libbz2.a
 endif
