@@ -133,6 +133,8 @@ void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 		close();
 		break;
 	case kNewGameCmd:
+		ConfMan.setActiveDomain("simon1");
+		close();
 		break;
 	case kContinueCmd:
 		break;
