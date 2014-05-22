@@ -275,6 +275,7 @@ static void setupGraphics(OSystem &system) {
 		system.setGraphicsMode(ConfMan.get("gfx_mode").c_str());
 
 		system.initSize(1280, 800);
+		system.resetGraphicsScale();
 
 		if (ConfMan.hasKey("aspect_ratio"))
 			system.setFeatureState(OSystem::kFeatureAspectRatioCorrection, ConfMan.getBool("aspect_ratio"));
