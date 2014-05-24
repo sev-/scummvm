@@ -570,6 +570,20 @@ void SaveLoadDialog::updateSaveList() {
 		saveNames.push_back(description);
 		curSlot++;
 	}
+
+	// Fill the rest of the save slots with empty saves
+
+	int maximumSaveSlots = 8;
+
+	Common::String emptyDesc;
+	for (int i = curSlot; i <= maximumSaveSlots; i++) {
+		saveNames.push_back(emptyDesc);
+		SaveStateDescriptor dummySave(i, "");
+		_saveList.push_back(dummySave);
+		colors.push_back(ThemeEngine::kFontColorNormal);
+	}
+
+	_list->setList(saveNames, &colors);
 }
 
 int SaveLoadDialog::run() {
