@@ -62,7 +62,7 @@ endif
 	cp $(srcdir)/icons/scummvm.icns $(bundle_name)/Contents/Resources/
 	cp $(DIST_FILES_DOCS) $(bundle_name)/
 	cp $(DIST_FILES_THEMES) $(bundle_name)/Contents/Resources/
-	cp *.shader gui/themes/simon1.zip scummvm.ini $(bundle_name)/Contents/Resources/
+	cp *.shader gui/themes/simon1.zip $(bundle_name)/Contents/Resources/
 ifdef DIST_FILES_ENGINEDATA
 	cp $(DIST_FILES_ENGINEDATA) $(bundle_name)/Contents/Resources/
 endif
