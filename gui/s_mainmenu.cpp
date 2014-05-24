@@ -501,7 +501,7 @@ void SaveLoad::updateSaveList() {
 }
 
 SaveLoadDialog::SaveLoadDialog(const Common::String &target, const Common::String &title, bool saveMode, const MetaEngine *metaEngine) {
-	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundSpecial
 
 	_target = target;
 	_saveMode = saveMode;
