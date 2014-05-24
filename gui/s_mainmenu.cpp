@@ -25,6 +25,7 @@
 
 #include "gui/s_mainmenu.h"
 #include "gui/gui-manager.h"
+#include "gui/message.h"
 
 #include "graphics/cursorman.h"
 
@@ -119,6 +120,8 @@ MainMenuDialog::MainMenuDialog() {
 	new ButtonWidget(this, "MainMenu.LoadGameButton", _("~L~OAD"), _("Load savegame"), kLoadGameCmd);
 	new ButtonWidget(this, "MainMenu.SaveGameButton", _("~S~AVE"), _("Save game"), kSaveGameCmd);
 	new ButtonWidget(this, "MainMenu.TutorialButton", _("~T~UTORIAL"), _("Game tutorial"), kTutorialCmd);
+
+	_loadDialog = new SaveLoad("simon1", _("CHOOSE LOAD SLOT"), false);
 }
 
 void MainMenuDialog::open() {
@@ -141,6 +144,7 @@ void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 dat
 	case kSaveGameCmd:
 		break;
 	case kLoadGameCmd:
+		_loadDialog->loadGame();
 		break;
 	case kTutorialCmd:
 		break;
@@ -462,5 +466,134 @@ void LanguageDialog::close() {
 
 	Dialog::close();
 }
+
+SaveLoad::SaveLoad(const Common::String &target, const Common::String &title, bool saveMode) {
+	_target = target;
+	_title = title;
+	_saveMode = saveMode;
+
+	const EnginePlugin *plugin = 0;
+
+	EngineMan.findGame(target, &plugin);
+
+	if (plugin) {
+		_metaEngine = &(**plugin);
+	} else {
+		MessageDialog dialog(_("ScummVM could not find any engine capable of running the selected game!"), _("OK"));
+		dialog.runModal();
+	}
+
+	updateSaveList();
+}
+
+void SaveLoad::loadGame() {
+	SaveLoadDialog loadDialog(_target, _title, _saveMode, _metaEngine);
+
+	int slot = loadDialog.run();
+	if (slot >= 0) {
+		ConfMan.setActiveDomain(_target);
+		ConfMan.setInt("save_slot", slot, Common::ConfigManager::kTransientDomain);
+	}
+}
+
+void SaveLoad::updateSaveList() {
+	_saveList = _metaEngine->listSaves(_target.c_str());
+}
+
+SaveLoadDialog::SaveLoadDialog(const Common::String &target, const Common::String &title, bool saveMode, const MetaEngine *metaEngine) {
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	_target = target;
+	_saveMode = saveMode;
+	_metaEngine = metaEngine;
+
+	new StaticTextWidget(this, "SaveLoadDialog.Title", title);
+
+	_list = new ListWidget(this, "SaveLoadDialog.List");
+	_list->setNumberingMode(kListNumberingZero);
+	_list->setEditable(saveMode);
+
+	new ButtonWidget(this, "SaveLoadDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+}
+
+void SaveLoadDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	switch (cmd) {
+	case kBackCmd:
+		close();
+		break;
+	default:
+		Dialog::handleCommand(sender, cmd, data);
+	}
+}
+
+void SaveLoadDialog::updateSaveList() {
+	_saveList = _metaEngine->listSaves(_target.c_str());
+
+	int curSlot = 0;
+	int saveSlot = 0;
+	Common::StringArray saveNames;
+	ListWidget::ColorList colors;
+	for (SaveStateList::const_iterator x = _saveList.begin(); x != _saveList.end(); ++x) {
+		// Handle gaps in the list of save games
+		saveSlot = x->getSaveSlot();
+		if (curSlot < saveSlot) {
+			while (curSlot < saveSlot) {
+				SaveStateDescriptor dummySave(curSlot, "");
+				_saveList.insert_at(curSlot, dummySave);
+				saveNames.push_back(dummySave.getDescription());
+				colors.push_back(ThemeEngine::kFontColorNormal);
+				curSlot++;
+			}
+
+			// Sync the save list iterator
+			for (x = _saveList.begin(); x != _saveList.end(); ++x) {
+				if (x->getSaveSlot() == saveSlot)
+					break;
+			}
+		}
+
+		// Show "Untitled savestate" for empty/whitespace savegame descriptions
+		Common::String description = x->getDescription();
+		Common::String trimmedDescription = description;
+		trimmedDescription.trim();
+		if (trimmedDescription.empty()) {
+			description = _("Untitled savestate");
+			colors.push_back(ThemeEngine::kFontColorAlternate);
+		} else {
+			colors.push_back(ThemeEngine::kFontColorNormal);
+		}
+
+		saveNames.push_back(description);
+		curSlot++;
+	}
+}
+
+int SaveLoadDialog::run() {
+	// Set up the game domain as newly active domain, so
+	// target specific savepath will be checked
+	Common::String oldDomain = ConfMan.getActiveDomainName();
+	ConfMan.setActiveDomain(_target);
+
+	int ret;
+	do {
+		ret = runIntern();
+	} while (ret < -1);
+
+	// Revert to the old active domain
+	ConfMan.setActiveDomain(oldDomain);
+
+	return ret;
+}
+
+int SaveLoadDialog::runIntern() {
+	_resultString.clear();
+	reflowLayout();
+	updateSaveList();
+
+	return Dialog::runModal();
+}
+
+
+
 
 } // End of namespace GUI
