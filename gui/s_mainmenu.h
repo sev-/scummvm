@@ -155,6 +155,8 @@ public:
 
 	int run();
 
+	virtual void setSize();
+
 private:
 	ListWidget *_list;
 	SaveStateList _saveList;
