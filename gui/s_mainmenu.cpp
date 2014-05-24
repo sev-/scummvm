@@ -133,6 +133,7 @@ void MainMenuDialog::open() {
 void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 	switch (cmd) {
 	case kQuitCmd:
+		ConfMan.setActiveDomain("");
 		setResult(-1);
 		close();
 		break;
