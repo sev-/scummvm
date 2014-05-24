@@ -24,9 +24,14 @@
 
 #include "gui/dialog.h"
 #include "gui/widget.h"
+#include "gui/widgets/list.h"
 #include "engines/game.h"
 
+#include "engines/metaengine.h"
+
 namespace GUI {
+
+class SaveLoad;
 
 class Simon1Dialog : public Dialog {
 public:
@@ -34,7 +39,7 @@ public:
 
 protected:
 	virtual void reflowLayout();
-	void setSize();
+	virtual void setSize();
 };
 
 class MainMenuDialog : public Simon1Dialog {
@@ -45,6 +50,9 @@ public:
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 
 	void open();
+
+private:
+	SaveLoad *_loadDialog;
 };
 
 class SettingsDialog : public Simon1Dialog {
@@ -120,6 +128,47 @@ protected:
 
 	RadiobuttonGroup *_languageToggleGroup;
 };
+
+class SaveLoad {
+public:
+	SaveLoad(const Common::String &target, const Common::String &title, bool saveMode);
+
+	void loadGame();
+
+private:
+	SaveStateList _saveList;
+	Common::String _title;
+	Common::String _target;
+	MetaEngine *_metaEngine;
+	bool _saveMode;
+
+	void updateSaveList();
+
+};
+
+class SaveLoadDialog : public Simon1Dialog {
+public:
+	SaveLoadDialog(const Common::String &target, const Common::String &title, bool saveMode, const MetaEngine *metaEngine);
+	virtual ~SaveLoadDialog() {}
+
+	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+	int run();
+
+private:
+	ListWidget *_list;
+	SaveStateList _saveList;
+	Common::String _target;
+	const MetaEngine *_metaEngine;
+	bool _saveMode;
+
+	Common::String _resultString;
+
+	void updateSaveList();
+	int runIntern();
+};
+
+
 
 } // End of namespace GUI
 
