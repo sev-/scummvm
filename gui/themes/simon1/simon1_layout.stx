@@ -303,10 +303,11 @@
 		</layout>
 	</dialog>
 
-	<dialog name = 'SaveLoadDialog' overlays = 'screen' inset = '8'>
+	<dialog name = 'SaveLoadDialog' overlays = 'screen_center' inset = '8'>
 		<layout type = 'vertical' padding = '8, 8, 8, 32' center = 'true'>
 			<widget name = 'Title'
 				height = 'Globals.Line.Height'
+				width = "300"
 			/>
 			<widget name = 'sep1'
 					width = '250'

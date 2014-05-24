@@ -606,13 +606,21 @@ int SaveLoadDialog::run() {
 
 int SaveLoadDialog::runIntern() {
 	_resultString.clear();
-	reflowLayout();
+
+	setSize();
+	Dialog::reflowLayout();
 	updateSaveList();
 
 	return Dialog::runModal();
 }
 
+void SaveLoadDialog::setSize() {
+	_w = 300;
 
+	_h = MAX(_saveList.size(), 8u) * 32; //g_gui.xmlEval()->getVar("Globals.Line.Height", 0);
 
+	_x = (g_system->getOverlayWidth() - _w) / 2;
+	_y = (g_system->getOverlayHeight() - _h) / 2;
+}
 
 } // End of namespace GUI
