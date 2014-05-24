@@ -312,8 +312,10 @@
 					width = '250'
 					height = '3'
 			/>
-			<space/>
-			<widget name = 'List' />
+			<widget name = 'List'
+					width = '300'
+					height = '500'
+			/>
 			<widget name = 'Cancel'
 				type = 'Button'
 			/>
