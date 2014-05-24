@@ -43,6 +43,7 @@ enum {
 	kQuitCmd = 'QUIT',
 
 	kBackCmd = 'BACK',
+	kCancelCmd = 'CNCL',
 	kSubtitleToggle = 'sttg',
 	kMusicToggle = 'mstg',
 	kGfxToggle = 'gftg',
@@ -121,7 +122,7 @@ MainMenuDialog::MainMenuDialog() {
 	new ButtonWidget(this, "MainMenu.SaveGameButton", _("~S~AVE"), _("Save game"), kSaveGameCmd);
 	new ButtonWidget(this, "MainMenu.TutorialButton", _("~T~UTORIAL"), _("Game tutorial"), kTutorialCmd);
 
-	_loadDialog = new SaveLoad("simon1", _("CHOOSE LOAD SLOT"), false);
+	_loadDialog = new SaveLoad("simon1", _("CHOOSE SLOT TO LOAD"), false);
 }
 
 void MainMenuDialog::open() {
@@ -501,7 +502,7 @@ void SaveLoad::updateSaveList() {
 }
 
 SaveLoadDialog::SaveLoadDialog(const Common::String &target, const Common::String &title, bool saveMode, const MetaEngine *metaEngine) {
-	_backgroundType = GUI::ThemeEngine::kDialogBackgroundSpecial
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundSpecial;
 
 	_target = target;
 	_saveMode = saveMode;
@@ -509,16 +510,19 @@ SaveLoadDialog::SaveLoadDialog(const Common::String &target, const Common::Strin
 
 	new StaticTextWidget(this, "SaveLoadDialog.Title", title);
 
+	GraphicsWidget *sep1 = new GraphicsWidget(this, "SaveLoadDialog.sep1");
+	sep1->setAGfx(g_gui.theme()->getAImageSurface("seperator.png"), ThemeEngine::kAutoScaleStretch);
+
 	_list = new ListWidget(this, "SaveLoadDialog.List");
 	_list->setNumberingMode(kListNumberingZero);
 	_list->setEditable(saveMode);
 
-	new ButtonWidget(this, "SaveLoadDialog.BackButton", _("BACK"), _("Previous menu"), kBackCmd);
+	new ButtonWidget(this, "SaveLoadDialog.Cancel", _("CANCEL"), _("Previous menu"), kCancelCmd);
 }
 
 void SaveLoadDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 	switch (cmd) {
-	case kBackCmd:
+	case kCancelCmd:
 		close();
 		break;
 	default:

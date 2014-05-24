@@ -302,4 +302,22 @@
 			/>
 		</layout>
 	</dialog>
+
+	<dialog name = 'SaveLoadDialog' overlays = 'screen' inset = '8'>
+		<layout type = 'vertical' padding = '8, 8, 8, 32' center = 'true'>
+			<widget name = 'Title'
+				height = 'Globals.Line.Height'
+			/>
+			<widget name = 'sep1'
+					width = '250'
+					height = '3'
+			/>
+			<space/>
+			<widget name = 'List' />
+			<widget name = 'Cancel'
+				type = 'Button'
+			/>
+		</layout>
+	</dialog>
+
 </layout_info>
