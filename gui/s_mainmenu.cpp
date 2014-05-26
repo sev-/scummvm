@@ -568,6 +568,8 @@ void SaveLoadDialog::updateSaveList() {
 			colors.push_back(ThemeEngine::kFontColorNormal);
 		}
 
+		warning("S: <%s>", description.c_str());
+
 		saveNames.push_back(description);
 		curSlot++;
 	}

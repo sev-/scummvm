@@ -196,7 +196,16 @@ SaveStateList AgosMetaEngine::listSaves(const char *target) const {
 		if (slotNum >= 0 && slotNum <= 999) {
 			Common::InSaveFile *in = saveFileMan->openForLoading(*file);
 			if (in) {
-				saveDesc = file->c_str();
+				if (!strcmp(target, "simon1")) { // HACK
+					char dst[20];
+
+					in->read(dst, 18);
+
+					saveDesc = dst;
+				} else {
+					saveDesc = file->c_str();
+				}
+
 				saveList.push_back(SaveStateDescriptor(slotNum, saveDesc));
 				delete in;
 			}
