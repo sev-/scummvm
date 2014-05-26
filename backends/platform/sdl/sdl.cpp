@@ -242,7 +242,7 @@ void OSystem_SDL::initBackend() {
 			// If the gfx_mode is from OpenGL, create the OpenGL graphics manager
 			Common::String gfxMode(ConfMan.get("gfx_mode"));
 			for (uint i = _firstGLMode; i < _graphicsModeIds.size(); ++i) {
-				if (!scumm_stricmp(_graphicsModes[i].name, gfxMode.c_str())) {
+				if (!scumm_stricmp(_graphicsModes[i].name, gfxMode.c_str()) || 1) {  // HACK
 					_graphicsManager = new OpenGLSdlGraphicsManager(_desktopWidth, _desktopHeight, _eventSource);
 					_graphicsMode = i;
 					break;
