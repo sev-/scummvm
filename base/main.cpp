@@ -371,6 +371,27 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 		ConfMan.loadDefaultConfigFile();
 	}
 
+	if (!ConfMan.hasGameDomain("simon1")) {
+		ConfMan.set("gfx_mode", "5xBR Squared.shader");
+		ConfMan.set("extrapath", "/Volumes/ScummVM/ScummVM.app/Contents/Resources/");
+		ConfMan.set("fullscreen", "true");
+		ConfMan.set("gui_theme", "simon1");
+		ConfMan.set("scaling_option", 0);
+		ConfMan.set("themepath", "/Users/sev/projects/scummvm/scummvm-20th/gui/themes/");
+
+
+		ConfMan.addGameDomain("simon1");
+		ConfMan.set("gameid", "simon1", "simon1");
+		ConfMan.set("description", "Simon the Sourcerer 1", "simon1");
+		ConfMan.set("platform", "windows", "simon1");
+		ConfMan.set("language", "en", "simon1");
+		ConfMan.set("path", "Simon1_data_all", "simon1");
+
+		warning("Created simon1.ini");
+
+		ConfMan.flushToDisk();
+	}
+
 	// Update the config file
 	ConfMan.set("versioninfo", gScummVMVersion, Common::ConfigManager::kApplicationDomain);
 
