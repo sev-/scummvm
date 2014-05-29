@@ -124,11 +124,11 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	GUI::PicButtonWidget *btn;
 	btn = new PicButtonWidget(this, MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow, 0, kMenuCmd, 0);
 	btn->setButtonDisplay(false);
-	btn->setGfx(g_gui.theme()->getImageSurface("menu.png"));
+	btn->setAGfx(g_gui.theme()->getAImageSurface("menu.png"));
 
 	btn = new PicButtonWidget(this, REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow, 0, kRevealCmd, 0);
 	btn->setButtonDisplay(false);
-	btn->setGfx(g_gui.theme()->getImageSurface("reveal_items.png"));
+	btn->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"));
 }
 
 void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {

@@ -103,8 +103,8 @@
 		<alphabitmap filename = 'bg.png'/>
 		<alphabitmap filename = 'seperator.png'/>
 		<alphabitmap filename = 'scroll_popup.9.png'/>
-		<bitmap filename = 'menu.png'/>
-		<bitmap filename = 'reveal_items.png'/>
+		<alphabitmap filename = 'menu.png'/>
+		<alphabitmap filename = 'reveal_items.png'/>
 	</bitmaps>
 
 	<fonts>
