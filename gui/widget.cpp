@@ -428,11 +428,6 @@ void PicButtonWidget::setAGfx(const Graphics::TransparentSurface *gfx, int state
 		return;
 	}
 
-	if (gfx->w > _w || gfx->h > _h) {
-		warning("PicButtonWidget has size %dx%d, but a surface with %dx%d is to be set", _w, _h, gfx->w, gfx->h);
-		return;
-	}
-
 	_agfx[statenum].copyFrom(*gfx);
 
 	_isAlpha = true;
