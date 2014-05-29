@@ -118,16 +118,18 @@ enum {
 SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_x = _y = 0;
 
+	_backgroundType = GUI::ThemeEngine::kDialogBackgroundNone;
+
 	int ow = g_system->getOverlayWidth();
 	int oh = g_system->getOverlayHeight();
 
 	GUI::PicButtonWidget *btn;
 	btn = new PicButtonWidget(this, MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow, 0, kMenuCmd, 0);
-	btn->setButtonDisplay(false);
+	//btn->setButtonDisplay(false);
 	btn->setAGfx(g_gui.theme()->getAImageSurface("menu.png"));
 
 	btn = new PicButtonWidget(this, REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow, 0, kRevealCmd, 0);
-	btn->setButtonDisplay(false);
+	//btn->setButtonDisplay(false);
 	btn->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"));
 }
 
