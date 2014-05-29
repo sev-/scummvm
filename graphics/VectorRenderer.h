@@ -273,7 +273,7 @@ public:
 	 *
 	 * @param surface Pointer to a Surface object.
 	 */
-	virtual void setSurface(Surface *surface) {
+	virtual void setSurface(TransparentSurface *surface) {
 		_activeSurface = surface;
 	}
 
@@ -508,7 +508,7 @@ public:
 	virtual void applyScreenShading(GUI::ThemeEngine::ShadingStyle) = 0;
 
 protected:
-	Surface *_activeSurface; /**< Pointer to the surface currently being drawn */
+	TransparentSurface *_activeSurface; /**< Pointer to the surface currently being drawn */
 
 	FillMode _fillMode; /**< Defines in which way (if any) are filled the drawn shapes */
 	ShadowFillMode _shadowFillMode;
