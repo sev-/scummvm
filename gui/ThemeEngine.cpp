@@ -1175,6 +1175,8 @@ void ThemeEngine::drawDialogBackground(const Common::Rect &r, DialogBackground b
 	case kDialogBackgroundDefault:
 		queueDD(kDDDefaultBackground, r);
 		break;
+	case kDialogBackgroundNone:
+		break;
 	}
 }
 
