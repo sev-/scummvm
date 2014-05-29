@@ -47,6 +47,7 @@
 #ifdef ENABLE_EVENTRECORDER
 #include "common/recorderfile.h"
 #endif
+#include "gui/s_overlay.h"
 #include "common/system.h"
 #include "common/textconsole.h"
 #include "common/tokenizer.h"
@@ -503,6 +504,8 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 				break;
 			}
 #endif
+
+			g_sOverlay.init();
 			// Try to run the game
 			Common::Error result = runGame(plugin, system, specialDebug);
 

@@ -18,6 +18,7 @@ MODULE_OBJS := \
 	saveload.o \
 	saveload-dialog.o \
 	s_mainmenu.o \
+	s_overlay.o \
 	themebrowser.o \
 	ThemeEngine.o \
 	ThemeEval.o \

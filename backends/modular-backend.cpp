@@ -27,6 +27,7 @@
 #include "backends/graphics/graphics.h"
 #include "backends/mutex/mutex.h"
 #include "gui/EventRecorder.h"
+#include "gui/s_overlay.h"
 
 #include "audio/mixer.h"
 #include "graphics/pixelformat.h"
@@ -146,7 +147,11 @@ void ModularBackend::updateScreen() {
 	g_eventRec.preDrawOverlayGui();
 #endif
 
+	g_sOverlay.preDrawOverlayGui();
+
 	_graphicsManager->updateScreen();
+
+	g_sOverlay.postDrawOverlayGui();
 
 #ifdef ENABLE_EVENTRECORDER
 	g_eventRec.postDrawOverlayGui();
