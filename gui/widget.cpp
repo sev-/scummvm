@@ -381,13 +381,15 @@ PicButtonWidget::PicButtonWidget(GuiObject *boss, int x, int y, int w, int h, co
 
 	setFlags(WIDGET_ENABLED/* | WIDGET_BORDER*/ | WIDGET_CLEARBG);
 	_type = kButtonWidget;
+	_mode = ThemeEngine::kAutoScaleNone;
 }
 
 PicButtonWidget::PicButtonWidget(GuiObject *boss, const Common::String &name, const char *tooltip, uint32 cmd, uint8 hotkey)
 	: ButtonWidget(boss, name, "", tooltip, cmd, hotkey),
-	  _alpha(256), _transparency(false), _showButton(true) {
+	  _alpha(256), _transparency(false), _showButton(true), _isAlpha(false) {
 	setFlags(WIDGET_ENABLED/* | WIDGET_BORDER*/ | WIDGET_CLEARBG);
 	_type = kButtonWidget;
+	_mode = ThemeEngine::kAutoScaleNone;
 }
 
 PicButtonWidget::~PicButtonWidget() {
@@ -415,6 +417,28 @@ void PicButtonWidget::setGfx(const Graphics::Surface *gfx, int statenum) {
 	_gfx[statenum].copyFrom(*gfx);
 }
 
+void PicButtonWidget::setAGfx(const Graphics::TransparentSurface *gfx, int statenum, ThemeEngine::AutoScaleMode mode) {
+	_agfx[statenum].free();
+
+	if (!gfx || !gfx->getPixels())
+		return;
+
+	if (gfx->format.bytesPerPixel == 1) {
+		warning("PicButtonWidget::setGfx got paletted surface passed");
+		return;
+	}
+
+	if (gfx->w > _w || gfx->h > _h) {
+		warning("PicButtonWidget has size %dx%d, but a surface with %dx%d is to be set", _w, _h, gfx->w, gfx->h);
+		return;
+	}
+
+	_agfx[statenum].copyFrom(*gfx);
+
+	_isAlpha = true;
+	_mode = mode;
+}
+
 void PicButtonWidget::setGfx(int w, int h, int r, int g, int b, int statenum) {
 	if (w == -1)
 		w = _w;
@@ -432,32 +456,58 @@ void PicButtonWidget::drawWidget() {
 	if (_showButton)
 		g_gui.theme()->drawButton(Common::Rect(_x, _y, _x+_w, _y+_h), "", _state, getFlags());
 
-	Graphics::Surface *gfx;
+	if (!_isAlpha) {
+		Graphics::Surface *gfx;
 
-	if (_state == ThemeEngine::kStateHighlight)
-		gfx = &_gfx[kPicButtonHighlight];
-	else if (_state == ThemeEngine::kStateDisabled)
-		gfx = &_gfx[kPicButtonStateDisabled];
-	else if (_state == ThemeEngine::kStatePressed)
-		gfx = &_gfx[kPicButtonStatePressed];
-	else
-		gfx = &_gfx[kPicButtonStateEnabled];
+		if (_state == ThemeEngine::kStateHighlight)
+			gfx = &_gfx[kPicButtonHighlight];
+		else if (_state == ThemeEngine::kStateDisabled)
+			gfx = &_gfx[kPicButtonStateDisabled];
+		else if (_state == ThemeEngine::kStatePressed)
+			gfx = &_gfx[kPicButtonStatePressed];
+		else
+			gfx = &_gfx[kPicButtonStateEnabled];
 
-	if (!gfx)
-		gfx = &_gfx[kPicButtonStateEnabled];
+		if (!gfx)
+			gfx = &_gfx[kPicButtonStateEnabled];
 
-	if (gfx->getPixels()) {
+		if (gfx->getPixels()) {
 		// Check whether the set up surface needs to be converted to the GUI
 		// color format.
-		const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
-		if (gfx->format != requiredFormat) {
-			gfx->convertToInPlace(requiredFormat);
+			const Graphics::PixelFormat &requiredFormat = g_gui.theme()->getPixelFormat();
+			if (gfx->format != requiredFormat) {
+				gfx->convertToInPlace(requiredFormat);
+			}
+
+			const int x = _x + (_w - gfx->w) / 2;
+			const int y = _y + (_h - gfx->h) / 2;
+
+			g_gui.theme()->drawSurface(Common::Rect(x, y, x + gfx->w,  y + gfx->h), *gfx, _state, _alpha, _transparency);
+		}
+	} else {
+		Graphics::TransparentSurface *gfx;
+
+		if (_state == ThemeEngine::kStateHighlight)
+			gfx = &_agfx[kPicButtonHighlight];
+		else if (_state == ThemeEngine::kStateDisabled)
+			gfx = &_agfx[kPicButtonStateDisabled];
+		else if (_state == ThemeEngine::kStatePressed)
+			gfx = &_agfx[kPicButtonStatePressed];
+		else
+			gfx = &_agfx[kPicButtonStateEnabled];
+
+		if (!gfx)
+			gfx = &_agfx[kPicButtonStateEnabled];
+
+		if (gfx->getPixels()) {
+		// Check whether the set up surface needs to be converted to the GUI
+		// color format.
+			const int x = _x + (_w - gfx->w) / 2;
+			const int y = _y + (_h - gfx->h) / 2;
+
+			g_gui.theme()->drawASurface(Common::Rect(x, y, x + gfx->w,  y + gfx->h), *gfx, _mode);
 		}
 
-		const int x = _x + (_w - gfx->w) / 2;
-		const int y = _y + (_h - gfx->h) / 2;
-
-		g_gui.theme()->drawSurface(Common::Rect(x, y, x + gfx->w,  y + gfx->h), *gfx, _state, _alpha, _transparency);
 	}
 }
 
