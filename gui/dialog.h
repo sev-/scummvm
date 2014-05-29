@@ -39,6 +39,7 @@ struct Event;
 namespace GUI {
 
 class EventRecorder;
+class SOverlay;
 
 class Widget;
 
@@ -51,6 +52,7 @@ enum {
 class Dialog : public GuiObject {
 	friend class GuiManager;
 	friend class EventRecorder;
+	friend class SOverlay;
 	friend class Tooltip;
 protected:
 	Widget	*_mouseWidget;
