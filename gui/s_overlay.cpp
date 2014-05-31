@@ -31,18 +31,24 @@ DECLARE_SINGLETON(GUI::SOverlay);
 #include "gui/widget.h"
 #include "gui/onscreendialog.h"
 
+#include "common/events.h"
+
 namespace GUI {
 
 SOverlay::SOverlay() {
 	_initialized = false;
 
 	_controlPanel = 0;
+
+	g_system->getEventManager()->getEventDispatcher()->registerObserver(this, 10, false);
 }
 
 SOverlay::~SOverlay() {
 	_controlPanel->close();
 
 	delete _controlPanel;
+
+	g_system->getEventManager()->getEventDispatcher()->unregisterObserver(this);
 }
 
 void SOverlay::init() {
@@ -67,6 +73,19 @@ void SOverlay::postDrawOverlayGui() {
 	    g_system->hideOverlay();
 	}
 }
+
+bool SOverlay::notifyEvent(const Common::Event &event) {
+	_controlPanel->_eventProcessed = false;
+
+	g_gui.processEvent(event, _controlPanel);
+
+	return _controlPanel->_eventProcessed;
+}
+
+bool SOverlay::notifyPoll() {
+	return _controlPanel->_eventProcessed;
+}
+
 
 #pragma mark --------- SDialog ---------
 
@@ -120,28 +139,46 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundNone;
 
-	int ow = g_system->getOverlayWidth();
-	int oh = g_system->getOverlayHeight();
+	reflowLayout();
 
-	GUI::PicButtonWidget *btn;
-	btn = new PicButtonWidget(this, MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow, 0, kMenuCmd, 0);
-	btn->setButtonDisplay(false);
-	btn->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
-
-	btn = new PicButtonWidget(this, REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow, 0, kRevealCmd, 0);
-	btn->setButtonDisplay(false);
-	btn->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_eventProcessed = false;
 }
 
 void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
+	_eventProcessed = false;
+
 	switch (cmd) {
 	case kMenuCmd:
-		close();
+		warning("menu");
+
+		_eventProcessed = true;
+
+		break;
+	case kRevealCmd:
+
+		warning("reveal");
+
+		_eventProcessed = true;
+
 		break;
 	}
 }
 
 void SDialog::reflowLayout() {
+	int ow = g_system->getOverlayWidth();
+	int oh = g_system->getOverlayHeight();
+
+	_w = ow;
+	_h = oh;
+
+	_menuButton = new PicButtonWidget(this, MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow, 0, kMenuCmd, 0);
+	_menuButton->setButtonDisplay(false);
+	_menuButton->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	_revealButton = new PicButtonWidget(this, REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow, 0, kRevealCmd, 0);
+	_revealButton->setButtonDisplay(false);
+	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
 	GuiObject::reflowLayout();
 }
 
