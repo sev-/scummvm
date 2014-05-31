@@ -30,6 +30,8 @@
 #include "gui/dialog.h"
 #include "gui/widget.h"
 
+#include "common/events.h"
+
 
 #define g_sOverlay (GUI::SOverlay::instance())
 
@@ -37,7 +39,7 @@ namespace GUI {
 
 class SDialog;
 
-class SOverlay : public Common::Singleton<SOverlay> {
+class SOverlay : public Common::Singleton<SOverlay>, public Common::EventObserver {
 	friend class Common::Singleton<SingletonBaseType>;
 	SOverlay();
 	~SOverlay();
@@ -50,6 +52,9 @@ public:
 	void postDrawOverlayGui();
 
 	void init();
+
+	virtual bool notifyEvent(const Common::Event &event);
+	virtual bool notifyPoll();
 
 private:
 	SDialog *_controlPanel;
@@ -66,6 +71,12 @@ public:
 	virtual bool isVisible() const { return true; }
 
 	void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+
+	bool _eventProcessed;
+
+private:
+	GUI::PicButtonWidget *_menuButton;
+	GUI::PicButtonWidget *_revealButton;
 };
 
 
