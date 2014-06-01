@@ -39,6 +39,8 @@
 #include "gui/Tooltip.h"
 #include "gui/widget.h"
 
+#include "gui/s_overlay.h"
+
 #include "graphics/cursorman.h"
 
 namespace Common {
@@ -501,6 +503,9 @@ void GuiManager::screenChange() {
 	for (DialogStack::size_type i = 0; i < _dialogStack.size(); ++i) {
 		_dialogStack[i]->reflowLayout();
 	}
+
+	g_sOverlay.reflowLayout(); // HACK
+
 	// We need to redraw immediately. Otherwise
 	// some other event may cause a widget to be
 	// redrawn before redraw() has been called.

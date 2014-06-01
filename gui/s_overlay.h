@@ -56,6 +56,8 @@ public:
 	virtual bool notifyEvent(const Common::Event &event);
 	virtual bool notifyPoll();
 
+	void reflowLayout();
+
 private:
 	SDialog *_controlPanel;
 	bool _initialized;

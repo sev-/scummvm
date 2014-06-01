@@ -86,6 +86,9 @@ bool SOverlay::notifyPoll() {
 	return _controlPanel->_eventProcessed;
 }
 
+void SOverlay::reflowLayout() {
+	_controlPanel->reflowLayout();
+}
 
 #pragma mark --------- SDialog ---------
 
@@ -161,6 +164,8 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		_eventProcessed = true;
 
 		break;
+	default:
+		warning("uknown command: %x", cmd);
 	}
 }
 
@@ -180,6 +185,8 @@ void SDialog::reflowLayout() {
 	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
 	GuiObject::reflowLayout();
+
+	warning("Reflow");
 }
 
 void SDialog::close() {
