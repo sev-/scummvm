@@ -22,6 +22,7 @@
 
 
 #include "gui/s_overlay.h"
+#include "gui/s_mainmenu.h"
 
 namespace Common {
 DECLARE_SINGLETON(GUI::SOverlay);
@@ -37,6 +38,7 @@ namespace GUI {
 
 SOverlay::SOverlay() {
 	_initialized = false;
+	_active = true;
 
 	_controlPanel = 0;
 
@@ -58,7 +60,7 @@ void SOverlay::init() {
 }
 
 void SOverlay::preDrawOverlayGui() {
-    if (_initialized) {
+    if (_initialized && _active) {
 		g_system->showOverlay();
 		g_gui.theme()->clearAll();
 		g_gui.theme()->openDialog(true, GUI::ThemeEngine::kShadingNone);
@@ -69,12 +71,15 @@ void SOverlay::preDrawOverlayGui() {
 }
 
 void SOverlay::postDrawOverlayGui() {
-    if (_initialized) {
+    if (_initialized && _active) {
 	    g_system->hideOverlay();
 	}
 }
 
 bool SOverlay::notifyEvent(const Common::Event &event) {
+	if (!_controlPanel || !_active)
+		return false;
+
 	_controlPanel->_eventProcessed = false;
 
 	Common::Event event1 = event;
@@ -88,8 +93,14 @@ bool SOverlay::notifyEvent(const Common::Event &event) {
 }
 
 void SOverlay::reflowLayout() {
-	_controlPanel->reflowLayout();
+	if (_controlPanel)
+		_controlPanel->reflowLayout();
 }
+
+void SOverlay::setEngine(Engine *engine) {
+	if (_controlPanel) _controlPanel->setEngine(engine);
+}
+
 
 #pragma mark --------- SDialog ---------
 
@@ -153,6 +164,10 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	reflowLayout();
 
 	_eventProcessed = false;
+
+	_mainMenuDialog = 0;
+
+	_engine = 0;
 }
 
 void SDialog::handleMouseDown(int x, int y, int button, int clickCount) {
@@ -164,7 +179,12 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 
 	switch (cmd) {
 	case kMenuCmd:
-		warning("menu");
+		if (!_mainMenuDialog)
+			_mainMenuDialog = new MainMenuDialog(_engine);
+
+		g_sOverlay.setActive(false);
+		_mainMenuDialog->runModal();
+		g_sOverlay.setActive(true);
 
 		_eventProcessed = true;
 

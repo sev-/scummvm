@@ -32,6 +32,7 @@
 
 #include "common/events.h"
 
+#include "engines/engine.h"
 
 #define g_sOverlay (GUI::SOverlay::instance())
 
@@ -57,9 +58,13 @@ public:
 
 	void reflowLayout();
 
+	void setEngine(Engine *engine);
+	void setActive(bool active) { _active = active; }
+
 private:
 	SDialog *_controlPanel;
 	bool _initialized;
+	bool _active;
 };
 
 class SDialog : public Dialog {
@@ -74,12 +79,18 @@ public:
 	void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 	virtual void handleMouseDown(int x, int y, int button, int clickCount);
 
+	void setEngine(Engine *engine) { _engine = engine; }
+
 
 	bool _eventProcessed;
+
+	Dialog *_mainMenuDialog;
 
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
+
+	Engine *_engine;
 };
 
 

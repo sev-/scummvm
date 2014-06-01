@@ -38,6 +38,8 @@
 
 #include "audio/mididrv.h"
 
+#include "gui/s_overlay.h"
+
 namespace AGOS {
 
 static const GameSpecificSettings simon1_settings = {
@@ -695,6 +697,8 @@ Common::Error AGOSEngine::init() {
 	case 4: _dumpScripts    = true; break;
 	case 5: _dumpVgaScripts = true; break;
 	}
+
+	g_sOverlay.setEngine(this);
 
 	return Common::kNoError;
 }
