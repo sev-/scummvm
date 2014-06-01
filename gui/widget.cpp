@@ -463,7 +463,7 @@ void PicButtonWidget::drawWidget() {
 		else
 			gfx = &_gfx[kPicButtonStateEnabled];
 
-		if (!gfx)
+		if (!gfx->getPixels())
 			gfx = &_gfx[kPicButtonStateEnabled];
 
 		if (gfx->getPixels()) {
@@ -495,12 +495,15 @@ void PicButtonWidget::drawWidget() {
 			gfx = &_agfx[kPicButtonStateEnabled];
 
 		if (gfx->getPixels()) {
-		// Check whether the set up surface needs to be converted to the GUI
-		// color format.
-			const int x = _x + (_w - gfx->w) / 2;
-			const int y = _y + (_h - gfx->h) / 2;
+			if (_mode == GUI::ThemeEngine::kAutoScaleNone) {
+				const int x = _x + (_w - gfx->w) / 2;
+				const int y = _y + (_h - gfx->h) / 2;
 
-			g_gui.theme()->drawASurface(Common::Rect(x, y, x + gfx->w,  y + gfx->h), *gfx, _mode);
+				g_gui.theme()->drawASurface(Common::Rect(x, y, x + gfx->w,  y + gfx->h), *gfx, _mode);
+
+			} else {
+				g_gui.theme()->drawASurface(Common::Rect(_x, _y, _x + _w,  _y + _h), *gfx, _mode);
+			}
 		}
 
 	}
