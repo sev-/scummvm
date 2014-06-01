@@ -141,6 +141,13 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_x = _y = 0;
 
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundNone;
+	_menuButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kMenuCmd, 0);
+	_menuButton->setButtonDisplay(false);
+	_menuButton->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	_revealButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kRevealCmd, 0);
+	_revealButton->setButtonDisplay(false);
+	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
 	reflowLayout();
 
@@ -176,17 +183,10 @@ void SDialog::reflowLayout() {
 	_w = ow;
 	_h = oh;
 
-	_menuButton = new PicButtonWidget(this, MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow, 0, kMenuCmd, 0);
-	_menuButton->setButtonDisplay(false);
-	_menuButton->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
-
-	_revealButton = new PicButtonWidget(this, REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow, 0, kRevealCmd, 0);
-	_revealButton->setButtonDisplay(false);
-	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_menuButton->resize(MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow);
+	_revealButton->resize(REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow);
 
 	GuiObject::reflowLayout();
-
-	warning("Reflow");
 }
 
 void SDialog::close() {
