@@ -42,6 +42,8 @@
 #include "graphics/font.h"
 #endif
 
+#include "gui/s_overlay.h"
+
 namespace OpenGL {
 
 OpenGLGraphicsManager::OpenGLGraphicsManager()
@@ -494,6 +496,9 @@ void OpenGLGraphicsManager::grabOverlay(void *buf, int pitch) {
 bool OpenGLGraphicsManager::showMouse(bool visible) {
 	bool last = _cursorVisible;
 	_cursorVisible = visible;
+
+	g_sOverlay.setMouseVisibility(visible);
+
 	return last;
 }
 
