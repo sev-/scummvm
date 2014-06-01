@@ -36,11 +36,24 @@ DECLARE_SINGLETON(GUI::SOverlay);
 
 namespace GUI {
 
+#define CHAT_MODE_CHECK_Y 199
+#define BOTTOM_TOOLBAR_CHECK_Y 199
+
+#define POSTCARD_WINDOW_CHECK_Y 105
+
+
 SOverlay::SOverlay() {
 	_initialized = false;
 	_active = true;
 
 	_controlPanel = 0;
+
+	_mouseVisible = false;
+	_gameInChat = false;
+	_gameInPostcard = false;
+	_bottomToolbarAppearing = false;
+
+	_selectedChatRow = 0;
 
 	g_system->getEventManager()->getEventDispatcher()->registerObserver(this, 10, false);
 }
@@ -68,6 +81,17 @@ void SOverlay::preDrawOverlayGui() {
 		g_gui.theme()->finishBuffering();
 		g_gui.theme()->updateScreen();
    }
+}
+
+void SOverlay::beforeDrawTextureToScreen(Graphics::Surface* gameSurface) {
+	// Check bottom toolbar
+	checkBottomToolbar(gameSurface);
+
+	// Check chat mode
+	checkGameInChat(gameSurface);
+
+	// Check postcard screen
+	checkGameInPostcard(gameSurface);
 }
 
 void SOverlay::postDrawOverlayGui() {
@@ -98,7 +122,141 @@ void SOverlay::reflowLayout() {
 }
 
 void SOverlay::setEngine(Engine *engine) {
-	if (_controlPanel) _controlPanel->setEngine(engine);
+	if (_controlPanel)
+		_controlPanel->setEngine(engine);
+}
+
+void SOverlay::setMouseVisibility(bool state) {
+	_mouseVisible = state;
+
+	reflowLayout();
+}
+
+void SOverlay::checkGameInChat(Graphics::Surface *gameSurface) {
+
+	bool gameInChat;
+
+	if (!_mouseVisible || _bottomToolbarAppearing) {
+		gameInChat = false;
+	} else {
+		//
+		// check if the game is in chat mode by checking if a certain line has only black pixels
+		//
+
+		// Get the row pointer
+		byte* rowPtr = (byte *)gameSurface->getPixels()
+				+ CHAT_MODE_CHECK_Y * gameSurface->pitch;
+		byte* rowEnd = rowPtr
+				+ gameSurface->w * gameSurface->format.bytesPerPixel;
+
+		// Check if all bytes are 0 (applies to all pixel formats)
+		gameInChat = true;
+		while (rowPtr < rowEnd) {
+			if (*rowPtr) {
+				// Byte != 0, so pixel is not black
+				gameInChat = false;
+				return;
+			}
+
+			++rowPtr;
+		}
+	}
+
+// Check if we got out of chat mode - if so, reposition the cursor in the game area.
+// This is done to prevent false highlighting of a chat choice in the next chat screen.
+	if (_gameInChat == true && gameInChat == false) {
+		pushScrollEvent(0, 0);
+	}
+
+// Check if we got into chat mode - if so, set the default line selection to 1
+	if (_gameInChat == false && gameInChat == true) {
+		// Get all the chat hotspots
+		Common::Point points[10];
+		uint16 count = 0; //mHitAreaHelper.getAllChatHotspots(points, 10);
+
+		if (count > 0) {
+			Common::Point first = points[0];
+			pushScrollEvent(first.x, first.y);
+
+			_selectedChatRow = 1;
+		}
+
+	}
+
+	_gameInChat = gameInChat;
+}
+
+void SOverlay::checkGameInPostcard(Graphics::Surface *gameSurface) {
+//
+// check if the game is in the postcard screen by querying certain pixels
+//
+
+// Get the row pointer
+	byte* rowPtr = (byte *)gameSurface->getPixels()
+			+ POSTCARD_WINDOW_CHECK_Y * gameSurface->pitch;
+
+// Check for a certain pixel pattern
+	if (getGameType() == GAME_TYPE_SIMON1) {
+		if (rowPtr[65] == 228 && rowPtr[75] == 243 && rowPtr[79] == 254
+				&& rowPtr[91] == 227 && rowPtr[133] == 225 && rowPtr[200] == 225
+				&& rowPtr[254] == 228) {
+			_gameInPostcard = true;
+		} else {
+			_gameInPostcard = false;
+		}
+	} else if (getGameType() == GAME_TYPE_SIMON2) {
+		if (rowPtr[65] == 0xEB && rowPtr[67] == 0xDB && rowPtr[100] == 0xDB
+				&& rowPtr[126] == 0xEB && rowPtr[200] == 0xE4
+				&& rowPtr[239] == 0xE4 && rowPtr[253] == 0xDB) {
+			_gameInPostcard = true;
+		} else {
+			_gameInPostcard = false;
+		}
+	}
+}
+
+void SOverlay::checkBottomToolbar(Graphics::Surface *gameSurface) {
+//
+// check if the game has inventory by querying certain pixels
+//
+
+// Get the row pointer
+	byte* rowPtr = (byte *)gameSurface->getPixels()
+			+ BOTTOM_TOOLBAR_CHECK_Y * gameSurface->pitch;
+
+// Check for a certain pixel pattern
+
+#if CURRENT_GAME_TYPE == GAME_TYPE_SIMON1
+	if (rowPtr[1] == 240 && rowPtr[25] == 247 && rowPtr[50] == 240
+			&& rowPtr[75] == 247 && rowPtr[100] == 250 && rowPtr[125] == 240) {
+		_bottomToolbarAppearing = true;
+	} else {
+		_bottomToolbarAppearing = false;
+	}
+#endif
+
+#if CURRENT_GAME_TYPE == GAME_TYPE_SIMON2
+
+	if (rowPtr[0] == 0xfa && rowPtr[17] == 0xf8 && rowPtr[69] == 0xf9
+			&& rowPtr[123] == 0xf7 && rowPtr[188] == 0xf8
+			&& rowPtr[254] == 0xf7) {
+		_bottomToolbarAppearing = true;
+	} else {
+		_bottomToolbarAppearing = false;
+	}
+#endif
+}
+
+/**
+ * Using GAME coordinates
+ */
+void SOverlay::pushScrollEvent(int x, int y) {
+	Common::Event e;
+	e.type = Common::EVENT_MOUSEMOVE;
+	e.mouse.x = x;
+	e.mouse.y = y;
+
+	//g_system->forceEvent(e);
 }
 
 
@@ -135,14 +293,11 @@ void SOverlay::setEngine(Engine *engine) {
 #define TOUCH_INDICATOR_SCALE_DURATION 750
 #define TOUCH_INDICATOR_INITIAL_FADE_DURATION 100
 
-
-
 #define MUSIC_ENHANCED_BY_X 0.1
 #define MUSIC_ENHANCED_BY_Y 0.7
 #define MUSIC_ENHANCED_BY_W 0.8
 #define MUSIC_ENHANCED_BY_BEGIN_TIME 3000
 #define MUSIC_ENHANCED_BY_END_TIME 8000
-
 
 enum {
 	kMenuCmd = 'MENU',
@@ -209,13 +364,41 @@ void SDialog::reflowLayout() {
 	_h = oh;
 
 	_menuButton->resize((int)(MENU_X * ow), (int)(MENU_Y * oh), (int)(MENU_W * ow), (int)(MENU_W * ow));
+	_menuButton->setVisible(canShowMenuButton());
+
 	_revealButton->resize(REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow);
+	_revealButton->setVisible(canShowRevealItems());
 
 	//GuiObject::reflowLayout();
 }
 
 void SDialog::close() {
 	Dialog::close();
+}
+
+bool SDialog::canSkip() {
+	if (_engine == NULL) {
+		return false;
+	}
+
+	return (!g_sOverlay._mouseVisible && _engine->canSkip());
+}
+
+bool SDialog::canShowRevealItems() {
+	return g_sOverlay._bottomToolbarAppearing && g_sOverlay._mouseVisible;
+}
+
+bool SDialog::canShowMenuButton() {
+	return (g_sOverlay._bottomToolbarAppearing || g_sOverlay._gameInChat)
+			&& g_sOverlay._mouseVisible;
+}
+
+uint16 SDialog::getCurrentAction() {
+	if (_engine == NULL) {
+		return ACTION_WALK;
+	}
+
+	return _engine->getCurrentActionId();
 }
 
 } // End of namespace GUI

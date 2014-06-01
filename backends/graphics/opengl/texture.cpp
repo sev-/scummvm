@@ -27,6 +27,8 @@
 #include "common/rect.h"
 #include "common/textconsole.h"
 
+#include "gui/s_overlay.h"
+
 namespace OpenGL {
 
 static GLuint nextHigher2(GLuint v) {
@@ -347,6 +349,8 @@ void TextureCLUT8::updateTexture() {
 	if (!isDirty()) {
 		return;
 	}
+
+	g_sOverlay.beforeDrawTextureToScreen(&_clut8Data);
 
 	// Do the palette look up
 	Graphics::Surface *outSurf = Texture::getSurface();

@@ -23,6 +23,11 @@
 #ifndef GUI_S_OVERLAY_H
 #define GUI_S_OVERLAY_H
 
+#define GAME_TYPE_SIMON1 0
+#define GAME_TYPE_SIMON2 1
+
+#define CURRENT_GAME_TYPE GAME_TYPE_SIMON1
+
 #include "common/system.h"
 
 #include "common/singleton.h"
@@ -37,6 +42,22 @@
 #define g_sOverlay (GUI::SOverlay::instance())
 
 namespace GUI {
+
+/**
+ * Simon 1 action ids
+ */
+#define ACTION_WALK 101
+#define ACTION_LOOK 102
+#define ACTION_OPEN 103
+#define ACTION_MOVE 104
+#define ACTION_CONSUME 105
+#define ACTION_PICK 106
+#define ACTION_CLOSE 107
+#define ACTION_USE 108
+#define ACTION_TALK 109
+#define ACTION_REMOVE 110
+#define ACTION_WEAR 111
+#define ACTION_GIVE 112
 
 class SDialog;
 
@@ -60,11 +81,28 @@ public:
 
 	void setEngine(Engine *engine);
 	void setActive(bool active) { _active = active; }
+	void setMouseVisibility(bool state);
+	void beforeDrawTextureToScreen(Graphics::Surface *gameSurface);
+
+	int getGameType() { return CURRENT_GAME_TYPE; }
 
 private:
 	SDialog *_controlPanel;
 	bool _initialized;
 	bool _active;
+
+	void checkBottomToolbar(Graphics::Surface *gameSurface);
+	void checkGameInChat(Graphics::Surface *gameSurface);
+	void checkGameInPostcard(Graphics::Surface *gameSurface);
+	void pushScrollEvent(int x, int y);
+
+public:
+	bool _mouseVisible;
+	bool _gameInChat;
+	bool _bottomToolbarAppearing;
+	bool _gameInPostcard;
+
+	int _selectedChatRow;
 };
 
 class SDialog : public Dialog {
@@ -81,6 +119,10 @@ public:
 
 	void setEngine(Engine *engine) { _engine = engine; }
 
+	bool canSkip();
+	bool canShowRevealItems();
+	bool canShowMenuButton();
+	uint16 getCurrentAction();
 
 	bool _eventProcessed;
 
