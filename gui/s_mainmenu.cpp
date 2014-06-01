@@ -29,6 +29,8 @@
 
 #include "graphics/cursorman.h"
 
+#include "engines/engine.h"
+
 using Common::ConfigManager;
 
 namespace GUI {
@@ -101,8 +103,13 @@ void Simon1Dialog::reflowLayout() {
 	Dialog::reflowLayout();
 }
 
-MainMenuDialog::MainMenuDialog() {
+MainMenuDialog::MainMenuDialog(Engine *engine) {
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundMain;
+
+	_engine = engine;
+
+	if (_engine)
+		_engine->pauseEngine(true);
 
 	setSize();
 
@@ -128,6 +135,13 @@ MainMenuDialog::MainMenuDialog() {
 void MainMenuDialog::open() {
 	CursorMan.popAllCursors();
 	Dialog::open();
+}
+
+void MainMenuDialog::close() {
+	Dialog::close();
+
+	if (_engine)
+		_engine->pauseEngine(false);
 }
 
 void MainMenuDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {

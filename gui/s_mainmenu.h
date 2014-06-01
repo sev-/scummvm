@@ -44,15 +44,17 @@ protected:
 
 class MainMenuDialog : public Simon1Dialog {
 public:
-	MainMenuDialog();
+	MainMenuDialog(Engine *engine = 0);
 	virtual ~MainMenuDialog() {}
 
 	virtual void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
 
 	void open();
+	virtual void close();
 
 private:
 	SaveLoad *_loadDialog;
+	Engine *_engine;
 };
 
 class SettingsDialog : public Simon1Dialog {
