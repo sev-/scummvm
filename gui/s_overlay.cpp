@@ -77,7 +77,12 @@ void SOverlay::postDrawOverlayGui() {
 bool SOverlay::notifyEvent(const Common::Event &event) {
 	_controlPanel->_eventProcessed = false;
 
-	g_gui.processEvent(event, _controlPanel);
+	Common::Event event1 = event;
+
+	event1.mouse.x = event.mouse.x * g_system->getOverlayWidth() / g_system->getWidth();
+	event1.mouse.y = event.mouse.y * g_system->getOverlayHeight() / g_system->getHeight();
+
+	g_gui.processEvent(event1, _controlPanel);
 
 	return _controlPanel->_eventProcessed;
 }
@@ -183,10 +188,10 @@ void SDialog::reflowLayout() {
 	_w = ow;
 	_h = oh;
 
-	_menuButton->resize(MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow);
+	_menuButton->resize((int)(MENU_X * ow), (int)(MENU_Y * oh), (int)(MENU_W * ow), (int)(MENU_W * ow));
 	_revealButton->resize(REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow);
 
-	GuiObject::reflowLayout();
+	//GuiObject::reflowLayout();
 }
 
 void SDialog::close() {
