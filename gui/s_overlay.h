@@ -54,7 +54,6 @@ public:
 	void init();
 
 	virtual bool notifyEvent(const Common::Event &event);
-	virtual bool notifyPoll();
 
 	void reflowLayout();
 
@@ -73,6 +72,8 @@ public:
 	virtual bool isVisible() const { return true; }
 
 	void handleCommand(CommandSender *sender, uint32 cmd, uint32 data);
+	virtual void handleMouseDown(int x, int y, int button, int clickCount);
+
 
 	bool _eventProcessed;
 
