@@ -491,7 +491,7 @@ void PicButtonWidget::drawWidget() {
 		else
 			gfx = &_agfx[kPicButtonStateEnabled];
 
-		if (!gfx)
+		if (!gfx->getPixels())
 			gfx = &_agfx[kPicButtonStateEnabled];
 
 		if (gfx->getPixels()) {
