@@ -87,10 +87,6 @@ bool SOverlay::notifyEvent(const Common::Event &event) {
 	return _controlPanel->_eventProcessed;
 }
 
-bool SOverlay::notifyPoll() {
-	return _controlPanel->_eventProcessed;
-}
-
 void SOverlay::reflowLayout() {
 	_controlPanel->reflowLayout();
 }
@@ -157,6 +153,10 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	reflowLayout();
 
 	_eventProcessed = false;
+}
+
+void SDialog::handleMouseDown(int x, int y, int button, int clickCount) {
+	_eventProcessed = _menuButton->isPointIn(x, y) || _revealButton->isPointIn(x, y);
 }
 
 void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
