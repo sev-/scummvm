@@ -103,6 +103,7 @@ public:
 	bool _gameInChat;
 	bool _bottomToolbarAppearing;
 	bool _gameInPostcard;
+	bool _classicMode;
 
 	int _selectedChatRow;
 };
@@ -124,6 +125,8 @@ public:
 	bool canSkip();
 	bool canShowRevealItems();
 	bool canShowMenuButton();
+	bool canShowChatControls();
+
 	uint16 getCurrentAction();
 
 	bool _eventProcessed;
@@ -134,6 +137,9 @@ private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
 	GUI::PicButtonWidget *_skipButton;
+	GUI::PicButtonWidget *_arrowUpButton;
+	GUI::PicButtonWidget *_arrowDownButton;
+	GUI::PicButtonWidget *_talkButton;
 
 	Engine *_engine;
 };

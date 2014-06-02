@@ -52,6 +52,7 @@ SOverlay::SOverlay() {
 	_gameInChat = false;
 	_gameInPostcard = false;
 	_bottomToolbarAppearing = false;
+	_classicMode = false;
 
 	_selectedChatRow = 0;
 
@@ -289,6 +290,19 @@ void SOverlay::pushScrollEvent(int x, int y) {
 #define SMALL_ACTION_ICON_W 		0.08
 #define SMALL_ACTION_ICON_PADDING 		14
 
+#define ARROW_W 0.1
+#define ARROW_H 0.14
+
+#define UP_ARROW_X (1 - ARROW_W - 0.01)
+#define UP_ARROW_Y 0.37
+#define DOWN_ARROW_X (1 - ARROW_W - 0.01)
+#define DOWN_ARROW_Y (UP_ARROW_Y + ARROW_H + 0.01)
+
+#define CHAT_BUTTON_W (ARROW_W * 1.6)
+#define CHAT_BUTTON_H (ARROW_H * 2 + 0.01)
+#define CHAT_BUTTON_X (UP_ARROW_X - CHAT_BUTTON_W - 0.01)
+#define CHAT_BUTTON_Y UP_ARROW_Y
+
 #define TOUCH_INDICATOR_W 0.035
 #define TOUCH_INDICATOR_MIN_SCALE_W 0.04
 #define TOUCH_INDICATOR_MAX_SCALE_W 0.05
@@ -304,7 +318,10 @@ void SOverlay::pushScrollEvent(int x, int y) {
 enum {
 	kMenuCmd = 'MENU',
 	kRevealCmd = 'REVL',
-	kSkipCmd = 'SKIP'
+	kSkipCmd = 'SKIP',
+	kUpCmd = 'UP  ',
+	kDownCmd = 'DOWN',
+	kTalkCmd = 'TALK'
 };
 
 SDialog::SDialog() : Dialog(0, 0, 320, 200) {
@@ -323,6 +340,18 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_skipButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kSkipCmd, 0);
 	_skipButton->setButtonDisplay(false);
 	_skipButton->setAGfx(g_gui.theme()->getAImageSurface("skip.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	_arrowUpButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kUpCmd, 0);
+	_arrowUpButton->setButtonDisplay(false);
+	_arrowUpButton->setAGfx(g_gui.theme()->getAImageSurface("arrow_up.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	_arrowDownButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kDownCmd, 0);
+	_arrowDownButton->setButtonDisplay(false);
+	_arrowDownButton->setAGfx(g_gui.theme()->getAImageSurface("arrow_down.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	_talkButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kTalkCmd, 0);
+	_talkButton->setButtonDisplay(false);
+	_talkButton->setAGfx(g_gui.theme()->getAImageSurface("talk_btn.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
 	_eventProcessed = false;
 
@@ -379,18 +408,33 @@ void SDialog::reflowLayout() {
 	_h = oh;
 
 	if (canSkip()) {
-		_skipButton->resize((int)(SKIP_X * ow), (int)(SKIP_Y * oh), (int)(SKIP_W * ow), (int)(SKIP_W * ow));
+		_skipButton->resize(SKIP_X * ow, SKIP_Y * oh, SKIP_W * ow, SKIP_W * ow);
 		_skipButton->setVisible(true);
 	} else {
 		_skipButton->setVisible(false);
 		_skipButton->resize(0, 0, 1, 1);
 	}
 
-	_menuButton->resize((int)(MENU_X * ow), (int)(MENU_Y * oh), (int)(MENU_W * ow), (int)(MENU_W * ow));
+	_menuButton->resize(MENU_X * ow, MENU_Y * oh, MENU_W * ow, MENU_W * ow);
 	_menuButton->setVisible(canShowMenuButton());
 
 	_revealButton->resize(REVEAL_ITEMS_X * ow, REVEAL_ITEMS_Y * oh, REVEAL_ITEMS_W * ow, REVEAL_ITEMS_W * ow);
 	_revealButton->setVisible(canShowRevealItems());
+
+	// Show the chat overlay if needed
+	if (canShowChatControls()) {
+		_arrowUpButton->resize(UP_ARROW_X * ow, UP_ARROW_Y * oh, ARROW_W * ow, ARROW_H * oh);
+		_arrowDownButton->resize(DOWN_ARROW_X * ow, DOWN_ARROW_Y * oh, ARROW_W * ow, ARROW_H * oh);
+		_talkButton->resize(CHAT_BUTTON_X * ow, CHAT_BUTTON_Y * oh, CHAT_BUTTON_W * ow, CHAT_BUTTON_H * oh);
+	} else {
+		_arrowUpButton->resize(0, 0, 1, 1);
+		_arrowDownButton->resize(0, 0, 1, 1);
+		_talkButton->resize(0, 0, 1, 1);
+	}
+
+	_arrowUpButton->setVisible(canShowChatControls());
+	_arrowDownButton->setVisible(canShowChatControls());
+	_talkButton->setVisible(canShowChatControls());
 
 	//GuiObject::reflowLayout();
 }
@@ -414,6 +458,10 @@ bool SDialog::canShowRevealItems() {
 bool SDialog::canShowMenuButton() {
 	return (g_sOverlay._bottomToolbarAppearing || g_sOverlay._gameInChat)
 			&& g_sOverlay._mouseVisible;
+}
+
+bool SDialog::canShowChatControls() {
+	return g_sOverlay._mouseVisible && g_sOverlay._gameInChat && !g_sOverlay._classicMode;
 }
 
 uint16 SDialog::getCurrentAction() {

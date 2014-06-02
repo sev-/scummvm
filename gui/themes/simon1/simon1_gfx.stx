@@ -106,6 +106,9 @@
 		<alphabitmap filename = 'menu.png'/>
 		<alphabitmap filename = 'reveal_items.png'/>
 		<alphabitmap filename = 'skip.png'/>
+		<alphabitmap filename = 'arrow_up.png'/>
+		<alphabitmap filename = 'arrow_down.png'/>
+		<alphabitmap filename = 'talk_btn.png'/>
 	</bitmaps>
 
 	<fonts>
