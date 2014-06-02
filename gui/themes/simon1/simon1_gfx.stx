@@ -105,6 +105,7 @@
 		<alphabitmap filename = 'scroll_popup.9.png'/>
 		<alphabitmap filename = 'menu.png'/>
 		<alphabitmap filename = 'reveal_items.png'/>
+		<alphabitmap filename = 'skip.png'/>
 	</bitmaps>
 
 	<fonts>

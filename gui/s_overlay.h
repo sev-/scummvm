@@ -59,6 +59,7 @@ namespace GUI {
 #define ACTION_WEAR 111
 #define ACTION_GIVE 112
 
+class HitAreaHelper;
 class SDialog;
 
 class SOverlay : public Common::Singleton<SOverlay>, public Common::EventObserver {
@@ -90,6 +91,7 @@ private:
 	SDialog *_controlPanel;
 	bool _initialized;
 	bool _active;
+	HitAreaHelper *_hitAreaHelper;
 
 	void checkBottomToolbar(Graphics::Surface *gameSurface);
 	void checkGameInChat(Graphics::Surface *gameSurface);
@@ -131,10 +133,56 @@ public:
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
+	GUI::PicButtonWidget *_skipButton;
 
 	Engine *_engine;
 };
 
+struct Hotspot {
+	Common::Point _displayPoint;
+	Common::Point _cursorPoint;
+
+	Hotspot() {}
+
+	Hotspot(Common::Point display, Common::Point cursor)
+			: _displayPoint(display), _cursorPoint(cursor) {
+	}
+
+	void clear() {
+		_displayPoint = Common::Point();
+		_cursorPoint = Common::Point();
+	}
+
+};
+
+class HitAreaHelper {
+public:
+	HitAreaHelper();
+	virtual ~HitAreaHelper();
+
+	/**
+	 * Returns the closest hit area to a game coordinate, according to a defined distance threshold
+	 */
+	Hotspot getClosestHotspot(int x, int y);
+
+	uint16 getAllInteractionHotspots(Common::Point *hotspots, uint16 max);
+
+	uint16 getAllChatHotspots(Common::Point *hotspots, uint16 max);
+
+private:
+
+	bool isPointIsolated(Common::Point p, Common::Rect *original);
+
+	void updateInteractionHitAreas();
+	void updateChatHitAreas();
+
+
+	Common::Rect *_interactionHitAreas;
+	uint16 _interactionHitAreaCount;
+
+	Common::Rect *_chatHitAreas;
+	uint16 _chatHitAreaCount;
+};
 
 } // End of namespace GUI
 
