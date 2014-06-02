@@ -55,6 +55,8 @@ SOverlay::SOverlay() {
 
 	_selectedChatRow = 0;
 
+	_hitAreaHelper = new HitAreaHelper;
+
 	g_system->getEventManager()->getEventDispatcher()->registerObserver(this, 10, false);
 }
 
@@ -172,7 +174,7 @@ void SOverlay::checkGameInChat(Graphics::Surface *gameSurface) {
 	if (_gameInChat == false && gameInChat == true) {
 		// Get all the chat hotspots
 		Common::Point points[10];
-		uint16 count = 0; //mHitAreaHelper.getAllChatHotspots(points, 10);
+		uint16 count = _hitAreaHelper->getAllChatHotspots(points, 10);
 
 		if (count > 0) {
 			Common::Point first = points[0];
@@ -301,13 +303,15 @@ void SOverlay::pushScrollEvent(int x, int y) {
 
 enum {
 	kMenuCmd = 'MENU',
-	kRevealCmd = 'REVL'
+	kRevealCmd = 'REVL',
+	kSkipCmd = 'SKIP'
 };
 
 SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_x = _y = 0;
 
 	_backgroundType = GUI::ThemeEngine::kDialogBackgroundNone;
+
 	_menuButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kMenuCmd, 0);
 	_menuButton->setButtonDisplay(false);
 	_menuButton->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
@@ -316,13 +320,17 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_revealButton->setButtonDisplay(false);
 	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
-	reflowLayout();
+	_skipButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kSkipCmd, 0);
+	_skipButton->setButtonDisplay(false);
+	_skipButton->setAGfx(g_gui.theme()->getAImageSurface("skip.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
 	_eventProcessed = false;
 
 	_mainMenuDialog = 0;
 
 	_engine = 0;
+
+	reflowLayout();
 }
 
 void SDialog::handleMouseDown(int x, int y, int button, int clickCount) {
@@ -351,6 +359,13 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		_eventProcessed = true;
 
 		break;
+	case kSkipCmd:
+
+		warning("skip");
+
+		_eventProcessed = true;
+
+		break;
 	default:
 		warning("uknown command: %x", cmd);
 	}
@@ -362,6 +377,14 @@ void SDialog::reflowLayout() {
 
 	_w = ow;
 	_h = oh;
+
+	if (canSkip()) {
+		_skipButton->resize((int)(SKIP_X * ow), (int)(SKIP_Y * oh), (int)(SKIP_W * ow), (int)(SKIP_W * ow));
+		_skipButton->setVisible(true);
+	} else {
+		_skipButton->setVisible(false);
+		_skipButton->resize(0, 0, 1, 1);
+	}
 
 	_menuButton->resize((int)(MENU_X * ow), (int)(MENU_Y * oh), (int)(MENU_W * ow), (int)(MENU_W * ow));
 	_menuButton->setVisible(canShowMenuButton());
@@ -399,6 +422,160 @@ uint16 SDialog::getCurrentAction() {
 	}
 
 	return _engine->getCurrentActionId();
+}
+
+#pragma mark --------- HitAreaHelper ---------
+
+#define HIT_AREA_MAX 100
+#define DISTANCE_THRESHOLD 50
+
+HitAreaHelper::HitAreaHelper()
+		: _interactionHitAreaCount(0) {
+	_interactionHitAreas = new Common::Rect[HIT_AREA_MAX];
+	_chatHitAreas = new Common::Rect[HIT_AREA_MAX];
+}
+
+HitAreaHelper::~HitAreaHelper() {
+	delete[] _interactionHitAreas;
+	delete[] _chatHitAreas;
+}
+
+uint16 HitAreaHelper::getAllChatHotspots(Common::Point *hotspots, uint16 max) {
+	updateChatHitAreas();
+
+	int maxCount = MIN(_chatHitAreaCount, max);
+
+	for (int i = 0; i < maxCount; ++i) {
+		hotspots[i].x = (_chatHitAreas[i].right + _chatHitAreas[i].left) / 2;
+		hotspots[i].y = (_chatHitAreas[i].bottom + _chatHitAreas[i].top) / 2;
+	}
+
+	return maxCount;
+}
+
+uint16 HitAreaHelper::getAllInteractionHotspots(Common::Point *hotspots, uint16 max) {
+	updateInteractionHitAreas();
+
+	int maxCount = MIN(_interactionHitAreaCount, max);
+
+	for (int i = 0; i < maxCount; ++i) {
+		hotspots[i].x = (_interactionHitAreas[i].right + _interactionHitAreas[i].left) / 2;
+		hotspots[i].y = (_interactionHitAreas[i].bottom + _interactionHitAreas[i].top) / 2;
+	}
+
+	return maxCount;
+}
+
+Hotspot HitAreaHelper::getClosestHotspot(int x, int y) {
+	updateInteractionHitAreas();
+
+	Rect *resultRect = NULL;
+
+	// First, check if we're inside one of the hit areas
+	for (int i = 0; i < _interactionHitAreaCount; ++i) {
+		if (x >= _interactionHitAreas[i].left && y >= _interactionHitAreas[i].top
+				&& x <= _interactionHitAreas[i].right && y <= _interactionHitAreas[i].bottom) {
+			resultRect = _interactionHitAreas + i;
+		}
+	}
+
+	if (resultRect == NULL) {
+		// If not, check for the smallest distance that is below the threshold
+		int closestDistanceSquare = DISTANCE_THRESHOLD * DISTANCE_THRESHOLD;
+
+		for (int i = 0; i < _interactionHitAreaCount; ++i) {
+			int centerX = (_interactionHitAreas[i].right + _interactionHitAreas[i].left) / 2;
+			int centerY = (_interactionHitAreas[i].bottom + _interactionHitAreas[i].top) / 2;
+			int dx = abs(x - centerX);
+			int dy = abs(y - centerY);
+			int distanceSquare = dx * dx + dy * dy;
+
+			if (distanceSquare <= closestDistanceSquare) {
+				resultRect = _interactionHitAreas + i;
+				closestDistanceSquare = distanceSquare;
+			}
+		}
+	}
+
+	Hotspot resultHotspot;
+
+	// Return the middle point, a corner (if there's a clash in the middle) or 0 point
+	if (resultRect != NULL) {
+		// Middle
+		resultHotspot._displayPoint = Common::Point(
+				(resultRect->left + resultRect->right) / 2,
+				(resultRect->top + resultRect->bottom) / 2);
+		resultHotspot._cursorPoint = resultHotspot._displayPoint;
+
+		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+			return resultHotspot;
+		}
+
+		// top left
+		resultHotspot._cursorPoint = Common::Point(resultRect->left + 1,
+				resultRect->top + 1);
+
+		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+			return resultHotspot;
+		}
+
+		// top right
+		resultHotspot._cursorPoint = Common::Point(resultRect->right - 1,
+				resultRect->top + 1);
+
+		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+			return resultHotspot;
+		}
+
+		// bottom left
+		resultHotspot._cursorPoint = Common::Point(resultRect->left + 1,
+				resultRect->bottom - 1);
+
+		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+			return resultHotspot;
+		}
+
+		// bottom right
+		resultHotspot._cursorPoint = Common::Point(resultRect->right - 1,
+				resultRect->bottom - 1);
+
+		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+			return resultHotspot;
+		}
+		// Use middle anyway
+		resultHotspot._cursorPoint = resultHotspot._displayPoint;
+
+		return resultHotspot;
+	} else {
+		resultHotspot._cursorPoint = Common::Point();
+		resultHotspot._displayPoint = Common::Point();
+		return resultHotspot;
+	}
+}
+
+void HitAreaHelper::updateInteractionHitAreas() {
+	g_engine->getInteractionHitAreas(_interactionHitAreas, _interactionHitAreaCount);
+}
+
+void HitAreaHelper::updateChatHitAreas() {
+	g_engine->getChatHitAreas(_chatHitAreas, _chatHitAreaCount);
+}
+
+bool HitAreaHelper::isPointIsolated(Common::Point p, Rect *original) {
+	// Check if the point is inside another hit area beside the original
+	for (int i = 0; i < _interactionHitAreaCount; ++i) {
+		if (_interactionHitAreas + i != original) {
+			if (p.x >= _interactionHitAreas[i].left && p.y >= _interactionHitAreas[i].top
+					&& p.x <= _interactionHitAreas[i].right
+					&& p.y <= _interactionHitAreas[i].bottom) {
+
+				// Clash detected
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 } // End of namespace GUI
