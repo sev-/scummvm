@@ -87,6 +87,9 @@ void SOverlay::preDrawOverlayGui() {
 }
 
 void SOverlay::beforeDrawTextureToScreen(Graphics::Surface* gameSurface) {
+	if (!g_engine)
+		return;
+
 	// Check bottom toolbar
 	checkBottomToolbar(gameSurface);
 
