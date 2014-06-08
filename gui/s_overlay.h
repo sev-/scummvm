@@ -97,6 +97,11 @@ private:
 	void checkGameInChat(Graphics::Surface *gameSurface);
 	void checkGameInPostcard(Graphics::Surface *gameSurface);
 	void pushScrollEvent(int x, int y);
+	void pushClickEvent(int x, int y);
+
+public:
+	void chatArrowClick(bool up);
+	void talkButtonClick();
 
 public:
 	bool _mouseVisible;
