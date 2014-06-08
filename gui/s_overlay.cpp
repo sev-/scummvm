@@ -262,16 +262,23 @@ void SOverlay::pushScrollEvent(int x, int y) {
 	e.mouse.x = x;
 	e.mouse.y = y;
 
-	//g_system->forceEvent(e);
+	g_system->getEventManager()->pushEvent(e);
 }
 
 void SOverlay::pushClickEvent(int32 x, int32 y) {
 	Common::Event e;
-	e.type = Common::EVENT_LBUTTONDOWN;
+	e.type = Common::EVENT_MOUSEMOVE;
+
 	e.mouse.x = x;
 	e.mouse.y = y;
 
-	//g_system->forceEvent(e);
+	g_system->getEventManager()->pushEvent(e);
+
+	e.type = Common::EVENT_LBUTTONDOWN;
+	g_system->getEventManager()->pushEvent(e);
+
+	e.type = Common::EVENT_LBUTTONUP;
+	g_system->getEventManager()->pushEvent(e);
 }
 
 void SOverlay::chatArrowClick(bool up) {
