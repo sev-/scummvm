@@ -168,13 +168,13 @@ void SOverlay::checkGameInChat(Graphics::Surface *gameSurface) {
 		}
 	}
 
-// Check if we got out of chat mode - if so, reposition the cursor in the game area.
-// This is done to prevent false highlighting of a chat choice in the next chat screen.
+	// Check if we got out of chat mode - if so, reposition the cursor in the game area.
+	// This is done to prevent false highlighting of a chat choice in the next chat screen.
 	if (_gameInChat == true && gameInChat == false) {
 		pushScrollEvent(0, 0);
 	}
 
-// Check if we got into chat mode - if so, set the default line selection to 1
+	// Check if we got into chat mode - if so, set the default line selection to 1
 	if (_gameInChat == false && gameInChat == true) {
 		// Get all the chat hotspots
 		Common::Point points[10];
@@ -263,6 +263,58 @@ void SOverlay::pushScrollEvent(int x, int y) {
 	e.mouse.y = y;
 
 	//g_system->forceEvent(e);
+}
+
+void SOverlay::pushClickEvent(int32 x, int32 y) {
+	Common::Event e;
+	e.type = Common::EVENT_LBUTTONDOWN;
+	e.mouse.x = x;
+	e.mouse.y = y;
+
+	//g_system->forceEvent(e);
+}
+
+void SOverlay::chatArrowClick(bool up) {
+	// Get all the chat hotspots
+	Common::Point points[10];
+	uint16 count = _hitAreaHelper->getAllChatHotspots(points, 10);
+
+	// Adjust the selected row number.
+	// Chat hit areas are ordered from bottom to top.
+	if (up) {
+		--_selectedChatRow;
+		if (_selectedChatRow <= 0) {
+			_selectedChatRow = count;
+		}
+	} else {
+		++_selectedChatRow;
+		if (_selectedChatRow > count) {
+			_selectedChatRow = 1;
+		}
+	}
+
+	// Scroll the game mouse to the selected row
+	Common::Point selected = points[_selectedChatRow - 1];
+
+	pushScrollEvent(selected.x, selected.y);
+}
+
+void SOverlay::talkButtonClick() {
+	// Get all the chat hotspots
+	Common::Point points[10];
+	uint16 count = _hitAreaHelper->getAllChatHotspots(points, 10);
+
+	// Click the selected row
+	Common::Point selected;
+	if (_selectedChatRow <= 0 || _selectedChatRow > count) {
+		selected = points[0];
+	} else {
+		selected = points[_selectedChatRow - 1];
+	}
+
+	pushClickEvent(selected.x, selected.y);
+
+	_selectedChatRow = 0;
 }
 
 
@@ -398,6 +450,27 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		_eventProcessed = true;
 
 		break;
+	case kUpCmd:
+
+		g_sOverlay.chatArrowClick(true);
+
+		_eventProcessed = true;
+
+		break;
+	case kDownCmd:
+
+		g_sOverlay.chatArrowClick(false);
+
+		_eventProcessed = true;
+
+		break;
+	case kTalkCmd:
+
+		g_sOverlay.talkButtonClick();
+
+		_eventProcessed = true;
+
+		break;
 	default:
 		warning("uknown command: %x", cmd);
 	}
@@ -474,6 +547,7 @@ uint16 SDialog::getCurrentAction() {
 
 	return _engine->getCurrentActionId();
 }
+
 
 #pragma mark --------- HitAreaHelper ---------
 
