@@ -13,6 +13,7 @@ MODULE_OBJS := \
 	codecs/cinepak.o \
 	codecs/codec.o \
 	codecs/indeo3.o \
+	codecs/indeo5.o \
 	codecs/mjpeg.o \
 	codecs/msrle.o \
 	codecs/msvideo1.o \
