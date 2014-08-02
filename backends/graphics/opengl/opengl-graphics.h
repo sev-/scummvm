@@ -399,6 +399,12 @@ private:
 
                // GL ids for non-standard uniforms
 		GLuint origTextureLoc, origTextureSizeLoc, origInputSizeLoc;
+
+		GLint positionAttributeLoc;
+		GLint texCoordAttributeLoc;
+		GLint alphaFactorLoc;
+		GLint textureFractLoc;
+
 	};
 
 	struct ShaderInfo {
