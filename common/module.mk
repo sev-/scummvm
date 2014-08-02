@@ -1,6 +1,7 @@
 MODULE := common
 
 MODULE_OBJS := \
+	advxmlparser.o \
 	archive.o \
 	config-manager.o \
 	coroutines.o \

@@ -79,13 +79,15 @@ public:
 
 	void fill(uint32 color);
 
-	void draw(GLfloat x, GLfloat y, GLfloat w, GLfloat h);
-
 	void flagDirty() { _allDirty = true; }
 	bool isDirty() const { return _allDirty || !_dirtyArea.isEmpty(); }
 
 	uint getWidth() const { return _userPixelData.w; }
 	uint getHeight() const { return _userPixelData.h; }
+	GLuint getTextureWidth() const { return _textureData.w; }
+	GLuint getTextureHeight() const { return _textureData.h; }
+	GLfloat getDrawWidth() { return (GLfloat)_userPixelData.w / _textureData.w; }
+	GLfloat getDrawHeight() { return (GLfloat)_userPixelData.h / _textureData.h; }
 
 	/**
 	 * @return The hardware format of the texture data.
@@ -120,10 +122,14 @@ public:
 	 * @return Return the maximum texture dimensions supported.
 	 */
 	static GLint getMaximumTextureSize() { return _maxTextureSize; }
-protected:
+
 	virtual void updateTexture();
 
 	Common::Rect getDirtyArea() const;
+
+public:
+	GLuint getName() { return _glTexture; }
+
 private:
 	const GLenum _glIntFormat;
 	const GLenum _glFormat;
@@ -162,7 +168,6 @@ public:
 	virtual Graphics::Surface *getSurface() { return &_clut8Data; }
 	virtual const Graphics::Surface *getSurface() const { return &_clut8Data; }
 
-protected:
 	virtual void updateTexture();
 
 private:
