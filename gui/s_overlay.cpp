@@ -80,6 +80,9 @@ void SOverlay::preDrawOverlayGui() {
 		g_system->showOverlay();
 		g_gui.theme()->clearAll();
 		g_gui.theme()->openDialog(true, GUI::ThemeEngine::kShadingNone);
+
+		_controlPanel->updateHotspots();
+
 		_controlPanel->drawDialog();
 		g_gui.theme()->finishBuffering();
 		g_gui.theme()->updateScreen();
@@ -324,6 +327,10 @@ void SOverlay::talkButtonClick() {
 	_selectedChatRow = 0;
 }
 
+void SOverlay::revealItems() {
+	_controlPanel->createHotspots(_hitAreaHelper);
+}
+
 
 #pragma mark --------- SDialog ---------
 
@@ -383,7 +390,8 @@ enum {
 	kSkipCmd = 'SKIP',
 	kUpCmd = 'UP  ',
 	kDownCmd = 'DOWN',
-	kTalkCmd = 'TALK'
+	kTalkCmd = 'TALK',
+	kSpotCmd = 'SPOT'
 };
 
 SDialog::SDialog() : Dialog(0, 0, 320, 200) {
@@ -421,6 +429,15 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 
 	_engine = 0;
 
+	_hotspotsOn = false;
+	_numHotspots = 0;
+	_hotspotAlpha = 0;
+	_hotspotState = 0;
+	_hotspotCountdown = 0;
+
+	for (int i = 0; i < kMaxHotspots; i++)
+		_hotspotButtons[i] = 0;
+
 	reflowLayout();
 }
 
@@ -445,7 +462,7 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		break;
 	case kRevealCmd:
 
-		warning("reveal");
+		g_sOverlay.revealItems();
 
 		_eventProcessed = true;
 
@@ -476,6 +493,11 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		g_sOverlay.talkButtonClick();
 
 		_eventProcessed = true;
+
+		break;
+	case kSpotCmd:
+
+		warning("spot");
 
 		break;
 	default:
@@ -519,6 +541,8 @@ void SDialog::reflowLayout() {
 	_arrowDownButton->setVisible(canShowChatControls());
 	_talkButton->setVisible(canShowChatControls());
 
+	reflowHotspots();
+
 	//GuiObject::reflowLayout();
 }
 
@@ -553,6 +577,82 @@ uint16 SDialog::getCurrentAction() {
 	}
 
 	return _engine->getCurrentActionId();
+}
+
+void SDialog::createHotspots(HitAreaHelper *hitAreaHelper) {
+	if (_hotspotsOn)
+		return;
+
+	// Obtain hotspots
+	_numHotspots = hitAreaHelper->getAllInteractionHotspots(_hotspots, kMaxHotspots);
+
+	_hotspotsOn = true;
+	_hotspotState = 0;
+	_hotspotCountdown = 0;
+
+	for (uint i = 0; i < _numHotspots; i++) {
+		_hotspotButtons[i] = new PicButtonWidget(this, 0, 0, 10, 10, 0, kSpotCmd, 0);
+		_hotspotButtons[i]->setButtonDisplay(false);
+		_hotspotButtons[i]->setAGfx(g_gui.theme()->getAImageSurface("touch_indicator.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	}
+
+	reflowHotspots();
+}
+
+void SDialog::reflowHotspots() {
+	int ow = g_system->getOverlayWidth();
+	int oh = g_system->getOverlayHeight();
+
+	for (uint i = 0; i < _numHotspots; i++) {
+		_hotspotButtons[i]->resize(_hotspots[i].x * ow / 320, _hotspots[i].y * oh / 200, TOUCH_INDICATOR_W * ow, TOUCH_INDICATOR_W * ow);
+	}
+}
+
+void SDialog::updateHotspots() {
+	if (!_hotspotsOn)
+		return;
+
+	_hotspotCountdown++;
+
+	byte oldAlpha = _hotspotAlpha;
+
+	switch(_hotspotState) {
+	case 0: // fade in
+		_hotspotAlpha = _hotspotCountdown * 32;
+
+		if (_hotspotCountdown > 8) {
+			_hotspotCountdown = 0;
+			_hotspotState++;
+
+			_hotspotAlpha = 255;
+		}
+		break;
+	case 1: // display
+		if (_hotspotCountdown > 200) {
+			_hotspotCountdown = 0;
+			_hotspotState++;
+		}
+		break;
+	case 2: // fade out
+		if (_hotspotCountdown > 64) {
+			_hotspotCountdown = 0;
+			_hotspotState++;
+		}
+
+		_hotspotAlpha = 255 - _hotspotCountdown * 4;
+
+		break;
+	case 3: // destroy
+		for (uint i = 0; i < _numHotspots; i++)
+			removeWidget(_hotspotButtons[i]);
+
+		_numHotspots = 0;
+		_hotspotsOn = false;
+	}
+
+	if (oldAlpha != _hotspotAlpha)
+		for (uint i = 0; i < _numHotspots; i++)
+			_hotspotButtons[i]->useAlpha(_hotspotAlpha);
 }
 
 

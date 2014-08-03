@@ -59,6 +59,11 @@ namespace GUI {
 #define ACTION_WEAR 111
 #define ACTION_GIVE 112
 
+
+enum {
+	kMaxHotspots = 30
+};
+
 class HitAreaHelper;
 class SDialog;
 
@@ -103,6 +108,8 @@ public:
 	void chatArrowClick(bool up);
 	void talkButtonClick();
 
+	void revealItems();
+
 public:
 	bool _mouseVisible;
 	bool _gameInChat;
@@ -138,6 +145,9 @@ public:
 
 	Dialog *_mainMenuDialog;
 
+	void updateHotspots();
+	void createHotspots(HitAreaHelper *hitAreaHelper);
+
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
@@ -147,6 +157,16 @@ private:
 	GUI::PicButtonWidget *_talkButton;
 
 	Engine *_engine;
+
+	Common::Point _hotspots[kMaxHotspots];
+	GUI::PicButtonWidget *_hotspotButtons[kMaxHotspots];
+	bool _hotspotsOn;
+	uint _numHotspots;
+	byte _hotspotAlpha;
+	int _hotspotState;
+	int _hotspotCountdown;
+
+	void reflowHotspots();
 };
 
 struct Hotspot {
