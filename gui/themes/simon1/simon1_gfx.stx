@@ -109,6 +109,7 @@
 		<alphabitmap filename = 'arrow_up.png'/>
 		<alphabitmap filename = 'arrow_down.png'/>
 		<alphabitmap filename = 'talk_btn.png'/>
+		<alphabitmap filename = 'touch_indicator.png'/>
 	</bitmaps>
 
 	<fonts>
