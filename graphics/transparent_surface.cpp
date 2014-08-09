@@ -182,7 +182,7 @@ void BlenderNormal::blendPixel(byte ina, byte inr, byte ing, byte inb, byte *out
 
 	} else {
 
-		*outa = 255;
+		*outa = ina;
 		*outb = (*outb * (255 - ina) >> 8);
 		*outr = (*outr * (255 - ina) >> 8);
 		*outg = (*outg * (255 - ina) >> 8);
