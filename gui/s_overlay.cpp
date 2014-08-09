@@ -583,10 +583,11 @@ void SDialog::createHotspots(HitAreaHelper *hitAreaHelper) {
 	if (_hotspotsOn)
 		return;
 
+	_hotspotsOn = true;
+
 	// Obtain hotspots
 	_numHotspots = hitAreaHelper->getAllInteractionHotspots(_hotspots, kMaxHotspots);
 
-	_hotspotsOn = true;
 	_hotspotState = 0;
 	_hotspotCountdown = 0;
 
@@ -618,7 +619,7 @@ void SDialog::updateHotspots() {
 
 	switch(_hotspotState) {
 	case 0: // fade in
-		_hotspotAlpha = _hotspotCountdown * 32;
+		_hotspotAlpha = _hotspotCountdown ? _hotspotCountdown * 32 - 1 : 0;
 
 		if (_hotspotCountdown > 8) {
 			_hotspotCountdown = 0;
@@ -635,19 +636,26 @@ void SDialog::updateHotspots() {
 		break;
 	case 2: // fade out
 		if (_hotspotCountdown > 64) {
+			_hotspotAlpha = 0;
 			_hotspotCountdown = 0;
 			_hotspotState++;
+			break;
 		}
 
-		_hotspotAlpha = 255 - _hotspotCountdown * 4;
+		_hotspotAlpha = 255 - (_hotspotAlpha ? _hotspotCountdown * 4 - 1 : 0);
 
 		break;
 	case 3: // destroy
 		for (uint i = 0; i < _numHotspots; i++)
 			removeWidget(_hotspotButtons[i]);
 
+		_hotspotAlpha = 0;
 		_numHotspots = 0;
 		_hotspotsOn = false;
+		_hotspotState++;
+		break;
+	case 4:
+		return;
 	}
 
 	if (oldAlpha != _hotspotAlpha)
