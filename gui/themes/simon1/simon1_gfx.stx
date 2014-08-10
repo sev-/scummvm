@@ -110,6 +110,19 @@
 		<alphabitmap filename = 'arrow_down.png'/>
 		<alphabitmap filename = 'talk_btn.png'/>
 		<alphabitmap filename = 'touch_indicator.png'/>
+
+		<alphabitmap filename = 'action_close.png'/>
+		<alphabitmap filename = 'action_consume.png'/>
+		<alphabitmap filename = 'action_give.png'/>
+		<alphabitmap filename = 'action_look.png'/>
+		<alphabitmap filename = 'action_move.png'/>
+		<alphabitmap filename = 'action_open.png'/>
+		<alphabitmap filename = 'action_pick.png'/>
+		<alphabitmap filename = 'action_remove.png'/>
+		<alphabitmap filename = 'action_talk.png'/>
+		<alphabitmap filename = 'action_use.png'/>
+		<alphabitmap filename = 'action_walk.png'/>
+		<alphabitmap filename = 'action_wear.png'/>
 	</bitmaps>
 
 	<fonts>

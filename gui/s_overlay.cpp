@@ -609,6 +609,38 @@ void SDialog::reflowHotspots() {
 	}
 }
 
+static const char *getActionIcon(uint16 action) {
+	switch (action) {
+	case ACTION_WALK:
+		return "walk.png";
+	case ACTION_LOOK:
+		return "look.png";
+	case ACTION_OPEN:
+		return "open.png";
+	case ACTION_MOVE:
+		return "move.png";
+	case ACTION_CONSUME:
+		return "consume.png";
+	case ACTION_PICK:
+		return "pick.png";
+	case ACTION_CLOSE:
+		return "close.png";
+	case ACTION_USE:
+		return "use.png";
+	case ACTION_TALK:
+		return "talk.png";
+	case ACTION_REMOVE:
+		return "remove.png";
+	case ACTION_WEAR:
+		return "wear.png";
+	case ACTION_GIVE:
+		return "give.png";
+	default:
+		return NULL;
+	}
+}
+
+
 void SDialog::updateHotspots() {
 	if (!_hotspotsOn)
 		return;
