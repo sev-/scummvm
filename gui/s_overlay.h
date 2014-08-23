@@ -166,6 +166,12 @@ private:
 	int _hotspotState;
 	int _hotspotCountdown;
 
+	void createActionIcon(int x, int y, int action);
+	GUI::PicButtonWidget *_actionIcon;
+	int _actionX;
+	int _actionY;
+	int _currentAction;
+
 	void reflowHotspots();
 };
 

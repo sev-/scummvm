@@ -334,6 +334,14 @@ void SOverlay::revealItems() {
 
 #pragma mark --------- SDialog ---------
 
+#define GAME_SCREEN_WIDTH 320
+#define GAME_SCREEN_HEIGHT 200
+
+#define BLACK_PANEL_START_Y 134
+#define BLACK_PANEL_END_Y 144
+
+#define BLACK_PANEL_HEIGHT (BLACK_PANEL_END_Y - BLACK_PANEL_START_Y)
+
 #define SKIP_X 0
 #define SKIP_Y 0
 #define SKIP_W 0.09
@@ -384,6 +392,9 @@ void SOverlay::revealItems() {
 #define MUSIC_ENHANCED_BY_BEGIN_TIME 3000
 #define MUSIC_ENHANCED_BY_END_TIME 8000
 
+#define ACTION_BITMAP_W 90
+#define ACTION_BITMAP_H 90
+
 enum {
 	kMenuCmd = 'MENU',
 	kRevealCmd = 'REVL',
@@ -391,7 +402,8 @@ enum {
 	kUpCmd = 'UP  ',
 	kDownCmd = 'DOWN',
 	kTalkCmd = 'TALK',
-	kSpotCmd = 'SPOT'
+	kSpotCmd = 'SPOT',
+	kActCmd  = 'ACT '
 };
 
 SDialog::SDialog() : Dialog(0, 0, 320, 200) {
@@ -402,26 +414,33 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_menuButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kMenuCmd, 0);
 	_menuButton->setButtonDisplay(false);
 	_menuButton->setAGfx(g_gui.theme()->getAImageSurface("menu.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_menuButton->setVisible(false);
 
 	_revealButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kRevealCmd, 0);
 	_revealButton->setButtonDisplay(false);
 	_revealButton->setAGfx(g_gui.theme()->getAImageSurface("reveal_items.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_revealButton->setVisible(false);
 
 	_skipButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kSkipCmd, 0);
 	_skipButton->setButtonDisplay(false);
 	_skipButton->setAGfx(g_gui.theme()->getAImageSurface("skip.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_skipButton->setVisible(false);
 
 	_arrowUpButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kUpCmd, 0);
 	_arrowUpButton->setButtonDisplay(false);
 	_arrowUpButton->setAGfx(g_gui.theme()->getAImageSurface("arrow_up.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_arrowUpButton->setVisible(false);
 
 	_arrowDownButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kDownCmd, 0);
 	_arrowDownButton->setButtonDisplay(false);
 	_arrowDownButton->setAGfx(g_gui.theme()->getAImageSurface("arrow_down.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_arrowDownButton->setVisible(false);
 
 	_talkButton = new PicButtonWidget(this, 0, 0, 10, 10, 0, kTalkCmd, 0);
 	_talkButton->setButtonDisplay(false);
 	_talkButton->setAGfx(g_gui.theme()->getAImageSurface("talk_btn.png"), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+	_talkButton->setVisible(false);
+
 
 	_eventProcessed = false;
 
@@ -438,11 +457,20 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	for (int i = 0; i < kMaxHotspots; i++)
 		_hotspotButtons[i] = 0;
 
+	_actionIcon = 0;
+	_actionX = 0;
+	_actionY = 0;
+
+	_currentAction = ACTION_WALK;
+
 	reflowLayout();
 }
 
 void SDialog::handleMouseDown(int x, int y, int button, int clickCount) {
 	_eventProcessed = _menuButton->isPointIn(x, y) || _revealButton->isPointIn(x, y);
+
+	_actionX = x;
+	_actionY = y;
 }
 
 void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
@@ -498,6 +526,7 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 	case kSpotCmd:
 
 		warning("spot");
+		createActionIcon(_actionX, _actionY, _currentAction);
 
 		break;
 	default:
@@ -607,39 +636,68 @@ void SDialog::reflowHotspots() {
 	for (uint i = 0; i < _numHotspots; i++) {
 		_hotspotButtons[i]->resize(_hotspots[i].x * ow / 320, _hotspots[i].y * oh / 200, TOUCH_INDICATOR_W * ow, TOUCH_INDICATOR_W * ow);
 	}
+
+	if (_actionIcon) {
+		// Draw action icon
+		float indicatorHeight = TOUCH_INDICATOR_W * ACTION_BITMAP_H / ACTION_BITMAP_W * ow / oh;
+		float hotspotPositionY =
+			((_actionY + BLACK_PANEL_HEIGHT)/ (float) GAME_SCREEN_HEIGHT)-indicatorHeight / 2;
+
+		float actionHeight = SMALL_ACTION_ICON_W * (float)ACTION_BITMAP_H / (float)ACTION_BITMAP_W;
+		float ax = (float)_actionX / (float)GAME_SCREEN_WIDTH - SMALL_ACTION_ICON_W / 2;
+		ax *= GAME_SCREEN_WIDTH;
+
+		float ay = _actionY - 0.01 - actionHeight;
+		if (ay < (BLACK_PANEL_HEIGHT / (float) GAME_SCREEN_HEIGHT)) {
+			// If we're on the upper part, switch Y value to be below the indicator
+			ay = hotspotPositionY + indicatorHeight + 0.06;
+		}
+
+		_actionIcon->resize(ax, ay, SMALL_ACTION_ICON_W * ow, actionHeight * oh);
+	}
 }
 
 static const char *getActionIcon(uint16 action) {
 	switch (action) {
 	case ACTION_WALK:
-		return "walk.png";
+		return "action_walk.png";
 	case ACTION_LOOK:
-		return "look.png";
+		return "action_look.png";
 	case ACTION_OPEN:
-		return "open.png";
+		return "action_open.png";
 	case ACTION_MOVE:
-		return "move.png";
+		return "action_move.png";
 	case ACTION_CONSUME:
-		return "consume.png";
+		return "action_consume.png";
 	case ACTION_PICK:
-		return "pick.png";
+		return "action_pick.png";
 	case ACTION_CLOSE:
-		return "close.png";
+		return "action_close.png";
 	case ACTION_USE:
-		return "use.png";
+		return "action_use.png";
 	case ACTION_TALK:
-		return "talk.png";
+		return "action_talk.png";
 	case ACTION_REMOVE:
-		return "remove.png";
+		return "action_remove.png";
 	case ACTION_WEAR:
-		return "wear.png";
+		return "action_wear.png";
 	case ACTION_GIVE:
-		return "give.png";
+		return "action_give.png";
 	default:
 		return NULL;
 	}
 }
 
+void SDialog::createActionIcon(int x, int y, int action) {
+	if (_actionIcon)
+		removeWidget(_actionIcon);
+
+	_actionIcon = new PicButtonWidget(this, 0, 0, 10, 10, 0, kActCmd, 0);
+	_actionIcon->setButtonDisplay(false);
+	_actionIcon->setAGfx(g_gui.theme()->getAImageSurface(getActionIcon(action)), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
+
+	reflowHotspots();
+}
 
 void SDialog::updateHotspots() {
 	if (!_hotspotsOn)
