@@ -458,8 +458,6 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 		_hotspotButtons[i] = 0;
 
 	_actionIcon = 0;
-	_actionX = 0;
-	_actionY = 0;
 
 	_currentAction = ACTION_WALK;
 
@@ -468,9 +466,6 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 
 void SDialog::handleMouseDown(int x, int y, int button, int clickCount) {
 	_eventProcessed = _menuButton->isPointIn(x, y) || _revealButton->isPointIn(x, y);
-
-	_actionX = x;
-	_actionY = y;
 }
 
 void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
@@ -523,14 +518,20 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		_eventProcessed = true;
 
 		break;
-	case kSpotCmd:
+	case kSpotCmd: {
+			warning("spot");
 
-		warning("spot");
-		createActionIcon(_actionX, _actionY, _currentAction);
+			createActionIcon(_mouseWidget->getAbsX(), _mouseWidget->getAbsY(), _currentAction);
+		}
 
 		break;
+
+	case kActCmd:
+		// Do nothing
+		break;
+
 	default:
-		warning("uknown command: %x", cmd);
+		warning("uknown command: %s", tag2str(cmd));
 	}
 }
 
@@ -641,16 +642,15 @@ void SDialog::reflowHotspots() {
 		// Draw action icon
 		float indicatorHeight = TOUCH_INDICATOR_W * ACTION_BITMAP_H / ACTION_BITMAP_W * ow / oh;
 		float hotspotPositionY =
-			((_actionY + BLACK_PANEL_HEIGHT)/ (float) GAME_SCREEN_HEIGHT)-indicatorHeight / 2;
+			((_actionY + BLACK_PANEL_HEIGHT) / (float) GAME_SCREEN_HEIGHT) - indicatorHeight / 2;
 
 		float actionHeight = SMALL_ACTION_ICON_W * (float)ACTION_BITMAP_H / (float)ACTION_BITMAP_W;
-		float ax = (float)_actionX / (float)GAME_SCREEN_WIDTH - SMALL_ACTION_ICON_W / 2;
-		ax *= GAME_SCREEN_WIDTH;
+		float ax = _actionX - (SMALL_ACTION_ICON_W / 2) * GAME_SCREEN_WIDTH;
 
-		float ay = _actionY - 0.01 - actionHeight;
+		float ay = _actionY - (0.01 - actionHeight) * GAME_SCREEN_HEIGHT;
 		if (ay < (BLACK_PANEL_HEIGHT / (float) GAME_SCREEN_HEIGHT)) {
 			// If we're on the upper part, switch Y value to be below the indicator
-			ay = hotspotPositionY + indicatorHeight + 0.06;
+			ay = hotspotPositionY + (indicatorHeight + 0.06) * GAME_SCREEN_HEIGHT;
 		}
 
 		_actionIcon->resize(ax, ay, SMALL_ACTION_ICON_W * ow, actionHeight * oh);
@@ -696,6 +696,9 @@ void SDialog::createActionIcon(int x, int y, int action) {
 	_actionIcon->setButtonDisplay(false);
 	_actionIcon->setAGfx(g_gui.theme()->getAImageSurface(getActionIcon(action)), kPicButtonStateEnabled, ThemeEngine::kAutoScaleFit);
 
+	_actionX = x;
+	_actionY = y;
+
 	reflowHotspots();
 }
 
@@ -738,6 +741,9 @@ void SDialog::updateHotspots() {
 	case 3: // destroy
 		for (uint i = 0; i < _numHotspots; i++)
 			removeWidget(_hotspotButtons[i]);
+
+		if (_actionIcon)
+			removeWidget(_actionIcon);
 
 		_hotspotAlpha = 0;
 		_numHotspots = 0;

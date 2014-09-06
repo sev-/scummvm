@@ -82,6 +82,7 @@ public:
 	virtual int16	getChildY() const	{ return getAbsY(); }
 	virtual uint16	getWidth() const	{ return _w; }
 	virtual uint16	getHeight() const	{ return _h; }
+	const Common::String  getName() const   { return _name; }
 
 	virtual bool	isVisible() const = 0;
 
