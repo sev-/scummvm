@@ -177,20 +177,34 @@ bool ComposerArchive::openStream(Common::SeekableReadStream *stream) {
 	close();
 
 	bool newStyle = false;
+	bool v4Style = false;
 	uint32 headerSize = stream->readUint32LE();
 	if (headerSize == SWAP_CONSTANT_32(ID_LBRC)) {
 		// new-style file
 		newStyle = true;
 		headerSize = stream->readUint32LE();
 		uint32 zeros = stream->readUint32LE();
-		if (zeros != 0)
-			error("invalid LBRC header (%d instead of zeros)", zeros);
+		if (zeros != 0) {
+			// v4
+			v4Style = true;
+			uint32 dataSize = zeros;
+			uint32 unk1 = stream->readUint32LE();
+		}
 	}
 
 	uint16 numResourceTypes = stream->readUint16LE();
 	if (newStyle) {
 		uint16 unknown = stream->readUint16LE();
 		debug(4, "skipping unknown %04x", unknown);
+		if (v4Style) {
+			debug(4, "%d v4 types", numResourceTypes);
+			uint32 headerSize2 = stream->readUint32LE();
+			assert(headerSize == headerSize2);
+			uint32 zeros = stream->readUint32LE();
+			assert(zeros == 0);
+			zeros = stream->readUint32LE();
+			assert(zeros == 0);
+		}
 	}
 
 	debug(4, "Reading LBRC resource table with %d entries", numResourceTypes);
@@ -200,7 +214,9 @@ bool ComposerArchive::openStream(Common::SeekableReadStream *stream) {
 		debug(4, "Type '%s' at offset %d", tag2str(tag), tableOffset);
 		// starting from the start of the resource table, which differs
 		// according to whether we have the 10 extra bytes for newStyle
-		if (newStyle)
+		if (v4Style)
+			tableOffset += 32;
+		else if (newStyle)
 			tableOffset += 16;
 		else
 			tableOffset += 6;
@@ -219,7 +235,11 @@ bool ComposerArchive::openStream(Common::SeekableReadStream *stream) {
 				offset = stream->readUint32LE();
 				if (!offset)
 					break;
+				if (v4Style)
+					offset += 0x10; // ?!?!?
 				size = stream->readUint32LE();
+				if (v4Style)
+					stream->readUint32LE(); // ??
 				id = stream->readUint16LE();
 				flags = stream->readUint16LE(); // set to 1 for preload, otherwise no preload
 				/*uint32 junk = */ stream->readUint32LE();

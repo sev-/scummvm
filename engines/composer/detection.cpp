@@ -447,6 +447,28 @@ static const ComposerGameDescription gameDescriptions[] = {
 	{ AD_TABLE_END_MARKER, 0 }
 };
 
+static const ComposerGameDescription v4fallbackDescription = {
+	{
+		"composer",
+		0,
+		{
+			{"book.ini", 0, "", -1},
+			AD_LISTEND
+		},
+		Common::EN_ANY,
+		Common::kPlatformWindows,
+		ADGF_NO_FLAGS,
+		GUIO1(GUIO_NOASPECT)
+	},
+	GType_ComposerV4
+};
+
+static const ADFileBasedFallback fileBasedFallback[] = {
+	// FIXME: too generic
+	{ &v4fallbackDescription.desc, { "book.ini", 0 } },
+	{ 0, { 0 } }
+};
+
 } // End of namespace Composer
 
 using namespace Composer;
@@ -467,6 +489,10 @@ public:
 		_singleId = "composer";
 		_maxScanDepth = 2;
 		_directoryGlobs = directoryGlobs;
+	}
+
+	virtual const ADGameDescription *fallbackDetect(const FileMap &allFiles, const Common::FSList &fslist) const {
+		return detectGameFilebased(allFiles, fslist, Composer::fileBasedFallback);
 	}
 
 	virtual const char *getName() const {

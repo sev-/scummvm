@@ -95,6 +95,12 @@ Common::Error ComposerEngine::run() {
 		}
 	}
 
+	// TODO: replace this with something saner
+	if (getGameType() == GType_ComposerV4) {
+		if (getStringFromConfig("Libs", "99")[0] != '~')
+			_directoriesToStrip = 0;
+	}
+
 	uint width = 640;
 	if (_bookIni.hasKey("Width", "Common"))
 		width = atoi(getStringFromConfig("Common", "Width").c_str());
@@ -585,8 +591,11 @@ Button::Button(Common::SeekableReadStream *stream, uint16 id, uint gameType) {
 	switch (_type) {
 	case kButtonRect:
 	case kButtonEllipse:
-		if (size != 4)
-			error("button %d of type %d had %d points, not 4", id, _type, size);
+		if (size != 4) {
+			// FIXME: wtf
+			warning("button %d of type %d had %d points, not 4", id, _type, size);
+			break;
+		}
 		_rect.left = stream->readSint16LE();
 		_rect.top = stream->readSint16LE();
 		_rect.right = stream->readSint16LE();

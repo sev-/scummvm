@@ -55,7 +55,8 @@ struct ComposerGameDescription;
 
 enum GameType {
 	GType_ComposerV1,
-	GType_ComposerV2
+	GType_ComposerV2,
+	GType_ComposerV4
 };
 
 class Archive;
