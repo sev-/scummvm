@@ -492,7 +492,7 @@ void SDialog::handleCommand(CommandSender *sender, uint32 cmd, uint32 data) {
 		break;
 	case kSkipCmd:
 
-		warning("skip");
+		performSkip();
 
 		_eventProcessed = true;
 
@@ -757,6 +757,32 @@ void SDialog::updateHotspots() {
 	if (oldAlpha != _hotspotAlpha)
 		for (uint i = 0; i < _numHotspots; i++)
 			_hotspotButtons[i]->useAlpha(_hotspotAlpha);
+}
+
+void SDialog::performSkip(bool showAnimation) {
+	if (showAnimation) {
+		//addBigActionFadeAnimation(getBitmap("skip.png"));
+	}
+
+	// Push the "esc" key event to the system
+	Common::Event e1, e2, e3, e4;
+
+	e1.kbd.keycode = Common::KEYCODE_ESCAPE;
+	e1.kbd.ascii = Common::ASCII_ESCAPE;
+	e1.type = Common::EVENT_KEYDOWN;
+	g_system->getEventManager()->pushEvent(e1);
+
+	e2.kbd.keycode = Common::KEYCODE_ESCAPE;
+	e2.kbd.ascii = Common::ASCII_ESCAPE;
+	e2.type = Common::EVENT_KEYUP;
+	g_system->getEventManager()->pushEvent(e2);
+
+	// Push a right click event to the system
+	e3.type = Common::EVENT_RBUTTONDOWN;
+	g_system->getEventManager()->pushEvent(e3);
+
+	e4.type = Common::EVENT_RBUTTONUP;
+	g_system->getEventManager()->pushEvent(e4);
 }
 
 

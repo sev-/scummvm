@@ -148,6 +148,8 @@ public:
 	void updateHotspots();
 	void createHotspots(HitAreaHelper *hitAreaHelper);
 
+	void performSkip(bool anim = false);
+
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
