@@ -4,22 +4,10 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>ScummVM</string>
-	<key>CFBundleIdentifier</key>
-	<string>org.scummvm.scummvm</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundleName</key>
-	<string>ScummVM</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.7.0git</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>1.7.0git</string>
 	<key>CFBundleIconFile</key>
 	<string>icon.png</string>
 	<key>CFBundleIconFiles</key>
@@ -28,12 +16,55 @@
 		<string>icon-72.png</string>
 		<string>icon4.png</string>
 	</array>
+	<key>CFBundleIcons</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>icon.png</string>
+				<string>icon-72.png</string>
+				<string>icon4.png</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.iphsoft.ttt</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>ScummVM</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.5.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1000</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UIPrerenderedIcon</key>
 	<true/>
-	<key>UIDeviceFamily</key>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackTranslucent</string>
+	<key>UISupportedInterfaceOrientations</key>
 	<array>
-		<integer>1</integer>
-		<integer>2</integer>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>
