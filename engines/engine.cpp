@@ -386,9 +386,11 @@ void Engine::checkCD() {
 }
 
 bool Engine::canSkip() {
+    return true;
 }
 
 uint16 Engine::getCurrentActionId() {
+    return 0;
 }
 
 bool Engine::shouldPerformAutoSave(int lastSaveTime) {
