@@ -210,7 +210,7 @@ void NinePatchBitmap::blit(Graphics::Surface &target, int dx, int dy, int dw, in
 	if (dw == _width && dh == _height) {
 		Common::Rect r(1, 1, dw, dh);
 
-		_bmp->blit(target, dx, dy, TransparentSurface::FLIP_NONE, &r);
+		_bmp->blit(target, dx, dy, Graphics::FLIP_NONE, &r);
 		return;
 	}
 		
@@ -230,7 +230,7 @@ void NinePatchBitmap::blit(Graphics::Surface &target, int dx, int dy, int dw, in
 						_h._m[j]->offset + _h._m[j]->length, _v._m[i]->offset + _v._m[i]->length);
 
 			_bmp->blit(target, dx + _h._m[j]->dest_offset, dy + _v._m[i]->dest_offset,
-					TransparentSurface::FLIP_NONE, &r, BS_ARGB(255, 255, 255, 255),
+					Graphics::FLIP_NONE, &r, TS_ARGB(255, 255, 255, 255),
 					_h._m[j]->dest_length, _v._m[i]->dest_length);
 		}
 	}
