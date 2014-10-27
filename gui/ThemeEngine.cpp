@@ -763,7 +763,7 @@ bool ThemeEngine::addAlphaBitmap(const Common::String &filename) {
 		if (srcSurface && srcSurface->format.bytesPerPixel != 1)
 			surf = srcSurface->convertTo(_overlayFormat);
 #else
-		error("No PNG support compiled in");
+		//error("No PNG support compiled in");
 #endif
 	} else {
 		error("Only PNG is supported as alphabitmap");

@@ -275,9 +275,9 @@ static void setupGraphics(OSystem &system) {
 
 	system.beginGFXTransaction();
 		// Set the user specified graphics mode (if any).
-		system.setGraphicsMode(ConfMan.get("gfx_mode").c_str());
+    system.setGraphicsMode("normal"); //ConfMan.get("gfx_mode").c_str());
 
-		system.initSize(1280, 800);
+		system.initSize(320, 200);
 		system.resetGraphicsScale();
 
 		if (ConfMan.hasKey("aspect_ratio"))
@@ -364,6 +364,8 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	// Parse the command line
 	Common::StringMap settings;
 	command = Base::parseCommandLine(settings, argc, argv);
+    
+    command = "simon1";
 
 	// Load the config file (possibly overridden via command line):
 	if (settings.contains("config")) {
@@ -387,7 +389,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 		ConfMan.set("description", "Simon the Sourcerer 1", "simon1");
 		ConfMan.set("platform", "windows", "simon1");
 		ConfMan.set("language", "en", "simon1");
-		ConfMan.set("path", "Simon1_data_all", "simon1");
+		ConfMan.set("path", ".", "simon1");
 
 		warning("Created simon1.ini");
 

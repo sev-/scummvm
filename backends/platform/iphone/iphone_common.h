@@ -99,6 +99,7 @@ void iPhone_updateScreen();
 bool iPhone_fetchEvent(InternalEvent *event);
 const char *iPhone_getDocumentsDir();
 bool iPhone_isHighResDevice();
+const char *iPhone_getMainBundleDirectory();
 
 uint getSizeNextPOT(uint size);
 

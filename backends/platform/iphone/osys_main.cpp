@@ -306,7 +306,7 @@ void iphone_main(int argc, char *argv[]) {
 	}
 
 #ifdef IPHONE_OFFICIAL
-	chdir(iPhone_getDocumentsDir());
+	chdir(iPhone_getMainBundleDirectory());
 #else
 	system("mkdir " SCUMMVM_ROOT_PATH);
 	system("mkdir " SCUMMVM_SAVE_PATH);
