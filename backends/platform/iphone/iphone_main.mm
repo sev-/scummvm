@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 @implementation iPhoneMain
 
 -(id) init {
-	[super init];
+	self = [super init];
 	_window = nil;
 	_view = nil;
 	return self;
@@ -135,6 +135,12 @@ int main(int argc, char **argv) {
 
 - (UIWindow*) getWindow {
 	return _window;
+}
+
+const char *iPhone_getMainBundleDirectory() {
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    path = [path stringByAppendingPathComponent:@"Simon1_data_all.bundle"];
+    return [path UTF8String];
 }
 
 @end
