@@ -133,6 +133,9 @@ struct TransparentSurface : public Graphics::Surface {
 	TransparentSurface *rotoscale(const TransformStruct &transform) const;
 	AlphaType getAlphaMode() const;
 	void setAlphaMode(AlphaType);
+    
+    TransparentSurface *convertTo(const PixelFormat &dstFormat, const byte *palette = 0) const;
+    
 private:
 	AlphaType _alphaMode;
 
