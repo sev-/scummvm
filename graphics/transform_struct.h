@@ -23,7 +23,7 @@
 #ifndef GRAPHICS_TRANSFORM_STRUCT_H
 #define GRAPHICS_TRANSFORM_STRUCT_H
 
-#include "common/rect32.h"
+#include "common/rect.h"
 
 namespace Graphics {
 
@@ -52,7 +52,7 @@ const int32 kDefaultAngle = 0;
 
 struct TransformStruct {
 private:
-	void init(Common::Point32 zoom, uint32 angle, Common::Point32 hotspot, bool alphaDisable, TSpriteBlendMode blendMode, uint32 alpha, bool mirrorX, bool mirrorY, Common::Point32 offset);
+	void init(Common::Point zoom, uint32 angle, Common::Point hotspot, bool alphaDisable, TSpriteBlendMode blendMode, uint32 alpha, bool mirrorX, bool mirrorY, Common::Point offset);
 
 public:
 	TransformStruct(int32 zoomX, int32 zoomY, uint32 angle, int32 hotspotX, int32 hotspotY, TSpriteBlendMode blendMode, uint32 alpha, bool mirrorX = false, bool mirrorY = false, int32 offsetX = 0, int32 offsetY = 0);
@@ -62,14 +62,14 @@ public:
 	TransformStruct(int32 numTimesX, int32 numTimesY);
 	TransformStruct();
 
-	Common::Point32 _zoom;   ///< Zoom; 100 = no zoom
-	Common::Point32 _hotspot; ///< Position of the hotspot
+	Common::Point _zoom;   ///< Zoom; 100 = no zoom
+	Common::Point _hotspot; ///< Position of the hotspot
 	int32 _angle;   ///< Rotation angle, in degrees
 	byte _flip;      ///< Bitflag: see TransparentSurface::FLIP_XXX
 	bool _alphaDisable;
 	TSpriteBlendMode _blendMode;
 	uint32 _rgbaMod;      ///< RGBa
-	Common::Point32 _offset;
+	Common::Point _offset;
 	int32 _numTimesX;
 	int32 _numTimesY;
 

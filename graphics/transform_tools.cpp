@@ -26,7 +26,7 @@
 
 namespace Graphics {
 
-Common::FloatPoint TransformTools::transformPoint(Common::FloatPoint point, const float rotate, const Common::Point32 &zoom, const bool mirrorX, const bool mirrorY) {
+FloatPoint TransformTools::transformPoint(FloatPoint point, const float rotate, const Common::Point &zoom, const bool mirrorX, const bool mirrorY) {
 	float rotateRad = rotate * M_PI / 180.0f;
 	float x = point.x;
 	float y = point.y;
@@ -40,7 +40,7 @@ Common::FloatPoint TransformTools::transformPoint(Common::FloatPoint point, cons
 	if (mirrorY)
 		y *= -1;
 #endif
-	Common::FloatPoint newPoint;
+	FloatPoint newPoint;
 	newPoint.x = x * cos(rotateRad) - y * sin(rotateRad);
 	newPoint.y = x * sin(rotateRad) + y * cos(rotateRad);
 	if (mirrorX) {
@@ -52,13 +52,13 @@ Common::FloatPoint TransformTools::transformPoint(Common::FloatPoint point, cons
 	return newPoint;
 }
 
-Common::Rect32 TransformTools::newRect(const Common::Rect32 &oldRect, const TransformStruct &transform, Common::Point32 *newHotspot) {
-	Common::Point32 nw(oldRect.left, oldRect.top);
-	Common::Point32 ne(oldRect.right, oldRect.top);
-	Common::Point32 sw(oldRect.left, oldRect.bottom);
-	Common::Point32 se(oldRect.right, oldRect.bottom);
+Common::Rect TransformTools::newRect(const Common::Rect &oldRect, const TransformStruct &transform, Common::Point *newHotspot) {
+	Common::Point nw(oldRect.left, oldRect.top);
+	Common::Point ne(oldRect.right, oldRect.top);
+	Common::Point sw(oldRect.left, oldRect.bottom);
+	Common::Point se(oldRect.right, oldRect.bottom);
 
-	Common::FloatPoint nw1, ne1, sw1, se1;
+	FloatPoint nw1, ne1, sw1, se1;
 
 	nw1 = transformPoint(nw - transform._hotspot, transform._angle, transform._zoom);
 	ne1 = transformPoint(ne - transform._hotspot, transform._angle, transform._zoom);
@@ -75,7 +75,7 @@ Common::Rect32 TransformTools::newRect(const Common::Rect32 &oldRect, const Tran
 		newHotspot->x = (uint32)(-floor(left));
 	}
 
-	Common::Rect32 res;
+	Common::Rect res;
 	res.top = (int32)(floor(top)) + transform._hotspot.y;
 	res.bottom = (int32)(ceil(bottom)) + transform._hotspot.y;
 	res.left = (int32)(floor(left)) + transform._hotspot.x;

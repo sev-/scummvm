@@ -307,6 +307,7 @@ void PegasusEngine::runIntro() {
 
 	Video::VideoDecoder *video = new Video::QuickTimeDecoder();
 	if (video->loadFile(_introDirectory + "/BandaiLogo.movie")) {
+		video->setVolume(MIN<uint>(getAmbienceLevel(), 0xFF));
 		video->start();
 
 		while (!shouldQuit() && !video->endOfVideo() && !skipped) {
@@ -337,6 +338,8 @@ void PegasusEngine::runIntro() {
 
 	if (!video->loadFile(_introDirectory + "/Big Movie.movie"))
 		error("Could not load intro movie");
+
+	video->setVolume(MIN<uint>(getAmbienceLevel(), 0xFF));
 
 	video->seek(Audio::Timestamp(0, 10 * 600, 600));
 	video->start();
@@ -794,6 +797,8 @@ void PegasusEngine::introTimerExpired() {
 		if (!video->loadFile(_introDirectory + "/LilMovie.movie"))
 			error("Failed to load little movie");
 
+		video->setVolume(MIN<uint>(getAmbienceLevel(), 0xFF));
+
 		bool saveAllowed = swapSaveAllowed(false);
 		bool openAllowed = swapLoadAllowed(false);
 
@@ -940,6 +945,8 @@ void PegasusEngine::doGameMenuCommand(const GameMenuCommand command) {
 				Video::VideoDecoder *video = new Video::QuickTimeDecoder();
 				if (!video->loadFile(_introDirectory + "/Closing.movie"))
 					error("Could not load closing movie");
+
+				video->setVolume(MIN<uint>(getSoundFXLevel(), 0xFF));
 
 				uint16 x = (640 - video->getWidth() * 2) / 2;
 				uint16 y = (480 - video->getHeight() * 2) / 2;
@@ -2507,7 +2514,7 @@ void PegasusEngine::initKeymap() {
 		{ Common::KEYCODE_t, "TMA", _("Toggle Center Data Display") },
 		{ Common::KEYCODE_i, "TIN", _("Display/Hide Info Screen") },
 		{ Common::KEYCODE_ESCAPE, "PM", _("Display/Hide Pause Menu") },
-		{ Common::KEYCODE_e, "WTF", _("???") } // easter egg key (without being completely upfront about it)
+		{ Common::KEYCODE_e, "WTF", "???" } // easter egg key (without being completely upfront about it)
 	};
 
 	for (uint i = 0; i < ARRAYSIZE(keyActionEntries); i++) {

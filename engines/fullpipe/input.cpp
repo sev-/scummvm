@@ -303,7 +303,7 @@ void FullpipeEngine::processArcade(ExCommand *cmd) {
 	int idx;
 
 	if (cmd->_sceneClickX <= g_fp->_aniMan2->_ox) {
-		for (idx = _arcadeKeys.size() - 1; idx >= 0; idx--) {
+		for (idx = (int)_arcadeKeys.size() - 1; idx >= 0; idx--) {
 			if (_arcadeKeys[idx]->x < g_fp->_aniMan2->_ox)
 				break;
 		}
@@ -311,12 +311,12 @@ void FullpipeEngine::processArcade(ExCommand *cmd) {
 		if (idx < 0)
 			return;
 	} else {
-		for (idx = 0; idx < _arcadeKeys.size(); idx++) {
+		for (idx = 0; idx < (int)_arcadeKeys.size(); idx++) {
 			if (_arcadeKeys[idx]->x > g_fp->_aniMan2->_ox)
 				break;
 		}
 
-		if (idx >= _arcadeKeys.size())
+		if (idx >= (int)_arcadeKeys.size())
 			return;
 	}
 

@@ -104,11 +104,6 @@ void OpenGLSdlGraphicsManager::setFeatureState(OSystem::Feature f, bool enable) 
 	case OSystem::kFeatureFullscreenMode:
 		assert(getTransactionMode() != kTransactionNone);
 		_wantsFullScreen = enable;
-		// When we switch to windowed mode we will ignore resize events. This
-		// avoids bad resizes to the (former) fullscreen resolution.
-		if (!enable) {
-			_ignoreResizeEvents = 10;
-		}
 		break;
 
 	case OSystem::kFeatureIconifyWindow:
@@ -309,7 +304,6 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 			SDL_Delay(10);
 		}
 	}
-	_lastVideoModeLoad = curTime;
 
 	uint32 flags = SDL_OPENGL;
 	if (_wantsFullScreen) {
@@ -336,6 +330,9 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 		}
 	}
 
+	// Part of the WORKAROUND mentioned above.
+	_lastVideoModeLoad = SDL_GetTicks();
+
 	if (_hwScreen) {
 		// This is pretty confusing since RGBA8888 talks about the memory
 		// layout here. This is a different logical layout depending on
@@ -353,6 +350,12 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 
 		initShaders();
 	}
+
+	// Ignore resize events (from SDL) for a few frames, if this isn't
+	// caused by a notification from SDL. This avoids bad resizes to a
+	// (former) resolution for which we haven't processed an event yet.
+	if (!_gotResize)
+		_ignoreResizeEvents = 10;
 
 	return _hwScreen != nullptr;
 }

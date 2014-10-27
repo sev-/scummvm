@@ -35,11 +35,38 @@
  *
  */
 
-// TODO: Find a better solution for this.
-#define BS_RGB(R,G,B)       (0xFF000000 | ((R) << 16) | ((G) << 8) | (B))
-#define BS_ARGB(A,R,G,B)    (((A) << 24) | ((R) << 16) | ((G) << 8) | (B))
+#ifdef SCUMM_LITTLE_ENDIAN
+#define TS_RGB(R,G,B)       ((0xff << 24) | ((R) << 16) | ((G) << 8) | (B))
+#define TS_ARGB(A,R,G,B)    (((R) << 24) | ((G) << 16) | ((B) << 8) | (A))
+#else
+#define TS_RGB(R,G,B)       (((R) << 24) | ((G) << 16) | (B << 8) | 0xff)
+#define TS_ARGB(A,R,G,B)    (((R) << 24) | ((G) << 16) | ((B) << 8) | (A))
+#endif
 
-namespace Graphics{
+namespace Graphics {
+
+// Enums
+/**
+ @brief The possible flipping parameters for the blit method.
+ */
+enum FLIP_FLAGS {
+    /// The image will not be flipped.
+    FLIP_NONE = 0,
+    /// The image will be flipped at the horizontal axis.
+    FLIP_H = 1,
+    /// The image will be flipped at the vertical axis.
+    FLIP_V = 2,
+    /// The image will be flipped at the horizontal and vertical axis.
+    FLIP_HV = FLIP_H | FLIP_V,
+    /// The image will be flipped at the horizontal and vertical axis.
+    FLIP_VH = FLIP_H | FLIP_V
+};
+
+enum AlphaType {
+    ALPHA_OPAQUE = 0,
+    ALPHA_BINARY = 1,
+    ALPHA_FULL = 2
+};
 
 /**
  * A transparent graphics surface, which implements alpha blitting.
@@ -51,53 +78,6 @@ struct TransparentSurface : public Graphics::Surface {
 	void setColorKey(char r, char g, char b);
 	void disableColorKey();
 
-	// Enums
-	/**
-	 @brief The possible flipping parameters for the blit methode.
-	 */
-	enum FLIP_FLAGS {
-	    /// The image will not be flipped.
-	    FLIP_NONE = 0,
-	    /// The image will be flipped at the horizontal axis.
-	    FLIP_H = 1,
-	    /// The image will be flipped at the vertical axis.
-	    FLIP_V = 2,
-	    /// The image will be flipped at the horizontal and vertical axis.
-	    FLIP_HV = FLIP_H | FLIP_V,
-	    /// The image will be flipped at the horizontal and vertical axis.
-	    FLIP_VH = FLIP_H | FLIP_V
-	};
-
-	enum AlphaType {
-	    ALPHA_OPAQUE = 0,
-	    ALPHA_BINARY = 1,
-	    ALPHA_FULL = 2
-	};
-
-#ifdef SCUMM_LITTLE_ENDIAN
-	static const int kAIndex = 3;	// HACK
-	static const int kBIndex = 2;
-	static const int kGIndex = 1;
-	static const int kRIndex = 0;
-#else
-	static const int kAIndex = 3;
-	static const int kBIndex = 2;
-	static const int kGIndex = 1;
-	static const int kRIndex = 0;
-#endif
-
-	static const int kBShift = 8;//img->format.bShift;
-	static const int kGShift = 16;//img->format.gShift;
-	static const int kRShift = 24;//img->format.rShift;
-	static const int kAShift = 0;//img->format.aShift;
-
-
-	static const int kBModShift = 0;//img->format.bShift;
-	static const int kGModShift = 8;//img->format.gShift;
-	static const int kRModShift = 16;//img->format.rShift;
-	static const int kAModShift = 24;//img->format.aShift;
-
-
 	/**
 	 @brief renders the surface to another surface
 	 @param target a pointer to the target surface. In most cases this is the framebuffer.
@@ -106,15 +86,15 @@ struct TransparentSurface : public Graphics::Surface {
 	 @param posY the position on the Y-axis in the target image in pixels where the image is supposed to be rendered.<br>
 	 The default value is 0.
 	 @param flipping how the the image should be flipped.<br>
-	 The default value is BS_Image::FLIP_NONE (no flipping)
+	 The default value is Graphics::FLIP_NONE (no flipping)
 	 @param pPartRect Pointer on Common::Rect which specifies the section to be rendered. If the whole image has to be rendered the Pointer is NULL.<br>
 	 This referes to the unflipped and unscaled image.<br>
 	 The default value is NULL.
 	 @param color an ARGB color value, which determines the parameters for the color modulation und alpha blending.<br>
 	 The alpha component of the color determines the alpha blending parameter (0 = no covering, 255 = full covering).<br>
 	 The color components determines the color for color modulation.<br>
-	 The default value is BS_ARGB(255, 255, 255, 255) (full covering, no color modulation).
-	 The macros BS_RGB and BS_ARGB can be used for the creation of the color value.
+	 The default value is TS_ARGB(255, 255, 255, 255) (full covering, no color modulation).
+	 The macros TS_RGB and TS_ARGB can be used for the creation of the color value.
 	 @param width the output width of the screen section.
 	 The images will be scaled if the output width of the screen section differs from the image section.<br>
 	 The value -1 determines that the image should not be scaled.<br>
@@ -128,7 +108,7 @@ struct TransparentSurface : public Graphics::Surface {
 	Common::Rect blit(Graphics::Surface &target, int posX = 0, int posY = 0,
 	                  int flipping = FLIP_NONE,
 	                  Common::Rect *pPartRect = nullptr,
-	                  uint color = BS_ARGB(255, 255, 255, 255),
+	                  uint color = TS_ARGB(255, 255, 255, 255),
 	                  int width = -1, int height = -1,
 	                  TSpriteBlendMode blend = BLEND_NORMAL);
 	void applyColorKey(uint8 r, uint8 g, uint8 b, bool overwriteAlpha = false);
@@ -151,9 +131,6 @@ struct TransparentSurface : public Graphics::Surface {
 	 *
 	 */
 	TransparentSurface *rotoscale(const TransformStruct &transform) const;
-
-	TransparentSurface *convertTo(const PixelFormat &dstFormat, const byte *palette = 0) const;
-
 	AlphaType getAlphaMode() const;
 	void setAlphaMode(AlphaType);
 private:

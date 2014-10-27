@@ -29,13 +29,24 @@ class PictureObject;
 class Picture;
 class Sound;
 
+struct FileInfo {
+	char filename[260];
+	bool empty;
+	char date[16];
+	int fx1;
+	int fx2;
+	int fy1;
+	int fy2;
+};
+
 class BaseModalObject {
  public:
 
 	BaseModalObject *_parentObj;
+	ObjType _objtype;
 
  public:
- 	BaseModalObject() : _parentObj(0) {}
+	BaseModalObject() : _parentObj(0) { _objtype = kObjTypeDefault; }
 	virtual ~BaseModalObject() {}
 
 
@@ -224,12 +235,12 @@ public:
 	virtual void update();
 	virtual void saveload() {}
 
-	bool create(Scene *sc, PictureObject *picObjList, int picId);
+	bool create(Scene *sc, Scene *bgScene, int picId);
 	int getQueryResult() { return _queryResult; }
 
 
 private:
-	PictureObject *_picObjList;
+	Scene *_bgScene;
 	PictureObject *_bg;
 	PictureObject *_okBtn;
 	PictureObject *_cancelBtn;
@@ -243,16 +254,19 @@ public:
 	virtual ~ModalSaveGame();
 
 	virtual bool pollEvent() { return true; }
-	virtual bool handleMessage(ExCommand *message) { return false; }
-	virtual bool init(int counterdiff) { return true; }
-	virtual void update() {}
-	virtual void saveload() {}
+	virtual bool handleMessage(ExCommand *message);
+	virtual bool init(int counterdiff);
+	virtual void update();
+	virtual void saveload();
+
+	void processMouse(int x, int y);
 
 	void setScene(Scene *sc);
 	void setup(Scene *sc, int mode);
 	void processKey(int key);
 
 	char *getSaveName();
+	bool getFileInfo(int slot, FileInfo *fileinfo);
 
 	Common::Rect _rect;
 	int _oldBgX;
@@ -269,7 +283,7 @@ public:
 	Scene *_menuScene;
 	int _mode;
 	ModalQuery *_queryDlg;
-	Common::Array <char *> _filenames;
+	Common::Array <FileInfo *> _files;
 	Common::Array <PictureObject *> _arrayL;
 	Common::Array <PictureObject *> _arrayD;
 	int _queryRes;

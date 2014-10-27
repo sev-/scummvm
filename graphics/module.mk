@@ -20,6 +20,9 @@ MODULE_OBJS := \
 	scaler/normal.o \
 	sjis.o \
 	surface.o \
+	transform_struct.o \
+	transform_tools.o \
+	transparent_surface.o \
 	thumbnail.o \
 	transform_struct.o \
 	transform_tools.o \
