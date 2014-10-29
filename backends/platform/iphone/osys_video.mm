@@ -33,7 +33,7 @@ void OSystem_IPHONE::initVideoContext() {
 }
 
 const OSystem::GraphicsMode *OSystem_IPHONE::getSupportedGraphicsModes() const {
-	return s_supportedGraphicsModes;
+    return &::s_supportedGraphicsModes->front();
 }
 
 int OSystem_IPHONE::getDefaultGraphicsMode() const {

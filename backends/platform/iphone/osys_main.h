@@ -48,11 +48,6 @@
 typedef void (*SoundProc)(void *param, byte *buf, int len);
 typedef int (*TimerProc)(int interval);
 
-enum {
-    GFX_LINEAR = 0,
-    GFX_NEAREST = 1
-};
-
 struct AQCallbackStruct {
 	AudioQueueRef queue;
 	uint32 frameCount;
@@ -60,9 +55,10 @@ struct AQCallbackStruct {
 	AudioStreamBasicDescription dataFormat;
 };
 
+extern Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes;
+
 class OSystem_IPHONE : public EventsBaseBackend, public PaletteManager {
 protected:
-	static const OSystem::GraphicsMode s_supportedGraphicsModes[];
 	static AQCallbackStruct s_AudioQueue;
 	static SoundProc s_soundCallback;
 	static void *s_soundParam;
@@ -281,6 +277,7 @@ public:
 	 * Check OpenGL version and compile shaders if supported.
 	 */
 	void initShaders();
+    void initGraphicsModes();
 
 private:
 	/** 
@@ -305,8 +302,6 @@ private:
 
 	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h);
 	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info);
-
-
 };
 
 #endif

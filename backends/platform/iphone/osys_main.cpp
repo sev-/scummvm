@@ -43,13 +43,6 @@
 
 #include "osys_main.h"
 
-
-const OSystem::GraphicsMode OSystem_IPHONE::s_supportedGraphicsModes[] = {
-	{ "linear", "Linear filtering", kGraphicsModeLinear },
-	{ "none", "No filtering", kGraphicsModeNone },
-	{ 0, 0, 0 }
-};
-
 AQCallbackStruct OSystem_IPHONE::s_AudioQueue;
 SoundProc OSystem_IPHONE::s_soundCallback = NULL;
 void *OSystem_IPHONE::s_soundParam = NULL;

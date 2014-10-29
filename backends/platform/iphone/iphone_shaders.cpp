@@ -1,5 +1,6 @@
 #define FORBIDDEN_SYMBOL_ALLOW_ALL
 
+#include "common/system.h"
 #include "osys_main.h"
 #include "common/advxmlparser.h"
 #include "backends/platform/iphone/debug.h"
@@ -12,17 +13,16 @@
 namespace {
     
     const OSystem::GraphicsMode glGraphicsModes[] = {
-        { "opengl_linear",  _s("OpenGL"),                GFX_LINEAR  },
-        { "opengl_nearest", _s("OpenGL (No filtering)"), GFX_NEAREST },
+        { "opengl_linear",  _s("OpenGL"),                kGraphicsModeLinear  },
+        { "opengl_nearest", _s("OpenGL (No filtering)"), kGraphicsModeNone },
         { nullptr, nullptr, 0 }
     };
     
 } // End of anonymous namespace
 
-static Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes;
+Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes = 0;
 
-static void initGraphicsModes() {
-    s_supportedGraphicsModes = new Common::Array<OSystem::GraphicsMode>;
+void OSystem_IPHONE::initGraphicsModes() {
     OSystem::GraphicsMode gm;
     Common::ArchiveMemberList files;
     SearchMan.listMatchingMembers(files, "*.shader");
