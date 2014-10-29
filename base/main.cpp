@@ -277,7 +277,7 @@ static void setupGraphics(OSystem &system) {
 		// Set the user specified graphics mode (if any).
     system.setGraphicsMode("normal"); //ConfMan.get("gfx_mode").c_str());
 
-		system.initSize(320, 200);
+		system.initSize(800, 600);
 		system.resetGraphicsScale();
 
 		if (ConfMan.hasKey("aspect_ratio"))
@@ -365,7 +365,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	Common::StringMap settings;
 	command = Base::parseCommandLine(settings, argc, argv);
     
-    command = "simon1";
+    //command = "simon1";
 
 	// Load the config file (possibly overridden via command line):
 	if (settings.contains("config")) {

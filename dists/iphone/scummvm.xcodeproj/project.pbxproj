@@ -118,8 +118,9 @@
 		16C4D7C214EE97100026AD95 /* TVA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B014EE97100026AD95 /* TVA.cpp */; };
 		16C4D7C314EE97100026AD95 /* TVF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B214EE97100026AD95 /* TVF.cpp */; };
 		16C4D7C414EE97100026AD95 /* TVP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B414EE97100026AD95 /* TVP.cpp */; };
-		52C599D919FEEF5C00B616AA /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52C599D819FEEF5C00B616AA /* libpng.a */; };
-		52C599DC19FEEFEB00B616AA /* libpng.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 52C599DA19FEEFA600B616AA /* libpng.dylib */; };
+		52F2ACA51A00F11A00F06F8D /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA41A00F11A00F06F8D /* libpng.a */; };
+		52F2ACA71A00F23A00F06F8D /* libpng-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA61A00F23A00F06F8D /* libpng-1.a */; };
+		52F2ACA81A00F2C700F06F8D /* libpng-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA61A00F23A00F06F8D /* libpng-1.a */; };
 		8CB5A9D91253FDF500CB6BC7 /* drascula.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5A9D51253FDF400CB6BC7 /* drascula.dat */; };
 		8CB5A9DA1253FDF500CB6BC7 /* hugo.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5A9D61253FDF500CB6BC7 /* hugo.dat */; };
 		8CB5A9DC1253FDF500CB6BC7 /* teenagent.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CB5A9D81253FDF500CB6BC7 /* teenagent.dat */; };
@@ -1570,9 +1571,8 @@
 		16C4D7B414EE97100026AD95 /* TVP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TVP.cpp; sourceTree = "<group>"; };
 		16C4D7B514EE97100026AD95 /* TVP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVP.h; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* ScummVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScummVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		52C599D619FEE1CD00B616AA /* libpng.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libpng.framework; path = lib/libpng.framework; sourceTree = "<group>"; };
-		52C599D819FEEF5C00B616AA /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = lib/install_armv7s/lib/libpng.a; sourceTree = "<group>"; };
-		52C599DA19FEEFA600B616AA /* libpng.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpng.dylib; path = lib/install_macosx/lib/libpng.dylib; sourceTree = "<group>"; };
+		52F2ACA41A00F11A00F06F8D /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = lib/libpng.a; sourceTree = "<group>"; };
+		52F2ACA61A00F23A00F06F8D /* libpng-1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-1.a"; path = "lib/libpng-1.a"; sourceTree = "<group>"; };
 		8CB5A9D51253FDF400CB6BC7 /* drascula.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = drascula.dat; sourceTree = "<group>"; };
 		8CB5A9D61253FDF500CB6BC7 /* hugo.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = hugo.dat; sourceTree = "<group>"; };
 		8CB5A9D81253FDF500CB6BC7 /* teenagent.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = teenagent.dat; sourceTree = "<group>"; };
@@ -2850,14 +2850,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52C599D919FEEF5C00B616AA /* libpng.a in Frameworks */,
+				52F2ACA51A00F11A00F06F8D /* libpng.a in Frameworks */,
 				DFADE99319130FF40081AB85 /* UIKit.framework in Frameworks */,
-				52C599DC19FEEFEB00B616AA /* libpng.dylib in Frameworks */,
 				DFADE99119130FED0081AB85 /* CoreGraphics.framework in Frameworks */,
 				DFB19446191616CB00832EB3 /* libmad.a in Frameworks */,
 				DFD71A8E1940AEA100A4A943 /* libvorbisall.a in Frameworks */,
 				DFADE98F19130FE30081AB85 /* OpenGLES.framework in Frameworks */,
 				DF842A1A0E7BB34E00F5680E /* CoreAudio.framework in Frameworks */,
+				52F2ACA81A00F2C700F06F8D /* libpng-1.a in Frameworks */,
 				DF842A1B0E7BB34E00F5680E /* CoreFoundation.framework in Frameworks */,
 				DFD71A901940AF3B00A4A943 /* libogg.a in Frameworks */,
 				DF842A1C0E7BB34E00F5680E /* Foundation.framework in Frameworks */,
@@ -2890,6 +2890,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52F2ACA71A00F23A00F06F8D /* libpng-1.a in Frameworks */,
 				DFF95CBC0FB22D5700A3EC78 /* CoreAudio.framework in Frameworks */,
 				DFF95CBD0FB22D5700A3EC78 /* CoreFoundation.framework in Frameworks */,
 				DFF95CBE0FB22D5700A3EC78 /* Foundation.framework in Frameworks */,
@@ -2921,7 +2922,6 @@
 				DF842A170E7BB34E00F5680E /* CoreFoundation.framework */,
 				DF842A180E7BB34E00F5680E /* Foundation.framework */,
 				DF842A190E7BB34E00F5680E /* UIKit.framework */,
-				52C599DA19FEEFA600B616AA /* libpng.dylib */,
 				DFADEC061382140300C46364 /* libz.dylib */,
 			);
 			name = "Linked Frameworks";
@@ -4007,8 +4007,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				52C599D819FEEF5C00B616AA /* libpng.a */,
-				52C599D619FEE1CD00B616AA /* libpng.framework */,
+				52F2ACA61A00F23A00F06F8D /* libpng-1.a */,
+				52F2ACA41A00F11A00F06F8D /* libpng.a */,
 				DFADE99219130FF40081AB85 /* UIKit.framework */,
 				DFADE99019130FED0081AB85 /* CoreGraphics.framework */,
 				DFADE98E19130FE30081AB85 /* OpenGLES.framework */,
@@ -6708,6 +6708,7 @@
 					USE_ZLIB,
 					USE_TRANSLATION,
 					USE_MT32EMU,
+					USE_PNG,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "$(OTHER_CFLAGS)";
 				GCC_THUMB_SUPPORT = NO;
@@ -6778,6 +6779,7 @@
 					USE_ZLIB,
 					USE_TRANSLATION,
 					USE_MT32EMU,
+					USE_PNG,
 				);
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "$(OTHER_CFLAGS)";
 				GCC_THUMB_SUPPORT = NO;
