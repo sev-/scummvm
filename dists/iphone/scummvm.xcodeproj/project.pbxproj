@@ -118,6 +118,9 @@
 		16C4D7C214EE97100026AD95 /* TVA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B014EE97100026AD95 /* TVA.cpp */; };
 		16C4D7C314EE97100026AD95 /* TVF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B214EE97100026AD95 /* TVF.cpp */; };
 		16C4D7C414EE97100026AD95 /* TVP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 16C4D7B414EE97100026AD95 /* TVP.cpp */; };
+		52620D541A0105BC005682CE /* iphone_shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52620D531A0105BB005682CE /* iphone_shaders.cpp */; };
+		52620D551A0105C5005682CE /* iphone_shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52620D531A0105BB005682CE /* iphone_shaders.cpp */; };
+		52620D581A0111D4005682CE /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52620D561A0111D4005682CE /* debug.cpp */; };
 		52F2ACA51A00F11A00F06F8D /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA41A00F11A00F06F8D /* libpng.a */; };
 		52F2ACA71A00F23A00F06F8D /* libpng-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA61A00F23A00F06F8D /* libpng-1.a */; };
 		52F2ACA81A00F2C700F06F8D /* libpng-1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52F2ACA61A00F23A00F06F8D /* libpng-1.a */; };
@@ -1571,6 +1574,9 @@
 		16C4D7B414EE97100026AD95 /* TVP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TVP.cpp; sourceTree = "<group>"; };
 		16C4D7B514EE97100026AD95 /* TVP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TVP.h; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* ScummVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScummVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		52620D531A0105BB005682CE /* iphone_shaders.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iphone_shaders.cpp; sourceTree = "<group>"; };
+		52620D561A0111D4005682CE /* debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = debug.cpp; sourceTree = "<group>"; };
+		52620D571A0111D4005682CE /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		52F2ACA41A00F11A00F06F8D /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = lib/libpng.a; sourceTree = "<group>"; };
 		52F2ACA61A00F23A00F06F8D /* libpng-1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libpng-1.a"; path = "lib/libpng-1.a"; sourceTree = "<group>"; };
 		8CB5A9D51253FDF400CB6BC7 /* drascula.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = drascula.dat; sourceTree = "<group>"; };
@@ -5541,6 +5547,9 @@
 		DFE471D70D81F4E700B6D1FB /* iphone */ = {
 			isa = PBXGroup;
 			children = (
+				52620D531A0105BB005682CE /* iphone_shaders.cpp */,
+				52620D561A0111D4005682CE /* debug.cpp */,
+				52620D571A0111D4005682CE /* debug.h */,
 				1692AE3714F3865200889F28 /* iphone_common.h */,
 				C6BD2FFD19F1CCC600855972 /* iphone_keyboard.mm */,
 				C6BD2FFE19F1CCC600855972 /* iphone_main.mm */,
@@ -6247,6 +6256,7 @@
 				16B7A9AE14EBF5E500FA35FF /* huffman.cpp in Sources */,
 				16B7A9AF14EBF5E500FA35FF /* iff_container.cpp in Sources */,
 				16B7A9B014EBF5E500FA35FF /* localization.cpp in Sources */,
+				52620D541A0105BC005682CE /* iphone_shaders.cpp in Sources */,
 				16B7A9B114EBF5E500FA35FF /* macresman.cpp in Sources */,
 				16B7A9B214EBF5E500FA35FF /* md5.cpp in Sources */,
 				16B7A9B314EBF5E500FA35FF /* memorypool.cpp in Sources */,
@@ -6268,6 +6278,7 @@
 				16B7A9C214EBF5E500FA35FF /* unzip.cpp in Sources */,
 				C6BD2FCD19F1CAF000855972 /* codec.cpp in Sources */,
 				C6BD2F3A19F1CA5700855972 /* rendermode.cpp in Sources */,
+				52620D581A0111D4005682CE /* debug.cpp in Sources */,
 				16B7A9C314EBF5E500FA35FF /* util.cpp in Sources */,
 				C6BD2FF919F1CC1F00855972 /* BReverbModel.cpp in Sources */,
 				C6BD2FDB19F1CAF000855972 /* rpza.cpp in Sources */,
@@ -6528,6 +6539,7 @@
 				DFF959480FB22D5700A3EC78 /* object.cpp in Sources */,
 				DFF959490FB22D5700A3EC78 /* options.cpp in Sources */,
 				DFF9594D0FB22D5700A3EC78 /* themebrowser.cpp in Sources */,
+				52620D551A0105C5005682CE /* iphone_shaders.cpp in Sources */,
 				DFF9594E0FB22D5700A3EC78 /* widget.cpp in Sources */,
 				DFF9596D0FB22D5700A3EC78 /* seq.cpp in Sources */,
 				DFF9596E0FB22D5700A3EC78 /* scaler.cpp in Sources */,

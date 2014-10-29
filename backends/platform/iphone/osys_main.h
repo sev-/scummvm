@@ -23,6 +23,9 @@
 #ifndef BACKENDS_PLATFORM_IPHONE_OSYS_MAIN_H
 #define BACKENDS_PLATFORM_IPHONE_OSYS_MAIN_H
 
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+
 #include "graphics/surface.h"
 #include "iphone_common.h"
 #include "backends/base-backend.h"
@@ -44,6 +47,11 @@
 
 typedef void (*SoundProc)(void *param, byte *buf, int len);
 typedef int (*TimerProc)(int interval);
+
+enum {
+    GFX_LINEAR = 0,
+    GFX_NEAREST = 1
+};
 
 struct AQCallbackStruct {
 	AudioQueueRef queue;
@@ -216,6 +224,89 @@ protected:
 
 	bool handleEvent_mouseDragged(Common::Event &event, int x, int y);
 	bool handleEvent_mouseSecondDragged(Common::Event &event, int x, int y);
+
+		//
+	// Shaders
+	//
+	bool _enableShaders; ///< Set based on OpenGL version
+	bool _shadersInited;
+	uint _frameCount;
+
+	struct ShaderPass {
+		// GL id for shaders
+		GLuint fragment;
+		// GL id for program
+		GLuint program;
+             // Texture filter
+		GLint filter;
+
+		enum {
+			kFixed,
+			kInput,
+			kOutput,
+			kNotSet
+		} xScaleMethod, yScaleMethod;
+
+		float xScale, yScale;
+
+               // GL ids for uniforms
+		GLuint textureLoc, textureSizeLoc, inputSizeLoc, outputSizeLoc, frameCountLoc;
+
+               // GL ids for non-standard uniforms
+		GLuint origTextureLoc, origTextureSizeLoc, origInputSizeLoc;
+
+		GLint positionAttributeLoc;
+		GLint texCoordAttributeLoc;
+		GLint alphaFactorLoc;
+		GLint textureFractLoc;
+
+	};
+
+	struct ShaderInfo {
+               // GL ids for shaders
+		GLuint vertex;
+
+		Common::Array<ShaderPass> passes;
+		Common::String name;
+	};
+
+
+	Common::Array<ShaderInfo> _shaders;
+	ShaderInfo *_currentShader, *_defaultShader;
+
+	static bool parseShader(const Common::String &filename, ShaderInfo &info);
+
+public:
+	/**
+	 * Check OpenGL version and compile shaders if supported.
+	 */
+	void initShaders();
+
+private:
+	/** 
+	* Compiles shader.
+    *
+	* @param src    The source code.
+	* @param type   Either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+	*
+	* @return       The id to pass to GL functions.
+	*/
+	static GLuint compileShader(const Common::String &src, GLenum type);
+
+	/**
+	 * Links two shaders into a shader program.
+	 *
+	 * @param vertex   The vertex shader.
+	 * @param fragment The fragment shader.
+	 *
+	 * @return         The id of the program to pass to GL functions.
+	 */
+	static GLuint linkShaders(GLuint vertex, GLuint fragment);
+
+	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h);
+	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info);
+
+
 };
 
 #endif

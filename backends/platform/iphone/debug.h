@@ -20,45 +20,20 @@
  *
  */
 
-#include "backends/platform/iphone/debug.h"
+#ifndef BACKENDS_GRAPHICS_OPENGL_DEBUG_H
+#define BACKENDS_GRAPHICS_OPENGL_DEBUG_H
 
-#include "common/str.h"
-#include "common/textconsole.h"
+#define OPENGL_DEBUG
 
 #ifdef OPENGL_DEBUG
 
 namespace OpenGL {
-
-namespace {
-Common::String getGLErrStr(GLenum error) {
-	switch (error) {
-	case GL_INVALID_ENUM:
-		return "GL_INVALID_ENUM";
-	case GL_INVALID_VALUE:
-		return "GL_INVALID_VALUE";
-	case GL_INVALID_OPERATION:
-		return "GL_INVALID_OPERATION";
-	case GL_STACK_OVERFLOW:
-		return "GL_STACK_OVERFLOW";
-	case GL_STACK_UNDERFLOW:
-		return "GL_STACK_UNDERFLOW";
-	case GL_OUT_OF_MEMORY:
-		return "GL_OUT_OF_MEMORY";
-	}
-
-	return Common::String::format("(Unknown GL error code 0x%X)", error);
-}
-} // End of anonymous namespace
-
-void checkGLError(const char *expr, const char *file, int line) {
-	GLenum error;
-
-	while ((error = glGetError()) != GL_NO_ERROR) {
-		// We cannot use error here because we do not know whether we have a
-		// working screen or not.
-		warning("GL ERROR: %s on %s (%s:%d)", getGLErrStr(error).c_str(), expr, file, line);
-	}
-}
+void checkGLError(const char *expr, const char *file, int line);
 } // End of namespace OpenGL
+
+#define GLCALL(x) do { (x); OpenGL::checkGLError(#x, __FILE__, __LINE__); } while (false)
+#else
+#define GLCALL(x) do { (x); } while (false)
+#endif
 
 #endif

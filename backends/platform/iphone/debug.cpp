@@ -20,6 +20,9 @@
  *
  */
 
+#define FORBIDDEN_SYMBOL_ALLOW_ALL
+
+#include "osys_main.h"
 #include "backends/platform/iphone/debug.h"
 
 #include "common/str.h"
@@ -38,10 +41,6 @@ Common::String getGLErrStr(GLenum error) {
 		return "GL_INVALID_VALUE";
 	case GL_INVALID_OPERATION:
 		return "GL_INVALID_OPERATION";
-	case GL_STACK_OVERFLOW:
-		return "GL_STACK_OVERFLOW";
-	case GL_STACK_UNDERFLOW:
-		return "GL_STACK_UNDERFLOW";
 	case GL_OUT_OF_MEMORY:
 		return "GL_OUT_OF_MEMORY";
 	}
