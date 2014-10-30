@@ -32,10 +32,6 @@ void OSystem_IPHONE::initVideoContext() {
 	_videoContext = [g_iPhoneViewInstance getVideoContext];
 }
 
-const OSystem::GraphicsMode *OSystem_IPHONE::getSupportedGraphicsModes() const {
-    return &::s_supportedGraphicsModes->front();
-}
-
 int OSystem_IPHONE::getDefaultGraphicsMode() const {
 	return kGraphicsModeLinear;
 }
@@ -110,6 +106,9 @@ void OSystem_IPHONE::initSize(uint width, uint height, const Graphics::PixelForm
 	_fullScreenIsDirty = false;
 	dirtyFullScreen();
 	_mouseCursorPaletteEnabled = false;
+    
+    getSupportedGraphicsModes();
+    initShaders();
 }
 
 void OSystem_IPHONE::beginGFXTransaction() {

@@ -188,6 +188,8 @@
 		C6BD301919F1CECD00855972 /* s_overlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BD301619F1CECD00855972 /* s_overlay.cpp */; };
 		C6BD301C19F1CF0900855972 /* saveload-dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BD301A19F1CF0900855972 /* saveload-dialog.cpp */; };
 		C6BD301E19F1CF3700855972 /* simon1.zip in Resources */ = {isa = PBXBuildFile; fileRef = C6BD301D19F1CF3700855972 /* simon1.zip */; };
+		C6FDBE2B1A0210E1007AD1FA /* HQ.shader in Resources */ = {isa = PBXBuildFile; fileRef = C6FDBE291A0210E1007AD1FA /* HQ.shader */; };
+		C6FDBE2C1A0210E1007AD1FA /* LQ.shader in Resources */ = {isa = PBXBuildFile; fileRef = C6FDBE2A1A0210E1007AD1FA /* LQ.shader */; };
 		DF093E770F63CB26002D821E /* scummclassic.zip in Resources */ = {isa = PBXBuildFile; fileRef = DF2FFBDB0F485E480006E566 /* scummclassic.zip */; };
 		DF093E780F63CB26002D821E /* scummmodern.zip in Resources */ = {isa = PBXBuildFile; fileRef = DF7E8C7A0ED601E5001CB19F /* scummmodern.zip */; };
 		DF093E7A0F63CB26002D821E /* kyra.dat in Resources */ = {isa = PBXBuildFile; fileRef = DFE47C810D81F86900B6D1FB /* kyra.dat */; };
@@ -1785,6 +1787,8 @@
 		C6BD301A19F1CF0900855972 /* saveload-dialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "saveload-dialog.cpp"; sourceTree = "<group>"; };
 		C6BD301B19F1CF0900855972 /* saveload-dialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "saveload-dialog.h"; sourceTree = "<group>"; };
 		C6BD301D19F1CF3700855972 /* simon1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = simon1.zip; sourceTree = "<group>"; };
+		C6FDBE291A0210E1007AD1FA /* HQ.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = HQ.shader; path = ../../HQ.shader; sourceTree = "<group>"; };
+		C6FDBE2A1A0210E1007AD1FA /* LQ.shader */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = LQ.shader; path = ../../LQ.shader; sourceTree = "<group>"; };
 		DF09422A0F63CB26002D821E /* ScummVM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScummVM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF0944170F63FA8F002D821E /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		DF0944240F63FB2C002D821E /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
@@ -3974,6 +3978,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C6FDBE291A0210E1007AD1FA /* HQ.shader */,
+				C6FDBE2A1A0210E1007AD1FA /* LQ.shader */,
 				DFD71A7C1940AA9200A4A943 /* Default-568h@2x.png */,
 				DF65B1ED195557B300216164 /* Simon1_data_all.bundle */,
 				C6BD2F5219F1CAEF00855972 /* image */,
@@ -5547,20 +5553,20 @@
 		DFE471D70D81F4E700B6D1FB /* iphone */ = {
 			isa = PBXGroup;
 			children = (
-				52620D531A0105BB005682CE /* iphone_shaders.cpp */,
 				52620D561A0111D4005682CE /* debug.cpp */,
 				52620D571A0111D4005682CE /* debug.h */,
 				1692AE3714F3865200889F28 /* iphone_common.h */,
 				C6BD2FFD19F1CCC600855972 /* iphone_keyboard.mm */,
-				C6BD2FFE19F1CCC600855972 /* iphone_main.mm */,
-				C6BD2FFF19F1CCC600855972 /* iphone_video.mm */,
-				C6BD300019F1CCC600855972 /* osys_video.mm */,
 				1692AE3814F3865200889F28 /* iphone_keyboard.h */,
+				C6BD2FFE19F1CCC600855972 /* iphone_main.mm */,
+				52620D531A0105BB005682CE /* iphone_shaders.cpp */,
 				1692AE3B14F3865200889F28 /* iphone_video.h */,
+				C6BD2FFF19F1CCC600855972 /* iphone_video.mm */,
 				1692AE3D14F3865200889F28 /* osys_events.cpp */,
 				1692AE3E14F3865200889F28 /* osys_main.cpp */,
 				1692AE3F14F3865200889F28 /* osys_main.h */,
 				1692AE4014F3865200889F28 /* osys_sound.cpp */,
+				C6BD300019F1CCC600855972 /* osys_video.mm */,
 			);
 			path = iphone;
 			sourceTree = "<group>";
@@ -5959,9 +5965,11 @@
 				DF2FFD2C0F48717F0006E566 /* icon.png in Resources */,
 				DFD71A7D1940AA9200A4A943 /* Default-568h@2x.png in Resources */,
 				DF895C34124C26660077F6E8 /* icon-72.png in Resources */,
+				C6FDBE2C1A0210E1007AD1FA /* LQ.shader in Resources */,
 				DF895C41124C271F0077F6E8 /* icon4.png in Resources */,
 				8CB5A9E11253FDF500CB6BC7 /* drascula.dat in Resources */,
 				8CB5A9E21253FDF500CB6BC7 /* hugo.dat in Resources */,
+				C6FDBE2B1A0210E1007AD1FA /* HQ.shader in Resources */,
 				8CB5A9E41253FDF500CB6BC7 /* teenagent.dat in Resources */,
 				8CD1ED8A1262030100FA198C /* toon.dat in Resources */,
 			);

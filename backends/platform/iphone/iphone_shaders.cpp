@@ -22,7 +22,9 @@ namespace {
 
 Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes = 0;
 
-void OSystem_IPHONE::initGraphicsModes() {
+static void initGraphicsModes() {
+    s_supportedGraphicsModes = new Common::Array<OSystem::GraphicsMode>;
+    
     OSystem::GraphicsMode gm;
     Common::ArchiveMemberList files;
     SearchMan.listMatchingMembers(files, "*.shader");
@@ -39,6 +41,8 @@ void OSystem_IPHONE::initGraphicsModes() {
         gm.id = index;
         s_supportedGraphicsModes->push_back(gm);
         index++;
+        
+        warning("Added shader %s", (*i)->getName().c_str());
     }
     
     gm.name = 0;
@@ -47,6 +51,12 @@ void OSystem_IPHONE::initGraphicsModes() {
     s_supportedGraphicsModes->push_back(gm);
 }
 
+const OSystem::GraphicsMode *OSystem_IPHONE::getSupportedGraphicsModes() const {
+    if (!s_supportedGraphicsModes)
+        initGraphicsModes();
+    
+    return &::s_supportedGraphicsModes->front();
+}
 
 bool OSystem_IPHONE::parseShader(const Common::String &filename, ShaderInfo &info) {
     // FIXME
@@ -290,7 +300,7 @@ void OSystem_IPHONE::initShaders() {
     sscanf(version.c_str(), "%d.%d", &majorVersion, &minorVersion);
     _enableShaders = majorVersion >= 2;
 
-    if (!_enableShaders)
+    if (!_enableShaders && 0)
         return;
 
     ShaderInfo dInfo;

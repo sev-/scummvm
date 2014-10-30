@@ -37,6 +37,8 @@
 
 #include <AudioToolbox/AudioQueue.h>
 
+#define USE_GLES 1
+
 #define AUDIO_BUFFERS 3
 #define WAVE_BUFFER_SIZE 2048
 #define AUDIO_SAMPLE_RATE 44100
@@ -277,7 +279,6 @@ public:
 	 * Check OpenGL version and compile shaders if supported.
 	 */
 	void initShaders();
-    void initGraphicsModes();
 
 private:
 	/** 

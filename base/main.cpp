@@ -365,7 +365,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	Common::StringMap settings;
 	command = Base::parseCommandLine(settings, argc, argv);
     
-    //command = "simon1";
+    command = "simon1";
 
 	// Load the config file (possibly overridden via command line):
 	if (settings.contains("config")) {
@@ -376,7 +376,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 	}
 
 	if (!ConfMan.hasGameDomain("simon1")) {
-		ConfMan.set("gfx_mode", "5xBR Squared.shader");
+		ConfMan.set("gfx_mode", "HQ.shader");
 		ConfMan.set("extrapath", "/Volumes/ScummVM/ScummVM.app/Contents/Resources/");
 		ConfMan.set("fullscreen", "true");
 		ConfMan.set("gui_theme", "simon1");
