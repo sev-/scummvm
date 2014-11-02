@@ -1,3 +1,25 @@
+/* ScummVM - Graphic Adventure Engine
+ *
+ * ScummVM is the legal property of its developers, whose names
+ * are too numerous to list here. Please refer to the COPYRIGHT
+ * file distributed with this source distribution.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+
 #define FORBIDDEN_SYMBOL_ALLOW_ALL
 
 #include "common/system.h"
@@ -397,4 +419,246 @@ GLuint OSystem_IPHONE::linkShaders(GLuint vertex, GLuint fragment) {
     }
 
     return program;
+}
+
+// This function performs multipass rendering using shaders.
+// TODO: check if extensions are available, test OpenGL ES, clean/split function,
+//       generate buffers on gfxmode init, use x and y (instead of implicit 0,0)
+void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info) {
+    float outputw, outputh, inputw, inputh, texw, texh,
+    origInputw, origInputh, origTexw, origTexh;
+    origInputw = inputw = texture->getWidth();
+    origInputh = inputh = texture->getHeight();
+    origTexw = texw = texture->getTextureWidth();
+    origTexh = texh = texture->getTextureHeight();
+    bool implicitPass = false;
+    GLuint currentTexture = texture->getName();
+    GLuint origTexture = currentTexture;
+    GLuint fbo, outputtex;
+    
+    texture->updateTexture();
+    
+    for (uint i = 0; i < info->passes.size(); ++i) {
+        bool lastPass = (i == info->passes.size() - 1);
+        
+        const ShaderPass &p = info->passes[i];
+        
+        switch (p.xScaleMethod) {
+            case ShaderPass::kFixed:
+                outputw = p.xScale;
+                break;
+            case ShaderPass::kInput:
+                outputw = inputw * p.xScale;
+                break;
+            case ShaderPass::kOutput:
+                outputw = w * p.xScale;
+                break;
+            case ShaderPass::kNotSet:
+                outputw = inputw;
+        }
+        
+        if (lastPass) {
+            if (p.xScaleMethod == ShaderPass::kNotSet) {
+                outputw = w;
+            } else {
+                implicitPass = true;
+            }
+        }
+        
+        switch (p.yScaleMethod) {
+            case ShaderPass::kFixed:
+                outputh = p.yScale;
+                break;
+            case ShaderPass::kInput:
+                outputh = inputh * p.yScale;
+                break;
+            case ShaderPass::kOutput:
+                outputh = h * p.yScale;
+                break;
+            case ShaderPass::kNotSet:
+                outputh = inputh;
+        }
+        // ChecShaderPass::k if last pass
+        if (lastPass) {
+            if (p.yScaleMethod == ShaderPass::kNotSet) {
+                outputh = h;
+            } else {
+                implicitPass = true;
+            }
+        }
+        
+        if (!lastPass || implicitPass) {
+            GLCALL(glGenTextures(1, &outputtex));
+            GLCALL(glBindTexture(GL_TEXTURE_2D, outputtex));
+            GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
+            GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
+            GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+            GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+            GLCALL(glTexImage2D(
+                                GL_TEXTURE_2D, 0, GL_RGB,
+                                outputw, outputh,
+                                0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
+            
+            GLCALL(glGenFramebuffersEXT(1, &fbo));
+            GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo));
+            GLCALL(glFramebufferTexture2DEXT(
+                                             GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                                             GL_TEXTURE_2D, outputtex, 0));
+            GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+            if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
+                error("Framebuffer creation failed with %x", status);
+            }
+            GLCALL(glPushMatrix());
+            GLCALL(glPushAttrib(GL_VIEWPORT_BIT | GL_ENABLE_BIT));
+            GLCALL(glLoadIdentity());
+            GLCALL(glClear(GL_COLOR_BUFFER_BIT));
+            GLCALL(glViewport(0,0,outputw, outputh));
+        }
+        GLCALL(glDisable(GL_BLEND));
+        
+        // Set up current Texture
+        GLCALL(glActiveTexture(GL_TEXTURE1));
+        GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
+        GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
+        
+        // Set up orig Texture
+        GLCALL(glActiveTexture(GL_TEXTURE0));
+        GLCALL(glBindTexture(GL_TEXTURE_2D, origTexture));
+        
+        GLCALL(glUseProgram(p.program));
+        
+        GLCALL(glUniform1i(p.textureLoc, 0));
+        //GLCALL(glUniform1i(p.frameCountLoc, _frameCount));
+        
+        GLCALL(glUniform2f(p.textureSizeLoc, (GLfloat)texw, (GLfloat)texh));
+        
+        GLCALL(glUniform2f(p.textureFractLoc, (GLfloat)1/texw, (GLfloat)1/texh));
+        
+        GLCALL(glUniform2f(p.inputSizeLoc, inputw, inputh));
+        
+        GLCALL(glUniform2f(p.outputSizeLoc, outputw, outputh));
+        
+        // Use non-standard uniforms
+        //GLCALL(glUniform2f(p.origInputSizeLoc, origInputw, origInputh));
+        //GLCALL(glUniform2f(p.origTextureSizeLoc, origTexw, origTexh));
+        //GLCALL(glUniform1i(p.origTextureLoc, 0));
+#if 0
+        const GLfloat vertices[] = {
+            0, 0,
+            outputw, 0,
+            0, outputh,
+            outputw, outputh
+        };
+        const GLfloat texCoords[] = {
+            0, 0,
+            inputw/texw, 0,
+            0, inputh/texh,
+            inputw/texw, inputh/texh,
+        };
+#else
+        
+        int scalingFactor = 1;
+        GLfloat dirtyRectLeft, dirtyRectTop, dirtyRectWidth, dirtyRectHeight;
+        
+        dirtyRectLeft = 0;
+        dirtyRectTop = 0;
+        dirtyRectWidth = 1;
+        dirtyRectHeight = 1;
+        
+        const GLfloat tex_width = inputw * scalingFactor / (GLfloat) texw;
+        const GLfloat tex_height = inputh * scalingFactor / (GLfloat) texh;
+        
+        GLfloat texRectX = dirtyRectLeft * tex_width;
+        GLfloat texRectY = dirtyRectTop * tex_height;
+        GLfloat texRectW = dirtyRectWidth * tex_width;
+        GLfloat texRectH = dirtyRectHeight * tex_height;
+        
+        const GLfloat texCoords[] = { texRectX, texRectY, texRectX + texRectW,
+            texRectY, texRectX, texRectY + texRectH, texRectX + texRectW,
+            texRectY + texRectH, };
+        
+        GLfloat vX = dirtyRectLeft * 2.0 - 1.0;
+        GLfloat vY = dirtyRectTop * (-2.0) + 1.0;
+        GLfloat vW = dirtyRectWidth * 2.0;
+        GLfloat vH = dirtyRectHeight * 2.0;
+        
+        const GLfloat vertices[] = { vX, vY, vX + vW, vY, vX, vY - vH, vX + vW, vY
+            - vH };
+#endif
+        
+        GLCALL(glVertexAttribPointer(p.positionAttributeLoc, 2, GL_FLOAT, false, 0, vertices));
+        GLCALL(glVertexAttribPointer(p.texCoordAttributeLoc, 2, GL_FLOAT, false, 0, texCoords));
+        
+        GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
+        
+        GLCALL(glUseProgram(0));
+        
+        inputw = outputw;
+        inputh = outputh;
+        texw = outputw;
+        texh = outputh;
+        if (i)
+            GLCALL(glDeleteTextures(1, &currentTexture));
+        if (!lastPass || implicitPass) {
+            GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0));
+            GLCALL(glDeleteFramebuffersEXT(1, &fbo));
+            GLCALL(glPopMatrix());
+            GLCALL(glPopAttrib());
+        }
+        currentTexture = outputtex;
+    }
+    if (implicitPass) {
+        const GLshort vertices[] = {
+            0, 0,
+            w, 0,
+            0, h,
+            w, h
+        };
+        const GLfloat texCoords[] = {
+            0, 0,
+            inputw/texw, 0,
+            0, inputh/texh,
+            inputw/texw, inputh/texh,
+        };
+        GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
+        GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
+        GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
+        GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
+        glDeleteTextures(1, &currentTexture);
+    }
+    GLCALL(glEnable(GL_BLEND));
+    
+    _frameCount++;
+}
+
+void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h) {
+    // First update any potentional changes.
+    texture->updateTexture();
+    
+    // Set the texture.
+    GLCALL(glBindTexture(GL_TEXTURE_2D, texture->getName()));
+    
+    // Calculate the texture rect that will be drawn.
+    const GLfloat texWidth = texture->getDrawWidth();
+    const GLfloat texHeight = texture->getDrawHeight();
+    const GLfloat texcoords[4*2] = {
+        0,        0,
+        texWidth, 0,
+        0,        texHeight,
+        texWidth, texHeight
+    };
+    GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords));
+    
+    // Calculate the screen rect where the texture will be drawn.
+    const GLfloat vertices[4*2] = {
+        x,     y,
+        x + w, y,
+        x,     y + h,
+        x + w, y + h
+    };
+    GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
+    
+    // Draw the texture to the screen buffer.
+    GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 }
