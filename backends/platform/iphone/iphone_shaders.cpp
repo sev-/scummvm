@@ -486,7 +486,8 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
                 implicitPass = true;
             }
         }
-        
+
+/*
         if (!lastPass || implicitPass) {
             GLCALL(glGenTextures(1, &outputtex));
             GLCALL(glBindTexture(GL_TEXTURE_2D, outputtex));
@@ -514,6 +515,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
             GLCALL(glClear(GL_COLOR_BUFFER_BIT));
             GLCALL(glViewport(0,0,outputw, outputh));
         }
+ */
         GLCALL(glDisable(GL_BLEND));
         
         // Set up current Texture
@@ -600,12 +602,14 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         texh = outputh;
         if (i)
             GLCALL(glDeleteTextures(1, &currentTexture));
+        /*
         if (!lastPass || implicitPass) {
             GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0));
             GLCALL(glDeleteFramebuffersEXT(1, &fbo));
             GLCALL(glPopMatrix());
             GLCALL(glPopAttrib());
         }
+         */
         currentTexture = outputtex;
     }
     if (implicitPass) {
@@ -622,8 +626,8 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
             inputw/texw, inputh/texh,
         };
         GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
-        GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords));
-        GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
+        //GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texCoords)); // FIXME
+        //GLCALL(glVertexPointer(2, GL_SHORT, 0, vertices));
         GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
         glDeleteTextures(1, &currentTexture);
     }
@@ -648,7 +652,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         0,        texHeight,
         texWidth, texHeight
     };
-    GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords));
+    //GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords)); // FIXME
     
     // Calculate the screen rect where the texture will be drawn.
     const GLfloat vertices[4*2] = {
@@ -657,7 +661,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         x,     y + h,
         x + w, y + h
     };
-    GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices));
+    // GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices)); // FIXME
     
     // Draw the texture to the screen buffer.
     GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));

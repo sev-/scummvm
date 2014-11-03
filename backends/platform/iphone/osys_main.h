@@ -58,6 +58,7 @@ struct AQCallbackStruct {
 };
 
 extern Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes;
+struct ShaderInfo;
 
 class OSystem_IPHONE : public EventsBaseBackend, public PaletteManager {
 protected:
@@ -223,7 +224,7 @@ protected:
 	bool handleEvent_mouseDragged(Common::Event &event, int x, int y);
 	bool handleEvent_mouseSecondDragged(Common::Event &event, int x, int y);
 
-		//
+    //
 	// Shaders
 	//
 	bool _enableShaders; ///< Set based on OpenGL version
@@ -301,8 +302,8 @@ private:
 	 */
 	static GLuint linkShaders(GLuint vertex, GLuint fragment);
 
-	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h);
-	//void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info);
+	void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h);
+	void drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info);
 };
 
 #endif

@@ -23,8 +23,8 @@
 #ifndef BACKENDS_PLATFORM_IPHONE_IPHONE_COMMON_H
 #define BACKENDS_PLATFORM_IPHONE_IPHONE_COMMON_H
 
-#include "graphics/surface.h"
 #include "common/rect.h"
+#include "graphics/surface.h"
 
 enum InputEvent {
 	kInputMouseDown,
