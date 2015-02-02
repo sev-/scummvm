@@ -82,7 +82,6 @@ int main(int argc, char **argv) {
 
 	// hide the status bar
 	[application setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
-	[application setStatusBarHidden:YES animated:YES];
 
 	_window = [[UIWindow alloc] initWithFrame:rect];
 	[_window retain];
@@ -96,13 +95,34 @@ int main(int argc, char **argv) {
 	[_window makeKeyAndVisible];
 
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver:self
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
 	                                         selector:@selector(didRotate:)
 	                                             name:@"UIDeviceOrientationDidChangeNotification"
 	                                           object:nil];
 
+/*
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        UIDeviceOrientation screenOrientation = UIDeviceOrientationPortrait;
+        [_view deviceOrientationChanged:screenOrientation];
+
+        printf("now!!!\n");
+    });
+
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        UIDeviceOrientation screenOrientation = UIDeviceOrientationLandscapeRight;
+        [_view deviceOrientationChanged:screenOrientation];
+
+        printf("now!!!\n");
+    });
+    */
+
 	[NSThread detachNewThreadSelector:@selector(mainLoop:) toTarget:self withObject:nil];
 }
+
+
 
 - (void)applicationDidResume {
 }
@@ -123,13 +143,12 @@ int main(int argc, char **argv) {
 
 	// Workaround, need to "hide" and unhide the statusbar to properly remove it,
 	// since the Springboard has put it back without apparently flagging our application.
-	[self setStatusBarHidden:YES animated:YES];
 	[self setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
-	[self setStatusBarHidden:YES animated:YES];
 }
 
 - (void)didRotate:(NSNotification *)notification {
 	UIDeviceOrientation screenOrientation = [[UIDevice currentDevice] orientation];
+
 	[_view deviceOrientationChanged:screenOrientation];
 }
 

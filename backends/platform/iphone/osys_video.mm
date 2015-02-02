@@ -33,16 +33,19 @@ void OSystem_IPHONE::initVideoContext() {
 }
 
 int OSystem_IPHONE::getDefaultGraphicsMode() const {
-	return kGraphicsModeLinear;
+	return kGraphicsModeNone;
 }
 
 bool OSystem_IPHONE::setGraphicsMode(int mode) {
+    //yinon
 	switch (mode) {
 	case kGraphicsModeNone:
 	case kGraphicsModeLinear:
 		_videoContext->graphicsMode = (GraphicsModes)mode;
 		return true;
-
+    case 2:
+        _videoContext->graphicsMode = (GraphicsModes)mode;
+            return true;
 	default:
 		return false;
 	}
@@ -106,9 +109,12 @@ void OSystem_IPHONE::initSize(uint width, uint height, const Graphics::PixelForm
 	_fullScreenIsDirty = false;
 	dirtyFullScreen();
 	_mouseCursorPaletteEnabled = false;
-    
+
     getSupportedGraphicsModes();
-    initShaders();
+
+    [g_iPhoneViewInstance resetContext];
+
+    _videoContext->initShaders();
 }
 
 void OSystem_IPHONE::beginGFXTransaction() {
@@ -119,6 +125,8 @@ OSystem::TransactionError OSystem_IPHONE::endGFXTransaction() {
 	_screenChangeCount++;
 	updateOutputSurface();
 	[g_iPhoneViewInstance performSelectorOnMainThread:@selector(setGraphicsMode) withObject:nil waitUntilDone: YES];
+
+    //_videoContext.initShaders();
 
 	return _gfxTransactionError;
 }

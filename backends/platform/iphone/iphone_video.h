@@ -28,8 +28,8 @@
 #include <QuartzCore/QuartzCore.h>
 
 #include <OpenGLES/EAGL.h>
-#include <OpenGLES/ES1/gl.h>
-#include <OpenGLES/ES1/glext.h>
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
 
 #include "iphone_keyboard.h"
 #include "iphone_common.h"
@@ -77,6 +77,8 @@
 }
 
 - (id)initWithFrame:(struct CGRect)frame;
+
+- (void)resetContext;
 
 - (VideoContext *)getVideoContext;
 

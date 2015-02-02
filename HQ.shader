@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
    Hyllian's xBR v3.8c (squared) Shader
-   
+
    Copyright (C) 2011/2012 Hyllian/Jararaca - sergiogdb@gmail.com
 
    This program is free software; you can redistribute it and/or
@@ -27,12 +27,13 @@
 uniform vec2 rubyTextureSize;
 
 attribute vec4 vPosition;
+uniform mat4 projMat;
 attribute vec2 a_TexCoordinate;
 
     varying vec2 tc;
 
     void main() {
-      gl_Position = vPosition;
+      gl_Position = projMat * vPosition;
 
       tc = a_TexCoordinate;
     }
@@ -40,6 +41,7 @@ attribute vec2 a_TexCoordinate;
   ]]></vertex>
 
   <fragment filter="nearest"><![CDATA[
+precision highp float;
 /*
       Uniforms
       - rubyTexture: texture sampler
@@ -59,7 +61,7 @@ attribute vec2 a_TexCoordinate;
       - tc: coordinate of the texel being processed
       - xyp_[]_[]_[]: a packed coordinate for 3 areas within the texture
     */
-    
+
     varying vec2 tc;
 
     /*
@@ -107,7 +109,7 @@ attribute vec2 a_TexCoordinate;
     // Converts 4 3-color vectors into 1 4-value luminance vector
     vec4 lum_to(vec3 v0, vec3 v1, vec3 v2, vec3 v3) {
       return vec4(dot(lum, v0), dot(lum, v1), dot(lum, v2), dot(lum, v3));
-  
+
   //    return mat4(v0.x, v1.x, v2.x, v3.x, v0.y, v1.y, v2.y, v3.y, v0.z, v1.z, v2.z, v3.z, 0.0, 0.0, 0.0, 0.0) * vec4(lum, 0.0);
     }
 
@@ -132,8 +134,8 @@ attribute vec2 a_TexCoordinate;
     }
 
     void main() {
-    
-    
+
+
       /*
         Mask for algorhithm
   //    A1 B1 C1

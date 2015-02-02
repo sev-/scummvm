@@ -33,40 +33,40 @@
 #include "common/array.h"
 
 namespace {
-    
+
     const OSystem::GraphicsMode glGraphicsModes[] = {
         { "opengl_linear",  _s("OpenGL"),                kGraphicsModeLinear  },
         { "opengl_nearest", _s("OpenGL (No filtering)"), kGraphicsModeNone },
         { nullptr, nullptr, 0 }
     };
-    
+
 } // End of anonymous namespace
 
 Common::Array<OSystem::GraphicsMode> *s_supportedGraphicsModes = 0;
 
 static void initGraphicsModes() {
     s_supportedGraphicsModes = new Common::Array<OSystem::GraphicsMode>;
-    
+
     OSystem::GraphicsMode gm;
     Common::ArchiveMemberList files;
     SearchMan.listMatchingMembers(files, "*.shader");
     int index = 1;
-    
+
     // No gl calls can be made since the OpenGL context has not been created yet.
     gm.name = "opengl_nearest";
     gm.id = 0;
     gm.description = "OpenGL";
     s_supportedGraphicsModes->push_back(gm);
-    
+
     for (Common::ArchiveMemberList::iterator i = files.begin(); i != files.end(); ++i) {
         gm.description = gm.name = strdup((*i)->getName().c_str());
         gm.id = index;
         s_supportedGraphicsModes->push_back(gm);
         index++;
-        
+
         warning("Added shader %s", (*i)->getName().c_str());
     }
-    
+
     gm.name = 0;
     gm.description = 0;
     gm.id = 0;
@@ -76,11 +76,11 @@ static void initGraphicsModes() {
 const OSystem::GraphicsMode *OSystem_IPHONE::getSupportedGraphicsModes() const {
     if (!s_supportedGraphicsModes)
         initGraphicsModes();
-    
+
     return &::s_supportedGraphicsModes->front();
 }
 
-bool OSystem_IPHONE::parseShader(const Common::String &filename, ShaderInfo &info) {
+bool VideoContext::parseShader(const Common::String &filename, ShaderInfo &info) {
     // FIXME
     Common::AdvXMLParser shaderParser;
     if (!shaderParser.loadFile(filename)) {
@@ -256,7 +256,9 @@ bool OSystem_IPHONE::parseShader(const Common::String &filename, ShaderInfo &inf
     for (uint j = 0; j < info.passes.size(); ++j) {
         ShaderPass &p = info.passes[j];
         p.program = linkShaders(info.vertex, p.fragment);
+        warning("linkp: %d", p.program);
         GLCALL(p.positionAttributeLoc = glGetAttribLocation(p.program, "vPosition"));
+        GLCALL(p.projMat = glGetUniformLocation(p.program, "projMat"));
         GLCALL(p.texCoordAttributeLoc = glGetAttribLocation(p.program, "a_TexCoordinate"));
         GLCALL(p.textureLoc = glGetUniformLocation(p.program, "rubyTexture"));
         GLCALL(p.inputSizeLoc = glGetUniformLocation(p.program, "rubyInputSize"));
@@ -280,16 +282,18 @@ bool OSystem_IPHONE::parseShader(const Common::String &filename, ShaderInfo &inf
     return true;
 }
 
-const char *s_defaultVertex = 
+const char *s_defaultVertex =
 "attribute vec4 vPosition;\n"
+"uniform mat4 projMat;\n"
 "attribute vec2 a_TexCoordinate;\n"
 "varying vec2 v_TexCoordinate;\n"
 "void main() {\n"
 "  v_TexCoordinate = a_TexCoordinate;\n"
-"  gl_Position = vPosition;\n"
+"  gl_Position = projMat*vPosition;\n"
 "}\n";
 
 const char *s_defaultFragment =
+"precision mediump float;\n"
 "uniform sampler2D rubyTexture;\n"
 "uniform float alphaFactor;\n"
 "varying vec2 v_TexCoordinate;\n"
@@ -297,18 +301,26 @@ const char *s_defaultFragment =
 "void main() {\n"
 ""
 "  gl_FragColor = texture2D(rubyTexture, v_TexCoordinate);\n"
-"  gl_FragColor.a *= alphaFactor;\n"
 "}\n";
 
-void OSystem_IPHONE::initShaders() {
+void VideoContext::initShaders() {
+    warning("Init shaders");
+
     if (_shadersInited && 0) {
-        _currentShader = &_shaders[_videoContext->graphicsMode];
+        currentShader = &shaders[graphicsMode];
 
         _frameCount = 0;
         return;
     }
+
+    if (!s_supportedGraphicsModes)
+        initGraphicsModes();
+
+    warning("Capabilities: %s", glGetString(GL_EXTENSIONS));
+
     _shadersInited = true;
     const char * versionStr = (const char *)glGetString(GL_VERSION);
+    warning("Version: <%s>", versionStr);
     Common::String version;
     int majorVersion, minorVersion;
     Common::StringTokenizer st(versionStr);
@@ -321,6 +333,10 @@ void OSystem_IPHONE::initShaders() {
     version = st.nextToken();
     sscanf(version.c_str(), "%d.%d", &majorVersion, &minorVersion);
     _enableShaders = majorVersion >= 2;
+#if __i386__
+    printf("No shaders for i386. Needs to be fixed!\n");
+    return;
+#endif
 
     if (!_enableShaders && 0)
         return;
@@ -335,6 +351,7 @@ void OSystem_IPHONE::initShaders() {
     dInfo.name = "default";
     p.filter = GL_NEAREST;
     p.positionAttributeLoc = glGetAttribLocation(p.program, "vPosition");
+    p.projMat = glGetUniformLocation(p.program, "projMat");
     p.texCoordAttributeLoc = glGetAttribLocation(p.program, "a_TexCoordinate");
     p.textureLoc = glGetUniformLocation(p.program, "rubyTexture");
     p.inputSizeLoc = glGetUniformLocation(p.program, "rubyInputSize");
@@ -353,7 +370,7 @@ void OSystem_IPHONE::initShaders() {
     p.yScaleMethod = ShaderPass::kNotSet;
     dInfo.passes.push_back(p);
 
-    //_shaders.push_back(dInfo);
+    shaders.push_back(dInfo);
 
     for (uint i = 1; i < s_supportedGraphicsModes->size() - 1; ++i) {
         ShaderInfo info;
@@ -361,23 +378,24 @@ void OSystem_IPHONE::initShaders() {
         info.name = Common::String(gm.name);
         if (parseShader(info.name, info)) {
             warning("Successfully compiled %s", info.name.c_str());
-            _shaders.push_back(info);
+            shaders.push_back(info);
         } else {
             warning("%s is not a shader file", info.name.c_str());
         }
     }
 
-    _defaultShader = &_shaders[0];
-    _currentShader = &_shaders[_videoContext->graphicsMode];
+    defaultShader = &shaders[0];
+    currentShader = &shaders[2 /* graphicsMode */ ];
 
     _frameCount = 0;
-    //_currentShader = &_shaders[0];
+    //_videoContext->currentShader = &_videoContext->shaders[0];
 }
 
-GLuint OSystem_IPHONE::compileShader(const Common::String &src, GLenum type) {
+GLuint VideoContext::compileShader(const Common::String &src, GLenum type) {
     int size = src.size();
     const char * source = src.c_str();
-    GLuint shader = glCreateShader(type);
+    GLuint shader = glCreateShader(type); OpenGL::checkGLError("glCreateShader", __FILE__, __LINE__);
+    warning("Shad: %d", shader);
     GLCALL(glShaderSource(shader, 1, &source, &size));
     GLCALL(glCompileShader(shader));
 
@@ -397,7 +415,7 @@ GLuint OSystem_IPHONE::compileShader(const Common::String &src, GLenum type) {
     return shader;
 }
 
-GLuint OSystem_IPHONE::linkShaders(GLuint vertex, GLuint fragment) {
+GLuint VideoContext::linkShaders(GLuint vertex, GLuint fragment) {
     GLuint program = glCreateProgram();
     if (vertex)
         GLCALL(glAttachShader(program, vertex));
@@ -414,6 +432,7 @@ GLuint OSystem_IPHONE::linkShaders(GLuint vertex, GLuint fragment) {
         int length;
         GLCALL(glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length));
         buffer = new char[length];
+
         GLCALL(glGetProgramInfoLog(program, length, NULL, buffer));
         error("Shader program link failed:\n%s", buffer);
     }
@@ -424,7 +443,7 @@ GLuint OSystem_IPHONE::linkShaders(GLuint vertex, GLuint fragment) {
 // This function performs multipass rendering using shaders.
 // TODO: check if extensions are available, test OpenGL ES, clean/split function,
 //       generate buffers on gfxmode init, use x and y (instead of implicit 0,0)
-void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info) {
+void OSystem_IPHONE::drawTexturea(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h, const ShaderInfo *info) {
     float outputw, outputh, inputw, inputh, texw, texh,
     origInputw, origInputh, origTexw, origTexh;
     origInputw = inputw = texture->getWidth();
@@ -435,14 +454,14 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
     GLuint currentTexture = texture->getName();
     GLuint origTexture = currentTexture;
     GLuint fbo, outputtex;
-    
+
     texture->updateTexture();
-    
+
     for (uint i = 0; i < info->passes.size(); ++i) {
         bool lastPass = (i == info->passes.size() - 1);
-        
+
         const ShaderPass &p = info->passes[i];
-        
+
         switch (p.xScaleMethod) {
             case ShaderPass::kFixed:
                 outputw = p.xScale;
@@ -456,7 +475,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
             case ShaderPass::kNotSet:
                 outputw = inputw;
         }
-        
+
         if (lastPass) {
             if (p.xScaleMethod == ShaderPass::kNotSet) {
                 outputw = w;
@@ -464,7 +483,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
                 implicitPass = true;
             }
         }
-        
+
         switch (p.yScaleMethod) {
             case ShaderPass::kFixed:
                 outputh = p.yScale;
@@ -499,7 +518,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
                                 GL_TEXTURE_2D, 0, GL_RGB,
                                 outputw, outputh,
                                 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
-            
+
             GLCALL(glGenFramebuffersEXT(1, &fbo));
             GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo));
             GLCALL(glFramebufferTexture2DEXT(
@@ -517,30 +536,30 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         }
  */
         GLCALL(glDisable(GL_BLEND));
-        
+
         // Set up current Texture
         GLCALL(glActiveTexture(GL_TEXTURE1));
         GLCALL(glBindTexture(GL_TEXTURE_2D, currentTexture));
         GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, p.filter));
         GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, p.filter));
-        
+
         // Set up orig Texture
         GLCALL(glActiveTexture(GL_TEXTURE0));
         GLCALL(glBindTexture(GL_TEXTURE_2D, origTexture));
-        
+
         GLCALL(glUseProgram(p.program));
-        
+
         GLCALL(glUniform1i(p.textureLoc, 0));
         //GLCALL(glUniform1i(p.frameCountLoc, _frameCount));
-        
+
         GLCALL(glUniform2f(p.textureSizeLoc, (GLfloat)texw, (GLfloat)texh));
-        
+
         GLCALL(glUniform2f(p.textureFractLoc, (GLfloat)1/texw, (GLfloat)1/texh));
-        
+
         GLCALL(glUniform2f(p.inputSizeLoc, inputw, inputh));
-        
+
         GLCALL(glUniform2f(p.outputSizeLoc, outputw, outputh));
-        
+
         // Use non-standard uniforms
         //GLCALL(glUniform2f(p.origInputSizeLoc, origInputw, origInputh));
         //GLCALL(glUniform2f(p.origTextureSizeLoc, origTexw, origTexh));
@@ -559,43 +578,43 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
             inputw/texw, inputh/texh,
         };
 #else
-        
+
         int scalingFactor = 1;
         GLfloat dirtyRectLeft, dirtyRectTop, dirtyRectWidth, dirtyRectHeight;
-        
+
         dirtyRectLeft = 0;
         dirtyRectTop = 0;
         dirtyRectWidth = 1;
         dirtyRectHeight = 1;
-        
+
         const GLfloat tex_width = inputw * scalingFactor / (GLfloat) texw;
         const GLfloat tex_height = inputh * scalingFactor / (GLfloat) texh;
-        
+
         GLfloat texRectX = dirtyRectLeft * tex_width;
         GLfloat texRectY = dirtyRectTop * tex_height;
         GLfloat texRectW = dirtyRectWidth * tex_width;
         GLfloat texRectH = dirtyRectHeight * tex_height;
-        
+
         const GLfloat texCoords[] = { texRectX, texRectY, texRectX + texRectW,
             texRectY, texRectX, texRectY + texRectH, texRectX + texRectW,
             texRectY + texRectH, };
-        
+
         GLfloat vX = dirtyRectLeft * 2.0 - 1.0;
         GLfloat vY = dirtyRectTop * (-2.0) + 1.0;
         GLfloat vW = dirtyRectWidth * 2.0;
         GLfloat vH = dirtyRectHeight * 2.0;
-        
+
         const GLfloat vertices[] = { vX, vY, vX + vW, vY, vX, vY - vH, vX + vW, vY
             - vH };
 #endif
-        
+
         GLCALL(glVertexAttribPointer(p.positionAttributeLoc, 2, GL_FLOAT, false, 0, vertices));
         GLCALL(glVertexAttribPointer(p.texCoordAttributeLoc, 2, GL_FLOAT, false, 0, texCoords));
-        
+
         GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
-        
+
         GLCALL(glUseProgram(0));
-        
+
         inputw = outputw;
         inputh = outputh;
         texw = outputw;
@@ -632,17 +651,17 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         glDeleteTextures(1, &currentTexture);
     }
     GLCALL(glEnable(GL_BLEND));
-    
-    _frameCount++;
+
+    //frameCount++;
 }
 
-void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h) {
+void OSystem_IPHONE::drawTexturea(Texture *texture, GLshort x, GLshort y, GLshort w, GLshort h) {
     // First update any potentional changes.
     texture->updateTexture();
-    
+
     // Set the texture.
     GLCALL(glBindTexture(GL_TEXTURE_2D, texture->getName()));
-    
+
     // Calculate the texture rect that will be drawn.
     const GLfloat texWidth = texture->getDrawWidth();
     const GLfloat texHeight = texture->getDrawHeight();
@@ -653,7 +672,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         texWidth, texHeight
     };
     //GLCALL(glTexCoordPointer(2, GL_FLOAT, 0, texcoords)); // FIXME
-    
+
     // Calculate the screen rect where the texture will be drawn.
     const GLfloat vertices[4*2] = {
         x,     y,
@@ -662,7 +681,7 @@ void OSystem_IPHONE::drawTexture(Texture *texture, GLshort x, GLshort y, GLshort
         x + w, y + h
     };
     // GLCALL(glVertexPointer(2, GL_FLOAT, 0, vertices)); // FIXME
-    
+
     // Draw the texture to the screen buffer.
     GLCALL(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));
 }

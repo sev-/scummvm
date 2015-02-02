@@ -25,6 +25,7 @@
 
 #include "common/rect.h"
 #include "graphics/surface.h"
+#include "common/array.h"
 
 enum InputEvent {
 	kInputMouseDown,
@@ -54,7 +55,7 @@ enum UIViewSwipeDirection {
 };
 
 enum GraphicsModes {
-	kGraphicsModeLinear = 0,
+    kGraphicsModeLinear = 0,
 	kGraphicsModeNone = 1
 };
 
@@ -70,7 +71,7 @@ public:
      */
     Texture(GLenum glIntFormat, GLenum glFormat, GLenum glType, const Graphics::PixelFormat &format);
     virtual ~Texture();
-    
+
     /**
      * Destroy the OpenGL texture name.
      */
@@ -80,14 +81,14 @@ public:
      * Create the OpenGL texture name and flag the whole texture as dirty.
      */
     void recreateInternalTexture();
-    
+
     /**
      * Enable or disable linear texture filtering.
      *
      * @param enable true to enable and false to disable.
      */
     void enableLinearFiltering(bool enable);
-    
+
     /**
      * Allocate texture space for the desired dimensions. This wraps any
      * handling of requirements for POT textures.
@@ -96,87 +97,125 @@ public:
      * @param height The desired logical height.
      */
     virtual void allocate(uint width, uint height);
-    
+
     void copyRectToTexture(uint x, uint y, uint w, uint h, const void *src, uint srcPitch);
-    
+
     void fill(uint32 color);
-    
+
     void flagDirty() { _allDirty = true; }
     bool isDirty() const { return _allDirty || !_dirtyArea.isEmpty(); }
-    
+
     uint getWidth() const { return _userPixelData.w; }
     uint getHeight() const { return _userPixelData.h; }
     GLuint getTextureWidth() const { return _textureData.w; }
     GLuint getTextureHeight() const { return _textureData.h; }
     GLfloat getDrawWidth() { return (GLfloat)_userPixelData.w / _textureData.w; }
     GLfloat getDrawHeight() { return (GLfloat)_userPixelData.h / _textureData.h; }
-    
+
     /**
      * @return The hardware format of the texture data.
      */
     const Graphics::PixelFormat &getHardwareFormat() const { return _format; }
-    
+
     /**
      * @return The logical format of the texture data.
      */
     virtual Graphics::PixelFormat getFormat() const { return _format; }
-    
+
     virtual Graphics::Surface *getSurface() { return &_userPixelData; }
     virtual const Graphics::Surface *getSurface() const { return &_userPixelData; }
-    
+
     /**
      * @return Whether the texture data is using a palette.
      */
     virtual bool hasPalette() const { return false; }
-    
+
     virtual void setPalette(uint start, uint colors, const byte *palData) {}
-    
+
     virtual void *getPalette() { return 0; }
     virtual const void *getPalette() const { return 0; }
-    
+
     /**
      * Query texture related OpenGL information from the context. This only
      * queries the maximum texture size for now.
      */
     static void queryTextureInformation();
-    
+
     /**
      * @return Return the maximum texture dimensions supported.
      */
     static GLint getMaximumTextureSize() { return _maxTextureSize; }
-    
+
     virtual void updateTexture();
-    
+
     Common::Rect getDirtyArea() const;
-    
+
 public:
     GLuint getName() { return _glTexture; }
-    
+
 private:
     const GLenum _glIntFormat;
     const GLenum _glFormat;
     const GLenum _glType;
     const Graphics::PixelFormat _format;
-    
+
     GLint _glFilter;
     GLuint _glTexture;
-    
+
     Graphics::Surface _textureData;
     Graphics::Surface _userPixelData;
-    
+
     bool _allDirty;
     Common::Rect _dirtyArea;
     void clearDirty() { _allDirty = false; _dirtyArea = Common::Rect(); }
-    
+
     static GLint _maxTextureSize;
 };
 
+struct ShaderPass {
+    // GL id for shaders
+    GLuint fragment;
+    // GL id for program
+    GLuint program;
+    // Texture filter
+    GLint filter;
+
+    enum {
+        kFixed,
+        kInput,
+        kOutput,
+        kNotSet
+    } xScaleMethod, yScaleMethod;
+
+    float xScale, yScale;
+
+    // GL ids for uniforms
+    GLuint textureLoc, textureSizeLoc, inputSizeLoc, outputSizeLoc, frameCountLoc;
+
+    // GL ids for non-standard uniforms
+    GLuint origTextureLoc, origTextureSizeLoc, origInputSizeLoc;
+
+    GLint positionAttributeLoc;
+    GLint texCoordAttributeLoc;
+    GLint alphaFactorLoc;
+    GLint textureFractLoc;
+    GLint projMat;
+
+};
+
+struct ShaderInfo {
+    // GL ids for shaders
+    GLuint vertex;
+
+    Common::Array<ShaderPass> passes;
+    Common::String name;
+};
 
 struct VideoContext {
 	VideoContext() : asprectRatioCorrection(), screenWidth(), screenHeight(), overlayVisible(false),
 	                 overlayWidth(), overlayHeight(), mouseX(), mouseY(),
 	                 mouseHotspotX(), mouseHotspotY(), mouseWidth(), mouseHeight(),
-	                 mouseIsVisible(), graphicsMode(kGraphicsModeLinear), shakeOffsetY() {
+	                 mouseIsVisible(), graphicsMode(kGraphicsModeNone), shakeOffsetY() {
 	}
 
 	// Game screen state
@@ -199,6 +238,41 @@ struct VideoContext {
 	// Misc state
 	GraphicsModes graphicsMode;
 	int shakeOffsetY;
+
+    Common::Array<ShaderInfo> shaders;
+    ShaderInfo *currentShader, *defaultShader;
+
+    float projMat[16] = {0};
+
+    //
+    // Shaders
+    //
+    bool _enableShaders; ///< Set based on OpenGL version
+    bool _shadersInited;
+    uint _frameCount;
+
+    void initShaders();
+    static bool parseShader(const Common::String &filename, ShaderInfo &info);
+
+    /**
+     * Compiles shader.
+     *
+     * @param src    The source code.
+     * @param type   Either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+     *
+     * @return       The id to pass to GL functions.
+     */
+    static GLuint compileShader(const Common::String &src, GLenum type);
+
+    /**
+     * Links two shaders into a shader program.
+     *
+     * @param vertex   The vertex shader.
+     * @param fragment The fragment shader.
+     *
+     * @return         The id of the program to pass to GL functions.
+     */
+    static GLuint linkShaders(GLuint vertex, GLuint fragment);
 };
 
 struct InternalEvent {

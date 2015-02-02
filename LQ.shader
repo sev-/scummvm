@@ -24,18 +24,20 @@
 uniform vec2 rubyTextureSize;
 
 attribute vec4 vPosition;
+uniform mat4 projMat;
 attribute vec2 a_TexCoordinate;
 
     varying vec2 tc;
 
     void main() {
-      gl_Position = vPosition;
+      gl_Position = projMat * vPosition;
 
       tc = a_TexCoordinate;
     }
   ]]></vertex>
 
   <fragment filter="nearest"><![CDATA[
+      precision highp float;
 /*
       Uniforms
       - rubyTexture: texture sampler

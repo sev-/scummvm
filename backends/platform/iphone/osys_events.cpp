@@ -165,6 +165,7 @@ bool OSystem_IPHONE::handleEvent_secondMouseDown(Common::Event &event, int x, in
 	_gestureStartY = y;
 
 	if (_mouseClickAndDragEnabled) {
+        printf("EVENT_LBUTTONUP\n");
 		event.type = Common::EVENT_LBUTTONUP;
 		event.mouse.x = _videoContext->mouseX;
 		event.mouse.y = _videoContext->mouseY;
@@ -193,8 +194,10 @@ bool OSystem_IPHONE::handleEvent_secondMouseUp(Common::Event &event, int x, int 
 			event.kbd.ascii = _queuedInputEvent.kbd.ascii = Common::ASCII_ESCAPE;
 			_queuedEventTime = curTime + kQueuedInputEventDelay;
 			_lastSecondaryTap = 0;
-		} else if (!_mouseClickAndDragEnabled) {
-			//printf("Rightclick!\n");
+            printf("Sending ESC key...\n");
+
+		} else if (!_mouseClickAndDragEnabled && 0) {  //work around... it seems to make the game stack
+			printf("Rightclick!\n");
 			event.type = Common::EVENT_RBUTTONDOWN;
 			event.mouse.x = _videoContext->mouseX;
 			event.mouse.y = _videoContext->mouseY;
@@ -205,6 +208,23 @@ bool OSystem_IPHONE::handleEvent_secondMouseUp(Common::Event &event, int x, int 
 			_queuedEventTime = curTime + kQueuedInputEventDelay;
 		} else {
 			//printf("Right nothing!\n");
+
+            //printf("Right escape!\n");
+            event.type = Common::EVENT_KEYDOWN;
+            _queuedInputEvent.type = Common::EVENT_KEYUP;
+
+            event.kbd.flags = _queuedInputEvent.kbd.flags = 0;
+            event.kbd.keycode = _queuedInputEvent.kbd.keycode = Common::KEYCODE_ESCAPE;
+            event.kbd.ascii = _queuedInputEvent.kbd.ascii = Common::ASCII_ESCAPE;
+
+
+
+            _queuedEventTime = curTime + kQueuedInputEventDelay;
+            _lastSecondaryTap = 0;
+            printf("Sending ESC key...\n");
+            return true;
+
+
 			return false;
 		}
 	}
@@ -284,6 +304,7 @@ bool OSystem_IPHONE::handleEvent_mouseSecondDragged(Common::Event &event, int x,
 
 		if (absX < kMaxDeviation && vecY >= kNeededLength) {
 			// Swipe down
+            printf("Swipe down\n");
 			event.type = Common::EVENT_MAINMENU;
 			_queuedInputEvent.type = Common::EVENT_INVALID;
 
@@ -293,6 +314,7 @@ bool OSystem_IPHONE::handleEvent_mouseSecondDragged(Common::Event &event, int x,
 
 		if (absX < kMaxDeviation && -vecY >= kNeededLength) {
 			// Swipe up
+            printf("Swipe up\n");
 			_mouseClickAndDragEnabled = !_mouseClickAndDragEnabled;
 			const char *dialogMsg;
 			if (_mouseClickAndDragEnabled) {
@@ -307,6 +329,7 @@ bool OSystem_IPHONE::handleEvent_mouseSecondDragged(Common::Event &event, int x,
 
 		if (absY < kMaxDeviation && vecX >= kNeededLength) {
 			// Swipe right
+            printf("Swipe right\n");
 			_touchpadModeEnabled = !_touchpadModeEnabled;
 			const char *dialogMsg;
 			if (_touchpadModeEnabled)
@@ -321,6 +344,7 @@ bool OSystem_IPHONE::handleEvent_mouseSecondDragged(Common::Event &event, int x,
 
 		if (absY < kMaxDeviation && -vecX >= kNeededLength) {
 			// Swipe left
+            printf("Swipe left\n");
 			return false;
 		}
 	}
@@ -329,7 +353,7 @@ bool OSystem_IPHONE::handleEvent_mouseSecondDragged(Common::Event &event, int x,
 }
 
 void  OSystem_IPHONE::handleEvent_orientationChanged(int orientation) {
-	//printf("Orientation: %i\n", orientation);
+	printf("Orientation: %i\n", orientation);
 
 	ScreenOrientation newOrientation;
 	switch (orientation) {
