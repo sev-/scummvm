@@ -41,7 +41,7 @@ attribute vec2 a_TexCoordinate;
   ]]></vertex>
 
   <fragment filter="nearest"><![CDATA[
-precision highp float;
+precision mediump float;
 /*
       Uniforms
       - rubyTexture: texture sampler
@@ -49,7 +49,7 @@ precision highp float;
       - rubyInputSize: size of the actual game input screen before rendering (input resolution)
       - rubyOutputSize: size of the actual game output screen after rendering (output viewport)
     */
-    
+
     uniform sampler2D rubyTexture;
     uniform vec2 rubyTextureSize;
     uniform vec2 rubyInputSize;
