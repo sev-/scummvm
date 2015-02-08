@@ -232,8 +232,8 @@ const char *iPhone_getDocumentsDir() {
 
 		_videoContext.overlayHeight = _renderBufferWidth;
 		_videoContext.overlayWidth = _renderBufferHeight;
-		uint overlayTextureWidth = getSizeNextPOT(_videoContext.overlayHeight);
-		uint overlayTextureHeight = getSizeNextPOT(_videoContext.overlayWidth);
+		uint overlayTextureWidth = getSizeNextPOT(_videoContext.overlayWidth);
+		uint overlayTextureHeight = getSizeNextPOT(_videoContext.overlayHeight);
 
 		// Since the overlay size won't change the whole run, we can
 		// precalculate the texture coordinates for the overlay texture here
