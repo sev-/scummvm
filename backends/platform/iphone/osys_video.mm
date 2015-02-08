@@ -366,7 +366,7 @@ void OSystem_IPHONE::copyRectToOverlay(const void *buf, int pitch, int x, int y,
 
 	byte *dst = (byte *)_videoContext->overlayTexture.getBasePtr(x, y);
 	do {
-		memcpy(dst, src, w * sizeof(uint16));
+		memcpy(dst, src, w * _videoContext->overlayTexture.format.bytesPerPixel);
 		src += pitch;
 		dst += _videoContext->overlayTexture.pitch;
 	} while (--h);
