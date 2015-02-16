@@ -404,8 +404,10 @@ const char *iPhone_getDocumentsDir() {
 
 	[self updateMainSurface];
 
-	if (_videoContext.overlayVisible)
+	if (_videoContext.overlayVisible || 1)
 		[self updateOverlaySurface];
+    else
+        warning("");
 
 	if (_videoContext.mouseIsVisible)
 		[self updateMouseSurface];

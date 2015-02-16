@@ -27,6 +27,7 @@
 #include "iphone_video.h"
 
 #include "graphics/conversion.h"
+#include "gui/s_overlay.h"
 
 void OSystem_IPHONE::initVideoContext() {
 	_videoContext = [g_iPhoneViewInstance getVideoContext];
@@ -217,6 +218,8 @@ void OSystem_IPHONE::copyRectToScreen(const void *buf, int pitch, int x, int y, 
 }
 
 void OSystem_IPHONE::updateScreen() {
+    g_sOverlay.preDrawOverlayGui();
+
 	if (_dirtyRects.size() == 0 && _dirtyOverlayRects.size() == 0 && !_mouseDirty)
 		return;
 
@@ -228,9 +231,13 @@ void OSystem_IPHONE::updateScreen() {
 	_fullScreenOverlayIsDirty = false;
 
 	iPhone_updateScreen();
+
+    g_sOverlay.postDrawOverlayGui();
 }
 
 void OSystem_IPHONE::internUpdateScreen() {
+    g_sOverlay.beforeDrawTextureToScreen(&_framebuffer);
+
 	if (_mouseNeedTextureUpdate) {
 		updateMouseTexture();
 		_mouseNeedTextureUpdate = false;
@@ -300,16 +307,25 @@ void OSystem_IPHONE::setShakePos(int shakeOffset) {
 void OSystem_IPHONE::showOverlay() {
 	//printf("showOverlay()\n");
 	_videoContext->overlayVisible = true;
-	dirtyFullOverlayScreen();
-	updateScreen();
+    return;
+    dirtyFullOverlayScreen();
+
+    internUpdateScreen();
+    _mouseDirty = false;
+    _fullScreenIsDirty = false;
+    _fullScreenOverlayIsDirty = false;
+
+    iPhone_updateScreen();
+
 	[g_iPhoneViewInstance performSelectorOnMainThread:@selector(updateMouseCursorScaling) withObject:nil waitUntilDone: YES];
 	[g_iPhoneViewInstance performSelectorOnMainThread:@selector(clearColorBuffer) withObject:nil waitUntilDone: YES];
 }
 
 void OSystem_IPHONE::hideOverlay() {
-	//printf("hideOverlay()\n");
+    //printf("hideOverlay()\n");
 	_videoContext->overlayVisible = false;
-	_dirtyOverlayRects.clear();
+    return;
+    _dirtyOverlayRects.clear();
 	dirtyFullScreen();
 	[g_iPhoneViewInstance performSelectorOnMainThread:@selector(updateMouseCursorScaling) withObject:nil waitUntilDone: YES];
 	[g_iPhoneViewInstance performSelectorOnMainThread:@selector(clearColorBuffer) withObject:nil waitUntilDone: YES];
@@ -385,6 +401,8 @@ bool OSystem_IPHONE::showMouse(bool visible) {
 	bool last = _videoContext->mouseIsVisible;
 	_videoContext->mouseIsVisible = visible;
 	_mouseDirty = true;
+
+    g_sOverlay.setMouseVisibility(visible);
 
 	return last;
 }
