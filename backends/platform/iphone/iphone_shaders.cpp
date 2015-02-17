@@ -32,6 +32,8 @@
 #include "backends/graphics/graphics.h"
 #include "common/array.h"
 
+#import <sys/utsname.h>
+
 namespace {
 
     const OSystem::GraphicsMode glGraphicsModes[] = {
@@ -303,6 +305,17 @@ const char *s_defaultFragment =
 "  gl_FragColor = texture2D(rubyTexture, v_TexCoordinate);\n"
 "}\n";
 
+const char *s_lowPowerMachines[] = {
+    "i386",
+    "iPod4,1",
+    "iPod5,1",
+    "iPhone2,1",
+    "iPad2,1",
+    "iPhone3,1",
+    "iPhone4,1",
+    0
+};
+
 void VideoContext::initShaders() {
     warning("Init shaders");
 
@@ -384,8 +397,18 @@ void VideoContext::initShaders() {
         }
     }
 
+    struct utsname systemInfo;
+    uname(&systemInfo);
+
+    bool lowPower = false;
+
+    for (int m = 0; s_lowPowerMachines[m]; m++) {
+        if (!strcmp(systemInfo.machine, s_lowPowerMachines[m]))
+            lowPower = true;
+    }
+
     defaultShader = &shaders[0];
-    currentShader = &shaders[2 /* graphicsMode */ ];
+    currentShader = &shaders[lowPower ? 1 : 2 /* graphicsMode */ ];
 
     _frameCount = 0;
     //_videoContext->currentShader = &_videoContext->shaders[0];
