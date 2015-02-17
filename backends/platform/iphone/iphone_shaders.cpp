@@ -307,6 +307,7 @@ const char *s_defaultFragment =
 
 const char *s_lowPowerMachines[] = {
     "i386",
+    "x86_64",
     "iPod4,1",
     "iPod5,1",
     "iPhone2,1",
