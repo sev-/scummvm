@@ -20,7 +20,10 @@
  *
  */
 
-#include "backends/platform/iphone/debug.h"
+#include "backends/graphics/opengl/debug.h"
+#include "backends/graphics/opengl/opengl-sys.h"
+
+//#include "backends/platform/iphone/debug.h"
 
 #include "common/str.h"
 #include "common/textconsole.h"
