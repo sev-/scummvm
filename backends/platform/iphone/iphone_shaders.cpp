@@ -409,7 +409,11 @@ void VideoContext::initShaders() {
     }
 
     defaultShader = &shaders[0];
-    currentShader = &shaders[lowPower ? 1 : 2 /* graphicsMode */ ];
+    
+    if (!strcmp(systemInfo.machine, "x86_64"))
+        currentShader = defaultShader;
+    else
+        currentShader = &shaders[lowPower ? 1 : 2 /* graphicsMode */ ];
 
     _frameCount = 0;
     //_videoContext->currentShader = &_videoContext->shaders[0];
