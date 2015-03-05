@@ -31,7 +31,7 @@
 #include "graphics/surface.h"
 #include "graphics/palette.h"
 
-//#include "backends/platform/android/AndroidPortAdditions.h"
+#include "gui/s_overlay.h"
 
 namespace AGOS {
 
@@ -225,7 +225,7 @@ void AGOSEngine::vc62_fastFadeOut() {
 			fadeCount = 8;
 			fadeSize = 32;
 
-			if (/* AndroidPortAdditions::instance()->isInAutoloadState() */ 0) { // XXX
+			if (g_sOverlay.isInAutoloadState())  {
 				// If needed, completely disable fade-out
 				fadeCount = 0;
 				fadeSize = 0;

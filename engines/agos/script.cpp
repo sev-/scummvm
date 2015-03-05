@@ -30,7 +30,7 @@
 #include "agos/animation.h"
 #include "agos/agos.h"
 
-//#include "backends/platform/android/AndroidPortAdditions.h"
+#include "gui/s_overlay.h"
 
 #ifdef _WIN32_WCE
 extern bool isSmartphone();
@@ -986,7 +986,7 @@ void AGOSEngine::writeVariable(uint16 variable, uint16 contents) {
 	if (getGameType() == GType_SIMON1 && variable == SIMON_IDLE_COUNTER_VAR
 			&& contents <= 14) {
 
-		// AndroidPortAdditions::instance()->onGameIdleCounter(); // XXX
+		g_sOverlay.onGameIdleCounter();
 		contents = 15;
 	}
 

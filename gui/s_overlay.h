@@ -79,6 +79,12 @@ public:
 	void preDrawOverlayGui();
 	void postDrawOverlayGui();
 
+	void onFastFadeInStarted();
+	void onActionClicked(uint16 action);
+	bool isInAutoloadState();
+	void onGameIdleCounter();
+	void onActionChanged(uint16 action);
+
 	void init();
 
 	virtual bool notifyEvent(const Common::Event &event);
@@ -150,6 +156,8 @@ public:
 
 	void performSkip(bool anim = false);
 
+	int _currentAction;
+
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
@@ -172,7 +180,6 @@ private:
 	GUI::PicButtonWidget *_actionIcon;
 	int _actionX;
 	int _actionY;
-	int _currentAction;
 
 	void reflowHotspots();
 };

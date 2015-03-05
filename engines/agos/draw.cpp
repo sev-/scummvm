@@ -29,7 +29,7 @@
 #include "agos/agos.h"
 #include "agos/intern.h"
 
-//#include "backends/platform/android/AndroidPortAdditions.h"
+#include "gui/s_overlay.h"
 
 namespace AGOS {
 
@@ -857,7 +857,7 @@ void AGOSEngine::displayScreen() {
 void AGOSEngine::fastFadeIn() {
 
 
-	// AndroidPortAdditions::instance()->onFastFadeInStarted(); // XXX
+	g_sOverlay.onFastFadeInStarted();
 
 	if (_fastFadeInFlag & 0x8000) {
 		slowFadeIn();

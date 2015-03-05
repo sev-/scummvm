@@ -141,6 +141,41 @@ void SOverlay::setMouseVisibility(bool state) {
 	reflowLayout();
 }
 
+void SOverlay::onFastFadeInStarted() {
+	// If we reach the fast fade-in that happens when loading (after we loaded), we end auto-load state.
+	warning("onFastFadeInStarted()");
+#if 0
+	if (mAutoLoadSlot == -1) {
+		mAutoLoadState = false;
+	}
+#endif
+}
+
+bool SOverlay::isInAutoloadState() {
+	// If we are auto-loading, we disable movie fade-out, graphics, etc.
+
+	return false; // STUB
+#if 0
+	return mAutoLoadState;
+#endif
+}
+void SOverlay::onActionClicked(uint16 action) {
+//	addBigActionFadeAnimation(getActionIcon(action));
+}
+
+void SOverlay::onGameIdleCounter() {
+	// Mark a flag if we got an "idle" count while saving
+#if 0
+	if (mSaveInProgress) {
+		mGameIdleCountWhileSaving = true;
+	}
+#endif
+}
+
+void SOverlay::onActionChanged(uint16 action) {
+	_controlPanel->_currentAction = action;
+}
+
 void SOverlay::checkGameInChat(Graphics::Surface *gameSurface) {
 
 	bool gameInChat;
@@ -941,4 +976,3 @@ bool HitAreaHelper::isPointIsolated(Common::Point p, Rect *original) {
 }
 
 } // End of namespace GUI
-

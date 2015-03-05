@@ -29,6 +29,8 @@
 #include "agos/agos.h"
 #include "agos/intern.h"
 
+#include "gui/s_overlay.h"
+
 namespace AGOS {
 
 static const char *const russian_verb_names[] = {
@@ -678,7 +680,7 @@ void AGOSEngine::setVerb(HitArea *ha) {
 	_currentVerbBox = ha;
 
 	if (_currentVerbBox != NULL) {
-		// AndroidPortAdditions::instance()->onActionChanged(_currentVerbBox->id); // XXX
+		g_sOverlay.onActionChanged(_currentVerbBox->id);
 	}
 }
 
