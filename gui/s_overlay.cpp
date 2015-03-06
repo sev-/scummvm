@@ -174,6 +174,8 @@ void SOverlay::onGameIdleCounter() {
 
 void SOverlay::onActionChanged(uint16 action) {
 	_controlPanel->_currentAction = action;
+
+	_controlPanel->setMouseCursor(action);
 }
 
 void SOverlay::checkGameInChat(Graphics::Surface *gameSurface) {
@@ -692,35 +694,53 @@ void SDialog::reflowHotspots() {
 	}
 }
 
-static const char *getActionIcon(uint16 action) {
-	switch (action) {
-	case ACTION_WALK:
-		return "action_walk.png";
-	case ACTION_LOOK:
-		return "action_look.png";
-	case ACTION_OPEN:
-		return "action_open.png";
-	case ACTION_MOVE:
-		return "action_move.png";
-	case ACTION_CONSUME:
-		return "action_consume.png";
-	case ACTION_PICK:
-		return "action_pick.png";
-	case ACTION_CLOSE:
-		return "action_close.png";
-	case ACTION_USE:
-		return "action_use.png";
-	case ACTION_TALK:
-		return "action_talk.png";
-	case ACTION_REMOVE:
-		return "action_remove.png";
-	case ACTION_WEAR:
-		return "action_wear.png";
-	case ACTION_GIVE:
-		return "action_give.png";
-	default:
-		return NULL;
+static const struct Cursor {
+	int id;
+	const char *action;
+	const char *cursor;
+	int hX;
+	int hY;
+} cursors[] = {
+	{ ACTION_WALK,    "action_walk.png",    "action_walk-cursor.png", 0, 0 },
+	{ ACTION_LOOK,    "action_look.png",    "action_look-cursor.png", 0, 0 },
+	{ ACTION_OPEN,    "action_open.png",    "action_open-cursor.png", 0, 0 },
+	{ ACTION_MOVE,    "action_move.png",    "action_move-cursor.png", 0, 0 },
+	{ ACTION_CONSUME, "action_consume.png", "action_consume-cursor.png", 0, 0 },
+	{ ACTION_PICK,    "action_pick.png",    "action_pick-cursor.png", 0, 0 },
+	{ ACTION_CLOSE,   "action_close.png",   "action_close-cursor.png", 0, 0 },
+	{ ACTION_USE,     "action_use.png",     "action_use-cursor.png", 0, 0 },
+	{ ACTION_TALK,    "action_talk.png",    "action_talk-cursor.png", 0, 0 },
+	{ ACTION_REMOVE,  "action_remove.png",  "action_remove.png", 0, 0 },
+	{ ACTION_WEAR,    "action_wear.png",    "action_wear-cursro.png",    0, 0 },
+	{ ACTION_GIVE,    "action_give.png",    "action_give-cursor.png", 0, 0 },
+	{ -1, "", 0, 0 }
+};
+
+const Cursor *findCursor(int id) {
+	int n = 0;
+
+	while (cursors[n].id != -1) {
+		if (cursors[n].id == id)
+			return &cursors[n];
+		n++;
 	}
+
+	return &cursors[n]; // Null value
+}
+
+static const char *getActionIcon(uint16 action) {
+	return findCursor(action)->action;
+}
+
+void SDialog::setMouseCursor(int action) {
+	const Cursor *c = findCursor(action);
+
+	if (c->id == -1)
+		return;
+
+	const Graphics::TransparentSurface *surf = g_gui.theme()->getAImageSurface(c->cursor);
+
+	g_system->setMouseCursor(surf->getPixels(), surf->w, surf->h, c->hX, c->hY, 0, false, &surf->format);
 }
 
 void SDialog::createActionIcon(int x, int y, int action) {

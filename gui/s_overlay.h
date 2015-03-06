@@ -145,6 +145,8 @@ public:
 	bool canShowMenuButton();
 	bool canShowChatControls();
 
+	void setMouseCursor(int action);
+
 	uint16 getCurrentAction();
 
 	bool _eventProcessed;
