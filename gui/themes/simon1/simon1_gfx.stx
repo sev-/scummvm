@@ -123,6 +123,19 @@
 		<alphabitmap filename = 'action_use.png'/>
 		<alphabitmap filename = 'action_walk.png'/>
 		<alphabitmap filename = 'action_wear.png'/>
+
+		<alphabitmap filename = 'action_close-cursor.png'/>
+		<alphabitmap filename = 'action_consume-cursor.png'/>
+		<alphabitmap filename = 'action_give-cursor.png'/>
+		<alphabitmap filename = 'action_look-cursor.png'/>
+		<alphabitmap filename = 'action_move-cursor.png'/>
+		<alphabitmap filename = 'action_open-cursor.png'/>
+		<alphabitmap filename = 'action_pick-cursor.png'/>
+		<alphabitmap filename = 'action_remove-cursor.png'/>
+		<alphabitmap filename = 'action_talk-cursor.png'/>
+		<alphabitmap filename = 'action_use-cursor.png'/>
+		<alphabitmap filename = 'action_walk-cursor.png'/>
+		<alphabitmap filename = 'action_wear-cursor.png'/>
 	</bitmaps>
 
 	<fonts>
@@ -311,7 +324,7 @@
 					orientation = 'top'
 		/>
 	</drawdata>
-	
+
 	<drawdata id = 'scrollbar_button_hover' cache = 'false' resolution = 'y>399'>
 		<drawstep	func = 'roundedsq'
 					radius = '10'
@@ -334,7 +347,7 @@
 					orientation = 'top'
 		/>
 	</drawdata>
-	
+
 	<drawdata id = 'scrollbar_button_hover' cache = 'false' resolution = 'y<400'>
 		<drawstep	func = 'roundedsq'
 					radius = '10'
@@ -460,7 +473,7 @@
 					bg_color = 'xtrabrightred'
 					shadow = '2'
 		/>
-	
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -471,7 +484,7 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -482,14 +495,14 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal'
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
 	</drawdata>
-	
+
 	<drawdata id = 'popup_idle' cache = 'false' resolution ='y<400'>
 		<drawstep	func = 'roundedsq'
 					radius = '5'
@@ -499,7 +512,7 @@
 					bg_color = 'xtrabrightred'
 					shadow = '2'
 		/>
-	
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -510,7 +523,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -521,7 +534,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal'
 				vertical_align = 'center'
@@ -550,7 +563,7 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -561,14 +574,14 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal_hover'
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
 	</drawdata>
-	
+
 	<drawdata id = 'popup_disabled' cache = 'false' resolution = 'y<400'>
 		<drawstep	func = 'roundedsq'
 					radius = '5'
@@ -578,7 +591,7 @@
 					bg_color = 'xtrabrightred'
 					shadow = '2'
 		/>
-	
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -589,7 +602,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -600,7 +613,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal'
 				vertical_align = 'center'
@@ -629,7 +642,7 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -640,14 +653,14 @@
 					padding = '0, 0, 6, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal_hover'
 				vertical_align = 'center'
 				horizontal_align = 'left'
 		/>
 	</drawdata>
-	
+
 	<drawdata id = 'popup_hover' cache = 'false' resolution = 'y<400'>
 		<drawstep	func = 'roundedsq'
 					radius = '5'
@@ -657,7 +670,7 @@
 					bg_color = 'xtrabrightred'
 					shadow = '2'
 		/>
-	
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -668,7 +681,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'bottom'
 		/>
-		
+
 		<drawstep	func = 'triangle'
 					bg_color = 'shadowcolor'
 					fill = 'background'
@@ -679,7 +692,7 @@
 					padding = '0, 0, 3, 0'
 					orientation = 'top'
 		/>
-		
+
 		<text	font = 'text_default'
 				text_color = 'color_normal'
 				vertical_align = 'center'
@@ -753,7 +766,7 @@
 					file = 'buttondisable.9.png'
 					autoscale = '9patch'
 		/>
-	</drawdata> 
+	</drawdata>
 
 	<!-- Idle button -->
 	<drawdata id = 'button_idle' cache = 'false'>

@@ -710,10 +710,10 @@ static const struct Cursor {
 	{ ACTION_CLOSE,   "action_close.png",   "action_close-cursor.png", 0, 0 },
 	{ ACTION_USE,     "action_use.png",     "action_use-cursor.png", 0, 0 },
 	{ ACTION_TALK,    "action_talk.png",    "action_talk-cursor.png", 0, 0 },
-	{ ACTION_REMOVE,  "action_remove.png",  "action_remove.png", 0, 0 },
-	{ ACTION_WEAR,    "action_wear.png",    "action_wear-cursro.png",    0, 0 },
+	{ ACTION_REMOVE,  "action_remove.png",  "action_remove-cursor.png", 0, 0 },
+	{ ACTION_WEAR,    "action_wear.png",    "action_wear-cursor.png",    0, 0 },
 	{ ACTION_GIVE,    "action_give.png",    "action_give-cursor.png", 0, 0 },
-	{ -1, "", 0, 0 }
+	{ -1, "", "", 0, 0 }
 };
 
 const Cursor *findCursor(int id) {
@@ -740,7 +740,7 @@ void SDialog::setMouseCursor(int action) {
 
 	const Graphics::TransparentSurface *surf = g_gui.theme()->getAImageSurface(c->cursor);
 
-	g_system->setMouseCursor(surf->getPixels(), surf->w, surf->h, c->hX, c->hY, 0, false, &surf->format);
+	g_system->setMouseCursor(surf->getPixels(), surf->w, surf->h, c->hX, c->hY, 0, true, &surf->format);
 }
 
 void SDialog::createActionIcon(int x, int y, int action) {
