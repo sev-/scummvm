@@ -41,6 +41,28 @@ namespace GUI {
 
 #define POSTCARD_WINDOW_CHECK_Y 105
 
+// Postcard
+#define POSTCARD_WINDOW_CHECK_Y 105
+#define POSTCARD_LOAD_START_X 62
+#define POSTCARD_LOAD_START_Y 40
+#define POSTCARD_LOAD_END_X 156
+#define POSTCARD_LOAD_END_Y 70
+#define POSTCARD_SAVE_START_X 62
+#define POSTCARD_SAVE_START_Y 71
+#define POSTCARD_SAVE_END_X 156
+#define POSTCARD_SAVE_END_Y 110
+#define POSTCARD_EXIT_START_X 157
+#define POSTCARD_EXIT_START_Y 40
+#define POSTCARD_EXIT_END_X 235
+#define POSTCARD_EXIT_END_Y 71
+#define POSTCARD_CONTINUE_CLICK_X 180
+#define POSTCARD_CONTINUE_CLICK_Y 80
+#define POSTCARD_CLICK_NONE 0
+#define POSTCARD_CLICK_SAVE 1
+#define POSTCARD_CLICK_LOAD 2
+#define POSTCARD_CLICK_EXIT 3
+
+
 
 SOverlay::SOverlay() {
 	_initialized = false;
@@ -121,6 +143,41 @@ bool SOverlay::notifyEvent(const Common::Event &event) {
 	event1.mouse.y = event.mouse.y * g_system->getOverlayHeight() / g_system->getHeight();
 
 	g_gui.processEvent(event1, _controlPanel);
+
+	if (_gameInPostcard) {
+		int16 gameX = event1.mouse.x;
+		int16 gameY = event1.mouse.y;
+
+		// Check for clicks on "save", "load" or "exit"
+		uint16 postcardClick = POSTCARD_CLICK_NONE;
+
+		if (gameX >= POSTCARD_SAVE_START_X && gameY >= POSTCARD_SAVE_START_Y
+				&& gameX <= POSTCARD_SAVE_END_X && gameY <= POSTCARD_SAVE_END_Y) {
+			postcardClick = POSTCARD_CLICK_SAVE;
+		} else if (gameX >= POSTCARD_LOAD_START_X
+				&& gameY >= POSTCARD_LOAD_START_Y
+				&& gameX <= POSTCARD_LOAD_END_X && gameY <= POSTCARD_LOAD_END_Y) {
+			postcardClick = POSTCARD_CLICK_LOAD;
+		} else if (gameX >= POSTCARD_EXIT_START_X
+				&& gameY >= POSTCARD_EXIT_START_Y
+				&& gameX <= POSTCARD_EXIT_END_X && gameY <= POSTCARD_EXIT_END_Y) {
+			postcardClick = POSTCARD_CLICK_EXIT;
+		}
+
+		if (postcardClick != POSTCARD_CLICK_NONE) {
+			warning("postcardClick %d", postcardClick);
+
+			// Post a click to the "continue" button to cancel the postcard
+			pushClickEvent(POSTCARD_CONTINUE_CLICK_X, POSTCARD_CONTINUE_CLICK_Y);
+
+			// Handle the selected option
+			// TODO
+
+			return true;
+		}
+
+		return false;
+	}
 
 	return _controlPanel->_eventProcessed;
 }
