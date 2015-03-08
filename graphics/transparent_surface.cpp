@@ -49,16 +49,15 @@ static const int kRModShift = 16;//img->format.rShift;
 static const int kAModShift = 24;//img->format.aShift;
 
 #ifdef SCUMM_LITTLE_ENDIAN
-static const int kAIndex = 0;
-static const int kBIndex = 1;
-static const int kGIndex = 2;
-static const int kRIndex = 3;
-
-#else
 static const int kAIndex = 3;
 static const int kBIndex = 2;
 static const int kGIndex = 1;
 static const int kRIndex = 0;
+#else
+static const int kAIndex = 0;
+static const int kBIndex = 1;
+static const int kGIndex = 2;
+static const int kRIndex = 3;
 #endif
 
 void doBlitOpaqueFast(byte *ino, byte *outo, uint32 width, uint32 height, uint32 pitch, int32 inStep, int32 inoStep);
@@ -850,44 +849,44 @@ TransparentSurface *TransparentSurface::scale(uint16 newWidth, uint16 newHeight)
 
 TransparentSurface *TransparentSurface::convertTo(const PixelFormat &dstFormat, const byte *palette) const {
     assert(pixels);
-    
+
     TransparentSurface *surface = new TransparentSurface();
-    
+
     // If the target format is the same, just copy
     if (format == dstFormat) {
         surface->copyFrom(*this);
         return surface;
     }
-    
+
     if (format.bytesPerPixel == 0 || format.bytesPerPixel > 4)
         error("Surface::convertTo(): Can only convert from 1Bpp, 2Bpp, 3Bpp, and 4Bpp");
-    
+
     if (dstFormat.bytesPerPixel != 2 && dstFormat.bytesPerPixel != 4)
         error("Surface::convertTo(): Can only convert to 2Bpp and 4Bpp");
-    
+
     surface->create(w, h, dstFormat);
-    
+
     if (format.bytesPerPixel == 1) {
         // Converting from paletted to high color
         assert(palette);
-        
+
         for (int y = 0; y < h; y++) {
             const byte *srcRow = (const byte *)getBasePtr(0, y);
             byte *dstRow = (byte *)surface->getBasePtr(0, y);
-            
+
             for (int x = 0; x < w; x++) {
                 byte index = *srcRow++;
                 byte r = palette[index * 3];
                 byte g = palette[index * 3 + 1];
                 byte b = palette[index * 3 + 2];
-                
+
                 uint32 color = dstFormat.RGBToColor(r, g, b);
-                
+
                 if (dstFormat.bytesPerPixel == 2)
                     *((uint16 *)dstRow) = color;
                 else
                     *((uint32 *)dstRow) = color;
-                
+
                 dstRow += dstFormat.bytesPerPixel;
             }
         }
@@ -896,7 +895,7 @@ TransparentSurface *TransparentSurface::convertTo(const PixelFormat &dstFormat, 
         for (int y = 0; y < h; y++) {
             const byte *srcRow = (const byte *)getBasePtr(0, y);
             byte *dstRow = (byte *)surface->getBasePtr(0, y);
-            
+
             for (int x = 0; x < w; x++) {
                 uint32 srcColor;
                 if (format.bytesPerPixel == 2)
@@ -905,24 +904,24 @@ TransparentSurface *TransparentSurface::convertTo(const PixelFormat &dstFormat, 
                     srcColor = READ_UINT24(srcRow);
                 else
                     srcColor = READ_UINT32(srcRow);
-                
+
                 srcRow += format.bytesPerPixel;
-                
+
                 // Convert that color to the new format
                 byte r, g, b, a;
                 format.colorToARGB(srcColor, a, r, g, b);
                 uint32 color = dstFormat.ARGBToColor(a, r, g, b);
-                
+
                 if (dstFormat.bytesPerPixel == 2)
                     *((uint16 *)dstRow) = color;
                 else
                     *((uint32 *)dstRow) = color;
-                
+
                 dstRow += dstFormat.bytesPerPixel;
             }
         }
     }
-    
+
     return surface;
 }
 
