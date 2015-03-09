@@ -173,7 +173,7 @@ bool SOverlay::notifyEvent(const Common::Event &event) {
 			// Handle the selected option
 			// TODO
 
-			return true;
+			return false; //true;
 		}
 
 		return false;

@@ -41,6 +41,12 @@
 
 namespace Graphics {
 
+#ifdef SCUMM_LITTLE_ENDIAN
+static const int kAIndex = 3;
+static const int kBIndex = 2;
+static const int kGIndex = 1;
+static const int kRIndex = 0;
+
 static const int kAShift = 0;//img->format.aShift;
 
 static const int kBModShift = 0;//img->format.bShift;
@@ -48,16 +54,18 @@ static const int kGModShift = 8;//img->format.gShift;
 static const int kRModShift = 16;//img->format.rShift;
 static const int kAModShift = 24;//img->format.aShift;
 
-#ifdef SCUMM_LITTLE_ENDIAN
-static const int kAIndex = 3;
-static const int kBIndex = 2;
-static const int kGIndex = 1;
-static const int kRIndex = 0;
 #else
 static const int kAIndex = 0;
 static const int kBIndex = 1;
 static const int kGIndex = 2;
 static const int kRIndex = 3;
+
+static const int kAShift = 0;//img->format.aShift;
+
+static const int kBModShift = 0;//img->format.bShift;
+static const int kGModShift = 8;//img->format.gShift;
+static const int kRModShift = 16;//img->format.rShift;
+static const int kAModShift = 24;//img->format.aShift;
 #endif
 
 void doBlitOpaqueFast(byte *ino, byte *outo, uint32 width, uint32 height, uint32 pitch, int32 inStep, int32 inoStep);
@@ -337,7 +345,7 @@ Common::Rect TransparentSurface::blit(Graphics::Surface &target, int posX, int p
 	retSize.setWidth(0);
 	retSize.setHeight(0);
 	// Check if we need to draw anything at all
-	int ca = (color >> 24) & 0xff;
+	int ca = (color >> kAModShift) & 0xff;
 
 	if (ca == 0) {
 		return retSize;
