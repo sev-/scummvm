@@ -62,8 +62,6 @@ namespace GUI {
 #define POSTCARD_CLICK_LOAD 2
 #define POSTCARD_CLICK_EXIT 3
 
-
-
 SOverlay::SOverlay() {
 	_initialized = false;
 	_active = true;
@@ -489,6 +487,8 @@ void SOverlay::revealItems() {
 #define ACTION_BITMAP_W 90
 #define ACTION_BITMAP_H 90
 
+#define CURSOR_W 0.07
+
 enum {
 	kMenuCmd = 'MENU',
 	kRevealCmd = 'REVL',
@@ -667,6 +667,8 @@ void SDialog::reflowLayout() {
 
 	reflowHotspots();
 
+	setMouseCursor(_currentAction);
+
 	//GuiObject::reflowLayout();
 }
 
@@ -795,7 +797,8 @@ void SDialog::setMouseCursor(int action) {
 	if (c->id == -1)
 		return;
 
-	const Graphics::TransparentSurface *surf = g_gui.theme()->getAImageSurface(c->cursor);
+	int cursorW = (int)((float)g_system->getOverlayWidth() * CURSOR_W);
+	const Graphics::TransparentSurface *surf = g_gui.theme()->getAImageSurface(c->cursor)->scale(cursorW, cursorW);
 
 	g_system->setMouseCursor(surf->getPixels(), surf->w, surf->h, c->hX, c->hY, 0, true, &surf->format);
 }
