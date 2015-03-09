@@ -162,7 +162,7 @@ void doBlitAlphaBlend(byte *ino, byte *outo, uint32 width, uint32 height, uint32
 			for (uint32 j = 0; j < width; j++) {
 
 				if (in[kAIndex] != 0) {
-					out[kAIndex] = 255;
+					out[kAIndex] = MIN(in[kAIndex] + out[kAIndex], 255);
 					out[kRIndex] = ((in[kRIndex] * in[kAIndex]) + out[kRIndex] * (255 - in[kAIndex])) >> 8;
 					out[kGIndex] = ((in[kGIndex] * in[kAIndex]) + out[kGIndex] * (255 - in[kAIndex])) >> 8;
 					out[kBIndex] = ((in[kBIndex] * in[kAIndex]) + out[kBIndex] * (255 - in[kAIndex])) >> 8;
@@ -187,7 +187,7 @@ void doBlitAlphaBlend(byte *ino, byte *outo, uint32 width, uint32 height, uint32
 			for (uint32 j = 0; j < width; j++) {
 
 				uint32 ina = in[kAIndex] * ca >> 8;
-				out[kAIndex] = 255;
+				out[kAIndex] = MIN(in[kAIndex] + out[kAIndex] + ca, 255);;
 				out[kBIndex] = (out[kBIndex] * (255 - ina) >> 8);
 				out[kGIndex] = (out[kGIndex] * (255 - ina) >> 8);
 				out[kRIndex] = (out[kRIndex] * (255 - ina) >> 8);
