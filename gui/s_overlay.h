@@ -103,6 +103,7 @@ private:
 	bool _initialized;
 	bool _active;
 	HitAreaHelper *_hitAreaHelper;
+	Common::Point _prevHotspot;
 
 	void checkBottomToolbar(Graphics::Surface *gameSurface);
 	void checkGameInChat(Graphics::Surface *gameSurface);
@@ -145,7 +146,7 @@ public:
 	bool canShowMenuButton();
 	bool canShowChatControls();
 
-	void setMouseCursor(int action);
+	void setMouseCursor(int action, bool bulge = false);
 
 	uint16 getCurrentAction();
 

@@ -130,15 +130,23 @@ void SOverlay::postDrawOverlayGui() {
 }
 
 bool SOverlay::notifyEvent(const Common::Event &event) {
-	if (!_controlPanel || !_active)
-		return false;
-
-	_controlPanel->_eventProcessed = false;
-
 	Common::Event event1 = event;
 
 	event1.mouse.x = event.mouse.x * g_system->getOverlayWidth() / g_system->getWidth();
 	event1.mouse.y = event.mouse.y * g_system->getOverlayHeight() / g_system->getHeight();
+
+	Common::Point p = _hitAreaHelper->getClosestHotspot(event1.mouse.x, event1.mouse.y)._displayPoint;
+
+	if (p != _prevHotspot) {
+		_prevHotspot = p;
+
+		_controlPanel->setMouseCursor(_controlPanel->_currentAction, (p.x != 0 || p.y != 0));
+	}
+
+	if (!_controlPanel || !_active)
+		return false;
+
+	_controlPanel->_eventProcessed = false;
 
 	g_gui.processEvent(event1, _controlPanel);
 
@@ -191,6 +199,9 @@ void SOverlay::setEngine(Engine *engine) {
 }
 
 void SOverlay::setMouseVisibility(bool state) {
+	if (_mouseVisible == state)
+		return;
+
 	_mouseVisible = state;
 
 	reflowLayout();
@@ -488,6 +499,7 @@ void SOverlay::revealItems() {
 #define ACTION_BITMAP_H 90
 
 #define CURSOR_W 0.07
+#define CURSOR_BULGE 1.3
 
 enum {
 	kMenuCmd = 'MENU',
@@ -791,13 +803,13 @@ static const char *getActionIcon(uint16 action) {
 	return findCursor(action)->action;
 }
 
-void SDialog::setMouseCursor(int action) {
+void SDialog::setMouseCursor(int action, bool bulge) {
 	const Cursor *c = findCursor(action);
 
 	if (c->id == -1)
 		return;
 
-	int cursorW = (int)((float)g_system->getOverlayWidth() * CURSOR_W);
+	int cursorW = (int)((float)g_system->getOverlayWidth() * CURSOR_W * (bulge ? CURSOR_BULGE : 1.0));
 	const Graphics::TransparentSurface *surf = g_gui.theme()->getAImageSurface(c->cursor)->scale(cursorW, cursorW);
 
 	g_system->setMouseCursor(surf->getPixels(), surf->w, surf->h, c->hX, c->hY, 0, true, &surf->format);
