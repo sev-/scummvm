@@ -135,12 +135,14 @@ bool SOverlay::notifyEvent(const Common::Event &event) {
 	event1.mouse.x = event.mouse.x * g_system->getOverlayWidth() / g_system->getWidth();
 	event1.mouse.y = event.mouse.y * g_system->getOverlayHeight() / g_system->getHeight();
 
-	Common::Point p = _hitAreaHelper->getClosestHotspot(event1.mouse.x, event1.mouse.y)._displayPoint;
+	if (_controlPanel && _controlPanel->_numHotspots) {
+		Common::Point p = _hitAreaHelper->getClosestHotspot(event1.mouse.x, event1.mouse.y)._displayPoint;
 
-	if (p != _prevHotspot) {
-		_prevHotspot = p;
+		if (p != _prevHotspot) {
+			_prevHotspot = p;
 
-		_controlPanel->setMouseCursor(_controlPanel->_currentAction, (p.x != 0 || p.y != 0));
+			_controlPanel->setMouseCursor(_controlPanel->_currentAction, (p.x != 0 || p.y != 0));
+		}
 	}
 
 	if (!_controlPanel || !_active)

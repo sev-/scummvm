@@ -160,6 +160,7 @@ public:
 	void performSkip(bool anim = false);
 
 	int _currentAction;
+	uint _numHotspots;
 
 private:
 	GUI::PicButtonWidget *_menuButton;
@@ -174,7 +175,6 @@ private:
 	Common::Point _hotspots[kMaxHotspots];
 	GUI::PicButtonWidget *_hotspotButtons[kMaxHotspots];
 	bool _hotspotsOn;
-	uint _numHotspots;
 	byte _hotspotAlpha;
 	int _hotspotState;
 	int _hotspotCountdown;
