@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
    Hyllian's xBR v3.7c lq (squared) Shader
-   
+
    Copyright (C) 2011/2012 Hyllian/Jararaca - sergiogdb@gmail.com
 
    This program is free software; you can redistribute it and/or
@@ -30,20 +30,20 @@ attribute vec2 a_TexCoordinate;
     varying vec2 tc;
 
     void main() {
-      gl_Position = vPosition;
+      gl_Position = projMat * vPosition;
 
       tc = a_TexCoordinate;
     }
   ]]></vertex>
 
   <fragment filter="nearest"><![CDATA[
-      /* precision highp float; */
+      precision highp float;
 /*
       Uniforms
       - rubyTexture: texture sampler
       - rubyTextureSize: size of the texture before rendering
     */
-    
+
     uniform sampler2D rubyTexture;
     uniform vec2 rubyTextureSize;
 uniform vec2 rubyTextureFract;
@@ -53,7 +53,7 @@ uniform vec2 rubyTextureFract;
       - tc: coordinate of the texel being processed
       - xyp_[]_[]_[]: a packed coordinate for 3 areas within the texture
     */
-    
+
     varying vec2 tc;
 
     /*
@@ -89,8 +89,8 @@ uniform vec2 rubyTextureFract;
 
 
     void main() {
-    
-    
+
+
       /*
         Mask for algorhithm
         |B |C |

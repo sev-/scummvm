@@ -33,7 +33,7 @@ attribute vec2 a_TexCoordinate;
     varying vec2 tc;
 
     void main() {
-      gl_Position = vPosition;
+      gl_Position = projMat * vPosition;
 
       tc = a_TexCoordinate;
     }
@@ -41,7 +41,7 @@ attribute vec2 a_TexCoordinate;
   ]]></vertex>
 
   <fragment filter="nearest"><![CDATA[
-/* precision mediump float; */
+precision mediump float;
 /*
       Uniforms
       - rubyTexture: texture sampler

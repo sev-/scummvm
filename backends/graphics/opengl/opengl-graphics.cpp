@@ -519,7 +519,7 @@ void OpenGLGraphicsManager::warpMouse(int x, int y) {
 		if (!_overlay) {
 			return;
 		}
-	
+
 		// It might be confusing that we actually have to handle something
 		// here when the overlay is visible. This is because for very small
 		// resolutions we have a minimal overlay size and have to adjust
@@ -1074,8 +1074,8 @@ void OpenGLGraphicsManager::recalculateDisplayArea() {
 	}
 
 	// We center the screen in the middle for now.
-	_displayX = (_outputScreenWidth  - _displayWidth ) / 2; 
-	_displayY = (_outputScreenHeight - _displayHeight) / 2; 
+	_displayX = (_outputScreenWidth  - _displayWidth ) / 2;
+	_displayY = (_outputScreenHeight - _displayHeight) / 2;
 }
 
 void OpenGLGraphicsManager::updateCursorPalette() {
@@ -1175,7 +1175,15 @@ bool OpenGLGraphicsManager::parseShader(const Common::String &filename, ShaderIn
 				delete root;
 				return false;
 			}
-			const Common::String &src = t->children[0]->text;
+			Common::String &src = t->children[0]->text;
+
+#ifndef IPHONE  // HACK
+            if (src.contains("projMat *")) {
+                int pos = strstr(src.c_str(), "projMat *") - src.c_str();
+                src.erase(pos, strlen("projMat *"));
+            }
+#endif
+
 			info.vertex = compileShader(src, GL_VERTEX_SHADER);
 		} else if (t->text == "fragment") {
 			if (t->children[0]->type != Common::XMLTree::kText) {
@@ -1300,7 +1308,23 @@ bool OpenGLGraphicsManager::parseShader(const Common::String &filename, ShaderIn
 				const Common::String &value = t->attrs["outscale_y"];
 				sscanf(value.c_str(), "%f", &p.yScale);
 			}
-			const Common::String &src = t->children[0]->text;
+			Common::String &src = t->children[0]->text;
+
+#ifndef IPHONE  // HACK
+            if (src.contains("precision ")) {
+                char *p1 = strstr(src.c_str(), "precision");
+                char *p2 = strstr(p1, ";");
+
+                int pos = p1 - src.c_str();
+                src.setChar('/', pos);
+                src.setChar('*', pos + 1);
+
+                pos = p2 - src.c_str();
+                src.setChar('*', pos - 1);
+                src.setChar('/', pos);
+            }
+#endif
+
 			p.fragment = compileShader(src, GL_FRAGMENT_SHADER);
 			info.passes.push_back(p);
 		}
@@ -1336,7 +1360,7 @@ bool OpenGLGraphicsManager::parseShader(const Common::String &filename, ShaderIn
 	return true;
 }
 
-const char *s_defaultVertex = 
+const char *s_defaultVertex =
 "attribute vec4 vPosition;\n"
 "attribute vec2 a_TexCoordinate;\n"
 "varying vec2 v_TexCoordinate;\n"
@@ -1615,7 +1639,7 @@ void OpenGLGraphicsManager::drawTexture(Texture *texture, GLshort x, GLshort y, 
 			GLCALL(glGenFramebuffersEXT(1, &fbo));
 			GLCALL(glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo));
 			GLCALL(glFramebufferTexture2DEXT(
-				GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, 
+				GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
 				GL_TEXTURE_2D, outputtex, 0));
 			GLenum status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
 			if (status != GL_FRAMEBUFFER_COMPLETE_EXT) {
