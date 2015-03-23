@@ -383,6 +383,11 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 		ConfMan.set("scaling_option", 0);
 		ConfMan.set("themepath", "/Users/sev/projects/scummvm/scummvm-20th/gui/themes/");
 
+#ifdef IPHONE
+        ConfMan.set("inputmode", "touch");
+#else
+        ConfMan.set("inputmode", "hotspots");
+#endif
 
 		ConfMan.addGameDomain("simon1");
 		ConfMan.set("gameid", "simon1", "simon1");
@@ -390,7 +395,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 		ConfMan.set("platform", "windows", "simon1");
 		ConfMan.set("language", "en", "simon1");
 		ConfMan.set("path", ".", "simon1");
-
+        
 		warning("Created simon1.ini");
 
 		ConfMan.flushToDisk();

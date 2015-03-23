@@ -34,6 +34,10 @@ DECLARE_SINGLETON(GUI::SOverlay);
 
 #include "common/events.h"
 
+#include "common/config-manager.h"
+
+using Common::ConfigManager;
+
 namespace GUI {
 
 #define CHAT_MODE_CHECK_Y 199
@@ -72,13 +76,27 @@ SOverlay::SOverlay() {
 	_gameInChat = false;
 	_gameInPostcard = false;
 	_bottomToolbarAppearing = false;
-	_classicMode = false;
 
 	_selectedChatRow = 0;
 
 	_hitAreaHelper = new HitAreaHelper;
 
 	g_system->getEventManager()->getEventDispatcher()->registerObserver(this, 10, false);
+
+	Common::String inputmode = ConfMan.get("inputmode");
+
+	if (inputmode == "hotspots") {
+		_inputMode = kInputHotspots;
+	} else if (inputmode == "touch") {
+		_inputMode = kInputTouch;
+	} else {
+#ifdef IPHONE
+		_inputMode = kInputTouch;
+#else
+		_inputMode = kInputClassic;
+#endif
+	}
+
 }
 
 SOverlay::~SOverlay() {
@@ -708,7 +726,7 @@ bool SDialog::canShowMenuButton() {
 }
 
 bool SDialog::canShowChatControls() {
-	return g_sOverlay._mouseVisible && g_sOverlay._gameInChat && !g_sOverlay._classicMode;
+	return g_sOverlay._mouseVisible && g_sOverlay._gameInChat && (g_sOverlay._inputMode == kInputTouch);
 }
 
 uint16 SDialog::getCurrentAction() {
@@ -806,6 +824,9 @@ static const char *getActionIcon(uint16 action) {
 }
 
 void SDialog::setMouseCursor(int action, bool bulge) {
+	if (g_sOverlay._inputMode != kInputHotspots)
+		return;
+
 	const Cursor *c = findCursor(action);
 
 	if (c->id == -1)

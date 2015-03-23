@@ -64,6 +64,12 @@ enum {
 	kMaxHotspots = 30
 };
 
+enum {
+	kInputClassic,
+	kInputHotspots,
+	kInputTouch
+};
+
 class HitAreaHelper;
 class SDialog;
 
@@ -122,7 +128,8 @@ public:
 	bool _gameInChat;
 	bool _bottomToolbarAppearing;
 	bool _gameInPostcard;
-	bool _classicMode;
+
+	int _inputMode;
 
 	int _selectedChatRow;
 };
