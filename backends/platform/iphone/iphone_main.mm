@@ -27,10 +27,11 @@
 #include <Foundation/NSThread.h>
 
 #include "iphone_video.h"
+#import "MainViewController.h"
 
 void iphone_main(int argc, char *argv[]);
 
-@interface iPhoneMain : UIApplication {
+@interface iPhoneMain : UIResponder <UIApplicationDelegate> {
 	UIWindow *_window;
 	iPhoneView *_view;
 }
@@ -52,7 +53,7 @@ int main(int argc, char **argv) {
 		[NSAutoreleasePool alloc] init
 	];
 
-	int returnCode = UIApplicationMain(argc, argv, @"iPhoneMain", @"iPhoneMain");
+	int returnCode = UIApplicationMain(argc, argv, nil, NSStringFromClass([iPhoneMain class]));
 	[autoreleasePool release];
 	return returnCode;
 }
@@ -80,8 +81,22 @@ int main(int argc, char **argv) {
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	CGRect  rect = [[UIScreen mainScreen] bounds];
 
+    float sw = [[UIScreen mainScreen] bounds].size.width;
+    float sh = [[UIScreen mainScreen] bounds].size.height;
+
+    //iPad start in landscape support
+    rect.size.width=sh < sw ? sh : sw;
+    rect.size.height=sh > sw ? sh : sw;
+
+    NSLog(@"w=%f, h=%f", rect.size.width, rect.size.height);
+
 	// hide the status bar
 	[application setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+    [application setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+
+    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
+
+
 
 	_window = [[UIWindow alloc] initWithFrame:rect];
 	[_window retain];
@@ -89,9 +104,13 @@ int main(int argc, char **argv) {
 	_view = [[iPhoneView alloc] initWithFrame:rect];
 	_view.multipleTouchEnabled = YES;
 
-	[_window setContentView:_view];
+	//[_window setContentView:_view];
 
-  	[_window addSubview:_view];
+    MainViewController *vc = [[MainViewController alloc] init];
+    vc.view = _view;
+    _window.rootViewController=vc;
+
+    [_window addSubview:_view];
 	[_window makeKeyAndVisible];
 
 	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -143,13 +162,41 @@ int main(int argc, char **argv) {
 
 	// Workaround, need to "hide" and unhide the statusbar to properly remove it,
 	// since the Springboard has put it back without apparently flagging our application.
-	[self setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+	//[self setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
 }
 
 - (void)didRotate:(NSNotification *)notification {
 	UIDeviceOrientation screenOrientation = [[UIDevice currentDevice] orientation];
 
-	[_view deviceOrientationChanged:screenOrientation];
+    NSLog(@"screenOrientation=%ld",screenOrientation);
+
+    if  (screenOrientation==UIDeviceOrientationLandscapeRight)
+    {
+        NSLog(@"didRotate view now right!!!!!");
+
+        CGAffineTransform transform = CGAffineTransformMakeRotation(-M_PI_2*2);
+        NSLog(@"%f,%f",transform.tx,transform.ty);
+
+        _view.transform = transform;
+    }
+
+
+    if (screenOrientation==UIDeviceOrientationLandscapeLeft )
+    {
+        NSLog(@"didRotate view now left!!!!!");
+
+
+        CGAffineTransform transform = CGAffineTransformMakeRotation(0);
+
+        NSLog(@"%f,%f",transform.tx,transform.ty);
+        _view.transform = transform;
+
+    }
+
+    [[UIApplication sharedApplication] setStatusBarHidden:TRUE];
+
+
+	//[_view deviceOrientationChanged:screenOrientation];
 }
 
 - (UIWindow*) getWindow {

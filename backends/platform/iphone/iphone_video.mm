@@ -615,8 +615,8 @@ const char *iPhone_getDocumentsDir() {
 
     UIDeviceOrientation o = [[UIDevice currentDevice] orientation];
 
-    if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait)
-        o = UIDeviceOrientationLandscapeLeft;
+    //if ([[UIDevice currentDevice] orientation] == UIDeviceOrientationPortrait)
+    o = UIDeviceOrientationLandscapeLeft;
 
 	[self setUpOrientation:o width:&screenWidth height:&screenHeight];
 
@@ -661,7 +661,7 @@ const char *iPhone_getDocumentsDir() {
 
 	float overlayPortraitRatio;
     //yinon
-	if ((_orientation == UIDeviceOrientationLandscapeLeft || _orientation ==  UIDeviceOrientationLandscapeRight) && 1) {
+	if (1 || (_orientation == UIDeviceOrientationLandscapeLeft || _orientation ==  UIDeviceOrientationLandscapeRight) && 1) {
 		GLfloat gameScreenRatio = adjustedWidth / adjustedHeight;
 		GLfloat screenRatio = (GLfloat)screenWidth / (GLfloat)screenHeight;
 

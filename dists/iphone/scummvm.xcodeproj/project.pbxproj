@@ -136,6 +136,7 @@
 		8CD1ED881262030100FA198C /* toon.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CD1ED871262030100FA198C /* toon.dat */; };
 		8CD1ED891262030100FA198C /* toon.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CD1ED871262030100FA198C /* toon.dat */; };
 		8CD1ED8A1262030100FA198C /* toon.dat in Resources */ = {isa = PBXBuildFile; fileRef = 8CD1ED871262030100FA198C /* toon.dat */; };
+		C6793EFC1ABFF6360088A113 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C6793EFB1ABFF6360088A113 /* MainViewController.m */; };
 		C6BD2EE719F1C92300855972 /* dotmatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BD2ED919F1C92300855972 /* dotmatrix.cpp */; };
 		C6BD2EE819F1C92300855972 /* edge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BD2EDB19F1C92300855972 /* edge.cpp */; };
 		C6BD2EE919F1C92300855972 /* hq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6BD2EDD19F1C92300855972 /* hq.cpp */; };
@@ -1679,6 +1680,8 @@
 		8CD80CDE126272A0001C6C87 /* teenagent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = teenagent.cpp; sourceTree = "<group>"; };
 		8CD80CDF126272A0001C6C87 /* teenagent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = teenagent.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C6793EFA1ABFF6360088A113 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		C6793EFB1ABFF6360088A113 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		C6BD2ED919F1C92300855972 /* dotmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dotmatrix.cpp; sourceTree = "<group>"; };
 		C6BD2EDA19F1C92300855972 /* dotmatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dotmatrix.h; sourceTree = "<group>"; };
 		C6BD2EDB19F1C92300855972 /* edge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = edge.cpp; sourceTree = "<group>"; };
@@ -5553,6 +5556,8 @@
 		DFE471D70D81F4E700B6D1FB /* iphone */ = {
 			isa = PBXGroup;
 			children = (
+				C6793EFA1ABFF6360088A113 /* MainViewController.h */,
+				C6793EFB1ABFF6360088A113 /* MainViewController.m */,
 				52620D561A0111D4005682CE /* debug.cpp */,
 				52620D571A0111D4005682CE /* debug.h */,
 				1692AE3714F3865200889F28 /* iphone_common.h */,
@@ -6287,6 +6292,7 @@
 				C6BD2FCD19F1CAF000855972 /* codec.cpp in Sources */,
 				C6BD2F3A19F1CA5700855972 /* rendermode.cpp in Sources */,
 				52620D581A0111D4005682CE /* debug.cpp in Sources */,
+				C6793EFC1ABFF6360088A113 /* MainViewController.m in Sources */,
 				16B7A9C314EBF5E500FA35FF /* util.cpp in Sources */,
 				C6BD2FF919F1CC1F00855972 /* BReverbModel.cpp in Sources */,
 				C6BD2FDB19F1CAF000855972 /* rpza.cpp in Sources */,

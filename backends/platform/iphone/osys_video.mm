@@ -344,7 +344,7 @@ void OSystem_IPHONE::grabOverlay(void *buf, int pitch) {
 	byte *dst = (byte *)buf;
 	const byte *src = (const byte *)_videoContext->overlayTexture.getPixels();
 	do {
-		memcpy(dst, src, _videoContext->overlayWidth * sizeof(uint16));
+		memcpy(dst, src, _videoContext->overlayWidth * _videoContext->overlayTexture.format.bytesPerPixel);
 		src += _videoContext->overlayTexture.pitch;
 		dst += pitch;
 	} while (--h);
