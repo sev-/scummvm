@@ -89,11 +89,13 @@ SOverlay::SOverlay() {
 		_inputMode = kInputHotspots;
 	} else if (inputmode == "touch") {
 		_inputMode = kInputTouch;
+	} else if (inputmode == "classic") {
+		_inputMode = kInputClassic;
 	} else {
 #ifdef IPHONE
 		_inputMode = kInputTouch;
 #else
-		_inputMode = kInputClassic;
+		_inputMode = kInputHotspots;
 #endif
 	}
 
