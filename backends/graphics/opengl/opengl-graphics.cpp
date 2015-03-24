@@ -1312,8 +1312,8 @@ bool OpenGLGraphicsManager::parseShader(const Common::String &filename, ShaderIn
 
 #ifndef IPHONE  // HACK
             if (src.contains("precision ")) {
-                char *p1 = strstr(src.c_str(), "precision");
-                char *p2 = strstr(p1, ";");
+                const char *p1 = strstr(src.c_str(), "precision");
+                const char *p2 = strstr(p1, ";");
 
                 int pos = p1 - src.c_str();
                 src.setChar('/', pos);
