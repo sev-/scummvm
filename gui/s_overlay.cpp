@@ -36,6 +36,11 @@ DECLARE_SINGLETON(GUI::SOverlay);
 
 #include "common/config-manager.h"
 
+#include "gui/animation/AlphaAnimation.h"
+#include "gui/animation/AccelerateInterpolator.h"
+#include "gui/animation/DeccelerateInterpolator.h"
+#include "gui/animation/SequenceAnimationComposite.h"
+
 using Common::ConfigManager;
 
 namespace GUI {
@@ -121,7 +126,9 @@ void SOverlay::preDrawOverlayGui() {
 		g_gui.theme()->clearAll();
 		g_gui.theme()->openDialog(true, GUI::ThemeEngine::kShadingNone);
 
-		_controlPanel->updateHotspots();
+		_controlPanel->drawAnimations();
+
+		//_controlPanel->updateHotspots();
 
 		_controlPanel->drawDialog();
 		g_gui.theme()->finishBuffering();
@@ -523,6 +530,13 @@ void SOverlay::revealItems() {
 #define CURSOR_W 0.07
 #define CURSOR_BULGE 1.3
 
+#define HOTSPOT_RECT_END_ALPHA 0.7
+
+#define REVEAL_ITEMS_FADEIN_DURATION 100
+#define REVEAL_ITEMS_STAY_DURATION 2000
+#define REVEAL_ITEMS_FADEOUT_DURATION 500
+
+
 enum {
 	kMenuCmd = 'MENU',
 	kRevealCmd = 'REVL',
@@ -581,6 +595,8 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_hotspotAlpha = 0;
 	_hotspotState = 0;
 	_hotspotCountdown = 0;
+
+	mLastTimeRevealItemsPressed = 0;
 
 	for (int i = 0; i < kMaxHotspots; i++)
 		_hotspotButtons[i] = 0;
@@ -786,6 +802,215 @@ void SDialog::reflowHotspots() {
 		_actionIcon->resize(ax, ay, SMALL_ACTION_ICON_W * ow, actionHeight * oh);
 	}
 }
+
+void SDialog::performRevealItems(HitAreaHelper *hitAreaHelper) {
+	mLastTimeRevealItemsPressed = g_system->getMillis();
+
+	// Obtain hotspots
+	uint16 count = hitAreaHelper->getAllInteractionHotspots(_hotspots, kMaxHotspots);
+
+	Graphics::TransparentSurface *currentIndicator = 0; //getBitmap("touch_indicator.png");
+
+	// Draw indicators on all of them with alphas
+	for (int i = 0; i < count; ++i) {
+
+		DrawablePtr hotspotDrawable(new Drawable), actionDrawable(new Drawable);
+		DrawablePtr hotspotRectDrawable;
+
+		generateHotspotIndicatorDrawables(currentIndicator, _hotspots[i], NULL,
+				hotspotDrawable, actionDrawable, hotspotRectDrawable);
+
+		if (hotspotRectDrawable.get() != NULL) {
+
+			// Create a fade in animation
+			Common::SharedPtr<AlphaAnimation> fadeInAnimation(new AlphaAnimation());
+			fadeInAnimation->setDuration(REVEAL_ITEMS_FADEIN_DURATION);
+			fadeInAnimation->setStartAlpha(0);
+			fadeInAnimation->setEndAlpha(HOTSPOT_RECT_END_ALPHA);
+			fadeInAnimation->setInterpolator(InterpolatorPtr(new DeccelerateInterpolator));
+
+			// Create a stay animation
+			Common::SharedPtr<AlphaAnimation> stayAnimation(new AlphaAnimation());
+			stayAnimation->setDuration(REVEAL_ITEMS_STAY_DURATION);
+			stayAnimation->setStartAlpha(HOTSPOT_RECT_END_ALPHA);
+			stayAnimation->setEndAlpha(HOTSPOT_RECT_END_ALPHA);
+
+			// Create a fade out animation
+			Common::SharedPtr<AlphaAnimation> fadeOutAnimation(new AlphaAnimation());
+			fadeOutAnimation->setDuration(REVEAL_ITEMS_FADEOUT_DURATION);
+			fadeOutAnimation->setStartAlpha(HOTSPOT_RECT_END_ALPHA);
+			fadeOutAnimation->setEndAlpha(0);
+			fadeOutAnimation->setInterpolator(InterpolatorPtr(new AccelerateInterpolator));
+
+			// Create a sequence
+			Common::SharedPtr<SequenceAnimationComposite> revealItemsAnimation(new SequenceAnimationComposite);
+			revealItemsAnimation->addAnimation(fadeInAnimation);
+			revealItemsAnimation->addAnimation(stayAnimation);
+			revealItemsAnimation->addAnimation(fadeOutAnimation);
+			revealItemsAnimation->start(g_system->getMillis());
+
+			hotspotRectDrawable->setAnimation(revealItemsAnimation);
+			mAnimatedDrawables.push_back(hotspotRectDrawable);
+		}
+
+		if (hotspotDrawable.get() != NULL) {
+			// Create a fade in animation
+			Common::SharedPtr<AlphaAnimation> fadeInAnimation(new AlphaAnimation());
+			fadeInAnimation->setDuration(REVEAL_ITEMS_FADEIN_DURATION);
+			fadeInAnimation->setStartAlpha(0);
+			fadeInAnimation->setEndAlpha(1);
+			fadeInAnimation->setInterpolator(InterpolatorPtr(new DeccelerateInterpolator));
+
+			// Create a stay animation
+			Common::SharedPtr<AlphaAnimation> stayAnimation(new AlphaAnimation());
+			stayAnimation->setDuration(REVEAL_ITEMS_STAY_DURATION);
+			stayAnimation->setStartAlpha(1);
+			stayAnimation->setEndAlpha(1);
+
+			// Create a fade out animation
+			Common::SharedPtr<AlphaAnimation> fadeOutAnimation(new AlphaAnimation());
+			fadeOutAnimation->setDuration(REVEAL_ITEMS_FADEOUT_DURATION);
+			fadeOutAnimation->setStartAlpha(1);
+			fadeOutAnimation->setEndAlpha(0);
+			fadeOutAnimation->setInterpolator(InterpolatorPtr(new AccelerateInterpolator));
+
+			// Create a sequence
+			Common::SharedPtr<SequenceAnimationComposite> revealItemsAnimation(new SequenceAnimationComposite);
+			revealItemsAnimation->addAnimation(fadeInAnimation);
+			revealItemsAnimation->addAnimation(stayAnimation);
+			revealItemsAnimation->addAnimation(fadeOutAnimation);
+			revealItemsAnimation->start(g_system->getMillis());
+
+			hotspotDrawable->setAnimation(revealItemsAnimation);
+			mAnimatedDrawables.push_back(hotspotDrawable);
+		}
+	}
+}
+
+void SDialog::generateHotspotIndicatorDrawables(
+		Graphics::TransparentSurface *bitmap, Common::Point &hotspot, Graphics::TransparentSurface *action,
+		DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
+		DrawablePtr hotspotRectDrawable, float alpha) {
+
+	int16 x = hotspot.mDisplayPoint.x;
+	int16 y = hotspot.mDisplayPoint.y;
+
+	if (hotspotDrawable.get() != NULL) {
+		// Draw an indicator on the center of the target
+		// (calculate the starting corrdinates for drawing so that the bitmap is centered on the hotspot)
+		hotspotDrawable->setWidth(TOUCH_INDICATOR_W);
+
+		// getWidth might return a dynamic value, so we use it
+		float indicatorHeight = hotspotDrawable->getWidth() * bitmap->getRatio()
+				* mDisplayRatio;
+		float hotspotPositionX = (x / (float) GAME_SCREEN_WIDTH);
+		float hotspotPositionY;
+
+		hotspotPositionY = ((y + (mClassicMode ? 0 : BLACK_PANEL_HEIGHT))
+					/ (float) GAME_SCREEN_HEIGHT);
+
+		// Adjust to transformation if needed
+#ifdef MAINTAIN_ASPECT_RATIO
+		hotspotPositionX = adjustToDrawTransformationX(hotspotPositionX);
+		hotspotPositionY = adjustToDrawTransformationY(hotspotPositionY);
+#endif
+
+		hotspotDrawable->setPositionX(hotspotPositionX);
+		hotspotDrawable->setPositionY(hotspotPositionY);
+		hotspotDrawable->setShouldCenter(true);
+		hotspotDrawable->setAlpha(alpha);
+		hotspotDrawable->setBitmap(bitmap);
+
+		if (action != NULL) {
+			// Draw action icon
+
+			float actionY, actionWidth;
+			// In Simon, Y position is above the hotspot
+			float actionHeight = SMALL_ACTION_ICON_W * action->getRatio()
+					* mDisplayRatio;
+			actionY = hotspotPositionY - 0.01 - actionHeight;
+			if (actionY
+					< (BLACK_PANEL_HEIGHT / (float) GAME_SCREEN_HEIGHT)) {
+				// If we're on the upper part, switch Y value to be below the indicator
+				actionY = hotspotPositionY + indicatorHeight + 0.06;
+			}
+
+			actionWidth = SMALL_ACTION_ICON_W;
+
+			float actionX = (x / (float) GAME_SCREEN_WIDTH) - actionWidth / 2;
+
+#ifdef MAINTAIN_ASPECT_RATIO
+			actionX = adjustToDrawTransformationX(actionX);
+			actionY = adjustToDrawTransformationY(actionY);
+#endif
+
+			// X position is in the center
+			actionDrawable->setPositionX(actionX);
+			actionDrawable->setPositionY(actionY);
+			actionDrawable->setWidth(actionWidth);
+			actionDrawable->setBitmap(action);
+		}
+	}
+
+	if (hotspotRectDrawable != NULL) {
+
+		float rectPositionX = hotspot.mRect.left / (float) GAME_SCREEN_WIDTH;
+		float rectPositionY = hotspot.mRect.top / (float) GAME_SCREEN_HEIGHT;
+		float rectWidth = hotspot.mRect.width() / (float) GAME_SCREEN_WIDTH;
+		float rectHeight = hotspot.mRect.height() / (float) GAME_SCREEN_HEIGHT;
+
+#ifdef MAINTAIN_ASPECT_RATIO
+		rectPositionX = adjustToDrawTransformationX(rectPositionX);
+		rectPositionY = adjustToDrawTransformationY(rectPositionY);
+		rectWidth *= mDrawTransformationWidth;
+		rectHeight *= mDrawTransformationHeight;
+#endif
+
+		hotspotRectDrawable->setPositionX(rectPositionX);
+		hotspotRectDrawable->setPositionY(rectPositionY);
+		hotspotRectDrawable->setWidth(rectWidth);
+		hotspotRectDrawable->setHeight(rectHeight);
+		hotspotRectDrawable->setAlpha(alpha);
+		hotspotRectDrawable->setBitmap(mDummyBitmap);
+	}
+
+}
+
+void SDialog::drawAnimations() {
+	uint32 time = g_system->getMillis();
+
+	Common::List<DrawablePtr>::iterator it = mAnimatedDrawables.begin();
+	while (it != mAnimatedDrawables.end()) {
+		DrawablePtr drawable = *it;
+		drawable->updateAnimation(time);
+
+		if (drawable->isAnimationFinished()) {
+			// If animation was finished, erase element
+			mAnimatedDrawables.erase(it++);
+		} else {
+			// Draw the element
+			drawAnimationDrawable(drawable);
+
+			++it;
+		}
+	}
+}
+
+void SDialog::drawAnimationDrawable(const DrawablePtr drawable) {
+
+	float finalPositionX = drawable->getPositionX();
+	float finalPositionY = drawable->getPositionY();
+
+	if (drawable->shouldCenter()) {
+		finalPositionX -= drawable->getWidth() / 2;
+		finalPositionY -= drawable->getHeight() / 2;
+	}
+
+	//drawBitmapAsGlTexture(drawable->getBitmap(), finalPositionX, finalPositionY,
+	//		drawable->getWidth(), drawable->getHeight(), drawable->getAlpha(),
+	//		drawable->getProgram());
+}
+
 
 static const struct Cursor {
 	int id;

@@ -35,6 +35,8 @@
 #include "gui/dialog.h"
 #include "gui/widget.h"
 
+#include "gui/animation/Drawable.h"
+
 #include "common/events.h"
 
 #include "engines/engine.h"
@@ -169,6 +171,8 @@ public:
 	int _currentAction;
 	uint _numHotspots;
 
+	void drawAnimations();
+
 private:
 	GUI::PicButtonWidget *_menuButton;
 	GUI::PicButtonWidget *_revealButton;
@@ -186,12 +190,24 @@ private:
 	int _hotspotState;
 	int _hotspotCountdown;
 
+	long mLastTimeRevealItemsPressed;
+
+	Common::List<DrawablePtr> mAnimatedDrawables;
+
 	void createActionIcon(int x, int y, int action);
 	GUI::PicButtonWidget *_actionIcon;
 	int _actionX;
 	int _actionY;
 
 	void reflowHotspots();
+
+	void performRevealItems(HitAreaHelper *hitAreaHelper);
+	void drawAnimationDrawable(const DrawablePtr drawable);
+	void generateHotspotIndicatorDrawables(
+			Graphics::TransparentSurface *bitmap, Common::Point &hotspot, Graphics::TransparentSurface *action,
+			DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
+			DrawablePtr hotspotRectDrawable, float alpha);
+
 };
 
 struct Hotspot {
