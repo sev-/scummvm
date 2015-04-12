@@ -25,6 +25,14 @@ MODULE_OBJS := \
 	ThemeLayout.o \
 	ThemeParser.o \
 	Tooltip.o \
+	animation/AlphaAnimation.o \
+	animation/Animation.o \
+	animation/Drawable.o \
+	animation/ParallelAnimation.o \
+	animation/RepeatAnimationWrapper.o \
+	animation/ScaleAnimation.o \
+	animation/SequenceAnimationComposite.o \
+	animation/WaitForConditionAnimation.o \
 	widget.o \
 	widgets/editable.o \
 	widgets/edittext.o \
