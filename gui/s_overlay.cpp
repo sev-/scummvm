@@ -888,12 +888,12 @@ void SDialog::performRevealItems(HitAreaHelper *hitAreaHelper) {
 }
 
 void SDialog::generateHotspotIndicatorDrawables(
-		Graphics::TransparentSurface *bitmap, Common::Point &hotspot, Graphics::TransparentSurface *action,
+		Graphics::TransparentSurface *bitmap, Hotspot &hotspot, Graphics::TransparentSurface *action,
 		DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
 		DrawablePtr hotspotRectDrawable, float alpha) {
 
-	int16 x = hotspot.mDisplayPoint.x;
-	int16 y = hotspot.mDisplayPoint.y;
+	int16 x = hotspot._displayPoint.x;
+	int16 y = hotspot._displayPoint.y;
 
 	if (hotspotDrawable.get() != NULL) {
 		// Draw an indicator on the center of the target
@@ -952,12 +952,12 @@ void SDialog::generateHotspotIndicatorDrawables(
 		}
 	}
 
-	if (hotspotRectDrawable != NULL) {
+	if (hotspotRectDrawable.get() != NULL) {
 
-		float rectPositionX = hotspot.mRect.left / (float) GAME_SCREEN_WIDTH;
-		float rectPositionY = hotspot.mRect.top / (float) GAME_SCREEN_HEIGHT;
-		float rectWidth = hotspot.mRect.width() / (float) GAME_SCREEN_WIDTH;
-		float rectHeight = hotspot.mRect.height() / (float) GAME_SCREEN_HEIGHT;
+		float rectPositionX = hotspot._rect.left / (float) GAME_SCREEN_WIDTH;
+		float rectPositionY = hotspot._rect.top / (float) GAME_SCREEN_HEIGHT;
+		float rectWidth = hotspot._rect.width() / (float) GAME_SCREEN_WIDTH;
+		float rectHeight = hotspot._rect.height() / (float) GAME_SCREEN_HEIGHT;
 
 #ifdef MAINTAIN_ASPECT_RATIO
 		rectPositionX = adjustToDrawTransformationX(rectPositionX);
@@ -1170,7 +1170,7 @@ void SDialog::performSkip(bool showAnimation) {
 
 HitAreaHelper::HitAreaHelper()
 		: _interactionHitAreaCount(0) {
-	_interactionHitAreas = new Common::Rect[HIT_AREA_MAX];
+	_interactionHitAreas = new Hotspot[HIT_AREA_MAX];
 	_chatHitAreas = new Common::Rect[HIT_AREA_MAX];
 }
 
@@ -1192,14 +1192,17 @@ uint16 HitAreaHelper::getAllChatHotspots(Common::Point *hotspots, uint16 max) {
 	return maxCount;
 }
 
-uint16 HitAreaHelper::getAllInteractionHotspots(Common::Point *hotspots, uint16 max) {
+uint16 HitAreaHelper::getAllInteractionHotspots(Hotspot *hotspots, uint16 max) {
 	updateInteractionHitAreas();
 
 	int maxCount = MIN(_interactionHitAreaCount, max);
 
 	for (int i = 0; i < maxCount; ++i) {
-		hotspots[i].x = (_interactionHitAreas[i].right + _interactionHitAreas[i].left) / 2;
-		hotspots[i].y = (_interactionHitAreas[i].bottom + _interactionHitAreas[i].top) / 2;
+		hotspots[i] = _interactionHitAreas[i];
+		hotspots[i]._displayPoint.x = (_interactionHitAreas[i]._rect.right
+				+ _interactionHitAreas[i]._rect.left) / 2;
+		hotspots[i]._displayPoint.y = (_interactionHitAreas[i]._rect.bottom
+				+ _interactionHitAreas[i]._rect.top) / 2;
 	}
 
 	return maxCount;
@@ -1210,27 +1213,37 @@ Hotspot HitAreaHelper::getClosestHotspot(int x, int y) {
 
 	Rect *resultRect = NULL;
 
+	Hotspot* hotspotPtr = NULL;
+
 	// First, check if we're inside one of the hit areas
-	for (int i = 0; i < _interactionHitAreaCount; ++i) {
-		if (x >= _interactionHitAreas[i].left && y >= _interactionHitAreas[i].top
-				&& x <= _interactionHitAreas[i].right && y <= _interactionHitAreas[i].bottom) {
-			resultRect = _interactionHitAreas + i;
+	for (int i = 0; hotspotPtr == NULL && i < _interactionHitAreaCount; ++i) {
+
+		//		LOGD("HitAreaHelper::getClosestHotspot: hit area %s",
+		//				_interactionHitAreas[i].debugStr());
+
+		if (_interactionHitAreas[i]._rect.contains(x, y)) {
+
+			//	LOGD("HitAreaHelper::getClosestHitArea: inside %d", i);
+			// We're inside this hit area, return result
+			hotspotPtr = _interactionHitAreas + i;
+
 		}
 	}
-
-	if (resultRect == NULL) {
+	if (hotspotPtr == NULL) {
 		// If not, check for the smallest distance that is below the threshold
 		int closestDistanceSquare = DISTANCE_THRESHOLD * DISTANCE_THRESHOLD;
-
-		for (int i = 0; i < _interactionHitAreaCount; ++i) {
-			int centerX = (_interactionHitAreas[i].right + _interactionHitAreas[i].left) / 2;
-			int centerY = (_interactionHitAreas[i].bottom + _interactionHitAreas[i].top) / 2;
+		for (int i = 0; i < actionHitAreaCount; ++i) {
+			int centerX = (_interactionHitAreas[i]._rect.right
+					+ _interactionHitAreas[i]._rect.left) / 2;
+			int centerY = (_interactionHitAreas[i]._rect.bottom
+					+ _interactionHitAreas[i]._rect.top) / 2;
 			int dx = abs(x - centerX);
 			int dy = abs(y - centerY);
 			int distanceSquare = dx * dx + dy * dy;
 
 			if (distanceSquare <= closestDistanceSquare) {
-				resultRect = _interactionHitAreas + i;
+				//	LOGD("HitAreaHelper::getClosestHitArea: distanceSquare %d", distanceSquare);
+				hotspotPtr = _interactionHitAreas + i;
 				closestDistanceSquare = distanceSquare;
 			}
 		}
@@ -1239,48 +1252,53 @@ Hotspot HitAreaHelper::getClosestHotspot(int x, int y) {
 	Hotspot resultHotspot;
 
 	// Return the middle point, a corner (if there's a clash in the middle) or 0 point
-	if (resultRect != NULL) {
+	if (hotspotPtr != NULL) {
+
+		resultHotspot = *hotspotPtr;
+
 		// Middle
 		resultHotspot._displayPoint = Common::Point(
-				(resultRect->left + resultRect->right) / 2,
-				(resultRect->top + resultRect->bottom) / 2);
-		resultHotspot._cursorPoint = resultHotspot._displayPoint;
+				(resultHotspot._rect.left + resultHotspot._rect.right) / 2,
+				(resultHotspot._rect.top + resultHotspot._rect.bottom) / 2);
 
-		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+		if (resultHotspot._cursorPoint != Common::Point(0, 0)) {
+			// If the engine already defined a cursor point, don't calculate it
+			return resultHotspot;
+		}
+
+		resultHotspot._cursorPoint = resultHotspot._displayPoint;
+		if (isPointIsolated(resultHotspot._cursorPoint, resultHotspot._rect)) {
 			return resultHotspot;
 		}
 
 		// top left
-		resultHotspot._cursorPoint = Common::Point(resultRect->left + 1,
-				resultRect->top + 1);
-
-		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+		resultHotspot._cursorPoint = Common::Point(resultHotspot._rect.left + 1,
+				resultHotspot._rect.top + 1);
+		if (isPointIsolated(resultHotspot._cursorPoint, resultHotspot._rect)) {
 			return resultHotspot;
 		}
 
 		// top right
-		resultHotspot._cursorPoint = Common::Point(resultRect->right - 1,
-				resultRect->top + 1);
-
-		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+		resultHotspot._cursorPoint = Common::Point(resultHotspot._rect.right - 1,
+				resultHotspot._rect.top + 1);
+		if (isPointIsolated(resultHotspot._cursorPoint, resultHotspot._rect)) {
 			return resultHotspot;
 		}
 
 		// bottom left
-		resultHotspot._cursorPoint = Common::Point(resultRect->left + 1,
-				resultRect->bottom - 1);
-
-		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+		resultHotspot._cursorPoint = Common::Point(resultHotspot._rect.left + 1,
+				resultHotspot._rect.bottom - 1);
+		if (isPointIsolated(resultHotspot._cursorPoint, resultHotspot._rect)) {
 			return resultHotspot;
 		}
 
 		// bottom right
-		resultHotspot._cursorPoint = Common::Point(resultRect->right - 1,
-				resultRect->bottom - 1);
-
-		if (isPointIsolated(resultHotspot._cursorPoint, resultRect)) {
+		resultHotspot._cursorPoint = Common::Point(resultHotspot._rect.right - 1,
+				resultHotspot._rect.bottom - 1);
+		if (isPointIsolated(resultHotspot._cursorPoint, resultHotspot._rect)) {
 			return resultHotspot;
 		}
+
 		// Use middle anyway
 		resultHotspot._cursorPoint = resultHotspot._displayPoint;
 
@@ -1300,13 +1318,15 @@ void HitAreaHelper::updateChatHitAreas() {
 	g_engine->getChatHitAreas(_chatHitAreas, _chatHitAreaCount);
 }
 
-bool HitAreaHelper::isPointIsolated(Common::Point p, Rect *original) {
+bool HitAreaHelper::isPointIsolated(Common::Point p, Rect original) {
 	// Check if the point is inside another hit area beside the original
 	for (int i = 0; i < _interactionHitAreaCount; ++i) {
-		if (_interactionHitAreas + i != original) {
-			if (p.x >= _interactionHitAreas[i].left && p.y >= _interactionHitAreas[i].top
-					&& p.x <= _interactionHitAreas[i].right
-					&& p.y <= _interactionHitAreas[i].bottom) {
+
+		if (_interactionHitAreas[i]._rect != original) {
+			if (p.x >= _interactionHitAreas[i]._rect.left
+					&& p.y >= _interactionHitAreas[i]._rect.top
+					&& p.x <= _interactionHitAreas[i]._rect.right
+					&& p.y <= _interactionHitAreas[i]._rect.bottom) {
 
 				// Clash detected
 				return false;

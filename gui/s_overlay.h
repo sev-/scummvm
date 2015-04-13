@@ -74,6 +74,7 @@ enum {
 
 class HitAreaHelper;
 class SDialog;
+struct Hotspot;
 
 class SOverlay : public Common::Singleton<SOverlay>, public Common::EventObserver {
 	friend class Common::Singleton<SingletonBaseType>;
@@ -204,7 +205,7 @@ private:
 	void performRevealItems(HitAreaHelper *hitAreaHelper);
 	void drawAnimationDrawable(const DrawablePtr drawable);
 	void generateHotspotIndicatorDrawables(
-			Graphics::TransparentSurface *bitmap, Common::Point &hotspot, Graphics::TransparentSurface *action,
+			Graphics::TransparentSurface *bitmap, Hotspot &hotspot, Graphics::TransparentSurface *action,
 			DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
 			DrawablePtr hotspotRectDrawable, float alpha);
 
@@ -213,18 +214,23 @@ private:
 struct Hotspot {
 	Common::Point _displayPoint;
 	Common::Point _cursorPoint;
+	Common::Rect _rect;
 
-	Hotspot() {}
+	Hotspot() : _cursorPoint(0,0) {
+	}
 
-	Hotspot(Common::Point display, Common::Point cursor)
-			: _displayPoint(display), _cursorPoint(cursor) {
+	Hotspot(Common::Rect rect) : _rect(rect), _cursorPoint(0,0) {
+		}
+
+	Hotspot(Common::Point display, Common::Point cursor, Common::Rect rect)
+			: _displayPoint(display), _cursorPoint(cursor), _rect(rect) {
 	}
 
 	void clear() {
 		_displayPoint = Common::Point();
 		_cursorPoint = Common::Point();
+		_rect = Common::Rect();
 	}
-
 };
 
 class HitAreaHelper {
@@ -237,19 +243,19 @@ public:
 	 */
 	Hotspot getClosestHotspot(int x, int y);
 
-	uint16 getAllInteractionHotspots(Common::Point *hotspots, uint16 max);
+	uint16 getAllInteractionHotspots(Hotspot *hotspots, uint16 max);
 
 	uint16 getAllChatHotspots(Common::Point *hotspots, uint16 max);
 
 private:
 
-	bool isPointIsolated(Common::Point p, Common::Rect *original);
+	bool isPointIsolated(Common::Point p, Common::Rect original);
 
 	void updateInteractionHitAreas();
 	void updateChatHitAreas();
 
 
-	Common::Rect *_interactionHitAreas;
+	Hotspot *_interactionHitAreas;
 	uint16 _interactionHitAreaCount;
 
 	Common::Rect *_chatHitAreas;
