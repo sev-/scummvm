@@ -137,6 +137,28 @@ public:
 	int _selectedChatRow;
 };
 
+struct Hotspot {
+	Common::Point _displayPoint;
+	Common::Point _cursorPoint;
+	Common::Rect _rect;
+
+	Hotspot() : _cursorPoint(0,0) {
+	}
+
+	Hotspot(Common::Rect rect) : _rect(rect), _cursorPoint(0,0) {
+		}
+
+	Hotspot(Common::Point display, Common::Point cursor, Common::Rect rect)
+			: _displayPoint(display), _cursorPoint(cursor), _rect(rect) {
+	}
+
+	void clear() {
+		_displayPoint = Common::Point();
+		_cursorPoint = Common::Point();
+		_rect = Common::Rect();
+	}
+};
+
 class SDialog : public Dialog {
 public:
 	SDialog();
@@ -184,12 +206,14 @@ private:
 
 	Engine *_engine;
 
-	Common::Point _hotspots[kMaxHotspots];
+	Hotspot _hotspots[kMaxHotspots];
 	GUI::PicButtonWidget *_hotspotButtons[kMaxHotspots];
 	bool _hotspotsOn;
 	byte _hotspotAlpha;
 	int _hotspotState;
 	int _hotspotCountdown;
+
+	float _displayRatio;
 
 	long mLastTimeRevealItemsPressed;
 
@@ -209,28 +233,6 @@ private:
 			DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
 			DrawablePtr hotspotRectDrawable, float alpha);
 
-};
-
-struct Hotspot {
-	Common::Point _displayPoint;
-	Common::Point _cursorPoint;
-	Common::Rect _rect;
-
-	Hotspot() : _cursorPoint(0,0) {
-	}
-
-	Hotspot(Common::Rect rect) : _rect(rect), _cursorPoint(0,0) {
-		}
-
-	Hotspot(Common::Point display, Common::Point cursor, Common::Rect rect)
-			: _displayPoint(display), _cursorPoint(cursor), _rect(rect) {
-	}
-
-	void clear() {
-		_displayPoint = Common::Point();
-		_cursorPoint = Common::Point();
-		_rect = Common::Rect();
-	}
 };
 
 class HitAreaHelper {

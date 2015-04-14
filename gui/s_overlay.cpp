@@ -596,6 +596,8 @@ SDialog::SDialog() : Dialog(0, 0, 320, 200) {
 	_hotspotState = 0;
 	_hotspotCountdown = 0;
 
+	_displayRatio = g_system->getOverlayWidth() / (float)g_system->getOverlayHeight();
+
 	mLastTimeRevealItemsPressed = 0;
 
 	for (int i = 0; i < kMaxHotspots; i++)
@@ -902,7 +904,7 @@ void SDialog::generateHotspotIndicatorDrawables(
 
 		// getWidth might return a dynamic value, so we use it
 		float indicatorHeight = hotspotDrawable->getWidth() * bitmap->getRatio()
-				* mDisplayRatio;
+				* _displayRatio;
 		float hotspotPositionX = (x / (float) GAME_SCREEN_WIDTH);
 		float hotspotPositionY;
 
@@ -927,7 +929,7 @@ void SDialog::generateHotspotIndicatorDrawables(
 			float actionY, actionWidth;
 			// In Simon, Y position is above the hotspot
 			float actionHeight = SMALL_ACTION_ICON_W * action->getRatio()
-					* mDisplayRatio;
+					* _displayRatio;
 			actionY = hotspotPositionY - 0.01 - actionHeight;
 			if (actionY
 					< (BLACK_PANEL_HEIGHT / (float) GAME_SCREEN_HEIGHT)) {
