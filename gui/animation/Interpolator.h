@@ -23,6 +23,8 @@
 #ifndef GUI_ANIMATION_INTERPOLATOR_H
 #define GUI_ANIMATION_INTERPOLATOR_H
 
+#include "common/ptr.h"
+
 class Interpolator {
 public:
 	Interpolator() {}

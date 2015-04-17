@@ -35,7 +35,7 @@ void WaitForConditionAnimation::setCondition(ConditionPtr condition) {
 void WaitForConditionAnimation::update(Drawable *drawable, long currentTime) {
 
 	// Check the condition - if it has been met, finish.
-	if (_condition != NULL && _condition->evaluate()) {
+	if (_condition.get() != NULL && _condition->evaluate()) {
 		finishAnimation();
 	}
 }

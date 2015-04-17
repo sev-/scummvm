@@ -21,8 +21,9 @@
  */
 
 #include "gui/animation/ScaleAnimation.h"
+#include "gui/animation/Drawable.h"
 
-ScaleAnimation::ScaleAnimation() : mEndWidth(0), mEndWidthFactor(0) {
+ScaleAnimation::ScaleAnimation() : _endWidth(0), _endWidthFactor(0) {
 }
 
 float ScaleAnimation::getEndWidth() const {

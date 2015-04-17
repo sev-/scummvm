@@ -23,6 +23,9 @@
 #ifndef GUI_ANIMATION_DRAWABLE_H
 #define GUI_ANIMATION_DRAWABLE_H
 
+#include "common/ptr.h"
+#include "graphics/transparent_surface.h"
+
 #include "gui/animation/Animation.h"
 
 

@@ -21,6 +21,7 @@
  */
 
 #include "gui/animation/AlphaAnimation.h"
+#include "gui/animation/Drawable.h"
 
 float AlphaAnimation::getEndAlpha() const {
 	return _endAlpha;

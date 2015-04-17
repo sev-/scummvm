@@ -24,6 +24,7 @@
 #define GUI_ANIMATION_SEQUENCEANIMATION_H
 
 #include "gui/animation/Animation.h"
+#include "common/array.h"
 
 class SequenceAnimationComposite: public Animation {
 public:

@@ -24,6 +24,7 @@
 #define GUI_ANIMATION_PARALLELANIMATION_H
 
 #include "gui/animation/Animation.h"
+#include "common/array.h"
 
 class ParallelAnimation: public Animation {
 public:

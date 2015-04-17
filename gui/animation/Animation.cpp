@@ -23,7 +23,7 @@
 #include "gui/animation/Animation.h"
 
 Animation::Animation()
-		: _startTime(0), _duration(0), _finished(false), _finishOnEnd(true), _interpolator(NULL) {
+		: _startTime(0), _duration(0), _finished(false), _finishOnEnd(true) {
 }
 
 Animation::~Animation() {
@@ -54,7 +54,7 @@ void Animation::update(Drawable *drawable, long currentTime) {
 	}
 
 	// Activate the interpolator if present
-	if (_interpolator != NULL) {
+	if (_interpolator.get() != NULL) {
 		interpolation = _interpolator->interpolate(interpolation);
 	}
 

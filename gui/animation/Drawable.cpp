@@ -24,7 +24,8 @@
 
 Drawable::Drawable() :
 	_bitmap(NULL), _positionX(0), _positionY(0), _width(0), _height(0), _alpha(1),
-	_animation(NULL), _usingSnapshot(false), _shouldCenter(false) {
+	_usingSnapshot(false), _shouldCenter(false) {
+	_displayRatio = 0;
 }
 
 Drawable::~Drawable() {
@@ -34,13 +35,13 @@ Drawable::~Drawable() {
 }
 
 void Drawable::updateAnimation(long currentTime) {
-	if (_animation != NULL) {
+	if (_animation.get() != NULL) {
 		_animation->update(this, currentTime);
 	}
 }
 
 bool Drawable::isAnimationFinished() {
-	if (_animation != NULL) {
+	if (_animation.get() != NULL) {
 		return _animation->isFinished();
 	}
 
@@ -108,8 +109,6 @@ void Drawable::setHeight(float height) {
 	_height = height;
 }
 
-float Drawable::sDisplayRatio = 0;
-
 void Drawable::setDisplayRatio(float ratio) {
-	sDisplayRatio = ratio;
+	_displayRatio = ratio;
 }

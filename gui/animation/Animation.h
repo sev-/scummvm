@@ -23,7 +23,6 @@
 #ifndef GUI_ANIMATION_ANIMATION_H
 #define GUI_ANIMATION_ANIMATION_H
 
-#include "gui/animation/Drawable.h"
 #include "gui/animation/Interpolator.h"
 
 

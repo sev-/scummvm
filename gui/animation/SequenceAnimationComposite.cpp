@@ -50,7 +50,7 @@ void SequenceAnimationComposite::update(Drawable* drawable, long currentTime) {
 	}
 
 	// Get the current animation in the sequence
-	AnimationPtr anim = _sequence[mIndex];
+	AnimationPtr anim = _sequence[_index];
 
 	// Update the drawable
 	anim->update(drawable, currentTime);
