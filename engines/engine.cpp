@@ -609,8 +609,7 @@ EnginePlugin *Engine::getMetaEnginePlugin() const {
 }
 
 */
-void Engine::getInteractionHitAreas(Rect* rectArray, uint16& count)
-{
+void Engine::getInteractionHitAreas(GUI::Hotspot *rectArray, uint16 &count) {
 	// Empty implementation.
 	count = 0;
 }
@@ -622,5 +621,3 @@ void Engine::getChatHitAreas(Rect* rectArray, uint16& count)
 	// Empty implementation.
 	count = 0;
 }
-
-

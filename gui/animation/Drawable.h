@@ -73,7 +73,7 @@ public:
 
 	bool isAnimationFinished();
 
-	static void setDisplayRatio(float ratio);
+	void setDisplayRatio(float ratio);
 
 	inline bool shouldCenter() const {
 		return _shouldCenter;
@@ -98,7 +98,7 @@ private:
 	bool _shouldCenter;
 	AnimationPtr _animation;
 
-	static float _displayRatio;
+	float _displayRatio;
 
 };
 
