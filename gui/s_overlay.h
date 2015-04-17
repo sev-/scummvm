@@ -214,6 +214,7 @@ private:
 	int _hotspotCountdown;
 
 	float _displayRatio;
+	Graphics::TransparentSurface *_dummyBitmap;
 
 	long mLastTimeRevealItemsPressed;
 
@@ -231,7 +232,7 @@ private:
 	void generateHotspotIndicatorDrawables(
 			Graphics::TransparentSurface *bitmap, Hotspot &hotspot, Graphics::TransparentSurface *action,
 			DrawablePtr hotspotDrawable, DrawablePtr actionDrawable,
-			DrawablePtr hotspotRectDrawable, float alpha);
+			DrawablePtr hotspotRectDrawable, float alpha = 1.0);
 
 };
 

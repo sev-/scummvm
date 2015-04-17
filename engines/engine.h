@@ -46,6 +46,8 @@ class FSNode;
 namespace GUI {
 class Debugger;
 class Dialog;
+
+struct Hotspot;
 }
 
 /**
@@ -266,7 +268,7 @@ public:
 	 * Writes an array of hit areas into rectArray.
 	 * count is an output variable containing the number of hit areas written.
 	 */
-	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
+	virtual void getInteractionHitAreas(GUI::Hotspot *rectArray, uint16& count);
 
 	/**
 	 * Writes an array of hit areas into rectArray.

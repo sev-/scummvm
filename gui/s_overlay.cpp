@@ -721,10 +721,14 @@ void SDialog::reflowLayout() {
 
 	setMouseCursor(_currentAction);
 
+	_dummyBitmap = new Graphics::TransparentSurface;
+
 	//GuiObject::reflowLayout();
 }
 
 void SDialog::close() {
+	delete _dummyBitmap;
+
 	Dialog::close();
 }
 
@@ -783,7 +787,7 @@ void SDialog::reflowHotspots() {
 	int oh = g_system->getOverlayHeight();
 
 	for (uint i = 0; i < _numHotspots; i++) {
-		_hotspotButtons[i]->resize(_hotspots[i].x * ow / 320, _hotspots[i].y * oh / 200, TOUCH_INDICATOR_W * ow, TOUCH_INDICATOR_W * ow);
+		_hotspotButtons[i]->resize(_hotspots[i]._displayPoint.x * ow / 320, _hotspots[i]._displayPoint.y * oh / 200, TOUCH_INDICATOR_W * ow, TOUCH_INDICATOR_W * ow);
 	}
 
 	if (_actionIcon) {
@@ -908,7 +912,7 @@ void SDialog::generateHotspotIndicatorDrawables(
 		float hotspotPositionX = (x / (float) GAME_SCREEN_WIDTH);
 		float hotspotPositionY;
 
-		hotspotPositionY = ((y + (mClassicMode ? 0 : BLACK_PANEL_HEIGHT))
+		hotspotPositionY = ((y + (g_sOverlay._inputMode == kInputClassic ? 0 : BLACK_PANEL_HEIGHT))
 					/ (float) GAME_SCREEN_HEIGHT);
 
 		// Adjust to transformation if needed
@@ -973,7 +977,7 @@ void SDialog::generateHotspotIndicatorDrawables(
 		hotspotRectDrawable->setWidth(rectWidth);
 		hotspotRectDrawable->setHeight(rectHeight);
 		hotspotRectDrawable->setAlpha(alpha);
-		hotspotRectDrawable->setBitmap(mDummyBitmap);
+		hotspotRectDrawable->setBitmap(_dummyBitmap);
 	}
 
 }
@@ -1213,8 +1217,6 @@ uint16 HitAreaHelper::getAllInteractionHotspots(Hotspot *hotspots, uint16 max) {
 Hotspot HitAreaHelper::getClosestHotspot(int x, int y) {
 	updateInteractionHitAreas();
 
-	Rect *resultRect = NULL;
-
 	Hotspot* hotspotPtr = NULL;
 
 	// First, check if we're inside one of the hit areas
@@ -1234,7 +1236,7 @@ Hotspot HitAreaHelper::getClosestHotspot(int x, int y) {
 	if (hotspotPtr == NULL) {
 		// If not, check for the smallest distance that is below the threshold
 		int closestDistanceSquare = DISTANCE_THRESHOLD * DISTANCE_THRESHOLD;
-		for (int i = 0; i < actionHitAreaCount; ++i) {
+		for (int i = 0; i < _interactionHitAreaCount; ++i) {
 			int centerX = (_interactionHitAreas[i]._rect.right
 					+ _interactionHitAreas[i]._rect.left) / 2;
 			int centerY = (_interactionHitAreas[i]._rect.bottom

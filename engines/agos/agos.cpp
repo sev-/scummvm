@@ -1146,10 +1146,14 @@ void AGOSEngine::getChatHitAreas(Rect* rectArray, uint16& hitAreaCount) {
 	} while (ha++, --count);
 }
 
+static int hitAreaPriorities[100];
+static int hitAreaIndexes[100];
+static Rect hitAreaTempRects[100];
+
 /**
  * This implementation is copied from displayBoxStars, except it just counts the relevant hit areas.
  */
-void AGOSEngine::getInteractionHitAreas(Rect* rectArray, uint16& hitAreaCount) {
+void AGOSEngine::getInteractionHitAreas(GUI::Hotspot *rectArray, uint16 &hitAreaCount) {
 
 	HitArea *ha, *dha;
 	uint count;
@@ -1189,14 +1193,38 @@ void AGOSEngine::getInteractionHitAreas(Rect* rectArray, uint16& hitAreaCount) {
 				continue;
 
 			// If we got here, we add the hit area to the result
-			rectArray->left = ha->x;
-			rectArray->top = ha->y;
-			rectArray->right = ha->x + ha->width;
-			rectArray->bottom = ha->y + ha->height;
-			++hitAreaCount;
-			++rectArray;
+            Rect& currentRect = hitAreaTempRects[hitAreaCount] = Rect();
+
+            currentRect.left = ha->x - (_scrollX * 8);
+            currentRect.top = ha->y;
+            currentRect.right = currentRect.left + ha->width;
+            currentRect.bottom = currentRect.top + ha->height;
+
+            if (currentRect.left < 0 || currentRect.top < 0
+                            || currentRect.right >= 320 || currentRect.bottom >= 200)
+                continue;
+
+            hitAreaPriorities[hitAreaCount] = ha->priority;
+            hitAreaIndexes[hitAreaCount] = hitAreaCount;
+
+            ++hitAreaCount;
 		}
 	} while (ha++, --count);
+
+	// Sort the hit area indexes by priority - highest should be first
+	for (int i = 0; i < hitAreaCount - 1; ++i) {
+		for (int j = 0; j < hitAreaCount - i - 1; ++j) {
+			if (hitAreaPriorities[j] < hitAreaPriorities[j + 1]) {
+				SWAP(hitAreaPriorities[j], hitAreaPriorities[j + 1]);
+				SWAP(hitAreaIndexes[j], hitAreaIndexes[j + 1]);
+			}
+		}
+	}
+
+	// Copy the result to the output parameter according to the sorted indexes
+	for (int i = 0; i < hitAreaCount; ++i) {
+		rectArray[i] = GUI::Hotspot(hitAreaTempRects[hitAreaIndexes[i]]);
+	}
 }
 
 

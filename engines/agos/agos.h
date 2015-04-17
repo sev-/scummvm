@@ -914,8 +914,8 @@ protected:
 
 public:
 
-	virtual void getInteractionHitAreas(Rect* rectArray, uint16& count);
-	virtual void getChatHitAreas(Rect* rectArray, uint16& count);
+	virtual void getInteractionHitAreas(GUI::Hotspot *rectArray, uint16 &count);
+	virtual void getChatHitAreas(Rect *rectArray, uint16 &count);
 
 	virtual bool canSkip();
 
