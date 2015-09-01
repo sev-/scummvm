@@ -93,7 +93,7 @@ protected:
 	Audio::Mixer *_mixer;
 	Audio::SoundHandle _soundHandle;
 	const byte *_data;
-	FM_OPL *_opl;
+	OPL::OPL *_opl;
 	int _sampleRate;
 	int _nextUpdateSamples;
 	AdlibTrack _tracks[kMaxTracks];

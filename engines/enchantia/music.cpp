@@ -103,12 +103,14 @@ AdlibMusicPlayer::AdlibMusicPlayer(Audio::Mixer *mixer)
 	: _mixer(mixer), _playing(false), _data(NULL), _nextUpdateSamples(0)  {
 	
 	_sampleRate = _mixer->getOutputRate();
-	_opl = makeAdLibOPL(_sampleRate);
+	_opl = OPL::Config::create();
+	_opl->init();
 }
 
 AdlibMusicPlayer::~AdlibMusicPlayer() {
 	stop();
-	OPLDestroy(_opl);
+	delete _opl;
+	_opl = NULL;
 }
 
 void AdlibMusicPlayer::play(const byte *data, int size) {
@@ -163,7 +165,7 @@ int AdlibMusicPlayer::readBuffer(int16 *buffer, const int numSamples) {
 				render = (samples > _nextUpdateSamples) ?  (_nextUpdateSamples) : (samples);
 				samples -= render;
 				_nextUpdateSamples -= render;
-				YM3812UpdateOne(_opl, buffer, render);
+				//_opl->readBuffer(buffer, render);	// FIXME: deprecated
 				buffer += render;
 			} else {
 				// Poll
@@ -176,7 +178,7 @@ int AdlibMusicPlayer::readBuffer(int16 *buffer, const int numSamples) {
 }
 
 void AdlibMusicPlayer::writeReg(byte reg, byte data) {
-	OPLWriteReg(_opl, reg, data);
+	_opl->writeReg(reg, data);
 }
 
 void AdlibMusicPlayer::update() {
@@ -297,7 +299,7 @@ bool MidiParser_RS::loadMusic(byte *data, uint32 size) {
 	memcpy(_data, data, size);
 	
 	// CHECKME Check the values...	
-	_num_tracks = 1;
+	//_num_tracks = 1;
 	_tracks[0] = _data;
 	_ppqn = 300;
 	resetTracking();
@@ -317,22 +319,22 @@ void MidiParser_RS::parseNextEvent(EventInfo &info) {
 
 	byte delta, value;
 
-	info.start = _position._play_pos;
+	info.start = _position._playPos;
 	info.delta = 0;
 	
-	if (*(_position._play_pos) == 0xFF) {
+	if (*(_position._playPos) == 0xFF) {
 		// End of track reached, loop
 		// HOW? _currData = _data + READ_LE_UINT16(_currData + 1);
 	}
 
-	delta = *(_position._play_pos++);
+	delta = *(_position._playPos++);
 		
 	if (delta < 0xF0) {
-		value = *(_position._play_pos++);
+		value = *(_position._playPos++);
 		if (value < 0xF0) {
 			info.delta = delta * 4; // ??? TODO FIXME etc.
 			if (value >= 0x80) {
-				info.basic.param1 = *(_position._play_pos++);
+				info.basic.param1 = *(_position._playPos++);
 				info.event = value;
 			} else {
 				// Reuse the last event
@@ -340,7 +342,7 @@ void MidiParser_RS::parseNextEvent(EventInfo &info) {
 			}
 			// Read the second parameter if the event has one
 			if (info.event < 0xC0 || info.event >= 0xE0)
-				info.basic.param2 = *(_position._play_pos++);
+				info.basic.param2 = *(_position._playPos++);
 		}
 	}
 	
