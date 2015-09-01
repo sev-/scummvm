@@ -1862,9 +1862,13 @@ void EnchantiaEngine::runMenuBar() {
 	enum { stRunning, stAction, stDone } status = stRunning;
 	uint rectPalCounter = 1, colorIndex = 0, menuCounter = 0;
 	int16 cursorX, y;
-	uint slotIndex, prevSlotIndex = 0xFFFF;
+	uint slotIndex = 0, prevSlotIndex = 0xFFFF;
 	MenuSlotAction currMenu = kMenuNone, newMenu = kMenuMain;
 	bool needRedraw = true;
+
+	Graphics::Surface *savedScreen = new Graphics::Surface();
+	savedScreen->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	savedScreen->copyFrom(*_screen);
 
 	_isSaveAllowed = false;
 
@@ -1918,8 +1922,12 @@ void EnchantiaEngine::runMenuBar() {
 		}
 	}
 
-	// TODO Restore command bar background
-
+	// Restore command bar background
+	_screen->copyFrom(*savedScreen);
+	savedScreen->free();
+	delete savedScreen;
+	_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, 0), 320, 0, 0, 320, 200);
+	_system->updateScreen();
 }
 
 void EnchantiaEngine::updateMenuBar() {
