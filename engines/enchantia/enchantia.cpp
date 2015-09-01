@@ -258,7 +258,7 @@ Common::Error EnchantiaEngine::run() {
 	_useItemId = idNone;
 
 	clearInventory();
-#if 1
+#if 0
 	// TEST: Give some inventory items
 	//addInventoryItem(idFishBowl);
 	//addInventoryItem(idMeat);
@@ -286,10 +286,10 @@ Common::Error EnchantiaEngine::run() {
 #endif
 
 	_sceneIndex = -1;
-	//loadScene(-1, false);
+	loadScene(-1, false);
 	//loadScene(26, false);
 	//loadScene(69, false);
-	loadScene(61, false);
+	//loadScene(61, false);
 
 	if (_adlibMusic) {
 		// There's only one AdLib music track which is looped infinitely
