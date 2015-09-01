@@ -83,8 +83,8 @@ void EnchantiaEngine::updateScene() {
 	SpriteDef *spriteDef;
 	SpriteTemplate *spriteTemplate;
 	Sprite *sprite;
-	int16 deltaX, x, y;
-	uint spriteIndex;
+	int16 deltaX = 0, x = 0, y = 0;
+	uint spriteIndex = 0;
 
 	switch (_sceneIndex) {
 	
@@ -2026,6 +2026,10 @@ bool EnchantiaEngine::performCommand(int cmd, int item1, int item2) {
 				_flags1 ^= 0x40;
 				spriteIndex = 12;
 				break;
+			default:
+				_flags1 = 0;
+				spriteIndex = 0;
+				break;
 			}
 			queueWalkToSprite(spriteIndex, 4, 19);
 			queueActor(0xA082, 0xA08C, 0);
@@ -2717,6 +2721,9 @@ bool EnchantiaEngine::performCommand(int cmd, int item1, int item2) {
 			case idRock38: case idRock42: case idRock44:
 				index = 2;
 				break;
+			default:
+				index = 0;
+				break;
 			}
 			if (--_rockBasherCounters[index] >= 0) {
 				getSceneSpriteDef(10, 1 + index * 4 + _rockBasherCounters[index])->status = 0;
@@ -3031,6 +3038,9 @@ bool EnchantiaEngine::performCommand(int cmd, int item1, int item2) {
 			case idGlass:
 				frameIndex = 14;
 				break; 
+			default:
+				frameIndex = 0;
+				break;
 			}
 			switch (item2) {
 			case idBeamHole1:
@@ -3044,6 +3054,9 @@ bool EnchantiaEngine::performCommand(int cmd, int item1, int item2) {
 				break;
 			case idBeamHole4:
 				spriteIndex = 9;
+				break;
+			default:
+				spriteIndex = 0;
 				break;
 			}
 			if (_sprites[spriteIndex].status != 1) {
