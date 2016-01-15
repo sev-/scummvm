@@ -49,7 +49,9 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 	_zoomX = 160;
 	_zoomY = 100;
 
-	_workScreen = new byte[64320];
+	_backSurface = new Graphics::Surface();
+	_backSurface->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+
 	_currFontResource = new FontResource();
 	
 	setClipRect(0, 0, 320, 200);
@@ -57,7 +59,10 @@ Screen::Screen(CometEngine *vm) : _vm(vm) {
 }
 
 Screen::~Screen() {
-	delete[] _workScreen;
+
+	_backSurface->free();
+	delete _backSurface;
+
 	delete _currFontResource;
 }
 
@@ -73,7 +78,7 @@ void Screen::update() {
 
 		switch (_zoomFactor) {
 		case 0:
-			_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
+			_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
 			_vm->_system->updateScreen();
 			break;
 		case 1:
@@ -95,25 +100,25 @@ void Screen::update() {
 }
 
 void Screen::copyFromScreenResource(ScreenResource *screenResource) {
-	memcpy(getScreen(), screenResource->getScreen(), 64000);
+	memcpy(_backSurface->getPixels(), screenResource->getScreen(), 64000);
 }
 
 void Screen::copyFromScreen(byte *source) {
-	memcpy(getScreen(), source, 64000);
+	memcpy(_backSurface->getPixels(), source, 64000);
 }
 
 void Screen::copyToScreen(byte *dest) {
-	memcpy(dest, getScreen(), 64000);
+	memcpy(dest, _backSurface->getPixels(), 64000);
 }
 
 void Screen::grabRect(Graphics::Surface *surface, int x, int y) {
 	for (int yc = 0; yc < surface->h; yc++)
-		memcpy(surface->getBasePtr(0, yc), getScreen() + x + (y + yc) * 320, surface->w);
+		memcpy(surface->getBasePtr(0, yc), _backSurface->getBasePtr(x, y + yc), surface->w);
 }
 
 void Screen::putRect(Graphics::Surface *surface, int x, int y) {
 	for (int yc = 0; yc < surface->h; yc++)
-		memcpy(getScreen() + x + (y + yc) * 320, surface->getBasePtr(0, yc), surface->w);
+		memcpy(_backSurface->getBasePtr(x, y + yc), surface->getBasePtr(0, yc), surface->w);
 }
 
 void Screen::enableTransitionEffect() {
@@ -142,7 +147,7 @@ void Screen::screenZoomEffect2x(int x, int y) {
 	if (y > 99) y = 99;
 
 	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = _workScreen + x + (y * 320);
+	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
 	byte *destBuf = vgaScreen;
 
 	for (int yc = 0; yc < 100; yc++) {
@@ -180,7 +185,7 @@ void Screen::screenZoomEffect3x(int x, int y) {
 	if (y > 133) y = 133;
 
 	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = _workScreen + x + (y * 320);
+	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
 	byte *destBuf = vgaScreen;
 
 	for (int yc = 0; yc < 66; yc++) {
@@ -239,7 +244,7 @@ void Screen::screenZoomEffect4x(int x, int y) {
 	if (y > 149) y = 149;
 
 	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = _workScreen + x + (y * 320);
+	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
 	byte *destBuf = vgaScreen;
 
 	for (int yc = 0; yc < 50; yc++) {
@@ -296,7 +301,7 @@ void Screen::screenTransitionEffect() {
 	_vm->_system->unlockScreen();
 
 	for (int i = 0; i < 7; i++) {
-		byte *sourceBuf = _workScreen + i;
+		byte *sourceBuf = (byte*)_backSurface->getBasePtr(i, 0);
 		byte *destBuf = vgaScreen + i;
 		for (int x = 0; x < 320 * 200 / 6; x++) {
 			*destBuf = *sourceBuf;
@@ -319,7 +324,7 @@ void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
 	const int kScrollStripWidth = 40;
 
 	Graphics::Surface *screen = _vm->_system->lockScreen();
-	memcpy(_workScreen, screen->getPixels(), 320 * 200);
+	memcpy(_backSurface->getPixels(), screen->getPixels(), 320 * 200);
 	_vm->_system->unlockScreen();
 
 	int copyOfs = 0;
@@ -327,16 +332,16 @@ void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
 	while (copyOfs < 320) {
 		if (scrollDirection < 0) {
 			for (int y = 0; y < 200; y++) {
-				memmove(&_workScreen[y * 320], &_workScreen[y * 320 + kScrollStripWidth], 320 - kScrollStripWidth);
-				memcpy(&_workScreen[y * 320 + 320 - kScrollStripWidth], &newScreen[y * 320 + copyOfs], kScrollStripWidth);
+				memmove(_backSurface->getBasePtr(0, y), _backSurface->getBasePtr(kScrollStripWidth, y), 320 - kScrollStripWidth);
+				memcpy(_backSurface->getBasePtr(320 - kScrollStripWidth, y), &newScreen[y * 320 + copyOfs], kScrollStripWidth);
 			}
 		} else {
 			for (int y = 0; y < 200; y++) {
-				memmove(&_workScreen[y * 320 + kScrollStripWidth], &_workScreen[y * 320], 320 - kScrollStripWidth);
-				memcpy(&_workScreen[y * 320], &newScreen[y * 320 + (320 - kScrollStripWidth - copyOfs)], kScrollStripWidth);
+				memmove(_backSurface->getBasePtr(kScrollStripWidth, y), _backSurface->getBasePtr(0, y), 320 - kScrollStripWidth);
+				memcpy(_backSurface->getBasePtr(0, y), &newScreen[y * 320 + (320 - kScrollStripWidth - copyOfs)], kScrollStripWidth);
 			}
 		}
-		_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
+		_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
 		_vm->_system->updateScreen();
 		_vm->syncUpdate(false);
 		copyOfs += kScrollStripWidth;
@@ -365,7 +370,7 @@ void Screen::paletteFadeIn() {
 	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
 	setFullPalette(_vm->_screenPalette);
 	_vm->_system->updateScreen();
-	_vm->_system->copyRectToScreen(_workScreen, 320, 0, 0, 320, 200);
+	_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
 
 	int value = 0;
 	while (value < 255) {
@@ -424,96 +429,42 @@ void Screen::setFullPalette(byte *palette) {
 }
 
 void Screen::clear() {
-	memset(_workScreen, 0, 64320);
+	_backSurface->fillRect(Common::Rect(0, 0, 320, 200), 0);
 }
 
 void Screen::putPixel(int x, int y, byte color) {
 	if (x >= 0 && x < 320 && y >= 0 && y < 200)
-		_workScreen[x + y * 320] = color;
+		*(byte*)_backSurface->getBasePtr(x, y) = color;
 }
 
-void Screen::hLine(int x, int y, int x2, byte color) {
-	// Clipping
-	if (y < 0 || y >= 200)
-		return;
-
-	if (x2 < x)
-		SWAP(x2, x);
-
-	if (x < 0)
-		x = 0;
-	if (x2 >= 320)
-		x2 = 320 - 1;
-
-	byte *ptr = getScreen() + x + y * 320;
-	if (x2 >= x)
-		memset(ptr, color, x2 - x + 1);
-
-}
-
-void Screen::vLine(int x, int y, int y2, byte color) {
-	// Clipping
-	if (x < 0 || x >= 320)
-		return;
-
-	if (y2 < y)
-		SWAP(y2, y);
-
-	if (y < 0)
-		y = 0;
-	if (y2 >= 200)
-		y2 = 200 - 1;
-
-	byte *ptr = getScreen() + x + y * 320;
-	while (y++ <= y2) {
-		*ptr = (byte)color;
-		ptr += 320;
-	}
-
+void Screen::hLine(int x, int y, int x2, byte color) {	
+	_backSurface->hLine(x, y, x2, color);
 }
 
 void Screen::drawLine(int x1, int y1, int x2, int y2, byte color) {
-	Graphics::drawLine(x1, y1, x2, y2, color, Screen::plotProc, (void*)this);
+	_backSurface->drawLine(x1, y1, x2, y2, color);
+}
+
+static void plotDottedPoint(int x, int y, int color, void *data) {
+	DottedLineData *dottedLineData = (DottedLineData*)data;
+	Graphics::Surface *s = dottedLineData->_surface;
+	if (x >= 0 && x < s->w && y >= 0 && y < s->h) {
+		if ((++dottedLineData->_dotCounter) & 2)
+			*(byte*)s->getBasePtr(x, y) = color;
+	}
 }
 
 void Screen::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
-	DottedLineData dottedLineData = {this, 1};
-	Graphics::drawLine(x1, y1, x2, y2, color, Screen::dottedPlotProc, &dottedLineData);
+	DottedLineData dottedLineData = {_backSurface, 1};
+	Graphics::drawLine(x1, y1, x2, y2, color, plotDottedPoint, &dottedLineData);
 }
 
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
-
-	if (x1 < 0) x1 = 0;
-	else if (x1 >= 320) x1 = 319;
-	if (x2 < 0) x2 = 0;
-	else if (x2 >= 320) x2 = 319;
-	if (y1 < 0) y1 = 0;
-	else if (y1 >= 200) y1 = 199;
-	if (y2 < 0) y2 = 0;
-	else if (y2 >= 200) y2 = 199;
-
-	if (x2 < x1)
-		SWAP(x2, x1);
-
-	if (y2 < y1)
-		SWAP(y2, y1);
-
-	int width = x2 - x1 + 1;
-	int height = y2 - y1 + 1;
-
-	byte *ptr = getScreen() + x1 + y1 * 320;
-	while (height--) {
-		memset(ptr, color, width);
-		ptr += 320;
-	}
-
+	_backSurface->fillRect(Common::Rect(x1, y1, x2 + 1, y2 + 1), color);
 }
 
 void Screen::frameRect(int x1, int y1, int x2, int y2, byte color) {
-	hLine(x1, y1, x2 - 1, color);
-	hLine(x1, y2 - 1, x2 - 1, color);
-	vLine(x1, y1, y2 - 1, color);
-	vLine(x2 - 1, y1, y2 - 1, color);
+	_backSurface->frameRect(Common::Rect(x1, y1, x2 + 1, y2 + 1), color);
 }
 
 void Screen::clipPolygonLeft(Common::Array<Point> **poly, int16 clipLeft) {
@@ -786,11 +737,11 @@ void Screen::setFontColor(byte color) {
 }
 
 void Screen::drawText(int x, int y, const byte *text) {
-	_currFontResource->drawText(x, y, getScreen(), text, _currFontColor);
+	_currFontResource->drawText(x, y, (byte*)_backSurface->getPixels(), text, _currFontColor);
 }
 
 void Screen::drawTextOutlined(int x, int y, const byte *text, byte color1, byte color2) {
-	byte *destBuffer = getScreen();
+	byte *destBuffer = (byte*)_backSurface->getPixels();
 	_currFontResource->drawText(x + 1, y + 1, destBuffer, text, color2);
 	_currFontResource->drawText(x + 1, y - 1, destBuffer, text, color2);
 	_currFontResource->drawText(x + 1, y, destBuffer, text, color2);
@@ -849,14 +800,6 @@ int Screen::getTextHeight(const byte *text) {
 void Screen::plotProc(int x, int y, int color, void *data) {
 	Screen *screen = (Screen*)data;
 	screen->putPixel(x, y, color);
-}
-
-void Screen::dottedPlotProc(int x, int y, int color, void *data) {
-	DottedLineData *dottedLineData = (DottedLineData*)data;
-	if (x >= 0 && x < 320 && y >= 0 && y < 200) {
-		if ((++dottedLineData->_dotCounter) & 2)
-			dottedLineData->_screen->getScreen()[x + y * 320] = color;
-	}
 }
 
 Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 width, int16 height) {
@@ -925,7 +868,7 @@ void Screen::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte fl
 	if (x >= _clipX2 || y >= _clipY2)
 		return;
 
-	byte *screenDestPtr = _workScreen + x + (y * 320);
+	byte *screenDestPtr = (byte*)_backSurface->getBasePtr(x, y);
 	byte lineBuffer[320];
 
 	while (height--) {
@@ -971,8 +914,8 @@ void Screen::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 	bool doMemset = false;
 	byte *rleData = cel.data;
 
-	for (int i = 0; i < 200; i++)
-		offsets[i] = _workScreen + x + (y + i) * 320;
+	for (int yc = 0; yc < 200; yc++)
+		offsets[yc] = (byte*)_backSurface->getBasePtr(x, y + yc);
 
 	do {
 
