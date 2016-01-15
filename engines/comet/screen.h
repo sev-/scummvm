@@ -166,9 +166,13 @@ public:
 	int _fadeStep;
 	bool _palFlag;
 	int _clipX1, _clipY1, _clipX2, _clipY2;
-	int _dotFlag;
 	FontResource *_currFontResource;
 	byte _currFontColor;
+};
+
+struct DottedLineData {
+	Screen *_screen;
+	int _dotCounter;
 };
 
 }
