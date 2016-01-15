@@ -477,8 +477,8 @@ void Screen::drawLine(int x1, int y1, int x2, int y2, byte color) {
 }
 
 void Screen::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
-	_dotFlag = 1;
-	Graphics::drawLine(x1, y1, x2, y2, color, Screen::dottedPlotProc, (void*)this);
+	DottedLineData dottedLineData = {this, 1};
+	Graphics::drawLine(x1, y1, x2, y2, color, Screen::dottedPlotProc, &dottedLineData);
 }
 
 void Screen::fillRect(int x1, int y1, int x2, int y2, byte color) {
@@ -851,12 +851,11 @@ void Screen::plotProc(int x, int y, int color, void *data) {
 	screen->putPixel(x, y, color);
 }
 
-void Screen::dottedPlotProc(int x, int y, int color, void *data = NULL) {
-	Screen *screen = (Screen*)data;
+void Screen::dottedPlotProc(int x, int y, int color, void *data) {
+	DottedLineData *dottedLineData = (DottedLineData*)data;
 	if (x >= 0 && x < 320 && y >= 0 && y < 200) {
-		screen->_dotFlag++;
-		if (screen->_dotFlag & 2)
-			screen->getScreen()[x + y * 320] = color;
+		if ((++dottedLineData->_dotCounter) & 2)
+			dottedLineData->_screen->getScreen()[x + y * 320] = color;
 	}
 }
 
