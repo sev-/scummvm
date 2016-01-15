@@ -1341,27 +1341,26 @@ void CometEngine::setVoiceFileIndex(int narFileIndex) {
 }
 
 void CometEngine::playVoice(int voiceIndex) {
-	
-	stopVoice();
-
-	_textActive = true;
-	_talkieSpeechPlaying = true;
-	_currSoundResourceIndex = -1;
-
-	_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
-	_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
+	if (!isFloppy()) {
+		stopVoice();
+		_textActive = true;
+		_talkieSpeechPlaying = true;
+		_currSoundResourceIndex = -1;
+		_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
+		_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
+	}
 }
 
 void CometEngine::stopVoice() {
-	if (_mixer->isSoundHandleActive(_sampleHandle))
-		_mixer->stopHandle(_sampleHandle);
-
-	if (_talkieMode == 2 && !_textBubbleActive) {
-		_textActive = false;
-		_textDuration = 0;
+	if (!isFloppy()) {
+		if (_mixer->isSoundHandleActive(_sampleHandle))
+			_mixer->stopHandle(_sampleHandle);
+		if (_talkieMode == 2 && !_textBubbleActive) {
+			_textActive = false;
+			_textDuration = 0;
+		}
+		_talkieSpeechPlaying = false;
 	}
-	
-	_talkieSpeechPlaying = false;
 }
 
 void CometEngine::drawTextIllsmouth() {

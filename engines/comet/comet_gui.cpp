@@ -1112,13 +1112,15 @@ int GuiJournal::handleReadBook() {
 				talkPageNumber = pageNumber;
 			}
 			_vm->handleEvents();
-			mouseSelectedRect = _vm->findRect(bookRects, _vm->_mouseX, _vm->_mouseY, 2, kBANone);
-			if (mouseSelectedRect == -1)
-				_vm->setMouseCursor(NULL);
-			else if (mouseSelectedRect == 0)
-				_vm->setMouseCursor(_vm->_mouseCursors[3]);
-			else if (mouseSelectedRect == 1)
-				_vm->setMouseCursor(_vm->_mouseCursors[2]);
+			if (!_vm->isFloppy()) {
+				mouseSelectedRect = _vm->findRect(bookRects, _vm->_mouseX, _vm->_mouseY, 2, kBANone);
+				if (mouseSelectedRect == -1)
+					_vm->setMouseCursor(NULL);
+				else if (mouseSelectedRect == 0)
+					_vm->setMouseCursor(_vm->_mouseCursors[3]);
+				else if (mouseSelectedRect == 1)
+					_vm->setMouseCursor(_vm->_mouseCursors[2]);
+			}
 			_vm->syncUpdate();
 			if (_vm->_quitGame || _vm->_rightButton || _vm->_keyScancode == Common::KEYCODE_RETURN ||
 				_vm->_keyScancode == Common::KEYCODE_ESCAPE)
