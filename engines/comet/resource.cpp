@@ -23,18 +23,13 @@
  *
  */
 
-#include "common/file.h"
-
-#include "common/stream.h"
-#include "common/zlib.h"
-
-#include "audio/audiostream.h"
-#include "audio/mixer.h"
-#include "audio/decoders/raw.h"
-#include "audio/decoders/voc.h"
-
 #include "comet/resource.h"
 #include "comet/screen.h"
+
+#include "common/file.h"
+#include "common/stream.h"
+#include "audio/decoders/raw.h"
+#include "audio/decoders/voc.h"
 
 namespace Comet {
 
@@ -397,4 +392,4 @@ void ScriptResource::internalLoad(Common::MemoryReadStream &stream) {
 	stream.read(_scriptData, stream.size());
 }
 
-} // End of namespace Prisoner
+} // End of namespace Comet
