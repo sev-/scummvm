@@ -110,7 +110,6 @@ public:
 	void drawLine(int x1, int y1, int x2, int y2, byte color);
 	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
 	void hLine(int x, int y, int x2, byte color);
-	void vLine(int x, int y, int y2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
 	void frameRect(int x1, int y1, int x2, int y2, byte color);
 	
@@ -125,9 +124,11 @@ public:
 
 	void clear();
 
-	byte *getScreen() const {
-		return _workScreen;
+	/*
+	Graphics::Surface *getScreen() const {
+		return _backSurface;
 	}
+	*/
 
 	void loadFont(const char *pakName, int index);
 	void loadFontFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
@@ -159,7 +160,7 @@ public:
 
 //protected:
 	CometEngine *_vm;
-	byte *_workScreen;
+	Graphics::Surface *_backSurface;
 	bool _transitionEffect;
 	int _zoomFactor, _zoomX, _zoomY;
 	PaletteFadeType _fadeType;
@@ -171,7 +172,7 @@ public:
 };
 
 struct DottedLineData {
-	Screen *_screen;
+	Graphics::Surface *_surface;
 	int _dotCounter;
 };
 
