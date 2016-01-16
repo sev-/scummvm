@@ -26,9 +26,9 @@
 #ifndef COMET_ANIMATIONMGR_H
 #define COMET_ANIMATIONMGR_H
 
-#include "comet/comet.h"
-
 namespace Comet {
+
+class CometEngine;
 
 const uint kAnimationSlotCount = 20;
 

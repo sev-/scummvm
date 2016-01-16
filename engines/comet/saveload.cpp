@@ -37,6 +37,7 @@
 #include "audio/mixer.h"
 
 #include "comet/comet.h"
+#include "comet/actor.h"
 #include "comet/animationmgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
@@ -141,39 +142,39 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 	
 	for (int i = 0; i < ARRAYSIZE(_actors); i++) {
-		const Actor &actor = _actors[i];
-		out->writeUint16LE(actor.x);
-		out->writeUint16LE(actor.y);
-		out->writeUint16LE(actor.directionAdd);
-		out->writeUint16LE(actor.status);
-		out->writeUint16LE(actor.direction);
-		out->writeByte(actor.flag2);
-		out->writeUint16LE(actor.animationSlot);
-		out->writeUint16LE(actor.animIndex);
-		out->writeUint16LE(actor.animFrameIndex);
-		out->writeUint16LE(actor.interpolationStep);
-		out->writeUint16LE(actor.animFrameCount);
-		out->writeUint16LE(actor.animPlayFrameIndex);
-		out->writeUint16LE(actor.deltaX);
-		out->writeUint16LE(actor.deltaY);
-		out->writeUint16LE(actor.collisionType);
-		out->writeUint16LE(actor.collisionIndex);
-		out->writeByte(actor.value6);
-		out->writeUint16LE(actor.life);
-		out->writeByte(actor.textColor);
-		out->writeByte(actor.value7);
-		out->writeUint16LE(actor.textX);
-		out->writeUint16LE(actor.textY);
-		out->writeUint16LE(actor.walkStatus);
-		out->writeUint16LE(actor.walkDestX);
-		out->writeUint16LE(actor.walkDestY);
-		out->writeUint16LE(actor.savedWalkDestX);
-		out->writeUint16LE(actor.savedWalkDestY);
-		out->writeUint16LE(actor.clipX1);
-		out->writeUint16LE(actor.clipY1);
-		out->writeUint16LE(actor.clipX2);
-		out->writeUint16LE(actor.clipY2);
-		out->writeByte(actor.visible ? 1 : 0);
+		Actor *actor = _actors[i];
+		out->writeUint16LE(actor->_x);
+		out->writeUint16LE(actor->_y);
+		out->writeUint16LE(actor->_directionAdd);
+		out->writeUint16LE(actor->_status);
+		out->writeUint16LE(actor->_direction);
+		out->writeByte(actor->_flag2);
+		out->writeUint16LE(actor->_animationSlot);
+		out->writeUint16LE(actor->_animIndex);
+		out->writeUint16LE(actor->_animFrameIndex);
+		out->writeUint16LE(actor->_interpolationStep);
+		out->writeUint16LE(actor->_animFrameCount);
+		out->writeUint16LE(actor->_animPlayFrameIndex);
+		out->writeUint16LE(actor->_deltaX);
+		out->writeUint16LE(actor->_deltaY);
+		out->writeUint16LE(actor->_collisionType);
+		out->writeUint16LE(actor->_collisionIndex);
+		out->writeByte(actor->_value6);
+		out->writeUint16LE(actor->_life);
+		out->writeByte(actor->_textColor);
+		out->writeByte(actor->_value7);
+		out->writeUint16LE(actor->_textX);
+		out->writeUint16LE(actor->_textY);
+		out->writeUint16LE(actor->_walkStatus);
+		out->writeUint16LE(actor->_walkDestX);
+		out->writeUint16LE(actor->_walkDestY);
+		out->writeUint16LE(actor->_savedWalkDestX);
+		out->writeUint16LE(actor->_savedWalkDestY);
+		out->writeUint16LE(actor->_clipX1);
+		out->writeUint16LE(actor->_clipY1);
+		out->writeUint16LE(actor->_clipX2);
+		out->writeUint16LE(actor->_clipY2);
+		out->writeByte(actor->_visible ? 1 : 0);
 	}
 	
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
@@ -294,39 +295,39 @@ void CometEngine::loadgame(const char *filename) {
 	}
 
 	for (int i = 0; i < ARRAYSIZE(_actors); i++) {
-		Actor &actor = _actors[i];
-		actor.x = in->readUint16LE();
-		actor.y = in->readUint16LE();
-		actor.directionAdd = in->readUint16LE();
-		actor.status = in->readUint16LE();
-		actor.direction = in->readUint16LE();
-		actor.flag2 = in->readByte();
-		actor.animationSlot = in->readUint16LE();
-		actor.animIndex = in->readUint16LE();
-		actor.animFrameIndex = in->readUint16LE();
-		actor.interpolationStep = in->readUint16LE();
-		actor.animFrameCount = in->readUint16LE();
-		actor.animPlayFrameIndex = in->readUint16LE();
-		actor.deltaX = in->readUint16LE();
-		actor.deltaY = in->readUint16LE();
-		actor.collisionType = in->readUint16LE();
-		actor.collisionIndex = in->readUint16LE();
-		actor.value6 = in->readByte();
-		actor.life = in->readUint16LE();
-		actor.textColor = in->readByte();
-		actor.value7 = in->readByte();
-		actor.textX = in->readUint16LE();
-		actor.textY = in->readUint16LE();
-		actor.walkStatus = in->readUint16LE();
-		actor.walkDestX = in->readUint16LE();
-		actor.walkDestY = in->readUint16LE();
-		actor.savedWalkDestX = in->readUint16LE();
-		actor.savedWalkDestY = in->readUint16LE();
-		actor.clipX1 = in->readUint16LE();
-		actor.clipY1 = in->readUint16LE();
-		actor.clipX2 = in->readUint16LE();
-		actor.clipY2 = in->readUint16LE();
-		actor.visible = in->readByte() != 0;
+		Actor *actor = _actors[i];
+		actor->_x = in->readUint16LE();
+		actor->_y = in->readUint16LE();
+		actor->_directionAdd = in->readUint16LE();
+		actor->_status = in->readUint16LE();
+		actor->_direction = in->readUint16LE();
+		actor->_flag2 = in->readByte();
+		actor->_animationSlot = in->readUint16LE();
+		actor->_animIndex = in->readUint16LE();
+		actor->_animFrameIndex = in->readUint16LE();
+		actor->_interpolationStep = in->readUint16LE();
+		actor->_animFrameCount = in->readUint16LE();
+		actor->_animPlayFrameIndex = in->readUint16LE();
+		actor->_deltaX = in->readUint16LE();
+		actor->_deltaY = in->readUint16LE();
+		actor->_collisionType = in->readUint16LE();
+		actor->_collisionIndex = in->readUint16LE();
+		actor->_value6 = in->readByte();
+		actor->_life = in->readUint16LE();
+		actor->_textColor = in->readByte();
+		actor->_value7 = in->readByte();
+		actor->_textX = in->readUint16LE();
+		actor->_textY = in->readUint16LE();
+		actor->_walkStatus = in->readUint16LE();
+		actor->_walkDestX = in->readUint16LE();
+		actor->_walkDestY = in->readUint16LE();
+		actor->_savedWalkDestX = in->readUint16LE();
+		actor->_savedWalkDestY = in->readUint16LE();
+		actor->_clipX1 = in->readUint16LE();
+		actor->_clipY1 = in->readUint16LE();
+		actor->_clipX2 = in->readUint16LE();
+		actor->_clipY2 = in->readUint16LE();
+		actor->_visible = in->readByte() != 0;
 	}
 
 	for (uint i = 0; i < kAnimationSlotCount; i++) {

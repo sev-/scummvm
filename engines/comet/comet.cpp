@@ -40,6 +40,7 @@
 #include "audio/mixer.h"
 
 #include "comet/comet.h"
+#include "comet/actor.h"
 #include "comet/console.h"
 #include "comet/music.h"
 #include "comet/animationmgr.h"
@@ -113,10 +114,17 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 	_sceneDecorationSprite = 0;
 
 	_quitGame = false;
+
+	for (int actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex] = new Actor(this, actorIndex);
+
 }
 
 CometEngine::~CometEngine() {
 	DebugMan.clearAllDebugChannels();
+
+	for (int actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		delete _actors[actorIndex];
 
 	delete _rnd;
 	delete _console;
@@ -229,7 +237,6 @@ Common::Error CometEngine::run() {
 	_prevSceneNumber = -1;
 	_currentSceneNumber = -1;
 	_sceneNumber = 0;
-	memset(_actors, 0, sizeof(_actors));
 
 	_clearScreenRequest = false;
 

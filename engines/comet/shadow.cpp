@@ -32,6 +32,7 @@
 #include "graphics/surface.h"
 
 #include "comet/comet.h"
+#include "comet/actor.h"
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
 #include "comet/comet_gui.h"
@@ -50,43 +51,6 @@ int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 	if (y == y2)
 		flags |= 2;
 	return flags;
-}
-
-void CometEngine::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
-
-	int x1 = _actors[0].x - _actors[0].deltaX - 8;
-	int y1 = _actors[0].y - _actors[0].deltaY - 8;
-	int x2 = _actors[0].x + _actors[0].deltaX + 8;
-	int y2 = _actors[0].y + 8;
-
-	switch (_actors[0].direction) {
-	case 1:
-		y1 -= delta2;
-		y2 -= 20;
-		x1 -= delta1;
-		x2 += delta1;
-		break;
-	case 2:
-		x2 += delta2;
-		x1 += 25;
-		y1 -= 32;
-		break;
-	case 3:
-		y2 += delta2;
-		y1 += 20;
-		break;
-	case 4:
-		x1 -= delta2;
-		x2 -= 25;
-		y1 -= 32;
-		break;
-	}
-
-	rect.left = MAX(x1, 0);
-	rect.top = MAX(y1, 0);
-	rect.right = MIN(x2, 319);
-	rect.bottom = MIN(y2, 199);
-
 }
 
 int CometEngine::calcDirection(int fromX, int fromY, int toX, int toY) {
@@ -225,10 +189,9 @@ void CometEngine::initData() {
 
 	resetActorsLife();
 
-	actorInit(0, _animationMan->getAnimationResource(1, 0));
-
-	actorSetPosition(0, 160, 190);
-	_actors[0].life = 99;
+	_actors[0]->init(_animationMan->getAnimationResource(1, 0));
+	_actors[0]->setPosition(160, 190);
+	_actors[0]->_life = 99;
 }
 
 void CometEngine::setModuleAndScene(int moduleNumber, int sceneNumber) {
@@ -310,11 +273,11 @@ void CometEngine::updateModuleNumber() {
 void CometEngine::updateSceneNumber() {
 	Actor *mainActor = getActor(0);
 
-	if (mainActor->walkStatus != 0 &&
-		((mainActor->direction == 2 && mainActor->x < 319) ||
-		(mainActor->direction == 4 && mainActor->x > 0))) {
+	if (mainActor->_walkStatus != 0 &&
+		((mainActor->_direction == 2 && mainActor->_x < 319) ||
+		(mainActor->_direction == 4 && mainActor->_x > 0))) {
 
-		mainActor->y = mainActor->walkDestY;
+		mainActor->_y = mainActor->_walkDestY;
 
 	} else {
 
@@ -325,15 +288,13 @@ void CometEngine::updateSceneNumber() {
 		_prevModuleNumber = _currentModuleNumber;
 		_currentModuleNumber = _moduleNumber;
 
-		actorStopWalking(mainActor);
+		mainActor->stopWalking();
 
-		mainActor->visible = true;
-		mainActor->collisionType = kCollisionNone;
-		mainActor->value6 = 0;
-		mainActor->clipX1 = 0;
-		mainActor->clipY1 = 0;
-		mainActor->clipX2 = 319;
-		mainActor->clipY2 = 199;
+		mainActor->setVisible(true);
+		mainActor->enableCollisions();
+		mainActor->_value6 = 0;
+		mainActor->setClipX(0, 319);
+		mainActor->setClipY(0, 199);
 
 		_screen->_palFlag = false;
 
@@ -348,7 +309,7 @@ void CometEngine::getItemInSight() {
 	debug(4, "CometEngine::getItemInSight()");
 
 	Common::Rect sightRect;
-	calcSightRect(sightRect, 0, 50);
+	getActor(0)->calcSightRect(sightRect, 0, 50);
 
 	int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 	if (sceneItemIndex != 0) {
@@ -368,12 +329,12 @@ void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
 	if (_blockedInput != 15) {
 		Common::Rect sightRect;
-		calcSightRect(sightRect, 0, 50);
+		getActor(0)->calcSightRect(sightRect, 0, 50);
 		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 		if (sceneItemIndex != 0) {
 			SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
 			_itemInSight = true;
-			_itemDirection = _actors[0].direction;
+			_itemDirection = _actors[0]->_direction;
 			_itemX = sceneItem.x;
 			_itemY = sceneItem.y - 6;
 			if (showText && (!_dialog->isRunning() || !_textActive)) {
@@ -391,21 +352,13 @@ void CometEngine::lookAtItemInSight(bool showText) {
 }
 
 void CometEngine::updateActorAnimations() {
-	for (int i = 0; i < 10; i++)
-		if (_actors[i].life != 0)
-			updateActorAnimation(&_actors[i]);
-	updatePortraitAnimation(&_actors[kActorPortrait]);
+	for (int actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex]->updateActorAnimation();
 }
 
 void CometEngine::updateActorMovement() {
-	for (int i = 0; i < 11; i++) {
-		if (_actors[i].life != 0) {
-			Common::Rect obstacleRect;
-			bool skipCollision = updateActorPosition(i, obstacleRect);
-			if (_actors[i].walkStatus & 3)
-				actorUpdateWalking(&_actors[i], i, skipCollision, obstacleRect);
-		}
-	}
+	for (int actorIndex = 0; actorIndex < 11; actorIndex++)
+		_actors[actorIndex]->updateMovement();
 }
 
 void CometEngine::buildSpriteDrawQueue() {
@@ -419,10 +372,11 @@ void CometEngine::addToSpriteDrawQueue(int y, int actorIndex, int insertIndex) {
 	SpriteDraw spriteDraw;
 	spriteDraw.y = y;
 	spriteDraw.index = actorIndex;
-	if (insertIndex >= 0)
+	if (insertIndex >= 0) {
 		_spriteDrawQueue.insert_at(insertIndex, spriteDraw);
-	else
+	} else {
 		_spriteDrawQueue.push_back(spriteDraw);
+	}
 }
 
 void CometEngine::enqueueSceneDecorationForDrawing() {
@@ -435,9 +389,9 @@ void CometEngine::enqueueSceneDecorationForDrawing() {
 }
 
 void CometEngine::enqueueActorsForDrawing() {
-	for (int i = 0; i < 11; i++)
-		if (_actors[i].visible && _actors[i].life > 0)
-			enqueueActorForDrawing(_actors[i].y, i);
+	for (int actorIndex = 0; actorIndex < 11; actorIndex++)
+		if (_actors[actorIndex]->_visible && _actors[actorIndex]->_life > 0)
+			enqueueActorForDrawing(_actors[actorIndex]->_y, actorIndex);
 }
 
 void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
@@ -449,8 +403,8 @@ void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
 }
 
 void CometEngine::updateHeroLife() {
-	if (_actors[0].life > 0 && _actors[0].life < 99 && (_gameLoopCounter & 0x1FF) == 0)
-		_actors[0].life++;
+	if (_actors[0]->_life > 0 && _actors[0]->_life < 99 && (_gameLoopCounter & 0x1FF) == 0)
+		_actors[0]->_life++;
 }
 
 void CometEngine::drawSpriteQueue() {
@@ -465,46 +419,13 @@ void CometEngine::drawSpriteQueue() {
 			objectCmdIndex++;
 		}
 	}
-	if (_itemInSight && _actors[0].direction != 1)
+	if (_itemInSight && _actors[0]->_direction != 1)
 		drawLineOfSight();
 }
 
 void CometEngine::drawActor(int actorIndex) {
 	Actor *actor = getActor(actorIndex);
-
-	int x = actor->x;
-	int y = actor->y;
-
-	AnimationResource *animation = _animationMan->getAnimation(actor->animationSlot);
-
-	// NOTE: Yet another workaround for a crash (see updateActorAnimation).
-	if (actor->animIndex >= (int)animation->_anims.size()) {
-		actor->animIndex = 0;
-		actor->animFrameIndex = 0;
-		actor->animFrameCount = animation->_anims[0]->frames.size();
-	}
-
-	AnimationFrameList *frameList = animation->_anims[actor->animIndex];
-
-	_screen->setClipRect(actor->clipX1, actor->clipY1, actor->clipX2 + 1, actor->clipY2 + 1);
-
-	if (actor->status == 2) {
-		actor->interpolationStep = _screen->drawAnimation(animation, frameList, actor->animFrameIndex, actor->interpolationStep,
-			x, y, actor->animFrameCount);
-	} else {
-		if (actorIndex == 0 && _itemInSight && actor->direction == 1)
-			drawLineOfSight();
-		_screen->drawAnimationElement(animation, frameList->frames[actor->animFrameIndex]->elementIndex, x, y);
-	}
-
-	_screen->setClipRect(0, 0, 320, 200);
-
-	if (debugShowActorNum) {
-		// DEBUG: Show actor number
-		Common::String temp;
-		temp = Common::String::format("%d", actorIndex);
-		_screen->drawText(CLIP(x, 16, 320 - 16), CLIP(y, 16, 200 - 16), (const byte*)temp.c_str());
-	}
+	actor->draw();
 }
 
 void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
@@ -529,15 +450,15 @@ void CometEngine::updateTextDialog() {
 
 void CometEngine::updateText() {
 
-	Actor *actor = getActor(_talkActorIndex);
+	Actor *talkingActor = getActor(_talkActorIndex);
 	int textX, textY;
 
-	if (actor->textX != -1) {
-		textX = actor->textX;
-		textY = actor->textY;
+	if (talkingActor->_textX != -1) {
+		textX = talkingActor->_textX;
+		textY = talkingActor->_textY;
 	} else {
-		textX = actor->x;
-		textY = actor->y - _textMaxTextHeight - 50;
+		textX = talkingActor->_x;
+		textY = talkingActor->_y - _textMaxTextHeight - 50;
 	}
 
 	drawBubble(textX - _textMaxTextWidth - 4, textY - 4, textX + _textMaxTextWidth + 4, textY + _textMaxTextHeight);
@@ -598,6 +519,29 @@ void CometEngine::freeAnimationsAndSceneDecoration() {
 	_animationMan->purgeAnimationSlots();
 	delete _sceneDecorationSprite;
 	_sceneDecorationSprite = NULL;
+}
+
+int CometEngine::getPortraitTalkAnimNumber() {
+	if (_portraitTalkCounter == 0) {
+		if (_talkieMode == 0) {
+			_portraitTalkAnimNumber = randomValue(4);
+			if (_portraitTalkAnimNumber == 0)
+				_portraitTalkCounter = 1;
+		} else {
+			_portraitTalkAnimNumber = randomValue(3);
+			if (!_talkieSpeechPlaying)
+		  		_portraitTalkAnimNumber = 0;
+		}
+	} else {
+		_portraitTalkCounter++;
+		if (((_talkieMode == 1 || _talkieMode == 2) && _portraitTalkCounter == 1) || _portraitTalkCounter == 10)
+			_portraitTalkCounter = 0;
+	}
+	return _portraitTalkAnimNumber;
+}
+
+AnimationFrame *CometEngine::getAnimationFrame(int animationSlot, int animIndex, int animFrameIndex) {
+	return _animationMan->getAnimation(animationSlot)->_anims[animIndex]->frames[animFrameIndex];
 }
 
 void CometEngine::updateScreen() {
@@ -696,7 +640,7 @@ void CometEngine::blockInput(int flagIndex) {
 	if (flagIndex == 0) {
 		_walkDirection = 0;
 		_blockedInput = 15;
-		actorStopWalking(getActor(0));
+		getActor(0)->stopWalking();
 	} else {
 		static const int constFlagsArray[5] = {0, 1, 8, 2, 4};
 		_blockedInput |= constFlagsArray[flagIndex];
@@ -705,8 +649,8 @@ void CometEngine::blockInput(int flagIndex) {
 
 void CometEngine::unblockInput() {
 	_blockedInput = 0;
-	if (_actors[0].status == 2)
-		_actors[0].status = 0;
+	if (_actors[0]->_status == 2)
+		_actors[0]->_status = 0;
 }
 
 int CometEngine::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY) {
@@ -966,7 +910,7 @@ void CometEngine::handleInput() {
 	if (!isFloppy()) {
 		if (!_dialog->isRunning() && !_textActive && _blockedInput != 0x0F) {
 			if (!_mouseWalking && _walkDirection == 0) {
-				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->x, mainActor->y, _mouseX, _mouseY);
+				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->_x, mainActor->_y, _mouseX, _mouseY);
 			} else if (_walkDirection != 0) {
 				_mouseCursorDirection = _walkDirection;
 			}
@@ -1023,29 +967,28 @@ void CometEngine::handleInput() {
 	if (!isFloppy())
 		_scriptKeybFlag = _scriptKeybFlag || _leftButton || _rightButton;
 
-	if (mainActor->walkStatus & 3)
+	if (mainActor->_walkStatus & 3)
 		return;
 
-	if (_dialog->isRunning() && mainActor->directionAdd != 0) {
-		actorStopWalking(mainActor);
+	if (_dialog->isRunning() && mainActor->_directionAdd != 0) {
+		mainActor->stopWalking();
 		return;
 	}
 
-	directionAdd = mainActor->directionAdd;
-
-	mainActor->walkDestX = mainActor->x;
-	mainActor->walkDestY = mainActor->y;
+	directionAdd = mainActor->_directionAdd;
+	mainActor->_walkDestX = mainActor->_x;
+	mainActor->_walkDestY = mainActor->_y;
 
 	if (directionAdd == 4)
 		directionAdd = 0;
 
-	if (mainActor->direction == _walkDirection && !(_blockedInput & _cursorDirection))
+	if (mainActor->_direction == _walkDirection && !(_blockedInput & _cursorDirection))
 		directionAdd = 4;
 
-	direction = mouseDirectionTable[mainActor->direction * 5 + _walkDirection];
+	direction = mouseDirectionTable[mainActor->_direction * 5 + _walkDirection];
 
-	actorSetDirection(mainActor, direction);
-	actorSetDirectionAdd(mainActor, directionAdd);
+	mainActor->setDirection(direction);
+	mainActor->setDirectionAdd(directionAdd);
 }
 
 void CometEngine::stopText() {
@@ -1129,29 +1072,26 @@ int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNu
 
 	Actor *mainActor = getActor(0);
 
-	if (mainActor->direction != 1 && mainActor->direction != 3) {
+	if (mainActor->_direction != 1 && mainActor->_direction != 3) {
 		int x1, y1, x2, y2;
 
-		mainActor->value6 = 4;
+		mainActor->_value6 = 4;
 
-		_scene->getExitRect(mainActor->collisionIndex, x1, y1, x2, y2);
+		_scene->getExitRect(mainActor->_collisionIndex, x1, y1, x2, y2);
 		if (x2 == 318)
 			x2 = 319;
 
-		// Disable collision checks
-		mainActor->collisionType = kCollisionDisabled;
+		mainActor->disableCollisions();
 
-		if (mainActor->direction == 2) {
-			mainActor->clipX1 = 0;
-			mainActor->clipX2 = x2;
-			actorStartWalking(0, 319, mainActor->y);
-		} else if (mainActor->direction == 4) {
-			mainActor->clipX1 = x1;
-			mainActor->clipX2 = 319;
-			actorStartWalking(0, 0, mainActor->y);
+		if (mainActor->_direction == 2) {
+			mainActor->setClipX(0, x2);
+			mainActor->startWalking(319, mainActor->_y);
+		} else if (mainActor->_direction == 4) {
+			mainActor->setClipX(x1, 319);
+			mainActor->startWalking(0, mainActor->_y);
 		}
 
-		mainActor->walkStatus &= ~4;
+		mainActor->_walkStatus &= ~4;
 	}
 
 	return 1;
@@ -1172,8 +1112,8 @@ void CometEngine::showTextBubble(int index, byte *text, int textDuration) {
 
 void CometEngine::drawLineOfSight() {
 	if (_itemInSight) {
-		int x = _actors[0].x;
-		int y = _actors[0].y - 35;
+		int x = _actors[0]->_x;
+		int y = _actors[0]->_y - 35;
 		switch (_itemDirection) {
 		case 1:
 			y--;
@@ -1195,11 +1135,8 @@ void CometEngine::drawLineOfSight() {
 uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
 	for (int index = 0; index < 11; index++) {
 		Actor *actor = getActor(index);
-		if (index != selfActorIndex && actor->life != 0 && actor->collisionType != kCollisionDisabled) {
-			obstacleRect.left = actor->x - actor->deltaX;
-			obstacleRect.top = actor->y - actor->deltaY;
-			obstacleRect.right = actor->x + actor->deltaX;
-			obstacleRect.bottom = actor->y;
+		if (index != selfActorIndex && actor->_life != 0 && actor->_collisionType != kCollisionDisabled) {
+			obstacleRect = actor->getRect();
 			if (rectCompare(rect, obstacleRect)) {
 				return COLLISION(kCollisionActor, index);
 			}
@@ -1252,18 +1189,18 @@ void CometEngine::initSceneDecorationBlockingRects() {
 uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisionType) {
 	int result = 0;
 
-	actor->collisionType = COLLISION_TYPE(collisionType);
-	actor->collisionIndex = COLLISION_INDEX(collisionType);
+	actor->_collisionType = COLLISION_TYPE(collisionType);
+	actor->_collisionIndex = COLLISION_INDEX(collisionType);
 
-	if (actorIndex == 0 && actor->collisionType == kCollisionSceneExit) {
+	if (actor->_itemIndex == 0 && actor->_collisionType == kCollisionSceneExit) {
 		int moduleNumber, sceneNumber;
-		_scene->getExitLink(actor->collisionIndex, moduleNumber, sceneNumber);
+		_scene->getExitLink(actor->_collisionIndex, moduleNumber, sceneNumber);
 		result = handleLeftRightSceneExitCollision(moduleNumber, sceneNumber);
 	}
 
 	if (result == 0) {
-		actorSetDirectionAdd(actor, 0);
-		updateActorAnimation(actor);
+		actor->setDirectionAdd(0);
+		actor->updateAnimation();
 	}
 
 	return result;
@@ -1273,12 +1210,12 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 	Actor *mainActor = getActor(0);
 	int direction, x1, x2, y1, y2;
 
-	_scene->findExitRect(sceneNumber, moduleNumber, mainActor->direction, x1, y1, x2, y2, direction);
+	_scene->findExitRect(sceneNumber, moduleNumber, mainActor->_direction, x1, y1, x2, y2, direction);
 
-	mainActor->x = (x2 - x1) / 2 + x1;
-	mainActor->y = (y2 - y1) / 2 + y1;
-	mainActor->direction = direction;
-	actorSetAnimNumber(mainActor, direction - 1);
+	mainActor->_x = (x2 - x1) / 2 + x1;
+	mainActor->_y = (y2 - y1) / 2 + y1;
+	mainActor->_direction = direction;
+	mainActor->setAnimationIndex(direction - 1);
 
 	// Scene change effects
 	if (_screen->getZoomFactor() == 0) {
@@ -1501,9 +1438,9 @@ void CometEngine::drawBeams() {
 void CometEngine::initSystemVars() {
 	_systemVars[0] = &_prevSceneNumber;
 	for (int i = 0; i < 10; i++) {
-		_systemVars[1 + i * 3] = &_actors[i].life;
-		_systemVars[2 + i * 3] = &_actors[i].x;
-		_systemVars[3 + i * 3] = &_actors[i].y;
+		_systemVars[1 + i * 3] = &_actors[i]->_life;
+		_systemVars[2 + i * 3] = &_actors[i]->_x;
+		_systemVars[3 + i * 3] = &_actors[i]->_y;
 	}
 	_systemVars[31] = &_cursorDirection;
 	_systemVars[32] = &_scriptKeybFlag;
@@ -1594,7 +1531,7 @@ void CometEngine::cometMainLoop() {
 			loadSceneBackground();
 		}
 
-		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0]->_value6 != 4 && !_screen->_palFlag && !_textActive) {
 			handleKeyInput();
 		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
 		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
@@ -1662,7 +1599,7 @@ void CometEngine::museumMainLoop() {
 	_quitGame = false;
 	while (!_quitGame) {
 		handleEvents();
-		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0].value6 != 4 && !_screen->_palFlag && !_textActive) {
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors[0]->_value6 != 4 && !_screen->_palFlag && !_textActive) {
 			handleKeyInput();
 		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
 			stopText();

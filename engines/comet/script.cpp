@@ -24,6 +24,7 @@
  */
 
 #include "comet/comet.h"
+#include "comet/actor.h"
 #include "comet/screen.h"
 #include "comet/script.h"
 #include "comet/dialog.h"
@@ -283,16 +284,16 @@ void ScriptInterpreter::processScriptSleep(Script *script) {
 }
 
 void ScriptInterpreter::processScriptWalk(Script *script) {
-	if ((script->actor()->walkStatus & 3) == 0 || script->actor()->life == 0) {
+	if ((script->actor()->_walkStatus & 3) == 0 || script->actor()->_life == 0) {
 		script->status &= ~kScriptWalking;
-		_vm->actorSetAnimNumber(script->actor(), 0);
+		script->actor()->setAnimationIndex(0);
 	} else {
 		_yield = true;
 	}
 }
 
 void ScriptInterpreter::processScriptAnim(Script *script) {
-	if (script->actor()->animFrameIndex + 1 == script->actor()->animFrameCount) {
+	if (script->actor()->_animFrameIndex + 1 == script->actor()->_animFrameCount) {
 		script->status &= ~kScriptAnimPlaying;
 	} else {
 		_yield = true;
@@ -314,15 +315,15 @@ void ScriptInterpreter::processScriptTalk(Script *script) {
 		script->status &= ~kScriptTalking;
 		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_talkAnimIndex != -1)
-				_vm->_actors[_vm->_talkAnimIndex].visible = true;
-			_vm->_actors[10].life = 0;
+				_vm->_actors[_vm->_talkAnimIndex]->_visible = true;
+			_vm->_actors[10]->_life = 0;
 			_vm->_screen->enableTransitionEffect();
 		} else if (_vm->_talkAnimIndex != -1) {
 			// Restore previous actor animation
 			Actor *actor = _vm->getActor(_vm->_talkActorIndex);
-			_vm->actorSetAnimNumber(actor, _vm->_talkAnimIndex);
-			actor->animPlayFrameIndex = _vm->_talkAnimPlayFrameIndex;
-			actor->animFrameIndex = _vm->_talkAnimFrameIndex;
+			actor->setAnimationIndex(_vm->_talkAnimIndex);
+			actor->_animPlayFrameIndex = _vm->_talkAnimPlayFrameIndex;
+			actor->_animFrameIndex = _vm->_talkAnimFrameIndex;
 			_vm->_talkAnimIndex = -1;
 		}
 	} else {
@@ -440,11 +441,8 @@ void ScriptInterpreter::o1_nop(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorSetDirection(Script *script) {
-	debugC(2, kDebugScript, "o1_actorSetDirection");
-
 	ARG_BYTE(direction);
-	script->actor()->status = 0;
-	_vm->actorSetDirection(script->actor(), direction);
+	script->actor()->forceDirection(direction);
 }
 
 void ScriptInterpreter::o1_break(Script *script) {
@@ -458,9 +456,7 @@ void ScriptInterpreter::o1_jump(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToX(Script *script) {
 	ARG_BYTEX(newX);
-	script->actor()->status = 0;
-	if (_vm->actorStartWalking(script->actorIndex, newX, script->actor()->y)) {
-		script->actor()->walkStatus |= 8;
+	if (script->actor()->startWalkToX(newX)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -468,9 +464,7 @@ void ScriptInterpreter::o1_actorWalkToX(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToY(Script *script) {
 	ARG_BYTE(newY);
-	script->actor()->status = 0;
-	if (_vm->actorStartWalking(script->actorIndex, script->actor()->x, newY)) {
-		script->actor()->walkStatus |= 0x10;
+	if (script->actor()->startWalkToY(newY)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -490,7 +484,7 @@ void ScriptInterpreter::o1_loop(Script *script) {
 void ScriptInterpreter::o1_actorSetPosition(Script *script) {
 	ARG_BYTEX(x);
 	ARG_BYTE(y);
-	_vm->actorSetPosition(script->actorIndex, x, y);
+	script->actor()->setPosition(x, y);
 }
 
 void ScriptInterpreter::o1_synchronize(Script *script) {
@@ -527,9 +521,7 @@ void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
 	ARG_BYTE(delta);
-	script->actor()->status = 0;
-	if (_vm->actorStartWalking(script->actorIndex, _vm->_actors[0].x + delta, script->actor()->y)) {
-		script->actor()->walkStatus |= 8;
+	if (script->actor()->startWalkToX(_vm->_actors[0]->_x + delta)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -537,9 +529,7 @@ void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToMainActorY(Script *script) {
 	ARG_BYTE(delta);
-	script->actor()->status = 0;
-	if (_vm->actorStartWalking(script->actorIndex, script->actor()->x, _vm->_actors[0].y + delta)) {
-		script->actor()->walkStatus |= 0x10;
+	if (script->actor()->startWalkToY(_vm->_actors[0]->_y + delta)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -550,12 +540,10 @@ void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 	ARG_BYTE(deltaY);
 	Actor *mainActor = _vm->getActor(0);
 	Actor *actor = script->actor();
-	int x = mainActor->x + deltaX;
-	int y = mainActor->y + deltaY;
-	actor->status = 0;
-	_vm->_scene->superFilterWalkDestXY(x, y, actor->deltaX, actor->deltaY);
-	actor->walkStatus = 0;
-	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
+	int x = mainActor->_x + deltaX;
+	int y = mainActor->_y + deltaY;
+	_vm->_scene->superFilterWalkDestXY(x, y, actor->_deltaX, actor->_deltaY);
+	if (actor->startWalkToXY(x, y)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -573,9 +561,8 @@ void ScriptInterpreter::o1_unblockInput(Script *script) {
 void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
 	Actor *mainActor = _vm->getActor(0);
 	Actor *actor = script->actor();
-	int direction = _vm->calcDirection(actor->x, actor->y, mainActor->x, mainActor->y);
-	actor->status = 0;
-	_vm->actorSetDirection(actor, direction);
+	int direction = _vm->calcDirection(actor->_x, actor->_y, mainActor->_x, mainActor->_y);
+	actor->forceDirection(direction);
 }
 
 void ScriptInterpreter::o1_selectActor(Script *script) {
@@ -657,18 +644,17 @@ void ScriptInterpreter::o1_subVar(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorDisableCollisions(Script *script) {
-	script->actor()->collisionType = kCollisionDisabled;
+	script->actor()->disableCollisions();
 }
 
 void ScriptInterpreter::o1_actorEnableCollisions(Script *script) {
-	script->actor()->collisionType = kCollisionNone;
+	script->actor()->enableCollisions();
 }
 
 void ScriptInterpreter::o1_actorWalkTo(Script *script) {
 	ARG_BYTEX(x);
 	ARG_BYTE(y);
-	script->actor()->status = 0;
-	if (_vm->actorStartWalking(script->actorIndex, x, y)) {
+	if (script->actor()->startWalkToXY(x, y)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -689,11 +675,7 @@ void ScriptInterpreter::o1_setSceneNumber(Script *script) {
 void ScriptInterpreter::o1_setupActorAnim(Script *script) {
 	ARG_BYTE(animIndex);
 	ARG_BYTE(animFrameIndex);
-	Actor *actor = script->actor();
-	actor->animIndex = animIndex;
-	actor->animFrameIndex = animFrameIndex;
-	actor->animPlayFrameIndex = animFrameIndex;
-	actor->status = 2;
+	script->actor()->setupActorAnim(animIndex, animFrameIndex);
 }
 
 void ScriptInterpreter::o1_setAnimationType(Script *script) {
@@ -703,7 +685,7 @@ void ScriptInterpreter::o1_setAnimationType(Script *script) {
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
 	Actor *mainActor = _vm->getActor(0);
-	_vm->actorSetPosition(script->actorIndex, mainActor->x, mainActor->y + 1);
+	script->actor()->setPosition(mainActor->_x, mainActor->_y + 1);
 }
 
 void ScriptInterpreter::o1_setZoom(Script *script) {
@@ -717,7 +699,7 @@ void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_BYTE(zoomFactor);
 	Actor *actor = _vm->getActor(actorIndex);
-	_vm->_screen->setZoom(zoomFactor, actor->x, actor->y);
+	_vm->_screen->setZoom(zoomFactor, actor->_x, actor->_y);
 }
 
 void ScriptInterpreter::o1_startDialog(Script *script) {
@@ -752,24 +734,22 @@ void ScriptInterpreter::o1_waitUntilHeroEnterZone(Script *script) {
 
 void ScriptInterpreter::o1_actorDelete(Script *script) {
 	if (script->actorIndex != 0) {
-		script->actor()->life = 0;
-		if (script->actor()->animationSlot != -1)
-			_vm->unloadActorSprite(script->actor());
+		script->actor()->_life = 0;
+		if (script->actor()->_animationSlot != -1)
+			script->actor()->unloadSprite();
 	}
 }
 
 void ScriptInterpreter::o1_actorSetClipX(Script *script) {
 	ARG_BYTEX(clipX1);
 	ARG_BYTEX(clipX2);
-	script->actor()->clipX1 = clipX1;
-	script->actor()->clipX2 = clipX2;
+	script->actor()->setClipX(clipX1, clipX2);
 }
 
 void ScriptInterpreter::o1_actorSetClipY(Script *script) {
 	ARG_BYTE(clipY1);
 	ARG_BYTE(clipY2);
-	script->actor()->clipY1 = clipY1;
-	script->actor()->clipY2 = clipY2;
+	script->actor()->setClipY(clipY1, clipY2);
 }
 
 void ScriptInterpreter::o1_clearScreen(Script *script) {
@@ -845,12 +825,8 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 	script->zoneY2 = zoneY2;
 	Actor *mainActor = _vm->getActor(0);
 	Common::Rect rect1(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2);
-	Common::Rect rect2(
-		mainActor->x - mainActor->deltaX,
-		mainActor->y - mainActor->deltaY,
-		mainActor->x + mainActor->deltaX,
-		mainActor->y);
-	return _vm->rectCompare(rect1, rect2);
+	Common::Rect mainActorRect = mainActor->getRect();
+	return _vm->rectCompare(rect1, mainActorRect);
 }
 
 void ScriptInterpreter::o1_ifLook(Script *script) {
@@ -898,14 +874,13 @@ void ScriptInterpreter::o1_removeBlockingRect(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorSetTextColor(Script *script) {
-	script->actor()->textColor = script->readByte();
+	script->actor()->_textColor = script->readByte();
 }
 
 void ScriptInterpreter::o1_actorSetTextPosition(Script *script) {
 	ARG_BYTEX(textX);
 	ARG_BYTE(textY);
-	script->actor()->textX = textX;
-	script->actor()->textY = textY;
+	script->actor()->setTextXY(textX, textY);
 }
 
 void ScriptInterpreter::o1_breakLoop(Script *script) {
@@ -962,8 +937,8 @@ void ScriptInterpreter::o1_playActorAnim(Script *script) {
 
 void ScriptInterpreter::o1_actorSetAnimNumber(Script *script) {
 	ARG_BYTE(animIndex);
-	_vm->actorSetAnimNumber(script->actor(), animIndex);
-	script->actor()->status = 2;
+	script->actor()->setAnimationIndex(animIndex);
+	script->actor()->_status = 2;
 }
 
 void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
@@ -979,19 +954,19 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 void ScriptInterpreter::o1_initActor(Script *script) {
 	o1_selectActor(script);
 	if (script->actorIndex != 0)
-		_vm->actorInit(script->actorIndex, -1);
+		script->actor()->init(-1);
 }
 
 void ScriptInterpreter::o1_loadActorSprite(Script *script) {
 	ARG_BYTE(fileIndex);
-	_vm->unloadActorSprite(script->actor());
-	script->actor()->animationSlot = _vm->_animationMan->getAnimationResource(_vm->_animationType, fileIndex);
+	int animationSlot = _vm->_animationMan->getAnimationResource(_vm->_animationType, fileIndex);
+	script->actor()->loadSprite(animationSlot);
 	_vm->_animationType = 0;
 }
 
 void ScriptInterpreter::o1_setActorVisible(Script *script) {
 	ARG_BYTE(visible);
-	script->actor()->visible = visible;
+	script->actor()->setVisible(visible != 0);
 }
 
 void ScriptInterpreter::o1_paletteFadeIn(Script *script) {
