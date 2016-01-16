@@ -31,7 +31,6 @@
 #include "common/array.h"
 #include "common/list.h"
 #include "common/file.h"
-#include "common/endian.h"
 #include "common/stream.h"
 #include "common/util.h"
 #include "common/random.h"
@@ -60,9 +59,11 @@ class MusicPlayer;
 class CometEngine;
 class CometConsole;
 
+class Actor;
 class AnimationResource;
 struct AnimationElement;
 struct AnimationCel;
+struct AnimationFrame;
 class AnimationManager;
 struct AnimationFrameList;
 struct InterpolatedAnimationElement;
@@ -114,32 +115,6 @@ enum {
 #define COLLISION_TYPE(collision) (((collision) >> 8) & 0xFF)
 #define COLLISION_INDEX(collision) ((collision) & 0xFF)
 
-struct Actor {
-	int16 x, y;
-	int16 directionAdd, direction;
-	int16 status;
-	byte flag2;
-	int16 animationSlot;
-	int16 animIndex;
-	int16 animFrameIndex;
-	int16 interpolationStep;
-	int16 animFrameCount;
-	int16 animPlayFrameIndex;
-	int16 deltaX, deltaY;
-	uint16 collisionType;
-	int16 collisionIndex;
-	byte value6;
-	int16 life;
-	byte textColor;
-	byte value7;
-	int16 textX, textY;
-	uint16 walkStatus;
-	int16 walkDestX, walkDestY;
-	int16 savedWalkDestX, savedWalkDestY;
-	int16 clipX1, clipY1, clipX2, clipY2;
-	bool visible;
-};
-
 struct SpriteDraw {
 	byte y;
 	byte index;
@@ -165,6 +140,8 @@ enum {
 	kDebugCollision	= (1 << 5),
 	kDebugScreen	= (1 << 6)
 };
+
+const uint kActorsCount = 11;
 
 class CometEngine : public Engine {
 protected:
@@ -226,7 +203,7 @@ public:
 
 	int16 _animationType;
 
-	Actor _actors[11];
+	Actor *_actors[kActorsCount];
 
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
@@ -363,6 +340,9 @@ public:
 	bool updateActorPosition(int actorIndex, Common::Rect &obstacleRect);
 	void freeAnimationsAndSceneDecoration();
 
+	int getPortraitTalkAnimNumber();
+	AnimationFrame *getAnimationFrame(int animationSlot, int animIndex, int animFrameIndex);
+
 	void updateScreen();
 
 	// cursorSprite = NULL uses the engine's system cursor  
@@ -431,7 +411,6 @@ public:
 
 	// Misc
 	int comparePointXY(int x, int y, int x2, int y2);
-	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 
 	// Script
 	int16 *_systemVars[256];
