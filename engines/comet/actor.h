@@ -76,6 +76,8 @@ protected:
 	void moveAroundObstacle(Common::Rect &obstacleRect);
 	void moveAroundSceneBounds();
 	void updatePortraitAnimation();
+	uint16 checkCollision(Common::Rect &testRect, Common::Rect &obstacleRect);
+	uint16 updateCollision(uint16 collisionType);
 public://protected:
 	CometEngine *_vm;
 	int _itemIndex;
@@ -116,6 +118,7 @@ public:
 	void enqueueActorsForDrawing();
 	bool isAnimationSlotUsed(int16 animationSlot);
 	void clearAnimationSlotByIndex(int16 animationSlot);
+	uint16 checkCollisionWithActors(uint selfActorIndex, Common::Rect &testRect, Common::Rect &obstacleRect);
 	void resetHealth();
 	uint getCount() const { return kActorsCount; } // TODO Remove later, only used in saveload
 	Actor *getActor(uint index);

@@ -329,9 +329,10 @@ bool Actor::updatePosition(Common::Rect &obstacleRect) {
 		getNextWalkDestXY(newX, newY);
 
 	if (_collisionType != kCollisionDisabled) {
-		uint16 collisionType = _vm->checkCollision(_itemIndex, newX, newY, _deltaX, _deltaY, _direction, obstacleRect);
+		Common::Rect testRect(newX - _deltaX, newY - _deltaY, newX + _deltaX, newY);
+		uint16 collisionType = checkCollision(testRect, obstacleRect);
 		if (collisionType != 0) {
-			collisionType = _vm->updateCollision(this, _itemIndex, collisionType);
+			collisionType = updateCollision(collisionType);
 			if (collisionType == 0)
 				return false;
 		} else
@@ -553,6 +554,34 @@ void Actor::updateHealth() {
 		++_life;
 }
 
+uint16 Actor::checkCollision(Common::Rect &testRect, Common::Rect &obstacleRect) {
+	uint16 collisionType = 0;
+	collisionType = _vm->_scene->checkCollisionWithBounds(testRect, _direction);
+	if (collisionType != 0) {
+		uint16 sceneExitCollision = _vm->_scene->checkCollisionWithExits(testRect, _direction);
+		if (sceneExitCollision != 0)
+			collisionType = sceneExitCollision;
+	} else {
+		collisionType = _vm->_scene->checkCollisionWithBlockingRects(testRect, obstacleRect);
+		if (collisionType == 0)
+			collisionType = _vm->_actors->checkCollisionWithActors(_itemIndex, testRect, obstacleRect);
+	}
+	return collisionType;
+}
+
+uint16 Actor::updateCollision(uint16 collisionType) {
+	int result = 0;
+	_collisionType = COLLISION_TYPE(collisionType);
+	_collisionIndex = COLLISION_INDEX(collisionType);
+	if (_itemIndex == 0 && _collisionType == kCollisionSceneExit)
+		result = _vm->handleSceneExitCollision(_collisionIndex);
+	if (result == 0) {
+		setDirectionAdd(0);
+		updateAnimation();
+	}
+	return result;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -657,19 +686,31 @@ void Actors::enqueueActorsForDrawing() {
 }
 
 bool Actors::isAnimationSlotUsed(int16 animationSlot) {
-	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); actorIndex++)
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
 		if (_actors[actorIndex]->_animationSlot == animationSlot && _actors[actorIndex]->_life != 0)
 			return true;
 	return false;
 }
 
 void Actors::clearAnimationSlotByIndex(int16 animationSlot) {
-	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); actorIndex++) {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex) {
 		if (_actors[actorIndex]->_animationSlot == animationSlot) {
 			_actors[actorIndex]->_animationSlot = -1;
 			_actors[actorIndex]->_life = 0;
 		}
 	}
+}
+
+uint16 Actors::checkCollisionWithActors(uint selfActorIndex, Common::Rect &testRect, Common::Rect &obstacleRect) {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex) {
+		Actor *actor = _actors[actorIndex];
+		if (actorIndex != selfActorIndex && actor->_life != 0 && actor->_collisionType != kCollisionDisabled) {
+			obstacleRect = actor->getRect();
+			if (_vm->rectCompare(testRect, obstacleRect))
+				return COLLISION(kCollisionActor, actorIndex);
+		}
+	}
+	return 0;
 }
 
 void Actors::resetHealth() {
