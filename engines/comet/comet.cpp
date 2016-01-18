@@ -115,16 +115,14 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 
 	_quitGame = false;
 
-	for (int actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
-		_actors[actorIndex] = new Actor(this, actorIndex);
+	_actors = new Actors(this);
 
 }
 
 CometEngine::~CometEngine() {
 	DebugMan.clearAllDebugChannels();
 
-	for (int actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
-		delete _actors[actorIndex];
+	delete _actors;
 
 	delete _rnd;
 	delete _console;

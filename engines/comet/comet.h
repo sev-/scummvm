@@ -60,6 +60,7 @@ class CometEngine;
 class CometConsole;
 
 class Actor;
+class Actors;
 class AnimationResource;
 struct AnimationElement;
 struct AnimationCel;
@@ -141,8 +142,6 @@ enum {
 	kDebugScreen	= (1 << 6)
 };
 
-const uint kActorsCount = 11;
-
 class CometEngine : public Engine {
 protected:
 	Common::Error run();
@@ -203,7 +202,7 @@ public:
 
 	int16 _animationType;
 
-	Actor *_actors[kActorsCount];
+	Actors *_actors;
 
 	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
 
@@ -315,12 +314,9 @@ public:
 	void updateSceneNumber();
 	void getItemInSight();
 	void lookAtItemInSight(bool showText);
-	void updateActorAnimations();
-	void updateActorMovement();
 	void buildSpriteDrawQueue();
 	void addToSpriteDrawQueue(int y, int actorIndex, int insertIndex);
 	void enqueueSceneDecorationForDrawing();
-	void enqueueActorsForDrawing();
 	void enqueueActorForDrawing(int y, int actorIndex);
 	void updateHeroLife();
 	void handleActorCollision(int actorIndex, Actor *actor, Common::Rect &obstacleRect);
@@ -406,8 +402,6 @@ public:
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
-
-	void resetActorsLife();
 
 	// Misc
 	int comparePointXY(int x, int y, int x2, int y2);

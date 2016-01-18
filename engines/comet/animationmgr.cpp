@@ -67,8 +67,8 @@ AnimationResource *AnimationManager::loadAnimationResourceFromRaw(const byte *ra
 
 void AnimationManager::purgeUnusedAnimationSlots() {
 	for (uint slotIndex = 0; slotIndex < kAnimationSlotCount; slotIndex++)
-		if (_animationSlots[slotIndex].anim && _animationSlots[slotIndex].animationType == 0 && !_vm->isAnimationSlotUsed(slotIndex)) {
-			_vm->clearAnimationSlotByIndex(slotIndex);
+		if (_animationSlots[slotIndex].anim && _animationSlots[slotIndex].animationType == 0 && !_vm->_actors->isAnimationSlotUsed(slotIndex)) {
+			_vm->_actors->clearAnimationSlotByIndex(slotIndex);
 			delete _animationSlots[slotIndex].anim;
 			_animationSlots[slotIndex].anim = NULL;
 		}
@@ -76,8 +76,8 @@ void AnimationManager::purgeUnusedAnimationSlots() {
 
 void AnimationManager::purgeAnimationSlots() {
 	for (uint slotIndex = 0; slotIndex < kAnimationSlotCount; slotIndex++)
-		if (_animationSlots[slotIndex].anim && _animationSlots[slotIndex].animationType == 0 && _vm->_actors[0]->_animationSlot != (int)slotIndex) {
-			_vm->clearAnimationSlotByIndex(slotIndex);
+		if (_animationSlots[slotIndex].anim && _animationSlots[slotIndex].animationType == 0 && _vm->_actors->getActor(0)->_animationSlot != (int)slotIndex) {
+			_vm->_actors->clearAnimationSlotByIndex(slotIndex);
 			delete _animationSlots[slotIndex].anim;
 			_animationSlots[slotIndex].anim = NULL;
 		}
@@ -112,14 +112,14 @@ void AnimationManager::refreshAnimationSlots() {
 
 void AnimationManager::restoreAnimationSlots() {
 	for (uint slotIndex = 0; slotIndex < kAnimationSlotCount; slotIndex++) {
-		if (_animationSlots[slotIndex].fileIndex != -1) {
-			if (_animationSlots[slotIndex].animationType == 0) {
-				delete _animationSlots[slotIndex].anim;
-				_animationSlots[slotIndex].anim = loadAnimationResource(_vm->_animPakName.c_str(), _animationSlots[slotIndex].fileIndex);
-			} else
-				_animationSlots[slotIndex].anim = _vm->getGlobalAnimationResource(_animationSlots[slotIndex].animationType);
-		} else
+		if (_animationSlots[slotIndex].fileIndex < 0) {
 			_animationSlots[slotIndex].anim = NULL;
+		} else if (_animationSlots[slotIndex].animationType == 0) {
+			delete _animationSlots[slotIndex].anim;
+			_animationSlots[slotIndex].anim = loadAnimationResource(_vm->_animPakName.c_str(), _animationSlots[slotIndex].fileIndex);
+		} else {
+			_animationSlots[slotIndex].anim = _vm->getGlobalAnimationResource(_animationSlots[slotIndex].animationType);
+		}
 	}
 }
 

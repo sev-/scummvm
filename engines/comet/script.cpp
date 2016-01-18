@@ -315,12 +315,12 @@ void ScriptInterpreter::processScriptTalk(Script *script) {
 		script->status &= ~kScriptTalking;
 		if (_vm->_talkActorIndex == 10) {
 			if (_vm->_talkAnimIndex != -1)
-				_vm->_actors[_vm->_talkAnimIndex]->_visible = true;
-			_vm->_actors[10]->_life = 0;
+				_vm->_actors->getActor(_vm->_talkAnimIndex)->_visible = true;
+			_vm->_actors->getActor(10)->_life = 0;
 			_vm->_screen->enableTransitionEffect();
 		} else if (_vm->_talkAnimIndex != -1) {
 			// Restore previous actor animation
-			Actor *actor = _vm->getActor(_vm->_talkActorIndex);
+			Actor *actor = _vm->_actors->getActor(_vm->_talkActorIndex);
 			actor->setAnimationIndex(_vm->_talkAnimIndex);
 			actor->_animPlayFrameIndex = _vm->_talkAnimPlayFrameIndex;
 			actor->_animFrameIndex = _vm->_talkAnimFrameIndex;
@@ -431,7 +431,7 @@ bool ScriptInterpreter::evalBoolOp(int value1, int value2, int boolOp) {
 }
 
 Actor *ScriptInterpreter::getActor(int index) {
-	return _vm->getActor(index);
+	return _vm->_actors->getActor(index);
 }
 
 // Script functions
@@ -521,7 +521,7 @@ void ScriptInterpreter::o1_ifHeroInZone(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
 	ARG_BYTE(delta);
-	if (script->actor()->startWalkToX(_vm->_actors[0]->_x + delta)) {
+	if (script->actor()->startWalkToX(_vm->_actors->getActor(0)->_x + delta)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -529,7 +529,7 @@ void ScriptInterpreter::o1_actorWalkToMainActorX(Script *script) {
 
 void ScriptInterpreter::o1_actorWalkToMainActorY(Script *script) {
 	ARG_BYTE(delta);
-	if (script->actor()->startWalkToY(_vm->_actors[0]->_y + delta)) {
+	if (script->actor()->startWalkToY(_vm->_actors->getActor(0)->_y + delta)) {
 		script->status |= kScriptWalking;
 		_yield = true;
 	}
@@ -538,7 +538,7 @@ void ScriptInterpreter::o1_actorWalkToMainActorY(Script *script) {
 void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 	ARG_BYTE(deltaX);
 	ARG_BYTE(deltaY);
-	Actor *mainActor = _vm->getActor(0);
+	Actor *mainActor = _vm->_actors->getActor(0);
 	Actor *actor = script->actor();
 	int x = mainActor->_x + deltaX;
 	int y = mainActor->_y + deltaY;
@@ -559,7 +559,7 @@ void ScriptInterpreter::o1_unblockInput(Script *script) {
 }
 
 void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
-	Actor *mainActor = _vm->getActor(0);
+	Actor *mainActor = _vm->_actors->getActor(0);
 	Actor *actor = script->actor();
 	int direction = _vm->calcDirection(actor->_x, actor->_y, mainActor->_x, mainActor->_y);
 	actor->forceDirection(direction);
@@ -684,7 +684,7 @@ void ScriptInterpreter::o1_setAnimationType(Script *script) {
 }
 
 void ScriptInterpreter::o1_heroIncPositionY(Script *script) {
-	Actor *mainActor = _vm->getActor(0);
+	Actor *mainActor = _vm->_actors->getActor(0);
 	script->actor()->setPosition(mainActor->_x, mainActor->_y + 1);
 }
 
@@ -698,7 +698,7 @@ void ScriptInterpreter::o1_setZoom(Script *script) {
 void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_BYTE(zoomFactor);
-	Actor *actor = _vm->getActor(actorIndex);
+	Actor *actor = _vm->_actors->getActor(actorIndex);
 	_vm->_screen->setZoom(zoomFactor, actor->_x, actor->_y);
 }
 
@@ -823,7 +823,7 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 	script->zoneY1 = zoneY1;
 	script->zoneX2 = zoneX2;
 	script->zoneY2 = zoneY2;
-	Actor *mainActor = _vm->getActor(0);
+	Actor *mainActor = _vm->_actors->getActor(0);
 	Common::Rect rect1(script->zoneX1, script->zoneY1, script->zoneX2, script->zoneY2);
 	Common::Rect mainActorRect = mainActor->getRect();
 	return _vm->rectCompare(rect1, mainActorRect);

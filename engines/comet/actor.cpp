@@ -35,6 +35,8 @@
 
 namespace Comet {
 
+// Actor
+
 Actor::Actor(CometEngine *vm, int itemIndex)
 	: _vm(vm), _itemIndex(itemIndex),
 	_x(0), _y(0), _directionAdd(0), _direction(0), _flag2(0), _interpolationStep(0),
@@ -288,11 +290,9 @@ void Actor::moveAroundSceneBounds() {
 }
 
 void Actor::updateWalking(bool skipCollision, Common::Rect &obstacleRect) {
-	debug("Actor::updateWalking(%d)", _itemIndex);
 	if (!skipCollision)
 		handleCollision(obstacleRect);
 	int comp = _vm->comparePointXY(_x, _y, _walkDestX, _walkDestY);
-	debug("(%d, %d, %d, %d)", _x, _y, _walkDestX, _walkDestY);
 	if (debugRectangles) {
 		_vm->_screen->fillRect(_walkDestX - 6, _walkDestY - 6, _walkDestX + 6, _walkDestY + 6, 220);
 		_vm->_screen->drawDottedLine(_x, _y, _walkDestX, _walkDestY, 100);
@@ -344,11 +344,9 @@ bool Actor::updatePosition(Common::Rect &obstacleRect) {
 }
 
 void Actor::updateMovement() {
-	debug("_itemIndex: %d; _life: %d", _itemIndex, _life);
 	if (_life != 0) {
 		Common::Rect obstacleRect;
 		bool skipCollision = updatePosition(obstacleRect);
-		debug("_walkStatus: %d", _walkStatus);
 		if (_walkStatus & 3)
 			updateWalking(skipCollision, obstacleRect);
 	}
@@ -429,9 +427,10 @@ void Actor::loadSprite(int animationSlot) {
 
 void Actor::unloadSprite() {
 	if (_animationSlot != -1) {
+		// TODO Refactor; Try not to access _vm->_actors
 		AnimationSlot *animationSlot = _vm->_animationMan->getAnimationSlot(_animationSlot);
-		if (animationSlot->anim && animationSlot->animationType == 0 && !_vm->isAnimationSlotUsed(_animationSlot)) {
-			_vm->clearAnimationSlotByIndex(_animationSlot);
+		if (animationSlot->anim && animationSlot->animationType == 0 && !_vm->_actors->isAnimationSlotUsed(_animationSlot)) {
+			_vm->_actors->clearAnimationSlotByIndex(_animationSlot);
 			delete animationSlot->anim;
 			animationSlot->anim = NULL;
 		}
@@ -549,25 +548,14 @@ void Actor::draw() {
 	}
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-bool CometEngine::isAnimationSlotUsed(int16 animationSlot) {
-	for (uint i = 0; i < ARRAYSIZE(_actors); i++)
-		if (_actors[i]->_animationSlot == animationSlot && _actors[i]->_life != 0)
-			return true;
-	return false;
+void Actor::updateHealth() {
+	if (_life > 0 && _life < 99)
+		++_life;
 }
 
-void CometEngine::clearAnimationSlotByIndex(int16 animationSlot) {
-	for (uint i = 0; i < ARRAYSIZE(_actors); i++) {
-		if (_actors[i]->_animationSlot == animationSlot) {
-			_actors[i]->_animationSlot = -1;
-			_actors[i]->_life = 0;
-		}
-	}
-}
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	switch (animationType) {
@@ -580,17 +568,6 @@ AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) 
 		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
 		return NULL;
 	}
-}
-
-void CometEngine::resetActorsLife() {
-	// NOTE Don't reset the main actor's life
-	for (uint i = 1; i < ARRAYSIZE(_actors); i++)
-		_actors[i]->_life = 0;
-}
-
-Actor *CometEngine::getActor(int index) {
-	assert(_actors[index]);
-	return _actors[index];
 }
 
 void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
@@ -607,7 +584,7 @@ void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
 }
 
 void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber) {
-	Actor *actor = getActor(actorIndex);
+	Actor *actor = _actors->getActor(actorIndex);
 	actorTalk(actorIndex, talkTextIndex, actor->_textColor);
 	if (animNumber != 255) {
 		// Save current actor animation
@@ -623,13 +600,13 @@ void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animN
 }
 
 void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex) {
-	Actor *portraitActor = getActor(kActorPortrait);
+	Actor *portraitActor = _actors->getActor(kActorPortrait);
 	int16 animationSlot = _animationMan->getAnimationResource(_animationType, fileIndex);
 	portraitActor->init(animationSlot);
 	if (actorIndex != -1) {
 		portraitActor->_textX = 0;
 		portraitActor->_textY = 160;
-		portraitActor->_textColor = getActor(actorIndex)->_textColor;
+		portraitActor->_textColor = _actors->getActor(actorIndex)->_textColor;
 	}
 	_animationType = 0;
 	portraitActor->setPosition(0, 199);
@@ -639,15 +616,71 @@ void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animN
 }
 
 bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
-	Common::Rect actorRect1 = getActor(actorIndex1)->getRect();
-	Common::Rect actorRect2 = getActor(actorIndex2)->getProximityRect(x, y);
+	Common::Rect actorRect1 = _actors->getActor(actorIndex1)->getRect();
+	Common::Rect actorRect2 = _actors->getActor(actorIndex2)->getProximityRect(x, y);
 	return rectCompare(actorRect1, actorRect2);
 }
 
 bool CometEngine::isPlayerInZone(int x1, int y1, int x2, int y2) {
 	Common::Rect zoneRect(x1, y1, x2, y2);
-	Common::Rect playerRect = getActor(0)->getRect();
+	Common::Rect playerRect = _actors->getActor(0)->getRect();
 	return rectCompare(zoneRect, playerRect);
+}
+
+// Actors
+
+Actors::Actors(CometEngine *vm)
+	: _vm(vm) {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex] = new Actor(_vm, (int)actorIndex);
+}
+
+Actors::~Actors() {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		delete _actors[actorIndex];
+}
+
+void Actors::updateAnimations() {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex]->updateActorAnimation();
+}
+
+void Actors::updateMovement() {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex]->updateMovement();
+}
+
+void Actors::enqueueActorsForDrawing() {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		if (_actors[actorIndex]->_visible && _actors[actorIndex]->_life > 0)
+			_vm->enqueueActorForDrawing(_actors[actorIndex]->_y, (int)actorIndex);
+}
+
+bool Actors::isAnimationSlotUsed(int16 animationSlot) {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); actorIndex++)
+		if (_actors[actorIndex]->_animationSlot == animationSlot && _actors[actorIndex]->_life != 0)
+			return true;
+	return false;
+}
+
+void Actors::clearAnimationSlotByIndex(int16 animationSlot) {
+	for (uint actorIndex = 0; actorIndex < ARRAYSIZE(_actors); actorIndex++) {
+		if (_actors[actorIndex]->_animationSlot == animationSlot) {
+			_actors[actorIndex]->_animationSlot = -1;
+			_actors[actorIndex]->_life = 0;
+		}
+	}
+}
+
+void Actors::resetHealth() {
+	// NOTE Don't reset the main actor's life (index 0)
+	for (uint actorIndex = 1; actorIndex < ARRAYSIZE(_actors); ++actorIndex)
+		_actors[actorIndex]->_life = 0;
+}
+
+Actor *Actors::getActor(uint index) {
+	assert(_actors[index]);
+	return _actors[index];
 }
 
 } // End of namespace Comet
