@@ -1047,14 +1047,20 @@ void CometEngine::syncUpdate(bool screenUpdate) {
 	_system->delayMillis(40);
 }
 
-int CometEngine::handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber) {
-	if (sceneNumber == -1) {
+int CometEngine::handleSceneExitCollision(int sceneExitIndex) {
+	int newModuleNumber, newSceneNumber;
+	_scene->getExitLink(sceneExitIndex, newModuleNumber, newSceneNumber);
+	return handleLeftRightSceneExitCollision(newModuleNumber, newSceneNumber);
+}
+
+int CometEngine::handleLeftRightSceneExitCollision(int newModuleNumber, int newSceneNumber) {
+	if (newSceneNumber == -1) {
 		_moduleNumber = -1;
 		return 0;
 	}
 
-	_sceneNumber = sceneNumber;
-	_moduleNumber = moduleNumber;
+	_sceneNumber = newSceneNumber;
+	_moduleNumber = newModuleNumber;
 
 	Actor *mainActor = _actors->getActor(0);
 
@@ -1118,38 +1124,6 @@ void CometEngine::drawLineOfSight() {
 	}
 }
 
-uint16 CometEngine::checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect) {
-	for (int index = 0; index < 11; index++) {
-		Actor *actor = _actors->getActor(index);
-		if (index != selfActorIndex && actor->_life != 0 && actor->_collisionType != kCollisionDisabled) {
-			obstacleRect = actor->getRect();
-			if (rectCompare(rect, obstacleRect)) {
-				return COLLISION(kCollisionActor, index);
-			}
-		}
-	}
-	return 0;
-}
-
-uint16 CometEngine::checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect) {
-	uint16 collisionType = 0;
-
-	Common::Rect collisionRect(x - deltaX, y - deltaY, x + deltaX, y);
-
-	collisionType = _scene->checkCollisionWithBounds(collisionRect, direction);
-	if (collisionType != 0) {
-		uint16 sceneExitCollision = _scene->checkCollisionWithExits(collisionRect, direction);
-		if (sceneExitCollision != 0)
-			collisionType = sceneExitCollision;
-	} else {
-		collisionType = _scene->checkCollisionWithBlockingRects(collisionRect, obstacleRect);
-		if (collisionType == 0)
-			collisionType = checkCollisionWithActors(index, collisionRect, obstacleRect);
-	}
-
-	return collisionType;
-}
-
 void CometEngine::initSceneDecorationBlockingRects() {
 	_scene->_blockingRects.clear();
 
@@ -1170,26 +1144,6 @@ void CometEngine::initSceneDecorationBlockingRects() {
 			_scene->addBlockingRect(blockX1 * 2, blockY1, blockX2 * 2, blockY2);
 		}
 	}
-}
-
-uint16 CometEngine::updateCollision(Actor *actor, int actorIndex, uint16 collisionType) {
-	int result = 0;
-
-	actor->_collisionType = COLLISION_TYPE(collisionType);
-	actor->_collisionIndex = COLLISION_INDEX(collisionType);
-
-	if (actor->_itemIndex == 0 && actor->_collisionType == kCollisionSceneExit) {
-		int moduleNumber, sceneNumber;
-		_scene->getExitLink(actor->_collisionIndex, moduleNumber, sceneNumber);
-		result = handleLeftRightSceneExitCollision(moduleNumber, sceneNumber);
-	}
-
-	if (result == 0) {
-		actor->setDirectionAdd(0);
-		actor->updateAnimation();
-	}
-
-	return result;
 }
 
 void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {

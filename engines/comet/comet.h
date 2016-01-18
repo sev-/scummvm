@@ -359,18 +359,14 @@ public:
 	void loadSceneDecoration();
 	void drawSceneDecoration();
 
-	int handleLeftRightSceneExitCollision(int moduleNumber, int sceneNumber);
+    int handleSceneExitCollision(int sceneExitIndex);
+	int handleLeftRightSceneExitCollision(int newModuleNumber, int newSceneNumber);
 
-	uint16 checkCollisionWithActors(int selfActorIndex, Common::Rect &rect, Common::Rect &obstacleRect);
-	uint16 checkCollision(int index, int x, int y, int deltaX, int deltaY, int direction, Common::Rect &obstacleRect);
-	
 	void handleSceneChange(int sceneNumber, int moduleNumber);
 
 	void drawLineOfSight();
 	
 	void moveActorAroundBounds(int index, Actor *actor);
-	
-	uint16 updateCollision(Actor *actor, int actorIndex, uint16 collisionType);
 	
 	void blockInput(int flagIndex);
 	void unblockInput();
