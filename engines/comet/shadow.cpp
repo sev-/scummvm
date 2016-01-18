@@ -262,6 +262,13 @@ void CometEngine::updateGame() {
 	_cmdLook = false;
 }
 
+void CometEngine::updateHeroLife() {
+	if ((_gameLoopCounter & 0x1FF) == 0) {
+		Actor *mainActor = _actors->getActor(0);
+		mainActor->updateHealth();
+	}
+}
+
 void CometEngine::updateModuleNumber() {
 	if (_moduleNumber != -1) {
 		_animationMan->purgeAnimationSlots();
@@ -384,13 +391,6 @@ void CometEngine::enqueueActorForDrawing(int y, int actorIndex) {
 		if (_spriteDrawQueue[insertIndex].y > y)
 			break;
 	addToSpriteDrawQueue(y, actorIndex, insertIndex);
-}
-
-void CometEngine::updateHeroLife() {
-	if ((_gameLoopCounter & 0x1FF) == 0) {
-		Actor *mainActor = _actors->getActor(0);
-		mainActor->updateHealth();
-	}
 }
 
 void CometEngine::drawSpriteQueue() {
