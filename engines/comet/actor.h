@@ -65,6 +65,7 @@ public:
 	void setVisible(bool visible);
 	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
 	void draw();
+	void updateHealth();
 protected:
 	void saveWalkDestXY();
 	void updateDirection();
@@ -102,6 +103,25 @@ public: // TODO Make these protected
 	int16 _animPlayFrameIndex;
 	int16 _animFrameIndex;
 	int16 _textX, _textY;
+};
+
+const uint kActorsCount = 11;
+
+class Actors {
+public:
+	Actors(CometEngine *vm);
+	~Actors();
+	void updateAnimations();
+	void updateMovement();
+	void enqueueActorsForDrawing();
+	bool isAnimationSlotUsed(int16 animationSlot);
+	void clearAnimationSlotByIndex(int16 animationSlot);
+	void resetHealth();
+	uint getCount() const { return kActorsCount; } // TODO Remove later, only used in saveload
+	Actor *getActor(uint index);
+protected:
+	CometEngine *_vm;
+	Actor *_actors[kActorsCount];
 };
 
 }

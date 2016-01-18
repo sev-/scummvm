@@ -141,8 +141,9 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		out->writeUint16LE(bound.y);
 	}
 	
-	for (int i = 0; i < ARRAYSIZE(_actors); i++) {
-		Actor *actor = _actors[i];
+	// TODO Later move the loop into the Actors class and actual serilization code into Actor
+	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
+		Actor *actor = _actors->getActor(actorIndex);
 		out->writeUint16LE(actor->_x);
 		out->writeUint16LE(actor->_y);
 		out->writeUint16LE(actor->_directionAdd);
@@ -294,8 +295,9 @@ void CometEngine::loadgame(const char *filename) {
 		_scene->_bounds.push_back(bound);
 	}
 
-	for (int i = 0; i < ARRAYSIZE(_actors); i++) {
-		Actor *actor = _actors[i];
+	// TODO Later move the loop into the Actors class and actual serilization code into Actor
+	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
+		Actor *actor = _actors->getActor(actorIndex);
 		actor->_x = in->readUint16LE();
 		actor->_y = in->readUint16LE();
 		actor->_directionAdd = in->readUint16LE();

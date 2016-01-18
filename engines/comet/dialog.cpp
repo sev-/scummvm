@@ -167,7 +167,7 @@ void Dialog::drawTextBubbles() {
 	if (_vm->isFloppy() || _vm->_talkieMode == 0 || _vm->_talkieMode == 1) {
 		int x = _textX;
 		int y = _textY;
-		byte color1 = _vm->_actors[0]->_textColor == 25 ? 22 : _vm->_actors[0]->_textColor;
+		byte color1 = _vm->_actors->getActor(0)->_textColor == 25 ? 22 : _vm->_actors->getActor(0)->_textColor;
 		byte color2;
 		/* NOTE: Draw intro text bubble in floppy version
 		   NOTE: Never used in Comet Floppy since _items[0].index == _introTextIndex is always true
@@ -176,7 +176,7 @@ void Dialog::drawTextBubbles() {
 		for (uint i = 0; i < _items.size(); i++) {
 			color2 = color1;
 			if (i == (uint)_selectedItemIndex) {
-				if (_vm->_actors[0]->_textColor == 25) {
+				if (_vm->_actors->getActor(0)->_textColor == 25) {
 					color2 = _textColor;
 					_textColor += _textColorInc;
 					if (_textColor > 25) {
@@ -187,7 +187,7 @@ void Dialog::drawTextBubbles() {
 						_textColorInc = 1;
 					}
 				} else if (_vm->_textColorFlag & 1) {
-					color2 = _vm->_actors[0]->_textColor;
+					color2 = _vm->_actors->getActor(0)->_textColor;
 				} else {
 					color2 = 159;
 				}
