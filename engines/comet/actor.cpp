@@ -24,13 +24,13 @@
  */
 
 #include "comet/actor.h"
-#include "comet/comet.h"
-#include "comet/console.h"
 #include "comet/animationmgr.h"
+#include "comet/comet.h"
 #include "comet/console.h"
 #include "comet/resource.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
+#include "comet/talktext.h"
 #include "common/util.h"
 
 namespace Comet {
@@ -372,7 +372,7 @@ void Actor::updatePortraitAnimation() {
 		if (_animFrameIndex >= _animFrameCount) {
 			_animFrameIndex = 0;
 			if (_animIndex < 4) {
-				int portraitTalkAnimNumber = _vm->getPortraitTalkAnimNumber();
+				int portraitTalkAnimNumber = _vm->_talkText->getPortraitTalkAnimNumber();
 				setAnimationIndex(portraitTalkAnimNumber);
 			}
 		}
@@ -582,80 +582,6 @@ uint16 Actor::updateCollision(uint16 collisionType) {
 	return result;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) {
-	switch (animationType) {
-	case 1:
-		return _heroSprite;
-	case 2:
-		return _sceneDecorationSprite;
-	//case 3: // NOTE unused/returns NULL var (maybe used in Eternam?)
-	default:
-		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
-		return NULL;
-	}
-}
-
-void CometEngine::actorTalk(int actorIndex, int talkTextIndex, int color) {
-	_talkActorIndex = actorIndex;
-	_talkTextIndex = talkTextIndex;
-	if (isFloppy() || _talkieMode == 0 || _talkieMode == 1) {
-		_textReader->loadString(_narFileIndex + 3, _talkTextIndex, _actorTalkText);
-		setText(_actorTalkText);
-	}
-	if (!isFloppy() && (_talkieMode == 2 || _talkieMode == 1))
-		playVoice(_talkTextIndex);
-	_textActive = true;
-	_talkTextColor = color;
-}
-
-void CometEngine::actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber) {
-	Actor *actor = _actors->getActor(actorIndex);
-	actorTalk(actorIndex, talkTextIndex, actor->_textColor);
-	if (animNumber != 255) {
-		// Save current actor animation
-		_talkAnimIndex = actor->_animIndex;
-		_talkAnimPlayFrameIndex = actor->_animPlayFrameIndex;
-		_talkAnimFrameIndex = actor->_animFrameIndex;
-		// Set actor talk animation
-		actor->setAnimationIndex(animNumber);
-		actor->_status = 2;
-	} else {
-		_talkAnimIndex = -1;
-	}
-}
-
-void CometEngine::actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex) {
-	Actor *portraitActor = _actors->getActor(kActorPortrait);
-	int16 animationSlot = _animationMan->getAnimationResource(_animationType, fileIndex);
-	portraitActor->init(animationSlot);
-	if (actorIndex != -1) {
-		portraitActor->_textX = 0;
-		portraitActor->_textY = 160;
-		portraitActor->_textColor = _actors->getActor(actorIndex)->_textColor;
-	}
-	_animationType = 0;
-	portraitActor->setPosition(0, 199);
-	actorTalkWithAnim(kActorPortrait, talkTextIndex, animNumber);
-	_talkAnimIndex = actorIndex;
-	_screen->enableTransitionEffect();
-}
-
-bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
-	Common::Rect actorRect1 = _actors->getActor(actorIndex1)->getRect();
-	Common::Rect actorRect2 = _actors->getActor(actorIndex2)->getProximityRect(x, y);
-	return rectCompare(actorRect1, actorRect2);
-}
-
-bool CometEngine::isPlayerInZone(int x1, int y1, int x2, int y2) {
-	Common::Rect zoneRect(x1, y1, x2, y2);
-	Common::Rect playerRect = _actors->getActor(0)->getRect();
-	return rectCompare(zoneRect, playerRect);
-}
-
 // Actors
 
 Actors::Actors(CometEngine *vm)
@@ -722,6 +648,31 @@ void Actors::resetHealth() {
 Actor *Actors::getActor(uint index) {
 	assert(_actors[index]);
 	return _actors[index];
+}
+
+AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) {
+	switch (animationType) {
+	case 1:
+		return _heroSprite;
+	case 2:
+		return _sceneDecorationSprite;
+	//case 3: // NOTE unused/returns NULL var (maybe used in Eternam?)
+	default:
+		warning("CometEngine::getGlobalAnimationResource() Invalid animationType (%d)", animationType);
+		return NULL;
+	}
+}
+
+bool CometEngine::isActorNearActor(int actorIndex1, int actorIndex2, int x, int y) {
+	Common::Rect actorRect1 = _actors->getActor(actorIndex1)->getRect();
+	Common::Rect actorRect2 = _actors->getActor(actorIndex2)->getProximityRect(x, y);
+	return rectCompare(actorRect1, actorRect2);
+}
+
+bool CometEngine::isPlayerInZone(int x1, int y1, int x2, int y2) {
+	Common::Rect zoneRect(x1, y1, x2, y2);
+	Common::Rect playerRect = _actors->getActor(0)->getRect();
+	return rectCompare(zoneRect, playerRect);
 }
 
 } // End of namespace Comet

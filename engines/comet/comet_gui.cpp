@@ -32,6 +32,7 @@
 #include "comet/resourcemgr.h"
 #include "comet/screen.h"
 #include "comet/console.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -764,9 +765,12 @@ int GuiOptionsMenu::run() {
 			doWaitForKeys = false;
 			break;
 		case kOMATalkie:
-			_vm->_talkieMode++;
-			if (_vm->_talkieMode > 2)
-				_vm->_talkieMode = 0;
+			{
+				int talkieMode = _vm->_talkText->getTalkieMode();
+				if (talkieMode > 2)
+					talkieMode = 0;
+				_vm->_talkText->setTalkieMode(talkieMode);
+			}
 			break;
 		case kOMAGameSpeed:
 			if (optionIncr != 0)
@@ -813,7 +817,7 @@ int GuiOptionsMenu::run() {
 
 	if (optionsMenuStatus == 1) {
 		// TODO Also save game speed, text speed
-		_vm->_textSpeed = textSpeed;
+		_vm->_talkText->setTextSpeed(textSpeed);
 		_vm->_gameSpeed = gameSpeed;
 		ConfMan.setInt("text_speed", textSpeed);
 		ConfMan.setInt("text_speed", gameSpeed);
@@ -882,7 +886,7 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int d
 			(textSpeed == 2 && animFrameCounter > 24))
 			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 70, 0, 0);
 	} else
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkieMode + 79, 0, 0);
+		_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkText->getTalkieMode() + 79, 0, 0);
 
 	if (gameSpeed < 5)
 		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
@@ -1091,7 +1095,7 @@ int GuiJournal::handleReadBook() {
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
 	// Set speech file
-	_vm->setVoiceFileIndex(7);
+	_vm->_talkText->setVoiceFileIndex(7);
 
 	while (bookStatus == 0) {
 	
@@ -1106,9 +1110,9 @@ int GuiJournal::handleReadBook() {
 			// Play page speech
 			if (talkPageNumber != pageNumber) {
 				if (pageNumber > 0)
-					_vm->playVoice(pageNumber);
+					_vm->_talkText->playVoice(pageNumber);
 				else
-					_vm->stopVoice();
+					_vm->_talkText->stopVoice();
 				talkPageNumber = pageNumber;
 			}
 			_vm->handleEvents();
@@ -1158,10 +1162,10 @@ int GuiJournal::handleReadBook() {
 	}
 
 	_vm->waitForKeys();
-	_vm->stopVoice();
-	_vm->_textActive = false;
+	_vm->_talkText->stopVoice();
+	_vm->_talkText->_textActive = false;
 
-	_vm->setVoiceFileIndex(_vm->_narFileIndex);
+	_vm->_talkText->setVoiceFileIndex(_vm->_talkText->_textTableIndex);
 
 	return 2 - bookStatus;
 }

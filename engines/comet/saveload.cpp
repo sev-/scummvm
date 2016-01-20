@@ -42,6 +42,7 @@
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/script.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -106,7 +107,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint16LE(_prevSceneNumber);
 	
 	out->writeUint16LE(_backgroundFileIndex);
-	out->writeUint16LE(_narFileIndex);
+	out->writeUint16LE(_talkText->_textTableIndex);
 	out->writeUint32LE(_gameLoopCounter);
 	out->writeByte(_blockedInput);
 
@@ -252,7 +253,7 @@ void CometEngine::loadgame(const char *filename) {
 	_prevSceneNumber = in->readUint16LE();
 
 	_backgroundFileIndex = in->readUint16LE();
-	_narFileIndex = in->readUint16LE();
+	uint voiceFileIndex = in->readUint16LE();
 	_gameLoopCounter = in->readUint32LE();
 	
 	if (header.version > 0)//REMOVEME	
@@ -394,7 +395,7 @@ void CometEngine::loadgame(const char *filename) {
 		_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
 	_screen->setFullPalette(_screenPalette);
 
-	setVoiceFileIndex(_narFileIndex);
+	_talkText->setVoiceFileIndex(voiceFileIndex);
 
 }
 

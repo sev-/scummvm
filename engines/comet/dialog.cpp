@@ -24,9 +24,10 @@
  */
 
 #include "comet/dialog.h"
-#include "comet/comet.h"
 #include "comet/actor.h"
+#include "comet/comet.h"
 #include "comet/screen.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -47,11 +48,9 @@ Dialog::~Dialog() {
 void Dialog::start(Script *script) {
 	int dialogItemCount, y;
 
-	_vm->resetTextValues();
+	_vm->_talkText->resetTextValues();
 
 	_introTextIndex = script->readInt16();
-
-	debug("_introTextIndex = %d", _introTextIndex);
 
 	if (_introTextIndex != -1) {
 		//textOfs += _vm->loadString(_vm->_narFileIndex + 3, _introTextIndex, _vm->_tempTextBuffer + textOfs);
@@ -60,7 +59,7 @@ void Dialog::start(Script *script) {
 	_textX = script->readByte() * 2;
 	_textY = script->readByte();
 	
-	if (_vm->_talkieMode == 2) {
+	if (_vm->_talkText->getTalkieMode() == 2) {
 		_textX = 8;
 		_textY = 16;
 	}
@@ -78,19 +77,19 @@ void Dialog::start(Script *script) {
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
 		dialogItem.index = script->readInt16();
-		dialogItem.text = _vm->_textReader->getString(_vm->_narFileIndex + 3, dialogItem.index);
+		dialogItem.text = _vm->_textReader->getString(_vm->_talkText->_textTableIndex + 3, dialogItem.index);
 		dialogItem.scriptIp = script->ip;
 		script->ip += 2;
-		if (_vm->_talkieMode == 0 || _vm->_talkieMode == 1) {
+		if (_vm->_talkText->getTalkieMode() == 0 || _vm->_talkText->getTalkieMode() == 1) {
 			// Dialog bubbles containing the whole text
-			_vm->setText(dialogItem.text);
+			_vm->_talkText->setText(dialogItem.text);
 			y += _vm->_screen->getTextHeight(dialogItem.text);
 			dialogItem.rect.x = _textX - 4;
-			dialogItem.rect.y = y - 4 - _vm->_textMaxTextHeight;
-			dialogItem.rect.x2 = _textX + _vm->_textMaxTextWidth * 2 + 4;
+			dialogItem.rect.y = y - 4 - _vm->_talkText->getTextMaxTextHeight();
+			dialogItem.rect.x2 = _textX + _vm->_talkText->getTextMaxTextWidth() * 2 + 4;
 			dialogItem.rect.y2 = y;
 			y += 8;
-		} else if (_vm->_talkieMode == 2) {
+		} else if (_vm->_talkText->getTalkieMode() == 2) {
 			// Dialog bubbles containing letters only
 			dialogItem.rect.x = _textX - 2;
 			dialogItem.rect.y = _textY + index * 16 - 10;
@@ -149,10 +148,10 @@ void Dialog::update() {
 	drawTextBubbles();
 
 	if (_selectedItemIndex != -1 && (_vm->leftButton() || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
-		if (_vm->_talkieMode == 1) {
-			_vm->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
+		if (_vm->_talkText->getTalkieMode() == 1) {
+			_vm->_talkText->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
-				_vm->updateTalkAnims();
+				_vm->_talkText->updateTalkAnims();
 				_vm->handleEvents();
 				_vm->_system->updateScreen();
 			}
@@ -164,7 +163,7 @@ void Dialog::update() {
 }
 
 void Dialog::drawTextBubbles() {
-	if (_vm->isFloppy() || _vm->_talkieMode == 0 || _vm->_talkieMode == 1) {
+	if (_vm->isFloppy() || _vm->_talkText->getTalkieMode() == 0 || _vm->_talkText->getTalkieMode() == 1) {
 		int x = _textX;
 		int y = _textY;
 		byte color1 = _vm->_actors->getActor(0)->_textColor == 25 ? 22 : _vm->_actors->getActor(0)->_textColor;
@@ -192,12 +191,12 @@ void Dialog::drawTextBubbles() {
 					color2 = 159;
 				}
 			}
-			_vm->setText(_items[i].text);
-			_vm->drawBubble(x - 4, y - 4, x + _vm->_textMaxTextWidth * 2 + 4, y + _vm->_textMaxTextHeight);
+			_vm->_talkText->setText(_items[i].text);
+			_vm->drawBubble(x - 4, y - 4, x + _vm->_talkText->getTextMaxTextWidth() * 2 + 4, y + _vm->_talkText->getTextMaxTextHeight());
 			y = _vm->_screen->drawText3(x, y, _items[i].text, color2, 1);
 			y += 8;
 		}
-	} else if (_vm->_talkieMode == 2) {
+	} else if (_vm->_talkText->getTalkieMode() == 2) {
 		byte letter[2];
 		_frameColor += _frameColorInc;
 		if (_frameColor == 94)
@@ -206,7 +205,7 @@ void Dialog::drawTextBubbles() {
 			_frameColorInc = 1;
 		if (_introTextIndex >= 0) {
 			// Play the intro speech
-			_vm->playVoice(_introTextIndex);
+			_vm->_talkText->playVoice(_introTextIndex);
 		}
 		_introTextIndex = -1;
 		letter[0] = 'A';
@@ -225,7 +224,7 @@ void Dialog::drawTextBubbles() {
 		if (_selectedItemIndex != _selectedItemIndex2) {
 			if (_selectedItemIndex >= 0) {
 				// Play the speech for the selected item
-				_vm->playVoice(_items[_selectedItemIndex].index);
+				_vm->_talkText->playVoice(_items[_selectedItemIndex].index);
 			}
 			_selectedItemIndex2 = _selectedItemIndex;
 		}

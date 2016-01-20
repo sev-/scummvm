@@ -50,6 +50,7 @@
 #include "comet/resourcemgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -193,6 +194,7 @@ Common::Error CometEngine::run() {
 	_scene = new Scene(this);
 	_animationMan = new AnimationManager(this);
 	_res = new ResourceManager();
+	_talkText = new TalkText(this);
 
 	_textReader = new TextReader(this);
 	Common::String langText;
@@ -241,9 +243,7 @@ Common::Error CometEngine::run() {
 	_paletteRedness = 0;
 	_paletteStatus = 0;
 	_animationType = 0;
-	_textActive = false;
 
-	_textBubbleActive = false;
 	_itemInSight = false;
 
 	_sceneDecorationSprite = NULL;
@@ -270,11 +270,7 @@ Common::Error CometEngine::run() {
 
 	_currentInventoryItem = -1;
 
-	_talkAnimIndex = -1;
-
 	initSystemVars();
-
-	_talkieMode = isFloppy() ? 0 : 1;
 
 	// Unused in Comet CD
 	// _beamColor = 112;
@@ -332,6 +328,8 @@ Common::Error CometEngine::run() {
 			museumMainLoop();
 		}
 	}
+
+	delete _talkText;
 
 	return Common::kNoError;
 }
