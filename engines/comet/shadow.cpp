@@ -34,13 +34,14 @@
 #include "comet/comet.h"
 #include "comet/actor.h"
 #include "comet/animationmgr.h"
-#include "comet/dialog.h"
 #include "comet/comet_gui.h"
+#include "comet/dialog.h"
 #include "comet/music.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -162,8 +163,7 @@ void CometEngine::initAndLoadGlobalData() {
 }
 
 void CometEngine::loadGlobalTextData() {
-	_textActive = false;
-	_talkieSpeechPlaying = false;
+	_talkText->deactivate();
 	_globalStrings = _textReader->loadTextResource(0);
 	_inventoryItemNames = _textReader->loadTextResource(1);
 }
@@ -235,17 +235,7 @@ void CometEngine::updateGame() {
 	lookAtItemInSight(false);
 	drawSpriteQueue();
 
-	if (isFloppy()) {
-		updateTextDialog();
-	} else {
-		if (_talkieMode == 0)
-			updateTextDialog();
-		if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 && _textBubbleActive))
-			updateText();
-		if (_dialog->isRunning())
-			_dialog->update();
-		updateTalkAnims();
-	}
+	_talkText->update();
 
 	// TODO: Make vars for indices
 	if (_scriptVars[11] < 100 && _scriptVars[10] == 1)
@@ -289,7 +279,7 @@ void CometEngine::updateSceneNumber() {
 
 	} else {
 
-		resetTextValues();
+		_talkText->resetTextValues();
 		freeAnimationsAndSceneDecoration();
 		_prevSceneNumber = _currentSceneNumber;
 		_currentSceneNumber = _sceneNumber;
@@ -325,9 +315,9 @@ void CometEngine::getItemInSight() {
 			_inventoryItemStatus[sceneItem.itemIndex] = 1;
 			_inventoryItemIndex = sceneItem.itemIndex;
 			sceneItem.active = false;
-			showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
+			_talkText->showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 		} else {
-			showTextBubble(4, _inventoryItemNames->getString(4), 10);
+			_talkText->showTextBubble(4, _inventoryItemNames->getString(4), 10);
 		}
 	}
 }
@@ -344,14 +334,14 @@ void CometEngine::lookAtItemInSight(bool showText) {
 			_itemDirection = _actors->getActor(0)->_direction;
 			_itemX = sceneItem.x;
 			_itemY = sceneItem.y - 6;
-			if (showText && (!_dialog->isRunning() || !_textActive)) {
+			if (showText && (!_dialog->isRunning() || !_talkText->isActive())) {
 				if (sceneItem.paramType == 0) {
-					showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
+					_talkText->showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 				} else {
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
 					warning("CometEngine::lookAtItemInSight() sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
 					// NOTE: Probably only used in Eternam
-					// showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
+					// _talkText->showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 				}
 			}
 		}
@@ -427,57 +417,6 @@ void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListI
 	_screen->drawAnimationElement(animation, frameList->frames[frameIndex]->elementIndex, x, y);
 }
 
-void CometEngine::updateTextDialog() {
-	if ((isFloppy() && _textActive) || (!isFloppy() && (_textActive || _textBubbleActive)))
-		updateText();
-	if (_dialog->isRunning())
-		_dialog->update();
-}
-
-void CometEngine::updateText() {
-
-	Actor *talkingActor = _actors->getActor(_talkActorIndex);
-	int textX, textY;
-
-	if (talkingActor->_textX != -1) {
-		textX = talkingActor->_textX;
-		textY = talkingActor->_textY;
-	} else {
-		textX = talkingActor->_x;
-		textY = talkingActor->_y - _textMaxTextHeight - 50;
-	}
-
-	drawBubble(textX - _textMaxTextWidth - 4, textY - 4, textX + _textMaxTextWidth + 4, textY + _textMaxTextHeight);
-
-	_screen->drawText3(textX + 1, textY, _currentText, _talkTextColor, 0);
-	
-	_textDuration--;
-	if (_textDuration <= 0) {
-		_textActive = _moreText;
-		if (_moreText) {
-			// There's more text to display
-			setText(_textNextPos);
-		} else {
-			if (isFloppy() || _talkieMode == 0 || !_talkieSpeechPlaying) {
-				// Stop text display if text only mode or speech mode
-				resetTextValues();
-			} else if (_talkieMode == 1 && _talkieSpeechPlaying) {
-				// Keep text display alive if text+speech mode
-				_textDuration = 2;
-				_textActive = true;
-			}
-		}
-	}
-
-}
-
-void CometEngine::updateTalkAnims() {
-	if (!_mixer->isSoundHandleActive(_sampleHandle))
-		stopVoice();
-
-	// TODO: Update talk anim
-}
-
 void CometEngine::resetVars() {
 	// NOTE: scDisableRectFlag(); // Unused in Comet
 	_paletteBrightness = 255;
@@ -505,25 +444,6 @@ void CometEngine::freeAnimationsAndSceneDecoration() {
 	_animationMan->purgeAnimationSlots();
 	delete _sceneDecorationSprite;
 	_sceneDecorationSprite = NULL;
-}
-
-int CometEngine::getPortraitTalkAnimNumber() {
-	if (_portraitTalkCounter == 0) {
-		if (_talkieMode == 0) {
-			_portraitTalkAnimNumber = randomValue(4);
-			if (_portraitTalkAnimNumber == 0)
-				_portraitTalkCounter = 1;
-		} else {
-			_portraitTalkAnimNumber = randomValue(3);
-			if (!_talkieSpeechPlaying)
-		  		_portraitTalkAnimNumber = 0;
-		}
-	} else {
-		_portraitTalkCounter++;
-		if (((_talkieMode == 1 || _talkieMode == 2) && _portraitTalkCounter == 1) || _portraitTalkCounter == 10)
-			_portraitTalkCounter = 0;
-	}
-	return _portraitTalkAnimNumber;
 }
 
 AnimationFrame *CometEngine::getAnimationFrame(int animationSlot, int animIndex, int animFrameIndex) {
@@ -717,52 +637,6 @@ void CometEngine::drawBubble(int x1, int y1, int x2, int y2) {
 	_screen->drawAnimationElement(_bubbleSprite, 7, x2 - 16, y2);
 }
 
-void CometEngine::setText(byte *text) {
-	int lineCount = 0;
-
-	_currentText = text;
-
-	_textMaxTextHeight = 0;
-	_textMaxTextWidth = 0;
-	_moreText = false;
-	_textDuration = 0;
-
-	while (*text != '*') {
-		int textWidth = _screen->getTextWidth(text);
-		_textDuration += textWidth / 4;
-		if (_textDuration < 100)
-			_textDuration = 100;
-		if (textWidth > _textMaxTextWidth)
-			_textMaxTextWidth = textWidth;
-		text += strlen((char*)text) + 1;
-		if (textWidth != 0)
-			_textMaxTextHeight++;
-		if (++lineCount == 3 && *text != '*') {
-			_moreText = true;
-			break;
-		}
-	}
-
-	_textNextPos = text;
-	_textMaxTextWidth /= 2;
-	_textMaxTextHeight *= 8;
-
-	if (_textSpeed == 0) {
-		_textDuration /= 2;
-	} else if (_textSpeed == 2) {
-		_textDuration = _textDuration / 2 + _textDuration;
-	}
-	
-	_textOriginalDuration = _textDuration;
-	
-}
-
-void CometEngine::resetTextValues() {
-	_dialog->stop();
-	_textBubbleActive = false;
-	_textActive = false;
-}
-
 bool CometEngine::rectCompare(const Common::Rect &rect1, const Common::Rect &rect2) {
 	return (rect1.left <= rect2.right && rect1.top <= rect2.bottom && rect1.right >= rect2.left && rect1.bottom >= rect2.top);
 }
@@ -894,7 +768,7 @@ void CometEngine::handleInput() {
 	_walkDirection = walkDirectionTable[_cursorDirection & 0x0F];
 
 	if (!isFloppy()) {
-		if (!_dialog->isRunning() && !_textActive && _blockedInput != 0x0F) {
+		if (!_dialog->isRunning() && !_talkText->isActive() && _blockedInput != 0x0F) {
 			if (!_mouseWalking && _walkDirection == 0) {
 				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->_x, mainActor->_y, _mouseX, _mouseY);
 			} else if (_walkDirection != 0) {
@@ -931,7 +805,7 @@ void CometEngine::handleInput() {
 				setMouseCursor(_mouseCursors[3]);
 				break;
 			}
-		} else if (_textActive) {
+		} else if (_talkText->isActive()) {
 			setMouseCursor(_mouseCursors[4]);
 		} else if (_dialog->isRunning()) {
 			setMouseCursor(_mouseCursors[6]);
@@ -977,20 +851,6 @@ void CometEngine::handleInput() {
 	mainActor->setDirectionAdd(directionAdd);
 }
 
-void CometEngine::stopText() {
-	if (isFloppy()) {
-		if (_textDuration > 1 && _textDuration <= _textOriginalDuration - 3)
-			_textDuration = 1;
-		if (_dialog->isRunning())
-			_dialog->stop();			
-	} else {
-		_textDuration = 1;
-		_textActive = false;
-		stopVoice();
-	}
-	waitForKeys();
-}
-
 void CometEngine::handleKeyInput() {
 	switch (_keyScancode) {
 	case Common::KEYCODE_t:
@@ -1030,7 +890,7 @@ void CometEngine::handleKeyInput() {
 		waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
-		stopText();
+		_talkText->stopText();
 		break;
 	default:
 		if (Common::KEYCODE_TAB == _keyScancode || (!isFloppy() && _rightButton)) {
@@ -1087,19 +947,6 @@ int CometEngine::handleLeftRightSceneExitCollision(int newModuleNumber, int newS
 	}
 
 	return 1;
-}
-
-void CometEngine::showTextBubble(int index, byte *text, int textDuration) {
-	_talkActorIndex = 0;
-	_talkTextColor = 21;
-	_talkTextIndex = index;
-	setText(text);
-	_textActive = true;
-	_textBubbleActive = true;
-	if (isFloppy()) {
-		_textDuration = textDuration;
-		_textOriginalDuration = textDuration;
-	}
 }
 
 void CometEngine::drawLineOfSight() {
@@ -1196,7 +1043,7 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 	if (sampleIndex == 255) {
 		if (_mixer->isSoundHandleActive(_sampleHandle))
 			_mixer->stopHandle(_sampleHandle);
-	} else if (!_talkieSpeechPlaying && !_mixer->isSoundHandleActive(_sampleHandle)) {
+	} else if (!_talkText->isSpeechPlaying() && !_mixer->isSoundHandleActive(_sampleHandle)) {
 		if (sampleIndex != _currSoundResourceIndex) {
 			// Only load the sample when neccessary
 			_res->loadFromPak(_soundResource, "SMP.PAK", sampleIndex);
@@ -1205,38 +1052,6 @@ void CometEngine::playSample(int sampleIndex, int loopCount) {
 		_mixer->playStream(Audio::Mixer::kSFXSoundType, &_sampleHandle, loopCount > 1
 			? makeLoopingAudioStream(_soundResource->makeAudioStream(), loopCount)
 			: _soundResource->makeAudioStream());
-	}
-}
-
-void CometEngine::setVoiceFileIndex(int narFileIndex) {
-	if (!isFloppy()) {
-		_currNarFileIndex = narFileIndex;
-		if (getGameID() == GID_MUSEUM)
-			narFileIndex = 6; // Lovecraft museum uses only this NAR file
-		_narFilename = Common::String::format("D%02d.NAR", narFileIndex);
-	}
-}
-
-void CometEngine::playVoice(int voiceIndex) {
-	if (!isFloppy()) {
-		stopVoice();
-		_textActive = true;
-		_talkieSpeechPlaying = true;
-		_currSoundResourceIndex = -1;
-		_res->loadFromNar(_soundResource, _narFilename.c_str(), voiceIndex);
-		_mixer->playStream(Audio::Mixer::kSpeechSoundType, &_sampleHandle, _soundResource->makeAudioStream());
-	}
-}
-
-void CometEngine::stopVoice() {
-	if (!isFloppy()) {
-		if (_mixer->isSoundHandleActive(_sampleHandle))
-			_mixer->stopHandle(_sampleHandle);
-		if (_talkieMode == 2 && !_textBubbleActive) {
-			_textActive = false;
-			_textDuration = 0;
-		}
-		_talkieSpeechPlaying = false;
 	}
 }
 
@@ -1254,8 +1069,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	AnimationFrameList *frameList;
 	int animFrameCount;
 
-	stopVoice();
-	stopText();
+	_talkText->stopVoice();
+	_talkText->stopText();
 
 	cutsceneSprite = _animationMan->loadAnimationResource(_animPakName.c_str(), fileIndex);
 	frameList = cutsceneSprite->_anims[frameListIndex];
@@ -1300,7 +1115,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 
 			interpolationStep = _screen->drawAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
 
-			updateTextDialog();
+			_talkText->updateTextDialog();
 
 			if (palStatus == 1) {
 				// TODO: Set the anim palette
@@ -1324,8 +1139,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 			} else if (_keyScancode == Common::KEYCODE_RETURN) {
 				animFrameIndex = animFrameCount;
 				loopIndex = loopCount;
-				if (_textActive)
-					stopText();
+				if (_talkText->isActive())
+					_talkText->stopText();
 			}
 
 			if (interpolationStep == 0)
@@ -1338,8 +1153,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	if (palStatus > 0)
 		_screen->setFullPalette(_screenPalette);
 
-	if (_textActive)
-		resetTextValues();
+	if (_talkText->isActive())
+		_talkText->resetTextValues();
 
 	// CHECKME: If this is neccessary (screen is copied in main loop anyways)
 	_screen->copyFromScreenResource(_sceneBackgroundResource);
@@ -1429,7 +1244,7 @@ void CometEngine::introMainLoop() {
 			_endIntroLoop = true;
 			break;
 		case Common::KEYCODE_RETURN:
-			stopText();
+			_talkText->stopText();
 			break;
 		case Common::KEYCODE_p:
 			checkPauseGame();
@@ -1471,11 +1286,11 @@ void CometEngine::cometMainLoop() {
 			loadSceneBackground();
 		}
 
-		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_textActive) {
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
 			handleKeyInput();
-		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _textActive)) {
-		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
-			stopText();
+		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _talkText->isActive())) {
+		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _talkText->isActive()) {
+			_talkText->stopText();
 		}
 
 		if (_quitGame)
@@ -1539,10 +1354,10 @@ void CometEngine::museumMainLoop() {
 	_quitGame = false;
 	while (!_quitGame) {
 		handleEvents();
-		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_textActive) {
+		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
 			handleKeyInput();
-		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _textActive) {
-			stopText();
+		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _talkText->isActive()) {
+			_talkText->stopText();
 		}
 		if (_quitGame)
 			return;
@@ -1576,7 +1391,7 @@ void CometEngine::checkPauseGame() {
 		_screen->drawText(x, y, pauseText);
 		_screen->update();
 		_keyDirection = 0;
-		stopVoice();
+		_talkText->stopVoice();
 		do {
 			handleEvents();
 			syncUpdate(false);
@@ -1587,9 +1402,9 @@ void CometEngine::checkPauseGame() {
 int CometEngine::handleMap() {
 	int mapResult = 0;
 
-	stopVoice();
+	_talkText->stopVoice();
 
-	if (!_textActive && _blockedInput == 0 && !_dialog->isRunning() && !_talkieSpeechPlaying &&
+	if (_blockedInput == 0 && !_talkText->isActive() && !_dialog->isRunning() && !_talkText->isSpeechPlaying() &&
 		_scriptVars[7] != 1 && _scriptVars[8] != 1 && _scriptVars[8] != 2) {
 
 		setMouseCursor(NULL);

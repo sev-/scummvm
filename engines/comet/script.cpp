@@ -25,12 +25,13 @@
 
 #include "comet/comet.h"
 #include "comet/actor.h"
+#include "comet/animationmgr.h"
+#include "comet/dialog.h"
+#include "comet/resource.h"
+#include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/script.h"
-#include "comet/dialog.h"
-#include "comet/scene.h"
-#include "comet/animationmgr.h"
-#include "comet/resource.h"
+#include "comet/talktext.h"
 
 namespace Comet {
 
@@ -311,21 +312,9 @@ void ScriptInterpreter::processScriptDialog(Script *script) {
 }
 
 void ScriptInterpreter::processScriptTalk(Script *script) {
-	if (!_vm->_textActive) {
+	if (!_vm->_talkText->isActive()) {
 		script->status &= ~kScriptTalking;
-		if (_vm->_talkActorIndex == 10) {
-			if (_vm->_talkAnimIndex != -1)
-				_vm->_actors->getActor(_vm->_talkAnimIndex)->_visible = true;
-			_vm->_actors->getActor(10)->_life = 0;
-			_vm->_screen->enableTransitionEffect();
-		} else if (_vm->_talkAnimIndex != -1) {
-			// Restore previous actor animation
-			Actor *actor = _vm->_actors->getActor(_vm->_talkActorIndex);
-			actor->setAnimationIndex(_vm->_talkAnimIndex);
-			actor->_animPlayFrameIndex = _vm->_talkAnimPlayFrameIndex;
-			actor->_animFrameIndex = _vm->_talkAnimFrameIndex;
-			_vm->_talkAnimIndex = -1;
-		}
+		_vm->_talkText->handleTalkFinished();
 	} else {
 		_yield = true;
 	}
@@ -908,7 +897,7 @@ void ScriptInterpreter::o1_actorTalk(Script *script) {
 	ARG_BYTE(actorIndex);
 	ARG_INT16(talkTextIndex);
 	ARG_BYTE(animNumber);
-	_vm->actorTalkWithAnim(actorIndex, talkTextIndex, animNumber);
+	_vm->_talkText->actorTalkWithAnim(actorIndex, talkTextIndex, animNumber);
 	script->status |= kScriptTalking;
 	_yield = true;
 }
@@ -946,7 +935,7 @@ void ScriptInterpreter::o1_actorTalkPortrait(Script *script) {
 	ARG_INT16(talkTextIndex);
 	ARG_BYTE(animNumber);
 	ARG_BYTE(fileIndex);
-	_vm->actorTalkPortrait(actorIndex, talkTextIndex, animNumber, fileIndex);
+	_vm->_talkText->actorTalkPortrait(actorIndex, talkTextIndex, animNumber, fileIndex);
 	script->status |= kScriptTalking;
 	_yield = true;
 }
@@ -983,8 +972,8 @@ void ScriptInterpreter::o1_paletteFadeOut(Script *script) {
 
 void ScriptInterpreter::o1_setNarFileIndex(Script *script) {
 	ARG_BYTE(narFileIndex);
-	_vm->_narFileIndex = narFileIndex;
-	_vm->setVoiceFileIndex(narFileIndex);
+	_vm->_talkText->setTextTableIndex(narFileIndex);
+	_vm->_talkText->setVoiceFileIndex(narFileIndex);
 }
 
 void ScriptInterpreter::o1_ifNearActor(Script *script) {

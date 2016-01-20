@@ -74,6 +74,7 @@ class ScriptInterpreter;
 class Scene;
 class ScreenResource;
 class SoundResource;
+class TalkText;
 class TextReader;
 class TextResource;
 class FontResource;
@@ -191,6 +192,7 @@ public:
 	ResourceManager *_res;
 
 	ScreenResource *_sceneBackgroundResource;
+	TalkText *_talkText;
 
 	byte *_tempScreen;
 
@@ -211,13 +213,6 @@ public:
 	bool _clearScreenRequest;
 
 	int _backgroundFileIndex;
-
-	int _narFileIndex;
-	bool _talkieSpeechPlaying;
-
-	byte *_currentText, *_textNextPos;
-	int _textSpeed;
-	int _textMaxTextHeight, _textMaxTextWidth, _textDuration, _textOriginalDuration;
 
 	// TODO Game speed is currently not yet implemented
 	int _gameSpeed;
@@ -262,11 +257,6 @@ public:
 
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
 
-	int _talkieMode;
-	bool _moreText, _textActive;
-	byte _talkTextColor;
-	byte _actorTalkText[1000]; // Buffer size is take from the original
-
 	bool _quitGame;
 
 	int16 _scriptRandomValue;
@@ -283,12 +273,6 @@ public:
 	Audio::SoundHandle _sampleHandle;
 	SoundResource *_soundResource;
 	int _currSoundResourceIndex;
-	int _currNarFileIndex;
-	Common::String _narFilename;
-
-	void setVoiceFileIndex(int narFileIndex);
-	void playVoice(int voiceIndex);
-	void stopVoice();
 
 	void initAndLoadGlobalData();
 	void loadGlobalTextData();
@@ -392,12 +376,6 @@ public:
 	void actorSaveWalkDestXY(Actor *actor);
 	bool actorStartWalking(int actorIndex, int x, int y);
 	Actor *getActor(int index);
-
-	// Text
-	int _talkActorIndex, _talkAnimIndex, _talkAnimPlayFrameIndex, _talkAnimFrameIndex, _talkTextIndex;
-	void actorTalk(int actorIndex, int talkTextIndex, int color);
-	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
-	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
 
 	// Misc
 	int comparePointXY(int x, int y, int x2, int y2);
