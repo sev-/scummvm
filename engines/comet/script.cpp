@@ -27,6 +27,7 @@
 #include "comet/actor.h"
 #include "comet/animationmgr.h"
 #include "comet/dialog.h"
+#include "comet/input.h"
 #include "comet/resource.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
@@ -540,11 +541,11 @@ void ScriptInterpreter::o1_actorWalkToMainActorXY(Script *script) {
 
 void ScriptInterpreter::o1_blockInput(Script *script) {
 	ARG_BYTE(inputTypes);
-	_vm->blockInput(inputTypes);
+	_vm->_input->blockInput(inputTypes);
 }
 
 void ScriptInterpreter::o1_unblockInput(Script *script) {
-	_vm->unblockInput();
+	_vm->_input->unblockInput();
 }
 
 void ScriptInterpreter::o1_actorSetDirectionToHero(Script *script) {
@@ -693,8 +694,6 @@ void ScriptInterpreter::o1_setZoomByActor(Script *script) {
 
 void ScriptInterpreter::o1_startDialog(Script *script) {
 	_vm->_dialog->start(script);
-	if (!_vm->isFloppy())
-		_vm->waitForKeys();
 	script->status |= kScriptDialogRunning;
 	_yield = true;
 }
@@ -915,7 +914,7 @@ void ScriptInterpreter::o1_addSceneItem2(Script *script) {
 }
 
 void ScriptInterpreter::o1_waitForKeyPress(Script *script) {
-	_vm->waitForKeyPress();
+	_vm->_input->waitForKeyPress();
 }
 
 void ScriptInterpreter::o1_playActorAnim(Script *script) {

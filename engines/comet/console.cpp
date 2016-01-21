@@ -23,13 +23,13 @@
  *
  */
 
-#include "comet/resourcemgr.h"
-#include "comet/animationmgr.h"
-#include "comet/comet_gui.h"
-#include "comet/screen.h"
-
 #include "comet/console.h"
+#include "comet/animationmgr.h"
 #include "comet/comet.h"
+#include "comet/comet_gui.h"
+#include "comet/input.h"
+#include "comet/resourcemgr.h"
+#include "comet/screen.h"
 
 #include "gui/debugger.h"
 
@@ -172,8 +172,8 @@ bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
 	anim = _vm->_animationMan->loadAnimationResource("RES.PAK", resourceNum);
 	while (!done && !_vm->shouldQuit()) {
 		int16 x, y;
-		_vm->handleEvents();
-		switch (_vm->_keyScancode) {
+		_vm->_input->handleEvents();
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_UP:
 			if (celIndex >= anim->_cels.size())
 				celIndex = 0;
@@ -194,8 +194,8 @@ bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
 		}
 		debug(0, "celIndex = %d", celIndex);
 		currCel = anim->_cels[celIndex];
-		x = _vm->_mouseX + 20; 
-		y = _vm->_mouseY + 20;
+		x = _vm->_input->getMouseX() + 20;
+		y = _vm->_input->getMouseY() + 20;
 		_vm->_screen->clear();
 		_vm->_screen->drawAnimationCelSprite(*currCel, x, y, 0);
 		_vm->_screen->update();

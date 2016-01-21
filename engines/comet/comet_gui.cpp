@@ -28,6 +28,7 @@
 #include "comet/comet.h"
 #include "comet/comet_gui.h"
 #include "comet/animationmgr.h"
+#include "comet/input.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
 #include "comet/screen.h"
@@ -137,8 +138,8 @@ int GuiInventory::run() {
 	uint firstItem = 0, currentItem = 0, animFrameCounter = 0;
 	int inventoryStatus = 0;
 
-	_vm->waitForKeys();
-	_vm->setMouseCursor(NULL);
+	_vm->_input->waitForKeys();
+	_vm->setMouseCursor(-1);
 
 	// Build items array and set up variables
 	for (int i = 0; i < 256; i++) {
@@ -151,29 +152,29 @@ int GuiInventory::run() {
 		}
 	}
 
-	while (inventoryStatus == 0 && !_vm->_quitGame) {
+	while (inventoryStatus == 0 && !_vm->shouldQuit()) {
 		int inventoryAction = kIANone, mouseSelectedItem;
 		bool doWarpMouse = false;
 
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
-		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_mouseX, _vm->_mouseY, MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
+		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
 		if (mouseSelectedItem >= 0)
 			currentItem = firstItem + mouseSelectedItem;
 
 		drawInventory(items, firstItem, currentItem, animFrameCounter++);
 		_vm->syncUpdate();
 
-		if (_vm->_rightButton) {
+		if (_vm->_input->rightButton()) {
 			inventoryAction = kIAExit;
-		} else if (_vm->_leftButton) {
+		} else if (_vm->_input->leftButton()) {
 			if (mouseSelectedItem >= 0)
 				inventoryAction = kIAUse;
 			else if (mouseSelectedItem != kIANone)
 				inventoryAction = mouseSelectedItem;
 		}
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_DOWN:
 			inventoryAction = kIADown;
 			break;
@@ -238,7 +239,7 @@ int GuiInventory::run() {
 			doWarpMouse = false;
 		}
 
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 	}
 
 	return 2 - inventoryStatus;;
@@ -327,17 +328,17 @@ int GuiCommandBar::handleCommandBar() {
 	int commandBarStatus = 0;
 	_animFrameCounter = 0;
 	
-	_vm->waitForKeys();
-	_vm->setMouseCursor(NULL);
+	_vm->_input->waitForKeys();
+	_vm->setMouseCursor(-1);
 
 	if (isMuseum && (_commandBarSelectedItem != kCBAVerbLook || _commandBarSelectedItem != kCBAMenu))
 		_commandBarSelectedItem = kCBAVerbLook;
 
-	while (commandBarStatus == 0 && !_vm->_quitGame) {
+	while (commandBarStatus == 0 && !_vm->shouldQuit()) {
 		int mouseSelectedItem, commandBarAction = kCBANone;
 		bool doWarpMouse = false;
 
-		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_mouseX, _vm->_mouseY, commandBarItemCount + 1, kCBANone);
+		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), commandBarItemCount + 1, kCBANone);
 
 		if (isMuseum && (mouseSelectedItem != kCBAVerbLook || mouseSelectedItem != kCBAMenu))
 			mouseSelectedItem = kCBANone;
@@ -348,25 +349,25 @@ int GuiCommandBar::handleCommandBar() {
 		drawCommandBar(_commandBarSelectedItem);
 		_animFrameCounter++;
 		_vm->syncUpdate();
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
-		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
+		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
 			continue;
 
-		if (_vm->_rightButton)
+		if (_vm->_input->rightButton())
 			commandBarAction = kCBAExit;
-		else if (_vm->_leftButton && _commandBarSelectedItem != kCBANone)
+		else if (_vm->_input->leftButton() && _commandBarSelectedItem != kCBANone)
 			commandBarAction = _commandBarSelectedItem;
 
-		if (isMuseum && (_vm->_keyScancode == Common::KEYCODE_RIGHT || _vm->_keyScancode == Common::KEYCODE_LEFT)) {
+		if (isMuseum && (_vm->_input->getKeyCode() == Common::KEYCODE_RIGHT || _vm->_input->getKeyCode() == Common::KEYCODE_LEFT)) {
 			if (_commandBarSelectedItem == kCBAVerbLook)
 				_commandBarSelectedItem = kCBAMenu;
 			else if (_commandBarSelectedItem == kCBAMenu)
 				_commandBarSelectedItem = kCBAVerbLook;
-			_vm->_keyScancode = Common::KEYCODE_INVALID;
+			_vm->_input->clearKeyCode();
 		}
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_RIGHT:
 			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
 			if (_commandBarSelectedItem == commandBarItemCount)
@@ -456,10 +457,10 @@ int GuiCommandBar::handleCommandBar() {
 			break;
 		}
 
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 	}
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
 	return 0;
 }
@@ -482,14 +483,14 @@ int GuiMainMenu::run() {
 
 	int mainMenuStatus = 0;
 
-	_vm->waitForKeys();
-	_vm->setMouseCursor(NULL);
+	_vm->_input->waitForKeys();
+	_vm->setMouseCursor(-1);
 
-	while (mainMenuStatus == 0 && !_vm->_quitGame) {
+	while (mainMenuStatus == 0 && !_vm->shouldQuit()) {
 		int mouseSelectedItem, mainMenuAction = kMMANone;
 		bool doWarpMouse = false;
 	
-		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_mouseX, _vm->_mouseY, 4, kMMANone);
+		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 4, kMMANone);
 		if (mouseSelectedItem != kMMANone)
 			_mainMenuSelectedItem = mouseSelectedItem;
 			
@@ -497,18 +498,18 @@ int GuiMainMenu::run() {
 		
 		_vm->syncUpdate();
 
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
-		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
+		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
 			continue;
 
-		if (_vm->_rightButton) {
+		if (_vm->_input->rightButton()) {
 			mainMenuAction = kMMAExit;
-		} else if (_vm->_leftButton && _mainMenuSelectedItem != kMMANone) {
+		} else if (_vm->_input->leftButton() && _mainMenuSelectedItem != kMMANone) {
 			mainMenuAction = _mainMenuSelectedItem;
 		}
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_DOWN:
 			doWarpMouse = mouseSelectedItem == _mainMenuSelectedItem;
 			if (_mainMenuSelectedItem == 3) {
@@ -578,11 +579,11 @@ int GuiMainMenu::run() {
 			break;
 		}
 
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 	
 	}
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
 	return 0;
 }
@@ -648,18 +649,18 @@ int GuiOptionsMenu::run() {
 	gameSpeed = ConfMan.getInt("game_speed");
 	language = 1;
 	
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
-	while (optionsMenuStatus == 0 && !_vm->_quitGame) {
+	while (optionsMenuStatus == 0 && !_vm->shouldQuit()) {
 		int mouseSelectedItem = -1, optionsMenuAction = kOMANone, selectedItemToDraw;
 		int optionIncr = 0;
 		bool doWaitForKeys = true;
 		bool doWarpMouse = false;
 
-		int16 mouseX = CLIP(_vm->_mouseX, 127, 189);
+		int16 mouseX = CLIP(_vm->_input->getMouseX(), 127, 189);
 
 		if (!_vm->isFloppy()) {
-			mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_mouseX, _vm->_mouseY, 13, kOMANone);
+			mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 13, kOMANone);
 			if (mouseSelectedItem != kOMANone)
 				_optionsMenuSelectedItem = mouseSelectedItem;
 		}
@@ -689,17 +690,17 @@ int GuiOptionsMenu::run() {
 			gameSpeed, language, animFrameCounter, optionsMenuRects);
 
 		_vm->syncUpdate();
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
-		if (_vm->_keyScancode == Common::KEYCODE_INVALID && !_vm->_leftButton && !_vm->_rightButton)
+		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
 			continue;
 
-		if (_vm->_rightButton)
+		if (_vm->_input->rightButton())
 			optionsMenuAction = kOMAExit;
-		else if (_vm->_leftButton && _optionsMenuSelectedItem != kOMANone)
+		else if (_vm->_input->leftButton() && _optionsMenuSelectedItem != kOMANone)
 			optionsMenuAction = _optionsMenuSelectedItem;
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_DOWN:
 			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
 			if (_optionsMenuSelectedItem == 5)
@@ -810,10 +811,10 @@ int GuiOptionsMenu::run() {
 		}
 
 		if (doWaitForKeys)
-			_vm->waitForKeys();
+			_vm->_input->waitForKeys();
 	}
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
 	if (optionsMenuStatus == 1) {
 		// TODO Also save game speed, text speed
@@ -957,26 +958,26 @@ int GuiTownMap::run() {
 	cursorX = mapPoints[locationNumber].x;
 	cursorY = mapPoints[locationNumber].y;
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
 	if (!_vm->isFloppy()) {
 		CursorMan.showMouse(false);
 		_vm->_system->warpMouse(cursorX, cursorY);
 	}	
 
-	while (mapStatus == 0 && !_vm->_quitGame) {
+	while (mapStatus == 0 && !_vm->shouldQuit()) {
 
 		int16 currMapLocation = 0, selectedMapLocation = 0;
 		bool cursorChanged = false;
 
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
 		if (!_vm->isFloppy()) {
-			cursorX = CLIP(_vm->_mouseX, mapRectX1, mapRectX2);
-			cursorY = CLIP(_vm->_mouseY, mapRectY1, mapRectY2);
+			cursorX = CLIP(_vm->_input->getMouseX(), mapRectX1, mapRectX2);
+			cursorY = CLIP(_vm->_input->getMouseY(), mapRectY1, mapRectY2);
 		}
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_UP:
 			cursorY = MAX(cursorY - kCursorAddY, mapRectY1);
 			break;
@@ -998,10 +999,10 @@ int GuiTownMap::run() {
 		prevCursorX = cursorX;
 		prevCursorY = cursorY;
 
-		if (!_vm->isFloppy() && (_vm->_mouseX != cursorX || _vm->_mouseY != cursorY))
+		if (!_vm->isFloppy() && (_vm->_input->getMouseX() != cursorX || _vm->_input->getMouseY() != cursorY))
 			_vm->_system->warpMouse(cursorX, cursorY);
 
-		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->rightButton()) {
+		if (_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE || _vm->_input->rightButton()) {
 			mapStatus = 1;
 			cursorChanged = false;
 			currMapLocation = -1;
@@ -1029,7 +1030,7 @@ int GuiTownMap::run() {
 			}
 		}
 
-		if (currMapLocation != -1 && (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->leftButton())) {
+		if (currMapLocation != -1 && (_vm->_input->getKeyCode() == Common::KEYCODE_RETURN || _vm->_input->leftButton())) {
 			selectedMapLocation = currMapLocation;
 			const MapExit &mapExit = mapExits[selectedMapLocation];
 			_vm->_moduleNumber = mapExit.moduleNumber;
@@ -1052,7 +1053,7 @@ int GuiTownMap::run() {
 
 	}
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
 	CursorMan.showMouse(!_vm->isFloppy());
 
@@ -1090,7 +1091,7 @@ int GuiJournal::handleReadBook() {
 	pageNumber = _vm->_scriptVars[1];
 	pageCount = _vm->_scriptVars[1];
 
-	_vm->setMouseCursor(NULL);
+	_vm->setMouseCursor(-1);
 
 	bookTurnPageTextEffect(false, pageNumber, pageCount);
 
@@ -1115,23 +1116,23 @@ int GuiJournal::handleReadBook() {
 					_vm->_talkText->stopVoice();
 				talkPageNumber = pageNumber;
 			}
-			_vm->handleEvents();
+			_vm->_input->handleEvents();
 			if (!_vm->isFloppy()) {
-				mouseSelectedRect = _vm->findRect(bookRects, _vm->_mouseX, _vm->_mouseY, 2, kBANone);
+				mouseSelectedRect = _vm->findRect(bookRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 2, kBANone);
 				if (mouseSelectedRect == -1)
-					_vm->setMouseCursor(NULL);
+					_vm->setMouseCursor(-1);
 				else if (mouseSelectedRect == 0)
-					_vm->setMouseCursor(_vm->_mouseCursors[3]);
+					_vm->setMouseCursor(3);
 				else if (mouseSelectedRect == 1)
-					_vm->setMouseCursor(_vm->_mouseCursors[2]);
+					_vm->setMouseCursor(2);
 			}
 			_vm->syncUpdate();
-			if (_vm->_quitGame || _vm->_rightButton || _vm->_keyScancode == Common::KEYCODE_RETURN ||
-				_vm->_keyScancode == Common::KEYCODE_ESCAPE)
+			if (_vm->shouldQuit() || _vm->_input->rightButton() || _vm->_input->getKeyCode() == Common::KEYCODE_RETURN ||
+				_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE)
 				bookAction = kBAExit;
-			else if (_vm->_keyScancode == Common::KEYCODE_LEFT || (_vm->_leftButton && mouseSelectedRect == 0))
+			else if (_vm->_input->getKeyCode() == Common::KEYCODE_LEFT || (_vm->_input->leftButton() && mouseSelectedRect == 0))
 				bookAction = kBAPrevPage;
-			else if (_vm->_keyScancode == Common::KEYCODE_RIGHT || (_vm->_leftButton && mouseSelectedRect == 1))
+			else if (_vm->_input->getKeyCode() == Common::KEYCODE_RIGHT || (_vm->_input->leftButton() && mouseSelectedRect == 1))
 				bookAction = kBANextPage;
 		} while (bookAction == kBANone);
 
@@ -1157,11 +1158,11 @@ int GuiJournal::handleReadBook() {
 			break;
 		}
 
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 
 	}
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 	_vm->_talkText->stopVoice();
 	_vm->_talkText->_textActive = false;
 
@@ -1306,20 +1307,20 @@ int GuiPuzzle::runPuzzle() {
 
 	loadFingerCursor();
 
-	while (puzzleStatus == 0 && !_vm->_quitGame) {
+	while (puzzleStatus == 0 && !_vm->shouldQuit()) {
 
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
 		if (!_vm->isFloppy()) {
 			/* Comet CD: Find out which tile is selected and convert 
 			   mouse coords to tile coords.
 			*/
 			int mouseSelectedTile;
-			puzzleCursorX = CLIP(_vm->_mouseX, 103, 231);
-			puzzleCursorY = CLIP(_vm->_mouseY, 44, 171);
-			if (_vm->_mouseX != puzzleCursorX || _vm->_mouseY != puzzleCursorY)
+			puzzleCursorX = CLIP(_vm->_input->getMouseX(), 103, 231);
+			puzzleCursorY = CLIP(_vm->_input->getMouseY(), 44, 171);
+			if (_vm->_input->getMouseX() != puzzleCursorX || _vm->_input->getMouseY() != puzzleCursorY)
 				_vm->_system->warpMouse(puzzleCursorX, puzzleCursorY);
-			mouseSelectedTile = _vm->findRect(puzzleTileRects, _vm->_mouseX, _vm->_mouseY, 21, -1);
+			mouseSelectedTile = _vm->findRect(puzzleTileRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 21, -1);
 			if (mouseSelectedTile >= 0) {
 				if (mouseSelectedTile >= 0 && mouseSelectedTile < 20) {
 					_puzzleTableColumn = rectToColRow[mouseSelectedTile].col;
@@ -1337,10 +1338,10 @@ int GuiPuzzle::runPuzzle() {
 		drawField();
 		_vm->syncUpdate();
 
-		if (_vm->_keyScancode != Common::KEYCODE_INVALID) {
+		if (_vm->_input->getKeyCode() != Common::KEYCODE_INVALID) {
 			bool selectionChanged = false;
 
-			switch (_vm->_keyScancode) {
+			switch (_vm->_input->getKeyCode()) {
 			case Common::KEYCODE_UP:
 				if (_puzzleTableRow > 0) {
 					_puzzleTableRow--;
@@ -1401,9 +1402,9 @@ int GuiPuzzle::runPuzzle() {
 			
 		}
 
-		if (_vm->_keyScancode == Common::KEYCODE_ESCAPE || _vm->rightButton()) {
+		if (_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE || _vm->_input->rightButton()) {
 			puzzleStatus = 1;
-		} else if (_vm->_keyScancode == Common::KEYCODE_RETURN || _vm->leftButton()) {
+		} else if (_vm->_input->getKeyCode() == Common::KEYCODE_RETURN || _vm->_input->leftButton()) {
 			if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
 				playTileSound();
 				moveTileRow(_puzzleTableRow, -1);
@@ -1420,7 +1421,7 @@ int GuiPuzzle::runPuzzle() {
 			if (testIsSolved())
 				puzzleStatus = 2;
 		} else {
-			_vm->waitForKeys();
+			_vm->_input->waitForKeys();
 		}
 	}
 
@@ -1436,7 +1437,7 @@ void GuiPuzzle::loadFingerCursor() {
 	if (!_vm->isFloppy()) {
 		AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
 		AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
-		_vm->setMouseCursor(cel);
+		_vm->setMouseCursorSprite(cel);
 	}
 }
 
@@ -1568,12 +1569,12 @@ int GuiSaveLoadMenu::run() {
 
 	loadSavegamesList();
 
-	_vm->waitForKeys();
+	_vm->_input->waitForKeys();
 
-	while (saveLoadMenuStatus == 0 && !_vm->_quitGame) {
+	while (saveLoadMenuStatus == 0 && !_vm->shouldQuit()) {
 		int mouseSelectedItem;
 
-		mouseSelectedItem = _vm->findRect(saveLoadMenuRects, _vm->_mouseX, _vm->_mouseY, 10, -1);
+		mouseSelectedItem = _vm->findRect(saveLoadMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 10, -1);
 		if (mouseSelectedItem != -1)
 			selectedItem = mouseSelectedItem;
 
@@ -1581,15 +1582,15 @@ int GuiSaveLoadMenu::run() {
 		
 		_vm->syncUpdate();
 
-		_vm->handleEvents();
+		_vm->_input->handleEvents();
 
-		if (mouseSelectedItem != -1 && _vm->_leftButton) {
+		if (mouseSelectedItem != -1 && _vm->_input->leftButton()) {
 			saveLoadMenuStatus = 1;
-		} else if (_vm->_rightButton) {
+		} else if (_vm->_input->rightButton()) {
 			saveLoadMenuStatus = 2;
 		}
 
-		switch (_vm->_keyScancode) {
+		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_RETURN:
 			saveLoadMenuStatus = 1;
 			break;
@@ -1609,7 +1610,7 @@ int GuiSaveLoadMenu::run() {
 				selectedItem = 9;
 			break;
 		default:
-			if (_asSaveMenu && _vm->_keyScancode >= Common::KEYCODE_SPACE && _vm->_keyScancode <= Common::KEYCODE_z) {
+			if (_asSaveMenu && _vm->_input->getKeyCode() >= Common::KEYCODE_SPACE && _vm->_input->getKeyCode() <= Common::KEYCODE_z) {
 				if (handleEditSavegameDescription(selectedItem) == 1)
 					saveLoadMenuStatus = 1;
 			}
@@ -1620,7 +1621,7 @@ int GuiSaveLoadMenu::run() {
 		if (saveLoadMenuStatus == 1 && !_asSaveMenu && _savegames[selectedItem].description.size() == 0)
 			saveLoadMenuStatus = 0;
 
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 
 	}
 
@@ -1688,7 +1689,7 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 	Common::String description = _savegames[savegameIndex].description;
 	bool redrawSavegameDescription = true;
 
-	while (editSavegameDescriptionStatus == 0 && !_vm->_quitGame) {
+	while (editSavegameDescriptionStatus == 0 && !_vm->shouldQuit()) {
 		Common::Event event;
 
 		if (redrawSavegameDescription) {
@@ -1699,9 +1700,9 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 
 		_vm->syncUpdate();
 
-		if (_vm->_leftButton)
+		if (_vm->_input->leftButton())
 			editSavegameDescriptionStatus = 1;
-		else if (_vm->_rightButton)
+		else if (_vm->_input->rightButton())
 			editSavegameDescriptionStatus = 2;
 
 		// Local event polling since handleEvents seems to drop characters for some reason...	
@@ -1727,27 +1728,8 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 					}
 					break;
 				}
-			case Common::EVENT_MOUSEMOVE:
-				_vm->_mouseX = event.mouse.x;
-				_vm->_mouseY = event.mouse.y;
-				break;
-			case Common::EVENT_LBUTTONDOWN:
-				_vm->_leftButton = true;
-				break;
-			case Common::EVENT_LBUTTONUP:
-				_vm->_leftButton = false;
-				break;
-			case Common::EVENT_RBUTTONDOWN:
-				_vm->_rightButton = true;
-				break;
-			case Common::EVENT_RBUTTONUP:
-				_vm->_rightButton = false;
-				break;
-			case Common::EVENT_RTL:
-			case Common::EVENT_QUIT:
-				 _vm->_quitGame = true;
-				 break;
 			default:
+				_vm->_input->handleMouseEvent(event);
 				break;
 			}
 		}

@@ -42,6 +42,7 @@
 #include "comet/comet.h"
 #include "comet/actor.h"
 #include "comet/console.h"
+#include "comet/input.h"
 #include "comet/music.h"
 #include "comet/animationmgr.h"
 #include "comet/comet_gui.h"
@@ -113,8 +114,6 @@ CometEngine::CometEngine(OSystem *syst, const CometGameDescription *gameDesc) : 
 	_iconSprite = 0;
 
 	_sceneDecorationSprite = 0;
-
-	_quitGame = false;
 
 	_actors = new Actors(this);
 
@@ -194,6 +193,7 @@ Common::Error CometEngine::run() {
 	_scene = new Scene(this);
 	_animationMan = new AnimationManager(this);
 	_res = new ResourceManager();
+	_input = new Input(this);
 	_talkText = new TalkText(this);
 
 	_textReader = new TextReader(this);
@@ -252,18 +252,6 @@ Common::Error CometEngine::run() {
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
 
-	_mouseX = 0;
-	_mouseY = 0;
-	_keyScancode = Common::KEYCODE_INVALID;
-	_keyDirection = 0;
-	_cursorDirection = 0;
-	_mouseClick = 0;
-	_scriptKeybFlag = 0;
-	_mouseWalking = false;
-	_mouseCursorDirection = 0;
-	_leftButton = false;
-	_rightButton = false;
-
 	_cmdLook = false;
 	_cmdGet = false;
 	_cmdTalk = false;
@@ -295,7 +283,7 @@ Common::Error CometEngine::run() {
 
 	if (!isFloppy()) {
 		CursorMan.showMouse(true);
-		setMouseCursor(_mouseCursors[0]);
+		setMouseCursor(0);
 	} else
 		CursorMan.showMouse(false);
 
@@ -311,7 +299,7 @@ Common::Error CometEngine::run() {
 			_moduleNumber = 9;
 			_sceneNumber = 9;
 		}
-		waitForKeys();
+		_input->waitForKeys();
 		if (_currentModuleNumber == 5)
 			_sceneNumber = 2;
 		else if (_currentModuleNumber == 9)
@@ -321,7 +309,7 @@ Common::Error CometEngine::run() {
 	_screen->clear();
 	_screen->update();
 
-	if (!_quitGame) {
+	if (!shouldQuit()) {
 		if (getGameID() == GID_COMET) {
 			cometMainLoop();
 		} else if (getGameID() == GID_MUSEUM) {
@@ -330,6 +318,7 @@ Common::Error CometEngine::run() {
 	}
 
 	delete _talkText;
+	delete _input;
 
 	return Common::kNoError;
 }
