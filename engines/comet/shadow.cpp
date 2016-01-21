@@ -36,6 +36,7 @@
 #include "comet/animationmgr.h"
 #include "comet/comet_gui.h"
 #include "comet/dialog.h"
+#include "comet/input.h"
 #include "comet/music.h"
 #include "comet/resource.h"
 #include "comet/resourcemgr.h"
@@ -180,7 +181,7 @@ void CometEngine::initData() {
 	memset(_inventoryItemStatus, 0, sizeof(_inventoryItemStatus));
 
 	_screen->setFontColor(19);
-	unblockInput();
+	_input->unblockInput();
 
 	_currentModuleNumber = 0;
 	_sceneNumber = 0;
@@ -221,7 +222,7 @@ void CometEngine::updateGame() {
 	if (_cmdGet)
 		getItemInSight();
 
-	handleInput();
+	_input->handleInput();
 
 	_script->runAllScripts();
 
@@ -324,7 +325,7 @@ void CometEngine::getItemInSight() {
 
 void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
-	if (_blockedInput != 15) {
+	if (_input->getBlockedInput() != 15) {
 		Common::Rect sightRect;
 		_actors->getActor(0)->calcSightRect(sightRect, 0, 50);
 		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
@@ -425,8 +426,8 @@ void CometEngine::resetVars() {
 	_cmdLook = false;
 	_cmdTalk = false;
  	_scene->clearExits();
-	_blockedInput = 0;
 	_scene->_sceneItems.clear();
+	_input->unblockInput();
 }
 
 void CometEngine::loadAndRunScript(bool loadingGame) {
@@ -495,7 +496,11 @@ void CometEngine::updateScreen() {
 	_screen->update();
 }
 
-void CometEngine::setMouseCursor(AnimationCel *cursorSprite) {
+void CometEngine::setMouseCursor(int cursorNum) {
+	setMouseCursorSprite(cursorNum < 0 ? 0 : _mouseCursors[cursorNum]);
+}
+
+void CometEngine::setMouseCursorSprite(AnimationCel *cursorSprite) {
 
 	static const byte sysMouseCursor1[] = {
 		  1,  0,  0,  2,192,192, 14,  1,  0,  0,  3,192,255,
@@ -518,7 +523,7 @@ void CometEngine::setMouseCursor(AnimationCel *cursorSprite) {
 	const byte *data;
 
 	if (isFloppy()) {
-		warning("setMouseCursor() called in floppy version");
+		warning("setMouseCursorSprite() called in floppy version");
 		return;
 	}
 
@@ -540,46 +545,6 @@ void CometEngine::setMouseCursor(AnimationCel *cursorSprite) {
 		_currCursorSprite = data;
 	}
 	
-}
-
-void CometEngine::blockInput(int flagIndex) {
-	if (flagIndex == 0) {
-		_walkDirection = 0;
-		_blockedInput = 15;
-		_actors->getActor(0)->stopWalking();
-	} else {
-		static const int constFlagsArray[5] = {0, 1, 8, 2, 4};
-		_blockedInput |= constFlagsArray[flagIndex];
-	}
-}
-
-void CometEngine::unblockInput() {
-	_blockedInput = 0;
-	if (_actors->getActor(0)->_status == 2)
-		_actors->getActor(0)->_status = 0;
-}
-
-int CometEngine::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY) {
-	int deltaX, deltaY;
-	int deltaXAbs, deltaYAbs;
-	int direction;
-	deltaX = toX - fromX;
-	deltaY = toY - fromY;
-	deltaXAbs = ABS(toX - fromX);
-	deltaYAbs = ABS(toY - fromY);
-	if (deltaX == 0 && deltaY == 0)
-		direction = 0;
-	else if (deltaY > 0 && deltaY > deltaXAbs && deltaYAbs > 2)
-		direction = 3;
-	else if (deltaY < 0 && deltaYAbs > deltaXAbs && deltaYAbs > 2)
-		direction = 1;
-	else if (deltaX > 0 && deltaX > deltaYAbs && deltaXAbs > 2)
-		direction = 2;
-	else if (deltaX < 0 && deltaXAbs > deltaYAbs && deltaXAbs > 2)
-		direction = 4;
-	else
-		direction = 0;
-	return direction;
 }
 
 int16 CometEngine::randomValue(int maxValue) {
@@ -654,246 +619,49 @@ void CometEngine::warpMouseToRect(const GuiRectangle &rect) {
 		rect.y + (rect.y2 - rect.y) / 2);
 }
 
-void CometEngine::handleEvents() {
-	Common::Event event;
-
-	while (g_system->getEventManager()->pollEvent(event)) {
-		switch (event.type) {
-		case Common::EVENT_KEYDOWN:
-			switch (event.kbd.keycode) {
-			case Common::KEYCODE_UP:
-				_keyDirection = 1;
-				break;
-			case Common::KEYCODE_DOWN:
-				_keyDirection = 2;
-				break;
-			case Common::KEYCODE_LEFT:
-				_keyDirection = 4;
-				break;
-			case Common::KEYCODE_RIGHT:
-				_keyDirection = 8;
-				break;
-			case Common::KEYCODE_d:
-				if (event.kbd.flags & Common::KBD_CTRL) {
-					_console->attach();
-					_console->onFrame();
-					event.kbd.keycode = Common::KEYCODE_INVALID;
-				}
-				break;
-			default:
-				break;
-			}
-			_keyScancode = event.kbd.keycode;
-			_keyAscii = event.kbd.ascii;
-			break;
-		case Common::EVENT_KEYUP:
-			switch (event.kbd.keycode) {
-			case Common::KEYCODE_UP:
-				_keyDirection &= ~1;
-				break;
-			case Common::KEYCODE_DOWN:
-				_keyDirection &= ~2;
-				break;
-			case Common::KEYCODE_LEFT:
-				_keyDirection &= ~4;
-				break;
-			case Common::KEYCODE_RIGHT:
-				_keyDirection &= ~8;
-				break;
-			default:
-				break;
-			}
-			_keyScancode = Common::KEYCODE_INVALID;
-			break;
-		case Common::EVENT_RTL:
-		case Common::EVENT_QUIT:
-			_quitGame = true;
-			return;
-		default:
-			break;
-		}
-		if (!isFloppy()) {
-			// Handle mouse-related events only in the CD version
-			switch (event.type) {
-			case Common::EVENT_MOUSEMOVE:
-				_mouseX = event.mouse.x;
-				_mouseY = event.mouse.y;
-				break;
-			case Common::EVENT_LBUTTONDOWN:
-				_leftButton = true;
-				break;
-			case Common::EVENT_LBUTTONUP:
-				_leftButton = false;
-				break;
-			case Common::EVENT_RBUTTONDOWN:
-				_rightButton = true;
-				break;
-			case Common::EVENT_RBUTTONUP:
-				_rightButton = false;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
-
-void CometEngine::waitForKeys() {
-	while ((_keyScancode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) && !_quitGame) {
-		handleEvents();
-	}
-}
-
-void CometEngine::waitForKeyPress() {
-	waitForKeys();
-	while (_keyScancode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton && !_quitGame) {
-		handleEvents();
-	}
-}
-
-void CometEngine::handleInput() {
-
-	static const byte walkDirectionTable[] = {
-		0, 1, 3, 0, 4, 4, 4, 0, 2, 2, 2, 0, 0, 0, 0, 0
-	};
-	
-	static const byte mouseDirectionTable[] = {
-		0, 0, 0, 0, 0, 0, 1, 2, 2, 4, 0, 1, 2, 3, 3, 0, 4, 2, 3, 4, 0, 1, 3, 3, 4, 0
-	};
-
-	int direction, directionAdd;
-	Actor *mainActor = _actors->getActor(0);
-
-	_cursorDirection = _keyDirection;
-	_walkDirection = walkDirectionTable[_cursorDirection & 0x0F];
-
-	if (!isFloppy()) {
-		if (!_dialog->isRunning() && !_talkText->isActive() && _blockedInput != 0x0F) {
-			if (!_mouseWalking && _walkDirection == 0) {
-				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->_x, mainActor->_y, _mouseX, _mouseY);
-			} else if (_walkDirection != 0) {
-				_mouseCursorDirection = _walkDirection;
-			}
-			_mouseWalking = _leftButton;
-			switch (_mouseCursorDirection) {
-			case 1:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 1;
-					_walkDirection = _mouseCursorDirection;
-				}
-				setMouseCursor(_mouseCursors[0]);
-				break;
-			case 2:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 8;
-					_walkDirection = _mouseCursorDirection;
-				}
-				setMouseCursor(_mouseCursors[2]);
-				break;
-			case 3:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 2;
-					_walkDirection = _mouseCursorDirection;
-				}
-				setMouseCursor(_mouseCursors[1]);
-				break;
-			case 4:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 4;
-					_walkDirection = _mouseCursorDirection;
-				}
-				setMouseCursor(_mouseCursors[3]);
-				break;
-			}
-		} else if (_talkText->isActive()) {
-			setMouseCursor(_mouseCursors[4]);
-		} else if (_dialog->isRunning()) {
-			setMouseCursor(_mouseCursors[6]);
-		} else if (_blockedInput == 0x0F) {
-			setMouseCursor(_mouseCursors[5]);
-		} else {
-			setMouseCursor(NULL);
-		}
-	}
-
-	if ((_blockedInput & _cursorDirection) || _dialog->isRunning()) {
-		_walkDirection = 0;
-		_mouseClick = 0;
-	} else {
-		_mouseClick = _cursorDirection & 0x80;
-	}
-
-	_scriptKeybFlag = (_keyScancode == Common::KEYCODE_RETURN) || (_mouseClick & 0x80);
-	if (!isFloppy())
-		_scriptKeybFlag = _scriptKeybFlag || _leftButton || _rightButton;
-
-	if (mainActor->_walkStatus & 3)
-		return;
-
-	if (_dialog->isRunning() && mainActor->_directionAdd != 0) {
-		mainActor->stopWalking();
-		return;
-	}
-
-	directionAdd = mainActor->_directionAdd;
-	mainActor->_walkDestX = mainActor->_x;
-	mainActor->_walkDestY = mainActor->_y;
-
-	if (directionAdd == 4)
-		directionAdd = 0;
-
-	if (mainActor->_direction == _walkDirection && !(_blockedInput & _cursorDirection))
-		directionAdd = 4;
-
-	direction = mouseDirectionTable[mainActor->_direction * 5 + _walkDirection];
-
-	mainActor->setDirection(direction);
-	mainActor->setDirectionAdd(directionAdd);
-}
-
 void CometEngine::handleKeyInput() {
-	switch (_keyScancode) {
+	switch (_input->getKeyCode()) {
 	case Common::KEYCODE_t:
 		_cmdTalk = true;
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_g:
 		_cmdGet = true;
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_l:
 		_cmdLook = true;
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_o:
 		_gui->run(kGuiInventory);
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_u:
 		useCurrentInventoryItem();
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_d:
 		_gui->run(kGuiMainMenu);
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_m:
 		handleMap();
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_i:
 		_gui->run(kGuiJournal);
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_p:
 		checkPauseGame();
-		waitForKeys();
+		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_RETURN:
 		_talkText->stopText();
 		break;
 	default:
-		if (Common::KEYCODE_TAB == _keyScancode || (!isFloppy() && _rightButton)) {
+		if (_input->getKeyCode() == Common::KEYCODE_TAB || _input->rightButton()) {
 			_gui->run(kGuiCommandBar);
 		}
 		break;
@@ -1094,7 +862,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		// TODO: Load the sample
 	}
 
-	for (int loopIndex = 0; loopIndex < loopCount && !_quitGame; loopIndex++) {
+	for (int loopIndex = 0; loopIndex < loopCount && !shouldQuit(); loopIndex++) {
 		byte *workSoundFramesData = soundFramesData;
 		int workSoundFramesCount = soundFramesCount;
 		int animFrameIndex, animSoundFrameIndex = 0, interpolationStep = 0;
@@ -1107,8 +875,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 
 		animFrameIndex = 0;
 		while (animFrameIndex < animFrameCount) {
-			handleEvents();
-			if (_quitGame)
+			_input->handleEvents();
+			if (shouldQuit())
 				break;
 
 			_screen->copyFromScreen(_tempScreen);
@@ -1134,9 +902,9 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 
 			checkPauseGame();
 
-			if (_keyScancode == Common::KEYCODE_ESCAPE) {
+			if (_input->getKeyCode() == Common::KEYCODE_ESCAPE) {
 				// TODO: yesNoDialog();
-			} else if (_keyScancode == Common::KEYCODE_RETURN) {
+			} else if (_input->getKeyCode() == Common::KEYCODE_RETURN) {
 				animFrameIndex = animFrameCount;
 				loopIndex = loopCount;
 				if (_talkText->isActive())
@@ -1197,8 +965,8 @@ void CometEngine::initSystemVars() {
 		_systemVars[2 + i * 3] = &_actors->getActor(i)->_x;
 		_systemVars[3 + i * 3] = &_actors->getActor(i)->_y;
 	}
-	_systemVars[31] = &_cursorDirection;
-	_systemVars[32] = &_scriptKeybFlag;
+	_systemVars[31] = &_input->_cursorDirection;
+	_systemVars[32] = &_input->_scriptKeybFlag;
 	_systemVars[33] = &_scriptRandomValue;
 	_systemVars[34] = &_prevModuleNumber;
 }
@@ -1236,10 +1004,10 @@ void CometEngine::checkCurrentInventoryItem() {
 void CometEngine::introMainLoop() {
 	_endIntroLoop = false;
 
-	while (!_endIntroLoop && !_quitGame) {
-		handleEvents();
+	while (!_endIntroLoop && !shouldQuit()) {
+		_input->handleEvents();
 
-		switch (_keyScancode) {
+		switch (_input->getKeyCode()) {
 		case Common::KEYCODE_ESCAPE:
 			_endIntroLoop = true;
 			break;
@@ -1262,9 +1030,8 @@ void CometEngine::introMainLoop() {
 }
 
 void CometEngine::cometMainLoop() {
-	_quitGame = false;
-	while (!_quitGame) {
-		handleEvents();
+	while (!shouldQuit()) {
+		_input->handleEvents();
 
 		if (_currentModuleNumber == 7 && _currentSceneNumber == 1 && _paletteStatus == 0) {
 			memcpy(_backupPalette, _gamePalette, 768);
@@ -1288,12 +1055,12 @@ void CometEngine::cometMainLoop() {
 
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
 			handleKeyInput();
-		// Original behavior: } else if (_keyScancode == Common::KEYCODE_RETURN || (_rightButton && _talkText->isActive())) {
-		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _talkText->isActive()) {
+		// Original behavior: } else if (_input->getKeyCode() == Common::KEYCODE_RETURN || (_input->rightButton() && _talkText->isActive())) {
+		} else if ((_input->getKeyCode() == Common::KEYCODE_RETURN || _input->rightButton()) && _talkText->isActive()) {
 			_talkText->stopText();
 		}
 
-		if (_quitGame)
+		if (shouldQuit())
 			return;
 
 		if (debugTestPuzzle) {
@@ -1302,7 +1069,7 @@ void CometEngine::cometMainLoop() {
 		}
 
 		// Debugging keys
-		switch (_keyScancode) {
+		switch (_input->getKeyCode()) {
 		case Common::KEYCODE_F7:
 			savegame("comet.000", "Quicksave");
 			break;
@@ -1351,15 +1118,14 @@ void CometEngine::cometMainLoop() {
 }
 
 void CometEngine::museumMainLoop() {
-	_quitGame = false;
-	while (!_quitGame) {
-		handleEvents();
+	while (!shouldQuit()) {
+		_input->handleEvents();
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
 			handleKeyInput();
-		} else if ((_keyScancode == Common::KEYCODE_RETURN || _rightButton) && _talkText->isActive()) {
+		} else if ((_input->getKeyCode() == Common::KEYCODE_RETURN || _input->rightButton()) && _talkText->isActive()) {
 			_talkText->stopText();
 		}
-		if (_quitGame)
+		if (shouldQuit())
 			return;
 		updateGame();
 		syncUpdate(false);
@@ -1374,10 +1140,10 @@ void CometEngine::museumMainLoop() {
 
 void CometEngine::checkPauseGame() {
 	static const byte *pauseText = (const byte*)"Game Paused";
-	if (_keyScancode == Common::KEYCODE_p) {
+	if (_input->getKeyCode() == Common::KEYCODE_p) {
 		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
 		int y = 180;
-		waitForKeys();
+		_input->waitForKeys();
 		_screen->setFontColor(80);
 		_screen->drawText(x + 1, y + 1, pauseText);
 		_screen->drawText(x + 1, y - 1, pauseText);
@@ -1390,12 +1156,12 @@ void CometEngine::checkPauseGame() {
 		_screen->setFontColor(95);
 		_screen->drawText(x, y, pauseText);
 		_screen->update();
-		_keyDirection = 0;
+		_input->clearKeyDirection();
 		_talkText->stopVoice();
 		do {
-			handleEvents();
+			_input->handleEvents();
 			syncUpdate(false);
-		} while (_keyScancode == Common::KEYCODE_INVALID && !_leftButton && !_rightButton && !_quitGame); 
+		} while (_input->getKeyCode() == Common::KEYCODE_INVALID && !_input->leftButton() && !_input->rightButton() && !shouldQuit());
 	}
 }
 
@@ -1404,10 +1170,10 @@ int CometEngine::handleMap() {
 
 	_talkText->stopVoice();
 
-	if (_blockedInput == 0 && !_talkText->isActive() && !_dialog->isRunning() && !_talkText->isSpeechPlaying() &&
+	if (_input->getBlockedInput() == 0 && !_talkText->isActive() && !_dialog->isRunning() && !_talkText->isSpeechPlaying() &&
 		_scriptVars[7] != 1 && _scriptVars[8] != 1 && _scriptVars[8] != 2) {
 
-		setMouseCursor(NULL);
+		setMouseCursor(-1);
 
 		if (_currentModuleNumber == 0 && 
 			((_currentSceneNumber >= 0 && _currentSceneNumber <= 22) ||
@@ -1425,6 +1191,11 @@ int CometEngine::handleMap() {
 	}
 
 	return mapResult;
+}
+
+void CometEngine::openConsole() {
+	_console->attach();
+	_console->onFrame();
 }
 
 } // End of namespace Comet

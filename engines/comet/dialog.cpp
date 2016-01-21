@@ -26,6 +26,7 @@
 #include "comet/dialog.h"
 #include "comet/actor.h"
 #include "comet/comet.h"
+#include "comet/input.h"
 #include "comet/screen.h"
 #include "comet/talktext.h"
 
@@ -108,6 +109,10 @@ void Dialog::start(Script *script) {
 	_isRunning = true;
 
 	drawTextBubbles();
+
+	if (!_vm->isFloppy())
+		_vm->_input->waitForKeys();
+
 }
 
 void Dialog::stop() {
@@ -117,12 +122,12 @@ void Dialog::stop() {
 void Dialog::update() {
 	int oldDialogSelectedItemIndex = _selectedItemIndex;
 
-	if ((_vm->_cursorDirection & 1) && _selectedItemIndex > 0) {
+	if (_vm->_input->isCursorDirection(1) && _selectedItemIndex > 0) {
 		_selectedItemIndex--;
-		_vm->waitForKeys();
-	} else if ((_vm->_cursorDirection & 2) && _selectedItemIndex < (int)_items.size() - 1) {
+		_vm->_input->waitForKeys();
+	} else if (_vm->_input->isCursorDirection(2) && _selectedItemIndex < (int)_items.size() - 1) {
 		_selectedItemIndex++;
-		_vm->waitForKeys();
+		_vm->_input->waitForKeys();
 	}
 
 	if (!_vm->isFloppy()) {
@@ -130,8 +135,8 @@ void Dialog::update() {
 			// Handle selection by mouse
 			int mouseSelectedItemIndex = -1;
 			for (uint i = 0; i < _items.size(); i++) {
-				if (_vm->_mouseX > _items[i].rect.x && _vm->_mouseX < _items[i].rect.x2 &&
-					_vm->_mouseY > _items[i].rect.y && _vm->_mouseY < _items[i].rect.y2)
+				if (_vm->_input->getMouseX() > _items[i].rect.x && _vm->_input->getMouseX() < _items[i].rect.x2 &&
+					_vm->_input->getMouseY() > _items[i].rect.y && _vm->_input->getMouseY() < _items[i].rect.y2)
 					mouseSelectedItemIndex = _items[i].rect.id;
 			}
 			if (mouseSelectedItemIndex != -1)
@@ -147,15 +152,15 @@ void Dialog::update() {
 
 	drawTextBubbles();
 
-	if (_selectedItemIndex != -1 && (_vm->leftButton() || _vm->_keyScancode == Common::KEYCODE_RETURN)) {
+	if (_selectedItemIndex != -1 && (_vm->_input->leftButton() || _vm->_input->getKeyCode() == Common::KEYCODE_RETURN)) {
 		if (_vm->_talkText->getTalkieMode() == 1) {
 			_vm->_talkText->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
 				_vm->_talkText->updateTalkAnims();
-				_vm->handleEvents();
+				_vm->_input->handleEvents();
 				_vm->_system->updateScreen();
 			}
-			_vm->waitForKeys();
+			_vm->_input->waitForKeys();
 		}
 		_isRunning = false;
 	}

@@ -39,6 +39,7 @@
 #include "comet/comet.h"
 #include "comet/actor.h"
 #include "comet/animationmgr.h"
+#include "comet/input.h"
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/script.h"
@@ -109,7 +110,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint16LE(_backgroundFileIndex);
 	out->writeUint16LE(_talkText->_textTableIndex);
 	out->writeUint32LE(_gameLoopCounter);
-	out->writeByte(_blockedInput);
+	out->writeByte(_input->getBlockedInput());
 
 	out->writeByte(_scene->_exits.size());
 	for (Common::Array<SceneExitItem>::iterator iter = _scene->_exits.begin(); iter != _scene->_exits.end(); ++iter) {
@@ -257,9 +258,9 @@ void CometEngine::loadgame(const char *filename) {
 	_gameLoopCounter = in->readUint32LE();
 	
 	if (header.version > 0)//REMOVEME	
-		_blockedInput = in->readByte();
+		_input->setBlockedInput(in->readByte());
 	else
-		_blockedInput = 0; 
+		_input->setBlockedInput(0);
 
 	_scene->_exits.clear();
 	count = in->readByte();

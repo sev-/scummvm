@@ -8,6 +8,7 @@ MODULE_OBJS = \
 	comet_gui.o \
 	detection.o \
 	dialog.o \
+	input.o \
 	music.o \
 	resource.o \
 	resourcemgr.o \

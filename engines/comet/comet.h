@@ -68,6 +68,7 @@ struct AnimationFrame;
 class AnimationManager;
 struct AnimationFrameList;
 struct InterpolatedAnimationElement;
+class Input;
 class Gui;
 class ResourceManager;
 class ScriptInterpreter;
@@ -171,9 +172,6 @@ public:
 
 	GUI::Debugger *getDebugger() { return _console; }
 	
-	bool leftButton() const { return _leftButton && !isFloppy(); }
-	bool rightButton() const { return _rightButton && !isFloppy(); }
-
 	virtual void syncSoundSettings();
 
 private:
@@ -190,6 +188,7 @@ public:
 	Scene *_scene;
 	AnimationManager *_animationMan;
 	ResourceManager *_res;
+	Input *_input;
 
 	ScreenResource *_sceneBackgroundResource;
 	TalkText *_talkText;
@@ -217,19 +216,6 @@ public:
 	// TODO Game speed is currently not yet implemented
 	int _gameSpeed;
 
-	// Input related
-	Common::KeyCode _keyScancode;
-	char _keyAscii;
-	int _keyDirection;
-	int _mouseX, _mouseY;
-	bool _leftButton, _rightButton;
-	byte _blockedInput;
-	int16 _cursorDirection, _mouseClick;
-	int _walkDirection;
-	int16 _scriptKeybFlag;
-	bool _mouseWalking;
-	int _mouseCursorDirection;
-
 	bool _loadgameRequested;
 
 	int16 _startupModuleNumber, _startupSceneNumber;
@@ -253,11 +239,9 @@ public:
 	int _currentInventoryItem;
 
 	int _textColorFlag;
-	bool _textBubbleActive, _itemInSight;
+	bool _itemInSight;
 
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
-
-	bool _quitGame;
 
 	int16 _scriptRandomValue;
 
@@ -278,10 +262,6 @@ public:
 	void loadGlobalTextData();
 	void initData();
 
-	void handleEvents();
-	void waitForKeys();
-	void waitForKeyPress();
-	void handleInput();
 	void handleKeyInput();
 	void syncUpdate(bool screenUpdate = true);
 
@@ -325,8 +305,9 @@ public:
 
 	void updateScreen();
 
-	// cursorSprite = NULL uses the engine's system cursor  
-	void setMouseCursor(AnimationCel *cursorSprite);
+	// cursorSprite = NULL uses the engine's system cursor
+	void setMouseCursor(int cursorNum);
+	void setMouseCursorSprite(AnimationCel *cursorSprite);
 
 	int16 randomValue(int maxValue);
 	
@@ -392,6 +373,8 @@ public:
 	
 	bool isActorNearActor(int actorIndex1, int actorIndex2, int x, int y);
 	bool isPlayerInZone(int x1, int y1, int x2, int y2);
+
+	void openConsole();
 
 	// Save/load
 
