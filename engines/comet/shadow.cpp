@@ -370,8 +370,8 @@ void CometEngine::addToSpriteDrawQueue(int y, int actorIndex, int insertIndex) {
 void CometEngine::enqueueSceneDecorationForDrawing() {
 	if (_sceneDecorationSprite) {
 		AnimationElement *elem = _sceneDecorationSprite->_elements[0];
-		for (uint i = 0; i < elem->commands.size(); i++) {
-			addToSpriteDrawQueue(elem->commands[i]->points[0].y, 16, -1);
+		for (uint i = 0; i < elem->_commands.size(); i++) {
+			addToSpriteDrawQueue(elem->_commands[i]->_points[0].y, 16, -1);
 		}
 	}
 }
@@ -391,8 +391,8 @@ void CometEngine::drawSpriteQueue() {
 		if (_spriteDrawQueue[i].index < 16) {
 			drawActor(_spriteDrawQueue[i].index);
 		} else {
-			AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->commands[objectCmdIndex];
-			_screen->drawAnimationCommand(_sceneDecorationSprite, cmd, 0, 0);
+			AnimationCommand *cmd = _sceneDecorationSprite->getElementCommand(0, objectCmdIndex);
+			cmd->draw(_screen, _sceneDecorationSprite, 0, 0, 0);
 			objectCmdIndex++;
 		}
 	}
@@ -749,20 +749,20 @@ void CometEngine::drawLineOfSight() {
 void CometEngine::initSceneDecorationBlockingRects() {
 	_scene->_blockingRects.clear();
 
-	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->commands.size(); i++) {
-		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->commands[i];
-		AnimationElement *objectElement = _sceneDecorationSprite->_elements[((cmd->arg2 << 8) | cmd->arg1) & 0x7FFF];
+	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->_commands.size(); i++) {
+		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->_commands[i];
+		AnimationElement *objectElement = _sceneDecorationSprite->_elements[((cmd->_arg2 << 8) | cmd->_arg1) & 0x7FFF];
 		debug(8, "%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
-			i, cmd->cmd, cmd->arg1, cmd->arg2, cmd->points[0].x, cmd->points[0].y, objectElement->width, objectElement->height);
-		if (objectElement->width / 2 > 0) {
+			i, cmd->_cmd, cmd->_arg1, cmd->_arg2, cmd->_points[0].x, cmd->_points[0].y, objectElement->_width, objectElement->_height);
+		if (objectElement->_width / 2 > 0) {
 			int16 blockX1, blockY1, blockX2, blockY2;
-			if (cmd->cmd == 0)
-				blockX1 = (cmd->points[0].x - objectElement->width) / 2;
+			if (cmd->_cmd == 0)
+				blockX1 = (cmd->_points[0].x - objectElement->_width) / 2;
 			else
-				blockX1 = cmd->points[0].x / 2;
-			blockY1 = cmd->points[0].y - (objectElement->height / 16 % 4 * 4 + 4);
-			blockX2 = (cmd->points[0].x + objectElement->width) / 2;
-			blockY2 = cmd->points[0].y;
+				blockX1 = cmd->_points[0].x / 2;
+			blockY1 = cmd->_points[0].y - (objectElement->_height / 16 % 4 * 4 + 4);
+			blockX2 = (cmd->_points[0].x + objectElement->_width) / 2;
+			blockY2 = cmd->_points[0].y;
 			_scene->addBlockingRect(blockX1 * 2, blockY1, blockX2 * 2, blockY2);
 		}
 	}

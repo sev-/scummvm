@@ -24,6 +24,7 @@
  */
 
 #include "comet/resource.h"
+#include "comet/graphics.h"
 #include "comet/screen.h"
 #include "common/file.h"
 #include "common/stream.h"
@@ -159,23 +160,181 @@ int FontResource::getTextWidth(const byte *text) {
 	return textWidth;
 }
 
-// AnimationResource
+// AnimationCommand
+
+void AnimationCommand::loadFromStream(Common::SeekableReadStream &stream, bool ptAsByte) {
+	_cmd = stream.readByte();
+	byte pointsCount = stream.readByte();
+	_arg1 = stream.readByte();
+	_arg2 = stream.readByte();
+	debug(8, "AnimationCommand::loadFromStream() cmd = %d; pointsCount = %d; arg1 = %d; arg2 = %d",
+		_cmd, pointsCount, _arg1, _arg2);
+	while (pointsCount--) {
+		Common::Point pt;
+		if (ptAsByte) {
+			pt.x = (int8)stream.readByte();
+			pt.y = (int8)stream.readByte();
+		} else {
+			pt.x = (int16)stream.readUint16LE();
+			pt.y = (int16)stream.readUint16LE();
+		}
+		debug(8, "AnimationCommand::loadFromStream()	 x = %d; y = %d", pt.x, pt.y);
+		_points.push_back(pt);
+	}
+}
+
+void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags) {
+
+	debug(8, "Screen::drawAnimationCommand() cmd = %d; points = %d", _cmd, _points.size());
+
+	Common::Array<Common::Point> points;
+
+	// The commands' points need to be adjusted according to the parentFlags and the x/y position
+	points.reserve(_points.size() + 1);
+	for (uint i = 0; i < _points.size(); i++) {
+		int16 ax = _points[i].x;
+		int16 ay = _points[i].y;
+		if (parentFlags & 0x80)
+			ax = -ax;
+		if (parentFlags & 0x20)
+			ay = -ay;
+		points.push_back(Common::Point(x + ax, y + ay));
+	}
+
+	switch (_cmd) {
+
+	case kActElement:
+	{
+		int16 subElementIndex = ((_arg2 << 8) | _arg1) & 0x0FFF;
+		AnimationElement *subElement = animation->_elements[subElementIndex];
+		subElement->draw(destSurface, animation, points[0].x, points[0].y, parentFlags | (_arg2 & 0xA0));
+		break;
+	}
+
+	case kActCelSprite:
+	{
+		int16 celIndex = ((_arg2 << 8) | _arg1) & 0x0FFF;
+		int16 celX = points[0].x, celY = points[0].y;
+		if (parentFlags & 0x80)
+			celX -= animation->getCelWidth(celIndex);
+		if (parentFlags & 0x20)
+			celY += animation->getCelHeight(celIndex);
+		destSurface->drawAnimationCelSprite(*animation->_cels[celIndex], celX, celY, parentFlags | (_arg2 & 0xA0));
+		break;
+	}
+
+	case kActFilledPolygon:
+		destSurface->drawFilledPolygon(points, _arg2, _arg1);
+		break;
+
+	case kActRectangle:
+		destSurface->drawRectangle(points, _arg2, _arg1);
+		break;
+
+	case kActPolygon:
+		destSurface->drawPolygon(points, _arg2);
+		break;
+
+	case kActPixels:
+		destSurface->drawPixels(points, _arg2); 
+		break;
+
+	case kActCelRle:
+	{
+		AnimationCel *cel = animation->_cels[(_arg2 << 8) | _arg1];
+		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->height + 1);
+		break;
+	}
+
+	default:
+		warning("Screen::drawAnimationCommand() Unknown command %d", _cmd);
+
+	}
+
+}
+
+// AnimationElement
 
 AnimationElement::~AnimationElement() {
-	for (Common::Array<AnimationCommand*>::iterator iter = commands.begin(); iter != commands.end(); ++iter)
+	for (Common::Array<AnimationCommand*>::iterator iter = _commands.begin(); iter != _commands.end(); ++iter)
 		delete (*iter);
 }
+
+void AnimationElement::loadFromStream(Common::SeekableReadStream &stream) {
+	_width = stream.readByte();
+	_height = stream.readByte();
+	_flags = stream.readByte();
+	byte cmdCount = stream.readByte();
+	debug(8, "AnimationElement::loadFromStream() cmdCount = %d; flags = %02X", cmdCount, _flags);
+	while (cmdCount--) {
+		AnimationCommand *animationCommand = new AnimationCommand();
+		animationCommand->loadFromStream(stream, _flags & 0x10);
+		_commands.push_back(animationCommand);
+	}
+}
+
+void AnimationElement::draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags) {
+	byte flags = _flags | (parentFlags & 0xA0);
+	for (Common::Array<AnimationCommand*>::iterator iter = _commands.begin(); iter != _commands.end(); ++iter)
+		(*iter)->draw(destSurface, animation, x, y, flags);
+}
+
+// AnimationCel
+
+void AnimationCel::loadFromStream(Common::SeekableReadStream &stream) {
+	flags = stream.readUint16LE();
+	width = stream.readByte() * 16;
+	height = stream.readByte();
+	data = new byte[dataSize];
+	stream.read(data, dataSize);
+	debug(8, "AnimationCel::loadFromStream() cel width = %d; height = %d; dataSize = %d", width, height, dataSize);
+}
+
+// AnimationFrame
+
+void AnimationFrame::loadFromStream(Common::SeekableReadStream &stream) {
+	elementIndex = stream.readUint16LE();
+	flags = stream.readUint16LE();
+	xOffs = (int16)stream.readUint16LE();
+	yOffs = (int16)stream.readUint16LE();
+	debug(0, "AnimationFrame::loadFromStream() elementIndex = %d; flags = %04X; xOffs = %d; yOffs = %d",
+		elementIndex, flags, xOffs, yOffs);
+}
+
+// AnimationFrameList
 
 AnimationFrameList::~AnimationFrameList() {
 	for (Common::Array<AnimationFrame*>::iterator iter = frames.begin(); iter != frames.end(); ++iter)
 		delete (*iter);
 }
 
+void AnimationFrameList::loadFromStream(Common::SeekableReadStream &stream) {
+	priority = stream.readByte();
+	byte frameCount = stream.readByte();
+	debug(8, "AnimationFrameList::loadFromStream() frameCount = %d", frameCount);
+	while (frameCount--) {
+		AnimationFrame *animationFrame = new AnimationFrame();
+		animationFrame->loadFromStream(stream);
+		frames.push_back(animationFrame);
+	}
+}
+
+// AnimationResource
+
 AnimationResource::AnimationResource() {
 }
 
 AnimationResource::~AnimationResource() {
 	free();
+}
+
+AnimationCel *AnimationResource::getCelByElementCommand(int elementIndex, int commandIndex) {
+	AnimationCommand *cmd = _elements[elementIndex]->_commands[commandIndex];
+	return _cels[((cmd->_arg2 << 8) | cmd->_arg1) & 0x0FFF];
+}
+
+AnimationCommand *AnimationResource::getElementCommand(int elementIndex, int commandIndex) {
+	return _elements[elementIndex]->_commands[commandIndex];
 }
 
 void AnimationResource::free() {
@@ -200,7 +359,8 @@ void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
 	loadOffsets(stream, offsets);
 	for (uint i = 0; i < offsets.size(); i++) {
 		stream.seek(sectionOffsets[0] + offsets[i] - 2);
-		AnimationElement *animationElement = loadAnimationElement(stream);
+		AnimationElement *animationElement = new AnimationElement();
+		animationElement->loadFromStream(stream);
 		_elements.push_back(animationElement);
 	}
 	
@@ -209,15 +369,10 @@ void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
 	loadOffsets(stream, offsets);
 	offsets.push_back(sectionOffsets[2] - sectionOffsets[1]);
 	for (uint i = 0; i < offsets.size() - 1; i++) {
+		uint32 celDataSize = offsets[i + 1] - offsets[i] - 2;
 		stream.seek(sectionOffsets[1] + offsets[i] - 2);
-		AnimationCel *animationCel = new AnimationCel();
-		animationCel->flags = stream.readUint16LE();
-		animationCel->width = stream.readByte() * 16;
-		animationCel->height = stream.readByte();
-		animationCel->dataSize = offsets[i + 1] - offsets[i] - 2;
-		animationCel->data = new byte[animationCel->dataSize];
-		stream.read(animationCel->data, animationCel->dataSize);
-		debug(8, "Animation::load() cel width = %d; height = %d; dataSize = %d", animationCel->width, animationCel->height, animationCel->dataSize);
+		AnimationCel *animationCel = new AnimationCel(celDataSize);
+		animationCel->loadFromStream(stream);
 		_cels.push_back(animationCel);
 	}
 
@@ -226,7 +381,8 @@ void AnimationResource::internalLoad(Common::MemoryReadStream &stream) {
 	loadOffsets(stream, offsets);
 	for (uint i = 0; i < offsets.size(); i++) {
 		stream.seek(sectionOffsets[2] + offsets[i]);
-		AnimationFrameList *animationFrameList = loadAnimationFrameList(stream);
+		AnimationFrameList *animationFrameList = new AnimationFrameList();
+		animationFrameList->loadFromStream(stream);
 		_anims.push_back(animationFrameList);
 	}
 
@@ -242,61 +398,6 @@ void AnimationResource::loadOffsets(Common::SeekableReadStream &sourceS, OffsetA
 		offsets.push_back(offset);
 		offset = sourceS.readUint32LE();
 	}
-}
-
-AnimationElement *AnimationResource::loadAnimationElement(Common::SeekableReadStream &sourceS) {
-	AnimationElement *animationElement = new AnimationElement();
-	animationElement->width = sourceS.readByte();
-	animationElement->height = sourceS.readByte();
-	animationElement->flags = sourceS.readByte();
-	byte cmdCount = sourceS.readByte();
-	debug(8, "Animation::loadAnimationElement() cmdCount = %d; flags = %02X", cmdCount, animationElement->flags);
-	while (cmdCount--) {
-		AnimationCommand *animationCommand = loadAnimationCommand(sourceS, animationElement->flags & 0x10);
-		animationElement->commands.push_back(animationCommand);
-	}
-	return animationElement;
-}
-
-AnimationCommand *AnimationResource::loadAnimationCommand(Common::SeekableReadStream &sourceS, bool ptAsByte) {
-	AnimationCommand *animationCommand = new AnimationCommand();
-	animationCommand->cmd = sourceS.readByte();
-	byte pointsCount = sourceS.readByte();
-	animationCommand->arg1 = sourceS.readByte();
-	animationCommand->arg2 = sourceS.readByte();
-	debug(8, "Animation::loadAnimationCommand() cmd = %d; pointsCount = %d; arg1 = %d; arg2 = %d",
-		animationCommand->cmd, pointsCount, animationCommand->arg1, animationCommand->arg2);
-	while (pointsCount--) {
-		Common::Point pt;
-		if (ptAsByte) {
-			pt.x = (int8)sourceS.readByte();
-			pt.y = (int8)sourceS.readByte();
-		} else {
-			pt.x = (int16)sourceS.readUint16LE();
-			pt.y = (int16)sourceS.readUint16LE();
-		}
-		debug(8, "Animation::loadAnimationCommand()	 x = %d; y = %d", pt.x, pt.y);
-		animationCommand->points.push_back(pt);
-	}
-	return animationCommand;
-}
-
-AnimationFrameList *AnimationResource::loadAnimationFrameList(Common::SeekableReadStream &sourceS) {
-	AnimationFrameList *animationFrameList = new AnimationFrameList();
-	animationFrameList->priority = sourceS.readByte();
-	byte frameCount = sourceS.readByte();
-	debug(8, "Animation::loadAnimationFrameList() frameCount = %d", frameCount);
-	while (frameCount--) {
-		AnimationFrame *animationFrame = new AnimationFrame();
-		animationFrame->elementIndex = sourceS.readUint16LE();
-		animationFrame->flags = sourceS.readUint16LE();
-		animationFrame->xOffs = (int16)sourceS.readUint16LE();
-		animationFrame->yOffs = (int16)sourceS.readUint16LE();
-		debug(0, "Animation::loadAnimationFrameList() elementIndex = %d; flags = %04X; xOffs = %d; yOffs = %d",
-			animationFrame->elementIndex, animationFrame->flags, animationFrame->xOffs, animationFrame->yOffs);
-		animationFrameList->frames.push_back(animationFrame);
-	}
-	return animationFrameList;
 }
 
 // ScreenResource

@@ -414,83 +414,11 @@ Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 wid
 
 void Screen::drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
 	AnimationElement *element = animation->_elements[elementIndex];
-
-	byte flags = element->flags | (parentFlags & 0xA0);
-	debug(8, "Screen::drawAnimationElement() flags = %02X", flags);
-
-	for (Common::Array<AnimationCommand*>::iterator iter = element->commands.begin(); iter != element->commands.end(); ++iter) {
-		drawAnimationCommand(animation, (*iter), x, y, flags);
-	}
-
+	element->draw(this, animation, x, y, parentFlags);
 }
 
 void Screen::drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
-
-	debug(8, "Screen::drawAnimationCommand() cmd = %d; points = %d", cmd->cmd, cmd->points.size());
-
-	Common::Array<Common::Point> points;
-
-	// The commands' points need to be adjusted according to the parentFlags and the x/y position
-	points.reserve(cmd->points.size() + 1);
-	for (uint i = 0; i < cmd->points.size(); i++) {
-		int16 ax = cmd->points[i].x;
-		int16 ay = cmd->points[i].y;
-		if (parentFlags & 0x80)
-			ax = -ax;
-		if (parentFlags & 0x20)
-			ay = -ay;
-		points.push_back(Common::Point(x + ax, y + ay));
-	}
-
-	switch (cmd->cmd) {
-
-	case kActElement:
-	{
-		int16 subElementIndex = (cmd->arg2 << 8) | cmd->arg1;
-		drawAnimationElement(animation, subElementIndex & 0x0FFF, points[0].x, points[0].y, parentFlags | (cmd->arg2 & 0xA0));
-		break;
-	}
-
-	case kActCelSprite:
-	{
-		int16 celIndex = ((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF;
-		int16 celX = points[0].x, celY = points[0].y;
-		if (parentFlags & 0x80)
-			celX -= animation->getCelWidth(celIndex);
-		if (parentFlags & 0x20)
-			celY += animation->getCelHeight(celIndex);
-		drawAnimationCelSprite(*animation->_cels[celIndex], celX, celY, parentFlags | (cmd->arg2 & 0xA0));
-		break;
-	}
-
-	case kActFilledPolygon:
-		drawFilledPolygon(points, cmd->arg2, cmd->arg1);
-		break;
-
-	case kActRectangle:
-		drawRectangle(points, cmd->arg2, cmd->arg1);
-		break;
-
-	case kActPolygon:
-		drawPolygon(points, cmd->arg2);
-		break;
-
-	case kActPixels:
-		drawPixels(points, cmd->arg2); 
-		break;
-
-	case kActCelRle:
-	{
-		AnimationCel *cel = animation->_cels[(cmd->arg2 << 8) | cmd->arg1];
-		drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->height + 1);
-		break;
-	}
-
-	default:
-		warning("Screen::drawAnimationCommand() Unknown command %d", cmd->cmd);
-
-	}
-
+	cmd->draw(this, animation, x, y, parentFlags);
 }
 
 int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount) {
