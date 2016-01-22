@@ -104,6 +104,8 @@ public:
 	void buildRedPalette(byte *sourcePal, byte *destPal, int value);
 	void paletteFadeIn();
 	void paletteFadeOut();
+	void paletteFadeCore(int fadeStep);
+	void setFadePalette(int value);
 	void setWhitePalette(int value);
 
 	void putPixel(int x, int y, byte color);

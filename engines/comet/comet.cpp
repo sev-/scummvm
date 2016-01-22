@@ -176,7 +176,7 @@ Common::Error CometEngine::run() {
 	initGraphics(320, 200, false);
 	
 	syncSoundSettings();
-	
+
 	// Default values
 	ConfMan.registerDefault("text_speed", 1);
 	ConfMan.registerDefault("game_speed", 2);

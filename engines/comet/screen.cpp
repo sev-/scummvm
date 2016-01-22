@@ -367,50 +367,41 @@ void Screen::buildRedPalette(byte *sourcePal, byte *destPal, int value) {
 }
 
 void Screen::paletteFadeIn() {
-	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
-	setFullPalette(_vm->_screenPalette);
-	_vm->_system->updateScreen();
+	setFadePalette(0);
 	_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
-
-	int value = 0;
-	while (value < 255) {
-		buildPalette(_vm->_gamePalette, _vm->_screenPalette, value);
-		setFullPalette(_vm->_screenPalette);
-		_vm->_system->updateScreen();
-		value += _fadeStep;
-		_vm->_system->delayMillis(10); // TODO
-	}
-
-	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
-	setFullPalette(_vm->_screenPalette);
-	_vm->_system->updateScreen();
-
+	paletteFadeCore(_fadeStep);
+	setFadePalette(255);
 	_fadeType = kFadeNone;
 	_palFlag = false;
-
 }
 
 void Screen::paletteFadeOut() {
-	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 255);
-	setFullPalette(_vm->_screenPalette);
-	_vm->_system->updateScreen();
-
-	int value = 255;
-	while (value > 0) {
-		buildPalette(_vm->_gamePalette, _vm->_screenPalette, value);
-		setFullPalette(_vm->_screenPalette);
-		_vm->_system->updateScreen();
-		value -= _fadeStep;
-		_vm->_system->delayMillis(10); // TODO
-	}
-
-	buildPalette(_vm->_gamePalette, _vm->_screenPalette, 0);
-	setFullPalette(_vm->_screenPalette);
-	_vm->_system->updateScreen();
-
+	setFadePalette(255);
+	paletteFadeCore(-_fadeStep);
+	setFadePalette(0);
 	_fadeType = kFadeNone;
 	_palFlag = true;
+}
 
+void Screen::paletteFadeCore(int fadeStep) {
+	const uint32 kFadeUpdateDuration = 10;
+	int value = fadeStep < 0 ? 255 : 0;
+	uint32 nextTick = _vm->_system->getMillis();
+	while ((fadeStep < 0 && value > 0) || (fadeStep >= 0 && value < 255)) {
+		uint32 currTick = _vm->_system->getMillis();
+		if (currTick >= nextTick) {
+			if (currTick < nextTick + kFadeUpdateDuration)
+				setFadePalette(value);
+			nextTick = currTick + kFadeUpdateDuration;
+			value += fadeStep;
+		}
+	}
+}
+
+void Screen::setFadePalette(int value) {
+	buildPalette(_vm->_gamePalette, _vm->_screenPalette, value);
+	setFullPalette(_vm->_screenPalette);
+	_vm->_system->updateScreen();
 }
 
 void Screen::setWhitePalette(int value) {
