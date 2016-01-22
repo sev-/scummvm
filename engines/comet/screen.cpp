@@ -67,36 +67,21 @@ Screen::~Screen() {
 }
 
 void Screen::update() {
-
 	if (_transitionEffect && _zoomFactor == 0 && _fadeType == kFadeNone) {
 		screenTransitionEffect();
+		_transitionEffect = false;
 	} else if (_fadeType == kFadeIn) {
 		paletteFadeIn();
 	} else if (_fadeType == kFadeOut) {
 		paletteFadeOut();
+	} else if (_zoomFactor == 0) {
+		_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
+		_vm->_system->updateScreen();
+		_vm->syncUpdate(false);
 	} else {
-
-		switch (_zoomFactor) {
-		case 0:
-			_vm->_system->copyRectToScreen(_backSurface->getPixels(), 320, 0, 0, 320, 200);
-			_vm->_system->updateScreen();
-			break;
-		case 1:
-	  		screenZoomEffect2x(_zoomX, _zoomY);
-	  		break;
-		case 2:
-	  		screenZoomEffect3x(_zoomX, _zoomY);
-	  		break;
-		case 3:
-	  		screenZoomEffect4x(_zoomX, _zoomY);
-	  		break;
-		default:
-			break;
-		}
-
-		_vm->_system->delayMillis(40); // TODO
+		updateZoomEffect(_zoomFactor, _zoomX, _zoomY);
+		_vm->syncUpdate(false);
 	}
-
 }
 
 void Screen::copyFromScreenResource(ScreenResource *screenResource) {
@@ -139,157 +124,100 @@ void Screen::setFadeStep(int fadeStep) {
 	_fadeStep = fadeStep;
 }
 
-void Screen::screenZoomEffect2x(int x, int y) {
-
+void Screen::screenZoomEffect2x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y) {
 	if (x - 80 < 0) x = 0;
 	if (x > 159) x = 159;
 	if (y - 80 < 0) y = 0;
 	if (y > 99) y = 99;
-
-	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
-	byte *destBuf = vgaScreen;
-
-	for (int yc = 0; yc < 100; yc++) {
-
-		for (int xc = 0; xc < 160; xc++) {
-			byte pixel = *sourceBuf++;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
+	for (int yc = 0; yc < 100; ++yc) {
+		byte *sourceRow = (byte*)sourceSurface->getBasePtr(x, y + yc);
+		byte *destRow1 = (byte*)destSurface->getBasePtr(0, y + 2 * yc + 0);
+		byte *destRow2 = (byte*)destSurface->getBasePtr(0, y + 2 * yc + 1);
+		for (int xc = 0; xc < 160; ++xc) {
+			const byte pixel = *sourceRow++;
+			for (int p = 0; p < 2; ++p) {
+				*destRow1++ = pixel;
+				*destRow2++ = pixel;
+			}
 		}
-
-		sourceBuf -= 160;
-
-		for (int xc = 0; xc < 160; xc++) {
-			byte pixel = *sourceBuf++;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-		}
-
-		sourceBuf += 160;
-
 	}
-
-	_vm->_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-	_vm->_system->updateScreen();
-
-	delete[] vgaScreen;
-
 }
 
-void Screen::screenZoomEffect3x(int x, int y) {
-
+void Screen::screenZoomEffect3x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y) {
 	if (x - 53 < 0) x = 0;
 	if (x > 213) x = 213;
 	if (y - 50 < 0) y = 0;
 	if (y > 133) y = 133;
-
-	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
-	byte *destBuf = vgaScreen;
-
-	for (int yc = 0; yc < 66; yc++) {
-
+	for (int yc = 0; yc < 66; ++yc) {
+		byte *sourceRow = (byte*)sourceSurface->getBasePtr(x, y + yc);
+		byte *destRow1 = (byte*)destSurface->getBasePtr(0, y + 3 * yc + 0);
+		byte *destRow2 = (byte*)destSurface->getBasePtr(0, y + 3 * yc + 1);
+		byte *destRow3 = (byte*)destSurface->getBasePtr(0, y + 3 * yc + 2);
 		byte pixel = 0;
-
-		for (int xc = 0; xc < 106; xc++) {
-			pixel = *sourceBuf++;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
+		for (int xc = 0; xc < 106; ++xc) {
+			pixel = *sourceRow++;
+			for (int p = 0; p < 3; ++p) {
+				*destRow1++ = pixel;
+				*destRow2++ = pixel;
+				*destRow3++ = pixel;
+			}
 		}
-		*destBuf++ = pixel;
-		*destBuf++ = pixel;
-
-		sourceBuf -= 106;
-
-		for (int xc = 0; xc < 106; xc++) {
-			pixel = *sourceBuf++;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
+		for (int p = 0; p < 2; ++p) {
+			*destRow1++ = pixel;
+			*destRow2++ = pixel;
+			*destRow3++ = pixel;
 		}
-		*destBuf++ = pixel;
-		*destBuf++ = pixel;
-
-		sourceBuf -= 106;
-
-		for (int xc = 0; xc < 106; xc++) {
-			pixel = *sourceBuf++;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-		}
-		*destBuf++ = pixel;
-		*destBuf++ = pixel;
-
-		sourceBuf += 214;
-
 	}
-
-	memset(destBuf, 0, 640);
-
-	_vm->_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-	_vm->_system->updateScreen();
-
-	delete[] vgaScreen;
-
+	// The remaining rows are not scaled at all
+	for (int p = 0; p < 2; ++p) {
+		byte *destRow = (byte*)destSurface->getBasePtr(0, 198 + p);
+		memset(destRow, 0, 320);
+	}
 }
 
-void Screen::screenZoomEffect4x(int x, int y) {
-
+void Screen::screenZoomEffect4x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y) {
 	if (x - 40 < 0) x = 0;
 	if (x > 239) x = 239;
 	if (y - 44 < 0) y = 0;
 	if (y > 149) y = 149;
-
-	byte *vgaScreen = new byte[64000];
-	byte *sourceBuf = (byte*)_backSurface->getBasePtr(x, y);
-	byte *destBuf = vgaScreen;
-
-	for (int yc = 0; yc < 50; yc++) {
-
-		byte pixel;
-
-		for (int xc = 0; xc < 80; xc++) {
-			pixel = *sourceBuf++;
-
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			destBuf += 316;
-
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			destBuf += 316;
-
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			destBuf += 316;
-
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			*destBuf++ = pixel;
-			destBuf -= 960;
-
+	for (int yc = 0; yc < 50; ++yc) {
+		byte *sourceRow = (byte*)sourceSurface->getBasePtr(x, y + yc);
+		byte *destRow1 = (byte*)destSurface->getBasePtr(0, y + 4 * yc + 0);
+		byte *destRow2 = (byte*)destSurface->getBasePtr(0, y + 4 * yc + 1);
+		byte *destRow3 = (byte*)destSurface->getBasePtr(0, y + 4 * yc + 2);
+		byte *destRow4 = (byte*)destSurface->getBasePtr(0, y + 4 * yc + 3);
+		for (int xc = 0; xc < 80; ++xc) {
+			const byte pixel = *sourceRow++;
+			for (int p = 0; p < 4; ++p) {
+				*destRow1++ = pixel;
+				*destRow2++ = pixel;
+				*destRow3++ = pixel;
+				*destRow4++ = pixel;
+			}
 		}
-
-		sourceBuf += 240;
-		destBuf += 960;
-
 	}
+}
 
-	_vm->_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
+void Screen::updateZoomEffect(int zoomFactor, int zoomX, int zoomY) {
+	Graphics::Surface *destSurface = new Graphics::Surface();
+	destSurface->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	switch (zoomFactor) {
+	case 1:
+		screenZoomEffect2x(destSurface, _backSurface, zoomX, zoomY);
+		break;
+	case 2:
+		screenZoomEffect3x(destSurface, _backSurface, zoomX, zoomY);
+		break;
+	case 3:
+		screenZoomEffect4x(destSurface, _backSurface, zoomX, zoomY);
+		break;
+	default:
+		break;
+	}
+	_vm->_system->copyRectToScreen(destSurface->getPixels(), 320, 0, 0, 320, 200);
 	_vm->_system->updateScreen();
-
-	delete[] vgaScreen;
-
+	destSurface->free();
+	delete destSurface;
 }
 
 void Screen::screenTransitionEffect() {
@@ -314,8 +242,6 @@ void Screen::screenTransitionEffect() {
 	}
 
 	delete[] vgaScreen;
-
-	_transitionEffect = false;
 
 }
 

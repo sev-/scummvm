@@ -171,8 +171,6 @@ void CometEngine::syncSoundSettings() {
 }
 
 Common::Error CometEngine::run() {
-	Common::Event event;
-
 	initGraphics(320, 200, false);
 	
 	syncSoundSettings();
@@ -280,6 +278,40 @@ Common::Error CometEngine::run() {
 	}
 
 	initAndLoadGlobalData();
+
+#if 0
+//*** TEST ***//
+	_moduleNumber = 0;
+	_backgroundFileIndex = 0;
+	_scenePakName = Common::String::format("d%02d.pak", _moduleNumber);
+	_res->loadFromPak(_sceneBackgroundResource, _scenePakName.c_str(), _backgroundFileIndex);
+	_screen->clear();
+	_screen->setFullPalette(_gamePalette);
+	_screen->copyFromScreenResource(_sceneBackgroundResource);
+	Graphics::Surface *destSurface = new Graphics::Surface();
+	destSurface->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	Graphics::Surface *sourceSurface = new Graphics::Surface();
+	sourceSurface->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	memcpy(sourceSurface->getPixels(), _screen->_backSurface->getPixels(), 64000);
+	//_screen->screenZoomEffect2x(destSurface, sourceSurface, 0, 0);
+	//_screen->screenZoomEffect3x(destSurface, sourceSurface, 0, 0);
+	_screen->screenZoomEffect4x(destSurface, sourceSurface, 0, 0);
+	//_system->copyRectToScreen(_screen->_backSurface->getPixels(), 320, 0, 0, 320, 200);
+	_system->copyRectToScreen(destSurface->getPixels(), 320, 0, 0, 320, 200);
+	_system->updateScreen();
+	sourceSurface->free();
+	delete sourceSurface;
+	destSurface->free();
+	delete destSurface;
+	while (!shouldQuit()) {
+		Common::Event event;
+		while (_system->getEventManager()->pollEvent(event)) {
+		}
+	}
+	debug("ok.");
+//*** TEST ***//
+	return Common::kNoError;
+#endif
 
 	if (!isFloppy()) {
 		CursorMan.showMouse(true);
