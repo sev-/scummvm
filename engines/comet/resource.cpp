@@ -304,18 +304,18 @@ void AnimationFrame::loadFromStream(Common::SeekableReadStream &stream) {
 // AnimationFrameList
 
 AnimationFrameList::~AnimationFrameList() {
-	for (Common::Array<AnimationFrame*>::iterator iter = frames.begin(); iter != frames.end(); ++iter)
+	for (Common::Array<AnimationFrame*>::iterator iter = _frames.begin(); iter != _frames.end(); ++iter)
 		delete (*iter);
 }
 
 void AnimationFrameList::loadFromStream(Common::SeekableReadStream &stream) {
-	priority = stream.readByte();
+	_priority = stream.readByte();
 	byte frameCount = stream.readByte();
 	debug(8, "AnimationFrameList::loadFromStream() frameCount = %d", frameCount);
 	while (frameCount--) {
 		AnimationFrame *animationFrame = new AnimationFrame();
 		animationFrame->loadFromStream(stream);
-		frames.push_back(animationFrame);
+		_frames.push_back(animationFrame);
 	}
 }
 
