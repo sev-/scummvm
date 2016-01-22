@@ -31,6 +31,7 @@
 #include "common/util.h"
 
 #include "comet/comet.h"
+#include "comet/graphics.h"
 #include "comet/resource.h"
 
 namespace Comet {
@@ -39,12 +40,6 @@ enum PaletteFadeType {
 	kFadeNone,
 	kFadeIn,
 	kFadeOut
-};
-
-struct Point {
-	int16 x, y;
-	Point() : x(0), y(0) {}
-	Point(int16 px, int16 py) : x(px), y(py) {}
 };
 
 enum AnimationCommandType {
@@ -64,7 +59,7 @@ enum AnimationCommandType {
 struct InterpolatedAnimationCommand {
 	byte _cmd;
 	byte _aarg1, _aarg2, _barg1, _barg2;
-	Common::Array<Point> _points;
+	Common::Array<Common::Point> _points;
 	InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2);
 };
 
@@ -73,7 +68,7 @@ struct InterpolatedAnimationElement {
 	~InterpolatedAnimationElement();
 };
 
-class Screen {
+class Screen : public CometSurface {
 public:
 	Screen(CometEngine *vm);
 	~Screen();
@@ -83,9 +78,6 @@ public:
 	void copyFromScreenResource(ScreenResource *screenResource);
 	void copyFromScreen(byte *source);
 	void copyToScreen(byte *dest);
-	
-	void grabRect(Graphics::Surface *surface, int x, int y);
-	void putRect(Graphics::Surface *surface, int x, int y);
 	
 	void enableTransitionEffect();
 	void setZoom(int zoomFactor, int x, int y);
@@ -105,29 +97,8 @@ public:
 	void setFadePalette(int value);
 	void setWhitePalette(int value);
 
-	void putPixel(int x, int y, byte color);
-	void drawLine(int x1, int y1, int x2, int y2, byte color);
-	void drawDottedLine(int x1, int y1, int x2, int y2, int color);
-	void hLine(int x, int y, int x2, byte color);
-	void fillRect(int x1, int y1, int x2, int y2, byte color);
-	void frameRect(int x1, int y1, int x2, int y2, byte color);
-	
-	void clipPolygonLeft(Common::Array<Point> **poly, int16 clipLeft);
-	void clipPolygonRight(Common::Array<Point> **poly, int16 clipRight);
-	void clipPolygonTop(Common::Array<Point> **poly, int16 clipTop);
-	void clipPolygonBottom(Common::Array<Point> **poly, int16 clipBottom);
-	void filledPolygonColor(Common::Array<Point> &poly, byte color);
-
 	void setPartialPalette(byte *palette, int start, int count);
 	void setFullPalette(byte *palette);
-
-	void clear();
-
-	/*
-	Graphics::Surface *getScreen() const {
-		return _backSurface;
-	}
-	*/
 
 	void loadFont(const char *pakName, int index);
 	void loadFontFromRaw(const byte *rawData, uint32 rawDataSize, int maxCount, int index);
@@ -138,12 +109,7 @@ public:
 	int getTextWidth(const byte *text);
 	int getTextHeight(const byte *text);
 
-	static void plotProc(int x, int y, int color, void *data);
-	static void dottedPlotProc(int x, int y, int color, void *data);
-
 	Graphics::Surface *decompressAnimationCel(const byte *celData, int16 width, int16 height);
-	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
-	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
 	void drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
 	void drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 	void drawInterpolatedAnimationElement(InterpolatedAnimationElement *interElem, int16 x, int16 y, int mulValue);
@@ -153,31 +119,21 @@ public:
 
 	int drawAnimation(AnimationResource *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount);
 
-	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
-	void setClipX(int clipX1, int clipX2);
-	void setClipY(int clipY1, int clipY2);
-
 	void screenZoomEffect2x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
 	void screenZoomEffect3x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
 	void screenZoomEffect4x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
 	void updateZoomEffect(int zoomFactor, int zoomX, int zoomY);
 
-//protected:
+protected:
 	CometEngine *_vm;
-	Graphics::Surface *_backSurface;
 	bool _transitionEffect;
-	int _zoomFactor, _zoomX, _zoomY;
 	PaletteFadeType _fadeType;
 	int _fadeStep;
-	bool _palFlag;
-	int _clipX1, _clipY1, _clipX2, _clipY2;
 	FontResource *_currFontResource;
 	byte _currFontColor;
-};
-
-struct DottedLineData {
-	Graphics::Surface *_surface;
-	int _dotCounter;
+public:
+	bool _palFlag;
+	int _zoomFactor, _zoomX, _zoomY;
 };
 
 }
