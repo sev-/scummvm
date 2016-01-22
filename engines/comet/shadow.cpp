@@ -408,14 +408,14 @@ void CometEngine::drawActor(int actorIndex) {
 void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
 	AnimationFrameList *frameList = animation->_anims[frameListIndex];
 	uint frameIndex = 0;
-	if (frameList->_frames.size() > 1) {
-		frameIndex = animFrameCounter % frameList->_frames.size();
+	if (frameList->getFrameCount() > 1) {
+		frameIndex = animFrameCounter % frameList->getFrameCount();
 		for (uint i = 0; i <= frameIndex; ++i) {
-			x += frameList->_frames[i]->_xOffs;
-			y += frameList->_frames[i]->_yOffs;
+			x += frameList->getFrame(i)->_xOffs;
+			y += frameList->getFrame(i)->_yOffs;
 		}
 	}
-	_screen->drawAnimationElement(animation, frameList->_frames[frameIndex]->_elementIndex, x, y);
+	_screen->drawAnimationElement(animation, frameList->getFrame(frameIndex)->_elementIndex, x, y);
 }
 
 void CometEngine::resetVars() {
@@ -448,7 +448,7 @@ void CometEngine::freeAnimationsAndSceneDecoration() {
 }
 
 AnimationFrame *CometEngine::getAnimationFrame(int animationSlot, int animIndex, int animFrameIndex) {
-	return _animationMan->getAnimation(animationSlot)->_anims[animIndex]->_frames[animFrameIndex];
+	return _animationMan->getAnimation(animationSlot)->_anims[animIndex]->getFrame(animFrameIndex);
 }
 
 void CometEngine::updateScreen() {
@@ -849,7 +849,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 
 	cutsceneSprite = _animationMan->loadAnimationResource(_animPakName.c_str(), fileIndex);
 	frameList = cutsceneSprite->_anims[frameListIndex];
-	animFrameCount = frameList->_frames.size();
+	animFrameCount = frameList->getFrameCount();
 
 	if (backgroundIndex == 0) {
 		_screen->clear();

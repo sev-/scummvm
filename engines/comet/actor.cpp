@@ -114,7 +114,7 @@ void Actor::setDirectionAdd(int directionAdd) {
 
 void Actor::setAnimationIndex(int index) {
 	if (_animationSlot != -1) {
-		_animFrameCount = _vm->_animationMan->getAnimation(_animationSlot)->_anims[index]->_frames.size();
+		_animFrameCount = _vm->_animationMan->getAnimation(_animationSlot)->_anims[index]->getFrameCount();
 	} else {
 		_animFrameCount = 0;
 	}
@@ -316,7 +316,7 @@ bool Actor::updatePosition(Common::Rect &obstacleRect) {
 	int newX = _x;
 	int newY = _y;
 	AnimationResource *anim = _vm->_animationMan->getAnimation(_animationSlot);
-	AnimationFrame *frame = anim->_anims[_animIndex]->_frames[_animFrameIndex];
+	AnimationFrame *frame = anim->_anims[_animIndex]->getFrame(_animFrameIndex);
  	int16 xAdd = frame->_xOffs;
  	int16 yAdd = frame->_yOffs;
 
@@ -392,7 +392,7 @@ void Actor::updateAnimation() {
 				return;
 			// NOTE: After watching the ritual the players' frame number is out-of-bounds.
 			//	I don't know yet why this happens, but setting it to 0 at least avoids a crash.
-			if (_animFrameIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->_anims[_animIndex]->_frames.size())
+			if (_animFrameIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->_anims[_animIndex]->getFrameCount())
 				_animFrameIndex = 0;
 			AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
 			uint16 maxInterpolationStep = frame->_flags & 0x3FFF;
@@ -523,7 +523,7 @@ void Actor::draw() {
 	if (_animIndex >= (int)animation->_anims.size()) {
 		_animIndex = 0;
 		_animFrameIndex = 0;
-		_animFrameCount = animation->_anims[0]->_frames.size();
+		_animFrameCount = animation->_anims[0]->getFrameCount();
 	}
 
 	AnimationFrameList *frameList = animation->_anims[_animIndex];
@@ -536,7 +536,7 @@ void Actor::draw() {
 	} else {
 		if (_vm->_itemInSight && _itemIndex == 0 && _direction == 1)
 			_vm->drawLineOfSight();
-		_vm->_screen->drawAnimationElement(animation, frameList->_frames[_animFrameIndex]->_elementIndex, x, y);
+		_vm->_screen->drawAnimationElement(animation, frameList->getFrame(_animFrameIndex)->_elementIndex, x, y);
 	}
 
 	_vm->_screen->setClipRect(0, 0, 320, 200);

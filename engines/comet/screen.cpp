@@ -423,7 +423,7 @@ void Screen::drawAnimationCommand(AnimationResource *animation, AnimationCommand
 
 int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *frameList, int frameIndex, int interpolationStep, int x, int y, int frameCount) {
 
-	AnimationFrame *frame = frameList->_frames[frameIndex];
+	AnimationFrame *frame = frameList->getFrame(frameIndex);
 
 	int drawX = x, drawY = y;
 	int elementIndex = frame->_elementIndex;
@@ -432,8 +432,8 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 	int result = 0;
 
 	for (int i = 0; i <= frameIndex; ++i) {
-		drawX += frameList->_frames[i]->_xOffs;
-		drawY += frameList->_frames[i]->_yOffs;
+		drawX += frameList->getFrame(i)->_xOffs;
+		drawY += frameList->getFrame(i)->_yOffs;
 	}
 
 	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
@@ -450,7 +450,7 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 		int nextFrameIndex = frameIndex + 1;
 		if (nextFrameIndex >= frameCount)
 			nextFrameIndex = frameIndex;
-		AnimationFrame *nextFrame = frameList->_frames[nextFrameIndex];
+		AnimationFrame *nextFrame = frameList->getFrame(nextFrameIndex);
 		AnimationElement *elem1 = animation->_elements[frame->_elementIndex];
 		AnimationElement *elem2 = animation->_elements[nextFrame->_elementIndex];
 
