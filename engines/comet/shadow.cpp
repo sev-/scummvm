@@ -410,12 +410,12 @@ void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListI
 	uint frameIndex = 0;
 	if (frameList->frames.size() > 1) {
 		frameIndex = animFrameCounter % frameList->frames.size();
-		for (uint i = 0; i <= frameIndex; i++) {
-			x += frameList->frames[i]->xOffs;
-			y += frameList->frames[i]->yOffs;
+		for (uint i = 0; i <= frameIndex; ++i) {
+			x += frameList->frames[i]->_xOffs;
+			y += frameList->frames[i]->_yOffs;
 		}
 	}
-	_screen->drawAnimationElement(animation, frameList->frames[frameIndex]->elementIndex, x, y);
+	_screen->drawAnimationElement(animation, frameList->frames[frameIndex]->_elementIndex, x, y);
 }
 
 void CometEngine::resetVars() {
@@ -532,9 +532,9 @@ void CometEngine::setMouseCursorSprite(AnimationCel *cursorSprite) {
 		width = 16;
 		height = 16;
 	} else {
-		data = cursorSprite->data;
-		width = cursorSprite->width;
-		height = cursorSprite->height;
+		data = cursorSprite->_data;
+		width = cursorSprite->_width;
+		height = cursorSprite->_height;
 	}
 
 	if (_currCursorSprite != data) {

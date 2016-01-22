@@ -91,14 +91,14 @@ void CometSurface::frameRect(int x1, int y1, int x2, int y2, byte color) {
 }
 
 void CometSurface::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
-	byte *frameData = cel.data;
+	byte *frameData = cel._data;
 
-	int width = cel.width;
+	int width = cel._width;
 	int lineWidth = width;
-	int height = cel.height;
+	int height = cel._height;
 	int skipX = 0;
 
-	flags ^= (cel.flags >> 8);
+	flags ^= (cel._flags >> 8);
 
 	y -= height;
 	y++;
@@ -176,7 +176,7 @@ void CometSurface::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 	byte bh = 0, bl = 0;
 	byte cl = 0, dh = 0, dl = 0;
 	bool doMemset = false;
-	byte *rleData = cel.data;
+	byte *rleData = cel._data;
 
 	for (int yc = 0; yc < 200; yc++)
 		offsets[yc] = (byte*)getBasePtr(x, y + yc);

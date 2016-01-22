@@ -242,7 +242,7 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 	case kActCelRle:
 	{
 		AnimationCel *cel = animation->_cels[(_arg2 << 8) | _arg1];
-		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->height + 1);
+		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->_height + 1);
 		break;
 	}
 
@@ -282,23 +282,23 @@ void AnimationElement::draw(CometSurface *destSurface, AnimationResource *animat
 // AnimationCel
 
 void AnimationCel::loadFromStream(Common::SeekableReadStream &stream) {
-	flags = stream.readUint16LE();
-	width = stream.readByte() * 16;
-	height = stream.readByte();
-	data = new byte[dataSize];
-	stream.read(data, dataSize);
-	debug(8, "AnimationCel::loadFromStream() cel width = %d; height = %d; dataSize = %d", width, height, dataSize);
+	_flags = stream.readUint16LE();
+	_width = stream.readByte() * 16;
+	_height = stream.readByte();
+	_data = new byte[_dataSize];
+	stream.read(_data, _dataSize);
+	debug(8, "AnimationCel::loadFromStream() cel width = %d; height = %d; dataSize = %d", _width, _height, _dataSize);
 }
 
 // AnimationFrame
 
 void AnimationFrame::loadFromStream(Common::SeekableReadStream &stream) {
-	elementIndex = stream.readUint16LE();
-	flags = stream.readUint16LE();
-	xOffs = (int16)stream.readUint16LE();
-	yOffs = (int16)stream.readUint16LE();
+	_elementIndex = stream.readUint16LE();
+	_flags = stream.readUint16LE();
+	_xOffs = (int16)stream.readUint16LE();
+	_yOffs = (int16)stream.readUint16LE();
 	debug(0, "AnimationFrame::loadFromStream() elementIndex = %d; flags = %04X; xOffs = %d; yOffs = %d",
-		elementIndex, flags, xOffs, yOffs);
+		_elementIndex, _flags, _xOffs, _yOffs);
 }
 
 // AnimationFrameList
