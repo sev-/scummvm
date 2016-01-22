@@ -94,9 +94,6 @@ public:
 	void setFadeStep(int fadeStep);
 	int getZoomFactor() const { return _zoomFactor; }
 
-	void screenZoomEffect2x(int x, int y);
-	void screenZoomEffect3x(int x, int y);
-	void screenZoomEffect4x(int x, int y);
 	void screenTransitionEffect();
 	void screenScrollEffect(byte *newScreen, int scrollDirection);
 
@@ -159,6 +156,11 @@ public:
 	void setClipRect(int clipX1, int clipY1, int clipX2, int clipY2);
 	void setClipX(int clipX1, int clipX2);
 	void setClipY(int clipY1, int clipY2);
+
+	void screenZoomEffect2x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
+	void screenZoomEffect3x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
+	void screenZoomEffect4x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
+	void updateZoomEffect(int zoomFactor, int zoomX, int zoomY);
 
 //protected:
 	CometEngine *_vm;
