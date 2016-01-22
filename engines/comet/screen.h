@@ -42,32 +42,6 @@ enum PaletteFadeType {
 	kFadeOut
 };
 
-enum AnimationCommandType {
-	kActElement			= 0,
-	kActCelSprite		= 1,
-	kActNop0			= 2,
-	kActNop1			= 3,
-	kActFilledPolygon	= 4,
-	kActRectangle		= 5,
-	kActPolygon			= 6,
-	kActPixels			= 7,
-	kActPolygon1		= 8,	// unused in Comet? / Alias for kActPolygon
-	kActPolygon2		= 9,	// unused in Comet? / Alias for kActPolygon
-	kActCelRle			= 10
-};
-
-struct InterpolatedAnimationCommand {
-	byte _cmd;
-	byte _aarg1, _aarg2, _barg1, _barg2;
-	Common::Array<Common::Point> _points;
-	InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2);
-};
-
-struct InterpolatedAnimationElement {
-	Common::Array<InterpolatedAnimationCommand*> commands;
-	~InterpolatedAnimationElement();
-};
-
 class Screen : public CometSurface {
 public:
 	Screen(CometEngine *vm);

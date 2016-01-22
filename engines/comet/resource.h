@@ -88,6 +88,20 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
+enum AnimationCommandType {
+	kActElement			= 0,
+	kActCelSprite		= 1,
+	kActNop0			= 2,
+	kActNop1			= 3,
+	kActFilledPolygon	= 4,
+	kActRectangle		= 5,
+	kActPolygon			= 6,
+	kActPixels			= 7,
+	kActPolygon1		= 8,	// unused in Comet? / Alias for kActPolygon
+	kActPolygon2		= 9,	// unused in Comet? / Alias for kActPolygon
+	kActCelRle			= 10
+};
+
 struct AnimationCommand {
 	byte cmd;
 	byte arg1, arg2;
