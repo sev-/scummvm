@@ -26,6 +26,7 @@
 #ifndef COMET_GRAPHICS_H
 #define COMET_GRAPHICS_H
 
+#include "comet/resource.h"
 #include "common/array.h"
 #include "common/rect.h"
 #include "graphics/surface.h"
@@ -49,7 +50,8 @@ public:
 	void hLine(int x, int y, int x2, byte color);
 	void fillRect(int x1, int y1, int x2, int y2, byte color);
 	void frameRect(int x1, int y1, int x2, int y2, byte color);
-	void drawAnimationCelRle(int16 x, int16 y, byte *rleData);
+	void drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags = 0);
+	void drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y);
 	void drawFilledPolygon(Common::Array<Common::Point> &poly, byte fillColor, byte outlineColor);
 	void drawPolygon(Common::Array<Common::Point> &poly, byte color);
 	void drawRectangle(Common::Array<Common::Point> &points, byte fillColor, byte outlineColor);

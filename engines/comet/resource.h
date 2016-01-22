@@ -34,14 +34,12 @@
 #include "common/hash-str.h"
 
 #include "common/array.h"
-#include "common/str-array.h"
-
-#include "graphics/surface.h"
 
 #include "audio/audiostream.h"
 #include "audio/mixer.h"
 
 #include "comet/resourcemgr.h"
+#include "common/rect.h"
 
 namespace Comet {
 
@@ -90,12 +88,10 @@ protected:
 	void internalLoad(Common::MemoryReadStream &stream);
 };
 
-struct Point;
-
 struct AnimationCommand {
 	byte cmd;
 	byte arg1, arg2;
-	Common::Array<Point> points;
+	Common::Array<Common::Point> points;
 };
 
 struct AnimationElement {

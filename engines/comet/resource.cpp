@@ -25,7 +25,6 @@
 
 #include "comet/resource.h"
 #include "comet/screen.h"
-
 #include "common/file.h"
 #include "common/stream.h"
 #include "audio/decoders/raw.h"
@@ -268,7 +267,7 @@ AnimationCommand *AnimationResource::loadAnimationCommand(Common::SeekableReadSt
 	debug(8, "Animation::loadAnimationCommand() cmd = %d; pointsCount = %d; arg1 = %d; arg2 = %d",
 		animationCommand->cmd, pointsCount, animationCommand->arg1, animationCommand->arg2);
 	while (pointsCount--) {
-		Point pt;
+		Common::Point pt;
 		if (ptAsByte) {
 			pt.x = (int8)sourceS.readByte();
 			pt.y = (int8)sourceS.readByte();

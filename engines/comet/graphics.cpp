@@ -90,12 +90,93 @@ void CometSurface::frameRect(int x1, int y1, int x2, int y2, byte color) {
 	Graphics::Surface::frameRect(Common::Rect(x1, y1, x2 + 1, y2 + 1), color);
 }
 
-void CometSurface::drawAnimationCelRle(int16 x, int16 y, byte *rleData) {
+void CometSurface::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
+	byte *frameData = cel.data;
+
+	int width = cel.width;
+	int lineWidth = width;
+	int height = cel.height;
+	int skipX = 0;
+
+	flags ^= (cel.flags >> 8);
+
+	y -= height;
+	y++;
+
+	if (x + width >= _clipX2)
+		width = _clipX2 - x;
+
+	if (y + height >= _clipY2)
+		height = _clipY2 - y;
+
+	if (y < _clipY1) {
+		if (y + height - 1 < _clipY1)
+			return;
+		height -= _clipY1 - y;
+		while (y < _clipY1) {
+			// Skip the clipped RLE-compressed line
+			byte chunks = *frameData++;
+			while (chunks--)
+				frameData += 3 + frameData[1] * 4 + frameData[2];
+			frameData++;
+			y++;
+		}
+	}
+
+	if (x < _clipX1) {
+		if (x + width - 1 < _clipX1)
+			return;
+		skipX = _clipX1 - x;
+		x = _clipX1;
+	}
+
+	if (x >= _clipX2 || y >= _clipY2)
+		return;
+
+	byte *screenDestPtr = (byte*)getBasePtr(x, y);
+	byte lineBuffer[320];
+
+	while (height--) {
+
+		memset(lineBuffer, 0, lineWidth);
+
+		// Decompress the current pixel row
+		byte chunks = *frameData++;
+		byte *lineBufferPtr = lineBuffer;
+		while (chunks--) {
+			byte skip = frameData[0];
+			int count = frameData[1] * 4 + frameData[2];
+			frameData += 3;
+			lineBufferPtr += skip;
+			memcpy(lineBufferPtr, frameData, count);
+			lineBufferPtr += count;
+			frameData += count;
+		}
+		frameData++;
+
+		// Draw the decompressed pixels
+		if (flags & 0x80) {
+			for (int xc = skipX; xc < width; xc++)
+				if (lineBuffer[lineWidth-xc-1] != 0)
+					screenDestPtr[xc-skipX] = lineBuffer[lineWidth-xc-1];
+		} else {
+			for (int xc = skipX; xc < width; xc++)
+				if (lineBuffer[xc] != 0)
+					screenDestPtr[xc-skipX] = lineBuffer[xc];
+		}
+
+		screenDestPtr += pitch;
+	}
+
+}
+
+void CometSurface::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 	int line = 0;
 	byte *offsets[200];
 	byte bh = 0, bl = 0;
 	byte cl = 0, dh = 0, dl = 0;
 	bool doMemset = false;
+	byte *rleData = cel.data;
 
 	for (int yc = 0; yc < 200; yc++)
 		offsets[yc] = (byte*)getBasePtr(x, y + yc);
