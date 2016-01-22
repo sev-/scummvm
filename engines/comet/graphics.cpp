@@ -940,78 +940,78 @@ void InterpolatedAnimationElement::build(AnimationElement *elem1, AnimationEleme
 	uint minCmdCount, maxCmdCount;
 	uint minPointsCount, maxPointsCount;
 
-	minCmdCount = MIN(elem1->commands.size(), elem2->commands.size());
-	maxCmdCount = MAX(elem1->commands.size(), elem2->commands.size());
+	minCmdCount = MIN(elem1->_commands.size(), elem2->_commands.size());
+	maxCmdCount = MAX(elem1->_commands.size(), elem2->_commands.size());
 
 	for (uint cmdIndex = 0; cmdIndex < maxCmdCount; cmdIndex++) {
 
 		AnimationCommand *cmd1 = 0, *cmd2 = 0;
 		InterpolatedAnimationCommand *interCmd;
 
-		if (cmdIndex < elem1->commands.size())
-			cmd1 = elem1->commands[cmdIndex];
+		if (cmdIndex < elem1->_commands.size())
+			cmd1 = elem1->_commands[cmdIndex];
 		
-		if (cmdIndex < elem2->commands.size())
-			cmd2 = elem2->commands[cmdIndex];
+		if (cmdIndex < elem2->_commands.size())
+			cmd2 = elem2->_commands[cmdIndex];
 
 		if (!cmd1 || !cmd2)
 			continue;
 
-		minPointsCount = MIN(cmd1->points.size(), cmd2->points.size());
-		maxPointsCount = MAX(cmd1->points.size(), cmd2->points.size());
+		minPointsCount = MIN(cmd1->_points.size(), cmd2->_points.size());
+		maxPointsCount = MAX(cmd1->_points.size(), cmd2->_points.size());
 
 		if (cmdIndex < minCmdCount) {
-			if (cmd1->cmd == cmd2->cmd) {
-				interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
-					cmd1->arg1, cmd1->arg2, cmd2->arg1, cmd2->arg2);
+			if (cmd1->_cmd == cmd2->_cmd) {
+				interCmd = new InterpolatedAnimationCommand(cmd1->_cmd, 
+					cmd1->_arg1, cmd1->_arg2, cmd2->_arg1, cmd2->_arg2);
 				interCmd->_points.reserve(maxPointsCount * 2);
 				for (uint currPointIndex = 0; currPointIndex < maxPointsCount; ++currPointIndex) {
 					if (currPointIndex < minPointsCount) {
-						interCmd->_points.push_back(cmd1->points[currPointIndex]);
-						interCmd->_points.push_back(cmd2->points[currPointIndex]);
-					} else if (minPointsCount == cmd1->points.size()) {
-						interCmd->_points.push_back(cmd1->points[cmd1->points.size() - 1]);
-						interCmd->_points.push_back(cmd2->points[currPointIndex]);
+						interCmd->_points.push_back(cmd1->_points[currPointIndex]);
+						interCmd->_points.push_back(cmd2->_points[currPointIndex]);
+					} else if (minPointsCount == cmd1->_points.size()) {
+						interCmd->_points.push_back(cmd1->_points[cmd1->_points.size() - 1]);
+						interCmd->_points.push_back(cmd2->_points[currPointIndex]);
 					} else {
-						interCmd->_points.push_back(cmd1->points[currPointIndex]);
-						interCmd->_points.push_back(cmd2->points[cmd2->points.size() - 1]);
+						interCmd->_points.push_back(cmd1->_points[currPointIndex]);
+						interCmd->_points.push_back(cmd2->_points[cmd2->_points.size() - 1]);
 					}
 				}
 				_commands.push_back(interCmd);
 			} else {
-				interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
-					cmd1->arg1, cmd1->arg2, cmd2->arg1, cmd2->arg2);
-				interCmd->_points.reserve(cmd1->points.size() * 2);
-				for (uint currPointIndex = 0; currPointIndex < cmd1->points.size(); ++currPointIndex) {
-					interCmd->_points.push_back(cmd1->points[currPointIndex]);
-					interCmd->_points.push_back(cmd2->points[0]);
+				interCmd = new InterpolatedAnimationCommand(cmd1->_cmd, 
+					cmd1->_arg1, cmd1->_arg2, cmd2->_arg1, cmd2->_arg2);
+				interCmd->_points.reserve(cmd1->_points.size() * 2);
+				for (uint currPointIndex = 0; currPointIndex < cmd1->_points.size(); ++currPointIndex) {
+					interCmd->_points.push_back(cmd1->_points[currPointIndex]);
+					interCmd->_points.push_back(cmd2->_points[0]);
 				}
 				_commands.push_back(interCmd);
-				interCmd = new InterpolatedAnimationCommand(cmd2->cmd, 
-					cmd2->arg1, cmd2->arg2, cmd2->arg1, cmd2->arg2);
-				interCmd->_points.reserve(cmd2->points.size() * 2);
-				for (uint currPointIndex = 0; currPointIndex < cmd2->points.size(); ++currPointIndex) {
-					interCmd->_points.push_back(cmd1->points[0]);
-					interCmd->_points.push_back(cmd2->points[currPointIndex]);
+				interCmd = new InterpolatedAnimationCommand(cmd2->_cmd, 
+					cmd2->_arg1, cmd2->_arg2, cmd2->_arg1, cmd2->_arg2);
+				interCmd->_points.reserve(cmd2->_points.size() * 2);
+				for (uint currPointIndex = 0; currPointIndex < cmd2->_points.size(); ++currPointIndex) {
+					interCmd->_points.push_back(cmd1->_points[0]);
+					interCmd->_points.push_back(cmd2->_points[currPointIndex]);
 				}
 				_commands.push_back(interCmd);
 			}
-		} else if (minCmdCount == elem1->commands.size()) {
-			interCmd = new InterpolatedAnimationCommand(cmd2->cmd, 
-				cmd2->arg1, cmd2->arg2, cmd2->arg1, cmd2->arg2);
-			interCmd->_points.reserve(cmd2->points.size() * 2);
-			for (uint currPointIndex = 0; currPointIndex < cmd2->points.size(); ++currPointIndex) {
-				interCmd->_points.push_back(cmd2->points[0]);
-				interCmd->_points.push_back(cmd2->points[currPointIndex]);
+		} else if (minCmdCount == elem1->_commands.size()) {
+			interCmd = new InterpolatedAnimationCommand(cmd2->_cmd, 
+				cmd2->_arg1, cmd2->_arg2, cmd2->_arg1, cmd2->_arg2);
+			interCmd->_points.reserve(cmd2->_points.size() * 2);
+			for (uint currPointIndex = 0; currPointIndex < cmd2->_points.size(); ++currPointIndex) {
+				interCmd->_points.push_back(cmd2->_points[0]);
+				interCmd->_points.push_back(cmd2->_points[currPointIndex]);
 			}
 			_commands.push_back(interCmd);
 		} else {
-			interCmd = new InterpolatedAnimationCommand(cmd1->cmd, 
-				cmd1->arg1, cmd1->arg2, cmd1->arg1, cmd1->arg2);
-			interCmd->_points.reserve(cmd1->points.size() * 2);
-			for (uint currPointIndex = 0; currPointIndex < cmd1->points.size(); ++currPointIndex) {
-				interCmd->_points.push_back(cmd1->points[currPointIndex]);
-				interCmd->_points.push_back(cmd1->points[0]);
+			interCmd = new InterpolatedAnimationCommand(cmd1->_cmd, 
+				cmd1->_arg1, cmd1->_arg2, cmd1->_arg1, cmd1->_arg2);
+			interCmd->_points.reserve(cmd1->_points.size() * 2);
+			for (uint currPointIndex = 0; currPointIndex < cmd1->_points.size(); ++currPointIndex) {
+				interCmd->_points.push_back(cmd1->_points[currPointIndex]);
+				interCmd->_points.push_back(cmd1->_points[0]);
 			}
 			_commands.push_back(interCmd);
 		}

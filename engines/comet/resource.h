@@ -43,6 +43,8 @@
 
 namespace Comet {
 
+class CometSurface;
+
 // GenericResource
 
 class GenericResource : public BaseResource {
@@ -102,16 +104,22 @@ enum AnimationCommandType {
 	kActCelRle			= 10
 };
 
-struct AnimationCommand {
-	byte cmd;
-	byte arg1, arg2;
-	Common::Array<Common::Point> points;
+class AnimationCommand {
+public:
+	byte _cmd;
+	byte _arg1, _arg2;
+	Common::Array<Common::Point> _points;
+	void loadFromStream(Common::SeekableReadStream &stream, bool ptAsByte);
+	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags);
 };
 
-struct AnimationElement {
-	byte width, height, flags;
-	Common::Array<AnimationCommand*> commands;
+class AnimationElement {
+public:
+	byte _width, _height, _flags;
+	Common::Array<AnimationCommand*> _commands;
 	~AnimationElement();
+	void loadFromStream(Common::SeekableReadStream &stream);
+	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags = 0);
 };
 
 struct AnimationCel {
@@ -119,21 +127,23 @@ struct AnimationCel {
 	uint16 width, height;
 	uint16 dataSize;
 	byte *data;
-
-	AnimationCel() : flags(0), width(0), height(0), dataSize(0), data(0) {}
+	AnimationCel(uint32 adataSize) : flags(0), width(0), height(0), dataSize(adataSize), data(0) {}
 	~AnimationCel() { delete[] data; }
+	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
 struct AnimationFrame {
 	uint16 elementIndex;
 	uint16 flags;
 	int16 xOffs, yOffs;
+	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
 struct AnimationFrameList {
 	byte priority;
 	Common::Array<AnimationFrame*> frames;
 	~AnimationFrameList();
+	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
 class AnimationResource : public BaseResource {
@@ -143,6 +153,9 @@ public:
 
 	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->width; }
 	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->height; }
+	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
+	AnimationCommand *getElementCommand(int elementIndex, int commandIndex);
+
 //protected://all public while in progress
 	typedef Common::Array<uint32> OffsetArray;
 	Common::Array<AnimationElement*> _elements;
@@ -152,9 +165,6 @@ public:
 	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 	void loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets);
-	AnimationElement *loadAnimationElement(Common::SeekableReadStream &sourceS);
-	AnimationCommand *loadAnimationCommand(Common::SeekableReadStream &sourceS, bool ptAsByte);
-	AnimationFrameList *loadAnimationFrameList(Common::SeekableReadStream &sourceS);
 };
 
 // ScreenResource

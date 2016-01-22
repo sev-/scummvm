@@ -1435,8 +1435,7 @@ int GuiPuzzle::runPuzzle() {
 
 void GuiPuzzle::loadFingerCursor() {
 	if (!_vm->isFloppy()) {
-		AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
-		AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
+		AnimationCel *cel = _puzzleSprite->getCelByElementCommand(18, 0);
 		_vm->setMouseCursorSprite(cel);
 	}
 }
@@ -1446,8 +1445,7 @@ void GuiPuzzle::drawFinger() {
 		int16 fingerX = 108 + _puzzleTableColumn * 24;
 		int16 fingerY = 48 + _puzzleTableRow * 24;
 		if (!_fingerBackground) {
-			AnimationCommand *cmd = _puzzleSprite->_elements[18]->commands[0];
-			AnimationCel *cel = _puzzleSprite->_cels[((cmd->arg2 << 8) | cmd->arg1) & 0x0FFF];
+			AnimationCel *cel = _puzzleSprite->getCelByElementCommand(18, 0);
 			_fingerBackground = new Graphics::Surface();
 			_fingerBackground->create(cel->width, cel->height, Graphics::PixelFormat::createFormatCLUT8());
 			_prevFingerX = 0;
