@@ -215,6 +215,7 @@ public:
 
 	// TODO Game speed is currently not yet implemented
 	int _gameSpeed;
+	uint32 _nextTick;
 
 	bool _loadgameRequested;
 

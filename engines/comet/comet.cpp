@@ -256,6 +256,8 @@ Common::Error CometEngine::run() {
 
 	_currentInventoryItem = -1;
 
+	_nextTick = 0;
+
 	initSystemVars();
 
 	// Unused in Comet CD

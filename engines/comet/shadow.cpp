@@ -669,10 +669,17 @@ void CometEngine::handleKeyInput() {
 }
 
 void CometEngine::syncUpdate(bool screenUpdate) {
-	// TODO Maybe implement better delay mechanism (wait less if neccessary)
+	const uint32 kTargetFramerate = 10;
+	const uint32 kMillisPerFrame = 1000 / kTargetFramerate;
+	const uint32 kMinimumTimerResolution = 10;
 	if (screenUpdate)
 		_screen->update();
-	_system->delayMillis(40);
+	// Try to keep the framerate as demanded by kMillisPerFrame
+	uint32 currTick = _system->getMillis();
+	if (_nextTick > currTick && _nextTick - currTick >= kMinimumTimerResolution)
+		_system->delayMillis(_nextTick - currTick);
+	// TODO Take gamespeed into account later
+	_nextTick = currTick + kMillisPerFrame;
 }
 
 int CometEngine::handleSceneExitCollision(int sceneExitIndex) {
