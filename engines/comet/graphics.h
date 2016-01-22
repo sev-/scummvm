@@ -69,6 +69,25 @@ protected:
 	void drawFilledPolygonBody(Common::Array<Common::Point> &poly, byte color);
 };
 
+class InterpolatedAnimationCommand {
+public:
+	Common::Array<Common::Point> _points;
+	InterpolatedAnimationCommand(byte cmd, byte aarg1, byte aarg2, byte barg1, byte barg2);
+	void draw(CometSurface *destSurface, int16 x, int16 y, int mulValue);
+protected:
+	byte _cmd;
+	byte _aarg1, _aarg2, _barg1, _barg2;
+};
+
+class InterpolatedAnimationElement {
+public:
+	~InterpolatedAnimationElement();
+	void build(AnimationElement *elem1, AnimationElement *elem2);
+	void draw(CometSurface *destSurface, int16 x, int16 y, int mulValue);
+protected:
+	Common::Array<InterpolatedAnimationCommand*> _commands;
+};
+
 }
 
 #endif
