@@ -140,8 +140,8 @@ struct AnimationFrame {
 };
 
 struct AnimationFrameList {
-	byte priority;
-	Common::Array<AnimationFrame*> frames;
+	byte _priority;
+	Common::Array<AnimationFrame*> _frames;
 	~AnimationFrameList();
 	void loadFromStream(Common::SeekableReadStream &stream);
 };
