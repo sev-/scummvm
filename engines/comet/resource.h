@@ -139,11 +139,15 @@ struct AnimationFrame {
 	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
-struct AnimationFrameList {
-	byte _priority;
-	Common::Array<AnimationFrame*> _frames;
+class AnimationFrameList {
+public:
 	~AnimationFrameList();
 	void loadFromStream(Common::SeekableReadStream &stream);
+	AnimationFrame *getFrame(uint index) { return _frames[index]; }
+	uint getFrameCount() const { return _frames.size(); }
+protected:
+	byte _priority;
+	Common::Array<AnimationFrame*> _frames;
 };
 
 class AnimationResource : public BaseResource {
