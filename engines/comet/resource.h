@@ -123,19 +123,19 @@ public:
 };
 
 struct AnimationCel {
-	uint16 flags;
-	uint16 width, height;
-	uint16 dataSize;
-	byte *data;
-	AnimationCel(uint32 adataSize) : flags(0), width(0), height(0), dataSize(adataSize), data(0) {}
-	~AnimationCel() { delete[] data; }
+	uint16 _flags;
+	uint16 _width, _height;
+	uint16 _dataSize;
+	byte *_data;
+	AnimationCel(uint32 dataSize) : _flags(0), _width(0), _height(0), _dataSize(dataSize), _data(0) {}
+	~AnimationCel() { delete[] _data; }
 	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
 struct AnimationFrame {
-	uint16 elementIndex;
-	uint16 flags;
-	int16 xOffs, yOffs;
+	uint16 _elementIndex;
+	uint16 _flags;
+	int16 _xOffs, _yOffs;
 	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
@@ -151,8 +151,8 @@ public:
 	AnimationResource();
 	~AnimationResource();
 
-	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->width; }
-	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->height; }
+	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->_width; }
+	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->_height; }
 	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
 	AnimationCommand *getElementCommand(int elementIndex, int commandIndex);
 

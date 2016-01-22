@@ -1447,7 +1447,7 @@ void GuiPuzzle::drawFinger() {
 		if (!_fingerBackground) {
 			AnimationCel *cel = _puzzleSprite->getCelByElementCommand(18, 0);
 			_fingerBackground = new Graphics::Surface();
-			_fingerBackground->create(cel->width, cel->height, Graphics::PixelFormat::createFormatCLUT8());
+			_fingerBackground->create(cel->_width, cel->_height, Graphics::PixelFormat::createFormatCLUT8());
 			_prevFingerX = 0;
 			_prevFingerY = 0;
 		} else if ((_prevFingerX == 228 || _prevFingerY == 168) && (fingerX != _prevFingerX || fingerY != _prevFingerY))

@@ -317,8 +317,8 @@ bool Actor::updatePosition(Common::Rect &obstacleRect) {
 	int newY = _y;
 	AnimationResource *anim = _vm->_animationMan->getAnimation(_animationSlot);
 	AnimationFrame *frame = anim->_anims[_animIndex]->frames[_animFrameIndex];
- 	int16 xAdd = frame->xOffs;
- 	int16 yAdd = frame->yOffs;
+ 	int16 xAdd = frame->_xOffs;
+ 	int16 yAdd = frame->_yOffs;
 
  	// NOTE SceneObject_sub_8243(_direction, &xAdd, &yAdd); (but has no effect in Comet CD, probably used in Eternam)
 
@@ -359,15 +359,15 @@ void Actor::updatePortraitAnimation() {
 		if (_animationSlot < 0)
 			return;
 		AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
-		uint16 maxInterpolationStep = frame->flags & 0x3FFF;
-		uint16 gfxMode = frame->flags >> 14;
+		uint16 maxInterpolationStep = frame->_flags & 0x3FFF;
+		uint16 gfxMode = frame->_flags >> 14;
 		if (gfxMode == 1) {
 			if (_interpolationStep >= MAX<int>(1, maxInterpolationStep) - 1) {
 				_interpolationStep = 0;
-				_animFrameIndex++;
+				++_animFrameIndex;
 			}
 		} else {
-			_animFrameIndex++;
+			++_animFrameIndex;
 		}
 		if (_animFrameIndex >= _animFrameCount) {
 			_animFrameIndex = 0;
@@ -395,8 +395,8 @@ void Actor::updateAnimation() {
 			if (_animFrameIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->_anims[_animIndex]->frames.size())
 				_animFrameIndex = 0;
 			AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
-			uint16 maxInterpolationStep = frame->flags & 0x3FFF;
-			uint16 gfxMode = frame->flags >> 14;
+			uint16 maxInterpolationStep = frame->_flags & 0x3FFF;
+			uint16 gfxMode = frame->_flags >> 14;
 			if (gfxMode == 1) {
 				if (_interpolationStep >= MAX<int>(1, maxInterpolationStep) - 1) {
 					_interpolationStep = 0;
@@ -536,7 +536,7 @@ void Actor::draw() {
 	} else {
 		if (_vm->_itemInSight && _itemIndex == 0 && _direction == 1)
 			_vm->drawLineOfSight();
-		_vm->_screen->drawAnimationElement(animation, frameList->frames[_animFrameIndex]->elementIndex, x, y);
+		_vm->_screen->drawAnimationElement(animation, frameList->frames[_animFrameIndex]->_elementIndex, x, y);
 	}
 
 	_vm->_screen->setClipRect(0, 0, 320, 200);
