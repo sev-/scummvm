@@ -9,6 +9,7 @@ MODULE_OBJS = \
 	detection.o \
 	dialog.o \
 	input.o \
+	graphics.o \
 	music.o \
 	resource.o \
 	resourcemgr.o \
