@@ -714,7 +714,7 @@ void CometEngine::initSceneDecorationBlockingRects() {
 #if 0 // TODO
 	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->_commands.size(); i++) {
 		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->_commands[i];
-		AnimationElement *objectElement = _sceneDecorationSprite->_elements[((cmd->_arg2 << 8) | cmd->_arg1) & 0x7FFF];
+		AnimationElement *objectElement = _sceneDecorationSprite->_elements[cmd->getArgAsInt16() & 0x7FFF];
 		debug(8, "%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
 			i, cmd->_cmd, cmd->_arg1, cmd->_arg2, cmd->_points[0].x, cmd->_points[0].y, objectElement->_width, objectElement->_height);
 		if (objectElement->_width / 2 > 0) {

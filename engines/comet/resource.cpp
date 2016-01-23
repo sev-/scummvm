@@ -205,7 +205,7 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 
 	case kActElement:
 	{
-		int16 subElementIndex = ((_arg2 << 8) | _arg1) & 0x0FFF;
+		int16 subElementIndex = getArgAsInt16() & 0x0FFF;
 		AnimationElement *subElement = animation->getElement(subElementIndex);
 		subElement->draw(destSurface, animation, points[0].x, points[0].y, parentFlags | (_arg2 & 0xA0));
 		break;
@@ -213,7 +213,7 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 
 	case kActCelSprite:
 	{
-		int16 celIndex = ((_arg2 << 8) | _arg1) & 0x0FFF;
+		int16 celIndex = getArgAsInt16() & 0x0FFF;
 		int16 celX = points[0].x, celY = points[0].y;
 		if (parentFlags & 0x80)
 			celX -= animation->getCelWidth(celIndex);
@@ -241,7 +241,7 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 
 	case kActCelRle:
 	{
-		AnimationCel *cel = animation->getCel((_arg2 << 8) | _arg1);
+		AnimationCel *cel = animation->getCel(getArgAsInt16());
 		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->getHeight() + 1);
 		break;
 	}
@@ -350,7 +350,7 @@ void AnimationResource::drawElement(CometSurface *destSurface, int elementIndex,
 
 AnimationCel *AnimationResource::getCelByElementCommand(int elementIndex, int commandIndex) {
 	AnimationCommand *cmd = _elements[elementIndex]->getCommand(commandIndex);
-	return _cels[((cmd->_arg2 << 8) | cmd->_arg1) & 0x0FFF];
+	return _cels[cmd->getArgAsInt16() & 0x0FFF];
 }
 
 AnimationCommand *AnimationResource::getElementCommand(int elementIndex, int commandIndex) {
