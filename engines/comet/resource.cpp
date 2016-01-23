@@ -349,7 +349,7 @@ void AnimationResource::drawElement(CometSurface *destSurface, int elementIndex,
 }
 
 AnimationCel *AnimationResource::getCelByElementCommand(int elementIndex, int commandIndex) {
-	AnimationCommand *cmd = _elements[elementIndex]->_commands[commandIndex];
+	AnimationCommand *cmd = _elements[elementIndex]->getCommand(commandIndex);
 	return _cels[((cmd->_arg2 << 8) | cmd->_arg1) & 0x0FFF];
 }
 

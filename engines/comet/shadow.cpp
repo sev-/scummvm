@@ -370,8 +370,8 @@ void CometEngine::addToSpriteDrawQueue(int y, int actorIndex, int insertIndex) {
 void CometEngine::enqueueSceneDecorationForDrawing() {
 	if (_sceneDecorationSprite) {
 		AnimationElement *elem = _sceneDecorationSprite->getElement(0);
-		for (uint i = 0; i < elem->_commands.size(); i++) {
-			addToSpriteDrawQueue(elem->_commands[i]->_points[0].y, 16, -1);
+		for (uint i = 0; i < elem->getCommandCount(); ++i) {
+			addToSpriteDrawQueue(elem->getCommand(i)->getPoint(0).y, 16, -1);
 		}
 	}
 }
