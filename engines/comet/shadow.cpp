@@ -410,12 +410,9 @@ void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListI
 	uint frameIndex = 0;
 	if (frameList->getFrameCount() > 1) {
 		frameIndex = animFrameCounter % frameList->getFrameCount();
-		for (uint i = 0; i <= frameIndex; ++i) {
-			x += frameList->getFrame(i)->_xOffs;
-			y += frameList->getFrame(i)->_yOffs;
-		}
+		frameList->accumulateDrawOffset(x, y, frameIndex);
 	}
-	_screen->drawAnimationElement(animation, frameList->getFrame(frameIndex)->_elementIndex, x, y);
+	_screen->drawAnimationElement(animation, frameList->getFrame(frameIndex)->getElementIndex(), x, y);
 }
 
 void CometEngine::resetVars() {

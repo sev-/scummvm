@@ -426,15 +426,12 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 	AnimationFrame *frame = frameList->getFrame(frameIndex);
 
 	int drawX = x, drawY = y;
-	int elementIndex = frame->_elementIndex;
-	int maxInterpolationStep = frame->_flags & 0x3FFF;
-	int gfxMode = frame->_flags >> 14;
+	int elementIndex = frame->getElementIndex();
+	int maxInterpolationStep = frame->getMaxInterpolationStep();
+	int gfxMode = frame->getDrawMode();
 	int result = 0;
 
-	for (int i = 0; i <= frameIndex; ++i) {
-		drawX += frameList->getFrame(i)->_xOffs;
-		drawY += frameList->getFrame(i)->_yOffs;
-	}
+	frameList->accumulateDrawOffset(drawX, drawY, frameIndex);
 
 	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
 		gfxMode, x, y, drawX, drawY, gfxMode, maxInterpolationStep);
@@ -451,8 +448,8 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 		if (nextFrameIndex >= frameCount)
 			nextFrameIndex = frameIndex;
 		AnimationFrame *nextFrame = frameList->getFrame(nextFrameIndex);
-		AnimationElement *elem1 = animation->_elements[frame->_elementIndex];
-		AnimationElement *elem2 = animation->_elements[nextFrame->_elementIndex];
+		AnimationElement *elem1 = animation->_elements[frame->getElementIndex()];
+		AnimationElement *elem2 = animation->_elements[nextFrame->getElementIndex()];
 
 		InterpolatedAnimationElement interElem;
 		interElem.build(elem1, elem2);

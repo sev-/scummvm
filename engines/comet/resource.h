@@ -133,16 +133,23 @@ struct AnimationCel {
 };
 
 struct AnimationFrame {
+public:
+	void loadFromStream(Common::SeekableReadStream &stream);
+	void accumulateDrawOffset(int &x, int &y);
+	uint16 getMaxInterpolationStep() const { return _flags & 0x3FFF; }
+	uint16 getDrawMode() const { return _flags >> 14; }
+	uint16 getElementIndex() const { return _elementIndex; }
+protected:
 	uint16 _elementIndex;
 	uint16 _flags;
 	int16 _xOffs, _yOffs;
-	void loadFromStream(Common::SeekableReadStream &stream);
 };
 
 class AnimationFrameList {
 public:
 	~AnimationFrameList();
 	void loadFromStream(Common::SeekableReadStream &stream);
+	void accumulateDrawOffset(int &x, int &y, int targetFrameIndex);
 	AnimationFrame *getFrame(uint index) { return _frames[index]; }
 	uint getFrameCount() const { return _frames.size(); }
 protected:
