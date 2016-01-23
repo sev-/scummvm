@@ -114,7 +114,7 @@ void Actor::setDirectionAdd(int directionAdd) {
 
 void Actor::setAnimationIndex(int index) {
 	if (_animationSlot != -1) {
-		_animFrameCount = _vm->_animationMan->getAnimation(_animationSlot)->_anims[index]->getFrameCount();
+		_animFrameCount = _vm->_animationMan->getAnimation(_animationSlot)->getFrameList(index)->getFrameCount();
 	} else {
 		_animFrameCount = 0;
 	}
@@ -316,7 +316,7 @@ bool Actor::updatePosition(Common::Rect &obstacleRect) {
 	int newX = _x;
 	int newY = _y;
 	AnimationResource *anim = _vm->_animationMan->getAnimation(_animationSlot);
-	AnimationFrame *frame = anim->_anims[_animIndex]->getFrame(_animFrameIndex);
+	AnimationFrame *frame = anim->getFrameListFrame(_animIndex, _animFrameIndex);
 
 	frame->accumulateDrawOffset(newX, newY);
  	
@@ -383,11 +383,11 @@ void Actor::updateAnimation() {
 	} else {
 		if (_animPlayFrameIndex == -1) {
 			// NOTE: See note below, but here we bail out.
-			if (_animIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->_anims.size())
+			if (_animIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->getFrameListCount())
 				return;
 			// NOTE: After watching the ritual the players' frame number is out-of-bounds.
 			//	I don't know yet why this happens, but setting it to 0 at least avoids a crash.
-			if (_animFrameIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->_anims[_animIndex]->getFrameCount())
+			if (_animFrameIndex >= (int)_vm->_animationMan->getAnimation(_animationSlot)->getFrameList(_animIndex)->getFrameCount())
 				_animFrameIndex = 0;
 			AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
 			uint16 maxInterpolationStep = frame->getMaxInterpolationStep();
@@ -515,13 +515,13 @@ void Actor::draw() {
 	AnimationResource *animation = _vm->_animationMan->getAnimation(_animationSlot);
 
 	// NOTE: Yet another workaround for a crash (see updateActorAnimation).
-	if (_animIndex >= (int)animation->_anims.size()) {
+	if (_animIndex >= (int)animation->getFrameListCount()) {
 		_animIndex = 0;
 		_animFrameIndex = 0;
-		_animFrameCount = animation->_anims[0]->getFrameCount();
+		_animFrameCount = animation->getFrameList(0)->getFrameCount();
 	}
 
-	AnimationFrameList *frameList = animation->_anims[_animIndex];
+	AnimationFrameList *frameList = animation->getFrameList(_animIndex);
 
 	_vm->_screen->setClipRect(_clipX1, _clipY1, _clipX2 + 1, _clipY2 + 1);
 

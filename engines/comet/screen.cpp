@@ -390,8 +390,7 @@ int Screen::getTextHeight(const byte *text) {
 }
 
 void Screen::drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
-	AnimationElement *element = animation->_elements[elementIndex];
-	element->draw(this, animation, x, y, parentFlags);
+	animation->drawElement(this, elementIndex, x, y, parentFlags);
 }
 
 void Screen::drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags) {
@@ -425,8 +424,8 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 		if (nextFrameIndex >= frameCount)
 			nextFrameIndex = frameIndex;
 		AnimationFrame *nextFrame = frameList->getFrame(nextFrameIndex);
-		AnimationElement *elem1 = animation->_elements[frame->getElementIndex()];
-		AnimationElement *elem2 = animation->_elements[nextFrame->getElementIndex()];
+		AnimationElement *elem1 = animation->getElementByFrame(frame);
+		AnimationElement *elem2 = animation->getElementByFrame(nextFrame);
 
 		InterpolatedAnimationElement interElem;
 		interElem.build(elem1, elem2);
