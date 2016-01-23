@@ -301,6 +301,11 @@ void AnimationFrame::loadFromStream(Common::SeekableReadStream &stream) {
 		_elementIndex, _flags, _xOffs, _yOffs);
 }
 
+void AnimationFrame::accumulateDrawOffset(int &x, int &y) {
+	x += _xOffs;
+	y += _yOffs;
+}
+
 // AnimationFrameList
 
 AnimationFrameList::~AnimationFrameList() {
@@ -317,6 +322,11 @@ void AnimationFrameList::loadFromStream(Common::SeekableReadStream &stream) {
 		animationFrame->loadFromStream(stream);
 		_frames.push_back(animationFrame);
 	}
+}
+
+void AnimationFrameList::accumulateDrawOffset(int &x, int &y, int targetFrameIndex) {
+	for (int frameIndex = 0; frameIndex <= targetFrameIndex; ++frameIndex)
+		_frames[frameIndex]->accumulateDrawOffset(x, y);
 }
 
 // AnimationResource
