@@ -28,7 +28,6 @@
 
 #include "common/scummsys.h"
 #include "common/endian.h"
-#include "common/util.h"
 #include "common/memstream.h"
 #include "common/system.h"
 #include "common/hash-str.h"
@@ -40,6 +39,7 @@
 
 #include "comet/resourcemgr.h"
 #include "common/rect.h"
+#include "common/util.h"
 
 namespace Comet {
 
@@ -111,15 +111,19 @@ public:
 	Common::Array<Common::Point> _points;
 	void loadFromStream(Common::SeekableReadStream &stream, bool ptAsByte);
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags);
+	const Common::Point &getPoint(uint pointIndex) const { return _points[pointIndex]; }
 };
 
 class AnimationElement {
 public:
-	byte _width, _height, _flags;
 	Common::Array<AnimationCommand*> _commands;
 	~AnimationElement();
 	void loadFromStream(Common::SeekableReadStream &stream);
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags = 0);
+	uint getCommandCount() const { return _commands.size(); }
+	AnimationCommand *getCommand(uint commandIndex) const { return _commands[commandIndex]; }
+protected:
+	byte _width, _height, _flags;
 };
 
 class AnimationCel {
@@ -163,23 +167,25 @@ protected:
 	Common::Array<AnimationFrame*> _frames;
 };
 
+#define ASSERT_INDEX(arr, idx) { if (idx < 0 || (uint)idx >= arr.size()) error("Index %d out of bounds in %s (max %d)", idx, SCUMMVM_CURRENT_FUNCTION, arr.size()); }
+
 class AnimationResource : public BaseResource {
 public:
 	AnimationResource();
 	~AnimationResource();
 	void drawElement(CometSurface *destSurface, int elementIndex, int16 x, int16 y, byte parentFlags);
 	uint getCelCount() const { return _cels.size(); }
-	AnimationCel *getCel(int celIndex) const { return _cels[celIndex]; }
+	AnimationCel *getCel(int celIndex) const { ASSERT_INDEX(_cels, celIndex); return _cels[celIndex]; }
 	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
-	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->getWidth(); }
-	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->getHeight(); }
+	int16 getCelWidth(int16 celIndex) const { return getCel(celIndex)->getWidth(); }
+	int16 getCelHeight(int16 celIndex) const { return getCel(celIndex)->getHeight(); }
 	AnimationCommand *getElementCommand(int elementIndex, int commandIndex);
 	uint getFrameListCount() const { return _anims.size(); }
-	AnimationFrameList *getFrameList(int frameListIndex) const { return _anims[frameListIndex]; }
+	AnimationFrameList *getFrameList(int frameListIndex) const { ASSERT_INDEX(_anims, frameListIndex); return _anims[frameListIndex]; }
 	uint getElementCount() const { return _elements.size(); }
-	AnimationElement *getElement(int elementIndex) const { return _elements[elementIndex]; }
-	AnimationElement *getElementByFrame(AnimationFrame *frame) const { return _elements[frame->getElementIndex()]; }
-	AnimationFrame *getFrameListFrame(int frameListIndex, int frameIndex) const { return _anims[frameListIndex]->getFrame(frameIndex); }
+	AnimationElement *getElement(int elementIndex) const { ASSERT_INDEX(_elements, elementIndex); return _elements[elementIndex]; }
+	AnimationElement *getElementByFrame(AnimationFrame *frame) const { return getElement(frame->getElementIndex()); }
+	AnimationFrame *getFrameListFrame(int frameListIndex, int frameIndex) const { return getFrameList(frameListIndex)->getFrame(frameIndex); }
 protected:
 	typedef Common::Array<uint32> OffsetArray;
 	Common::Array<AnimationElement*> _elements;
