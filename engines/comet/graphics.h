@@ -88,6 +88,32 @@ protected:
 	Common::Array<InterpolatedAnimationCommand*> _commands;
 };
 
+class BaseMouseCursor {
+public:
+	void setCursor(const byte **currentCursor);
+	virtual ~BaseMouseCursor() {}
+protected:
+	virtual Graphics::Surface *createCursorSurface() = 0;
+	virtual const byte *getCursorData() = 0;
+};
+
+class AnimationCelMouseCursor : public BaseMouseCursor {
+public:
+	AnimationCelMouseCursor(const AnimationCel *cel) : _cel(cel) {};
+protected:
+	const AnimationCel *_cel;
+	virtual Graphics::Surface *createCursorSurface();
+	virtual const byte *getCursorData();
+};
+
+class SystemMouseCursor : public BaseMouseCursor {
+protected:
+	virtual Graphics::Surface *createCursorSurface();
+	virtual const byte *getCursorData();
+};
+
+Graphics::Surface *decompressAnimationCel(const byte *celData, int width, int height);
+
 }
 
 #endif

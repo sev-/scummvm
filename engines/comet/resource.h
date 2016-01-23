@@ -122,14 +122,20 @@ public:
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags = 0);
 };
 
-struct AnimationCel {
+class AnimationCel {
+public:
+	AnimationCel(uint32 dataSize) : _flags(0), _width(0), _height(0), _dataSize(dataSize), _data(0) {}
+	~AnimationCel();
+	void loadFromStream(Common::SeekableReadStream &stream);
+	uint16 getFlags() const { return _flags; }
+	uint16 getWidth() const { return _width; }
+	uint16 getHeight() const { return _height; }
+	const byte *getData() const { return _data; }
+protected:
 	uint16 _flags;
 	uint16 _width, _height;
 	uint16 _dataSize;
-	byte *_data;
-	AnimationCel(uint32 dataSize) : _flags(0), _width(0), _height(0), _dataSize(dataSize), _data(0) {}
-	~AnimationCel() { delete[] _data; }
-	void loadFromStream(Common::SeekableReadStream &stream);
+	const byte *_data;
 };
 
 struct AnimationFrame {
@@ -162,8 +168,8 @@ public:
 	AnimationResource();
 	~AnimationResource();
 
-	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->_width; }
-	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->_height; }
+	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->getWidth(); }
+	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->getHeight(); }
 	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
 	AnimationCommand *getElementCommand(int elementIndex, int commandIndex);
 

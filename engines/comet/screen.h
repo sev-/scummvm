@@ -83,7 +83,6 @@ public:
 	int getTextWidth(const byte *text);
 	int getTextHeight(const byte *text);
 
-	Graphics::Surface *decompressAnimationCel(const byte *celData, int16 width, int16 height);
 	void drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags = 0);
 	void drawAnimationCommand(AnimationResource *animation, AnimationCommand *cmd, int16 x, int16 y, byte parentFlags = 0);
 	void drawInterpolatedAnimationElement(InterpolatedAnimationElement *interElem, int16 x, int16 y, int mulValue);

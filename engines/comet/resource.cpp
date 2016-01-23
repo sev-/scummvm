@@ -242,7 +242,7 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 	case kActCelRle:
 	{
 		AnimationCel *cel = animation->_cels[(_arg2 << 8) | _arg1];
-		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->_height + 1);
+		destSurface->drawAnimationCelRle(*cel, points[0].x, points[0].y - cel->getHeight() + 1);
 		break;
 	}
 
@@ -281,12 +281,18 @@ void AnimationElement::draw(CometSurface *destSurface, AnimationResource *animat
 
 // AnimationCel
 
+AnimationCel::~AnimationCel() {
+	if (_dataSize > 0)
+		delete[] _data;
+}
+
 void AnimationCel::loadFromStream(Common::SeekableReadStream &stream) {
 	_flags = stream.readUint16LE();
 	_width = stream.readByte() * 16;
 	_height = stream.readByte();
-	_data = new byte[_dataSize];
-	stream.read(_data, _dataSize);
+	byte *data = new byte[_dataSize];
+	stream.read(data, _dataSize);
+	_data = data;
 	debug(8, "AnimationCel::loadFromStream() cel width = %d; height = %d; dataSize = %d", _width, _height, _dataSize);
 }
 

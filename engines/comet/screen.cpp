@@ -389,29 +389,6 @@ int Screen::getTextHeight(const byte *text) {
 	return textHeight;
 }
 
-Graphics::Surface *Screen::decompressAnimationCel(const byte *celData, int16 width, int16 height) {
-	Graphics::Surface *surface = new Graphics::Surface();
-	surface->create(width, height, Graphics::PixelFormat::createFormatCLUT8());
-	const byte *src = celData;
-	byte *dst = (byte*)surface->getPixels();
-	while (height--) {
-		byte *row = dst;
-		byte chunks = *src++;
-		while (chunks--) {
-			byte skip = src[0];
-			int count = src[1] * 4 + src[2];
-			src += 3;
-			row += skip;
-			memcpy(row, src, count);
-			row += count;
-			src += count;
-		}
-		src++;
-		dst += surface->pitch;
-	}
-	return surface;
-}
-
 void Screen::drawAnimationElement(AnimationResource *animation, int16 elementIndex, int16 x, int16 y, byte parentFlags) {
 	AnimationElement *element = animation->_elements[elementIndex];
 	element->draw(this, animation, x, y, parentFlags);

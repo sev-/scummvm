@@ -24,6 +24,7 @@
  */
 
 #include "comet/graphics.h"
+#include "graphics/cursorman.h"
 #include "graphics/surface.h"
 #include "graphics/palette.h"
 #include "graphics/primitives.h"
@@ -91,14 +92,13 @@ void CometSurface::frameRect(int x1, int y1, int x2, int y2, byte color) {
 }
 
 void CometSurface::drawAnimationCelSprite(AnimationCel &cel, int16 x, int16 y, byte flags) {
-	byte *frameData = cel._data;
-
-	int width = cel._width;
+	const byte *frameData = cel.getData();
+	int width = cel.getWidth();
 	int lineWidth = width;
-	int height = cel._height;
+	int height = cel.getHeight();
 	int skipX = 0;
 
-	flags ^= (cel._flags >> 8);
+	flags ^= (cel.getFlags() >> 8);
 
 	y -= height;
 	y++;
@@ -176,7 +176,7 @@ void CometSurface::drawAnimationCelRle(AnimationCel &cel, int16 x, int16 y) {
 	byte bh = 0, bl = 0;
 	byte cl = 0, dh = 0, dl = 0;
 	bool doMemset = false;
-	byte *rleData = cel._data;
+	const byte *rleData = cel.getData();
 
 	for (int yc = 0; yc < 200; yc++)
 		offsets[yc] = (byte*)getBasePtr(x, y + yc);
@@ -1025,6 +1025,76 @@ void InterpolatedAnimationElement::draw(CometSurface *destSurface, int16 x, int1
 		InterpolatedAnimationCommand *interCmd = *iter;
 		interCmd->draw(destSurface, x, y, mulValue);
 	}
+}
+
+// BaseMouseCursor
+
+void BaseMouseCursor::setCursor(const byte **currentCursor) {
+	const byte *newCursor = getCursorData();
+	if (*currentCursor != newCursor) {
+		Graphics::Surface *cursor = createCursorSurface();
+		CursorMan.replaceCursor((const byte *)cursor->getPixels(), cursor->w, cursor->h, 0, 0, 0);
+		cursor->free();
+		delete cursor;
+		*currentCursor = newCursor;
+	}
+}
+
+// AnimationCelMouseCursor
+
+Graphics::Surface *AnimationCelMouseCursor::createCursorSurface() {
+	return decompressAnimationCel(_cel->getData(), _cel->getWidth(), _cel->getHeight());
+}
+
+const byte *AnimationCelMouseCursor::getCursorData() {
+	return _cel->getData();
+}
+
+// SystemMouseCursor
+
+Graphics::Surface *SystemMouseCursor::createCursorSurface() {
+	return decompressAnimationCel(getCursorData(), 16, 16);
+}
+
+const byte *SystemMouseCursor::getCursorData() {
+	static const byte kSysMouseCursorSprite[] = {
+		  1,  0,  0,  2,192,192, 14,  1,  0,  0,  3,192,255,
+		192, 13,  1,  0,  1,  0,192,255,255,192, 12,  1,  0,
+		  1,  1,192,255,255,255,192, 11,  1,  0,  1,  2,192,
+		255,255,255,255,192, 10,  1,  0,  1,  3,192,255,255,
+		255,255,255,192,  9,  1,  0,  2,  0,192,255,255,255,
+		255,255,255,192,  8,  1,  0,  2,  1,192,255,255,255,
+		255,255,255,255,192,  7,  1,  0,  2,  2,192,255,255,
+		255,255,255,255,255,255,192,  6,  1,  0,  2,  3,192,
+		255,255,255,255,255,192,192,192,192,192,  5,  1,  0,
+		  1,  3,192,255,255,192,255,255,192,  9,  2,  0,  0,
+		  3,192,255,192,  1,  1,  0,192,255,255,192,  8,  2,
+		  0,  0,  2,192,192,  2,  1,  0,192,255,255,192,  8,
+		  2,  0,  0,  1,192,  4,  1,  0,192,255,255,192,  7,
+		  1,  5,  1,  0,192,255,255,192,  7,  1,  6,  0,  3,
+		192,192,192,  7};
+	return kSysMouseCursorSprite;
+}
+
+Graphics::Surface *decompressAnimationCel(const byte *celData, int width, int height) {
+	Graphics::Surface *surface = new Graphics::Surface();
+	surface->create(width, height, Graphics::PixelFormat::createFormatCLUT8());
+	const byte *src = celData;
+	for (int y = 0; y < height; ++y) {
+		byte *row = (byte*)surface->getBasePtr(0, y);
+		byte chunks = *src++;
+		while (chunks--) {
+			byte skip = src[0];
+			int count = src[1] * 4 + src[2];
+			src += 3;
+			row += skip;
+			memcpy(row, src, count);
+			row += count;
+			src += count;
+		}
+		src++;
+	}
+	return surface;
 }
 
 } // End of namespace Comet
