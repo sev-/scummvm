@@ -167,18 +167,24 @@ class AnimationResource : public BaseResource {
 public:
 	AnimationResource();
 	~AnimationResource();
-
+	void drawElement(CometSurface *destSurface, int elementIndex, int16 x, int16 y, byte parentFlags);
+	uint getCelCount() const { return _cels.size(); }
+	AnimationCel *getCel(int celIndex) const { return _cels[celIndex]; }
+	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
 	int16 getCelWidth(int16 celIndex) const { return _cels[celIndex]->getWidth(); }
 	int16 getCelHeight(int16 celIndex) const { return _cels[celIndex]->getHeight(); }
-	AnimationCel *getCelByElementCommand(int elementIndex, int commandIndex);
 	AnimationCommand *getElementCommand(int elementIndex, int commandIndex);
-
-//protected://all public while in progress
+	uint getFrameListCount() const { return _anims.size(); }
+	AnimationFrameList *getFrameList(int frameListIndex) const { return _anims[frameListIndex]; }
+	uint getElementCount() const { return _elements.size(); }
+	AnimationElement *getElement(int elementIndex) const { return _elements[elementIndex]; }
+	AnimationElement *getElementByFrame(AnimationFrame *frame) const { return _elements[frame->getElementIndex()]; }
+	AnimationFrame *getFrameListFrame(int frameListIndex, int frameIndex) const { return _anims[frameListIndex]->getFrame(frameIndex); }
+protected:
 	typedef Common::Array<uint32> OffsetArray;
 	Common::Array<AnimationElement*> _elements;
 	Common::Array<AnimationCel*> _cels;
 	Common::Array<AnimationFrameList*> _anims;
-	// TODO: Section 4 is palette
 	void free();
 	void internalLoad(Common::MemoryReadStream &stream);
 	void loadOffsets(Common::SeekableReadStream &sourceS, OffsetArray &offsets);

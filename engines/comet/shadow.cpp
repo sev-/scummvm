@@ -109,7 +109,7 @@ void CometEngine::loadSceneDecoration() {
 }
 
 void CometEngine::drawSceneDecoration() {
-	if (_sceneDecorationSprite->_elements.size() > 0)
+	if (_sceneDecorationSprite->getElementCount() > 0)
 		_screen->drawAnimationElement(_sceneDecorationSprite, 0, 0, 0);
 }
 
@@ -140,13 +140,13 @@ void CometEngine::initAndLoadGlobalData() {
 		_introPalette2 = _res->loadRawFromPak("RES.PAK", 8);
 		// Initialize mouse cursors
 		_cursorSprite = _animationMan->loadAnimationResource("RES.PAK", 9);
-		_mouseCursors[0] = _cursorSprite->_cels[1];
-		_mouseCursors[1] = _cursorSprite->_cels[0];
-		_mouseCursors[2] = _cursorSprite->_cels[4];
-		_mouseCursors[3] = _cursorSprite->_cels[3];
-		_mouseCursors[4] = _cursorSprite->_cels[2];
-		_mouseCursors[5] = _cursorSprite->_cels[5];
-		_mouseCursors[6] = _cursorSprite->_cels[6];
+		_mouseCursors[0] = _cursorSprite->getCel(1);
+		_mouseCursors[1] = _cursorSprite->getCel(0);
+		_mouseCursors[2] = _cursorSprite->getCel(4);
+		_mouseCursors[3] = _cursorSprite->getCel(3);
+		_mouseCursors[4] = _cursorSprite->getCel(2);
+		_mouseCursors[5] = _cursorSprite->getCel(5);
+		_mouseCursors[6] = _cursorSprite->getCel(6);
 	}
 
 	_currCursorSprite = 0;
@@ -369,7 +369,7 @@ void CometEngine::addToSpriteDrawQueue(int y, int actorIndex, int insertIndex) {
 
 void CometEngine::enqueueSceneDecorationForDrawing() {
 	if (_sceneDecorationSprite) {
-		AnimationElement *elem = _sceneDecorationSprite->_elements[0];
+		AnimationElement *elem = _sceneDecorationSprite->getElement(0);
 		for (uint i = 0; i < elem->_commands.size(); i++) {
 			addToSpriteDrawQueue(elem->_commands[i]->_points[0].y, 16, -1);
 		}
@@ -406,7 +406,7 @@ void CometEngine::drawActor(int actorIndex) {
 }
 
 void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
-	AnimationFrameList *frameList = animation->_anims[frameListIndex];
+	AnimationFrameList *frameList = animation->getFrameList(frameListIndex);
 	uint frameIndex = 0;
 	if (frameList->getFrameCount() > 1) {
 		frameIndex = animFrameCounter % frameList->getFrameCount();
@@ -445,7 +445,7 @@ void CometEngine::freeAnimationsAndSceneDecoration() {
 }
 
 AnimationFrame *CometEngine::getAnimationFrame(int animationSlot, int animIndex, int animFrameIndex) {
-	return _animationMan->getAnimation(animationSlot)->_anims[animIndex]->getFrame(animFrameIndex);
+	return _animationMan->getAnimation(animationSlot)->getFrameListFrame(animIndex, animFrameIndex);
 }
 
 void CometEngine::updateScreen() {
@@ -711,7 +711,7 @@ void CometEngine::drawLineOfSight() {
 
 void CometEngine::initSceneDecorationBlockingRects() {
 	_scene->_blockingRects.clear();
-
+#if 0 // TODO
 	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->_commands.size(); i++) {
 		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->_commands[i];
 		AnimationElement *objectElement = _sceneDecorationSprite->_elements[((cmd->_arg2 << 8) | cmd->_arg1) & 0x7FFF];
@@ -729,6 +729,7 @@ void CometEngine::initSceneDecorationBlockingRects() {
 			_scene->addBlockingRect(blockX1 * 2, blockY1, blockX2 * 2, blockY2);
 		}
 	}
+#endif
 }
 
 void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
@@ -811,7 +812,7 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 	_talkText->stopText();
 
 	cutsceneSprite = _animationMan->loadAnimationResource(_animPakName.c_str(), fileIndex);
-	frameList = cutsceneSprite->_anims[frameListIndex];
+	frameList = cutsceneSprite->getFrameList(frameListIndex);
 	animFrameCount = frameList->getFrameCount();
 
 	if (backgroundIndex == 0) {

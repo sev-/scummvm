@@ -175,14 +175,14 @@ bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
 		_vm->_input->handleEvents();
 		switch (_vm->_input->getKeyCode()) {
 		case Common::KEYCODE_UP:
-			if (celIndex >= anim->_cels.size())
+			if (celIndex >= anim->getCelCount())
 				celIndex = 0;
 			else
 				celIndex++;
 			break;
 		case Common::KEYCODE_DOWN:
 			if (celIndex == 0)
-				celIndex = anim->_cels.size() - 1;
+				celIndex = anim->getCelCount() - 1;
 			else
 				celIndex--;
 			break;
@@ -193,7 +193,7 @@ bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
 			break;
 		}
 		debug(0, "celIndex = %d", celIndex);
-		currCel = anim->_cels[celIndex];
+		currCel = anim->getCel(celIndex);
 		x = _vm->_input->getMouseX() + 20;
 		y = _vm->_input->getMouseY() + 20;
 		_vm->_screen->clear();
