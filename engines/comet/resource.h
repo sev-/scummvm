@@ -112,6 +112,7 @@ public:
 	void loadFromStream(Common::SeekableReadStream &stream, bool ptAsByte);
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags);
 	const Common::Point &getPoint(uint pointIndex) const { return _points[pointIndex]; }
+	uint16 getArgAsInt16() const { return (_arg2 << 8) | _arg1; }
 };
 
 class AnimationElement {
