@@ -79,6 +79,7 @@ class TalkText;
 class TextReader;
 class TextResource;
 class FontResource;
+class SystemMouseCursor;
 
 enum CometGameID {
 	GID_COMET	= 0,	// Shadow of the Comet
@@ -227,6 +228,7 @@ public:
 	AnimationResource *_bubbleSprite, *_heroSprite, *_inventoryItemSprites, *_cursorSprite, *_iconSprite;
 	AnimationResource *_sceneDecorationSprite;
 	const byte *_currCursorSprite;
+	SystemMouseCursor *_systemMouseCursor;
 
 	byte *_screenPalette, *_backupPalette;
 
@@ -308,7 +310,7 @@ public:
 
 	// cursorSprite = NULL uses the engine's system cursor
 	void setMouseCursor(int cursorNum);
-	void setMouseCursorSprite(AnimationCel *cursorSprite);
+	void setMouseCursorSprite(const AnimationCel *cursorSprite);
 
 	int16 randomValue(int maxValue);
 	

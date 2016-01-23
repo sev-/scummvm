@@ -149,7 +149,7 @@ void CometEngine::initAndLoadGlobalData() {
 		_mouseCursors[6] = _cursorSprite->_cels[6];
 	}
 
-	_currCursorSprite = NULL;
+	_currCursorSprite = 0;
 
 	_screen->setFontColor(0);
 
@@ -497,51 +497,17 @@ void CometEngine::setMouseCursor(int cursorNum) {
 	setMouseCursorSprite(cursorNum < 0 ? 0 : _mouseCursors[cursorNum]);
 }
 
-void CometEngine::setMouseCursorSprite(AnimationCel *cursorSprite) {
-
-	static const byte sysMouseCursor1[] = {
-		  1,  0,  0,  2,192,192, 14,  1,  0,  0,  3,192,255,
-		192, 13,  1,  0,  1,  0,192,255,255,192, 12,  1,  0,
-		  1,  1,192,255,255,255,192, 11,  1,  0,  1,  2,192,
-		255,255,255,255,192, 10,  1,  0,  1,  3,192,255,255,
-		255,255,255,192,  9,  1,  0,  2,  0,192,255,255,255,
-		255,255,255,192,  8,  1,  0,  2,  1,192,255,255,255,
-		255,255,255,255,192,  7,  1,  0,  2,  2,192,255,255,
-		255,255,255,255,255,255,192,  6,  1,  0,  2,  3,192,
-		255,255,255,255,255,192,192,192,192,192,  5,  1,  0,
-		  1,  3,192,255,255,192,255,255,192,  9,  2,  0,  0,
-		  3,192,255,192,  1,  1,  0,192,255,255,192,  8,  2,
-		  0,  0,  2,192,192,  2,  1,  0,192,255,255,192,  8,
-		  2,  0,  0,  1,192,  4,  1,  0,192,255,255,192,  7,
-		  1,  5,  1,  0,192,255,255,192,  7,  1,  6,  0,  3,
-		192,192,192,  7};
-
-	int width, height;
-	const byte *data;
-
+void CometEngine::setMouseCursorSprite(const AnimationCel *cursorSprite) {
 	if (isFloppy()) {
 		warning("setMouseCursorSprite() called in floppy version");
 		return;
 	}
-
 	if (!cursorSprite) {
-		data = sysMouseCursor1;
-		width = 16;
-		height = 16;
+		_systemMouseCursor->setCursor(&_currCursorSprite);
 	} else {
-		data = cursorSprite->_data;
-		width = cursorSprite->_width;
-		height = cursorSprite->_height;
+		AnimationCelMouseCursor celMouseCursor(cursorSprite);
+		celMouseCursor.setCursor(&_currCursorSprite);
 	}
-
-	if (_currCursorSprite != data) {
-		Graphics::Surface *cursor = _screen->decompressAnimationCel(data, width, height);
-		CursorMan.replaceCursor((const byte *)cursor->getPixels(), cursor->w, cursor->h, 0, 0, 0);
-		cursor->free();
-		delete cursor;
-		_currCursorSprite = data;
-	}
-	
 }
 
 int16 CometEngine::randomValue(int maxValue) {

@@ -179,6 +179,7 @@ Common::Error CometEngine::run() {
 	ConfMan.registerDefault("text_speed", 1);
 	ConfMan.registerDefault("game_speed", 2);
 	
+	_systemMouseCursor = new SystemMouseCursor();
 	_console = new CometConsole(this);
 
 	// Any music driver gets Adlib music except for 'No sound'
@@ -353,6 +354,7 @@ Common::Error CometEngine::run() {
 
 	delete _talkText;
 	delete _input;
+	delete _systemMouseCursor;
 
 	return Common::kNoError;
 }
