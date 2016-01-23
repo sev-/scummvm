@@ -111,6 +111,7 @@ public:
 	Common::Array<Common::Point> _points;
 	void loadFromStream(Common::SeekableReadStream &stream, bool ptAsByte);
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags);
+	bool getBlockingRect(AnimationResource *animation, Common::Rect &blockingRect);
 	const Common::Point &getPoint(uint pointIndex) const { return _points[pointIndex]; }
 	uint16 getArgAsInt16() const { return (_arg2 << 8) | _arg1; }
 };
@@ -123,6 +124,8 @@ public:
 	void draw(CometSurface *destSurface, AnimationResource *animation, int16 x, int16 y, byte parentFlags = 0);
 	uint getCommandCount() const { return _commands.size(); }
 	AnimationCommand *getCommand(uint commandIndex) const { return _commands[commandIndex]; }
+	byte getWidth() const { return _width; }
+	byte getHeight() const { return _height; }
 protected:
 	byte _width, _height, _flags;
 };

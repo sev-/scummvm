@@ -710,26 +710,15 @@ void CometEngine::drawLineOfSight() {
 }
 
 void CometEngine::initSceneDecorationBlockingRects() {
+	Common::Rect blockingRect;
 	_scene->_blockingRects.clear();
-#if 0 // TODO
-	for (uint i = 0; i < _sceneDecorationSprite->_elements[0]->_commands.size(); i++) {
-		AnimationCommand *cmd = _sceneDecorationSprite->_elements[0]->_commands[i];
-		AnimationElement *objectElement = _sceneDecorationSprite->_elements[cmd->getArgAsInt16() & 0x7FFF];
-		debug(8, "%03d: cmd = %d; arg1 = %d; arg2 = %d; x = %d; y = %d; width = %d; height = %d",
-			i, cmd->_cmd, cmd->_arg1, cmd->_arg2, cmd->_points[0].x, cmd->_points[0].y, objectElement->_width, objectElement->_height);
-		if (objectElement->_width / 2 > 0) {
-			int16 blockX1, blockY1, blockX2, blockY2;
-			if (cmd->_cmd == 0)
-				blockX1 = (cmd->_points[0].x - objectElement->_width) / 2;
-			else
-				blockX1 = cmd->_points[0].x / 2;
-			blockY1 = cmd->_points[0].y - (objectElement->_height / 16 % 4 * 4 + 4);
-			blockX2 = (cmd->_points[0].x + objectElement->_width) / 2;
-			blockY2 = cmd->_points[0].y;
-			_scene->addBlockingRect(blockX1 * 2, blockY1, blockX2 * 2, blockY2);
+	AnimationElement *element = _sceneDecorationSprite->getElement(0);
+	for (uint i = 0; i < element->getCommandCount(); ++i) {
+		AnimationCommand *cmd = element->getCommand(i);
+		if (cmd->getBlockingRect(_sceneDecorationSprite, blockingRect)) {
+			_scene->addBlockingRect(blockingRect.left * 2, blockingRect.top, blockingRect.right * 2, blockingRect.bottom);
 		}
 	}
-#endif
 }
 
 void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {

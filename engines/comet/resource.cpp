@@ -253,6 +253,20 @@ void AnimationCommand::draw(CometSurface *destSurface, AnimationResource *animat
 
 }
 
+bool AnimationCommand::getBlockingRect(AnimationResource *animation, Common::Rect &blockingRect) {
+	AnimationElement *objectElement = animation->getElement(getArgAsInt16() & 0x7FFF);
+	const byte elemWidth = objectElement->getWidth();
+	const byte elemHeight = objectElement->getHeight();
+	if (elemWidth / 2 > 0) {
+		blockingRect.left = _cmd == 0 ? (_points[0].x - elemWidth) / 2 : _points[0].x / 2;
+		blockingRect.top = _points[0].y - (elemHeight / 16 % 4 * 4 + 4);
+		blockingRect.right = (_points[0].x + elemWidth) / 2;
+		blockingRect.bottom = _points[0].y;
+		return true;
+	}
+	return false;
+}
+
 // AnimationElement
 
 AnimationElement::~AnimationElement() {
