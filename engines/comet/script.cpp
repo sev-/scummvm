@@ -773,27 +773,27 @@ void ScriptInterpreter::o1_addBlockingRect(Script *script) {
 }
 
 void ScriptInterpreter::o1_ifSpeak(Script *script) {
-	if (_vm->_cmdTalk) {
+	if (_vm->_verbs.isTalkRequested()) {
 		script->ip += 2;
-		_vm->_cmdTalk = false;
+		_vm->_verbs.clearTalkRequested();
 	} else
 		script->jump();
 }
 
 void ScriptInterpreter::o1_ifSpeakTo(Script *script) {
 	ARG_BYTE(actorIndex);
-	if (_vm->_cmdTalk && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
+	if (_vm->_verbs.isTalkRequested() && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
 		script->ip += 2;
-		_vm->_cmdTalk = false;
+		_vm->_verbs.clearTalkRequested();
 	} else
 		script->jump();
 }
 
 void ScriptInterpreter::o1_ifSpeakZone(Script *script) {
-	if (_vm->_cmdTalk) {
+	if (_vm->_verbs.isTalkRequested()) {
 		if (isHeroInZone(script)) {
 			script->ip += 2;
-			_vm->_cmdTalk = false;
+			_vm->_verbs.clearTalkRequested();
 		} else
 			script->jump();
 	} else {
@@ -818,27 +818,27 @@ bool ScriptInterpreter::isHeroInZone(Script *script) {
 }
 
 void ScriptInterpreter::o1_ifLook(Script *script) {
-	if (_vm->_cmdLook) {
+	if (_vm->_verbs.isLookRequested()) {
 		script->ip += 2;
-		_vm->_cmdLook = false;
+		_vm->_verbs.clearLookRequested();
 	} else
 		script->jump();
 }
 
 void ScriptInterpreter::o1_ifLookAt(Script *script) {
 	ARG_BYTE(actorIndex);
-	if (_vm->_cmdLook && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
+	if (_vm->_verbs.isLookRequested() && _vm->isActorNearActor(0, actorIndex, 40, 40)) {
 		script->ip += 2;
-		_vm->_cmdLook = false;
+		_vm->_verbs.clearLookRequested();
 	} else
 		script->jump();
 }
 
 void ScriptInterpreter::o1_ifLookZone(Script *script) {
-	if (_vm->_cmdLook) {
+	if (_vm->_verbs.isLookRequested()) {
 		if (isHeroInZone(script)) {
 			script->ip += 2;
-			_vm->_cmdLook = false;
+			_vm->_verbs.clearLookRequested();
 		} else
 			script->jump();
 	} else {

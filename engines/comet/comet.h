@@ -145,6 +145,29 @@ enum {
 	kDebugScreen	= (1 << 6)
 };
 
+class Verbs {
+public:
+	Verbs() {
+		clear();
+	}
+	void clear() {
+		_look = false;
+		_get = false;
+		_talk = false;
+	}
+	bool isLookRequested() const { return _look; }
+	bool isGetRequested() const { return _get; }
+	bool isTalkRequested() const { return _talk; }
+	void clearLookRequested() { _look = false; }
+	void clearGetRequested() { _get = false; }
+	void clearTalkRequested() { _talk = false; }
+	void requestLook() { _look = true; }
+	void requestGet() { _get = true; }
+	void requestTalk() { _talk = true; }
+protected:
+	bool _look, _get, _talk;
+};
+
 class CometEngine : public Engine {
 protected:
 	Common::Error run();
@@ -238,7 +261,6 @@ public:
 	int _gameLoopCounter;
 	bool _endIntroLoop;
 
-	bool _cmdLook, _cmdGet, _cmdTalk;
 	int _currentInventoryItem;
 
 	int _textColorFlag;
@@ -247,6 +269,8 @@ public:
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
 
 	int16 _scriptRandomValue;
+
+	Verbs _verbs;
 
 	// Audio
 	MusicPlayer *_music;
