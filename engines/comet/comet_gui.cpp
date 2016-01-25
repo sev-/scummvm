@@ -167,6 +167,10 @@ int GuiInventory::run() {
 
 	// Build items array and set up variables
 	for (int i = 0; i < 256; i++) {
+		if (_vm->_inventoryItemIndex != 0 && _vm->_inventoryItemIndex == i) {
+			_vm->_currentInventoryItem = i;
+			_vm->_inventoryItemIndex = 0;
+		}
 		if (_vm->_inventoryItemStatus[i] >= 1) {
 			items.push_back(i);
 			if (i == _vm->_currentInventoryItem) {
