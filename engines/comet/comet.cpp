@@ -251,9 +251,7 @@ Common::Error CometEngine::run() {
 	_portraitTalkCounter = 0;
 	_portraitTalkAnimNumber = 0;
 
-	_cmdLook = false;
-	_cmdGet = false;
-	_cmdTalk = false;
+	_verbs.clear();
 
 	_currentInventoryItem = -1;
 

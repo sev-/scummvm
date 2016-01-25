@@ -455,15 +455,15 @@ int GuiCommandBar::handleCommandBar() {
 			commandBarStatus = 2;
 			break;
 		case kCBAVerbTalk:
-			_vm->_cmdTalk = true;
+			_vm->_verbs.requestTalk();
 			commandBarStatus = 1;
 			break;
 		case kCBAVerbGet:
-			_vm->_cmdGet = true;
+			_vm->_verbs.requestGet();
 			commandBarStatus = 1;
 			break;
 		case kCBAVerbLook:
-			_vm->_cmdLook = true;
+			_vm->_verbs.requestLook();
 			commandBarStatus = 1;
 			break;
 		case kCBAUseItem:

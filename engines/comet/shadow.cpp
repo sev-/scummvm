@@ -46,6 +46,8 @@
 
 namespace Comet {
 
+// CometEngine
+
 int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
 	int flags = 0;
 	if (x == x2)
@@ -216,10 +218,10 @@ void CometEngine::updateGame() {
 
 	_screen->copyFromScreenResource(_sceneBackgroundResource);
 
-	if (_cmdLook)
+	if (_verbs.isLookRequested())
 		lookAtItemInSight(true);
 
-	if (_cmdGet)
+	if (_verbs.isGetRequested())
 		getItemInSight();
 
 	_input->handleInput();
@@ -248,9 +250,7 @@ void CometEngine::updateGame() {
 
 	_loadgameRequested = false;
 
-	_cmdTalk = false;
-	_cmdGet = false;
-	_cmdLook = false;
+	_verbs.clear();
 }
 
 void CometEngine::updateHeroLife() {
@@ -409,9 +409,7 @@ void CometEngine::resetVars() {
 	// NOTE: scDisableRectFlag(); // Unused in Comet
 	_paletteBrightness = 255;
 	// NOTE: g_sp_byte_1 = 0; // Unused in Comet
-	_cmdGet = false;
-	_cmdLook = false;
-	_cmdTalk = false;
+	_verbs.clear();
  	_scene->clearExits();
 	_scene->_sceneItems.clear();
 	_input->unblockInput();
@@ -575,15 +573,15 @@ void CometEngine::warpMouseToRect(const GuiRectangle &rect) {
 void CometEngine::handleKeyInput() {
 	switch (_input->getKeyCode()) {
 	case Common::KEYCODE_t:
-		_cmdTalk = true;
+		_verbs.requestTalk();
 		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_g:
-		_cmdGet = true;
+		_verbs.requestGet();
 		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_l:
-		_cmdLook = true;
+		_verbs.requestLook();
 		_input->waitForKeys();
 		break;
 	case Common::KEYCODE_o:
