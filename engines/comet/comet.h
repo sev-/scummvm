@@ -292,7 +292,6 @@ public:
 
 	void drawSpriteQueue();
 	void drawActor(int actorIndex);
-	void drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 
 	void updateTextDialog();
 	void updateText();

@@ -108,6 +108,30 @@ int Gui::run(GuiPageIdent page) {
 	return result;
 }
 
+// GuiPage
+
+void GuiPage::drawIcon(int elementIndex, int x, int y) {
+	_vm->_screen->drawAnimationElement(_vm->_iconSprite, elementIndex, x, y);
+}
+
+void GuiPage::drawAnimatedIcon(uint frameListIndex, int x, int y, uint animFrameCounter) {
+	drawAnimatedIconSprite(_vm->_iconSprite, frameListIndex, x, y, animFrameCounter);
+}
+
+void GuiPage::drawAnimatedInventoryIcon(uint frameListIndex, int x, int y, uint animFrameCounter) {
+	drawAnimatedIconSprite(_vm->_inventoryItemSprites, frameListIndex, x, y, animFrameCounter);
+}
+
+void GuiPage::drawAnimatedIconSprite(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
+	AnimationFrameList *frameList = animation->getFrameList(frameListIndex);
+	uint frameIndex = 0;
+	if (frameList->getFrameCount() > 1) {
+		frameIndex = animFrameCounter % frameList->getFrameCount();
+		frameList->accumulateDrawOffset(x, y, frameIndex);
+	}
+	_vm->_screen->drawAnimationElement(animation, frameList->getFrame(frameIndex)->getElementIndex(), x, y);
+}
+
 // GuiInventory
 
 int GuiInventory::run() {
@@ -242,20 +266,20 @@ int GuiInventory::run() {
 		_vm->_input->waitForKeys();
 	}
 
-	return 2 - inventoryStatus;;
+	return 2 - inventoryStatus;
 }
 
 void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
 	const uint kMaxItemsOnScreen = 10;
 	const uint xadd = 74, yadd = 64, itemHeight = 12;
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 16, 0, 0);
+	drawIcon(16);
 	// Draw up arrow
 	if (firstItem > 0)
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 53, 0, 0);
+		drawIcon(53);
 	// Draw down arrow
 	if (firstItem + kMaxItemsOnScreen < items.size())
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 52, 0, 0);
+		drawIcon(52);
 	for (uint itemIndex = 0; (itemIndex < kMaxItemsOnScreen) && (firstItem + itemIndex < items.size()); itemIndex++) {
 		byte *itemName = _vm->_inventoryItemNames->getString(items[firstItem + itemIndex]);
 		const int itemX = xadd + 21, itemY = yadd + itemHeight * itemIndex;
@@ -263,7 +287,7 @@ void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, u
 		_vm->_screen->drawText(itemX, itemY, itemName);
 		_vm->_screen->setFontColor(119);
 		_vm->_screen->drawText(itemX + 1, itemY + 1, itemName);
-		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
+		drawAnimatedInventoryIcon(items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
 	}
 	if (items.size() > 0) {
 		const int selectionY = yadd + (currentItem - firstItem) * itemHeight - 1;
@@ -288,8 +312,8 @@ void GuiCommandBar::drawCommandBar(int selectedItem) {
 	const int x = 196;
 	const int y = 14;
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 0, 0, 0);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, selectedItem + 1, 0, 0);
+	drawIcon(0);
+	drawIcon(selectedItem + 1);
 	if (_vm->_currentInventoryItem >= 0 && _vm->_inventoryItemStatus[_vm->_currentInventoryItem] == 0) {
 		_vm->_currentInventoryItem = -1;
 		for (int inventoryItem = 0; inventoryItem <= 255 && _vm->_currentInventoryItem == -1; inventoryItem++) {
@@ -298,7 +322,7 @@ void GuiCommandBar::drawCommandBar(int selectedItem) {
 		}
 	}
 	if (_vm->_currentInventoryItem >= 0)
-		_vm->drawAnimatedIcon(_vm->_inventoryItemSprites, _vm->_currentInventoryItem, x, y, _animFrameCounter);
+		drawAnimatedInventoryIcon(_vm->_currentInventoryItem, x, y, _animFrameCounter);
 }
 
 int GuiCommandBar::handleCommandBar() {
@@ -596,8 +620,8 @@ void GuiMainMenu::drawMainMenu(int selectedItem) {
 	const int x = 137;
 	const int y = 65;
 	const int itemHeight = 23;
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 10, 0, 0);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 11, x, y + selectedItem * itemHeight);
+	drawIcon(10);
+	drawIcon(11, x, y + selectedItem * itemHeight);
 }
 
 // GuiOptionsMenu
@@ -843,58 +867,58 @@ void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int d
 	const int gaugeX = 128;
 	const int gaugeY = 70;
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 25, 0, 0);
+	drawIcon(25);
 
 	if (!_vm->isFloppy() && selectedItem == 5)
 		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
 	else
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 28, itemLeftX, selectedItem * itemHeight + itemTopY);
+		drawIcon(28, itemLeftX, selectedItem * itemHeight + itemTopY);
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + musicVolumeDiv * 4, gaugeY);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + digiVolumeDiv * 4, gaugeY + itemHeight);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, language + 32, 129, _vm->isFloppy() ? 177 : 157);
+	drawIcon(27, gaugeX + musicVolumeDiv * 4, gaugeY);
+	drawIcon(27, gaugeX + digiVolumeDiv * 4, gaugeY + itemHeight);
+	drawIcon(27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
+	drawIcon(language + 32, 129, _vm->isFloppy() ? 177 : 157);
 
 	if (_vm->isFloppy())
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 27, gaugeX + textSpeed * 30, gaugeY + itemHeight * 2);
+		drawIcon(27, gaugeX + textSpeed * 30, gaugeY + itemHeight * 2);
 
 	if (musicVolumeDiv == 0) {
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 55, 0, 0);
+		drawIcon(55);
 	} else if (musicVolumeDiv > 0 && musicVolumeDiv < 8) {
 		if (animFrameCounter < 16) {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 71, 0, 0);
+			drawIcon(71);
 		} else {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 72, 0, 0);
+			drawIcon(72);
 		}
 	} else if (musicVolumeDiv >= 8) {
 		if (animFrameCounter < 16) {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 73, 0, 0);
+			drawIcon(73);
 		} else {
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 74, 0, 0);
+			drawIcon(74);
 		}
 	}
 
 	if (digiVolumeDiv == 0)
-		_vm->drawAnimatedIcon(_vm->_iconSprite, 1, 0, 0, animFrameCounter);
+		drawAnimatedIcon(1, 0, 0, animFrameCounter);
 	else if (digiVolumeDiv < 7)
-		_vm->drawAnimatedIcon(_vm->_iconSprite, 2, 0, 0, animFrameCounter);
+		drawAnimatedIcon(2, 0, 0, animFrameCounter);
 	else
-		_vm->drawAnimatedIcon(_vm->_iconSprite, 3, 0, 0, animFrameCounter);
+		drawAnimatedIcon(3, 0, 0, animFrameCounter);
 
 	if (_vm->isFloppy()) {
 		if ((textSpeed == 0 && animFrameCounter > 6) ||
 			(textSpeed == 1 && animFrameCounter > 16) ||
 			(textSpeed == 2 && animFrameCounter > 24))
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 70, 0, 0);
+			drawIcon(70);
 	} else
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, _vm->_talkText->getTalkieMode() + 79, 0, 0);
+		drawIcon(_vm->_talkText->getTalkieMode() + 79);
 
 	if (gameSpeed < 5)
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 75, 0, 0);
+		drawIcon(75);
 	else if (gameSpeed >= 5 && gameSpeed < 10)
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 76, 0, 0);
+		drawIcon(76);
 	else if (gameSpeed >= 10)
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 77, 0, 0);
+		drawIcon(77);
 
 }
 
@@ -1011,7 +1035,7 @@ int GuiTownMap::run() {
 		if (cursorChanged) {
 			currMapLocation = -1;
 			selectedMapLocation = -1;
-			_vm->_screen->drawAnimationElement(_vm->_iconSprite, 50, 0, 0);
+			drawIcon(50);
 			for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
 				const MapRect &mapRect = mapRects[mapLocation];
 				if ((sceneBitMaskStatus & (1 << mapLocation)) && 
@@ -1026,7 +1050,7 @@ int GuiTownMap::run() {
 				_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
 					cursorY - 6, locationName, 119, 120);
 			} else {
-				_vm->_screen->drawAnimationElement(_vm->_iconSprite, 51, cursorX, cursorY);
+				drawIcon(51, cursorX, cursorY);
 			}
 		}
 
@@ -1178,9 +1202,9 @@ void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte font
 
 	byte *pageText = _vm->_textReader->getString(2, pageTextIndex);
 
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
+	drawIcon(30);
 	if (pageTextIndex < pageTextMaxIndex)
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 37, 0, 0);
+		drawIcon(37);
 
 	_vm->_screen->setFontColor(58);
 
@@ -1212,8 +1236,8 @@ void GuiJournal::bookTurnPage(bool turnDirection) {
 	const uint last = turnDirection ? 49 : 38;
 	const int incr = turnDirection ? +1 : -1;
 	for (uint i = first; i != last; i += incr) {
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, 30, 0, 0);
-		_vm->_screen->drawAnimationElement(_vm->_iconSprite, i, 0, 0);
+		drawIcon(30);
+		drawIcon(i);
 		_vm->syncUpdate();
 	}
 }
@@ -1645,7 +1669,7 @@ void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem) {
 	const int x = 95;
 	const int y = 64;
 	const int itemHeight = 12;
-	_vm->_screen->drawAnimationElement(_vm->_iconSprite, _asSaveMenu ? 14 : 15, 0, 0);
+	drawIcon(_asSaveMenu ? 14 : 15);
 	for (int itemIndex = 0; itemIndex < 10; itemIndex++)
 		drawSavegameDescription(_savegames[itemIndex].description, itemIndex);
 	_vm->_screen->frameRect(x - 2, y + selectedItem * itemHeight - 2, x + 138, y + selectedItem * itemHeight + 9, 119);
