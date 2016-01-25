@@ -405,16 +405,6 @@ void CometEngine::drawActor(int actorIndex) {
 	actor->draw();
 }
 
-void CometEngine::drawAnimatedIcon(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter) {
-	AnimationFrameList *frameList = animation->getFrameList(frameListIndex);
-	uint frameIndex = 0;
-	if (frameList->getFrameCount() > 1) {
-		frameIndex = animFrameCounter % frameList->getFrameCount();
-		frameList->accumulateDrawOffset(x, y, frameIndex);
-	}
-	_screen->drawAnimationElement(animation, frameList->getFrame(frameIndex)->getElementIndex(), x, y);
-}
-
 void CometEngine::resetVars() {
 	// NOTE: scDisableRectFlag(); // Unused in Comet
 	_paletteBrightness = 255;

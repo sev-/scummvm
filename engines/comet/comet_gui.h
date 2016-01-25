@@ -53,6 +53,10 @@ public:
 	};
 protected:
 	CometEngine *_vm;
+	void drawIcon(int elementIndex, int x = 0, int y = 0);
+	void drawAnimatedIcon(uint frameListIndex, int x, int y, uint animFrameCounter);
+	void drawAnimatedInventoryIcon(uint frameListIndex, int x, int y, uint animFrameCounter);
+	void drawAnimatedIconSprite(AnimationResource *animation, uint frameListIndex, int x, int y, uint animFrameCounter);
 };
 
 class GuiInventory : public GuiPage {
