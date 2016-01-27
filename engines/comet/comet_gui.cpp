@@ -166,19 +166,7 @@ int GuiInventory::run() {
 	_vm->setMouseCursor(-1);
 
 	// Build items array and set up variables
-	for (int i = 0; i < 256; i++) {
-		if (_vm->_inventoryItemIndex != 0 && _vm->_inventoryItemIndex == i) {
-			_vm->_currentInventoryItem = i;
-			_vm->_inventoryItemIndex = 0;
-		}
-		if (_vm->_inventoryItemStatus[i] >= 1) {
-			items.push_back(i);
-			if (i == _vm->_currentInventoryItem) {
-				firstItem = items.size() < 5 ? 0 : items.size() - 5;
-				currentItem = items.size() - 1;
-			}
-		}
-	}
+	_vm->_inventory.buildItems(items, firstItem, currentItem);
 
 	while (inventoryStatus == 0 && !_vm->shouldQuit()) {
 		int inventoryAction = kIANone, mouseSelectedItem;
@@ -248,14 +236,11 @@ int GuiInventory::run() {
 			break;
 		case kIASelect:
 		case kIAUse:
-			for (uint i = 0; i < 255; i++) {
-				if (_vm->_inventoryItemStatus[i] == 2)
-					_vm->_inventoryItemStatus[i] = 1;
-			}
-			_vm->_currentInventoryItem = items[currentItem];
+			_vm->_inventory.resetStatus();
+			_vm->_inventory.selectItem(items[currentItem]);
 			// Return just selects, U actually uses the item
 			if (inventoryAction == kIAUse)
-				_vm->_inventoryItemStatus[_vm->_currentInventoryItem] = 2;
+				_vm->_inventory.requestUseSelectedItem();
 			inventoryStatus = 1;
 			break;
 		default:
@@ -318,15 +303,9 @@ void GuiCommandBar::drawCommandBar(int selectedItem) {
 
 	drawIcon(0);
 	drawIcon(selectedItem + 1);
-	if (_vm->_currentInventoryItem >= 0 && _vm->_inventoryItemStatus[_vm->_currentInventoryItem] == 0) {
-		_vm->_currentInventoryItem = -1;
-		for (int inventoryItem = 0; inventoryItem <= 255 && _vm->_currentInventoryItem == -1; inventoryItem++) {
-			if (_vm->_inventoryItemStatus[inventoryItem] > 0)
-				_vm->_currentInventoryItem = inventoryItem;
-		}
-	}
-	if (_vm->_currentInventoryItem >= 0)
-		drawAnimatedInventoryIcon(_vm->_currentInventoryItem, x, y, _animFrameCounter);
+	_vm->_inventory.testSelectFirstItem();
+	if (_vm->_inventory.getSelectedItem() >= 0)
+		drawAnimatedInventoryIcon(_vm->_inventory.getSelectedItem(), x, y, _animFrameCounter);
 }
 
 int GuiCommandBar::handleCommandBar() {

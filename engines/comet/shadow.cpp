@@ -46,6 +46,99 @@
 
 namespace Comet {
 
+// Inventory
+
+Inventory::Inventory() {
+	clear();
+}
+
+void Inventory::clear() {
+	_itemIndex = -1;
+	_currentItem = -1;
+	for (uint i = 0; i < ARRAYSIZE(_itemStatus); ++i)
+		_itemStatus[i] = 0;
+}
+
+int16 Inventory::getStatus(int itemIndex) {
+	return _itemStatus[itemIndex];
+}
+
+void Inventory::setStatus(int itemIndex, int16 status) {
+	_itemStatus[itemIndex] = status;
+}
+
+int16 *Inventory::getStatusPtr(int itemIndex) {
+	return &_itemStatus[itemIndex];
+}
+
+int Inventory::getSelectedItem() {
+	return _currentItem;
+}
+
+void Inventory::selectItem(int itemIndex) {
+	_currentItem = itemIndex;
+}
+
+void Inventory::requestGetItem(int itemIndex) {
+	_itemStatus[itemIndex] = 1;
+	_itemIndex = itemIndex;
+}
+
+void Inventory::requestUseSelectedItem() {
+	if (_currentItem != -1 && _itemStatus[_currentItem] == 1)
+		_itemStatus[_currentItem] = 2;
+}
+
+void Inventory::testSelectedItemRemoved() {
+	// If the currently selected item is disabled, scan for the preceeding item
+	// and set it as selected item.
+	if (_currentItem >= 0 && _itemStatus[_currentItem] == 0) {
+		if (_currentItem >= 1) {
+			for (_currentItem = _currentItem - 1;
+				_currentItem >= 0 && _itemStatus[_currentItem] == 0;
+				--_currentItem);
+		} else {
+			_currentItem = -1;
+		}
+	}
+}
+
+void Inventory::testSelectFirstItem() {
+	// If the currently selected item is disabled, try to select the first
+	// enabled item.
+	if (_currentItem >= 0 && _itemStatus[_currentItem] == 0) {
+		_currentItem = -1;
+		for (int i = 0; i < ARRAYSIZE(_itemStatus); ++i)
+			if (_itemStatus[i] > 0) {
+				_currentItem = i;
+				break;
+			}
+	}
+}
+
+void Inventory::resetStatus() {
+	for (uint i = 0; i < ARRAYSIZE(_itemStatus); ++i)
+		if (_itemStatus[i] == 2)
+			_itemStatus[i] = 1;
+}
+
+void Inventory::buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem) {
+	// Build items array and set up variables
+	for (int i = 0; i < ARRAYSIZE(_itemStatus); i++) {
+		if (_itemIndex != 0 && _itemIndex == i) {
+			_currentItem = i;
+			_itemIndex = 0;
+		}
+		if (_itemStatus[i] >= 1) {
+			items.push_back(i);
+			if (i == _currentItem) {
+				firstItem = items.size() < 5 ? 0 : items.size() - 5;
+				currentItem = items.size() - 1;
+			}
+		}
+	}
+}
+
 // CometEngine
 
 int CometEngine::comparePointXY(int x, int y, int x2, int y2) {
@@ -180,7 +273,6 @@ void CometEngine::initData() {
 	memcpy(_screenPalette, _gamePalette, 768);
 
 	memset(_scriptVars, 0, sizeof(_scriptVars));
-	memset(_inventoryItemStatus, 0, sizeof(_inventoryItemStatus));
 
 	_screen->setFontColor(19);
 	_input->unblockInput();
@@ -313,8 +405,7 @@ void CometEngine::getItemInSight() {
 	if (sceneItemIndex != 0) {
 		SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
 		if (sceneItem.paramType == 0) {
-			_inventoryItemStatus[sceneItem.itemIndex] = 1;
-			_inventoryItemIndex = sceneItem.itemIndex;
+			_inventory.requestGetItem(sceneItem.itemIndex);
 			sceneItem.active = false;
 			_talkText->showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
 		} else {
@@ -920,32 +1011,16 @@ void CometEngine::initSystemVars() {
 }
 
 void CometEngine::useCurrentInventoryItem() {
-	for (uint index = 0; index < 256; index++) {
-		if (_inventoryItemStatus[index] == 2)
-			_inventoryItemStatus[index] = 1;
-	}
-	if (_currentInventoryItem != -1) {
-		if (_inventoryItemStatus[_currentInventoryItem] == 1)
-			_inventoryItemStatus[_currentInventoryItem] = 2;
-	}
+	_inventory.resetStatus();
+	_inventory.requestUseSelectedItem();
 }
 
 void CometEngine::checkCurrentInventoryItem() {
-	// If the currently selected item was disabled, scan for the preceeding item
-	// and set it as selected item.
-	if (_currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0) {
-		if (_currentInventoryItem >= 1) {
-			for (_currentInventoryItem = _currentInventoryItem - 1; _currentInventoryItem >= 0 && _inventoryItemStatus[_currentInventoryItem] == 0;
-				_currentInventoryItem--) {
-			}
-		} else {
-			_currentInventoryItem = -1;
-		}
-	}
+	_inventory.testSelectedItemRemoved();
 	// Check if the player wants to read the notebook
-	if (_inventoryItemStatus[0] == 2) {
+	if (_inventory.getStatus(0) == 2) {
 		_gui->run(kGuiJournal);
-		_inventoryItemStatus[0] = 1;
+		_inventory.setStatus(0, 1);
 	}
 }
 
@@ -1128,12 +1203,12 @@ int CometEngine::handleMap() {
 			(_currentSceneNumber >= 30 || _currentSceneNumber <= 52) ||
 			(_currentSceneNumber >= 60 || _currentSceneNumber <= 82))) {
 			mapResult = _gui->run(kGuiTownMap);
-			_inventoryItemStatus[0] = 1;
+			_inventory.setStatus(0, 1);
 		}
 
 		if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
 			mapResult = _gui->run(kGuiTownMap);
-			_inventoryItemStatus[0] = 1;
+			_inventory.setStatus(0, 1);
 		}
 		
 	}

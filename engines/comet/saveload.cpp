@@ -80,6 +80,8 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 
 void CometEngine::savegame(const char *filename, const char *description) {
 
+	// TODO Later use Serializer and add serializer code to the various classes
+
 	debug("Saving %s [%s]...", filename, description);
 
 	Common::OutSaveFile *out;
@@ -213,7 +215,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->write(_scene->_boundsMap, 320);
 	
 	for (int i = 0; i < 256; i++)
-		out->writeUint16LE(_inventoryItemStatus[i]);
+		out->writeUint16LE(_inventory.getStatus(i));
 
 	for (int i = 0; i < 256; i++)
 		out->writeUint16LE(_scriptVars[i]);
@@ -377,8 +379,10 @@ void CometEngine::loadgame(const char *filename) {
 
 	in->read(_scene->_boundsMap, 320);
 
-	for (int i = 0; i < 256; i++)
-		_inventoryItemStatus[i] = in->readUint16LE();
+	for (int i = 0; i < 256; i++) {
+		int16 status = in->readUint16LE();
+		_inventory.setStatus(i, status);
+	}
 
 	for (int i = 0; i < 256; i++)
 		_scriptVars[i] = in->readUint16LE();
