@@ -252,8 +252,7 @@ Common::Error CometEngine::run() {
 	_portraitTalkAnimNumber = 0;
 
 	_verbs.clear();
-
-	_currentInventoryItem = -1;
+	_inventory.clear();
 
 	_nextTick = 0;
 

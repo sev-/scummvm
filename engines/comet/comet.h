@@ -168,6 +168,27 @@ protected:
 	bool _look, _get, _talk;
 };
 
+class Inventory {
+public:
+	Inventory();
+	void clear();
+	int16 getStatus(int itemIndex);
+	void setStatus(int itemIndex, int16 status);
+	int16 *getStatusPtr(int itemIndex);
+	int getSelectedItem();
+	void selectItem(int itemIndex);
+	void requestGetItem(int itemIndex);
+	void requestUseSelectedItem();
+	void testSelectedItemRemoved();
+	void testSelectFirstItem();
+	void resetStatus();
+	void buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem);
+protected:
+	int16 _itemStatus[256];
+	int _currentItem;
+	int _itemIndex;
+};
+
 class CometEngine : public Engine {
 protected:
 	Common::Error run();
@@ -229,7 +250,7 @@ public:
 
 	Actors *_actors;
 
-	int _itemX, _itemY, _itemDirection, _inventoryItemIndex;
+	int _itemX, _itemY, _itemDirection;
 
 	int _paletteStatus;
 	byte _paletteBrightness, _paletteRedness;
@@ -261,8 +282,6 @@ public:
 	int _gameLoopCounter;
 	bool _endIntroLoop;
 
-	int _currentInventoryItem;
-
 	int _textColorFlag;
 	bool _itemInSight;
 
@@ -271,6 +290,7 @@ public:
 	int16 _scriptRandomValue;
 
 	Verbs _verbs;
+	Inventory _inventory;
 
 	// Audio
 	MusicPlayer *_music;
@@ -389,7 +409,7 @@ public:
 
 	// Script
 	int16 *_systemVars[256];
-	int16 _scriptVars[256], _inventoryItemStatus[256];
+	int16 _scriptVars[256];
 	void loadAndRunScript(bool loadingGame = false);
 
 	bool rectCompare(const Common::Rect &rect1, const Common::Rect &rect2);
