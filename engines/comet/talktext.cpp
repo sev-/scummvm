@@ -313,4 +313,10 @@ void TalkText::handleTalkFinished() {
 	}
 }
 
+void TalkText::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(_textTableIndex);
+	if (s.isLoading())
+		setVoiceFileIndex(_textTableIndex);
+}
+
 } // End of namespace Comet
