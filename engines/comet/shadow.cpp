@@ -296,8 +296,7 @@ void CometEngine::updateSceneNumber() {
 void CometEngine::getItemInSight() {
 	debug(4, "CometEngine::getItemInSight()");
 
-	Common::Rect sightRect;
-	_actors->getActor(0)->calcSightRect(sightRect, 0, 50);
+	Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
 
 	int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 	if (sceneItemIndex != 0) {
@@ -315,8 +314,7 @@ void CometEngine::getItemInSight() {
 void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
 	if (_input->getBlockedInput() != 15) {
-		Common::Rect sightRect;
-		_actors->getActor(0)->calcSightRect(sightRect, 0, 50);
+		Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
 		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
 		if (sceneItemIndex != 0) {
 			SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
