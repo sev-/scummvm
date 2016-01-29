@@ -142,11 +142,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 		syncAsPoint(s, bound);
 	}
 	
-	// TODO Later move the loop into the Actors class and actual serilization code into Actor
-	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
-		Actor *actor = _actors->getActor(actorIndex);
-		actor->sync(s);
-	}
+	_actors->sync(s);
 	
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
 		const AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);
@@ -233,10 +229,7 @@ void CometEngine::loadgame(const char *filename) {
 		_scene->_bounds.push_back(bound);
 	}
 
-	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
-		Actor *actor = _actors->getActor(actorIndex);
-		actor->sync(s);
-	}
+	_actors->sync(s);
 
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
 		AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);

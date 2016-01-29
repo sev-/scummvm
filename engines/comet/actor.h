@@ -122,8 +122,8 @@ public:
 	void clearAnimationSlotByIndex(int16 animationSlot);
 	uint16 checkCollisionWithActors(uint selfActorIndex, Common::Rect &testRect, Common::Rect &obstacleRect);
 	void resetHealth();
-	uint getCount() const { return kActorsCount; } // TODO Remove later, only used in saveload
 	Actor *getActor(uint index);
+	void sync(Common::Serializer &s);
 protected:
 	CometEngine *_vm;
 	Actor *_actors[kActorsCount];

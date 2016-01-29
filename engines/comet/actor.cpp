@@ -682,6 +682,12 @@ Actor *Actors::getActor(uint index) {
 	return _actors[index];
 }
 
+void Actors::sync(Common::Serializer &s) {
+	for (uint actorIndex = 0; actorIndex < kActorsCount; ++actorIndex) {
+		getActor(actorIndex)->sync(s);
+	}
+}
+
 AnimationResource *CometEngine::getGlobalAnimationResource(int16 animationType) {
 	switch (animationType) {
 	case 1:
