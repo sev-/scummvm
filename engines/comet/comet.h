@@ -431,8 +431,10 @@ public:
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
 
+	// TODO Subclass Serializer and move those two there
 	void syncAsPoint(Common::Serializer &s, Common::Point &point);
 	void syncAsRect(Common::Serializer &s, Common::Rect &rect);
+
 	void syncScriptVars(Common::Serializer &s);
 
 	int handleMap();
