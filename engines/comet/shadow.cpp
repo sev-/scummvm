@@ -606,12 +606,22 @@ void CometEngine::syncUpdate(bool screenUpdate) {
 	const uint32 kTargetFramerate = 10;
 	const uint32 kMillisPerFrame = 1000 / kTargetFramerate;
 	const uint32 kMinimumTimerResolution = 10;
+	const uint32 kUpdateScreenMillis = 20;
 	if (screenUpdate)
 		_screen->update();
 	// Try to keep the framerate as demanded by kMillisPerFrame
 	uint32 currTick = _system->getMillis();
-	if (_nextTick > currTick && _nextTick - currTick >= kMinimumTimerResolution)
-		_system->delayMillis(_nextTick - currTick);
+	if (_nextTick > currTick && _nextTick - currTick >= kMinimumTimerResolution) {
+		uint32 totalWaitMillis = _nextTick - currTick;
+		while (totalWaitMillis > 0) {
+			uint32 waitMillis = totalWaitMillis > kUpdateScreenMillis
+				? kUpdateScreenMillis : totalWaitMillis;
+			_system->delayMillis(waitMillis);
+			_input->handleEvents();
+			_system->updateScreen();
+			totalWaitMillis -= waitMillis;
+		}
+	}
 	// TODO Take gamespeed into account later
 	_nextTick = currTick + kMillisPerFrame;
 }
