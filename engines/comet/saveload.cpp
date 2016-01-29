@@ -95,6 +95,15 @@ void CometEngine::syncScriptVars(Common::Serializer &s) {
 		s.syncAsUint16LE(_scriptVars[i]);
 }
 
+void CometEngine::syncModuleSceneInfo(Common::Serializer &s) {
+	s.syncAsUint16LE(_moduleNumber);
+	s.syncAsUint16LE(_currentModuleNumber);
+	s.syncAsUint16LE(_prevModuleNumber);
+	s.syncAsUint16LE(_sceneNumber);
+	s.syncAsUint16LE(_currentSceneNumber);
+	s.syncAsUint16LE(_prevSceneNumber);
+}
+
 void CometEngine::savegame(const char *filename, const char *description) {
 
 	// TODO Later use Serializer and add serializer code to the various classes
@@ -121,13 +130,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 
 	Common::Serializer s(0, out);
 
-	out->writeUint16LE(_moduleNumber);
-	out->writeUint16LE(_currentModuleNumber);
-	out->writeUint16LE(_prevModuleNumber);
-	out->writeUint16LE(_sceneNumber);
-	out->writeUint16LE(_currentSceneNumber);
-	out->writeUint16LE(_prevSceneNumber);
-	
+	syncModuleSceneInfo(s);
+
 	out->writeUint16LE(_backgroundFileIndex);
 	out->writeUint16LE(_talkText->_textTableIndex);
 	out->writeUint32LE(_gameLoopCounter);
@@ -179,13 +183,8 @@ void CometEngine::loadgame(const char *filename) {
 	_animationMan->purgeAnimationSlots();
 	
 	Common::Serializer s(in, 0);
-
-	_moduleNumber = in->readUint16LE();
-	_currentModuleNumber = in->readUint16LE();
-	_prevModuleNumber = in->readUint16LE();
-	_sceneNumber = in->readUint16LE();
-	_currentSceneNumber = in->readUint16LE();
-	_prevSceneNumber = in->readUint16LE();
+	
+	syncModuleSceneInfo(s);
 
 	_backgroundFileIndex = in->readUint16LE();
 	uint voiceFileIndex = in->readUint16LE();

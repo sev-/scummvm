@@ -436,6 +436,7 @@ public:
 	void syncAsRect(Common::Serializer &s, Common::Rect &rect);
 
 	void syncScriptVars(Common::Serializer &s);
+	void syncModuleSceneInfo(Common::Serializer &s);
 
 	int handleMap();
 
