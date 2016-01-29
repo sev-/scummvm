@@ -275,6 +275,18 @@ void Scene::superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 
 }
 
+void Scene::initBlockingRectsFromAnimation(AnimationResource *animation) {
+	Common::Rect blockingRect;
+	_blockingRects.clear();
+	AnimationElement *element = animation->getElement(0);
+	for (uint i = 0; i < element->getCommandCount(); ++i) {
+		AnimationCommand *cmd = element->getCommand(i);
+		if (cmd->getBlockingRect(animation, blockingRect)) {
+			addBlockingRect(blockingRect.left * 2, blockingRect.top, blockingRect.right * 2, blockingRect.bottom);
+		}
+	}
+}
+
 void Scene::drawExits() {
 	for (uint32 i = 0; i < _exits.size(); i++) {
 		if (_exits[i].directionIndex == 3) {
