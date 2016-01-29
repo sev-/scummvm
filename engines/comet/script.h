@@ -26,8 +26,9 @@
 #ifndef COMET_SCRIPT_H
 #define COMET_SCRIPT_H
 
-#include "common/func.h"
 #include "comet/comet.h"
+#include "common/func.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -61,6 +62,7 @@ public:
 	uint16 loadVarValue();
 	uint16 loadValue();
 	Actor *actor() const;
+	void sync(Common::Serializer &s);
 private:
 	ScriptInterpreter *_inter;
 };

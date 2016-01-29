@@ -78,6 +78,23 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 	return ((in->eos() || in->err()) ? kRSHEIoError : kRSHENoError);
 }
 
+void CometEngine::syncAsPoint(Common::Serializer &s, Common::Point &point) {
+	s.syncAsUint16LE(point.x);
+	s.syncAsUint16LE(point.y);
+}
+
+void CometEngine::syncAsRect(Common::Serializer &s, Common::Rect &rect) {
+	s.syncAsUint16LE(rect.left);
+	s.syncAsUint16LE(rect.top);
+	s.syncAsUint16LE(rect.right);
+	s.syncAsUint16LE(rect.bottom);
+}
+
+void CometEngine::syncScriptVars(Common::Serializer &s) {
+	for (uint i = 0; i < ARRAYSIZE(_scriptVars); ++i)
+		s.syncAsUint16LE(_scriptVars[i]);
+}
+
 void CometEngine::savegame(const char *filename, const char *description) {
 
 	// TODO Later use Serializer and add serializer code to the various classes
@@ -102,6 +119,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeByte(0); // gameID
 	out->writeUint32LE(0); // flags
 
+	Common::Serializer s(0, out);
+
 	out->writeUint16LE(_moduleNumber);
 	out->writeUint16LE(_currentModuleNumber);
 	out->writeUint16LE(_prevModuleNumber);
@@ -116,70 +135,26 @@ void CometEngine::savegame(const char *filename, const char *description) {
 
 	out->writeByte(_scene->_exits.size());
 	for (Common::Array<SceneExitItem>::iterator iter = _scene->_exits.begin(); iter != _scene->_exits.end(); ++iter) {
-		const SceneExitItem &sceneExit = *iter;
-		out->writeUint16LE(sceneExit.directionIndex);
-		out->writeUint16LE(sceneExit.moduleNumber);
-		out->writeUint16LE(sceneExit.sceneNumber);
-		out->writeUint16LE(sceneExit.x1);
-		out->writeUint16LE(sceneExit.x2);
+		SceneExitItem &sceneExit = *iter;
+		sceneExit.sync(s);
 	}
 
 	out->writeByte(_script->_scriptCount);
 	for (int i = 0; i < _script->_scriptCount; i++) {
-		const Script &script = *_script->_scripts[i];
-		out->writeUint16LE(script.ip);
-		out->writeByte(script.actorIndex);
-		out->writeUint16LE(script.status);
-		out->writeUint16LE(script.scriptNumber);
-		out->writeUint16LE(script.loopCounter);
-		out->writeUint16LE(script.zoneX1);
-		out->writeUint16LE(script.zoneY1);
-		out->writeUint16LE(script.zoneX2);
-		out->writeUint16LE(script.zoneY2);
+		Script &script = *_script->_scripts[i];
+		script.sync(s);
 	}
 	
 	out->writeByte(_scene->_bounds.size());
 	for (PointArray::iterator iter = _scene->_bounds.begin(); iter != _scene->_bounds.end(); ++iter) {
-		const Common::Point &bound = *iter;
-		out->writeUint16LE(bound.x);
-		out->writeUint16LE(bound.y);
+		Common::Point &bound = *iter;
+		syncAsPoint(s, bound);
 	}
 	
 	// TODO Later move the loop into the Actors class and actual serilization code into Actor
 	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
 		Actor *actor = _actors->getActor(actorIndex);
-		out->writeUint16LE(actor->_x);
-		out->writeUint16LE(actor->_y);
-		out->writeUint16LE(actor->_directionAdd);
-		out->writeUint16LE(actor->_status);
-		out->writeUint16LE(actor->_direction);
-		out->writeByte(actor->_flag2);
-		out->writeUint16LE(actor->_animationSlot);
-		out->writeUint16LE(actor->_animIndex);
-		out->writeUint16LE(actor->_animFrameIndex);
-		out->writeUint16LE(actor->_interpolationStep);
-		out->writeUint16LE(actor->_animFrameCount);
-		out->writeUint16LE(actor->_animPlayFrameIndex);
-		out->writeUint16LE(actor->_deltaX);
-		out->writeUint16LE(actor->_deltaY);
-		out->writeUint16LE(actor->_collisionType);
-		out->writeUint16LE(actor->_collisionIndex);
-		out->writeByte(actor->_value6);
-		out->writeUint16LE(actor->_life);
-		out->writeByte(actor->_textColor);
-		out->writeByte(actor->_value7);
-		out->writeUint16LE(actor->_textX);
-		out->writeUint16LE(actor->_textY);
-		out->writeUint16LE(actor->_walkStatus);
-		out->writeUint16LE(actor->_walkDestX);
-		out->writeUint16LE(actor->_walkDestY);
-		out->writeUint16LE(actor->_savedWalkDestX);
-		out->writeUint16LE(actor->_savedWalkDestY);
-		out->writeUint16LE(actor->_clipX1);
-		out->writeUint16LE(actor->_clipY1);
-		out->writeUint16LE(actor->_clipX2);
-		out->writeUint16LE(actor->_clipY2);
-		out->writeByte(actor->_visible ? 1 : 0);
+		actor->sync(s);
 	}
 	
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
@@ -190,21 +165,14 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	
 	out->writeByte(_scene->_sceneItems.size());
 	for (Common::Array<SceneItem>::iterator iter = _scene->_sceneItems.begin(); iter != _scene->_sceneItems.end(); ++iter) {
-		const SceneItem &sceneItem = *iter;
-		out->writeUint16LE(sceneItem.itemIndex);
-		out->writeByte(sceneItem.active ? 1 : 0);
-		out->writeByte(sceneItem.paramType);
-		out->writeUint16LE(sceneItem.x);
-		out->writeUint16LE(sceneItem.y);
+		SceneItem &sceneItem = *iter;
+		sceneItem.sync(s);
 	}
 
 	out->writeByte(_scene->_blockingRects.size());
 	for (Common::Array<Common::Rect>::iterator iter = _scene->_blockingRects.begin(); iter != _scene->_blockingRects.end(); ++iter) {
-		const Common::Rect &blockingRect = *iter;
-		out->writeUint16LE(blockingRect.left);
-		out->writeUint16LE(blockingRect.top);
-		out->writeUint16LE(blockingRect.right);
-		out->writeUint16LE(blockingRect.bottom);
+		Common::Rect &blockingRect = *iter;
+		syncAsRect(s, blockingRect);
 	}
 
 	out->writeByte(_paletteBrightness);
@@ -214,11 +182,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 
 	out->write(_scene->_boundsMap, 320);
 	
-	for (int i = 0; i < 256; i++)
-		out->writeUint16LE(_inventory.getStatus(i));
-
-	for (int i = 0; i < 256; i++)
-		out->writeUint16LE(_scriptVars[i]);
+	_inventory.sync(s);
+	syncScriptVars(s);
 
 	delete out;
 
@@ -248,6 +213,8 @@ void CometEngine::loadgame(const char *filename) {
 	
 	_animationMan->purgeAnimationSlots();
 	
+	Common::Serializer s(in, 0);
+
 	_moduleNumber = in->readUint16LE();
 	_currentModuleNumber = in->readUint16LE();
 	_prevModuleNumber = in->readUint16LE();
@@ -268,72 +235,27 @@ void CometEngine::loadgame(const char *filename) {
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		SceneExitItem sceneExit;
-		sceneExit.directionIndex = in->readUint16LE();
-		sceneExit.moduleNumber = in->readUint16LE();
-		sceneExit.sceneNumber = in->readUint16LE();
-		sceneExit.x1 = in->readUint16LE();
-		sceneExit.x2 = in->readUint16LE();
+		sceneExit.sync(s);
 		_scene->_exits.push_back(sceneExit);
 	}
 
 	_script->_scriptCount = in->readByte();
 	for (int i = 0; i < _script->_scriptCount; i++) {
 		Script &script = *_script->_scripts[i];
-		script.ip = in->readUint16LE();
-		script.actorIndex = in->readByte();
-		script.status = in->readUint16LE();
-		script.scriptNumber = in->readUint16LE();
-		script.loopCounter = in->readUint16LE();
-		script.zoneX1 = in->readUint16LE();
-		script.zoneY1 = in->readUint16LE();
-		script.zoneX2 = in->readUint16LE();
-		script.zoneY2 = in->readUint16LE();
+		script.sync(s);
 	}
 
 	_scene->_bounds.clear();
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		Common::Point bound;
-		bound.x = in->readUint16LE();
-		bound.y = in->readUint16LE();
+		syncAsPoint(s, bound);
 		_scene->_bounds.push_back(bound);
 	}
 
-	// TODO Later move the loop into the Actors class and actual serilization code into Actor
 	for (uint actorIndex = 0; actorIndex < _actors->getCount(); ++actorIndex) {
 		Actor *actor = _actors->getActor(actorIndex);
-		actor->_x = in->readUint16LE();
-		actor->_y = in->readUint16LE();
-		actor->_directionAdd = in->readUint16LE();
-		actor->_status = in->readUint16LE();
-		actor->_direction = in->readUint16LE();
-		actor->_flag2 = in->readByte();
-		actor->_animationSlot = in->readUint16LE();
-		actor->_animIndex = in->readUint16LE();
-		actor->_animFrameIndex = in->readUint16LE();
-		actor->_interpolationStep = in->readUint16LE();
-		actor->_animFrameCount = in->readUint16LE();
-		actor->_animPlayFrameIndex = in->readUint16LE();
-		actor->_deltaX = in->readUint16LE();
-		actor->_deltaY = in->readUint16LE();
-		actor->_collisionType = in->readUint16LE();
-		actor->_collisionIndex = in->readUint16LE();
-		actor->_value6 = in->readByte();
-		actor->_life = in->readUint16LE();
-		actor->_textColor = in->readByte();
-		actor->_value7 = in->readByte();
-		actor->_textX = in->readUint16LE();
-		actor->_textY = in->readUint16LE();
-		actor->_walkStatus = in->readUint16LE();
-		actor->_walkDestX = in->readUint16LE();
-		actor->_walkDestY = in->readUint16LE();
-		actor->_savedWalkDestX = in->readUint16LE();
-		actor->_savedWalkDestY = in->readUint16LE();
-		actor->_clipX1 = in->readUint16LE();
-		actor->_clipY1 = in->readUint16LE();
-		actor->_clipX2 = in->readUint16LE();
-		actor->_clipY2 = in->readUint16LE();
-		actor->_visible = in->readByte() != 0;
+		actor->sync(s);
 	}
 
 	for (uint i = 0; i < kAnimationSlotCount; i++) {
@@ -341,18 +263,13 @@ void CometEngine::loadgame(const char *filename) {
 		marcheItem->animationType = in->readUint16LE();
 		marcheItem->fileIndex = (int16)in->readUint16LE();
 		marcheItem->anim = NULL;
-		debug("marcheItem.animationType = %d; marcheItem.fileIndex = %d", marcheItem->animationType, marcheItem->fileIndex);
 	}
 
 	_scene->_sceneItems.clear();
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		SceneItem sceneItem;
-		sceneItem.itemIndex = in->readUint16LE();
-		sceneItem.active = in->readByte() != 0;
-		sceneItem.paramType = in->readByte();
-		sceneItem.x = in->readUint16LE();
-		sceneItem.y = in->readUint16LE();
+		sceneItem.sync(s);
 		_scene->_sceneItems.push_back(sceneItem);
 	}
 
@@ -360,10 +277,7 @@ void CometEngine::loadgame(const char *filename) {
 	count = in->readByte();
 	for (int i = 0; i < count; i++) {
 		Common::Rect blockingRect;
-		blockingRect.left = in->readUint16LE();
-		blockingRect.top = in->readUint16LE();
-		blockingRect.right = in->readUint16LE();
-		blockingRect.bottom = in->readUint16LE();
+		syncAsRect(s, blockingRect);
 		_scene->_blockingRects.push_back(blockingRect);
 	}
 
@@ -379,13 +293,8 @@ void CometEngine::loadgame(const char *filename) {
 
 	in->read(_scene->_boundsMap, 320);
 
-	for (int i = 0; i < 256; i++) {
-		int16 status = in->readUint16LE();
-		_inventory.setStatus(i, status);
-	}
-
-	for (int i = 0; i < 256; i++)
-		_scriptVars[i] = in->readUint16LE();
+	_inventory.sync(s);
+	syncScriptVars(s);
 
 	delete in;
 	

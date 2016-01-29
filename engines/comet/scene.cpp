@@ -31,6 +31,28 @@
 
 namespace Comet {
 
+// SceneExitItem
+
+void SceneExitItem::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(directionIndex);
+	s.syncAsUint16LE(moduleNumber);
+	s.syncAsUint16LE(sceneNumber);
+	s.syncAsUint16LE(x1);
+	s.syncAsUint16LE(x2);
+}
+
+// SceneItem
+
+void SceneItem::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(itemIndex);
+	s.syncAsByte(active);
+	s.syncAsByte(paramType);
+	s.syncAsUint16LE(x);
+	s.syncAsUint16LE(y);
+}
+
+// Scene
+
 Scene::Scene(CometEngine *vm) : _vm(vm) {
 }
 

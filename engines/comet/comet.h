@@ -35,6 +35,7 @@
 #include "common/util.h"
 #include "common/random.h"
 #include "common/savefile.h"
+#include "common/serializer.h"
 #include "common/system.h"
 #include "common/textconsole.h"
 #include "common/hash-str.h"
@@ -429,6 +430,10 @@ public:
 	const char *getSavegameFilename(int num);
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
+
+	void syncAsPoint(Common::Serializer &s, Common::Point &point);
+	void syncAsRect(Common::Serializer &s, Common::Rect &rect);
+	void syncScriptVars(Common::Serializer &s);
 
 	int handleMap();
 

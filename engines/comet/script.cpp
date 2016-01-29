@@ -76,6 +76,18 @@ Actor *Script::actor() const {
 	return _inter->getActor(actorIndex);
 }
 
+void Script::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(ip);
+	s.syncAsByte(actorIndex);
+	s.syncAsUint16LE(status);
+	s.syncAsUint16LE(scriptNumber);
+	s.syncAsUint16LE(loopCounter);
+	s.syncAsUint16LE(zoneX1);
+	s.syncAsUint16LE(zoneY1);
+	s.syncAsUint16LE(zoneX2);
+	s.syncAsUint16LE(zoneY2);
+}
+
 // ScriptInterpreter
 
 ScriptInterpreter::ScriptInterpreter(CometEngine *vm) : _vm(vm) {

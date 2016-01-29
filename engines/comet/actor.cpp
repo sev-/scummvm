@@ -551,6 +551,41 @@ void Actor::updateHealth() {
 		++_life;
 }
 
+void Actor::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(_x);
+	s.syncAsUint16LE(_y);
+	s.syncAsUint16LE(_directionAdd);
+	s.syncAsUint16LE(_status);
+	s.syncAsUint16LE(_direction);
+	s.syncAsByte(_flag2);
+	s.syncAsUint16LE(_animationSlot);
+	s.syncAsUint16LE(_animIndex);
+	s.syncAsUint16LE(_animFrameIndex);
+	s.syncAsUint16LE(_interpolationStep);
+	s.syncAsUint16LE(_animFrameCount);
+	s.syncAsUint16LE(_animPlayFrameIndex);
+	s.syncAsUint16LE(_deltaX);
+	s.syncAsUint16LE(_deltaY);
+	s.syncAsUint16LE(_collisionType);
+	s.syncAsUint16LE(_collisionIndex);
+	s.syncAsByte(_value6);
+	s.syncAsUint16LE(_life);
+	s.syncAsByte(_textColor);
+	s.syncAsByte(_value7);
+	s.syncAsUint16LE(_textX);
+	s.syncAsUint16LE(_textY);
+	s.syncAsUint16LE(_walkStatus);
+	s.syncAsUint16LE(_walkDestX);
+	s.syncAsUint16LE(_walkDestY);
+	s.syncAsUint16LE(_savedWalkDestX);
+	s.syncAsUint16LE(_savedWalkDestY);
+	s.syncAsUint16LE(_clipX1);
+	s.syncAsUint16LE(_clipY1);
+	s.syncAsUint16LE(_clipX2);
+	s.syncAsUint16LE(_clipY2);
+	s.syncAsByte(_visible);
+}
+
 uint16 Actor::checkCollision(Common::Rect &testRect, Common::Rect &obstacleRect) {
 	uint16 collisionType = 0;
 	collisionType = _vm->_scene->checkCollisionWithBounds(testRect, _direction);

@@ -120,4 +120,9 @@ void Inventory::buildItems(Common::Array<uint16> &items, uint &firstItem, uint &
 	}
 }
 
+void Inventory::sync(Common::Serializer &s) {
+	for (uint i = 0; i < ARRAYSIZE(_itemStatus); ++i)
+		s.syncAsUint16LE(_itemStatus[i]);
+}
+
 } // End of namespace Comet

@@ -26,10 +26,10 @@
 #ifndef COMET_SCENE_H
 #define COMET_SCENE_H
 
-#include "common/func.h"
-
 #include "comet/comet.h"
 #include "comet/resource.h"
+#include "common/func.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -38,6 +38,7 @@ struct SceneExitItem {
 	int moduleNumber;
 	int sceneNumber;
 	int x1, x2;
+	void sync(Common::Serializer &s);
 };
 
 struct SceneItem {
@@ -45,6 +46,7 @@ struct SceneItem {
 	bool active;
 	int paramType;
 	int x, y;
+	void sync(Common::Serializer &s);
 };
 
 class Scene {
