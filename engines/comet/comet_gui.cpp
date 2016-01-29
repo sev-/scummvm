@@ -1170,10 +1170,7 @@ int GuiJournal::handleReadBook() {
 	}
 
 	_vm->_input->waitForKeys();
-	_vm->_talkText->stopVoice();
-	_vm->_talkText->_textActive = false;
-
-	_vm->_talkText->setVoiceFileIndex(_vm->_talkText->_textTableIndex);
+	_vm->_talkText->leaveJournal();
 
 	return 2 - bookStatus;
 }
