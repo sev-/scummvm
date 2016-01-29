@@ -438,6 +438,7 @@ public:
 	void syncScriptVars(Common::Serializer &s);
 	void syncModuleSceneInfo(Common::Serializer &s);
 	void syncPaletteInfo(Common::Serializer &s);
+	void sync(Common::Serializer &s);
 
 	int handleMap();
 

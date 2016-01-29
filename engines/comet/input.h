@@ -26,26 +26,9 @@
 #ifndef COMET_INPUT_H
 #define COMET_INPUT_H
 
-#include "common/scummsys.h"
-#include "common/endian.h"
-#include "common/array.h"
-#include "common/list.h"
-#include "common/file.h"
-#include "common/stream.h"
-#include "common/util.h"
-#include "common/random.h"
-#include "common/savefile.h"
-#include "common/system.h"
-#include "common/textconsole.h"
-#include "common/hash-str.h"
-#include "common/events.h"
-#include "common/keyboard.h"
-#include "common/config-manager.h"
-#include "audio/mixer.h"
-
-#include "engines/engine.h"
-
 #include "comet/console.h"
+#include "common/events.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -73,6 +56,7 @@ public:
 	int getMouseY() const { return _mouseY; }
 	void clearKeyDirection() { _keyDirection = 0; }
 	void clearKeyCode() { _keyCode = Common::KEYCODE_INVALID; }
+	void sync(Common::Serializer &s);
 public:
 	int16 _cursorDirection;
 	int16 _scriptKeybFlag;

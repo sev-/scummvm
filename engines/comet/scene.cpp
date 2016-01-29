@@ -319,6 +319,14 @@ void Scene::drawExits() {
 	}
 }
 
+void Scene::sync(Common::Serializer &s) {
+	syncExits(s);
+	syncBounds(s);
+	syncSceneItems(s);
+	syncBlockingRects(s);
+	syncBoundsMap(s);
+}
+
 void Scene::syncExits(Common::Serializer &s) {
 	uint count = s.isSaving() ? _exits.size() : 0;
 	s.syncAsByte(count);

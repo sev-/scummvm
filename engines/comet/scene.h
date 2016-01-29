@@ -88,6 +88,7 @@ public:
     void initBlockingRectsFromAnimation(AnimationResource *animation);
 	void drawExits();
 
+    void sync(Common::Serializer &s);
     void syncExits(Common::Serializer &s);
     void syncSceneItems(Common::Serializer &s);
     void syncBounds(Common::Serializer &s);

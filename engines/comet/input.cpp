@@ -63,6 +63,10 @@ bool Input::rightButton() const {
 	return _rightButton && !_vm->isFloppy();
 }
 
+void Input::sync(Common::Serializer &s) {
+	s.syncAsByte(_blockedInput);
+}
+
 void Input::blockInput(int flagIndex) {
 	if (flagIndex == 0) {
 		_walkDirection = 0;

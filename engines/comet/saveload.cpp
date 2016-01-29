@@ -52,11 +52,12 @@ namespace Comet {
 //	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
 //  - Save playtime info
 
-#define SAVEGAME_VERSION 2 // < 1000 is dev version until in official SVN
+const uint SAVEGAME_VERSION = 3;     // < 1000 is dev version until in official SVN
+const uint SAVEGAME_VERSION_MIN = 3; // Minimum supported savegame version
 
 CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header) {
 	header.version = in->readUint32LE();
-	if (header.version > SAVEGAME_VERSION)
+	if (header.version > SAVEGAME_VERSION || header.version < SAVEGAME_VERSION_MIN)
 		return kRSHEInvalidVersion;
 
 	byte descriptionLen = in->readByte();
@@ -109,11 +110,23 @@ void CometEngine::syncPaletteInfo(Common::Serializer &s) {
 	s.syncAsByte(_paletteRedness);
 }
 
+void CometEngine::sync(Common::Serializer &s) {
+	s.syncAsUint32LE(_gameLoopCounter);
+	s.syncAsUint16LE(_backgroundFileIndex);
+	syncModuleSceneInfo(s);
+	_actors->sync(s);
+	_animationMan->sync(s);
+	_input->sync(s);
+	_scene->sync(s);
+	_talkText->sync(s);
+	_script->syncScripts(s);
+	syncPaletteInfo(s);
+	_screen->syncZoom(s);
+	_inventory.sync(s);
+	syncScriptVars(s);
+}
+
 void CometEngine::savegame(const char *filename, const char *description) {
-
-	// TODO Later use Serializer and add serializer code to the various classes
-
-	debug("Saving %s [%s]...", filename, description);
 
 	Common::OutSaveFile *out;
 	if (!(out = g_system->getSavefileManager()->openForSaving(filename))) {
@@ -134,34 +147,13 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint32LE(0); // flags
 
 	Common::Serializer s(0, out);
-
-	syncModuleSceneInfo(s);
-
-	out->writeUint16LE(_backgroundFileIndex);
-	out->writeUint16LE(_talkText->_textTableIndex);
-	out->writeUint32LE(_gameLoopCounter);
-	out->writeByte(_input->getBlockedInput());
-
-	_scene->syncExits(s);
-	_script->syncScripts(s);
-	_scene->syncBounds(s);
-	_actors->sync(s);
-	_animationMan->sync(s);
-	_scene->syncSceneItems(s);
-	_scene->syncBlockingRects(s);
-	syncPaletteInfo(s);
-	_screen->syncZoom(s);
-	_scene->syncBoundsMap(s);
-	_inventory.sync(s);
-	syncScriptVars(s);
+	sync(s);
 
 	delete out;
 
 }
 
 void CometEngine::loadgame(const char *filename) {
-
-	debug("Loading %s...", filename);
 
 	Common::InSaveFile *in;
 	if (!(in = g_system->getSavefileManager()->openForLoading(filename))) {
@@ -182,30 +174,7 @@ void CometEngine::loadgame(const char *filename) {
 	_animationMan->purgeAnimationSlots();
 	
 	Common::Serializer s(in, 0);
-	
-	syncModuleSceneInfo(s);
-
-	_backgroundFileIndex = in->readUint16LE();
-	uint voiceFileIndex = in->readUint16LE();
-	_gameLoopCounter = in->readUint32LE();
-	
-	if (header.version > 0)//REMOVEME	
-		_input->setBlockedInput(in->readByte());
-	else
-		_input->setBlockedInput(0);
-
-	_scene->syncExits(s);
-	_script->syncScripts(s);
-	_scene->syncBounds(s);
-	_actors->sync(s);
-	_animationMan->sync(s);
-	_scene->syncSceneItems(s);
-	_scene->syncBlockingRects(s);
-	syncPaletteInfo(s);
-	_screen->syncZoom(s);
-	_scene->syncBoundsMap(s);
-	_inventory.sync(s);
-	syncScriptVars(s);
+	sync(s);
 
 	delete in;
 	
@@ -219,8 +188,6 @@ void CometEngine::loadgame(const char *filename) {
 	else		
 		_screen->buildPalette(_gamePalette, _screenPalette, _paletteBrightness);
 	_screen->setFullPalette(_screenPalette);
-
-	_talkText->setVoiceFileIndex(voiceFileIndex);
 
 }
 

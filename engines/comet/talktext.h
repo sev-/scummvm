@@ -26,17 +26,8 @@
 #ifndef COMET_TALKTEXT_H
 #define COMET_TALKTEXT_H
 
-#include "common/scummsys.h"
-#include "common/endian.h"
-#include "common/array.h"
-#include "common/list.h"
-#include "common/file.h"
-#include "common/stream.h"
+#include "common/serializer.h"
 #include "common/util.h"
-#include "common/savefile.h"
-#include "common/config-manager.h"
-#include "audio/mixer.h"
-#include "engines/engine.h"
 
 namespace Comet {
 
@@ -67,6 +58,7 @@ public:
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
 	
 	void handleTalkFinished();
+	void sync(Common::Serializer &s);
 	
 	int getTalkieMode() const { return _talkieMode; }
 	void setTalkieMode(int value) { _talkieMode = value; }
