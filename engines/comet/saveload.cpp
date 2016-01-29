@@ -135,29 +135,19 @@ void CometEngine::savegame(const char *filename, const char *description) {
 
 	_scene->syncExits(s);
 	_script->syncScripts(s);
-
-	out->writeByte(_scene->_bounds.size());
-	for (PointArray::iterator iter = _scene->_bounds.begin(); iter != _scene->_bounds.end(); ++iter) {
-		Common::Point &bound = *iter;
-		syncAsPoint(s, bound);
-	}
+	_scene->syncBounds(s);
 	
 	_actors->sync(s);
 	_animationMan->sync(s);
 	_scene->syncSceneItems(s);
-	
-	out->writeByte(_scene->_blockingRects.size());
-	for (Common::Array<Common::Rect>::iterator iter = _scene->_blockingRects.begin(); iter != _scene->_blockingRects.end(); ++iter) {
-		Common::Rect &blockingRect = *iter;
-		syncAsRect(s, blockingRect);
-	}
+	_scene->syncBlockingRects(s);
 
 	out->writeByte(_paletteBrightness);
 	out->writeByte(_paletteRedness);
 	out->writeUint16LE(_screen->_zoomX);
 	out->writeUint16LE(_screen->_zoomY);
 
-	out->write(_scene->_boundsMap, 320);
+	_scene->syncBoundsMap(s);
 	
 	_inventory.sync(s);
 	syncScriptVars(s);
@@ -186,8 +176,6 @@ void CometEngine::loadgame(const char *filename) {
 		return;
 	}
 
-	int count;
-	
 	_animationMan->purgeAnimationSlots();
 	
 	Common::Serializer s(in, 0);
@@ -210,26 +198,12 @@ void CometEngine::loadgame(const char *filename) {
 
 	_scene->syncExits(s);
 	_script->syncScripts(s);
-
-	_scene->_bounds.clear();
-	count = in->readByte();
-	for (int i = 0; i < count; i++) {
-		Common::Point bound;
-		syncAsPoint(s, bound);
-		_scene->_bounds.push_back(bound);
-	}
+	_scene->syncBounds(s);
 
 	_actors->sync(s);
 	_animationMan->sync(s);
 	_scene->syncSceneItems(s);
-
-	_scene->_blockingRects.clear();
-	count = in->readByte();
-	for (int i = 0; i < count; i++) {
-		Common::Rect blockingRect;
-		syncAsRect(s, blockingRect);
-		_scene->_blockingRects.push_back(blockingRect);
-	}
+	_scene->syncBlockingRects(s);
 
 	_paletteBrightness = in->readByte();
 	
@@ -241,7 +215,7 @@ void CometEngine::loadgame(const char *filename) {
 	_screen->_zoomX = in->readUint16LE();
 	_screen->_zoomY = in->readUint16LE();
 
-	in->read(_scene->_boundsMap, 320);
+	_scene->syncBoundsMap(s);
 
 	_inventory.sync(s);
 	syncScriptVars(s);
