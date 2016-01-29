@@ -84,6 +84,8 @@ public:
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 	void superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 
+	void drawExits();
+
 //protected:
 public: // while still in progress
 	CometEngine *_vm;

@@ -76,15 +76,6 @@ int CometEngine::calcDirection(int fromX, int fromY, int toX, int toY) {
 
 }
 
-void CometEngine::drawSceneExits() {
-	for (uint32 i = 0; i < _scene->_exits.size(); i++) {
-		if (_scene->_exits[i].directionIndex == 3) {
-			_screen->fillRect(_scene->_exits[i].x1, 198, _scene->_exits[i].x2, 199, 120);
-			_screen->hLine(_scene->_exits[i].x1 + 1, 199, _scene->_exits[i].x2 - 2, 127);
-		}
-	}
-}
-
 // Scene
 
 void CometEngine::initSceneBackground(bool loadingGame) {
@@ -230,7 +221,7 @@ void CometEngine::updateGame() {
 	if (_loadgameRequested)
 		return;
 
-	drawSceneExits();
+	_scene->drawExits();
 	_actors->updateAnimations();
 	_actors->updateMovement();
 	buildSpriteDrawQueue();
