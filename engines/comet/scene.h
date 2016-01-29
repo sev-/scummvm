@@ -90,9 +90,12 @@ public:
 
     void syncExits(Common::Serializer &s);
     void syncSceneItems(Common::Serializer &s);
+    void syncBounds(Common::Serializer &s);
+    void syncBlockingRects(Common::Serializer &s);
+    void syncBoundsMap(Common::Serializer &s);
 
-//protected:
-public: // while still in progress
+protected:
+//public: // while still in progress
 	CometEngine *_vm;
 
 	Common::Array<Common::Rect> _blockingRects;

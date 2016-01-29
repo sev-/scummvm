@@ -345,6 +345,36 @@ void Scene::syncSceneItems(Common::Serializer &s) {
 	}
 }
 
+void Scene::syncBounds(Common::Serializer &s) {
+	uint count = s.isSaving() ? _bounds.size() : 0;
+	s.syncAsByte(count);
+	if (s.isLoading()) {
+		_bounds.clear();
+		_bounds.resize(count);
+	}
+	for (PointArray::iterator iter = _bounds.begin(); iter != _bounds.end(); ++iter) {
+		Common::Point &bound = *iter;
+		_vm->syncAsPoint(s, bound);
+	}
+}
+
+void Scene::syncBlockingRects(Common::Serializer &s) {
+	uint count = s.isSaving() ? _blockingRects.size() : 0;
+	s.syncAsByte(count);
+	if (s.isLoading()) {
+		_blockingRects.clear();
+		_blockingRects.resize(count);
+	}
+	for (Common::Array<Common::Rect>::iterator iter = _blockingRects.begin(); iter != _blockingRects.end(); ++iter) {
+		Common::Rect &blockingRect = *iter;
+		_vm->syncAsRect(s, blockingRect);
+	}
+}
+
+void Scene::syncBoundsMap(Common::Serializer &s) {
+	s.syncBytes(_boundsMap, 320);
+}
+
 void Scene::initBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
