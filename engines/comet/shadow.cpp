@@ -297,10 +297,8 @@ void CometEngine::getItemInSight() {
 	debug(4, "CometEngine::getItemInSight()");
 
 	Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
-
-	int sceneItemIndex = _scene->findSceneItemAt(sightRect);
-	if (sceneItemIndex != 0) {
-		SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
+	SceneItem sceneItem;
+	if (_scene->getSceneItemAt(sightRect, sceneItem)) {
 		if (sceneItem.paramType == 0) {
 			_inventory.requestGetItem(sceneItem.itemIndex);
 			sceneItem.active = false;
@@ -315,9 +313,8 @@ void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
 	if (_input->getBlockedInput() != 15) {
 		Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
-		int sceneItemIndex = _scene->findSceneItemAt(sightRect);
-		if (sceneItemIndex != 0) {
-			SceneItem &sceneItem = _scene->getSceneItem(sceneItemIndex & 0xFF);
+		SceneItem sceneItem;
+		if (_scene->getSceneItemAt(sightRect, sceneItem)) {
 			_itemInSight = true;
 			_itemDirection = _actors->getActor(0)->_direction;
 			_itemX = sceneItem.x;

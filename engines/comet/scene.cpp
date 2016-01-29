@@ -204,6 +204,13 @@ SceneItem& Scene::getSceneItem(int itemIndex) {
 	return _sceneItems[itemIndex];
 }
 
+bool Scene::getSceneItemAt(const Common::Rect &rect, SceneItem &sceneItem) {
+	int sceneItemIndex = findSceneItemAt(rect);
+	if (sceneItemIndex != 0)
+		sceneItem = getSceneItem(sceneItemIndex & 0xFF);
+	return sceneItemIndex != 0;
+}
+
 int Scene::findBoundsRight(int x, int y) {
 	int yp = 0;
 	for (uint i = 0; i < _bounds.size(); i++) {
