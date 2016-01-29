@@ -26,13 +26,13 @@
 #ifndef COMET_SCREEN_H
 #define COMET_SCREEN_H
 
-#include "common/scummsys.h"
-#include "common/array.h"
-#include "common/util.h"
-
 #include "comet/comet.h"
 #include "comet/graphics.h"
 #include "comet/resource.h"
+#include "common/scummsys.h"
+#include "common/array.h"
+#include "common/util.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -97,6 +97,7 @@ public:
 	void screenZoomEffect4x(Graphics::Surface *destSurface, Graphics::Surface *sourceSurface, int x, int y);
 	void updateZoomEffect(int zoomFactor, int zoomX, int zoomY);
 
+	void syncZoom(Common::Serializer &s);
 protected:
 	CometEngine *_vm;
 	bool _transitionEffect;

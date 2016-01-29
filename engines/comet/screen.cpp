@@ -191,6 +191,11 @@ void Screen::updateZoomEffect(int zoomFactor, int zoomX, int zoomY) {
 	delete destSurface;
 }
 
+void Screen::syncZoom(Common::Serializer &s) {
+	s.syncAsUint16LE(_zoomX);
+	s.syncAsUint16LE(_zoomY);
+}
+
 void Screen::screenTransitionEffect() {
 
 	byte *vgaScreen = new byte[64000];
