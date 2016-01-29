@@ -144,13 +144,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	
 	_actors->sync(s);
 	_animationMan->sync(s);
+	_scene->syncSceneItems(s);
 	
-	out->writeByte(_scene->_sceneItems.size());
-	for (Common::Array<SceneItem>::iterator iter = _scene->_sceneItems.begin(); iter != _scene->_sceneItems.end(); ++iter) {
-		SceneItem &sceneItem = *iter;
-		sceneItem.sync(s);
-	}
-
 	out->writeByte(_scene->_blockingRects.size());
 	for (Common::Array<Common::Rect>::iterator iter = _scene->_blockingRects.begin(); iter != _scene->_blockingRects.end(); ++iter) {
 		Common::Rect &blockingRect = *iter;
@@ -226,14 +221,7 @@ void CometEngine::loadgame(const char *filename) {
 
 	_actors->sync(s);
 	_animationMan->sync(s);
-
-	_scene->_sceneItems.clear();
-	count = in->readByte();
-	for (int i = 0; i < count; i++) {
-		SceneItem sceneItem;
-		sceneItem.sync(s);
-		_scene->_sceneItems.push_back(sceneItem);
-	}
+	_scene->syncSceneItems(s);
 
 	_scene->_blockingRects.clear();
 	count = in->readByte();
