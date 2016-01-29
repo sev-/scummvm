@@ -46,6 +46,7 @@
 #include "engines/engine.h"
 
 #include "comet/console.h"
+#include "comet/inventory.h"
 
 namespace Comet {
 
@@ -166,27 +167,6 @@ public:
 	void requestTalk() { _talk = true; }
 protected:
 	bool _look, _get, _talk;
-};
-
-class Inventory {
-public:
-	Inventory();
-	void clear();
-	int16 getStatus(int itemIndex);
-	void setStatus(int itemIndex, int16 status);
-	int16 *getStatusPtr(int itemIndex);
-	int getSelectedItem();
-	void selectItem(int itemIndex);
-	void requestGetItem(int itemIndex);
-	void requestUseSelectedItem();
-	void testSelectedItemRemoved();
-	void testSelectFirstItem();
-	void resetStatus();
-	void buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem);
-protected:
-	int16 _itemStatus[256];
-	int _currentItem;
-	int _itemIndex;
 };
 
 class CometEngine : public Engine {
