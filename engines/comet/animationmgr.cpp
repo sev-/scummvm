@@ -33,6 +33,18 @@
 
 namespace Comet {
 
+// AnimationSlot
+
+void AnimationSlot::sync(Common::Serializer &s) {
+	s.syncAsUint16LE(animationType);
+	s.syncAsUint16LE(fileIndex);
+	if (s.isLoading()) {
+		anim = 0;
+	}
+}
+
+// AnimationManager
+
 AnimationManager::AnimationManager(CometEngine *vm) : _vm(vm) {
 	for (uint slotIndex = 0; slotIndex < kAnimationSlotCount; slotIndex++) {
 		_animationSlots[slotIndex].animationType = -1;
@@ -120,6 +132,12 @@ void AnimationManager::restoreAnimationSlots() {
 		} else {
 			_animationSlots[slotIndex].anim = _vm->getGlobalAnimationResource(_animationSlots[slotIndex].animationType);
 		}
+	}
+}
+
+void AnimationManager::sync(Common::Serializer &s) {
+	for (uint i = 0; i < kAnimationSlotCount; ++i) {
+		getAnimationSlot(i)->sync(s);
 	}
 }
 

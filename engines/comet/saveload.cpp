@@ -143,12 +143,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	}
 	
 	_actors->sync(s);
-	
-	for (uint i = 0; i < kAnimationSlotCount; i++) {
-		const AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);
-		out->writeUint16LE(marcheItem->animationType);
-		out->writeUint16LE(marcheItem->fileIndex);
-	}
+	_animationMan->sync(s);
 	
 	out->writeByte(_scene->_sceneItems.size());
 	for (Common::Array<SceneItem>::iterator iter = _scene->_sceneItems.begin(); iter != _scene->_sceneItems.end(); ++iter) {
@@ -230,13 +225,7 @@ void CometEngine::loadgame(const char *filename) {
 	}
 
 	_actors->sync(s);
-
-	for (uint i = 0; i < kAnimationSlotCount; i++) {
-		AnimationSlot *marcheItem = _animationMan->getAnimationSlot(i);
-		marcheItem->animationType = in->readUint16LE();
-		marcheItem->fileIndex = (int16)in->readUint16LE();
-		marcheItem->anim = NULL;
-	}
+	_animationMan->sync(s);
 
 	_scene->_sceneItems.clear();
 	count = in->readByte();
