@@ -104,6 +104,11 @@ void CometEngine::syncModuleSceneInfo(Common::Serializer &s) {
 	s.syncAsUint16LE(_prevSceneNumber);
 }
 
+void CometEngine::syncPaletteInfo(Common::Serializer &s) {
+	s.syncAsByte(_paletteBrightness);
+	s.syncAsByte(_paletteRedness);
+}
+
 void CometEngine::savegame(const char *filename, const char *description) {
 
 	// TODO Later use Serializer and add serializer code to the various classes
@@ -140,18 +145,13 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	_scene->syncExits(s);
 	_script->syncScripts(s);
 	_scene->syncBounds(s);
-	
 	_actors->sync(s);
 	_animationMan->sync(s);
 	_scene->syncSceneItems(s);
 	_scene->syncBlockingRects(s);
-
-	out->writeByte(_paletteBrightness);
-	out->writeByte(_paletteRedness);
-
+	syncPaletteInfo(s);
 	_screen->syncZoom(s);
 	_scene->syncBoundsMap(s);
-	
 	_inventory.sync(s);
 	syncScriptVars(s);
 
@@ -197,22 +197,13 @@ void CometEngine::loadgame(const char *filename) {
 	_scene->syncExits(s);
 	_script->syncScripts(s);
 	_scene->syncBounds(s);
-
 	_actors->sync(s);
 	_animationMan->sync(s);
 	_scene->syncSceneItems(s);
 	_scene->syncBlockingRects(s);
-
-	_paletteBrightness = in->readByte();
-	
-	if (header.version > 0)//REMOVEME	
-		_paletteRedness = in->readByte();
-	else
-		_paletteRedness = 0;
-	
+	syncPaletteInfo(s);
 	_screen->syncZoom(s);
 	_scene->syncBoundsMap(s);
-
 	_inventory.sync(s);
 	syncScriptVars(s);
 
