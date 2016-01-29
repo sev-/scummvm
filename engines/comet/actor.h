@@ -28,6 +28,7 @@
 
 #include "common/endian.h"
 #include "common/rect.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -66,6 +67,7 @@ public:
 	Common::Rect calcSightRect(int delta1, int delta2);
 	void draw();
 	void updateHealth();
+	void sync(Common::Serializer &s);
 protected:
 	void saveWalkDestXY();
 	void updateDirection();

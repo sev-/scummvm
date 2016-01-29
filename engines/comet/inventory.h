@@ -28,6 +28,7 @@
 
 #include "common/array.h"
 #include "common/savefile.h"
+#include "common/serializer.h"
 
 namespace Comet {
 
@@ -46,6 +47,7 @@ public:
 	void testSelectFirstItem();
 	void resetStatus();
 	void buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem);
+	void sync(Common::Serializer &s);
 protected:
 	int16 _itemStatus[256];
 	int _currentItem;
