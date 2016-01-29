@@ -63,7 +63,7 @@ public:
 	void setClipY(int y1, int y2);
 	void setTextXY(int x, int y);
 	void setVisible(bool visible);
-	void calcSightRect(Common::Rect &rect, int delta1, int delta2);
+	Common::Rect calcSightRect(int delta1, int delta2);
 	void draw();
 	void updateHealth();
 protected:

@@ -475,7 +475,7 @@ void Actor::setVisible(bool visible) {
 	_visible = visible;
 }
 
-void Actor::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
+Common::Rect Actor::calcSightRect(int delta1, int delta2) {
 	int x1 = _x - _deltaX - 8;
 	int y1 = _y - _deltaY - 8;
 	int x2 = _x + _deltaX + 8;
@@ -502,10 +502,12 @@ void Actor::calcSightRect(Common::Rect &rect, int delta1, int delta2) {
 		y1 -= 32;
 		break;
 	}
+	Common::Rect rect;
 	rect.left = MAX(x1, 0);
 	rect.top = MAX(y1, 0);
 	rect.right = MIN(x2, 319);
 	rect.bottom = MIN(y2, 199);
+	return rect;
 }
 
 void Actor::draw() {
