@@ -268,6 +268,15 @@ void Scene::superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 
 }
 
+void Scene::drawExits() {
+	for (uint32 i = 0; i < _exits.size(); i++) {
+		if (_exits[i].directionIndex == 3) {
+			_vm->_screen->fillRect(_exits[i].x1, 198, _exits[i].x2, 199, 120);
+			_vm->_screen->hLine(_exits[i].x1 + 1, 199, _exits[i].x2 - 2, 127);
+		}
+	}
+}
+
 void Scene::initBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
