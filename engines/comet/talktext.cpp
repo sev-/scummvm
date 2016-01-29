@@ -27,21 +27,9 @@
 #include "comet/actor.h"
 #include "comet/animationmgr.h"
 #include "comet/comet.h"
-#include "comet/comet_gui.h"
 #include "comet/dialog.h"
 #include "comet/input.h"
-#include "comet/music.h"
-#include "comet/resource.h"
-#include "comet/resourcemgr.h"
-#include "comet/scene.h"
 #include "comet/screen.h"
-
-#include "common/stream.h"
-#include "audio/decoders/raw.h"
-#include "audio/decoders/voc.h"
-#include "graphics/cursorman.h"
-#include "graphics/primitives.h"
-#include "graphics/surface.h"
 
 namespace Comet {
 
