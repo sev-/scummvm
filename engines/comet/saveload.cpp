@@ -47,11 +47,6 @@
 
 namespace Comet {
 
-// TODO:
-//	- Save with F7; Load with F9
-//	- Remove REMOVEME code once saveload code is finalized (this is just so my old savegames still work)
-//  - Save playtime info
-
 const uint SAVEGAME_VERSION = 3;     // < 1000 is dev version until in official SVN
 const uint SAVEGAME_VERSION_MIN = 3; // Minimum supported savegame version
 
@@ -65,7 +60,7 @@ CometEngine::kReadSaveHeaderError CometEngine::readSaveHeader(Common::SeekableRe
 	while (descriptionLen--)
 		header.description += (char)in->readByte();
 
-	if (loadThumbnail && header.version > 1 /*REMOVEME*/ ) {
+	if (loadThumbnail) {
 		header.thumbnail = Graphics::loadThumbnail(*in);
 	} else {
 		Graphics::skipThumbnail(*in);
