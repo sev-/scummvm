@@ -76,8 +76,7 @@ public:
 
 	void addSceneItem(int itemIndex, int x, int y, int paramType);
 	void removeSceneItem(int itemIndex);
-	uint16 findSceneItemAt(const Common::Rect &rect);
-	SceneItem& getSceneItem(int itemIndex);
+	bool getSceneItemAt(const Common::Rect &rect, SceneItem &sceneItem);
 
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
@@ -98,6 +97,8 @@ public: // while still in progress
 	byte _boundsMap[320];
 	
 	void initBoundsMap();
+	uint16 findSceneItemAt(const Common::Rect &rect);
+	SceneItem& getSceneItem(int itemIndex);
 	
 };
 
