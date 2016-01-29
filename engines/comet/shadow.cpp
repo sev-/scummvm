@@ -661,8 +661,9 @@ int CometEngine::handleLeftRightSceneExitCollision(int newModuleNumber, int newS
 
 void CometEngine::drawLineOfSight() {
 	if (_itemInSight) {
-		int x = _actors->getActor(0)->_x;
-		int y = _actors->getActor(0)->_y - 35;
+		Actor *mainActor = _actors->getActor(0);
+		int x = mainActor->_x;
+		int y = mainActor->_y - 35;
 		switch (_itemDirection) {
 		case 1:
 			y--;
