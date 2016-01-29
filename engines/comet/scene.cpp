@@ -332,6 +332,19 @@ void Scene::syncExits(Common::Serializer &s) {
 	}
 }
 
+void Scene::syncSceneItems(Common::Serializer &s) {
+	uint count = s.isSaving() ? _sceneItems.size() : 0;
+	s.syncAsByte(count);
+	if (s.isLoading()) {
+		_sceneItems.clear();
+		_sceneItems.resize(count);
+	}
+	for (Common::Array<SceneItem>::iterator iter = _sceneItems.begin(); iter != _sceneItems.end(); ++iter) {
+		SceneItem &sceneItem = *iter;
+		sceneItem.sync(s);
+	}
+}
+
 void Scene::initBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;

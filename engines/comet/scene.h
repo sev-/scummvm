@@ -89,6 +89,7 @@ public:
 	void drawExits();
 
     void syncExits(Common::Serializer &s);
+    void syncSceneItems(Common::Serializer &s);
 
 //protected:
 public: // while still in progress
