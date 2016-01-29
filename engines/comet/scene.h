@@ -83,6 +83,7 @@ public:
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 	void superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 
+    void initBlockingRectsFromAnimation(AnimationResource *animation);
 	void drawExits();
 
 //protected:

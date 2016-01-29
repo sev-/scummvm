@@ -89,7 +89,7 @@ void CometEngine::initSceneBackground(bool loadingGame) {
 	//	screen_c_1();
 	
 	if (!loadingGame)
-		initSceneDecorationBlockingRects();
+		_scene->initBlockingRectsFromAnimation(_sceneDecorationSprite);
 }
 
 void CometEngine::loadSceneBackground() {
@@ -679,18 +679,6 @@ void CometEngine::drawLineOfSight() {
 			break;
 		}
 		_screen->drawDottedLine(x, y, _itemX + randomValue(3) - 1, _itemY + randomValue(3) - 1, 7);
-	}
-}
-
-void CometEngine::initSceneDecorationBlockingRects() {
-	Common::Rect blockingRect;
-	_scene->_blockingRects.clear();
-	AnimationElement *element = _sceneDecorationSprite->getElement(0);
-	for (uint i = 0; i < element->getCommandCount(); ++i) {
-		AnimationCommand *cmd = element->getCommand(i);
-		if (cmd->getBlockingRect(_sceneDecorationSprite, blockingRect)) {
-			_scene->addBlockingRect(blockingRect.left * 2, blockingRect.top, blockingRect.right * 2, blockingRect.bottom);
-		}
 	}
 }
 
