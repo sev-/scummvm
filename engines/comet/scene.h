@@ -93,7 +93,6 @@ public: // while still in progress
 	Common::Array<Common::Rect> _blockingRects;
 	Common::Array<SceneExitItem> _exits;
 	Common::Array<SceneItem> _sceneItems;
-	AnimationResource *_sceneObjectsSprite;
 	PointArray _bounds;
 	byte _boundsMap[320];
 	
