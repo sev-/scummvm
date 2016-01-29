@@ -46,7 +46,7 @@
 namespace Comet {
 
 TalkText::TalkText(CometEngine *vm)
-	: _vm(vm), _textActive(false),	_textBubbleActive(false), _talkAnimIndex(-1) {
+	: _vm(vm), _textActive(false),	_textBubbleActive(false), _talkieSpeechPlaying(false), _talkAnimIndex(-1) {
 	
 	_talkieMode = _vm->isFloppy() ? 0 : 1;
 }
@@ -184,6 +184,7 @@ void TalkText::setText(byte *text) {
 
 void TalkText::resetTextValues() {
 	_vm->_dialog->stop();
+	_textBubbleActive = false;
 	deactivate();
 }
 
