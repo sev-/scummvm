@@ -63,10 +63,6 @@ void Scene::initExits(byte *data) {
 	}
 }
 
-void Scene::clearExits() {
-	_exits.clear();
-}
-
 void Scene::getExitLink(int index, int &moduleNumber, int &sceneNumber) {
 	moduleNumber = _exits[index].moduleNumber;
 	sceneNumber = _exits[index].sceneNumber;
@@ -273,6 +269,11 @@ void Scene::superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY) {
 	if (y > 199)
 		y = 199;
 
+}
+
+void Scene::clear() {
+ 	_exits.clear();
+	_sceneItems.clear();
 }
 
 void Scene::initBlockingRectsFromAnimation(AnimationResource *animation) {

@@ -394,8 +394,7 @@ void CometEngine::resetVars() {
 	_paletteBrightness = 255;
 	// NOTE: g_sp_byte_1 = 0; // Unused in Comet
 	_verbs.clear();
- 	_scene->clearExits();
-	_scene->_sceneItems.clear();
+ 	_scene->clear();
 	_input->unblockInput();
 }
 
