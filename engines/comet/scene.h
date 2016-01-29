@@ -88,6 +88,8 @@ public:
     void initBlockingRectsFromAnimation(AnimationResource *animation);
 	void drawExits();
 
+    void syncExits(Common::Serializer &s);
+
 //protected:
 public: // while still in progress
 	CometEngine *_vm;

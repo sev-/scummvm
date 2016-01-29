@@ -133,11 +133,7 @@ void CometEngine::savegame(const char *filename, const char *description) {
 	out->writeUint32LE(_gameLoopCounter);
 	out->writeByte(_input->getBlockedInput());
 
-	out->writeByte(_scene->_exits.size());
-	for (Common::Array<SceneExitItem>::iterator iter = _scene->_exits.begin(); iter != _scene->_exits.end(); ++iter) {
-		SceneExitItem &sceneExit = *iter;
-		sceneExit.sync(s);
-	}
+	_scene->syncExits(s);
 
 	out->writeByte(_script->_scriptCount);
 	for (int i = 0; i < _script->_scriptCount; i++) {
@@ -231,13 +227,7 @@ void CometEngine::loadgame(const char *filename) {
 	else
 		_input->setBlockedInput(0);
 
-	_scene->_exits.clear();
-	count = in->readByte();
-	for (int i = 0; i < count; i++) {
-		SceneExitItem sceneExit;
-		sceneExit.sync(s);
-		_scene->_exits.push_back(sceneExit);
-	}
+	_scene->syncExits(s);
 
 	_script->_scriptCount = in->readByte();
 	for (int i = 0; i < _script->_scriptCount; i++) {

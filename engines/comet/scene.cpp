@@ -319,6 +319,19 @@ void Scene::drawExits() {
 	}
 }
 
+void Scene::syncExits(Common::Serializer &s) {
+	uint count = s.isSaving() ? _exits.size() : 0;
+	s.syncAsByte(count);
+	if (s.isLoading()) {
+		_exits.clear();
+		_exits.resize(count);
+	}
+	for (Common::Array<SceneExitItem>::iterator iter = _exits.begin(); iter != _exits.end(); ++iter) {
+		SceneExitItem &sceneExit = *iter;
+		sceneExit.sync(s);
+	}
+}
+
 void Scene::initBoundsMap() {
 
 	int x1, y1, x2, y2, errorX, errorY = 0;
