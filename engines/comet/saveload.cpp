@@ -148,9 +148,8 @@ void CometEngine::savegame(const char *filename, const char *description) {
 
 	out->writeByte(_paletteBrightness);
 	out->writeByte(_paletteRedness);
-	out->writeUint16LE(_screen->_zoomX);
-	out->writeUint16LE(_screen->_zoomY);
 
+	_screen->syncZoom(s);
 	_scene->syncBoundsMap(s);
 	
 	_inventory.sync(s);
@@ -211,9 +210,7 @@ void CometEngine::loadgame(const char *filename) {
 	else
 		_paletteRedness = 0;
 	
-	_screen->_zoomX = in->readUint16LE();
-	_screen->_zoomY = in->readUint16LE();
-
+	_screen->syncZoom(s);
 	_scene->syncBoundsMap(s);
 
 	_inventory.sync(s);
