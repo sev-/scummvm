@@ -28,7 +28,6 @@
 
 #include "comet/comet.h"
 #include "comet/resource.h"
-#include "common/func.h"
 #include "common/serializer.h"
 
 namespace Comet {
@@ -53,48 +52,27 @@ class Scene {
 public:
 	Scene(CometEngine *vm);
 	~Scene();
-
-	//void initSceneBackground();
-	//void initStaticObjectRects();
-	//void loadSceneBackground();
-	//void loadStaticObjects();
-	//void drawSceneForeground();
-
 	void initBounds(byte *data);
-
 	void initExits(byte *data);
 	void getExitLink(int index, int &chapterNumber, int &sceneNumber);
-
 	void addBlockingRect(int x1, int y1, int x2, int y2);
 	void removeBlockingRect(int x, int y);
-
 	uint16 checkCollisionWithBounds(const Common::Rect &collisionRect, int direction);
 	uint16 checkCollisionWithExits(const Common::Rect &collisionRect, int direction);
 	uint16 checkCollisionWithBlockingRects(Common::Rect &collisionRect, Common::Rect &obstacleRect);
-
 	void getExitRect(int index, int &x1, int &y1, int &x2, int &y2);
 	void findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection);
-
 	void addSceneItem(int itemIndex, int x, int y, int paramType);
 	void removeSceneItem(int itemIndex);
 	bool getSceneItemAt(const Common::Rect &rect, SceneItem &sceneItem);
-
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 	void superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
-
 	void clear();
     void initBlockingRectsFromAnimation(AnimationResource *animation);
 	void drawExits();
-
     void sync(Common::Serializer &s);
-    void syncExits(Common::Serializer &s);
-    void syncSceneItems(Common::Serializer &s);
-    void syncBounds(Common::Serializer &s);
-    void syncBlockingRects(Common::Serializer &s);
-    void syncBoundsMap(Common::Serializer &s);
-
 protected:
 	CometEngine *_vm;
 	Common::Array<Common::Rect> _blockingRects;
@@ -105,7 +83,11 @@ protected:
 	void initBoundsMap();
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	SceneItem& getSceneItem(int itemIndex);
-	
+    void syncExits(Common::Serializer &s);
+    void syncSceneItems(Common::Serializer &s);
+    void syncBounds(Common::Serializer &s);
+    void syncBlockingRects(Common::Serializer &s);
+    void syncBoundsMap(Common::Serializer &s);
 };
 
 } // End of namespace Comet
