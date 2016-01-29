@@ -26,6 +26,8 @@
 #ifndef COMET_ANIMATIONMGR_H
 #define COMET_ANIMATIONMGR_H
 
+#include "common/serializer.h"
+
 namespace Comet {
 
 class CometEngine;
@@ -44,6 +46,7 @@ struct AnimationSlot {
 	int16 animationType;
 	int16 fileIndex;
 	AnimationResource *anim;
+	void sync(Common::Serializer &s);
 };
 
 class AnimationManager {
@@ -59,6 +62,7 @@ public:
 	void restoreAnimationSlots();
 	AnimationSlot *getAnimationSlot(uint index) { return &_animationSlots[index]; }
 	AnimationResource *getAnimation(uint index) { return _animationSlots[index].anim; }
+	void sync(Common::Serializer &s);
 private:
 	CometEngine *_vm;
 	AnimationSlot _animationSlots[kAnimationSlotCount];
