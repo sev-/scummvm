@@ -297,6 +297,12 @@ void TalkText::actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumb
 	_vm->_screen->enableTransitionEffect();
 }
 
+void TalkText::leaveJournal() {
+	stopVoice();
+	_textActive = false;
+	setVoiceFileIndex(_textTableIndex);
+}
+
 void TalkText::handleTalkFinished() {
 	if (_talkActorIndex == 10) {
 		if (_talkAnimIndex != -1)

@@ -96,15 +96,12 @@ public:
     void syncBoundsMap(Common::Serializer &s);
 
 protected:
-//public: // while still in progress
 	CometEngine *_vm;
-
 	Common::Array<Common::Rect> _blockingRects;
 	Common::Array<SceneExitItem> _exits;
 	Common::Array<SceneItem> _sceneItems;
 	PointArray _bounds;
 	byte _boundsMap[320];
-	
 	void initBoundsMap();
 	uint16 findSceneItemAt(const Common::Rect &rect);
 	SceneItem& getSceneItem(int itemIndex);

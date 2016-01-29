@@ -78,7 +78,7 @@ void Dialog::start(Script *script) {
 	for (int index = 0; index < dialogItemCount; index++) {
 		DialogItem dialogItem;
 		dialogItem.index = script->readInt16();
-		dialogItem.text = _vm->_textReader->getString(_vm->_talkText->_textTableIndex + 3, dialogItem.index);
+		dialogItem.text = _vm->_textReader->getString(_vm->_talkText->getTextTableIndex() + 3, dialogItem.index);
 		dialogItem.scriptIp = script->ip;
 		script->ip += 2;
 		if (_vm->_talkText->getTalkieMode() == 0 || _vm->_talkText->getTalkieMode() == 1) {

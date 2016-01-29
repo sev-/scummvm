@@ -47,19 +47,16 @@ public:
 	void setText(byte *text);
 	void resetTextValues();
 	void showTextBubble(int index, byte *text, int textDuration);
-
 	void setTextTableIndex(uint tableIndex);
 	void setVoiceFileIndex(int narFileIndex);
 	void playVoice(int voiceIndex);
 	void stopVoice();
-
 	void actorTalk(int actorIndex, int talkTextIndex, int color);
 	void actorTalkWithAnim(int actorIndex, int talkTextIndex, int animNumber);
 	void actorTalkPortrait(int actorIndex, int talkTextIndex, int animNumber, int fileIndex);
-	
+	void leaveJournal();
 	void handleTalkFinished();
 	void sync(Common::Serializer &s);
-	
 	int getTalkieMode() const { return _talkieMode; }
 	void setTalkieMode(int value) { _talkieMode = value; }
 	int getTextSpeed() const { return _textSpeed; }
@@ -69,25 +66,19 @@ public:
 	bool isActive() const { return _textActive; }
 	bool isBubbleActive() const { return _textBubbleActive; }
 	bool isSpeechPlaying() const { return _talkieSpeechPlaying; }
+	uint getTextTableIndex() const { return _textTableIndex; }
 protected:
 	CometEngine *_vm;
-public:
 	int _talkieMode;
 	int _textSpeed;
-
 	byte *_currentText, *_textNextPos;
 	int _textMaxTextHeight, _textMaxTextWidth, _textDuration, _textOriginalDuration;
-
-	bool _textBubbleActive, _itemInSight;
-
+	bool _textBubbleActive;
 	int _portraitTalkCounter, _portraitTalkAnimNumber;
-
 	bool _moreText, _textActive;
 	byte _talkTextColor;
 	byte _actorTalkText[1000]; // Buffer size is taken from the original
-
 	int _talkActorIndex, _talkAnimIndex, _talkAnimPlayFrameIndex, _talkAnimFrameIndex, _talkTextIndex;
-
 	int _currNarFileIndex;
 	Common::String _narFilename;
 	uint _textTableIndex;
