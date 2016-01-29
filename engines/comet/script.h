@@ -75,6 +75,7 @@ class ScriptInterpreter {
 public:
 	ScriptInterpreter(CometEngine *vm);
 	~ScriptInterpreter();
+	void syncScripts(Common::Serializer &s);
 
 protected:
 	CometEngine *_vm;

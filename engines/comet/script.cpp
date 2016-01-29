@@ -114,6 +114,14 @@ ScriptInterpreter::~ScriptInterpreter() {
 	_opcodes.clear();
 }
 
+void ScriptInterpreter::syncScripts(Common::Serializer &s) {
+	s.syncAsByte(_scriptCount);
+	for (int i = 0; i < _scriptCount; ++i) {
+		Script *script = _scripts[i];
+		script->sync(s);
+	}
+}
+
 typedef Common::Functor1Mem<Script*, void, ScriptInterpreter> ScriptOpcodeF;
 #define RegisterOpcode(x) \
 	_opcodes.push_back(new ScriptOpcodeF(this, &ScriptInterpreter::x));  \
