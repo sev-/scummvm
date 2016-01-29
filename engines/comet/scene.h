@@ -61,7 +61,6 @@ public:
 	void initBounds(byte *data);
 
 	void initExits(byte *data);
-	void clearExits();
 	void getExitLink(int index, int &chapterNumber, int &sceneNumber);
 
 	void addBlockingRect(int x1, int y1, int x2, int y2);
@@ -83,6 +82,7 @@ public:
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 	void superFilterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
 
+	void clear();
     void initBlockingRectsFromAnimation(AnimationResource *animation);
 	void drawExits();
 
