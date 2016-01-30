@@ -352,8 +352,8 @@ void Actor::updatePortraitAnimation() {
 			return;
 		AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
 		uint16 maxInterpolationStep = frame->getMaxInterpolationStep();
-		uint16 gfxMode = frame->getDrawMode();
-		if (gfxMode == 1) {
+		uint16 drawMode = frame->getDrawMode();
+		if (drawMode == 1) {
 			if (_interpolationStep >= MAX<int>(1, maxInterpolationStep) - 1) {
 				_interpolationStep = 0;
 				++_animFrameIndex;
@@ -388,8 +388,8 @@ void Actor::updateAnimation() {
 				_animFrameIndex = 0;
 			AnimationFrame *frame = _vm->getAnimationFrame(_animationSlot, _animIndex, _animFrameIndex);
 			uint16 maxInterpolationStep = frame->getMaxInterpolationStep();
-			uint16 gfxMode = frame->getDrawMode();
-			if (gfxMode == 1) {
+			uint16 drawMode = frame->getDrawMode();
+			if (drawMode == 1) {
 				if (_interpolationStep >= MAX<int>(1, maxInterpolationStep) - 1) {
 					_interpolationStep = 0;
 					_animFrameIndex++;

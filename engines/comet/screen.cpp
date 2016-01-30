@@ -406,15 +406,15 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 	int drawX = x, drawY = y;
 	int elementIndex = frame->getElementIndex();
 	int maxInterpolationStep = frame->getMaxInterpolationStep();
-	int gfxMode = frame->getDrawMode();
+	int drawMode = frame->getDrawMode();
 	int result = 0;
 
 	frameList->accumulateDrawOffset(drawX, drawY, frameIndex);
 
-	debug(0, "gfxMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; gfxMode = %d; maxInterpolationStep = %d",
-		gfxMode, x, y, drawX, drawY, gfxMode, maxInterpolationStep);
+	debug(0, "drawMode = %d; x = %d; y = %d; drawX = %d; drawY = %d; drawMode = %d; maxInterpolationStep = %d",
+		drawMode, x, y, drawX, drawY, drawMode, maxInterpolationStep);
 
-	switch (gfxMode) {
+	switch (drawMode) {
 	case 0:
 		// Normal drawing
 		drawAnimationElement(animation, elementIndex, drawX, drawY);
@@ -442,7 +442,7 @@ int Screen::drawAnimation(AnimationResource *animation, AnimationFrameList *fram
 		break;		
 	}				
 	default:
-		debug("Screen::drawAnimation() gfxMode == %d not yet implemented", gfxMode);
+		debug("Screen::drawAnimation() drawMode == %d not yet implemented", drawMode);
 	}
 
 	return result;
