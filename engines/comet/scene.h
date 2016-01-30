@@ -64,7 +64,7 @@ public:
 	void findExitRect(int sceneNumber, int moduleNumber, int direction, int &x1, int &y1, int &x2, int &y2, int &outDirection);
 	void addSceneItem(int itemIndex, int x, int y, int paramType);
 	void removeSceneItem(int itemIndex);
-	bool getSceneItemAt(const Common::Rect &rect, SceneItem &sceneItem);
+	SceneItem *getSceneItemAt(const Common::Rect &rect);
 	int findBoundsRight(int x, int y);
 	int findBoundsLeft(int x, int y);
 	void filterWalkDestXY(int &x, int &y, int deltaX, int deltaY);
@@ -82,7 +82,7 @@ protected:
 	byte _boundsMap[320];
 	void initBoundsMap();
 	uint16 findSceneItemAt(const Common::Rect &rect);
-	SceneItem& getSceneItem(int itemIndex);
+	SceneItem *getSceneItem(int itemIndex);
     void syncExits(Common::Serializer &s);
     void syncSceneItems(Common::Serializer &s);
     void syncBounds(Common::Serializer &s);

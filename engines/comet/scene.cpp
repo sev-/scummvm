@@ -218,15 +218,15 @@ uint16 Scene::findSceneItemAt(const Common::Rect &rect) {
 	return 0;
 }
 
-SceneItem& Scene::getSceneItem(int itemIndex) {
-	return _sceneItems[itemIndex];
+SceneItem* Scene::getSceneItem(int itemIndex) {
+	return &_sceneItems[itemIndex];
 }
 
-bool Scene::getSceneItemAt(const Common::Rect &rect, SceneItem &sceneItem) {
+SceneItem *Scene::getSceneItemAt(const Common::Rect &rect) {
 	int sceneItemIndex = findSceneItemAt(rect);
 	if (sceneItemIndex != 0)
-		sceneItem = getSceneItem(sceneItemIndex & 0xFF);
-	return sceneItemIndex != 0;
+		return getSceneItem(sceneItemIndex & 0xFF);
+	return 0;
 }
 
 int Scene::findBoundsRight(int x, int y) {
