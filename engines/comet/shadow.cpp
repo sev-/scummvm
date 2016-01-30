@@ -297,12 +297,12 @@ void CometEngine::getItemInSight() {
 	debug(4, "CometEngine::getItemInSight()");
 
 	Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
-	SceneItem sceneItem;
-	if (_scene->getSceneItemAt(sightRect, sceneItem)) {
-		if (sceneItem.paramType == 0) {
-			_inventory.requestGetItem(sceneItem.itemIndex);
-			sceneItem.active = false;
-			_talkText->showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
+	SceneItem *sceneItem = _scene->getSceneItemAt(sightRect);
+	if (sceneItem) {
+		if (sceneItem->paramType == 0) {
+			_inventory.requestGetItem(sceneItem->itemIndex);
+			sceneItem->active = false;
+			_talkText->showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex), 10);
 		} else {
 			_talkText->showTextBubble(4, _inventoryItemNames->getString(4), 10);
 		}
@@ -313,18 +313,18 @@ void CometEngine::lookAtItemInSight(bool showText) {
 	_itemInSight = false;
 	if (_input->getBlockedInput() != 15) {
 		Common::Rect sightRect = _actors->getActor(0)->calcSightRect(0, 50);
-		SceneItem sceneItem;
-		if (_scene->getSceneItemAt(sightRect, sceneItem)) {
+		SceneItem *sceneItem = _scene->getSceneItemAt(sightRect);
+		if (sceneItem) {
 			_itemInSight = true;
 			_itemDirection = _actors->getActor(0)->_direction;
-			_itemX = sceneItem.x;
-			_itemY = sceneItem.y - 6;
+			_itemX = sceneItem->x;
+			_itemY = sceneItem->y - 6;
 			if (showText && (!_dialog->isRunning() || !_talkText->isActive())) {
-				if (sceneItem.paramType == 0) {
-					_talkText->showTextBubble(sceneItem.itemIndex, _inventoryItemNames->getString(sceneItem.itemIndex), 10);
+				if (sceneItem->paramType == 0) {
+					_talkText->showTextBubble(sceneItem->itemIndex, _inventoryItemNames->getString(sceneItem->itemIndex), 10);
 				} else {
 					// NOTE: Looks like this is never used in Comet CD, the resp. opcode is unused there.
-					warning("CometEngine::lookAtItemInSight() sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem.itemIndex);
+					warning("CometEngine::lookAtItemInSight() sceneItem.paramType != 0; sceneItem.itemIndex = %d", sceneItem->itemIndex);
 					// NOTE: Probably only used in Eternam
 					// _talkText->showTextBubble(sceneItem->itemIndex, getTextEntry(sceneItem->itemIndex, textBuffer));
 				}
