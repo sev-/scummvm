@@ -193,9 +193,57 @@ void CometEngine::setModuleAndScene(int moduleNumber, int sceneNumber) {
 	_scriptFileName = Common::String::format("r%02d.cc4", _moduleNumber);
 }
 
+void CometEngine::updateWalkToDirection(int walkDirection) {
+	static const byte kMouseDirections[] = {
+		0, 0, 0, 0, 0,
+		0, 1, 2, 2, 4,
+		0, 1, 2, 3, 3,
+		0, 4, 2, 3, 4,
+		0, 1, 3, 3, 4
+	};
+
+	Actor *mainActor = _actors->getActor(0);
+
+	if (mainActor->_walkStatus & 3)
+		return;
+
+	if (_dialog->isRunning() && mainActor->_directionAdd != 0) {
+		mainActor->stopWalking();
+		return;
+	}
+
+	int newDirectionAdd = mainActor->_directionAdd;
+	mainActor->_walkDestX = mainActor->_x;
+	mainActor->_walkDestY = mainActor->_y;
+
+	if (newDirectionAdd == 4)
+		newDirectionAdd = 0;
+
+	if (mainActor->_direction == walkDirection && !_input->isCurrentArrowKeyDirectionBlocked())
+		newDirectionAdd = 4;
+
+	int newDirection = kMouseDirections[mainActor->_direction * 5 + walkDirection];
+
+	mainActor->setDirection(newDirection);
+	mainActor->setDirectionAdd(newDirectionAdd);
+}
+
 void CometEngine::updateGame() {
-	_gameLoopCounter++;
-	_textColorFlag++;
+	// TODO Make this better, just a test at the moment
+	static uint32 nextUpdateTick = 0;
+
+	_input->updateArrowDirection();
+	updateMouseCursor();
+
+	if (nextUpdateTick != 0 && _system->getMillis() < nextUpdateTick) {
+		_system->updateScreen();
+		return;
+	}
+
+	nextUpdateTick = _system->getMillis() + 100;
+
+	++_gameLoopCounter;
+	++_textColorFlag;
 
 	if (_moduleNumber != _currentModuleNumber)
 		updateModuleNumber();
@@ -211,7 +259,8 @@ void CometEngine::updateGame() {
 	if (_verbs.isGetRequested())
 		getItemInSight();
 
-	_input->handleInput();
+	_input->_scriptKeybFlag = _input->isButtonPressed() ? 1 : 0;
+	updateWalkToDirection(_input->getWalkDirection());
 
 	_script->runAllScripts();
 
@@ -475,6 +524,31 @@ void CometEngine::setMouseCursorSprite(const AnimationCel *cursorSprite) {
 	} else {
 		AnimationCelMouseCursor celMouseCursor(cursorSprite);
 		celMouseCursor.setCursor(&_currCursorSprite);
+	}
+}
+
+void CometEngine::updateMouseCursor() {
+	if (_talkText->isActive()) {
+		setMouseCursor(4);
+	} else if (_dialog->isRunning()) {
+		setMouseCursor(6);
+	} else if (_input->getBlockedInput() == 0x0F) {
+		setMouseCursor(5);
+	} else {
+		switch (_input->getMouseCursorDirection()) {
+		case 1:
+			setMouseCursor(0);
+			break;
+		case 2:
+			setMouseCursor(2);
+			break;
+		case 3:
+			setMouseCursor(1);
+			break;
+		case 4:
+			setMouseCursor(3);
+			break;
+		}
 	}
 }
 
@@ -801,10 +875,8 @@ void CometEngine::playCutscene(int fileIndex, int frameListIndex, int background
 		}
 
 		animFrameIndex = 0;
-		while (animFrameIndex < animFrameCount) {
+		while (animFrameIndex < animFrameCount && !shouldQuit()) {
 			_input->handleEvents();
-			if (shouldQuit())
-				break;
 
 			_screen->copyFromScreen(_tempScreen);
 
@@ -892,7 +964,7 @@ void CometEngine::initSystemVars() {
 		_systemVars[2 + i * 3] = &_actors->getActor(i)->_x;
 		_systemVars[3 + i * 3] = &_actors->getActor(i)->_y;
 	}
-	_systemVars[31] = &_input->_cursorDirection;
+	_systemVars[31] = &_input->_arrowDirection;
 	_systemVars[32] = &_input->_scriptKeybFlag;
 	_systemVars[33] = &_scriptRandomValue;
 	_systemVars[34] = &_prevModuleNumber;
@@ -936,7 +1008,8 @@ void CometEngine::introMainLoop() {
 			_endIntroLoop = true;
 
 		updateGame();
-		syncUpdate(false);
+		_system->delayMillis(20);
+
 	}
 }
 
@@ -983,24 +1056,29 @@ void CometEngine::cometMainLoop() {
 		switch (_input->getKeyCode()) {
 		case Common::KEYCODE_F7:
 			savegame("comet.000", "Quicksave");
+			_input->waitForKeys();
 			break;
 		case Common::KEYCODE_F9:
 			loadgame("comet.000");
+			_input->waitForKeys();
 			break;
 		case Common::KEYCODE_KP_PLUS:
 			_sceneNumber++;
 			debug("## New _sceneNumber = %d", _sceneNumber);
+			_input->waitForKeys();
 			break;
 		case Common::KEYCODE_KP_MINUS:
 			if (_sceneNumber > 0) {
 				debug("## New _sceneNumber = %d", _sceneNumber);
 				_sceneNumber--;
 			}
+			_input->waitForKeys();
 			break;
 		case Common::KEYCODE_KP_MULTIPLY:
 			_moduleNumber++;
 			_sceneNumber = 0;
 			debug("## New _moduleNumber = %d", _moduleNumber);
+			_input->waitForKeys();
 			break;
 		case Common::KEYCODE_KP_DIVIDE:
 			if (_moduleNumber > 0) {
@@ -1008,13 +1086,14 @@ void CometEngine::cometMainLoop() {
 				_sceneNumber = 0;
 				debug("## New _moduleNumber = %d", _moduleNumber);
 			}
+			_input->waitForKeys();
 			break;
 		default:
 			break;
 		}
 
 		updateGame();
-		syncUpdate(false);
+		_system->delayMillis(20);
 
 		if (_loadgameRequested) {
 			// TODO:
@@ -1038,8 +1117,10 @@ void CometEngine::museumMainLoop() {
 		}
 		if (shouldQuit())
 			return;
+
 		updateGame();
-		syncUpdate(false);
+		_system->delayMillis(20);
+
 		if (_loadgameRequested) {
 			// TODO:
 			//	while (savegame_load() == 0);
@@ -1069,10 +1150,7 @@ void CometEngine::checkPauseGame() {
 		_screen->update();
 		_input->clearKeyDirection();
 		_talkText->stopVoice();
-		do {
-			_input->handleEvents();
-			syncUpdate(false);
-		} while (_input->getKeyCode() == Common::KEYCODE_INVALID && !_input->leftButton() && !_input->rightButton() && !shouldQuit());
+		_input->waitForKeyPress();
 	}
 }
 

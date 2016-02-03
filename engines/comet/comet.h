@@ -298,6 +298,7 @@ public:
 	void stopText();
 
 	void setModuleAndScene(int moduleNumber, int sceneNumber);
+	void updateWalkToDirection(int walkDirection);
 	void updateGame();
 	void updateModuleNumber();
 	void updateSceneNumber();
@@ -332,6 +333,7 @@ public:
 	// cursorSprite = NULL uses the engine's system cursor
 	void setMouseCursor(int cursorNum);
 	void setMouseCursorSprite(const AnimationCel *cursorSprite);
+	void updateMouseCursor();
 
 	int16 randomValue(int maxValue);
 	

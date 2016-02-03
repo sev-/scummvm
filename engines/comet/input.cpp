@@ -45,7 +45,7 @@ namespace Comet {
 
 Input::Input(CometEngine *vm)
 	: _vm(vm), _mouseX(0), _mouseY(0), _keyCode(Common::KEYCODE_INVALID),
-	_keyDirection(0), _cursorDirection(0), _mouseClick(0), _scriptKeybFlag(0),
+	_keyDirection(0), _arrowDirection(0), _scriptKeybFlag(0),
 	_mouseWalking(false), _mouseCursorDirection(0), _leftButton(false), _rightButton(false) {
 }
 
@@ -66,7 +66,6 @@ void Input::sync(Common::Serializer &s) {
 
 void Input::blockInput(int flagIndex) {
 	if (flagIndex == 0) {
-		_walkDirection = 0;
 		_blockedInput = 15;
 		_vm->_actors->getActor(0)->stopWalking();
 	} else {
@@ -102,6 +101,13 @@ int Input::mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY) {
 	else
 		direction = 0;
 	return direction;
+}
+
+int Input::arrowDirectionToWalkDirection(int arrowDirection) {
+	static const byte kWalkDirections[] = {
+		0, 1, 3, 0, 4, 4, 4, 0, 2, 2, 2, 0, 0, 0, 0, 0
+	};
+	return kWalkDirections[arrowDirection & 0x0F];
 }
 
 void Input::handleEvents() {
@@ -193,6 +199,7 @@ void Input::handleMouseEvent(Common::Event &event) {
 void Input::waitForKeys() {
 	while ((_keyCode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) && !_vm->shouldQuit()) {
 		handleEvents();
+		_vm->_system->delayMillis(20);
 	}
 }
 
@@ -200,107 +207,40 @@ void Input::waitForKeyPress() {
 	waitForKeys();
 	while (_keyCode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton && !_vm->shouldQuit()) {
 		handleEvents();
+		_vm->_system->delayMillis(20);
 	}
 }
 
-void Input::handleInput() {
+bool Input::isButtonPressed() {
+	return
+		(_keyCode == Common::KEYCODE_RETURN) ||
+		(!isCurrentArrowKeyDirectionBlocked() && !_vm->_dialog->isRunning()) ||
+		(!_vm->isFloppy() && (_leftButton || _rightButton));
+}
 
-	static const byte kWalkDirections[] = {
-		0, 1, 3, 0, 4, 4, 4, 0, 2, 2, 2, 0, 0, 0, 0, 0
+int Input::getWalkDirection() {
+	if (isCurrentArrowKeyDirectionBlocked() || _vm->_dialog->isRunning())
+		return 0;
+	return arrowDirectionToWalkDirection(_arrowDirection);
+}
+
+void Input::updateArrowDirection() {
+	static const byte kCursorDirectionToKeyDirections[] = {
+		0, 1, 8, 2, 4
 	};
-	
-	static const byte kMouseDirections[] = {
-		0, 0, 0, 0, 0, 0, 1, 2, 2, 4, 0, 1, 2, 3, 3, 0, 4, 2, 3, 4, 0, 1, 3, 3, 4, 0
-	};
-
-	int direction, directionAdd;
-	Actor *mainActor = _vm->_actors->getActor(0);
-
-	_cursorDirection = _keyDirection;
-	_walkDirection = kWalkDirections[_cursorDirection & 0x0F];
-
-	if (!_vm->isFloppy()) {
-		if (!_vm->_dialog->isRunning() && !_vm->_talkText->isActive() && _blockedInput != 0x0F) {
-			if (!_mouseWalking && _walkDirection == 0) {
-				_mouseCursorDirection = mouseCalcCursorDirection(mainActor->_x, mainActor->_y, _mouseX, _mouseY);
-			} else if (_walkDirection != 0) {
-				_mouseCursorDirection = _walkDirection;
-			}
-			_mouseWalking = _leftButton;
-			switch (_mouseCursorDirection) {
-			case 1:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 1;
-					_walkDirection = _mouseCursorDirection;
-				}
-				_vm->setMouseCursor(0);
-				break;
-			case 2:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 8;
-					_walkDirection = _mouseCursorDirection;
-				}
-				_vm->setMouseCursor(2);
-				break;
-			case 3:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 2;
-					_walkDirection = _mouseCursorDirection;
-				}
-				_vm->setMouseCursor(1);
-				break;
-			case 4:
-				if (_mouseWalking) {
-					_cursorDirection = (_cursorDirection & 0x80) | 4;
-					_walkDirection = _mouseCursorDirection;
-				}
-				_vm->setMouseCursor(3);
-				break;
-			}
-		} else if (_vm->_talkText->isActive()) {
-			_vm->setMouseCursor(4);
-		} else if (_vm->_dialog->isRunning()) {
-			_vm->setMouseCursor(6);
-		} else if (_blockedInput == 0x0F) {
-			_vm->setMouseCursor(5);
-		} else {
-			_vm->setMouseCursor(-1);
+	_arrowDirection = _keyDirection;
+	if (!_vm->isFloppy() && !_vm->_dialog->isRunning() && !_vm->_talkText->isActive() && _blockedInput != 0x0F) {
+		if (!_mouseWalking && _arrowDirection == 0) {
+			Actor *mainActor = _vm->_actors->getActor(0);
+			_mouseCursorDirection = mouseCalcCursorDirection(mainActor->_x, mainActor->_y, _mouseX, _mouseY);
+		} else if (_arrowDirection != 0) {
+			_mouseCursorDirection = arrowDirectionToWalkDirection(_arrowDirection);
+		}
+		_mouseWalking = _leftButton;
+		if (_mouseWalking && _mouseCursorDirection != 0) {
+			_arrowDirection = kCursorDirectionToKeyDirections[_mouseCursorDirection];
 		}
 	}
-
-	if ((_blockedInput & _cursorDirection) || _vm->_dialog->isRunning()) {
-		_walkDirection = 0;
-		_mouseClick = 0;
-	} else {
-		_mouseClick = _cursorDirection & 0x80;
-	}
-
-	_scriptKeybFlag = (_keyCode == Common::KEYCODE_RETURN) || (_mouseClick & 0x80);
-	if (!_vm->isFloppy())
-		_scriptKeybFlag = _scriptKeybFlag || _leftButton || _rightButton;
-
-	if (mainActor->_walkStatus & 3)
-		return;
-
-	if (_vm->_dialog->isRunning() && mainActor->_directionAdd != 0) {
-		mainActor->stopWalking();
-		return;
-	}
-
-	directionAdd = mainActor->_directionAdd;
-	mainActor->_walkDestX = mainActor->_x;
-	mainActor->_walkDestY = mainActor->_y;
-
-	if (directionAdd == 4)
-		directionAdd = 0;
-
-	if (mainActor->_direction == _walkDirection && !(_blockedInput & _cursorDirection))
-		directionAdd = 4;
-
-	direction = kMouseDirections[mainActor->_direction * 5 + _walkDirection];
-
-	mainActor->setDirection(direction);
-	mainActor->setDirectionAdd(directionAdd);
 }
 
 } // End of namespace Comet

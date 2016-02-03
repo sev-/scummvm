@@ -40,22 +40,26 @@ public:
 	void handleMouseEvent(Common::Event &event);
 	void waitForKeys();
 	void waitForKeyPress();
-	void handleInput();
+	void updateArrowDirection();
 	void blockInput(int flagIndex);
 	void unblockInput();
 	bool leftButton() const;
 	bool rightButton() const;
 	Common::KeyCode getKeyCode() const { return _keyCode; }
-	bool isCursorDirection(int flag) const { return (_cursorDirection & flag) != 0;}
+	bool isCursorDirection(int flag) const { return (_arrowDirection & flag) != 0;}
 	int getBlockedInput() const { return _blockedInput; }
 	void setBlockedInput(int value) { _blockedInput = value; }
 	int getMouseX() const { return _mouseX; }
 	int getMouseY() const { return _mouseY; }
 	void clearKeyDirection() { _keyDirection = 0; }
 	void clearKeyCode() { _keyCode = Common::KEYCODE_INVALID; }
+	int getMouseCursorDirection() const { return _mouseCursorDirection; }
+	bool isCurrentArrowKeyDirectionBlocked() const { return (_blockedInput & _arrowDirection) != 0; }
+	bool isButtonPressed();
+	int getWalkDirection();
 	void sync(Common::Serializer &s);
 public:
-	int16 _cursorDirection;
+	int16 _arrowDirection;
 	int16 _scriptKeybFlag;
 protected:
 	CometEngine *_vm;
@@ -65,11 +69,10 @@ protected:
 	int _mouseX, _mouseY;
 	bool _leftButton, _rightButton;
 	byte _blockedInput;
-	int16 _mouseClick;
-	int _walkDirection;
 	bool _mouseWalking;
 	int _mouseCursorDirection;
 	int mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY);
+	int arrowDirectionToWalkDirection(int arrowDirection);
 };
 
 } // End of namespace Comet
