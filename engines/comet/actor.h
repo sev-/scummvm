@@ -47,6 +47,7 @@ public:
 	bool startWalkToX(int x);
 	bool startWalkToY(int y);
 	bool startWalkToXY(int x, int y);
+	void updateWalkToDirection(int direction);
 	void updateMovement();
 	void updateAnimation();
 	void updateActorAnimation();
