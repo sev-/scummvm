@@ -1136,17 +1136,7 @@ void CometEngine::checkPauseGame() {
 		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
 		int y = 180;
 		_input->waitForKeys();
-		_screen->setFontColor(80);
-		_screen->drawText(x + 1, y + 1, pauseText);
-		_screen->drawText(x + 1, y - 1, pauseText);
-		_screen->drawText(x + 1, y, pauseText);
-		_screen->drawText(x - 1, y, pauseText);
-		_screen->drawText(x, y + 1, pauseText);
-		_screen->drawText(x, y - 1, pauseText);
-		_screen->drawText(x - 1, y + 1, pauseText);
-		_screen->drawText(x - 1, y - 1, pauseText);
-		_screen->setFontColor(95);
-		_screen->drawText(x, y, pauseText);
+		_screen->drawTextOutlined(x, y, pauseText, 95, 80);
 		_screen->update();
 		_input->clearKeyDirection();
 		_talkText->stopVoice();
