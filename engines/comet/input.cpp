@@ -111,10 +111,7 @@ int Input::arrowDirectionToWalkDirection(int arrowDirection) {
 }
 
 void Input::handleEvents() {
-	Common::Event event;
-	while (_vm->_system->getEventManager()->pollEvent(event)) {
-		handleEvent(event);
-	}
+	debug("Input::handleEvents() TODO Obsolete");
 }
 
 void Input::handleEvent(Common::Event &event) {
@@ -197,18 +194,24 @@ void Input::handleMouseEvent(Common::Event &event) {
 }
 
 void Input::waitForKeys() {
+	debug("TODO Input::waitForKeys() called");
+	/*
 	while ((_keyCode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) && !_vm->shouldQuit()) {
 		handleEvents();
 		_vm->_system->delayMillis(20);
 	}
+	*/
 }
 
 void Input::waitForKeyPress() {
+	debug("TODO Input::waitForKeyPress() called");
+	/*
 	waitForKeys();
 	while (_keyCode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton && !_vm->shouldQuit()) {
 		handleEvents();
 		_vm->_system->delayMillis(20);
 	}
+	*/
 }
 
 bool Input::isButtonPressed() {

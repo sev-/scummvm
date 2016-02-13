@@ -22,6 +22,7 @@
 
 #include "comet/comet.h"
 #include "comet/screen.h"
+#include "comet/task.h"
 #include "graphics/surface.h"
 #include "graphics/palette.h"
 #include "graphics/primitives.h"
@@ -46,19 +47,17 @@ Screen::~Screen() {
 
 void Screen::update() {
 	if (_transitionEffect && _zoomFactor == 0 && _fadeType == kFadeNone) {
-		screenTransitionEffect();
+		g_taskMan.enterTask(new ScreenTransitionEffectTask(_vm));
 		_transitionEffect = false;
 	} else if (_fadeType == kFadeIn) {
-		paletteFadeIn();
+		g_taskMan.enterTask(new PaletteFadeInTask(_vm, _fadeStep));
 	} else if (_fadeType == kFadeOut) {
-		paletteFadeOut();
+		g_taskMan.enterTask(new PaletteFadeOutTask(_vm, -_fadeStep));
 	} else if (_zoomFactor == 0) {
 		_vm->_system->copyRectToScreen(getPixels(), 320, 0, 0, 320, 200);
 		_vm->_system->updateScreen();
-		_vm->syncUpdate(false);
 	} else {
 		updateZoomEffect(_zoomFactor, _zoomX, _zoomY);
-		_vm->syncUpdate(false);
 	}
 }
 
@@ -193,61 +192,6 @@ void Screen::syncZoom(Common::Serializer &s) {
 	s.syncAsUint16LE(_zoomY);
 }
 
-void Screen::screenTransitionEffect() {
-
-	byte *vgaScreen = new byte[64000];
-
-	Graphics::Surface *screen = _vm->_system->lockScreen();
-	memcpy(vgaScreen, screen->getPixels(), 320 * 200);
-	_vm->_system->unlockScreen();
-
-	for (int i = 0; i < 7; i++) {
-		byte *sourceBuf = (byte*)getBasePtr(i, 0);
-		byte *destBuf = vgaScreen + i;
-		for (int x = 0; x < 320 * 200 / 6; x++) {
-			*destBuf = *sourceBuf;
-			sourceBuf += 6;
-			destBuf += 6;
-		}
-		_vm->_system->copyRectToScreen(vgaScreen, 320, 0, 0, 320, 200);
-		_vm->_system->updateScreen();
-		_vm->syncUpdate(false);
-	}
-
-	delete[] vgaScreen;
-
-}
-
-void Screen::screenScrollEffect(byte *newScreen, int scrollDirection) {
-
-	const int kScrollStripWidth = 40;
-
-	Graphics::Surface *screen = _vm->_system->lockScreen();
-	memcpy(getPixels(), screen->getPixels(), 320 * 200);
-	_vm->_system->unlockScreen();
-
-	int copyOfs = 0;
-	
-	while (copyOfs < 320) {
-		if (scrollDirection < 0) {
-			for (int y = 0; y < 200; y++) {
-				memmove(getBasePtr(0, y), getBasePtr(kScrollStripWidth, y), 320 - kScrollStripWidth);
-				memcpy(getBasePtr(320 - kScrollStripWidth, y), &newScreen[y * 320 + copyOfs], kScrollStripWidth);
-			}
-		} else {
-			for (int y = 0; y < 200; y++) {
-				memmove(getBasePtr(kScrollStripWidth, y), getBasePtr(0, y), 320 - kScrollStripWidth);
-				memcpy(getBasePtr(0, y), &newScreen[y * 320 + (320 - kScrollStripWidth - copyOfs)], kScrollStripWidth);
-			}
-		}
-		_vm->_system->copyRectToScreen(getPixels(), 320, 0, 0, 320, 200);
-		_vm->_system->updateScreen();
-		_vm->syncUpdate(false);
-		copyOfs += kScrollStripWidth;
-	}
-
-}
-
 void Screen::buildPalette(byte *sourcePal, byte *destPal, int value) {
 	for (int i = 0; i < 768; i++)
 		destPal[i] = (sourcePal[i] * value) >> 8;
@@ -262,38 +206,6 @@ void Screen::buildRedPalette(byte *sourcePal, byte *destPal, int value) {
 		*destPal++ = ((r + g + b + 100) / 4 - r) * value / 16 + r;
 		*destPal++ = g * (16 - value) / 16;
 		*destPal++ = b * (16 - value) / 16;
-	}
-}
-
-void Screen::paletteFadeIn() {
-	setFadePalette(0);
-	_vm->_system->copyRectToScreen(getPixels(), 320, 0, 0, 320, 200);
-	paletteFadeCore(_fadeStep);
-	setFadePalette(255);
-	_fadeType = kFadeNone;
-	_palFlag = false;
-}
-
-void Screen::paletteFadeOut() {
-	setFadePalette(255);
-	paletteFadeCore(-_fadeStep);
-	setFadePalette(0);
-	_fadeType = kFadeNone;
-	_palFlag = true;
-}
-
-void Screen::paletteFadeCore(int fadeStep) {
-	const uint32 kFadeUpdateDuration = 10;
-	int value = fadeStep < 0 ? 255 : 0;
-	uint32 nextTick = _vm->_system->getMillis();
-	while ((fadeStep < 0 && value > 0) || (fadeStep >= 0 && value < 255)) {
-		uint32 currTick = _vm->_system->getMillis();
-		if (currTick >= nextTick) {
-			if (currTick < nextTick + kFadeUpdateDuration)
-				setFadePalette(value);
-			nextTick = currTick + kFadeUpdateDuration;
-			value += fadeStep;
-		}
 	}
 }
 

@@ -40,6 +40,7 @@
 #include "comet/scene.h"
 #include "comet/screen.h"
 #include "comet/talktext.h"
+#include "comet/task.h"
 
 namespace Comet {
 
@@ -625,76 +626,7 @@ void CometEngine::warpMouseToRect(const GuiRectangle &rect) {
 }
 
 void CometEngine::handleKeyInput() {
-	switch (_input->getKeyCode()) {
-	case Common::KEYCODE_t:
-		_verbs.requestTalk();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_g:
-		_verbs.requestGet();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_l:
-		_verbs.requestLook();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_o:
-		_gui->run(kGuiInventory);
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_u:
-		useCurrentInventoryItem();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_d:
-		_gui->run(kGuiMainMenu);
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_m:
-		handleMap();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_i:
-		_gui->run(kGuiJournal);
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_p:
-		checkPauseGame();
-		_input->waitForKeys();
-		break;
-	case Common::KEYCODE_RETURN:
-		_talkText->stopText();
-		break;
-	default:
-		if (_input->getKeyCode() == Common::KEYCODE_TAB || _input->rightButton()) {
-			_gui->run(kGuiCommandBar);
-		}
-		break;
-	}
-}
-
-void CometEngine::syncUpdate(bool screenUpdate) {
-	const uint32 kTargetFramerate = 10;
-	const uint32 kMillisPerFrame = 1000 / kTargetFramerate;
-	const uint32 kMinimumTimerResolution = 10;
-	const uint32 kUpdateScreenMillis = 20;
-	if (screenUpdate)
-		_screen->update();
-	// Try to keep the framerate as demanded by kMillisPerFrame
-	uint32 currTick = _system->getMillis();
-	if (_nextTick > currTick && _nextTick - currTick >= kMinimumTimerResolution) {
-		uint32 totalWaitMillis = _nextTick - currTick;
-		while (totalWaitMillis > 0) {
-			uint32 waitMillis = totalWaitMillis > kUpdateScreenMillis
-				? kUpdateScreenMillis : totalWaitMillis;
-			_system->delayMillis(waitMillis);
-			_input->handleEvents();
-			_system->updateScreen();
-			totalWaitMillis -= waitMillis;
-		}
-	}
-	// TODO Take gamespeed into account later
-	_nextTick = currTick + kMillisPerFrame;
+	// TODO Remove obsolete
 }
 
 int CometEngine::handleSceneExitCollision(int sceneExitIndex) {
@@ -784,10 +716,12 @@ void CometEngine::handleSceneChange(int sceneNumber, int moduleNumber) {
 			buildSpriteDrawQueue();		
 			drawSpriteQueue();
 			_screen->copyToScreen(_tempScreen);
+			// TODO
+			// TODO Also make parameterless left/right variants of the class
 			if (direction == 2) {
-				_screen->screenScrollEffect(_tempScreen, -1);
+				g_taskMan.enterTask(new ScreenScrollEffectTask(this, _tempScreen, -1));
 			} else if (direction == 4) {
-				_screen->screenScrollEffect(_tempScreen, 1);
+				g_taskMan.enterTask(new ScreenScrollEffectTask(this, _tempScreen, 1));
 			}
 		}
 	}
@@ -828,103 +762,6 @@ void CometEngine::drawTextIllsmouth() {
 	byte *text = _textReader->getString(2, 36);
 	_screen->drawTextOutlined((320 - _screen->getTextWidth(text)) / 2, 180, text, 7, 0); 
 	_scriptVars[11]++;
-}
-
-void CometEngine::playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData) {
-	debug("playCutscene(%d, %d, %d, %d, %d)", fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount);
-
-	int palStatus = 0;
-	AnimationResource *cutsceneSprite;
-	AnimationFrameList *frameList;
-	int animFrameCount;
-
-	_talkText->stopVoice();
-	_talkText->stopText();
-
-	cutsceneSprite = _animationMan->loadAnimationResource(_animPakName.c_str(), fileIndex);
-	frameList = cutsceneSprite->getFrameList(frameListIndex);
-	animFrameCount = frameList->getFrameCount();
-
-	if (backgroundIndex == 0) {
-		_screen->clear();
-	} else if (backgroundIndex < 0) {
-		_screen->drawAnimationElement(cutsceneSprite, -backgroundIndex, 0, 0);
-	} else if (backgroundIndex < 32000) {
-		_screen->drawAnimationElement(_sceneDecorationSprite, backgroundIndex, 0, 0);
-	} else if (backgroundIndex == 32000) {
-		// TODO: Grab vga screen to work screen
-	}
-
-	_screen->copyToScreen(_tempScreen);
-
-	if (soundFramesCount > 0) {
-		int sampleIndex = soundFramesData[0];
-		debug("  sampleIndex = %d", sampleIndex);
-		// TODO: Load the sample
-	}
-
-	for (int loopIndex = 0; loopIndex < loopCount && !shouldQuit(); loopIndex++) {
-		byte *workSoundFramesData = soundFramesData;
-		int workSoundFramesCount = soundFramesCount;
-		int animFrameIndex, animSoundFrameIndex = 0, interpolationStep = 0;
-
-		if (soundFramesCount > 0) {
-			workSoundFramesData++;
-			animSoundFrameIndex = *workSoundFramesData++;
-			workSoundFramesData++;
-		}
-
-		animFrameIndex = 0;
-		while (animFrameIndex < animFrameCount && !shouldQuit()) {
-			_input->handleEvents();
-
-			_screen->copyFromScreen(_tempScreen);
-
-			interpolationStep = _screen->drawAnimation(cutsceneSprite, frameList, animFrameIndex, interpolationStep, 0, 0, animFrameCount);
-
-			_talkText->updateTextDialog();
-
-			if (palStatus == 1) {
-				// TODO: Set the anim palette
-				palStatus = 2;
-			}
-
-			syncUpdate();
-
-			if (workSoundFramesCount > 0 && animFrameIndex == animSoundFrameIndex) {
-				// TODO: Play the anim sound
-				workSoundFramesCount--;
-				if (workSoundFramesCount > 0) {
-					// NOTE: Load the next sample; unused in Comet (only max. one sample per cutscene)
-				}
-			}
-
-			checkPauseGame();
-
-			if (_input->getKeyCode() == Common::KEYCODE_ESCAPE) {
-				// TODO: yesNoDialog();
-			} else if (_input->getKeyCode() == Common::KEYCODE_RETURN) {
-				animFrameIndex = animFrameCount;
-				loopIndex = loopCount;
-				if (_talkText->isActive())
-					_talkText->stopText();
-			}
-
-			if (interpolationStep == 0)
-				animFrameIndex++;
-		}
-	}
-
-	delete cutsceneSprite;
-
-	if (palStatus > 0)
-		_screen->setFullPalette(_screenPalette);
-
-	if (_talkText->isActive())
-		_talkText->resetTextValues();
-
-	// CHECKME: If this is neccessary (screen is copied in main loop anyways)
-	_screen->copyFromScreenResource(_sceneBackgroundResource);
 }
 
 void CometEngine::addBeam(int x1, int y1, int x2, int y2) {
@@ -979,135 +816,13 @@ void CometEngine::checkCurrentInventoryItem() {
 	_inventory.testSelectedItemRemoved();
 	// Check if the player wants to read the notebook
 	if (_inventory.getStatus(0) == 2) {
-		_gui->run(kGuiJournal);
+		// TODO _gui->run(kGuiJournal);
 		_inventory.setStatus(0, 1);
 	}
 }
 
-void CometEngine::introMainLoop() {
-	_endIntroLoop = false;
-
-	while (!_endIntroLoop && !shouldQuit()) {
-		_input->handleEvents();
-
-		switch (_input->getKeyCode()) {
-		case Common::KEYCODE_ESCAPE:
-			_endIntroLoop = true;
-			break;
-		case Common::KEYCODE_RETURN:
-			_talkText->stopText();
-			break;
-		case Common::KEYCODE_p:
-			checkPauseGame();
-			break;
-		default:
-			break;
-		}
-
-		if (_currentSceneNumber == 0 && _currentModuleNumber == 0)
-			_endIntroLoop = true;
-
-		updateGame();
-		_system->delayMillis(20);
-
-	}
-}
-
-void CometEngine::cometMainLoop() {
-	while (!shouldQuit()) {
-		_input->handleEvents();
-
-		if (_currentModuleNumber == 7 && _currentSceneNumber == 1 && _paletteStatus == 0) {
-			memcpy(_backupPalette, _gamePalette, 768);
-			memcpy(_gamePalette, _flashbakPal, 768);
-			memcpy(_screenPalette, _flashbakPal, 768);
-			_screen->clear();
-			_screen->setFullPalette(_gamePalette);
-			_paletteStatus = 1;
-		} else if (_currentModuleNumber == 2 && _currentSceneNumber == 22 && _paletteStatus == 1) {
-			memcpy(_gamePalette, _backupPalette, 768);
-			memcpy(_screenPalette, _backupPalette, 768);
-			_screen->clear();
-			_screen->setFullPalette(_gamePalette);
-			_paletteStatus = 0;
-		}
-
-		if (_scriptVars[9] == 1) {
-			_scriptVars[9] = _gui->run(kGuiPuzzle);
-			loadSceneBackground();
-		}
-
-		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
-			handleKeyInput();
-		// Original behavior: } else if (_input->getKeyCode() == Common::KEYCODE_RETURN || (_input->rightButton() && _talkText->isActive())) {
-		} else if ((_input->getKeyCode() == Common::KEYCODE_RETURN || _input->rightButton()) && _talkText->isActive()) {
-			_talkText->stopText();
-		}
-
-		if (shouldQuit())
-			return;
-
-		if (debugTestPuzzle) {
-			_gui->run(kGuiPuzzle);
-			debugTestPuzzle = false;
-		}
-
-		// Debugging keys
-		switch (_input->getKeyCode()) {
-		case Common::KEYCODE_F7:
-			savegame("comet.000", "Quicksave");
-			_input->waitForKeys();
-			break;
-		case Common::KEYCODE_F9:
-			loadgame("comet.000");
-			_input->waitForKeys();
-			break;
-		case Common::KEYCODE_KP_PLUS:
-			_sceneNumber++;
-			debug("## New _sceneNumber = %d", _sceneNumber);
-			_input->waitForKeys();
-			break;
-		case Common::KEYCODE_KP_MINUS:
-			if (_sceneNumber > 0) {
-				debug("## New _sceneNumber = %d", _sceneNumber);
-				_sceneNumber--;
-			}
-			_input->waitForKeys();
-			break;
-		case Common::KEYCODE_KP_MULTIPLY:
-			_moduleNumber++;
-			_sceneNumber = 0;
-			debug("## New _moduleNumber = %d", _moduleNumber);
-			_input->waitForKeys();
-			break;
-		case Common::KEYCODE_KP_DIVIDE:
-			if (_moduleNumber > 0) {
-				_moduleNumber--;
-				_sceneNumber = 0;
-				debug("## New _moduleNumber = %d", _moduleNumber);
-			}
-			_input->waitForKeys();
-			break;
-		default:
-			break;
-		}
-
-		updateGame();
-		_system->delayMillis(20);
-
-		if (_loadgameRequested) {
-			// TODO:
-			//	while (savegame_load() == 0);
-			//	savegame_load
-
-			_loadgameRequested = false;
-		}
-
-		checkCurrentInventoryItem();
-	}
-}
-
 void CometEngine::museumMainLoop() {
+#if 0 // TODO
 	while (!shouldQuit()) {
 		_input->handleEvents();
 		if (!_dialog->isRunning() && _currentModuleNumber != 3 && _actors->getActor(0)->_value6 != 4 && !_screen->_palFlag && !_talkText->isActive()) {
@@ -1128,53 +843,51 @@ void CometEngine::museumMainLoop() {
 			_loadgameRequested = false;
 		}
 	}
+#endif
 }
 
-void CometEngine::checkPauseGame() {
-	static const byte *pauseText = (const byte*)"Game Paused";
-	if (_input->getKeyCode() == Common::KEYCODE_p) {
-		int x = (320 - _screen->getTextWidth(pauseText)) / 2;
-		int y = 180;
-		_input->waitForKeys();
-		_screen->drawTextOutlined(x, y, pauseText, 95, 80);
-		_screen->update();
-		_input->clearKeyDirection();
-		_talkText->stopVoice();
-		_input->waitForKeyPress();
-	}
-}
-
-int CometEngine::handleMap() {
-	int mapResult = 0;
-
-	_talkText->stopVoice();
-
+bool CometEngine::canShowMap() {
+	bool result = false;
 	if (_input->getBlockedInput() == 0 && !_talkText->isActive() && !_dialog->isRunning() && !_talkText->isSpeechPlaying() &&
 		_scriptVars[7] != 1 && _scriptVars[8] != 1 && _scriptVars[8] != 2) {
-
-		setMouseCursor(-1);
-
 		if (_currentModuleNumber == 0 && 
 			((_currentSceneNumber >= 0 && _currentSceneNumber <= 22) ||
 			(_currentSceneNumber >= 30 || _currentSceneNumber <= 52) ||
 			(_currentSceneNumber >= 60 || _currentSceneNumber <= 82))) {
-			mapResult = _gui->run(kGuiTownMap);
+			result = true;
+			_inventory.setStatus(0, 1);
+		} else if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
+			result = true;
 			_inventory.setStatus(0, 1);
 		}
-
-		if (_currentModuleNumber == 6 && _currentSceneNumber >= 0 && _currentSceneNumber <= 22) {
-			mapResult = _gui->run(kGuiTownMap);
-			_inventory.setStatus(0, 1);
-		}
-		
 	}
-
-	return mapResult;
+	return result;
 }
 
 void CometEngine::openConsole() {
 	_console->attach();
 	_console->onFrame();
+}
+
+void CometEngine::runTasks() {
+	// TODO Make this better, just a test at the moment
+	static uint32 lastUpdateTick = 0;
+
+	while (!shouldQuit() && g_taskMan.isActive()) {
+		Common::Event event;
+		while (_system->getEventManager()->pollEvent(event)) {
+			g_taskMan.handleEvent(event);
+		}
+		if (lastUpdateTick == 0 || _system->getMillis() >= lastUpdateTick + g_taskMan.getUpdateTicks()) {
+			lastUpdateTick = _system->getMillis();
+			g_taskMan.update();
+			debug("-----------------");
+			//_screen->update();
+		}
+		_system->updateScreen();
+		_system->delayMillis(20);
+	}
+
 }
 
 } // End of namespace Comet

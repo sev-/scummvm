@@ -34,6 +34,20 @@
 
 namespace Comet {
 
+// GuiPage
+
+GuiPage::GuiPage(CometEngine *vm)
+	: CometTaskBase(vm) {
+}
+
+void GuiPage::enter() {
+	_vm->_gui->onEnterPage(this);
+}
+
+void GuiPage::leave() {
+	_vm->_gui->onLeavePage(this);
+}
+
 Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiInventory = new GuiInventory(_vm);
 	_guiCommandBar = new GuiCommandBar(_vm);
@@ -42,7 +56,7 @@ Gui::Gui(CometEngine *vm) : _vm(vm) {
 	_guiMainMenu = new GuiMainMenu(_vm);
 	_guiOptionsMenu = new GuiOptionsMenu(_vm);
 	_guiPuzzle = new GuiPuzzle(_vm);
-	_guiSaveLoadMenu = new GuiSaveLoadMenu(_vm);
+//	_guiSaveLoadMenu = new GuiSaveLoadMenu(_vm);
 	_gameScreen = new byte[64000];
 	_currPage = NULL;
 }
@@ -55,54 +69,62 @@ Gui::~Gui() {
 	delete _guiMainMenu;
 	delete _guiOptionsMenu;
 	delete _guiPuzzle;
-	delete _guiSaveLoadMenu;
+//	delete _guiSaveLoadMenu;
 	delete[] _gameScreen;
 }
 
-int Gui::run(GuiPageIdent page) {
-	int result;
-	if (_currPage)
+void Gui::onEnterPage(GuiPage *page) {
+	debug("Gui::onEnterPage()");
+	if (_currPage) {
 		_stack.push_back(_currPage);
-	else
-		_vm->_screen->copyToScreen(_gameScreen);
-	switch (page) {
-	case kGuiInventory:
-		_currPage = _guiInventory;
-		break;
-	case kGuiCommandBar:
-		_currPage = _guiCommandBar;
-		break;
-	case kGuiJournal:
-		_currPage = _guiJournal;
-		break;
-	case kGuiTownMap:
-		_currPage = _guiTownMap;
-		break;
-	case kGuiMainMenu:
-		_currPage = _guiMainMenu;
-		break;
-	case kGuiOptionsMenu:
-		_currPage = _guiOptionsMenu;
-		break;
-	case kGuiPuzzle:
-		_currPage = _guiPuzzle;
-		break;
-	case kGuiSaveMenu:
-	case kGuiLoadMenu:
-		_guiSaveLoadMenu->setAsSaveMenu(page == kGuiSaveMenu);
-		_currPage = _guiSaveLoadMenu;
-		break;
 	}
-	result = _currPage->run();
+	else {
+		_vm->_screen->copyToScreen(_gameScreen);
+	}
+	_currPage = page;
+}
+
+void Gui::onLeavePage(GuiPage *page) {
+	debug("Gui::onLeavePage()");
+	_lastResult = page->getResult();
 	if (_stack.size() > 0) {
 		_currPage = _stack.back();
 		_stack.pop_back();
 		_vm->_screen->copyFromScreen(_gameScreen);
 		for (Common::Array<GuiPage*>::iterator it = _stack.begin(); it != _stack.end(); it++)
 			(*it)->draw();
-	} else
+	} else {
 		_currPage = NULL;
-	return result;
+	}
+}
+
+GuiPage *Gui::getGuiPage(GuiPageIdent page) {
+	switch (page) {
+	case kGuiInventory:
+		return _guiInventory;
+	case kGuiCommandBar:
+		return _guiCommandBar;
+	case kGuiJournal:
+		return _guiJournal;
+	case kGuiTownMap:
+		return _guiTownMap;
+	case kGuiMainMenu:
+		return _guiMainMenu;
+	case kGuiOptionsMenu:
+		return _guiOptionsMenu;
+	case kGuiPuzzle:
+		return _guiPuzzle;
+		break;
+#if 0
+	case kGuiSaveMenu:
+	case kGuiLoadMenu:
+		// TODO _guiSaveLoadMenu->setAsSaveMenu(page == kGuiSaveMenu);
+		return _guiSaveLoadMenu;
+#endif
+	default:
+		error("Gui::getGuiPage() Page %d not yet refactored", page);
+		break;
+	}
 }
 
 // GuiPage
@@ -131,152 +153,164 @@ void GuiPage::drawAnimatedIconSprite(AnimationResource *animation, uint frameLis
 
 // GuiInventory
 
-int GuiInventory::run() {
-	const int kIANone		= -1;
-	const int kIAUp			= -2;
-	const int kIADown		= -3;
-	const int kIAUse		= -4;
-	const int kIASelect		= -5;
-	const int kIAExit		= -6;
-	const uint kMaxItemsOnScreen = 10;
+enum GuiInventoryAction {
+	kIANone   = -1,
+	kIAUp     = -2,
+	kIADown   = -3,
+	kIAUse    = -4,
+	kIASelect = -5,
+	kIAExit   = -6
+};
 
-	static const GuiRectangle inventorySlotRects[] = {
-		{160, 182, 170, 190, kIADown},
-		{160,  53, 170,  61, kIAUp},
-		{ 74,  62, 253,  73,  0},
-		{ 74,  74, 253,  85,  1},
-		{ 74,  86, 253,  97,  2},
-		{ 74,  98, 253, 109,  3},
-		{ 74, 110, 253, 121,  4},
-		{ 74, 122, 253, 133,  5},
-		{ 74, 134, 253, 145,  6},
-		{ 74, 146, 253, 157,  7},
-		{ 74, 158, 253, 169,  8},
-		{ 74, 170, 253, 181,  9}
-	};
+static const GuiRectangle kInventorySlotRects[] = {
+	{160, 182, 170, 190, kIADown},
+	{160,  53, 170,  61, kIAUp},
+	{ 74,  62, 253,  73,  0},
+	{ 74,  74, 253,  85,  1},
+	{ 74,  86, 253,  97,  2},
+	{ 74,  98, 253, 109,  3},
+	{ 74, 110, 253, 121,  4},
+	{ 74, 122, 253, 133,  5},
+	{ 74, 134, 253, 145,  6},
+	{ 74, 146, 253, 157,  7},
+	{ 74, 158, 253, 169,  8},
+	{ 74, 170, 253, 181,  9}
+};
 
-	Common::Array<uint16> items;
-	uint firstItem = 0, currentItem = 0, animFrameCounter = 0;
-	int inventoryStatus = 0;
+const uint kMaxInventoryItemsOnScreen = 10;
 
-	_vm->_input->waitForKeys();
+void GuiInventory::enter() {
+	GuiPage::enter();
+	_mouseSelectedItem = -1;
+	_firstItem = 0;
+	_currentItem = 0;
+	_animFrameCounter = 0;
+	_inventoryStatus = 0;
 	_vm->setMouseCursor(-1);
-
 	// Build items array and set up variables
-	_vm->_inventory.buildItems(items, firstItem, currentItem);
-
-	while (inventoryStatus == 0 && !_vm->shouldQuit()) {
-		int inventoryAction = kIANone, mouseSelectedItem;
-		bool doWarpMouse = false;
-
-		_vm->_input->handleEvents();
-
-		mouseSelectedItem = _vm->findRect(inventorySlotRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), MIN<int>(items.size() - firstItem, 10) + 2, kIANone);
-		if (mouseSelectedItem >= 0)
-			currentItem = firstItem + mouseSelectedItem;
-
-		drawInventory(items, firstItem, currentItem, animFrameCounter++);
-		_vm->syncUpdate();
-
-		if (_vm->_input->rightButton()) {
-			inventoryAction = kIAExit;
-		} else if (_vm->_input->leftButton()) {
-			if (mouseSelectedItem >= 0)
-				inventoryAction = kIAUse;
-			else if (mouseSelectedItem != kIANone)
-				inventoryAction = mouseSelectedItem;
-		}
-
-		switch (_vm->_input->getKeyCode()) {
-		case Common::KEYCODE_DOWN:
-			inventoryAction = kIADown;
-			break;
-		case Common::KEYCODE_UP:
-			inventoryAction = kIAUp;
-			break;
-		case Common::KEYCODE_ESCAPE:
-			inventoryAction = kIAExit;
-			break;
-		case Common::KEYCODE_RETURN:
-			inventoryAction = kIASelect;
-			break;
-		case Common::KEYCODE_u:
-			inventoryAction = kIAUse;
-			break;
-		default:
-			break;
-		}
-
-		switch (inventoryAction) {
-		case kIANone:
-			break;
-		case kIADown:
-			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && currentItem + 1 < items.size()) {
-				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
-				currentItem++;
-			} else if (firstItem + kMaxItemsOnScreen < items.size()) {
-				firstItem++;
-				currentItem++;
-			}
-			break;
-		case kIAUp:
-			if (currentItem > firstItem) {
-				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
-				currentItem--;
-			} else if (firstItem > 0) {
-				firstItem--;
-				currentItem--;
-			}
-			break;
-		case kIAExit:
-			inventoryStatus = 2;
-			break;
-		case kIASelect:
-		case kIAUse:
-			_vm->_inventory.resetStatus();
-			_vm->_inventory.selectItem(items[currentItem]);
-			// Return just selects, U actually uses the item
-			if (inventoryAction == kIAUse)
-				_vm->_inventory.requestUseSelectedItem();
-			inventoryStatus = 1;
-			break;
-		default:
-			break;
-		}
-		
-		if (doWarpMouse) {
-			_vm->warpMouseToRect(inventorySlotRects[currentItem - firstItem + 2]);
-			doWarpMouse = false;
-		}
-
-		_vm->_input->waitForKeys();
-	}
-
-	return 2 - inventoryStatus;
+	_items.clear();
+	_vm->_inventory.buildItems(_items, _firstItem, _currentItem);
+	_inventoryAction = kIANone;
 }
 
-void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, uint currentItem, uint animFrameCounter) {
-	const uint kMaxItemsOnScreen = 10;
+void GuiInventory::update() {
+
+	//bool doWarpMouse = false;
+#if 0
+	_mouseSelectedItem = _vm->findRect(kInventorySlotRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), MIN<int>(_items.size() - _firstItem, 10) + 2, kIANone);
+	if (_mouseSelectedItem >= 0)
+		_currentItem = _firstItem + _mouseSelectedItem;
+#endif
+	drawInventory();
+
+	switch (_inventoryAction) {
+	case kIANone:
+		break;
+	case kIADown:
+		if ((_currentItem - _firstItem + 1 < kMaxInventoryItemsOnScreen) && _currentItem + 1 < _items.size()) {
+			// TODO doWarpMouse = _mouseSelectedItem == (_currentItem - _firstItem);
+			++_currentItem;
+		} else if (_firstItem + kMaxInventoryItemsOnScreen < _items.size()) {
+			++_firstItem;
+			++_currentItem;
+		}
+		break;
+	case kIAUp:
+		if (_currentItem > _firstItem) {
+			// TODO doWarpMouse = _mouseSelectedItem == (_currentItem - _firstItem);
+			--_currentItem;
+		} else if (_firstItem > 0) {
+			--_firstItem;
+			--_currentItem;
+		}
+		break;
+	case kIAExit:
+		_inventoryStatus = 2;
+		break;
+	case kIASelect:
+	case kIAUse:
+		_vm->_inventory.resetStatus();
+		_vm->_inventory.selectItem(_items[_currentItem]);
+		// Return just selects, U actually uses the item
+		if (_inventoryAction == kIAUse)
+			_vm->_inventory.requestUseSelectedItem();
+		_inventoryStatus = 1;
+		break;
+	default:
+		break;
+	}
+#if 0	
+	if (doWarpMouse) {
+		_vm->warpMouseToRect(kInventorySlotRects[_currentItem - _firstItem + 2]);
+		doWarpMouse = false;
+	}
+#endif
+	
+	_inventoryAction = kIANone;
+
+	_vm->_screen->update();
+
+	// TODO Save the current status etc. return 2 - _inventoryStatus;
+}
+
+void GuiInventory::handleEvent(Common::Event &event) {
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		case Common::KEYCODE_DOWN:
+			_inventoryAction = kIADown;
+			break;
+		case Common::KEYCODE_UP:
+			_inventoryAction = kIAUp;
+			break;
+		case Common::KEYCODE_ESCAPE:
+			_inventoryAction = kIAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			_inventoryAction = kIASelect;
+			break;
+		case Common::KEYCODE_u:
+			_inventoryAction = kIAUse;
+			break;
+		default:
+			break;
+		}
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (_mouseSelectedItem >= 0)
+			_inventoryAction = kIAUse;
+		else if (_mouseSelectedItem != kIANone)
+			_inventoryAction = _mouseSelectedItem;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_inventoryAction = kIAExit;
+		break;
+	default:
+		break;
+	}
+}
+
+void GuiInventory::drawInventory() {
 	const uint xadd = 74, yadd = 64, itemHeight = 12;
 
 	drawIcon(16);
 	// Draw up arrow
-	if (firstItem > 0)
+	if (_firstItem > 0)
 		drawIcon(53);
 	// Draw down arrow
-	if (firstItem + kMaxItemsOnScreen < items.size())
+	if (_firstItem + kMaxInventoryItemsOnScreen < _items.size())
 		drawIcon(52);
-	for (uint itemIndex = 0; (itemIndex < kMaxItemsOnScreen) && (firstItem + itemIndex < items.size()); itemIndex++) {
-		byte *itemName = _vm->_inventoryItemNames->getString(items[firstItem + itemIndex]);
+	for (uint itemIndex = 0; (itemIndex < kMaxInventoryItemsOnScreen) && (_firstItem + itemIndex < _items.size()); itemIndex++) {
+		byte *itemName = _vm->_inventoryItemNames->getString(_items[_firstItem + itemIndex]);
 		const int itemX = xadd + 21, itemY = yadd + itemHeight * itemIndex;
 		_vm->_screen->setFontColor(120);
 		_vm->_screen->drawText(itemX, itemY, itemName);
 		_vm->_screen->setFontColor(119);
 		_vm->_screen->drawText(itemX + 1, itemY + 1, itemName);
-		drawAnimatedInventoryIcon(items[firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, animFrameCounter);
+		drawAnimatedInventoryIcon(_items[_firstItem + itemIndex], xadd, yadd + itemHeight * itemIndex - 3, _animFrameCounter);
 	}
-	if (items.size() > 0) {
-		const int selectionY = yadd + (currentItem - firstItem) * itemHeight - 1;
+	if (_items.size() > 0) {
+		const int selectionY = yadd + (_currentItem - _firstItem) * itemHeight - 1;
 		_vm->_screen->frameRect(xadd + 16, selectionY, 253, selectionY + itemHeight - 1, _selectionColor);
 		_selectionColor++;
 		if (_selectionColor >= 96)
@@ -286,8 +320,188 @@ void GuiInventory::drawInventory(Common::Array<uint16> &items, uint firstItem, u
 
 // GuiCommandBar
 
-int GuiCommandBar::run() {
-	return handleCommandBar();
+enum GuiCommandBarAction {
+	kCBANone      = -1,
+	kCBAExit      = -2,
+	kCBAVerbTalk  = 0,
+	kCBAVerbGet   = 1,
+	kCBAUseItem   = 2,
+	kCBAVerbLook  = 3,
+	kCBAInventory = 4,
+	kCBAMap       = 5,
+	kCBAMenu      = 6
+};
+
+static const GuiRectangle kCommandBarRects[] = {
+	{  6, 4,  41, 34, kCBAVerbTalk}, 
+	{ 51, 4,  86, 34, kCBAVerbGet}, 
+	{ 96, 4, 131, 34, kCBAUseItem},
+	{141, 4, 176, 34, kCBAVerbLook}, 
+	{186, 4, 221, 34, kCBAInventory}, 
+	{231, 4, 266, 34, kCBAMap},
+	{276, 4, 311, 34, kCBAMenu}};
+const int kCommandBarItemCount = 6; // Intentionally doesn't match actual count!
+
+void GuiCommandBar::enter() {
+	GuiPage::enter();
+	_commandBarStatus = 0;
+	_animFrameCounter = 0;
+	_vm->setMouseCursor(-1);
+	// The Lovecraft Museum that comes with the CD version needs some special handling
+	if (isMuseum() && (_commandBarSelectedItem != kCBAVerbLook || _commandBarSelectedItem != kCBAMenu))
+		_commandBarSelectedItem = kCBAVerbLook;
+	_commandBarAction = kCBANone;
+}
+
+void GuiCommandBar::update() {
+	TASK_BODY_BEGIN
+
+	// TODO int mouseSelectedItem;
+	// TODO bool doWarpMouse = false;
+
+#if 0
+	mouseSelectedItem = _vm->findRect(kCommandBarRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), kCommandBarItemCount + 1, kCBANone);
+
+	if (isMuseum && (mouseSelectedItem != kCBAVerbLook || mouseSelectedItem != kCBAMenu))
+		mouseSelectedItem = kCBANone;
+
+	if (mouseSelectedItem != kCBANone)
+		_commandBarSelectedItem = mouseSelectedItem;
+#endif
+
+	drawCommandBar(_commandBarSelectedItem);
+	++_animFrameCounter;
+
+#if 0
+	if (isMuseum && (_vm->_input->getKeyCode() == Common::KEYCODE_RIGHT || _vm->_input->getKeyCode() == Common::KEYCODE_LEFT)) {
+		if (_commandBarSelectedItem == kCBAVerbLook)
+			_commandBarSelectedItem = kCBAMenu;
+		else if (_commandBarSelectedItem == kCBAMenu)
+			_commandBarSelectedItem = kCBAVerbLook;
+		_vm->_input->clearKeyCode();
+	}
+#endif
+
+#if 0
+	if (doWarpMouse) {
+		_vm->warpMouseToRect(kCommandBarRects[_commandBarSelectedItem]);
+		doWarpMouse = false;
+	}
+#endif
+	
+	if (_commandBarAction >= 0) {
+		drawCommandBar(_commandBarAction);
+	}
+	
+	switch (_commandBarAction) {
+	case kCBANone:
+		break;
+	case kCBAExit:
+		_commandBarStatus = 2;
+		break;
+	case kCBAVerbTalk:
+		_vm->_verbs.requestTalk();
+		_commandBarStatus = 1;
+		break;
+	case kCBAVerbGet:
+		_vm->_verbs.requestGet();
+		_commandBarStatus = 1;
+		break;
+	case kCBAVerbLook:
+		_vm->_verbs.requestLook();
+		_commandBarStatus = 1;
+		break;
+	case kCBAUseItem:
+		_vm->useCurrentInventoryItem();
+		_commandBarStatus = 1;
+		break;
+	}
+	
+	_vm->_screen->update();
+
+	// Can't use switch here
+	if (_commandBarAction == kCBAInventory) {
+		TASK_AWAIT_TASK(_vm->_gui->getGuiPage(kGuiInventory));
+		_commandBarStatus = _vm->_gui->getLastResult();
+	} else if (_commandBarAction == kCBAMenu) {
+		TASK_AWAIT_TASK(_vm->_gui->getGuiPage(kGuiMainMenu));
+		_commandBarStatus = _vm->_gui->getLastResult();
+	} else if (_commandBarAction == kCBAMap && _vm->canShowMap()) {
+		TASK_AWAIT_TASK(_vm->_gui->getGuiPage(kGuiTownMap));
+		_commandBarStatus = _vm->_gui->getLastResult();
+	}
+	
+	_commandBarAction = kCBANone;
+
+	TASK_BODY_END
+}
+
+void GuiCommandBar::handleEvent(Common::Event &event) {
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		case Common::KEYCODE_RIGHT:
+			// TODO doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
+			selectNextItem();
+			break;
+		case Common::KEYCODE_LEFT:
+			// TODO doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
+			selectPrevItem();
+			break;
+		case Common::KEYCODE_ESCAPE:
+		case Common::KEYCODE_TAB:
+			_commandBarAction = kCBAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			_commandBarAction = _commandBarSelectedItem;
+			break;
+		case Common::KEYCODE_t:
+			_commandBarAction = kCBAVerbTalk;
+			break;
+		case Common::KEYCODE_g:
+			_commandBarAction = kCBAVerbGet;
+			break;
+		case Common::KEYCODE_l:
+			_commandBarAction = kCBAVerbLook;
+			break;
+		case Common::KEYCODE_o:
+			_commandBarAction = kCBAInventory;
+			break;
+		case Common::KEYCODE_u:
+			_commandBarAction = kCBAUseItem;
+			break;
+		case Common::KEYCODE_d:
+			_commandBarAction = kCBAMenu;
+			break;
+		case Common::KEYCODE_m:
+			_commandBarAction = kCBAMap;
+			break;
+		default:
+			break;
+		}
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (_commandBarSelectedItem != kCBANone)
+			_commandBarAction = _commandBarSelectedItem;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_commandBarAction = kCBAExit;
+		break;
+	default:
+		break;
+	}
+}
+
+void GuiCommandBar::selectNextItem() {
+	++_commandBarSelectedItem;
+	if (_commandBarSelectedItem > kCommandBarItemCount)
+		_commandBarSelectedItem = 0;
+}
+
+void GuiCommandBar::selectPrevItem() {
+	--_commandBarSelectedItem;
+	if (_commandBarSelectedItem < 0)
+		_commandBarSelectedItem = kCommandBarItemCount;
 }
 
 void GuiCommandBar::draw() {
@@ -295,301 +509,144 @@ void GuiCommandBar::draw() {
 }
 
 void GuiCommandBar::drawCommandBar(int selectedItem) {
-	const int x = 196;
-	const int y = 14;
-
+	const int kIconX = 196;
+	const int kIconY = 14;
+	
 	drawIcon(0);
 	drawIcon(selectedItem + 1);
 	_vm->_inventory.testSelectFirstItem();
 	if (_vm->_inventory.getSelectedItem() >= 0)
-		drawAnimatedInventoryIcon(_vm->_inventory.getSelectedItem(), x, y, _animFrameCounter);
-}
-
-int GuiCommandBar::handleCommandBar() {
-	const int kCBANone		= -1;
-	const int kCBAExit		= -2;
-	const int kCBAVerbTalk	= 0;
-	const int kCBAVerbGet	= 1;
-	const int kCBAUseItem	= 2;
-	const int kCBAVerbLook	= 3;
-	const int kCBAInventory	= 4;
-	const int kCBAMap		= 5;
-	const int kCBAMenu		= 6;
-
-	static const GuiRectangle commandBarRects[] = {
-		{  6, 4,  41, 34, kCBAVerbTalk}, 
-		{ 51, 4,  86, 34, kCBAVerbGet}, 
-		{ 96, 4, 131, 34, kCBAUseItem},
-		{141, 4, 176, 34, kCBAVerbLook}, 
-		{186, 4, 221, 34, kCBAInventory}, 
-		{231, 4, 266, 34, kCBAMap},
-		{276, 4, 311, 34, kCBAMenu}};
-	const int commandBarItemCount = 6; // Intentionally doesn't match actual count!
-
-    // The Lovecraft Museum that comes with the CD version needs some special handling
-	const bool isMuseum = _vm->getGameID() == GID_MUSEUM;
-
-	int commandBarStatus = 0;
-	_animFrameCounter = 0;
-	
-	_vm->_input->waitForKeys();
-	_vm->setMouseCursor(-1);
-
-	if (isMuseum && (_commandBarSelectedItem != kCBAVerbLook || _commandBarSelectedItem != kCBAMenu))
-		_commandBarSelectedItem = kCBAVerbLook;
-
-	while (commandBarStatus == 0 && !_vm->shouldQuit()) {
-		int mouseSelectedItem, commandBarAction = kCBANone;
-		bool doWarpMouse = false;
-
-		mouseSelectedItem = _vm->findRect(commandBarRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), commandBarItemCount + 1, kCBANone);
-
-		if (isMuseum && (mouseSelectedItem != kCBAVerbLook || mouseSelectedItem != kCBAMenu))
-			mouseSelectedItem = kCBANone;
-
-		if (mouseSelectedItem != kCBANone)
-			_commandBarSelectedItem = mouseSelectedItem;
-			
-		drawCommandBar(_commandBarSelectedItem);
-		_animFrameCounter++;
-		_vm->syncUpdate();
-		_vm->_input->handleEvents();
-
-		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
-			continue;
-
-		if (_vm->_input->rightButton())
-			commandBarAction = kCBAExit;
-		else if (_vm->_input->leftButton() && _commandBarSelectedItem != kCBANone)
-			commandBarAction = _commandBarSelectedItem;
-
-		if (isMuseum && (_vm->_input->getKeyCode() == Common::KEYCODE_RIGHT || _vm->_input->getKeyCode() == Common::KEYCODE_LEFT)) {
-			if (_commandBarSelectedItem == kCBAVerbLook)
-				_commandBarSelectedItem = kCBAMenu;
-			else if (_commandBarSelectedItem == kCBAMenu)
-				_commandBarSelectedItem = kCBAVerbLook;
-			_vm->_input->clearKeyCode();
-		}
-
-		switch (_vm->_input->getKeyCode()) {
-		case Common::KEYCODE_RIGHT:
-			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
-			if (_commandBarSelectedItem == commandBarItemCount)
-				_commandBarSelectedItem = 0;
-			else
-				_commandBarSelectedItem++;
-			break;
-		case Common::KEYCODE_LEFT:
-			doWarpMouse = mouseSelectedItem == _commandBarSelectedItem;
-			if (_commandBarSelectedItem == 0)
-				_commandBarSelectedItem = commandBarItemCount;
-			else
-				_commandBarSelectedItem--;
-			break;
-		case Common::KEYCODE_ESCAPE:
-		case Common::KEYCODE_TAB:
-			commandBarAction = kCBAExit;
-			break;
-		case Common::KEYCODE_RETURN:
-			commandBarAction = _commandBarSelectedItem;
-			break;
-		case Common::KEYCODE_t:
-			commandBarAction = kCBAVerbTalk;
-			break;
-		case Common::KEYCODE_g:
-			commandBarAction = kCBAVerbGet;
-			break;
-		case Common::KEYCODE_l:
-			commandBarAction = kCBAVerbLook;
-			break;
-		case Common::KEYCODE_o:
-			commandBarAction = kCBAInventory;
-			break;
-		case Common::KEYCODE_u:
-			commandBarAction = kCBAUseItem;
-			break;
-		case Common::KEYCODE_d:
-			commandBarAction = kCBAMenu;
-			break;
-		case Common::KEYCODE_m:
-			commandBarAction = kCBAMap;
-			break;
-		default:
-			break;
-		}
-		
-		if (doWarpMouse) {
-			_vm->warpMouseToRect(commandBarRects[_commandBarSelectedItem]);
-			doWarpMouse = false;
-		}
-		
-		if (commandBarAction >= 0) {
-			drawCommandBar(commandBarAction);
-			_vm->_screen->update();
-		}
-		
-		switch (commandBarAction) {
-		case kCBANone:
-			break;
-		case kCBAExit:
-			commandBarStatus = 2;
-			break;
-		case kCBAVerbTalk:
-			_vm->_verbs.requestTalk();
-			commandBarStatus = 1;
-			break;
-		case kCBAVerbGet:
-			_vm->_verbs.requestGet();
-			commandBarStatus = 1;
-			break;
-		case kCBAVerbLook:
-			_vm->_verbs.requestLook();
-			commandBarStatus = 1;
-			break;
-		case kCBAUseItem:
-			_vm->useCurrentInventoryItem();
-			commandBarStatus = 1;
-			break;
-		case kCBAInventory:
-			commandBarStatus = _vm->_gui->run(kGuiInventory);
-			break;
-		case kCBAMap:
-			commandBarStatus = _vm->handleMap();
-			break;
-		case kCBAMenu:
-			commandBarStatus = _vm->_gui->run(kGuiMainMenu);
-			break;
-		}
-
-		_vm->_input->waitForKeys();
-	}
-
-	_vm->_input->waitForKeys();
-
-	return 0;
+		drawAnimatedInventoryIcon(_vm->_inventory.getSelectedItem(), kIconX, kIconY, _animFrameCounter);
 }
 
 // GuiMainMenu
 
-int GuiMainMenu::run() {
-	const int kMMANone		= -1;
-	const int kMMAExit		= -2;
-	const int kMMASave		= 0;
-	const int kMMALoad		= 1;
-	const int kMMAOptions	= 2;
-	const int kMMAQuit		= 3;
+enum GuiMainMenuAction {
+	kMMANone    = -1,
+	kMMAExit    = -2,
+	kMMASave    = 0,
+	kMMALoad    = 1,
+	kMMAOptions = 2,
+	kMMAQuit    = 3
+};
 
-	static const GuiRectangle mainMenuRects[] = {
-		{136,  64, 184,  80, kMMASave},
-		{136,  87, 184, 103, kMMALoad},
-		{136, 110, 184, 126, kMMAOptions},
-		{136, 133, 184, 149, kMMAQuit}};
+static const GuiRectangle kMainMenuRects[] = {
+	{136,  64, 184,  80, kMMASave},
+	{136,  87, 184, 103, kMMALoad},
+	{136, 110, 184, 126, kMMAOptions},
+	{136, 133, 184, 149, kMMAQuit}};
 
-	int mainMenuStatus = 0;
-
-	_vm->_input->waitForKeys();
+void GuiMainMenu::enter() {
+	GuiPage::enter();
+	_mainMenuStatus = 0;
+	_mainMenuAction = kMMANone;
 	_vm->setMouseCursor(-1);
+}
 
-	while (mainMenuStatus == 0 && !_vm->shouldQuit()) {
-		int mouseSelectedItem, mainMenuAction = kMMANone;
-		bool doWarpMouse = false;
-	
-		mouseSelectedItem = _vm->findRect(mainMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 4, kMMANone);
-		if (mouseSelectedItem != kMMANone)
-			_mainMenuSelectedItem = mouseSelectedItem;
-			
+void GuiMainMenu::leave() {
+	GuiPage::leave();
+}
+
+void GuiMainMenu::update() {
+
+	// TODO bool doWarpMouse = false;
+#if 0
+	_mouseSelectedItem = _vm->findRect(kMainMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 4, kMMANone);
+	if (_mouseSelectedItem != kMMANone)
+		_mainMenuSelectedItem = _mouseSelectedItem;
+#endif		
+	drawMainMenu(_mainMenuSelectedItem);
+#if 0	
+	if (doWarpMouse) {
+		_vm->warpMouseToRect(kMainMenuRects[_mainMenuSelectedItem]);
+		doWarpMouse = false;
+	}
+#endif
+#if 0
+	if (_mainMenuAction >= 0) {
 		drawMainMenu(_mainMenuSelectedItem);
-		
-		_vm->syncUpdate();
+		_vm->_screen->update();
+	}
+#endif
 
-		_vm->_input->handleEvents();
+	switch (_mainMenuAction) {
+	case kMMANone:
+		break;
+	case kMMAExit:
+		_mainMenuStatus = 2;
+		break;
+	case kMMASave:
+		_mainMenuStatus = 0;// TODO _vm->_gui->run(kGuiSaveMenu);
+		break;
+	case kMMALoad:
+		_mainMenuStatus = 0;// TODO _vm->_gui->run(kGuiLoadMenu);
+		break;
+	case kMMAOptions:
+		_mainMenuStatus = 0;// TODO _vm->_gui->run(kGuiOptionsMenu);
+		break;
+	case kMMAQuit:
+		_vm->quitGame();
+		_mainMenuStatus = 0;
+		break;
+	}
+	
+	_vm->_screen->update();
 
-		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
-			continue;
+	// return 0;
+}
 
-		if (_vm->_input->rightButton()) {
-			mainMenuAction = kMMAExit;
-		} else if (_vm->_input->leftButton() && _mainMenuSelectedItem != kMMANone) {
-			mainMenuAction = _mainMenuSelectedItem;
-		}
-
-		switch (_vm->_input->getKeyCode()) {
+void GuiMainMenu::handleEvent(Common::Event &event) {
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
 		case Common::KEYCODE_DOWN:
-			doWarpMouse = mouseSelectedItem == _mainMenuSelectedItem;
+			// TODO doWarpMouse = _mouseSelectedItem == _mainMenuSelectedItem;
 			if (_mainMenuSelectedItem == 3) {
 				_mainMenuSelectedItem = 0;
 			} else {
-				_mainMenuSelectedItem++;
+				++_mainMenuSelectedItem;
 			}
 			break;
 		case Common::KEYCODE_UP:
-			doWarpMouse = mouseSelectedItem == _mainMenuSelectedItem;
+			// TODO doWarpMouse = _mouseSelectedItem == _mainMenuSelectedItem;
 			if (_mainMenuSelectedItem == 0) {
 				_mainMenuSelectedItem = 3;
 			} else {
-				_mainMenuSelectedItem--;
+				--_mainMenuSelectedItem;
 			}
 			break;
 		case Common::KEYCODE_ESCAPE:
-			mainMenuAction = kMMAExit;
+			_mainMenuAction = kMMAExit;
 			break;
 		case Common::KEYCODE_RETURN:
-			mainMenuAction = _mainMenuSelectedItem;
+			_mainMenuAction = _mainMenuSelectedItem;
 			break;
 		case Common::KEYCODE_s:
-			mainMenuAction = kMMASave;
+			_mainMenuAction = kMMASave;
 			break;
 		case Common::KEYCODE_l:
-			mainMenuAction = kMMALoad;
+			_mainMenuAction = kMMALoad;
 			break;
 		case Common::KEYCODE_t:
-			mainMenuAction = kMMAOptions;
+			_mainMenuAction = kMMAOptions;
 			break;
 		case Common::KEYCODE_x:
-			mainMenuAction = kMMAQuit;
+			_mainMenuAction = kMMAQuit;
 			break;
 		default:
 			break;
 		}
-		
-		if (doWarpMouse) {
-			_vm->warpMouseToRect(mainMenuRects[_mainMenuSelectedItem]);
-			doWarpMouse = false;
-		}
-
-		if (mainMenuAction >= 0) {
-			drawMainMenu(_mainMenuSelectedItem);
-			_vm->_screen->update();
-		}
-
-		switch (mainMenuAction) {
-		case kMMANone:
-			break;
-		case kMMAExit:
-			mainMenuStatus = 2;
-			break;
-		case kMMASave:
-			mainMenuStatus = _vm->_gui->run(kGuiSaveMenu);
-			break;
-		case kMMALoad:
-			mainMenuStatus = _vm->_gui->run(kGuiLoadMenu);
-			break;
-		case kMMAOptions:
-			mainMenuStatus = _vm->_gui->run(kGuiOptionsMenu);
-			break;
-		case kMMAQuit:
-			_vm->quitGame();
-			mainMenuStatus = 0;
-			break;
-		}
-
-		_vm->_input->waitForKeys();
-	
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (_mainMenuSelectedItem != kMMANone)
+			_mainMenuAction = _mainMenuSelectedItem;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_mainMenuAction = kMMAExit;
+		break;
+	default:
+		break;
 	}
-
-	_vm->_input->waitForKeys();
-
-	return 0;
 }
 
 void GuiMainMenu::draw() {
@@ -606,590 +663,643 @@ void GuiMainMenu::drawMainMenu(int selectedItem) {
 
 // GuiOptionsMenu
 
-int GuiOptionsMenu::run() {
-	const int kOMANone			= -1;
-	const int kOMAExit			= -2;
-	const int kOMAMusicVol		= 0;
-	const int kOMASoundVol		= 1;
-	const int kOMATextSpeed		= 2;
-	const int kOMAGameSpeed		= 3;
-	const int kOMADriveLetter	= 4;
-	const int kOMALanguage		= 5;
-	const int kOMAOk			= 6;
-	const int kOMATalkie		= 7;
-	const int kOMADefMusicVol	= 8;
-	const int kOMADefSoundVol	= 9;
-	const int kOMADefGameSpeed	= 10;
-	
-	const int kVolumeConversionFactor = 17;
+enum GuiOptionsMenuAction {
+	kOMANone         = -1,
+	kOMAExit         = -2,
+	kOMAMusicVol     = 0,
+	kOMASoundVol     = 1,
+	kOMATextSpeed    = 2,
+	kOMAGameSpeed    = 3,
+	kOMADriveLetter  = 4,
+	kOMALanguage     = 5,
+	kOMAOk           = 6,
+	kOMATalkie       = 7,
+	kOMADefMusicVol  = 8,
+	kOMADefSoundVol  = 9,
+	kOMADefGameSpeed = 10
+};
 
-	static const GuiRectangle optionsMenuRects[] = {
-		{127,  64, 189,  79, kOMAMusicVol},
-		{127,  84, 189,  99, kOMASoundVol},
-		{127, 104, 164, 119, kOMATalkie},
-		{127, 124, 189, 139, kOMAGameSpeed},
-		{127, 144, 142, 159, kOMALanguage},
-		{127, 164, 142, 179, kOMAOk},
-		{172, 165, 199, 178, kOMAOk},
-		{106,  64, 121,  79, kOMADefMusicVol},
-		{106,  84, 121,  99, kOMADefSoundVol},
-		{106, 104, 121, 119, kOMATalkie},
-		{106, 124, 121, 139, kOMADefGameSpeed},
-		{106, 144, 121, 159, kOMALanguage},
-		{106, 164, 121, 179, 35}};//???
+static const GuiRectangle kOptionsMenuRects[] = {
+	{127,  64, 189,  79, kOMAMusicVol},
+	{127,  84, 189,  99, kOMASoundVol},
+	{127, 104, 164, 119, kOMATalkie},
+	{127, 124, 189, 139, kOMAGameSpeed},
+	{127, 144, 142, 159, kOMALanguage},
+	{127, 164, 142, 179, kOMAOk},
+	{172, 165, 199, 178, kOMAOk},
+	{106,  64, 121,  79, kOMADefMusicVol},
+	{106,  84, 121,  99, kOMADefSoundVol},
+	{106, 104, 121, 119, kOMATalkie},
+	{106, 124, 121, 139, kOMADefGameSpeed},
+	{106, 144, 121, 159, kOMALanguage},
+	{106, 164, 121, 179, 35}};//???
 
-	int optionsMenuStatus = 0;
-	int musicVolumeDiv, currMusicVolumeDiv, digiVolumeDiv, textSpeed, gameSpeed, language;
-	uint animFrameCounter = 0;
+const int kVolumeConversionFactor = 17;
 
+void GuiOptionsMenu::enter() {
+	GuiPage::enter();
+	_optionsMenuStatus = 0;
+	_optionsMenuAction = kOMANone;
+	_animFrameCounter = 0;
+	_mouseSelectedItem = -1;
+	_optionIncr = 0;
+	// Load settings
 	// NOTE There are no separate volume controls for speech and effects.
 	// Because we know if a sample is speech or an effect we use the proper sound types
 	// when playing. This means that the speech volume can only be changed in the ScummVM options.
+	_musicVolumeDiv = ConfMan.getInt("music_volume") / kVolumeConversionFactor;
+	_digiVolumeDiv = ConfMan.getInt("sfx_volume") / kVolumeConversionFactor;
+	_currMusicVolumeDiv = _musicVolumeDiv;
+	_textSpeed = ConfMan.getInt("text_speed");
+	_gameSpeed = ConfMan.getInt("game_speed");
+	_language = 1;
+}
 
-	musicVolumeDiv = ConfMan.getInt("music_volume") / kVolumeConversionFactor;
-	digiVolumeDiv = ConfMan.getInt("sfx_volume") / kVolumeConversionFactor;
-	currMusicVolumeDiv = musicVolumeDiv;
-	textSpeed = ConfMan.getInt("text_speed");
-	gameSpeed = ConfMan.getInt("game_speed");
-	language = 1;
+void GuiOptionsMenu::leave() {
+	// Save settings
+	if (_optionsMenuStatus == 1) {
+		_vm->_talkText->setTextSpeed(_textSpeed);
+		_vm->_gameSpeed = _gameSpeed;
+		ConfMan.setInt("text_speed", _textSpeed);
+		ConfMan.setInt("text_speed", _gameSpeed);
+		ConfMan.setInt("music_volume", _musicVolumeDiv * kVolumeConversionFactor);
+		ConfMan.setInt("sfx_volume", _digiVolumeDiv * kVolumeConversionFactor);
+		ConfMan.flushToDisk();
+		_vm->syncSoundSettings();
+	}
+	GuiPage::leave();
+}
+
+void GuiOptionsMenu::update() {
+	// bool doWarpMouse = false;
+
+#if 0
+	if (_musicVolumeDiv != _currMusicVolumeDiv) {
+		_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, _musicVolumeDiv * kVolumeConversionFactor);
+		_currMusicVolumeDiv = _musicVolumeDiv;
+	}
+#endif
+	++_animFrameCounter;
+	if (_animFrameCounter == 32)
+		_animFrameCounter = 0;
+
+	drawOptionsMenu();
+
+#if 0
+	if (doWarpMouse) {
+		_vm->warpMouseToRect(kOptionsMenuRects[_optionsMenuSelectedItem]);
+		doWarpMouse = false;
+	}
+#endif
+	switch (_optionsMenuAction) {
+	case kOMANone:
+		break;
+	case kOMAExit:
+		_optionsMenuStatus = 2;
+		break;
+	case kOMAMusicVol:
+		if (_optionIncr != 0)
+			_musicVolumeDiv = CLIP(_musicVolumeDiv + _optionIncr, 0, 15);
+		else
+			_musicVolumeDiv = _mouseSliderPos / 4;
+		break;
+	case kOMASoundVol:
+		if (_optionIncr != 0)
+			_digiVolumeDiv = CLIP(_digiVolumeDiv + _optionIncr, 0, 15);
+		else
+			_digiVolumeDiv = _mouseSliderPos / 4;
+		break;
+	case kOMATalkie:
+		{
+			int talkieMode = _vm->_talkText->getTalkieMode();
+			if (talkieMode > 2)
+				talkieMode = 0;
+			_vm->_talkText->setTalkieMode(talkieMode);
+		}
+		break;
+	case kOMAGameSpeed:
+		if (_optionIncr != 0)
+			_gameSpeed = CLIP(_gameSpeed + _optionIncr, 0, 15);
+		else
+			_gameSpeed = _mouseSliderPos / 4;
+		break;
+	case kOMATextSpeed:
+		if (_optionIncr != 0)
+			_textSpeed = CLIP(_textSpeed + _optionIncr, 0, 2);
+		break;
+	case kOMADriveLetter:
+		// Nothing/not supported
+		break;
+	case kOMALanguage:
+		if (_optionIncr != 0)
+			_language = CLIP(_language + _optionIncr, 0, 4);
+		else if (_language < 4)
+			_language++;
+		else
+			_language = 0;
+		break;
+	case kOMAOk:
+		_optionsMenuStatus = 1;
+		break;
+	case kOMADefMusicVol:
+		_musicVolumeDiv = 8;
+		break;
+	case kOMADefSoundVol:
+		_digiVolumeDiv = 8;
+		break;
+	case kOMADefGameSpeed:
+		_gameSpeed = 8;
+		break;
+	}
 	
-	_vm->_input->waitForKeys();
+	_optionsMenuAction = kOMANone;
+	_optionIncr = 0;
 
-	while (optionsMenuStatus == 0 && !_vm->shouldQuit()) {
-		int mouseSelectedItem = -1, optionsMenuAction = kOMANone, selectedItemToDraw;
-		int optionIncr = 0;
-		bool doWaitForKeys = true;
-		bool doWarpMouse = false;
+	_vm->_screen->update();
 
-		int16 mouseX = CLIP(_vm->_input->getMouseX(), 127, 189);
+	// TODO return 0;
+}
 
-		if (!_vm->isFloppy()) {
-			mouseSelectedItem = _vm->findRect(optionsMenuRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 13, kOMANone);
-			if (mouseSelectedItem != kOMANone)
-				_optionsMenuSelectedItem = mouseSelectedItem;
-		}
-
-		if (musicVolumeDiv != currMusicVolumeDiv) {
-			_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kMusicSoundType, musicVolumeDiv * kVolumeConversionFactor);
-			currMusicVolumeDiv = musicVolumeDiv;
-		}
-
-		animFrameCounter++;
-		if (animFrameCounter == 32)
-			animFrameCounter = 0;
-
-		selectedItemToDraw = _optionsMenuSelectedItem;
-		if (!_vm->isFloppy()) {
-			if (selectedItemToDraw == kOMADefMusicVol)
-				selectedItemToDraw = kOMAMusicVol;
-			else if (selectedItemToDraw == kOMADefSoundVol)
-				selectedItemToDraw = kOMASoundVol;
-			else if (selectedItemToDraw == kOMADefGameSpeed)
-				selectedItemToDraw = kOMAGameSpeed;
-			else if (selectedItemToDraw == kOMATalkie)
-				selectedItemToDraw = 2;
-		}
-
-		drawOptionsMenu(selectedItemToDraw, musicVolumeDiv, digiVolumeDiv, textSpeed,
-			gameSpeed, language, animFrameCounter, optionsMenuRects);
-
-		_vm->syncUpdate();
-		_vm->_input->handleEvents();
-
-		if (_vm->_input->getKeyCode() == Common::KEYCODE_INVALID && !_vm->_input->leftButton() && !_vm->_input->rightButton())
-			continue;
-
-		if (_vm->_input->rightButton())
-			optionsMenuAction = kOMAExit;
-		else if (_vm->_input->leftButton() && _optionsMenuSelectedItem != kOMANone)
-			optionsMenuAction = _optionsMenuSelectedItem;
-
-		switch (_vm->_input->getKeyCode()) {
+void GuiOptionsMenu::handleEvent(Common::Event &event) {
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
 		case Common::KEYCODE_DOWN:
-			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
+			// doWarpMouse = _mouseSelectedItem == _optionsMenuSelectedItem;
 			if (_optionsMenuSelectedItem == 5)
 				_optionsMenuSelectedItem = 0;
 			else
-				_optionsMenuSelectedItem++;
+				++_optionsMenuSelectedItem;
 			break;
 		case Common::KEYCODE_UP:
-			doWarpMouse = mouseSelectedItem == _optionsMenuSelectedItem;
+			// doWarpMouse = _mouseSelectedItem == _optionsMenuSelectedItem;
 			if (_optionsMenuSelectedItem == 0)
 				_optionsMenuSelectedItem = 5;
 			else
-				_optionsMenuSelectedItem--;
+				--_optionsMenuSelectedItem;
 			break;
 		case Common::KEYCODE_LEFT:
-			optionIncr = -1;
+			_optionIncr = -1;
 			if (_vm->isFloppy())
-				optionsMenuAction = _optionsMenuSelectedItem;
+				_optionsMenuAction = _optionsMenuSelectedItem;
 			else if (_optionsMenuSelectedItem != 5)
-				optionsMenuAction = optionsMenuRects[_optionsMenuSelectedItem].id;
+				_optionsMenuAction = kOptionsMenuRects[_optionsMenuSelectedItem].id;
 			break;
 		case Common::KEYCODE_RIGHT:
-			optionIncr = +1;
+			_optionIncr = +1;
 			if (_vm->isFloppy())
-				optionsMenuAction = _optionsMenuSelectedItem;
+				_optionsMenuAction = _optionsMenuSelectedItem;
 			else if (_optionsMenuSelectedItem != 5)
-				optionsMenuAction = optionsMenuRects[_optionsMenuSelectedItem].id;
+				_optionsMenuAction = kOptionsMenuRects[_optionsMenuSelectedItem].id;
 			break;
 		case Common::KEYCODE_ESCAPE:
-			optionsMenuAction = kOMAExit;
+			_optionsMenuAction = kOMAExit;
 			break;
 		case Common::KEYCODE_RETURN:
 			if (_vm->isFloppy() || _optionsMenuSelectedItem == 5 || _optionsMenuSelectedItem == 6)
-				optionsMenuAction = kOMAOk;
+				_optionsMenuAction = kOMAOk;
 			break;
 		default:
 			break;
 		}
-
-		if (doWarpMouse) {
-			_vm->warpMouseToRect(optionsMenuRects[_optionsMenuSelectedItem]);
-			doWarpMouse = false;
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (_optionsMenuSelectedItem != kOMANone)
+			_optionsMenuAction = _optionsMenuSelectedItem;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_optionsMenuAction = kOMAExit;
+		break;
+	case Common::EVENT_MOUSEMOVE:
+		if (!_vm->isFloppy()) {
+			_mouseSliderPos = CLIP<int16>(event.mouse.x, 127, 189) - 127;
+			_mouseSelectedItem = _vm->findRect(kOptionsMenuRects, event.mouse.x, event.mouse.y, 13, kOMANone);
+			if (_mouseSelectedItem != kOMANone)
+				_optionsMenuSelectedItem = _mouseSelectedItem;
 		}
-
-		switch (optionsMenuAction) {
-		case kOMANone:
-			break;
-		case kOMAExit:
-			optionsMenuStatus = 2;
-			break;
-		case kOMAMusicVol:
-			if (optionIncr != 0)
-				musicVolumeDiv = CLIP(musicVolumeDiv + optionIncr, 0, 15);
-			else
-				musicVolumeDiv = (mouseX - 127) / 4;
-			doWaitForKeys = false;
-			break;
-		case kOMASoundVol:
-			if (optionIncr != 0)
-				digiVolumeDiv = CLIP(digiVolumeDiv + optionIncr, 0, 15);
-			else
-				digiVolumeDiv = (mouseX - 127) / 4;
-			doWaitForKeys = false;
-			break;
-		case kOMATalkie:
-			{
-				int talkieMode = _vm->_talkText->getTalkieMode();
-				if (talkieMode > 2)
-					talkieMode = 0;
-				_vm->_talkText->setTalkieMode(talkieMode);
-			}
-			break;
-		case kOMAGameSpeed:
-			if (optionIncr != 0)
-				gameSpeed = CLIP(gameSpeed + optionIncr, 0, 15);
-			else
-				gameSpeed = (mouseX - 127) / 4;
-			doWaitForKeys = false;
-			break;
-		case kOMATextSpeed:
-			if (optionIncr != 0)
-				textSpeed = CLIP(textSpeed + optionIncr, 0, 2);
-			doWaitForKeys = false;
-			break;
-		case kOMADriveLetter:
-			// Nothing/not supported
-			break;
-		case kOMALanguage:
-			if (optionIncr != 0)
-				language = CLIP(language + optionIncr, 0, 4);
-			else if (language < 4)
-				language++;
-			else
-				language = 0;
-			break;
-		case kOMAOk:
-			optionsMenuStatus = 1;
-			break;
-		case kOMADefMusicVol:
-			musicVolumeDiv = 8;
-			break;
-		case kOMADefSoundVol:
-			digiVolumeDiv = 8;
-			break;
-		case kOMADefGameSpeed:
-			gameSpeed = 8;
-			break;
-		}
-
-		if (doWaitForKeys)
-			_vm->_input->waitForKeys();
+		break;
+	default:
+		break;
 	}
-
-	_vm->_input->waitForKeys();
-
-	if (optionsMenuStatus == 1) {
-		// TODO Also save game speed, text speed
-		_vm->_talkText->setTextSpeed(textSpeed);
-		_vm->_gameSpeed = gameSpeed;
-		ConfMan.setInt("text_speed", textSpeed);
-		ConfMan.setInt("text_speed", gameSpeed);
-		ConfMan.setInt("music_volume", musicVolumeDiv * kVolumeConversionFactor);
-		ConfMan.setInt("sfx_volume", digiVolumeDiv * kVolumeConversionFactor);
-		ConfMan.flushToDisk();
-		_vm->syncSoundSettings();
-	}
-
-	return 0;
 }
 
-void GuiOptionsMenu::draw() {
-}
+void GuiOptionsMenu::drawOptionsMenu() {
 
-void GuiOptionsMenu::drawOptionsMenu(int selectedItem, int musicVolumeDiv, int digiVolumeDiv, int textSpeed,
-	int gameSpeed, int language, uint animFrameCounter, const GuiRectangle *guiRectangles) {
+	const int kItemLeftX = 107;
+	const int kItemTopY = 65;
+	const int kItemHeight = 20;
+	const int kGaugeX = 128;
+	const int kGaugeY = 70;
 
-	const int itemLeftX = 107;
-	const int itemTopY = 65;
-	const int itemHeight = 20;
-	const int gaugeX = 128;
-	const int gaugeY = 70;
+	int selectedItem = _optionsMenuSelectedItem;
+	if (!_vm->isFloppy()) {
+		if (selectedItem == kOMADefMusicVol)
+			selectedItem = kOMAMusicVol;
+		else if (selectedItem == kOMADefSoundVol)
+			selectedItem = kOMASoundVol;
+		else if (selectedItem == kOMADefGameSpeed)
+			selectedItem = kOMAGameSpeed;
+		else if (selectedItem == kOMATalkie)
+			selectedItem = 2;
+	}
 
 	drawIcon(25);
 
 	if (!_vm->isFloppy() && selectedItem == 5)
-		_vm->_screen->frameRect(guiRectangles[6].x, guiRectangles[6].y, guiRectangles[6].x2, guiRectangles[6].y2, 119);
+		_vm->_screen->frameRect(kOptionsMenuRects[6].x, kOptionsMenuRects[6].y, kOptionsMenuRects[6].x2, kOptionsMenuRects[6].y2, 119);
 	else
-		drawIcon(28, itemLeftX, selectedItem * itemHeight + itemTopY);
+		drawIcon(28, kItemLeftX, selectedItem * kItemHeight + kItemTopY);
 
-	drawIcon(27, gaugeX + musicVolumeDiv * 4, gaugeY);
-	drawIcon(27, gaugeX + digiVolumeDiv * 4, gaugeY + itemHeight);
-	drawIcon(27, gaugeX + gameSpeed * 4, gaugeY + itemHeight * 3);
-	drawIcon(language + 32, 129, _vm->isFloppy() ? 177 : 157);
+	drawIcon(27, kGaugeX + _musicVolumeDiv * 4, kGaugeY);
+	drawIcon(27, kGaugeX + _digiVolumeDiv * 4, kGaugeY + kItemHeight);
+	drawIcon(27, kGaugeX + _gameSpeed * 4, kGaugeY + kItemHeight * 3);
+	drawIcon(_language + 32, 129, _vm->isFloppy() ? 177 : 157);
 
 	if (_vm->isFloppy())
-		drawIcon(27, gaugeX + textSpeed * 30, gaugeY + itemHeight * 2);
+		drawIcon(27, kGaugeX + _textSpeed * 30, kGaugeY + kItemHeight * 2);
 
-	if (musicVolumeDiv == 0) {
+	if (_musicVolumeDiv == 0) {
 		drawIcon(55);
-	} else if (musicVolumeDiv > 0 && musicVolumeDiv < 8) {
-		if (animFrameCounter < 16) {
+	} else if (_musicVolumeDiv > 0 && _musicVolumeDiv < 8) {
+		if (_animFrameCounter < 16) {
 			drawIcon(71);
 		} else {
 			drawIcon(72);
 		}
-	} else if (musicVolumeDiv >= 8) {
-		if (animFrameCounter < 16) {
+	} else if (_musicVolumeDiv >= 8) {
+		if (_animFrameCounter < 16) {
 			drawIcon(73);
 		} else {
 			drawIcon(74);
 		}
 	}
 
-	if (digiVolumeDiv == 0)
-		drawAnimatedIcon(1, 0, 0, animFrameCounter);
-	else if (digiVolumeDiv < 7)
-		drawAnimatedIcon(2, 0, 0, animFrameCounter);
+	if (_digiVolumeDiv == 0)
+		drawAnimatedIcon(1, 0, 0, _animFrameCounter);
+	else if (_digiVolumeDiv < 7)
+		drawAnimatedIcon(2, 0, 0, _animFrameCounter);
 	else
-		drawAnimatedIcon(3, 0, 0, animFrameCounter);
+		drawAnimatedIcon(3, 0, 0, _animFrameCounter);
 
 	if (_vm->isFloppy()) {
-		if ((textSpeed == 0 && animFrameCounter > 6) ||
-			(textSpeed == 1 && animFrameCounter > 16) ||
-			(textSpeed == 2 && animFrameCounter > 24))
+		if ((_textSpeed == 0 && _animFrameCounter > 6) ||
+			(_textSpeed == 1 && _animFrameCounter > 16) ||
+			(_textSpeed == 2 && _animFrameCounter > 24))
 			drawIcon(70);
 	} else
 		drawIcon(_vm->_talkText->getTalkieMode() + 79);
 
-	if (gameSpeed < 5)
+	if (_gameSpeed < 5)
 		drawIcon(75);
-	else if (gameSpeed >= 5 && gameSpeed < 10)
+	else if (_gameSpeed >= 5 && _gameSpeed < 10)
 		drawIcon(76);
-	else if (gameSpeed >= 10)
+	else if (_gameSpeed >= 10)
 		drawIcon(77);
 
 }
 
 // GuiTownMap
 
-int GuiTownMap::run() {
+enum GuiGuiTownMapAction {
+	kMANone   = 0,
+	kMASelect = 1,
+	kMAExit   = 2
+};
 
-	static const struct MapPoint { int16 x, y; } mapPoints[] = {
-		{248, 126}, {226, 126}, {224, 150}, {204, 156},
-		{178, 154}, {176, 138}, {152, 136}, {124, 134},
-		{112, 148}, { 96, 132}, { 92, 114}, {146, 116},
-		{176, 106}, {138, 100}, {104,  94}, { 82,  96},
-		{172,  94}, {116,  80}, {134,  80}, {148,  86},
-		{202, 118}, {178, 120}, {190,  92}
-	};
+static const struct MapPoint { int16 x, y; } kMapPoints[] = {
+	{248, 126}, {226, 126}, {224, 150}, {204, 156},
+	{178, 154}, {176, 138}, {152, 136}, {124, 134},
+	{112, 148}, { 96, 132}, { 92, 114}, {146, 116},
+	{176, 106}, {138, 100}, {104,  94}, { 82,  96},
+	{172,  94}, {116,  80}, {134,  80}, {148,  86},
+	{202, 118}, {178, 120}, {190,  92}
+};
 
-	static const struct MapRect { int16 x1, y1, x2, y2; } mapRects[] = {
-		{240, 116, 264, 134}, {192, 102, 216, 127}, {164,  82, 189,  96},
-		{165,  98, 189, 113}, {108, 108, 162, 124}, {140, 128, 166, 144},
-		{ 85,  99, 104, 122}, { 84, 124, 106, 142}, {125,  92, 154, 106},
-		{104,  70, 128,  87}
-	};
+static const struct MapRect { int16 x1, y1, x2, y2; } kMapRects[] = {
+	{240, 116, 264, 134}, {192, 102, 216, 127}, {164,  82, 189,  96},
+	{165,  98, 189, 113}, {108, 108, 162, 124}, {140, 128, 166, 144},
+	{ 85,  99, 104, 122}, { 84, 124, 106, 142}, {125,  92, 154, 106},
+	{104,  70, 128,  87}
+};
 
-	static const struct MapExit { int16 moduleNumber, sceneNumber; } mapExits[] = {
-		{0,  0}, {0, 20}, {0, 16}, {0, 12}, {0, 11},
-		{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
-	};
+static const struct MapExit { int16 moduleNumber, sceneNumber; } kMapExits[] = {
+	{0,  0}, {0, 20}, {0, 16}, {0, 12}, {0, 11},
+	{0,  6}, {0, 10}, {0,  9}, {0, 13}, {0, 17}
+};
 	
-	const int16 kCursorAddX = 8, kCursorAddY = 8;
+void GuiTownMap::enter() {
+	GuiPage::enter();
+	
+	_vm->_talkText->stopVoice();
 
-	int mapRectX1, mapRectX2, mapRectY1, mapRectY2;
-	int mapStatus = 0;
-	uint16 sceneBitMaskStatus;
-	uint16 sceneStatus1, sceneStatus2, sceneStatus3, sceneStatus4;
-	int16 cursorX, cursorY;
-	int16 prevCursorX = -1, prevCursorY = -1;
-	int16 locationNumber = _vm->_sceneNumber % 30;
+	_prevCursorX = -1;
+	_prevCursorY = -1;
+	_locationNumber = _vm->_sceneNumber % 30;
+	_currMapLocation = -1;
+	_selectedMapLocation = -1;
+	_mapStatus = 0;
+	_mapAction = kMANone;
 
 	if (_vm->isFloppy()) {
-		mapRectX1 = 82;
-		mapRectX2 = 268;
-		mapRectY1 = 68;
-		mapRectY2 = 186;
-		sceneBitMaskStatus = _vm->_scriptVars[2];
-		sceneStatus1 = _vm->_scriptVars[89];
-		sceneStatus2 = _vm->_scriptVars[114];
-		sceneStatus3 = _vm->_scriptVars[61];
-		sceneStatus4 = _vm->_scriptVars[92];
+		_mapRectX1 = 82;
+		_mapRectX2 = 268;
+		_mapRectY1 = 68;
+		_mapRectY2 = 186;
+		_sceneBitMaskStatus = _vm->_scriptVars[2];
+		_sceneStatus1 = _vm->_scriptVars[89];
+		_sceneStatus2 = _vm->_scriptVars[114];
+		_sceneStatus3 = _vm->_scriptVars[61];
+		_sceneStatus4 = _vm->_scriptVars[92];
 	} else {
-		mapRectX1 = 65;
-		mapRectX2 = 268;
-		mapRectY1 = 66;
-		mapRectY2 = 186;
-		sceneBitMaskStatus = _vm->_scriptVars[2];
-		sceneStatus1 = _vm->_scriptVars[3];
-		sceneStatus2 = _vm->_scriptVars[4];
-		sceneStatus3 = _vm->_scriptVars[5];
-		sceneStatus4 = _vm->_scriptVars[6];
+		_mapRectX1 = 65;
+		_mapRectX2 = 268;
+		_mapRectY1 = 66;
+		_mapRectY2 = 186;
+		_sceneBitMaskStatus = _vm->_scriptVars[2];
+		_sceneStatus1 = _vm->_scriptVars[3];
+		_sceneStatus2 = _vm->_scriptVars[4];
+		_sceneStatus3 = _vm->_scriptVars[5];
+		_sceneStatus4 = _vm->_scriptVars[6];
 	}
 
-	cursorX = mapPoints[locationNumber].x;
-	cursorY = mapPoints[locationNumber].y;
-
-	_vm->_input->waitForKeys();
+	_cursorX = kMapPoints[_locationNumber].x;
+	_cursorY = kMapPoints[_locationNumber].y;
 
 	if (!_vm->isFloppy()) {
 		CursorMan.showMouse(false);
-		_vm->_system->warpMouse(cursorX, cursorY);
+		_vm->_system->warpMouse(_cursorX, _cursorY);
 	}	
 
-	while (mapStatus == 0 && !_vm->shouldQuit()) {
+}
 
-		int16 currMapLocation = 0, selectedMapLocation = 0;
-		bool cursorChanged = false;
+void GuiTownMap::leave() {
+	if (!_vm->isFloppy()) {
+		CursorMan.showMouse(true);
+	}
+	GuiPage::leave();
+}
 
-		_vm->_input->handleEvents();
+void GuiTownMap::update() {
+	bool cursorChanged = false;
 
-		if (!_vm->isFloppy()) {
-			cursorX = CLIP(_vm->_input->getMouseX(), mapRectX1, mapRectX2);
-			cursorY = CLIP(_vm->_input->getMouseY(), mapRectY1, mapRectY2);
+	cursorChanged = _prevCursorX != _cursorX || _prevCursorY != _cursorY;
+	_prevCursorX = _cursorX;
+	_prevCursorY = _cursorY;
+
+#if 0
+	if (!_vm->isFloppy() && (_vm->_input->getMouseX() != _cursorX || _vm->_input->getMouseY() != _cursorY))
+		_vm->_system->warpMouse(_cursorX, _cursorY);
+#endif
+
+	if (cursorChanged) {
+		_currMapLocation = -1;
+		_selectedMapLocation = -1;
+		drawIcon(50);
+		for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
+			const MapRect &mapRect = kMapRects[mapLocation];
+			if ((_sceneBitMaskStatus & (1 << mapLocation)) && 
+				_cursorX >= mapRect.x1 && _cursorX <= mapRect.x2 && 
+				_cursorY >= mapRect.y1 && _cursorY <= mapRect.y2) {
+				_currMapLocation = mapLocation;
+				break;
+			}
 		}
+		if (_currMapLocation != -1) {
+			byte *locationName = _vm->_textReader->getString(2, 40 + _currMapLocation);
+			_vm->_screen->drawTextOutlined(MIN(_cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
+				_cursorY - 6, locationName, 119, 120);
+		} else {
+			drawIcon(51, _cursorX, _cursorY);
+		}
+	}
 
-		switch (_vm->_input->getKeyCode()) {
+	switch (_mapAction) {
+	case kMANone:
+		break;
+	case kMASelect:
+		// TODO Extract to method
+		if (_currMapLocation != -1) {
+			_selectedMapLocation = _currMapLocation;
+			const MapExit &mapExit = kMapExits[_selectedMapLocation];
+			_vm->_moduleNumber = mapExit.moduleNumber;
+			_vm->_sceneNumber = mapExit.sceneNumber;
+			if (_sceneStatus1 == 1) {
+				_vm->_moduleNumber += 6;
+			} else if (_sceneStatus2 >= 2) {
+				_vm->_sceneNumber += (_sceneStatus2 - 1) * 30;
+			}
+			if ((_locationNumber == 7 || _locationNumber == 8) &&
+				_sceneStatus3 == 2 && _sceneStatus4 == 0 &&
+				_selectedMapLocation != 6 && _selectedMapLocation != 7 && _selectedMapLocation != 4) {
+				_vm->_sceneNumber = 36;
+			}
+			_mapStatus = 2;
+		}
+		break;
+	case kMAExit:
+		_mapStatus = 1;
+		_currMapLocation = -1;
+		break;
+	}
+	
+	_vm->_screen->update();
+	
+	// TODO return 1;
+
+}
+
+void GuiTownMap::handleEvent(Common::Event &event) {
+	const int16 kCursorAddX = 8, kCursorAddY = 8;
+
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		// TODO Movement should be pulsing not one-shot
 		case Common::KEYCODE_UP:
-			cursorY = MAX(cursorY - kCursorAddY, mapRectY1);
+			_cursorY = MAX(_cursorY - kCursorAddY, _mapRectY1);
 			break;
 		case Common::KEYCODE_DOWN:
-			cursorY = MIN(cursorY + kCursorAddY, mapRectY2);
+			_cursorY = MIN(_cursorY + kCursorAddY, _mapRectY2);
 			break;
 		case Common::KEYCODE_LEFT:
-			cursorX = MAX(cursorX - kCursorAddX, mapRectX1);
+			_cursorX = MAX(_cursorX - kCursorAddX, _mapRectX1);
 			break;
 		case Common::KEYCODE_RIGHT:
-			cursorX = MIN(cursorX + kCursorAddX, mapRectX2);
+			_cursorX = MIN(_cursorX + kCursorAddX, _mapRectX2);
+			break;
+		case Common::KEYCODE_ESCAPE:
+			_mapAction = kMAExit;
+			break;
+		case Common::KEYCODE_RETURN:
+			_mapAction = kMASelect;
 			break;
 		default:
 			break;
 		}
-
-		cursorChanged = prevCursorX != cursorX || prevCursorY != cursorY;
-
-		prevCursorX = cursorX;
-		prevCursorY = cursorY;
-
-		if (!_vm->isFloppy() && (_vm->_input->getMouseX() != cursorX || _vm->_input->getMouseY() != cursorY))
-			_vm->_system->warpMouse(cursorX, cursorY);
-
-		if (_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE || _vm->_input->rightButton()) {
-			mapStatus = 1;
-			cursorChanged = false;
-			currMapLocation = -1;
+		break;
+	case Common::EVENT_MOUSEMOVE:
+		if (!_vm->isFloppy()) {
+			_cursorX = CLIP<int16>(event.mouse.x, _mapRectX1, _mapRectX2);
+			_cursorY = CLIP<int16>(event.mouse.y, _mapRectY1, _mapRectY2);
 		}
-
-		if (cursorChanged) {
-			currMapLocation = -1;
-			selectedMapLocation = -1;
-			drawIcon(50);
-			for (int16 mapLocation = 0; mapLocation < 10; mapLocation++) {
-				const MapRect &mapRect = mapRects[mapLocation];
-				if ((sceneBitMaskStatus & (1 << mapLocation)) && 
-					cursorX >= mapRect.x1 && cursorX <= mapRect.x2 && 
-					cursorY >= mapRect.y1 && cursorY <= mapRect.y2) {
-					currMapLocation = mapLocation;
-					break;
-				}
-			}
-			if (currMapLocation != -1) {
-				byte *locationName = _vm->_textReader->getString(2, 40 + currMapLocation);
-				_vm->_screen->drawTextOutlined(MIN(cursorX - 2, 283 - _vm->_screen->getTextWidth(locationName)), 
-					cursorY - 6, locationName, 119, 120);
-			} else {
-				drawIcon(51, cursorX, cursorY);
-			}
-		}
-
-		if (currMapLocation != -1 && (_vm->_input->getKeyCode() == Common::KEYCODE_RETURN || _vm->_input->leftButton())) {
-			selectedMapLocation = currMapLocation;
-			const MapExit &mapExit = mapExits[selectedMapLocation];
-			_vm->_moduleNumber = mapExit.moduleNumber;
-			_vm->_sceneNumber = mapExit.sceneNumber;
-			if (sceneStatus1 == 1) {
-				_vm->_moduleNumber += 6;
-			} else if (sceneStatus2 >= 2) {
-				_vm->_sceneNumber += (sceneStatus2 - 1) * 30;
-			}
-			if ((locationNumber == 7 || locationNumber == 8) &&
-				sceneStatus3 == 2 && sceneStatus4 == 0 &&
-				selectedMapLocation != 6 && selectedMapLocation != 7 && selectedMapLocation != 4) {
-				_vm->_sceneNumber = 36;
-			}
-			mapStatus = 2;
-			debug("moduleNumber: %d; sceneNumber: %d", _vm->_moduleNumber, _vm->_sceneNumber);
-		}
-
-		_vm->syncUpdate();
-
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		_mapAction = kMASelect;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_mapAction = kMAExit;
+		break;
+	default:
+		break;
 	}
-
-	_vm->_input->waitForKeys();
-
-	CursorMan.showMouse(!_vm->isFloppy());
-
-	return 1;
-}
-
-void GuiTownMap::draw() {
 }
 
 // GuiJournal
 
-int GuiJournal::run() {
-	return handleReadBook();
-}
+enum GuiJournalAction {
+	kBANone     = -1,
+	kBAExit     = -2,
+	kBAPrevPage = 0,
+	kBANextPage = 1
+};
 
-void GuiJournal::draw() {
-}
+static const GuiRectangle kBookRects[] = {
+	{ 54, 46, 166, 189, kBAPrevPage},
+	{167, 46, 279, 189, kBANextPage}
+};
 
-int GuiJournal::handleReadBook() {
-
-	const int kBANone			= -1;
-	const int kBAExit			= -2;
-	const int kBAPrevPage		= 0;
-	const int kBANextPage		= 1;
-
-	static const GuiRectangle bookRects[] = {
-		{ 54, 46, 166, 189, kBAPrevPage},
-		{167, 46, 279, 189, kBANextPage}
-	};
-
-	int currPageNumber = -1, pageNumber, pageCount, talkPageNumber = -1;
-	int bookStatus = 0;
-
+void GuiJournal::enter() {
+	GuiPage::enter();
+	_currPageNumber = -1;
+	_talkPageNumber = -1;
 	// Use values from script; this is the most recent diary entry
-	pageNumber = _vm->_scriptVars[1];
-	pageCount = _vm->_scriptVars[1];
-
+	_pageNumber = _vm->_scriptVars[1];
+	_pageCount = 5;//_vm->_scriptVars[1];// TODO DEBUG
+	_bookStatus = 0;
+	_bookAction = kBANone;
+	_mouseSelectedRect = -1;
 	_vm->setMouseCursor(-1);
-
-	bookTurnPageTextEffect(false, pageNumber, pageCount);
-
+	_firstUpdate = true;
 	// Set speech file
-	_vm->_talkText->setVoiceFileIndex(7);
+	_vm->_talkText->setVoiceFileIndex(7); // TODO Make this _talkText->enterJournal() for symmetry
+}
 
-	while (bookStatus == 0) {
-	
-		int bookAction = kBANone, mouseSelectedRect;
+void GuiJournal::leave() {
+	_vm->_talkText->leaveJournal();
+	// TODO return 2 - _bookStatus;
+	GuiPage::leave();
+}
 
-		if (currPageNumber != pageNumber) {
-			drawBookPage(pageNumber, pageCount, 64);
-			currPageNumber = pageNumber;
-		}
+void GuiJournal::update() {
+	TASK_BODY_BEGIN
 
-		do {
-			// Play page speech
-			if (talkPageNumber != pageNumber) {
-				if (pageNumber > 0)
-					_vm->_talkText->playVoice(pageNumber);
-				else
-					_vm->_talkText->stopVoice();
-				talkPageNumber = pageNumber;
-			}
-			_vm->_input->handleEvents();
-			if (!_vm->isFloppy()) {
-				mouseSelectedRect = _vm->findRect(bookRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 2, kBANone);
-				if (mouseSelectedRect == -1)
-					_vm->setMouseCursor(-1);
-				else if (mouseSelectedRect == 0)
-					_vm->setMouseCursor(3);
-				else if (mouseSelectedRect == 1)
-					_vm->setMouseCursor(2);
-			}
-			_vm->syncUpdate();
-			if (_vm->shouldQuit() || _vm->_input->rightButton() || _vm->_input->getKeyCode() == Common::KEYCODE_RETURN ||
-				_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE)
-				bookAction = kBAExit;
-			else if (_vm->_input->getKeyCode() == Common::KEYCODE_LEFT || (_vm->_input->leftButton() && mouseSelectedRect == 0))
-				bookAction = kBAPrevPage;
-			else if (_vm->_input->getKeyCode() == Common::KEYCODE_RIGHT || (_vm->_input->leftButton() && mouseSelectedRect == 1))
-				bookAction = kBANextPage;
-		} while (bookAction == kBANone);
-
-		switch (bookAction) {
-		case kBAExit:
-			bookStatus = 2;
-			break;
-		case kBAPrevPage:
-			if (pageNumber > 0) {
-				bookTurnPageTextEffect(true, pageNumber, pageCount);
-				bookTurnPage(false);
-				pageNumber--;
-				bookTurnPageTextEffect(false, pageNumber, pageCount);
-			}
-			break;
-		case kBANextPage:
-			if (pageNumber < pageCount) {
-				bookTurnPageTextEffect(true, pageNumber, pageCount);
-				bookTurnPage(true);
-				pageNumber++;
-				bookTurnPageTextEffect(false, pageNumber, pageCount);
-			}
-			break;
-		}
-
-		_vm->_input->waitForKeys();
-
+	if (_firstUpdate) {
+		_firstUpdate = false;
+		TASK_AWAIT(bookTurnPageTextFadeInEffect);
 	}
 
-	_vm->_input->waitForKeys();
-	_vm->_talkText->leaveJournal();
+	if (_currPageNumber != _pageNumber) {
+		drawBookPage(64);
+		_currPageNumber = _pageNumber;
+	}
 
-	return 2 - bookStatus;
+	// Play page speech
+	if (_talkPageNumber != _pageNumber) {
+		if (_pageNumber > 0)
+			_vm->_talkText->playVoice(_pageNumber);
+		else
+			_vm->_talkText->stopVoice();
+		_talkPageNumber = _pageNumber;
+	}
+
+	switch (_bookAction) {
+	case kBANone:
+		break;
+	case kBAExit:
+		_bookStatus = 2;
+		break;
+	}
+	
+	if (_bookAction == kBAPrevPage && _pageNumber > 0) {
+		TASK_AWAIT(bookTurnPageTextFadeOutEffect);
+		TASK_AWAIT(bookTurnPagePrev);
+		--_pageNumber;
+		TASK_AWAIT(bookTurnPageTextFadeInEffect);
+	} else if (_bookAction == kBANextPage && _pageNumber < _pageCount) {
+		TASK_AWAIT(bookTurnPageTextFadeOutEffect);
+		TASK_AWAIT(bookTurnPageNext);
+		++_pageNumber;
+		TASK_AWAIT(bookTurnPageTextFadeInEffect);
+	}
+
+	_bookAction = kBANone;
+	
+	_vm->_screen->update();
+
+	TASK_BODY_END
 }
 
-void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte fontColor) {
+void GuiJournal::handleEvent(Common::Event &event) {
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		case Common::KEYCODE_ESCAPE:
+		case Common::KEYCODE_RETURN:
+			_bookAction = kBAExit;
+			break;
+		case Common::KEYCODE_LEFT:
+			_bookAction = kBAPrevPage;
+			break;
+		case Common::KEYCODE_RIGHT:
+			_bookAction = kBANextPage;
+			break;
+		default:
+			break;
+		}
+		break;
+	case Common::EVENT_MOUSEMOVE:
+		if (!_vm->isFloppy()) {
+			_mouseSelectedRect = _vm->findRect(kBookRects, event.mouse.x, event.mouse.y, 2, kBANone);
+			if (_mouseSelectedRect == -1)
+				_vm->setMouseCursor(-1);
+			else if (_mouseSelectedRect == 0)
+				_vm->setMouseCursor(3);
+			else if (_mouseSelectedRect == 1)
+				_vm->setMouseCursor(2);
+		}
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (_mouseSelectedRect == 0)
+			_bookAction = kBAPrevPage;
+		else if (_mouseSelectedRect == 1)
+			_bookAction = kBANextPage;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_bookAction = kBAExit;
+		break;
+	default:
+		break;
+	}
+}
+
+void GuiJournal::drawBookPage(byte fontColor) {
 	int xadd = 58, yadd = 48, x = 0, lineNumber = 0;
 	Common::String pageNumberString;
 	int pageNumberStringWidth;
 
-	byte *pageText = _vm->_textReader->getString(2, pageTextIndex);
+	byte *pageText = _vm->_textReader->getString(2, _pageNumber);
 
 	drawIcon(30);
-	if (pageTextIndex < pageTextMaxIndex)
+	if (_pageNumber < _pageCount)
 		drawIcon(37);
 
 	_vm->_screen->setFontColor(58);
 
-	pageNumberString = Common::String::format("- %d -", pageTextIndex * 2 + 1);
+	pageNumberString = Common::String::format("- %d -", _pageNumber * 2 + 1);
 	pageNumberStringWidth = _vm->_screen->getTextWidth((const byte*)pageNumberString.c_str());
 	_vm->_screen->drawText(xadd + (106 - pageNumberStringWidth) / 2, 180, (const byte*)pageNumberString.c_str());
 
-	pageNumberString = Common::String::format("- %d -", pageTextIndex * 2 + 2);
+	pageNumberString = Common::String::format("- %d -", _pageNumber * 2 + 2);
 	pageNumberStringWidth = _vm->_screen->getTextWidth((const byte*)pageNumberString.c_str());
 	_vm->_screen->drawText(xadd + 115 + (106 - pageNumberStringWidth) / 2, 180, (const byte*)pageNumberString.c_str());
 
@@ -1208,46 +1318,211 @@ void GuiJournal::drawBookPage(int pageTextIndex, int pageTextMaxIndex, byte font
 	}
 }
 
-void GuiJournal::bookTurnPage(bool turnDirection) {
-	const uint first = turnDirection ? 38 : 49;
-	const uint last = turnDirection ? 49 : 38;
-	const int incr = turnDirection ? +1 : -1;
-	for (uint i = first; i != last; i += incr) {
+void GuiJournal::bookTurnPageNext() {
+	const uint first = 38;
+	const uint last = 49;
+	const int incr = 1;
+	static uint i = first;
+	FUNC_BODY_BEGIN
+	for (i = first; i != last; i += incr) {
 		drawIcon(30);
 		drawIcon(i);
-		_vm->syncUpdate();
+		_vm->_screen->update();
+		FUNC_YIELD
 	}
+	FUNC_BODY_END
 }
 
-void GuiJournal::bookTurnPageTextEffect(bool turnDirection, int pageTextIndex, int pageTextMaxIndex) {
-	const byte firstColor = turnDirection ? 64 : 72;
-	const byte lastColor = turnDirection ? 72 : 64;
-	const int incr = turnDirection ? +1 : -1;
-	for (byte fontColor = firstColor; fontColor != lastColor; fontColor += incr) {
-		drawBookPage(pageTextIndex, pageTextMaxIndex, fontColor);
-		_vm->syncUpdate();
+void GuiJournal::bookTurnPagePrev() {
+	const uint first = 49;
+	const uint last = 38;
+	const int incr = -1;
+	static uint i = first;
+	FUNC_BODY_BEGIN
+	for (i = first; i != last; i += incr) {
+		drawIcon(30);
+		drawIcon(i);
+		_vm->_screen->update();
+		FUNC_YIELD
 	}
+	FUNC_BODY_END
+}
+
+void GuiJournal::bookTurnPageTextFadeInEffect() {
+	const byte firstColor = 72;
+	const byte lastColor = 64;
+	const int incr = -1;
+	static byte fontColor = firstColor;
+	FUNC_BODY_BEGIN
+	for (fontColor = firstColor; fontColor != lastColor; fontColor += incr) {
+		drawBookPage(fontColor);
+		_vm->_screen->update();
+		FUNC_YIELD
+	}
+	FUNC_BODY_END
+}
+
+void GuiJournal::bookTurnPageTextFadeOutEffect() {
+	const byte firstColor = 64;
+	const byte lastColor = 72;
+	const int incr = 1;
+	static byte fontColor = firstColor;
+	FUNC_BODY_BEGIN
+	for (fontColor = firstColor; fontColor != lastColor; fontColor += incr) {
+		drawBookPage(fontColor);
+		_vm->_screen->update();
+		FUNC_YIELD
+	}
+	FUNC_BODY_END
 }
 
 // GuiPuzzle
 
-int GuiPuzzle::run() {
-	return runPuzzle();
+static const GuiRectangle kPuzzleTileRects[] = {
+	{118,  44, 142,  59,  0},
+	{143,  44, 167,  59,  1},
+	{168,  44, 192,  59,  2},
+	{193,  44, 217,  59,  3},
+	{217,  59, 231,  83,  4},
+	{217,  84, 231, 108,  5},
+	{217, 109, 231, 133,  6},
+	{217, 134, 231, 158,  7},
+	{118, 158, 142, 171,  8},
+	{143, 158, 167, 171,  9},
+	{168, 158, 192, 171, 10},
+	{193, 158, 217, 171, 11},
+	{103,  59, 118,  83, 12},
+	{103,  84, 118, 108, 13},
+	{103, 109, 118, 133, 14},
+	{103, 134, 118, 158, 15},
+	{103,  44, 118,  59, 16},
+	{217,  44, 231,  59, 17},
+	{217, 158, 231, 171, 18},
+	{103, 158, 118, 171, 19},
+	{119,  60, 216, 157, 20}
+};
+
+void GuiPuzzle::enter() {
+	GuiPage::enter();
+	_puzzleStatus = 0;
+	_puzzleCursorX = 0;
+	_puzzleCursorY = 0;
+	_puzzleSprite = _vm->_animationMan->loadAnimationResource("A07.PAK", 24);
+	_isTileMoving = false;
+	initPuzzle();
+	_fingerBackground = NULL;	
+	_puzzleTableRow = 0;
+	_puzzleTableColumn = 0;
+	loadFingerCursor();
 }
 
-void GuiPuzzle::draw() {
+void GuiPuzzle::leave() {
+	if (_fingerBackground)
+		_fingerBackground->free();
+	delete _fingerBackground;
+	delete _puzzleSprite;
+	// TODO return _puzzleStatus == 2 ? 2 : 0;
+	GuiPage::leave();
 }
 
-int GuiPuzzle::runPuzzle() {
-	static const uint16 puzzleCheatInitialTiles[6][6] = {
+void GuiPuzzle::update() {
+	TASK_BODY_BEGIN
+
+	drawField();
+
+	if (_isTileMoving) {
+		if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
+			playTileMoveSound();
+			TASK_AWAIT(moveTileRowLeft);
+		} else if (_puzzleTableColumn == 5 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
+			playTileMoveSound();
+			TASK_AWAIT(moveTileRowRight);
+		} else if (_puzzleTableRow == 0 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
+			playTileMoveSound();
+			TASK_AWAIT(moveTileColumnUp);
+		} else if (_puzzleTableRow == 5 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
+			playTileMoveSound();
+			TASK_AWAIT(moveTileColumnDown);
+		}
+		if (isPuzzleSolved())
+			_puzzleStatus = 2;
+		_isTileMoving = false;
+	}
+	
+	_vm->_screen->update();
+
+	TASK_BODY_END
+}
+
+void GuiPuzzle::handleEvent(Common::Event &event) {
+	if (_isTileMoving)
+		return;
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		case Common::KEYCODE_ESCAPE:
+			_puzzleStatus = 1;
+			break;
+		case Common::KEYCODE_RETURN:
+			_isTileMoving = true;
+			break;
+		case Common::KEYCODE_UP:
+			if (_puzzleTableRow > 0) {
+				--_puzzleTableRow;
+				updateCurrentTile();
+			}
+			break;
+		case Common::KEYCODE_DOWN:
+			if (_puzzleTableRow < 5) {
+				++_puzzleTableRow;
+				updateCurrentTile();
+			}
+			break;
+		case Common::KEYCODE_LEFT:
+			if (_puzzleTableColumn > 0) {
+				--_puzzleTableColumn;
+				updateCurrentTile();
+			}
+			break;
+		case Common::KEYCODE_RIGHT:
+			if (_puzzleTableColumn < 5) {
+				++_puzzleTableColumn;
+				updateCurrentTile();
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	case Common::EVENT_MOUSEMOVE:
+		if (!_vm->isFloppy()) {
+			selectTileByMouse(event.mouse.x, event.mouse.y);
+		}
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		if (!_vm->isFloppy()) {
+			selectTileByMouse(event.mouse.x, event.mouse.y);
+			_isTileMoving = true;
+		}
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		_puzzleStatus = 1;
+		break;
+	default:
+		break;
+	}
+}
+
+void GuiPuzzle::initPuzzle() {
+	static const uint16 kPuzzleCheatInitialTiles[6][6] = {
 		{0, 0, 0, 0, 0, 0},
 		{0, 0, 4, 8,13, 0},
 		{0, 1, 5, 9,14, 0},
 		{0, 2, 6,10,15, 0},
 		{0, 3, 7,11,12, 0},
 		{0, 0, 0, 0, 0, 0}};
-
-	static const uint16 puzzleInitialTiles[6][6] = {
+	
+	static const uint16 kPuzzleInitialTiles[6][6] = {
 		{0, 0, 0, 0, 0, 0},
 		{0, 0, 4,10,15, 0},
 		{0, 5,11,13,12, 0},
@@ -1255,183 +1530,15 @@ int GuiPuzzle::runPuzzle() {
 		{0, 3, 7, 9,14, 0},
 		{0, 0, 0, 0, 0, 0}};
 
-	static const GuiRectangle puzzleTileRects[] = {
-		{118,  44, 142,  59,  0},
-		{143,  44, 167,  59,  1},
-		{168,  44, 192,  59,  2},
-		{193,  44, 217,  59,  3},
-		{217,  59, 231,  83,  4},
-		{217,  84, 231, 108,  5},
-		{217, 109, 231, 133,  6},
-		{217, 134, 231, 158,  7},
-		{118, 158, 142, 171,  8},
-		{143, 158, 167, 171,  9},
-		{168, 158, 192, 171, 10},
-		{193, 158, 217, 171, 11},
-		{103,  59, 118,  83, 12},
-		{103,  84, 118, 108, 13},
-		{103, 109, 118, 133, 14},
-		{103, 134, 118, 158, 15},
-		{103,  44, 118,  59, 16},
-		{217,  44, 231,  59, 17},
-		{217, 158, 231, 171, 18},
-		{103, 158, 118, 171, 19},
-		{119,  60, 216, 157, 20}
-	};
-
-	static const struct { int col, row; } rectToColRow[] = {
-		{1, 0}, {2, 0}, {3, 0}, {4, 0}, 
-		{5, 1}, {5, 2}, {5, 3}, {5, 4}, 
-		{1, 5}, {2, 5}, {3, 5}, {4, 5}, 
-		{0, 1}, {0, 2}, {0, 3}, {0, 4}, 
-		{0, 0}, {5, 0}, {5, 5}, {0, 5} 
-	};
-
-	int puzzleStatus = 0;
-	int puzzleCursorX = 0, puzzleCursorY = 0;
-
-	_puzzleSprite = _vm->_animationMan->loadAnimationResource("A07.PAK", 24);
-
 	// Initialize the puzzle state
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
 			if (debugPuzzleCheat)
-				_puzzleTiles[i][j] = puzzleCheatInitialTiles[i][j];
+				_puzzleTiles[i][j] = kPuzzleCheatInitialTiles[i][j];
 			else
-				_puzzleTiles[i][j] = puzzleInitialTiles[i][j];
+				_puzzleTiles[i][j] = kPuzzleInitialTiles[i][j];
 		}
 	}
-
-	_fingerBackground = NULL;	
-	_puzzleTableRow = 0;
-	_puzzleTableColumn = 0;
-
-	loadFingerCursor();
-
-	while (puzzleStatus == 0 && !_vm->shouldQuit()) {
-
-		_vm->_input->handleEvents();
-
-		if (!_vm->isFloppy()) {
-			/* Comet CD: Find out which tile is selected and convert 
-			   mouse coords to tile coords.
-			*/
-			int mouseSelectedTile;
-			puzzleCursorX = CLIP(_vm->_input->getMouseX(), 103, 231);
-			puzzleCursorY = CLIP(_vm->_input->getMouseY(), 44, 171);
-			if (_vm->_input->getMouseX() != puzzleCursorX || _vm->_input->getMouseY() != puzzleCursorY)
-				_vm->_system->warpMouse(puzzleCursorX, puzzleCursorY);
-			mouseSelectedTile = _vm->findRect(puzzleTileRects, _vm->_input->getMouseX(), _vm->_input->getMouseY(), 21, -1);
-			if (mouseSelectedTile >= 0) {
-				if (mouseSelectedTile >= 0 && mouseSelectedTile < 20) {
-					_puzzleTableColumn = rectToColRow[mouseSelectedTile].col;
-					_puzzleTableRow = rectToColRow[mouseSelectedTile].row;
-				} else if (mouseSelectedTile == 20) {
-					_puzzleTableColumn = (puzzleCursorX - 119) / 24 + 1;
-					_puzzleTableRow = (puzzleCursorY - 60) / 24 + 1; 
-				} else {
-					_puzzleTableColumn = 0;
-					_puzzleTableRow = 0;
-				}
-			}
-		}
-
-		drawField();
-		_vm->syncUpdate();
-
-		if (_vm->_input->getKeyCode() != Common::KEYCODE_INVALID) {
-			bool selectionChanged = false;
-
-			switch (_vm->_input->getKeyCode()) {
-			case Common::KEYCODE_UP:
-				if (_puzzleTableRow > 0) {
-					_puzzleTableRow--;
-					selectionChanged = true;
-				}
-				break;
-			case Common::KEYCODE_DOWN:
-				if (_puzzleTableRow < 5) {
-					_puzzleTableRow++;
-					selectionChanged = true;
-				}
-				break;
-			case Common::KEYCODE_LEFT:
-				if (_puzzleTableColumn > 0) {
-					_puzzleTableColumn--;
-					selectionChanged = true;
-				}
-				break;
-			case Common::KEYCODE_RIGHT:
-				if (_puzzleTableColumn < 5) {
-					_puzzleTableColumn++;
-					selectionChanged = true;
-				}
-				break;
-			default:
-				break;
-			}
-
-			if (selectionChanged && !_vm->isFloppy()) {
-				/* Comet CD: If the tile selection has been changed by cursor keys,
-				   position the mouse at the correct tile. */
-				int mouseNewTile = 20;
-				if (_puzzleTableColumn == 0 && _puzzleTableRow == 0)
-					mouseNewTile = 16;
-				else if (_puzzleTableColumn == 5 && _puzzleTableRow == 0)
-					mouseNewTile = 17;
-				else if (_puzzleTableColumn == 5 && _puzzleTableRow == 5)
-					mouseNewTile = 18;
-				else if (_puzzleTableColumn == 0 && _puzzleTableRow == 5)
-					mouseNewTile = 19;
-				else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 0)
-					mouseNewTile = _puzzleTableColumn - 1;
-				else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 5)
-					mouseNewTile = _puzzleTableColumn + 7;
-				else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 0)
-					mouseNewTile = _puzzleTableRow + 11;
-				else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 5)
-					mouseNewTile = _puzzleTableRow + 3;
-				if (mouseNewTile != 20) {
-					puzzleCursorX = (puzzleTileRects[mouseNewTile].x + puzzleTileRects[mouseNewTile].x2) / 2;
-					puzzleCursorY = (puzzleTileRects[mouseNewTile].y + puzzleTileRects[mouseNewTile].y2) / 2;
-				} else {
-					puzzleCursorX = (_puzzleTableColumn - 1) * 24 + 130;
-					puzzleCursorY = (_puzzleTableRow - 1) * 24 + 71;
-				}
-				_vm->_system->warpMouse(puzzleCursorX, puzzleCursorY);
-			}
-			
-		}
-
-		if (_vm->_input->getKeyCode() == Common::KEYCODE_ESCAPE || _vm->_input->rightButton()) {
-			puzzleStatus = 1;
-		} else if (_vm->_input->getKeyCode() == Common::KEYCODE_RETURN || _vm->_input->leftButton()) {
-			if (_puzzleTableColumn == 0 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				playTileSound();
-				moveTileRow(_puzzleTableRow, -1);
-			} else if (_puzzleTableColumn == 5 && _puzzleTableRow >= 1 && _puzzleTableRow <= 4) {
-				playTileSound();
-				moveTileRow(_puzzleTableRow, 1);
-			} else if (_puzzleTableRow == 0 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				playTileSound();
-				moveTileColumn(_puzzleTableColumn, -1);
-			} else if (_puzzleTableRow == 5 && _puzzleTableColumn >= 1 && _puzzleTableColumn <= 4) {
-				playTileSound();
-				moveTileColumn(_puzzleTableColumn, 1);
-			}
-			if (testIsSolved())
-				puzzleStatus = 2;
-		} else {
-			_vm->_input->waitForKeys();
-		}
-	}
-
-	if (_fingerBackground)
-		_fingerBackground->free();
-	delete _fingerBackground;
-	delete _puzzleSprite;
-
-	return puzzleStatus == 2 ? 2 : 0;
 }
 
 void GuiPuzzle::loadFingerCursor() {
@@ -1474,67 +1581,147 @@ void GuiPuzzle::drawTile(int columnIndex, int rowIndex, int xOffs, int yOffs) {
 		119 + (columnIndex - 1) * 24 + xOffs, 60 + (rowIndex - 1) * 24 + yOffs);
 }
 
-void GuiPuzzle::moveTileColumn(int columnIndex, int direction) {
-	if (direction < 0) {
-		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
-		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			_vm->_screen->setClipY(60, 156);
-			for (int rowIndex = 1; rowIndex <= 5; rowIndex++)
-				drawTile(columnIndex, rowIndex, 0, -yOffs);
-			_vm->_screen->setClipY(0, 199);
-			drawFinger();
-			_vm->syncUpdate();
+void GuiPuzzle::updateCurrentTile() {
+	/* Comet CD: If the tile selection has been changed by cursor keys,
+	   position the mouse at the correct tile. */
+	if (!_vm->isFloppy()) {
+		int mouseNewTile = 20;
+		if (_puzzleTableColumn == 0 && _puzzleTableRow == 0)
+			mouseNewTile = 16;
+		else if (_puzzleTableColumn == 5 && _puzzleTableRow == 0)
+			mouseNewTile = 17;
+		else if (_puzzleTableColumn == 5 && _puzzleTableRow == 5)
+			mouseNewTile = 18;
+		else if (_puzzleTableColumn == 0 && _puzzleTableRow == 5)
+			mouseNewTile = 19;
+		else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 0)
+			mouseNewTile = _puzzleTableColumn - 1;
+		else if (_puzzleTableColumn > 0 && _puzzleTableColumn < 5 && _puzzleTableRow == 5)
+			mouseNewTile = _puzzleTableColumn + 7;
+		else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 0)
+			mouseNewTile = _puzzleTableRow + 11;
+		else if (_puzzleTableRow > 0 && _puzzleTableRow < 5 && _puzzleTableColumn == 5)
+			mouseNewTile = _puzzleTableRow + 3;
+		if (mouseNewTile != 20) {
+			_puzzleCursorX = (kPuzzleTileRects[mouseNewTile].x + kPuzzleTileRects[mouseNewTile].x2) / 2;
+			_puzzleCursorY = (kPuzzleTileRects[mouseNewTile].y + kPuzzleTileRects[mouseNewTile].y2) / 2;
+		} else {
+			_puzzleCursorX = (_puzzleTableColumn - 1) * 24 + 130;
+			_puzzleCursorY = (_puzzleTableRow - 1) * 24 + 71;
 		}
+		_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+	}
+}
+
+void GuiPuzzle::selectTileByMouse(int mouseX, int mouseY) {
+	static const struct { int col, row; } kRectToColRow[] = {
+		{1, 0}, {2, 0}, {3, 0}, {4, 0}, 
+		{5, 1}, {5, 2}, {5, 3}, {5, 4}, 
+		{1, 5}, {2, 5}, {3, 5}, {4, 5}, 
+		{0, 1}, {0, 2}, {0, 3}, {0, 4}, 
+		{0, 0}, {5, 0}, {5, 5}, {0, 5} 
+	};
+
+	/* Comet CD: Find out which tile is selected and convert 
+	   mouse coords to tile coords.
+	*/
+	int mouseSelectedTile;
+	_puzzleCursorX = CLIP(mouseX, 103, 231);
+	_puzzleCursorY = CLIP(mouseY, 44, 171);
+	if (mouseX != _puzzleCursorX || mouseY != _puzzleCursorY)
+		_vm->_system->warpMouse(_puzzleCursorX, _puzzleCursorY);
+	mouseSelectedTile = _vm->findRect(kPuzzleTileRects, mouseX, mouseY, 21, -1);
+	if (mouseSelectedTile >= 0) {
+		if (mouseSelectedTile >= 0 && mouseSelectedTile < 20) {
+			_puzzleTableColumn = kRectToColRow[mouseSelectedTile].col;
+			_puzzleTableRow = kRectToColRow[mouseSelectedTile].row;
+		} else if (mouseSelectedTile == 20) {
+			_puzzleTableColumn = (_puzzleCursorX - 119) / 24 + 1;
+			_puzzleTableRow = (_puzzleCursorY - 60) / 24 + 1; 
+		} else {
+			_puzzleTableColumn = 0;
+			_puzzleTableRow = 0;
+		}
+	}
+}
+
+void GuiPuzzle::moveTileColumnUp() {
+	static int yOffs = 0;
+	FUNC_BODY_BEGIN
+	_puzzleTiles[_puzzleTableColumn][5] = _puzzleTiles[_puzzleTableColumn][1];
+	for (yOffs = 0; yOffs < 24; yOffs += 2) {
+		_vm->_screen->setClipY(60, 156);
+		for (int rowIndex = 1; rowIndex <= 5; rowIndex++)
+			drawTile(_puzzleTableColumn, rowIndex, 0, -yOffs);
+		_vm->_screen->setClipY(0, 199);
+		drawFinger();
+		_vm->_screen->update();
+		FUNC_YIELD
+	}
+	for (int rowIndex = 0; rowIndex <= 4; rowIndex++)
+		_puzzleTiles[_puzzleTableColumn][rowIndex] = _puzzleTiles[_puzzleTableColumn][rowIndex + 1];
+	_puzzleTiles[_puzzleTableColumn][5] = _puzzleTiles[_puzzleTableColumn][1];
+	FUNC_BODY_END
+}
+
+void GuiPuzzle::moveTileColumnDown() {
+	static int yOffs = 0;
+	FUNC_BODY_BEGIN
+	_puzzleTiles[_puzzleTableColumn][0] = _puzzleTiles[_puzzleTableColumn][4];
+	for (yOffs = 0; yOffs < 24; yOffs += 2) {
+		_vm->_screen->setClipY(60, 156);
 		for (int rowIndex = 0; rowIndex <= 4; rowIndex++)
-			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex + 1];
-		_puzzleTiles[columnIndex][5] = _puzzleTiles[columnIndex][1];
-	} else {
-		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
-		for (int yOffs = 0; yOffs < 24; yOffs += 2) {
-			_vm->_screen->setClipY(60, 156);
-			for (int rowIndex = 0; rowIndex <= 4; rowIndex++)
-				drawTile(columnIndex, rowIndex, 0, yOffs);
-			_vm->_screen->setClipY(0, 199);
-			drawFinger();
-			_vm->syncUpdate();
-		}
-		for (int rowIndex = 5; rowIndex >= 1; rowIndex--)
-			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex][rowIndex - 1];
-		_puzzleTiles[columnIndex][0] = _puzzleTiles[columnIndex][4];
+			drawTile(_puzzleTableColumn, rowIndex, 0, yOffs);
+		_vm->_screen->setClipY(0, 199);
+		drawFinger();
+		_vm->_screen->update();
+		FUNC_YIELD
 	}
+	for (int rowIndex = 5; rowIndex >= 1; rowIndex--)
+		_puzzleTiles[_puzzleTableColumn][rowIndex] = _puzzleTiles[_puzzleTableColumn][rowIndex - 1];
+	_puzzleTiles[_puzzleTableColumn][0] = _puzzleTiles[_puzzleTableColumn][4];
+	FUNC_BODY_END
 }
 
-void GuiPuzzle::moveTileRow(int rowIndex, int direction) {
-	if (direction < 0) {
-		_puzzleTiles[5][rowIndex] = _puzzleTiles[1][rowIndex];
-		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
-			_vm->_screen->setClipX(120, 215);
-			for (int columnIndex = 1; columnIndex <= 5; columnIndex++)
-				drawTile(columnIndex, rowIndex, -xOffs, 0);
-			_vm->_screen->setClipX(0, 319);
-			drawFinger();
-			_vm->syncUpdate();
-		}
+void GuiPuzzle::moveTileRowLeft() {
+	static int xOffs = 0;
+	FUNC_BODY_BEGIN
+	_puzzleTiles[5][_puzzleTableRow] = _puzzleTiles[1][_puzzleTableRow];
+	for (xOffs = 0; xOffs < 24; xOffs += 2) {
+		_vm->_screen->setClipX(120, 215);
+		for (int columnIndex = 1; columnIndex <= 5; columnIndex++)
+			drawTile(columnIndex, _puzzleTableRow, -xOffs, 0);
+		_vm->_screen->setClipX(0, 319);
+		drawFinger();
+		_vm->_screen->update();
+		FUNC_YIELD
+	}
+	for (int columnIndex = 0; columnIndex <= 4; columnIndex++)
+		_puzzleTiles[columnIndex][_puzzleTableRow] = _puzzleTiles[columnIndex + 1][_puzzleTableRow];
+	_puzzleTiles[5][_puzzleTableRow] = _puzzleTiles[1][_puzzleTableRow];
+	FUNC_BODY_END
+}
+
+void GuiPuzzle::moveTileRowRight() {
+	static int xOffs = 0;
+	FUNC_BODY_BEGIN
+	_puzzleTiles[0][_puzzleTableRow] = _puzzleTiles[4][_puzzleTableRow];
+	for (xOffs = 0; xOffs < 24; xOffs += 2) {
+		_vm->_screen->setClipX(120, 215);
 		for (int columnIndex = 0; columnIndex <= 4; columnIndex++)
-			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex + 1][rowIndex];
-		_puzzleTiles[5][rowIndex] = _puzzleTiles[1][rowIndex];
-	} else {
-		_puzzleTiles[0][rowIndex] = _puzzleTiles[4][rowIndex];
-		for (int xOffs = 0; xOffs < 24; xOffs += 2) {
-			_vm->_screen->setClipX(120, 215);
-			for (int columnIndex = 0; columnIndex <= 4; columnIndex++)
-				drawTile(columnIndex, rowIndex, xOffs, 0);
-			_vm->_screen->setClipX(0, 319);
-			drawFinger();
-			_vm->syncUpdate();
-		}
-		for (int columnIndex = 5; columnIndex >= 1; columnIndex--)
-			_puzzleTiles[columnIndex][rowIndex] = _puzzleTiles[columnIndex - 1][rowIndex];
-		_puzzleTiles[0][rowIndex] = _puzzleTiles[4][rowIndex];
+			drawTile(columnIndex, _puzzleTableRow, xOffs, 0);
+		_vm->_screen->setClipX(0, 319);
+		drawFinger();
+		_vm->_screen->update();
+		FUNC_YIELD
 	}
+	for (int columnIndex = 5; columnIndex >= 1; columnIndex--)
+		_puzzleTiles[columnIndex][_puzzleTableRow] = _puzzleTiles[columnIndex - 1][_puzzleTableRow];
+	_puzzleTiles[0][_puzzleTableRow] = _puzzleTiles[4][_puzzleTableRow];
+	FUNC_BODY_END
 }
 
-bool GuiPuzzle::testIsSolved() {
+bool GuiPuzzle::isPuzzleSolved() {
 	int matchingTiles = 0;
 	for (int columnIndex = 1; columnIndex <= 4; columnIndex++)
 		for (int rowIndex = 1; rowIndex <= 4; rowIndex++)
@@ -1543,11 +1730,13 @@ bool GuiPuzzle::testIsSolved() {
 	return matchingTiles == 16;
 }
 
-void GuiPuzzle::playTileSound() {
-	if (!_vm->isFloppy())
+void GuiPuzzle::playTileMoveSound() {
+	if (!_vm->isFloppy()) {
 		_vm->playSample(75, 1);
+	}
 }
 
+#if 0
 // GuiSaveLoadMenu
 
 int GuiSaveLoadMenu::run() {
@@ -1645,11 +1834,11 @@ void GuiSaveLoadMenu::draw() {
 void GuiSaveLoadMenu::drawSaveLoadMenu(int selectedItem) {
 	const int x = 95;
 	const int y = 64;
-	const int itemHeight = 12;
+	const int kItemHeight = 12;
 	drawIcon(_asSaveMenu ? 14 : 15);
 	for (int itemIndex = 0; itemIndex < 10; itemIndex++)
 		drawSavegameDescription(_savegames[itemIndex].description, itemIndex);
-	_vm->_screen->frameRect(x - 2, y + selectedItem * itemHeight - 2, x + 138, y + selectedItem * itemHeight + 9, 119);
+	_vm->_screen->frameRect(x - 2, y + selectedItem * kItemHeight - 2, x + 138, y + selectedItem * kItemHeight + 9, 119);
 }
 	
 void GuiSaveLoadMenu::loadSavegamesList() {
@@ -1743,12 +1932,12 @@ int GuiSaveLoadMenu::handleEditSavegameDescription(int savegameIndex) {
 void GuiSaveLoadMenu::drawSavegameDescription(Common::String &description, int savegameIndex) {
 	const int x = 95;
 	const int y = 64;
-	const int itemHeight = 12;
+	const int kItemHeight = 12;
 	int textX = (135 - _vm->_screen->getTextWidth((const byte*)description.c_str())) / 2;
 	_vm->_screen->setFontColor(120);
-	_vm->_screen->drawText(x + textX + 1, y + savegameIndex * itemHeight + 1, (const byte*)description.c_str());
+	_vm->_screen->drawText(x + textX + 1, y + savegameIndex * kItemHeight + 1, (const byte*)description.c_str());
 	_vm->_screen->setFontColor(119);
-	_vm->_screen->drawText(x + textX, y + savegameIndex * itemHeight, (const byte*)description.c_str());
+	_vm->_screen->drawText(x + textX, y + savegameIndex * kItemHeight, (const byte*)description.c_str());
 }
-
+#endif
 } // End of namespace Comet

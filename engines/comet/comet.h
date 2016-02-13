@@ -45,6 +45,7 @@
 
 #include "comet/console.h"
 #include "comet/inventory.h"
+#include "comet/task.h"
 
 namespace Comet {
 
@@ -288,7 +289,6 @@ public:
 	void initData();
 
 	void handleKeyInput();
-	void syncUpdate(bool screenUpdate = true);
 
 	void drawTextIllsmouth();
 
@@ -370,20 +370,6 @@ public:
 	AnimationResource *getGlobalAnimationResource(int16 animationType);
 	void unloadActorSprite(Actor *actor);
 
-	// Actor
-	void actorInit(int itemIndex, int16 animationSlot);
-	void actorSetDirection(Actor *actor, int direction);
-	void actorSetDirectionAdd(Actor *actor, int directionAdd);
-	void actorSetAnimNumber(Actor *actor, int index);
-	void actorStopWalking(Actor *actor);
-	void actorCalcDirection(Actor *actor);
-	void actorGetNextWalkDestXY(Actor *actor, int &x, int &y);
-	void actorSetPosition(int index, int x, int y);
-	void actorUpdateLife(Actor *actor, int flag);
-	void actorSaveWalkDestXY(Actor *actor);
-	bool actorStartWalking(int actorIndex, int x, int y);
-	Actor *getActor(int index);
-
 	// Misc
 	int comparePointXY(int x, int y, int x2, int y2);
 
@@ -439,13 +425,11 @@ public:
 	void syncPaletteInfo(Common::Serializer &s);
 	void sync(Common::Serializer &s);
 
-	int handleMap();
+	bool canShowMap();
 
 	void playMusic(int musicNumber);
 	void playSample(int sampleNumber, int loopCount);
 	
-	void playCutscene(int fileIndex, int frameListIndex, int backgroundIndex, int loopCount, int soundFramesCount, byte *soundFramesData);
-
 	// Beams
 	Common::Array<Beam> _beams;
 	
@@ -459,10 +443,9 @@ public:
 	
 	void initSystemVars();
 
-	void introMainLoop();
-	void cometMainLoop();
 	void museumMainLoop();
-	void checkPauseGame();
+	
+	void runTasks();
 
 public:
 	// Misc

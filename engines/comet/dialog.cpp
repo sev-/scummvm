@@ -23,7 +23,6 @@
 #include "comet/dialog.h"
 #include "comet/actor.h"
 #include "comet/comet.h"
-#include "comet/input.h"
 #include "comet/screen.h"
 #include "comet/talktext.h"
 
@@ -103,12 +102,11 @@ void Dialog::start(Script *script) {
 
 	_selectedItemIndex2 = -1;
 	_selectedItemIndex = 0;
+	_oldDialogSelectedItemIndex = 0;
 	_isRunning = true;
+	_isItemSelected = false;
 
 	drawTextBubbles();
-
-	if (!_vm->isFloppy())
-		_vm->_input->waitForKeys();
 
 }
 
@@ -116,52 +114,77 @@ void Dialog::stop() {
 	_isRunning = false;
 }
 
-void Dialog::update() {
-	int oldDialogSelectedItemIndex = _selectedItemIndex;
-
-	if (_vm->_input->isCursorDirection(1) && _selectedItemIndex > 0) {
-		_selectedItemIndex--;
-		_vm->_input->waitForKeys();
-	} else if (_vm->_input->isCursorDirection(2) && _selectedItemIndex < (int)_items.size() - 1) {
-		_selectedItemIndex++;
-		_vm->_input->waitForKeys();
-	}
-
-	if (!_vm->isFloppy()) {
-		if (oldDialogSelectedItemIndex == _selectedItemIndex) {
+void Dialog::handleEvent(Common::Event &event) {
+	debug("Dialog::handleEvent()");
+	switch (event.type) {
+	case Common::EVENT_KEYDOWN:
+		switch (event.kbd.keycode) {
+		case Common::KEYCODE_UP:
+			if (_selectedItemIndex > 0)
+				--_selectedItemIndex;
+			break;
+		case Common::KEYCODE_DOWN:
+			if (_selectedItemIndex < (int)_items.size() - 1)
+				++_selectedItemIndex;
+			break;
+		case Common::KEYCODE_RETURN:
+			_isItemSelected = true;
+			break;
+		default:
+			break;
+		}
+		break;		
+	case Common::EVENT_MOUSEMOVE:
+		// TODO Extract
+		if (!_vm->isFloppy()) {
 			// Handle selection by mouse
 			int mouseSelectedItemIndex = -1;
 			for (uint i = 0; i < _items.size(); i++) {
-				if (_vm->_input->getMouseX() > _items[i].rect.x && _vm->_input->getMouseX() < _items[i].rect.x2 &&
-					_vm->_input->getMouseY() > _items[i].rect.y && _vm->_input->getMouseY() < _items[i].rect.y2)
+				if (event.mouse.x > _items[i].rect.x && event.mouse.x < _items[i].rect.x2 &&
+					event.mouse.y > _items[i].rect.y && event.mouse.y < _items[i].rect.y2)
 					mouseSelectedItemIndex = _items[i].rect.id;
 			}
 			if (mouseSelectedItemIndex != -1)
 				_selectedItemIndex = mouseSelectedItemIndex;
-		} else {
-			// Move mouse cursor to the center of the selected dialog item
-			_vm->warpMouseToRect(_items[_selectedItemIndex].rect);
 		}
+		break;
+	case Common::EVENT_LBUTTONDOWN:
+		_isItemSelected = true;
+		break;
+	case Common::EVENT_RBUTTONDOWN:
+		break;
+	default:
+		break;
 	}
+}
 
-	if (oldDialogSelectedItemIndex != _selectedItemIndex)
+void Dialog::update() {
+	FUNC_BODY_BEGIN
+
+	// Move mouse cursor to the center of the selected dialog item
+	// TODO _vm->warpMouseToRect(_items[_selectedItemIndex].rect);
+
+	if (_oldDialogSelectedItemIndex != _selectedItemIndex) {
 		_textColor = 79;
+		//_vm->warpMouseToRect(_items[_selectedItemIndex].rect);
+		_oldDialogSelectedItemIndex = _selectedItemIndex;
+	}
 
 	drawTextBubbles();
 
-	if (_selectedItemIndex != -1 && (_vm->_input->leftButton() || _vm->_input->getKeyCode() == Common::KEYCODE_RETURN)) {
+	if (_selectedItemIndex != -1 && _isItemSelected) {
+		_isItemSelected = false;
 		if (_vm->_talkText->getTalkieMode() == 1) {
 			_vm->_talkText->actorTalkWithAnim(0, _items[_selectedItemIndex].index, 0);
 			while (_vm->_mixer->isSoundHandleActive(_vm->_sampleHandle)) {
 				_vm->_talkText->updateTalkAnims();
-				_vm->_input->handleEvents();
-				_vm->_system->updateScreen();
+				FUNC_YIELD
 			}
-			_vm->_input->waitForKeys();
 		}
 		_isRunning = false;
 	}
 	
+	FUNC_BODY_END
 }
 
 void Dialog::drawTextBubbles() {

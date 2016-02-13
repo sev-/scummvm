@@ -46,6 +46,7 @@ public:
 
 	void start(Script *script);
 	void stop();
+	void handleEvent(Common::Event &event);
 	void update();
 	bool isRunning() const { return _isRunning; }
 	uint16 getChoiceScriptIp();
@@ -55,11 +56,13 @@ protected:
 	CometEngine *_vm;
 
 	int _selectedItemIndex, _selectedItemIndex2;
+	int _oldDialogSelectedItemIndex;
 	int _introTextIndex, _textX, _textY;
 	byte _textColor;
 	int _textColorInc;
 	byte _frameColor;
 	int _frameColorInc;
+	bool _isItemSelected;
 	bool _isRunning;
 	Common::Array<DialogItem> _items;
 

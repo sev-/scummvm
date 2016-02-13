@@ -46,24 +46,29 @@ void TalkText::deactivate() {
 }
 
 void TalkText::update() {
+	debug("g_taskMan.getResumeLineNum(): %d", g_taskMan.getResumeLineNum());
+	FUNC_BODY_BEGIN
 	if (_vm->isFloppy()) {
-		updateTextDialog();
+		FUNC_AWAIT(updateTextDialog);
 	} else {
 		if (_talkieMode == 0)
-			updateTextDialog();
+			FUNC_AWAIT(updateTextDialog);
 		if ((_talkieMode == 1 && (_textActive || _textBubbleActive)) || (_talkieMode == 2 && _textBubbleActive))
 			updateText();
 		if (_vm->_dialog->isRunning())
-			_vm->_dialog->update();
+			FUNC_AWAIT(_vm->_dialog->update);
 		updateTalkAnims();
 	}
+	FUNC_BODY_END
 }
 
 void TalkText::updateTextDialog() {
+	FUNC_BODY_BEGIN
 	if ((_vm->isFloppy() && _textActive) || (!_vm->isFloppy() && (_textActive || _textBubbleActive)))
 		updateText();
 	if (_vm->_dialog->isRunning())
-		_vm->_dialog->update();
+		FUNC_AWAIT(_vm->_dialog->update);
+	FUNC_BODY_END
 }
 
 void TalkText::updateText() {
@@ -174,6 +179,7 @@ void TalkText::resetTextValues() {
 }
 
 void TalkText::stopText() {
+	debug("TalkText::stopText()");
 	if (_vm->isFloppy()) {
 		if (_textDuration > 1 && _textDuration <= _textOriginalDuration - 3)
 			_textDuration = 1;
@@ -184,7 +190,7 @@ void TalkText::stopText() {
 		_textActive = false;
 		stopVoice();
 	}
-	_vm->_input->waitForKeys();
+	// TODO Obsolete _vm->_input->waitForKeys();
 }
 
 void TalkText::showTextBubble(int index, byte *text, int textDuration) {

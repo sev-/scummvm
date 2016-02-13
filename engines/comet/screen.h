@@ -57,14 +57,8 @@ public:
 	void setFadeStep(int fadeStep);
 	int getZoomFactor() const { return _zoomFactor; }
 
-	void screenTransitionEffect();
-	void screenScrollEffect(byte *newScreen, int scrollDirection);
-
 	void buildPalette(byte *sourcePal, byte *destPal, int value);
 	void buildRedPalette(byte *sourcePal, byte *destPal, int value);
-	void paletteFadeIn();
-	void paletteFadeOut();
-	void paletteFadeCore(int fadeStep);
 	void setFadePalette(int value);
 	void setWhitePalette(int value);
 
@@ -98,13 +92,13 @@ public:
 protected:
 	CometEngine *_vm;
 	bool _transitionEffect;
-	PaletteFadeType _fadeType;
-	int _fadeStep;
 	FontResource *_currFontResource;
 	byte _currFontColor;
 public:
 	bool _palFlag;
 	int _zoomFactor, _zoomX, _zoomY;
+	int _fadeStep;
+	PaletteFadeType _fadeType;
 };
 
 }

@@ -315,7 +315,24 @@ Common::Error CometEngine::run() {
 		setMouseCursor(0);
 	} else
 		CursorMan.showMouse(false);
+	
+#if 0
+	CometIntroTask *_cometIntroTask = new CometIntroTask(this);
+	g_taskMan.newTask(_cometIntroTask);
+	runTasks();
+	delete _cometIntroTask;
+#endif
 
+	// TODO
+	_moduleNumber = 9;
+	_sceneNumber = 9;
+
+	CometGameTask *_cometGameTask = new CometGameTask(this);
+	g_taskMan.newTask(_cometGameTask);
+	runTasks();
+	delete _cometGameTask;
+
+#if 0
 	if (ConfMan.hasKey("save_slot")) {
 		int saveSlot = ConfMan.getInt("save_slot");
 		if (saveSlot >= 0 && saveSlot <= 99)
@@ -323,7 +340,7 @@ Common::Error CometEngine::run() {
 	} else if (getGameID() == GID_COMET) {
 		if (ConfMan.getInt("boot_param") != 1) {
 			// Play the intro
-			introMainLoop();
+			// TODO Obsolete introMainLoop();
 		} else {
 			_moduleNumber = 9;
 			_sceneNumber = 9;
@@ -340,12 +357,12 @@ Common::Error CometEngine::run() {
 
 	if (!shouldQuit()) {
 		if (getGameID() == GID_COMET) {
-			cometMainLoop();
+			// TODO Obsolete cometMainLoop();
 		} else if (getGameID() == GID_MUSEUM) {
 			museumMainLoop();
 		}
 	}
-
+#endif
 	delete _talkText;
 	delete _input;
 	delete _systemMouseCursor;

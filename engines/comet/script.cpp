@@ -30,6 +30,7 @@
 #include "comet/screen.h"
 #include "comet/script.h"
 #include "comet/talktext.h"
+#include "comet/task.h"
 
 namespace Comet {
 
@@ -341,6 +342,9 @@ void ScriptInterpreter::processScriptTalk(Script *script) {
 void ScriptInterpreter::runScript(int scriptNumber) {
 	_curScriptNumber = scriptNumber;
 	Script *script = _scripts[scriptNumber];
+	static byte opcode;
+
+	FUNC_BODY_BEGIN
 
 	_yield = false;
 
@@ -379,9 +383,9 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 
 	if (script->status & kScriptTalking)
 		processScriptTalk(script);
-
+		
 	while (!_yield) {
-		byte opcode = script->readByte();
+		opcode = script->readByte();
 		// DEBUG: So that o1_nop can print the opcode
 		//	This will be removed again once all opcodes are implemented.
 		script->debugOpcode = opcode;
@@ -390,16 +394,23 @@ void ScriptInterpreter::runScript(int scriptNumber) {
 			error("CometEngine::runScript() Invalid opcode %d", opcode);
 		//debugC(2, kDebugScript, "%s", _opcodeNames[opcode].c_str());
 		debugC(2, kDebugScript, "[%02d:%08X] %d %s", _curScriptNumber, script->ip, opcode, _opcodeNames[opcode].c_str());
-		(*_opcodes[opcode])(script);
+		FUNC_AWAIT_ARGS((*_opcodes[opcode]), (script));
 	}
 
+	FUNC_BODY_END
 }
 
 void ScriptInterpreter::runAllScripts() {
+	static int scriptNumber = 0;
+	FUNC_BODY_BEGIN
+	
 	debugC(2, kDebugScript, "ScriptInterpreter::runAllScripts()");
 	// Run all scripts except the main script
-	for (int scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++)
-		runScript(scriptNumber);
+	for (scriptNumber = 1; scriptNumber < _scriptCount; scriptNumber++) {
+		FUNC_AWAIT_ARGS(runScript, (scriptNumber));
+	}
+
+	FUNC_BODY_END
 }
 
 int16 *ScriptInterpreter::getVarPointer(int varIndex) {
@@ -620,13 +631,23 @@ void ScriptInterpreter::o1_startMultipleScripts(Script *script) {
 }
 
 void ScriptInterpreter::o1_playCutscene(Script *script) {
-	ARG_BYTE(fileIndex);
-	ARG_BYTE(frameListIndex);
-	ARG_INT16(backgroundIndex);
-	ARG_BYTE(loopCount);
-	ARG_BYTE(soundFramesCount);
-	_vm->playCutscene(fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount, script->code + script->ip);
-	script->ip += soundFramesCount * 3;
+	CutsceneTask *task;
+
+	FUNC_BODY_BEGIN
+	
+	{
+		ARG_BYTE(fileIndex);
+		ARG_BYTE(frameListIndex);
+		ARG_INT16(backgroundIndex);
+		ARG_BYTE(loopCount);
+		ARG_BYTE(soundFramesCount);
+		task = new CutsceneTask(_vm, fileIndex, frameListIndex, backgroundIndex, loopCount, soundFramesCount, script->code + script->ip);
+		script->ip += soundFramesCount * 3;
+	}
+	
+	FUNC_AWAIT_TASK(task);
+	
+	FUNC_BODY_END
 }
 
 void ScriptInterpreter::o1_setVar(Script *script) {

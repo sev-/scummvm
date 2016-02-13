@@ -20,6 +20,7 @@ MODULE_OBJS = \
 	script.o \
 	shadow.o \
 	talktext.o \
+	task.o \
 	unpack.o
 
 # This module can be built as a plugin
