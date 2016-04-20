@@ -888,6 +888,13 @@ void OSystem_Android::pushEvent(int type, int arg1, int arg2, int arg3,
 			e.kbd.ascii = Common::ASCII_ESCAPE;
 			break;
 
+#ifdef ENABLE_VKEYBD
+		case JKEYCODE_BUTTON_L1:
+			if (arg1 == JACTION_DOWN)
+				e.type = Common::EVENT_VIRTUAL_KEYBOARD;
+			return;
+#endif
+
 		default:
 			LOGW("unmapped gamepad key: %d", arg2);
 			return;

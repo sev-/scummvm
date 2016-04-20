@@ -2595,6 +2595,9 @@ if test -n "$_host"; then
 			_seq_midi=no
 			_mt32emu=no
 			_timidity=no
+			if test "$_host" = "ouya"; then
+				_vkeybd=yes
+			fi
 			;;
 		arm-linux|arm*-linux-gnueabi|arm-*-linux)
 			;;
