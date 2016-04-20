@@ -266,9 +266,10 @@ void OSystem_Android::initOverlay() {
 	// enforces the 'lowres' layout, which will be scaled back up by factor 2x,
 	// but this looks way better than the 'normal' layout scaled by some
 	// calculated factors
+	int divider = _runningOnOuya ? 11 : 20; // On OUYA we will get 810x455
 	while (overlay_height > 480) {
-		overlay_width /= 2;
-		overlay_height /= 2;
+		overlay_width = overlay_width * 10 / divider;
+		overlay_height = overlay_height * 10 / divider;
 	}
 
 	LOGI("overlay size is %ux%u", overlay_width, overlay_height);
