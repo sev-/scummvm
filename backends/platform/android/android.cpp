@@ -165,6 +165,8 @@ OSystem_Android::OSystem_Android(int audio_sample_rate, int audio_buffer_size) :
 	mf.toLowercase();
 	/*_htc_fail = mf.contains("htc");
 
+	_runningOnOuya = getSystemProperty("ro.product.model").equals("OUYA Console");
+
 	if (_htc_fail)
 		LOGI("Enabling HTC workaround");*/
 }

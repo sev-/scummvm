@@ -226,6 +226,8 @@ private:
 	int _joystick_scale;
 	int _fingersDown;
 
+	bool _runningOnOuya;
+
 	void clipMouse(Common::Point &p);
 	void scaleMouse(Common::Point &p, int x, int y, bool deductDrawRect = true, bool touchpadMode = false);
 	void updateEventScale();
