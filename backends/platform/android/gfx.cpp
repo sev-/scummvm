@@ -243,7 +243,16 @@ void OSystem_Android::initViewport() {
 
 	GLCALL(glEnable(GL_TEXTURE_2D));
 
-	GLCALL(glViewport(0, 0, _egl_surface_width, _egl_surface_height));
+	// OUYA Runs on a TV which typically has overscan.
+	// The recommendation is to not show anything important
+	// in 5% bands around the screen.
+	//
+	// In point-and-click games every pixel is important, thus we
+	// show black bands around (or no bands, your mileage may vary)
+	if (_runningOnOuya)
+		GLCALL(glViewport(_egl_surface_width * 0.05, _egl_surface_height * 0.05, _egl_surface_width * 0.9, _egl_surface_height * 0.9));
+	else
+		GLCALL(glViewport(0, 0, _egl_surface_width, _egl_surface_height));
 
 	GLCALL(glMatrixMode(GL_PROJECTION));
 	GLCALL(glLoadIdentity());
