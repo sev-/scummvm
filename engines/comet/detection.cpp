@@ -102,7 +102,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 AD_LISTEND},
 			Common::EN_ANY,
 			Common::kPlatformDOS,
-			ADGF_NO_FLAGS,
+			ADGF_CD,
 			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
@@ -121,7 +121,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 AD_LISTEND},
 			Common::DE_DEU,
 			Common::kPlatformDOS,
-			ADGF_NO_FLAGS,
+			ADGF_CD,
 			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
@@ -140,7 +140,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 AD_LISTEND},
 			Common::IT_ITA,
 			Common::kPlatformDOS,
-			ADGF_NO_FLAGS,
+			ADGF_CD,
 			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
@@ -159,7 +159,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 AD_LISTEND},
 			Common::ES_ESP,
 			Common::kPlatformDOS,
-			ADGF_NO_FLAGS,
+			ADGF_CD,
 			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
@@ -178,7 +178,7 @@ static const CometGameDescription gameDescriptions[] = {
 			 AD_LISTEND},
 			Common::FR_FRA,
 			Common::kPlatformDOS,
-			ADGF_NO_FLAGS,
+			ADGF_CD,
 			GUIO1(GUIO_NONE)
 		},
 		GID_COMET,
