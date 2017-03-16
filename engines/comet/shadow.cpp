@@ -1189,7 +1189,6 @@ void CometEngine::delayMillis(int ms) {
 	if (fastMode & 1)
 		ms /= 2;
 
-	debug("delay %d", ms);
 	_system->delayMillis(ms);
 }
 
