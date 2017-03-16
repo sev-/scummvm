@@ -100,7 +100,7 @@ void Inventory::resetStatus() {
 			_itemStatus[i] = 1;
 }
 
-void Inventory::buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem) {
+void Inventory::buildItems(Common::Array<uint16> &items, int &firstItem, int &currentItem) {
 	// Build items array and set up variables
 	for (int i = 0; i < ARRAYSIZE(_itemStatus); i++) {
 		if (_itemIndex != 0 && _itemIndex == i) {

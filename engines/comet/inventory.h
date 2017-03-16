@@ -43,7 +43,7 @@ public:
 	void testSelectedItemRemoved();
 	void testSelectFirstItem();
 	void resetStatus();
-	void buildItems(Common::Array<uint16> &items, uint &firstItem, uint &currentItem);
+	void buildItems(Common::Array<uint16> &items, int &firstItem, int &currentItem);
 	void sync(Common::Serializer &s);
 protected:
 	int16 _itemStatus[256];

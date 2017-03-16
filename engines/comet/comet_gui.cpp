@@ -138,7 +138,7 @@ int GuiInventory::run() {
 	const int kIAUse		= -4;
 	const int kIASelect		= -5;
 	const int kIAExit		= -6;
-	const uint kMaxItemsOnScreen = 10;
+	const int kMaxItemsOnScreen = 10;
 
 	static const GuiRectangle inventorySlotRects[] = {
 		{160, 182, 170, 190, kIADown},
@@ -156,7 +156,8 @@ int GuiInventory::run() {
 	};
 
 	Common::Array<uint16> items;
-	uint firstItem = 0, currentItem = 0, animFrameCounter = 0;
+	int firstItem = 0, currentItem = 0;
+	uint animFrameCounter = 0;
 	int inventoryStatus = 0;
 
 	_vm->_input->waitForKeys();
@@ -207,14 +208,15 @@ int GuiInventory::run() {
 			break;
 		}
 
+		int itemsSize = items.size();
 		switch (inventoryAction) {
 		case kIANone:
 			break;
 		case kIADown:
-			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && currentItem + 1 < items.size()) {
+			if ((currentItem - firstItem + 1 < kMaxItemsOnScreen) && currentItem + 1 < itemsSize) {
 				doWarpMouse = mouseSelectedItem == (currentItem - firstItem);
 				currentItem++;
-			} else if (firstItem + kMaxItemsOnScreen < items.size()) {
+			} else if (firstItem + kMaxItemsOnScreen < itemsSize) {
 				firstItem++;
 				currentItem++;
 			}
