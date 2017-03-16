@@ -240,7 +240,12 @@ void CometEngine::updateGame() {
 		return;
 	}
 
-	nextUpdateTick = _system->getMillis() + 100;
+	nextUpdateTick = _system->getMillis();
+	uint8 fastMode = _input->getFastMode();
+	if (fastMode & 1)
+		nextUpdateTick += 100 / 2;
+	else if (fastMode == 0)
+		nextUpdateTick += 100;
 
 	++_gameLoopCounter;
 	++_textColorFlag;
@@ -687,7 +692,7 @@ void CometEngine::syncUpdate(bool screenUpdate) {
 		while (totalWaitMillis > 0) {
 			uint32 waitMillis = totalWaitMillis > kUpdateScreenMillis
 				? kUpdateScreenMillis : totalWaitMillis;
-			_system->delayMillis(waitMillis);
+			delayMillis(waitMillis);
 			_input->handleEvents();
 			_system->updateScreen();
 			totalWaitMillis -= waitMillis;
@@ -1008,7 +1013,7 @@ void CometEngine::introMainLoop() {
 			_endIntroLoop = true;
 
 		updateGame();
-		_system->delayMillis(20);
+		delayMillis(20);
 
 	}
 }
@@ -1093,7 +1098,7 @@ void CometEngine::cometMainLoop() {
 		}
 
 		updateGame();
-		_system->delayMillis(20);
+		delayMillis(20);
 
 		if (_loadgameRequested) {
 			// TODO:
@@ -1119,7 +1124,7 @@ void CometEngine::museumMainLoop() {
 			return;
 
 		updateGame();
-		_system->delayMillis(20);
+		delayMillis(20);
 
 		if (_loadgameRequested) {
 			// TODO:
@@ -1176,5 +1181,17 @@ void CometEngine::openConsole() {
 	_console->attach();
 	_console->onFrame();
 }
+
+void CometEngine::delayMillis(int ms) {
+	uint8 fastMode = _input->getFastMode();
+	if (fastMode & 2)
+		return;
+	if (fastMode & 1)
+		ms /= 2;
+
+	debug("delay %d", ms);
+	_system->delayMillis(ms);
+}
+
 
 } // End of namespace Comet

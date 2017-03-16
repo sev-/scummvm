@@ -46,7 +46,8 @@ namespace Comet {
 Input::Input(CometEngine *vm)
 	: _vm(vm), _mouseX(0), _mouseY(0), _keyCode(Common::KEYCODE_INVALID),
 	_keyDirection(0), _arrowDirection(0), _scriptKeybFlag(0),
-	_mouseWalking(false), _mouseCursorDirection(0), _leftButton(false), _rightButton(false) {
+	_mouseWalking(false), _mouseCursorDirection(0), _leftButton(false), _rightButton(false),
+	_fastMode(0) {
 }
 
 Input::~Input() {
@@ -134,8 +135,22 @@ void Input::handleEvent(Common::Event &event) {
 			_keyDirection = 8;
 			break;
 		case Common::KEYCODE_d:
-			if (event.kbd.flags & Common::KBD_CTRL) {
+			if (event.kbd.hasFlags(Common::KBD_CTRL)) {
 				_vm->openConsole();
+				event.kbd.keycode = Common::KEYCODE_INVALID;
+			}
+			break;
+		case Common::KEYCODE_f:
+			if (event.kbd.hasFlags(Common::KBD_CTRL)) {
+				_fastMode ^= 1;
+				debug("fastmode = %u", _fastMode);
+				event.kbd.keycode = Common::KEYCODE_INVALID;
+			}
+			break;
+		case Common::KEYCODE_g:
+			if (event.kbd.hasFlags(Common::KBD_CTRL)) {
+				_fastMode ^= 2;
+				debug("fastmode = %u", _fastMode);
 				event.kbd.keycode = Common::KEYCODE_INVALID;
 			}
 			break;
@@ -199,7 +214,7 @@ void Input::handleMouseEvent(Common::Event &event) {
 void Input::waitForKeys() {
 	while ((_keyCode != Common::KEYCODE_INVALID || _keyDirection != 0 || _leftButton || _rightButton) && !_vm->shouldQuit()) {
 		handleEvents();
-		_vm->_system->delayMillis(20);
+		_vm->delayMillis(20);
 	}
 }
 
@@ -207,7 +222,7 @@ void Input::waitForKeyPress() {
 	waitForKeys();
 	while (_keyCode == Common::KEYCODE_INVALID && _keyDirection == 0 && !_leftButton && !_rightButton && !_vm->shouldQuit()) {
 		handleEvents();
-		_vm->_system->delayMillis(20);
+		_vm->delayMillis(20);
 	}
 }
 

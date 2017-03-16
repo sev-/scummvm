@@ -61,6 +61,7 @@ public:
 public:
 	int16 _arrowDirection;
 	int16 _scriptKeybFlag;
+	uint8 getFastMode() const { return _fastMode; }
 protected:
 	CometEngine *_vm;
 	Common::KeyCode _keyCode;
@@ -73,6 +74,7 @@ protected:
 	int _mouseCursorDirection;
 	int mouseCalcCursorDirection(int fromX, int fromY, int toX, int toY);
 	int arrowDirectionToWalkDirection(int arrowDirection);
+	byte _fastMode;
 };
 
 } // End of namespace Comet

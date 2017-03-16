@@ -463,6 +463,7 @@ public:
 	void cometMainLoop();
 	void museumMainLoop();
 	void checkPauseGame();
+	void delayMillis(int ms);
 
 public:
 	// Misc
