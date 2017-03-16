@@ -29,6 +29,7 @@
 #include "audio/fmopl.h"
 
 #include "comet/comet.h"
+#include "audio/softsynth/opl/mame.h"
 
 // FIXME
 #define musicSync 1500
@@ -95,7 +96,7 @@ public:
 	
 protected:
 	Audio::SoundHandle _handle;
-	FM_OPL *_opl;
+	OPL::MAME::FM_OPL *_opl;
 	bool _playing;
 	bool _first;
 	bool _ended;

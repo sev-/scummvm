@@ -92,7 +92,7 @@ uint8 smallTable[] = { 0x10, 8, 4, 2, 1 };
 MusicPlayer::MusicPlayer(CometEngine *vm) : _vm(vm) {
 
 	_rate = _vm->_mixer->getOutputRate();
-	_opl = makeAdLibOPL(_rate);
+	_opl = OPL::MAME::makeAdLibOPL(_rate);
 	_ended = false;
 	_playing = false;
 
@@ -141,7 +141,7 @@ int MusicPlayer::readBuffer(int16 *buffer, const int numSamples) {
 			render = (samples > _nextUpdateTimer) ?  (_nextUpdateTimer) : (samples);
 			samples -= render;
 			_nextUpdateTimer -= render;
-			YM3812UpdateOne(_opl, buffer, render);
+			OPL::MAME::YM3812UpdateOne(_opl, buffer, render);
 			buffer += render;
 		} else {
 			update();

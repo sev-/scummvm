@@ -38,15 +38,15 @@ bool debugTestPuzzle;
 bool debugPuzzleCheat;
 
 CometConsole::CometConsole(CometEngine *vm) : GUI::Debugger(), _vm(vm) {
-	DCmd_Register("toggleRects", WRAP_METHOD(CometConsole, Cmd_ToggleDebugRectangles));
-	DCmd_Register("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
-	DCmd_Register("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
-	DCmd_Register("module", WRAP_METHOD(CometConsole, Cmd_Module));
-	DCmd_Register("scene", WRAP_METHOD(CometConsole, Cmd_Scene));
-	DCmd_Register("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
-	DCmd_Register("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
-	DCmd_Register("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
-	DCmd_Register("viewCursor", WRAP_METHOD(CometConsole, Cmd_ViewCursor));
+	registerCmd("toggleRects", WRAP_METHOD(CometConsole, Cmd_ToggleDebugRectangles));
+	registerCmd("showActorNum", WRAP_METHOD(CometConsole, Cmd_ShowActorNum));
+	registerCmd("dumpResource", WRAP_METHOD(CometConsole, Cmd_DumpResource));
+	registerCmd("module", WRAP_METHOD(CometConsole, Cmd_Module));
+	registerCmd("scene", WRAP_METHOD(CometConsole, Cmd_Scene));
+	registerCmd("testBeamRoom", WRAP_METHOD(CometConsole, Cmd_TestBeamRoom));
+	registerCmd("testPuzzle", WRAP_METHOD(CometConsole, Cmd_TestPuzzle));
+	registerCmd("puzzleCheat", WRAP_METHOD(CometConsole, Cmd_PuzzleCheat));
+	registerCmd("viewCursor", WRAP_METHOD(CometConsole, Cmd_ViewCursor));
 
 	debugRectangles = false;
 	debugShowActorNum = false;
@@ -59,19 +59,19 @@ CometConsole::~CometConsole() {
 
 bool CometConsole::Cmd_ToggleDebugRectangles(int argc, const char **argv) {
 	debugRectangles = !debugRectangles;
-	DebugPrintf("Debug Rectangles: %s\n", debugRectangles ? "Enabled" : "Disabled");
+	debugPrintf("Debug Rectangles: %s\n", debugRectangles ? "Enabled" : "Disabled");
 	return true;
 }
 
 bool CometConsole::Cmd_ShowActorNum(int argc, const char **argv) {
-	DebugPrintf("Enabling Display of Actor Number...\n");
+	debugPrintf("Enabling Display of Actor Number...\n");
 	debugShowActorNum = true;
 	return true;
 }
 
 bool CometConsole::Cmd_DumpResource(int argc, const char **argv) {
 	if (argc != 3) {
-		DebugPrintf("Usage: dumpResource <Pak Name> <Resource Number>\n");
+		debugPrintf("Usage: dumpResource <Pak Name> <Resource Number>\n");
 		return true;
 	}
 
@@ -100,15 +100,15 @@ bool CometConsole::Cmd_Module(int argc, const char **argv) {
 	int16 moduleNum;
 	switch (argc) {
 	case 1:
-		DebugPrintf("Current Module: %d\n", _vm->_moduleNumber);
+		debugPrintf("Current Module: %d\n", _vm->_moduleNumber);
 		break;
 	case 2:
 		moduleNum = atoi(argv[1]);
-		DebugPrintf("Changing to Module: %d\n", moduleNum);
+		debugPrintf("Changing to Module: %d\n", moduleNum);
 		_vm->_moduleNumber = moduleNum;
 		break;
 	default:
-		DebugPrintf("Usage: module <Module Number>\n");
+		debugPrintf("Usage: module <Module Number>\n");
 		break;
 	}
 	return true;
@@ -118,22 +118,22 @@ bool CometConsole::Cmd_Scene(int argc, const char **argv) {
 	int16 sceneNum;
 	switch (argc) {
 	case 1:
-		DebugPrintf("Current Scene: %d\n", _vm->_sceneNumber);
+		debugPrintf("Current Scene: %d\n", _vm->_sceneNumber);
 		break;
 	case 2:
 		sceneNum = atoi(argv[1]);
-		DebugPrintf("Changing to Scene: %d\n", sceneNum);
+		debugPrintf("Changing to Scene: %d\n", sceneNum);
 		_vm->_sceneNumber = sceneNum;
 		break;
 	default:
-		DebugPrintf("Usage: scene <Scene Number>\n");
+		debugPrintf("Usage: scene <Scene Number>\n");
 		break;
 	}
 	return true;
 }
 
 bool CometConsole::Cmd_TestBeamRoom(int argc, const char **argv) {
-	DebugPrintf("Jump To Beam Room For Test...\n");
+	debugPrintf("Jump To Beam Room For Test...\n");
 	_vm->_scriptVars[116] = 1;
 	_vm->_scriptVars[139] = 1;
 	_vm->_moduleNumber = 7;
@@ -142,20 +142,20 @@ bool CometConsole::Cmd_TestBeamRoom(int argc, const char **argv) {
 }
 
 bool CometConsole::Cmd_TestPuzzle(int argc, const char **argv) {
-	DebugPrintf("Testing Block Puzzle...\n");
+	debugPrintf("Testing Block Puzzle...\n");
 	debugTestPuzzle = true;
 	return true;
 }
 
 bool CometConsole::Cmd_PuzzleCheat(int argc, const char **argv) {
-	DebugPrintf("Enabling Block Puzzle Cheating...\n");
+	debugPrintf("Enabling Block Puzzle Cheating...\n");
 	debugPuzzleCheat = true;
 	return true;
 }
 
 bool CometConsole::Cmd_ViewCursor(int argc, const char **argv) {
 	if (argc != 2) {
-		DebugPrintf("Usage: viewCursor <Resource Number>\n");
+		debugPrintf("Usage: viewCursor <Resource Number>\n");
 		return true;
 	}
 
