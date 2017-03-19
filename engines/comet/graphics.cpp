@@ -81,6 +81,11 @@ void CometSurface::drawDottedLine(int x1, int y1, int x2, int y2, int color) {
 }
 
 void CometSurface::fillRect(int x1, int y1, int x2, int y2, byte color) {
+	//if you skip invalid rectangles, notebook will be rendered with holes.
+	if (x1 >= x2)
+		SWAP(x1, x2);
+	if (y1 >= y2)
+		SWAP(y1, y2);
 	Graphics::Surface::fillRect(Common::Rect(x1, y1, x2 + 1, y2 + 1), color);
 }
 
