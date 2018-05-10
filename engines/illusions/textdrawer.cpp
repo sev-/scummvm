@@ -28,31 +28,55 @@ namespace Illusions {
 
 bool TextDrawer::wrapText(FontResource *font, uint16 *text, WidthHeight *dimensions, Common::Point offsPt,
 	uint textFlags, uint16 *&outTextPtr) {
-	_font = font;	
+	_font = font;
 	_text = text;
 	_dimensions = dimensions;
 	_offsPt = offsPt;
 	_textFlags = textFlags;
-	// TODO Calc max width/height using textFlags (border, shadow)
 	_textLines.clear();
-	bool done = wrapTextIntern(0, 0, dimensions->_width, dimensions->_height, outTextPtr);
-	// TODO Adjust text dimensions
+	bool done = wrapTextIntern(offsPt.x, offsPt.y, dimensions->_width, dimensions->_height, outTextPtr);
+	// Adjust text dimensions
+	dimensions->_width += 2 * offsPt.x;
+	dimensions->_height += offsPt.y;
+	_coreWidth = dimensions->_width;
+	_coreHeight = dimensions->_height;
+	_shadowWidth = offsPt.x * 0.75;
+	_shadowHeight = offsPt.y * 1.5;
+	if (_textFlags & 0x08) {
+		dimensions->_width += _shadowWidth;
+		dimensions->_height += _shadowHeight;
+	}
 	return done;
 }
 
 void TextDrawer::drawText(Screen *screen, Graphics::Surface *surface, uint16 color2, uint16 color1) {
-	// TODO Fill box, draw borders and shadow if flags are set
+	// Fill left, top and bottom border gaps
+	if (_offsPt.x > 0)
+		surface->fillRect(Common::Rect(0, 0, _offsPt.x, _coreHeight), color2);
+	if (_offsPt.y > 0) {
+		surface->fillRect(Common::Rect(0, 0, _coreWidth, _offsPt.y), color2);
+		surface->fillRect(Common::Rect(0, _coreHeight - _offsPt.y, _coreWidth, _coreHeight), color2);
+	}
+	// Draw text and fill the left and right gaps
 	for (Common::Array<TextLine>::iterator it = _textLines.begin(); it != _textLines.end(); ++it) {
 		const TextLine &textLine = *it;
+		int16 textBackgroundX = 0;
 		if (textLine._text)
-			screen->drawText(_font, surface, textLine._x, textLine._y, textLine._text, textLine._length);
-#if 0
-		for (int16 linePos = 0; linePos < textLine._length; ++linePos) {
-			const uint16 c = textLine._text[linePos];
-			debugN("%c", c);
-		}
-		debug(" ");
-#endif		
+			textBackgroundX = screen->drawText(_font, surface, textLine._x, textLine._y, textLine._text, textLine._length) - _font->_widthC;
+		surface->fillRect(Common::Rect(0, textLine._y - _font->_lineIncr, textLine._x, textLine._y + _font->_charHeight), color2);
+		surface->fillRect(Common::Rect(textBackgroundX, textLine._y - _font->_lineIncr, _coreWidth, textLine._y + _font->_charHeight), color2);
+	}
+	// Draw drop shadow
+	if (_textFlags & 0x08) {
+		surface->fillRect(Common::Rect(_coreWidth, _shadowHeight, surface->w, surface->h), color1);
+		surface->fillRect(Common::Rect(_shadowWidth, _coreHeight, surface->w, surface->h), color1);
+	}
+	// Draw border
+	if (_textFlags & 0x10) {
+		surface->drawLine(0, 0, _coreWidth - 1, 0, color1);
+		surface->drawLine(0, _coreHeight - 1, _coreWidth - 1, _coreHeight - 1, color1);
+		surface->drawLine(0, 0, 0, _coreHeight - 1, color1);
+		surface->drawLine(_coreWidth - 1, 0, _coreWidth - 1, _coreHeight - 1, color1);
 	}
 }
 	
@@ -182,11 +206,5 @@ int16 TextDrawer::getSpaceWidth() {
 int16 TextDrawer::getCharWidth(uint16 c) {
 	return _font->getCharInfo(c)->_width + _font->_widthC;
 }
-
-// TODO
-/*
-int16 offsX = (int16)(offsPt.x * 0.75);
-int16 offsY = (int16)(offsPt.y * 1.5);
-*/
 
 } // End of namespace Illusions

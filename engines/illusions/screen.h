@@ -170,7 +170,7 @@ public:
 	int16 getScreenHeight() const { return _backSurface->h; }
 	virtual void decompressSprite(SpriteDecompressQueueItem *item) = 0;
 	virtual void drawSurface(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags) = 0;
-	virtual void drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) = 0;
+	virtual int16 drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) = 0;
 	virtual void fillSurface(Graphics::Surface *surface, byte color) = 0;
 	virtual bool isSpritePixelSolid(Common::Point &testPt, Common::Point &drawPosition, Common::Point &drawOffset,
 		const SurfInfo &surfInfo, int16 scale, uint flags, byte *compressedPixels) = 0;
@@ -191,7 +191,7 @@ public:
 	Screen8Bit(IllusionsEngine *vm, int16 width, int16 height) : Screen(vm, width, height, 8) {}
 	void decompressSprite(SpriteDecompressQueueItem *item);
 	void drawSurface(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags);
-	void drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count);
+	int16 drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count);
 	void fillSurface(Graphics::Surface *surface, byte color);
 	bool isSpritePixelSolid(Common::Point &testPt, Common::Point &drawPosition, Common::Point &drawOffset,
 		const SurfInfo &surfInfo, int16 scale, uint flags, byte *compressedPixels);
@@ -206,7 +206,7 @@ public:
 	Screen16Bit(IllusionsEngine *vm, int16 width, int16 height) : Screen(vm, width, height, 16) {}
 	void decompressSprite(SpriteDecompressQueueItem *item);
 	void drawSurface(Common::Rect &dstRect, Graphics::Surface *surface, Common::Rect &srcRect, int16 scale, uint32 flags);
-	void drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count);
+	int16 drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count);
 	void fillSurface(Graphics::Surface *surface, byte color);
 	bool isSpritePixelSolid(Common::Point &testPt, Common::Point &drawPosition, Common::Point &drawOffset,
 		const SurfInfo &surfInfo, int16 scale, uint flags, byte *compressedPixels);

@@ -176,12 +176,10 @@ void BaseMenuSystem::calcMenuItemRect(uint menuItemIndex, WRect &rect) {
 	int charHeight = font->getCharHeight() + font->getLineIncr();
 	
 	_vm->_screenText->getTextInfoPosition(rect._topLeft);
-	/* TODO
 	if (_activeMenu->_field8) {
 		rect._topLeft.y += 4;
 		rect._topLeft.x += 4;
 	}
-	*/	
 	rect._topLeft.y += charHeight * (menuItemIndex + _menuLinesCount - 1);
 
 	WidthHeight textInfoDimensions;
@@ -258,10 +256,8 @@ void BaseMenuSystem::placeActor318() {
 	WidthHeight textInfoDimensions;
 	_vm->_screenText->getTextInfoDimensions(textInfoDimensions);
 
-	/* TODO	
 	if ( _activeMenu->_field8 && _activeMenu->_fieldA != _activeMenu->_field8)
 		textInfoDimensions._width -= 6;
-		*/
 		
 	WidthHeight frameDimensions;
 	v0->getActorFrameDimensions(frameDimensions);
@@ -312,12 +308,10 @@ void BaseMenuSystem::placeActor323() {
 	_vm->_screenText->getTextInfoPosition(textInfoPosition);
 	_vm->_screenText->getTextInfoDimensions(textInfoDimensions);
 	
-	/* TODO	
 	if (_activeMenu->_field8 && _activeMenu->_fieldA != _activeMenu->_field8) {
 		textInfoDimensions._width -= 2;
 		textInfoDimensions._height -= 6;
 	}
-	*/	
 
 	v0->setActorPosition(textInfoPosition);
 	v0->drawActorRect(Common::Rect(textInfoDimensions._width - 1, textInfoDimensions._height - 1), _activeMenu->_fieldC);
@@ -416,9 +410,9 @@ uint BaseMenuSystem::drawMenuText(BaseMenu *menu) {
 	textPt.x = v9;
 	textPt.y = v9;
 
-	uint flags = 1;
+	uint flags = 0x01;
 	if (menu->_field8 != menu->_fieldA)
-		flags = 25;
+		flags = 0x10 | 0x08 | 0x01;
 		
 	WidthHeight dimensions;
 	dimensions._width = 300;

@@ -54,6 +54,8 @@ protected:
 	Common::Point _offsPt;
 	uint _textFlags;
 	Graphics::Surface *_surface;
+	int _shadowWidth, _shadowHeight;
+	int _coreWidth, _coreHeight;
 	
 	Common::Array<TextLine> _textLines;
 	

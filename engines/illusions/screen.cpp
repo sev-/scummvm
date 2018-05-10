@@ -533,9 +533,10 @@ void Screen8Bit::drawSurface(Common::Rect &dstRect, Graphics::Surface *surface, 
 	}
 }
 
-void Screen8Bit::drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) {
+int16 Screen8Bit::drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) {
 	for (uint i = 0; i < count; ++i)
 		x += font->_widthC + drawChar(font, surface, x, y, *text++);
+	return x;
 }
 
 void Screen8Bit::fillSurface(Graphics::Surface *surface, byte color) {
@@ -731,9 +732,10 @@ void Screen16Bit::drawSurface(Common::Rect &dstRect, Graphics::Surface *surface,
 	}
 }
 
-void Screen16Bit::drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) {
+int16 Screen16Bit::drawText(FontResource *font, Graphics::Surface *surface, int16 x, int16 y, uint16 *text, uint count) {
 	for (uint i = 0; i < count; ++i)
 		x += font->_widthC + drawChar(font, surface, x, y, *text++);
+	return x;
 }
 
 void Screen16Bit::fillSurface(Graphics::Surface *surface, byte color) {
