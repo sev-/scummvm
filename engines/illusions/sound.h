@@ -25,8 +25,10 @@
 
 #include "illusions/graphics.h"
 #include "audio/audiostream.h"
-#include "audio/mixer.h"
 #include "audio/decoders/wave.h"
+#include "audio/midiplayer.h"
+#include "audio/mixer.h"
+#include "common/array.h"
 #include "common/list.h"
 
 namespace Illusions {
@@ -44,6 +46,31 @@ protected:
 	Audio::SoundHandle _soundHandle;
 	uint32 _musicId;
 	uint _flags;
+};
+
+class MidiPlayer : public Audio::MidiPlayer {
+public:
+	MidiPlayer();
+	~MidiPlayer();
+	bool play(uint32 musicId);
+	void stop();
+	bool isIdle() const { return _isIdle; }
+protected:
+	bool _isIdle;
+	bool _isPlaying;
+	bool _isCurrentlyPlaying;
+	bool _isLooped;
+	uint32 _loopedMusicId;
+	uint32 _queuedMusicId;
+	uint32 _loadedMusicId;
+	byte *_data;
+	uint _dataSize;
+	bool _isGM;
+	void sysMidiPlay(uint32 musicId);
+	void sysMidiStop();
+	virtual void send(uint32 b);
+	virtual void sendToChannel(byte channel, uint32 b);
+	virtual void endOfTrack();
 };
 
 class VoicePlayer {
@@ -90,6 +117,10 @@ public:
 	void playMusic(uint32 musicId, int16 type, int16 volume, int16 pan, uint32 notifyThreadId);
 	void stopMusic();
 
+	void playMidiMusic(uint32 musicId);
+	void stopMidiMusic();
+	void clearMidiMusicQueue();
+
 	bool cueVoice(const char *voiceName);
 	void stopCueingVoice();
 	void startVoice(int16 volume, int16 pan);
@@ -109,9 +140,12 @@ protected:
 	IllusionsEngine *_vm;
 	uint32 _musicNotifyThreadId;
 	MusicPlayer *_musicPlayer;
+	MidiPlayer *_midiPlayer;
 	VoicePlayer *_voicePlayer;
 	SoundList _sounds;
+	Common::Array<uint32> _midiMusicQueue;
 	Sound *getSound(uint32 soundEffectId);
+	void updateMidi();
 };
 
 } // End of namespace Illusions

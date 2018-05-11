@@ -22,6 +22,8 @@
 
 #include "illusions/illusions.h"
 #include "illusions/sound.h"
+#include "audio/mididrv.h"
+#include "audio/midiparser.h"
 
 namespace Illusions {
 
@@ -70,6 +72,158 @@ void MusicPlayer::stop() {
 
 bool MusicPlayer::isPlaying() {
 	return (_flags & 1) && (_flags & 2) && g_system->getMixer()->isSoundHandleActive(_soundHandle);
+}
+
+// MidiPlayer
+
+MidiPlayer::MidiPlayer()
+	: _isIdle(true), _isPlaying(false), _isCurrentlyPlaying(false), _isLooped(false),
+	_loopedMusicId(0), _queuedMusicId(0), _loadedMusicId(0),
+	_data(0), _dataSize(0) {
+
+	_data = 0;
+	_dataSize = 0;
+	_isGM = false;
+
+	MidiPlayer::createDriver();
+
+	int ret = _driver->open();
+	if (ret == 0) {
+		if (_nativeMT32)
+			_driver->sendMT32Reset();
+		else
+			_driver->sendGMReset();
+
+		_driver->setTimerCallback(this, &timerCallback);
+	}
+}
+
+MidiPlayer::~MidiPlayer() {
+	sysMidiStop();
+}
+
+bool MidiPlayer::play(uint32 musicId) {
+	debug("MidiPlayer::play(%08X)", musicId);
+	bool isMusicLooping = true; // TODO Use actual flag
+
+	if (!_isIdle)
+		return false;
+
+	if (_isPlaying) {
+		if (isMusicLooping) {
+			_loopedMusicId = musicId;
+		} else {
+			_queuedMusicId = musicId;
+			_isIdle = false;
+		}
+		return true;
+	}
+
+	if (_isCurrentlyPlaying && _loopedMusicId == musicId)
+		return true;
+
+	sysMidiStop();
+
+    _isLooped = isMusicLooping;
+    if (_isLooped) {
+		_loopedMusicId = musicId;
+    } else {
+		_isPlaying = true;
+	}
+
+	sysMidiPlay(musicId);
+
+	_isCurrentlyPlaying = true;
+
+	return true;
+}
+
+void MidiPlayer::stop() {
+	sysMidiStop();
+	_isIdle = true;
+	_isPlaying = false;
+	_isCurrentlyPlaying = false;
+	_loopedMusicId = 0;
+	_queuedMusicId = 0;
+}
+
+void MidiPlayer::sysMidiPlay(uint32 musicId) {
+	Common::StackLock lock(_mutex);
+
+	Common::String filename = Common::String::format("%08x.mid", musicId);
+	debug(0, "MidiPlayer::sysMidiPlay() %s", filename.c_str());
+
+	Common::File fd;
+	if (!fd.open(filename)) {
+		error("MidiPlayer::sysMidiPlay() Could not open %s", filename.c_str());
+	}
+
+	_dataSize = fd.size();
+	_data = new byte[_dataSize];
+	fd.read(_data, _dataSize);
+
+	_isGM = true;
+	_loadedMusicId = musicId;
+
+	MidiParser *parser = MidiParser::createParser_SMF();
+	if (parser->loadMusic(_data, _dataSize)) {
+		parser->setTrack(0);
+		parser->setMidiDriver(this);
+		parser->setTimerRate(_driver->getBaseTempo());
+		parser->property(MidiParser::mpCenterPitchWheelOnUnload, 1);
+
+		_parser = parser;
+
+		syncVolume();
+
+		Audio::MidiPlayer::_isLooping = _isLooped;
+		Audio::MidiPlayer::_isPlaying = true;
+	}
+}
+
+void MidiPlayer::sysMidiStop() {
+	Audio::MidiPlayer::stop();
+	delete[] _data;
+	_data = 0;
+	_dataSize = 0;
+	_loadedMusicId = 0;
+}
+
+void MidiPlayer::send(uint32 b) {
+	if ((b & 0xF0) == 0xC0 && !_isGM && !_nativeMT32) {
+		b = (b & 0xFFFF00FF) | MidiDriver::_mt32ToGm[(b >> 8) & 0xFF] << 8;
+	}
+
+	Audio::MidiPlayer::send(b);
+}
+
+void MidiPlayer::sendToChannel(byte channel, uint32 b) {
+	if (!_channelsTable[channel]) {
+		_channelsTable[channel] = (channel == 9) ? _driver->getPercussionChannel() : _driver->allocateChannel();
+		// If a new channel is allocated during the playback, make sure
+		// its volume is correctly initialized.
+		if (_channelsTable[channel])
+			_channelsTable[channel]->volume(_channelsVolume[channel] * _masterVolume / 255);
+	}
+
+	if (_channelsTable[channel])
+		_channelsTable[channel]->send(b);
+}
+
+void MidiPlayer::endOfTrack() {
+	uint32 nextMusicId = _queuedMusicId;
+	if (nextMusicId == 0)
+		nextMusicId = _loopedMusicId;
+
+	if (_isLooped && _loadedMusicId == nextMusicId) {
+		Audio::MidiPlayer::endOfTrack();
+		return;
+	}
+
+	sysMidiStop();
+	_queuedMusicId = 0;
+	_isIdle = true;
+	play(nextMusicId);
 }
 
 // VoicePlayer
@@ -175,16 +329,19 @@ bool Sound::isPlaying() {
 SoundMan::SoundMan(IllusionsEngine *vm)
 	: _vm(vm), _musicNotifyThreadId(0) {
 	_musicPlayer = new MusicPlayer();
+	_midiPlayer = new MidiPlayer();
 	_voicePlayer = new VoicePlayer();
 }
 
 SoundMan::~SoundMan() {
 	delete _musicPlayer;
+	delete _midiPlayer;
 	delete _voicePlayer;
 	unloadSounds(0);
 }
 
 void SoundMan::update() {
+	updateMidi();
 	// TODO voc_testCued();
 	if (_musicNotifyThreadId && !_musicPlayer->isPlaying())
 		_vm->notifyThreadId(_musicNotifyThreadId);
@@ -198,6 +355,20 @@ void SoundMan::playMusic(uint32 musicId, int16 type, int16 volume, int16 pan, ui
 
 void SoundMan::stopMusic() {
 	_musicPlayer->stop();
+}
+
+void SoundMan::playMidiMusic(uint32 musicId) {
+	if (!_midiPlayer->play(musicId)) {
+		_midiMusicQueue.push_back(musicId);
+	}
+}
+
+void SoundMan::stopMidiMusic() {
+	_midiPlayer->stop();
+}
+
+void SoundMan::clearMidiMusicQueue() {
+	_midiMusicQueue.clear();
 }
 
 bool SoundMan::cueVoice(const char *voiceName) {
@@ -262,6 +433,15 @@ Sound *SoundMan::getSound(uint32 soundEffectId) {
 		if ((*it)->_soundEffectId == soundEffectId)
 			return *it;
 	return 0;
+}
+
+void SoundMan::updateMidi() {
+	if (_midiPlayer->isIdle() & !_midiMusicQueue.empty()) {
+		uint32 musicId = _midiMusicQueue.front();
+		_midiMusicQueue.remove_at(0);
+		_midiPlayer->play(musicId);
+	}
+	// TODO Update music volume fading
 }
 
 } // End of namespace Illusions
