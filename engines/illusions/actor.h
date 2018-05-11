@@ -245,6 +245,8 @@ public:
 	void unpauseControls();
 	void pauseControlsBySceneId(uint32 sceneId);
 	void unpauseControlsBySceneId(uint32 sceneId);
+	void pauseActors(uint32 selfObjectId);
+	void unpauseActors(uint32 selfObjectId);
 	bool getOverlappedObject(Control *control, Common::Point pt, Control **outOverlappedControl, int minPriority);
 	bool getOverlappedObjectAccurate(Control *control, Common::Point pt, Control **outOverlappedControl, int minPriority);
 	bool getDialogItemAtPos(Control *control, Common::Point pt, Control **outOverlappedControl);

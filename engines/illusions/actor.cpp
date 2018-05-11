@@ -1282,6 +1282,23 @@ void Controls::unpauseControlsBySceneId(uint32 sceneId) {
 	}
 }
 
+void Controls::pauseActors(uint32 selfObjectId) {
+	for (ItemsIterator it = _controls.begin(); it != _controls.end(); ++it) {
+		Control *control = *it;
+		if (control->_actor && control->_objectId != selfObjectId)
+			control->_actor->pause();
+	}
+}
+
+void Controls::unpauseActors(uint32 selfObjectId) {
+	for (ItemsIterator it = _controls.begin(); it != _controls.end(); ++it) {
+		Control *control = *it;
+		if (control->_actor && control->_objectId != selfObjectId)
+			control->_actor->unpause();
+	}
+	_vm->_unpauseControlActorFlag = true;
+}
+
 bool Controls::getOverlappedObject(Control *control, Common::Point pt, Control **outOverlappedControl, int minPriority) {
 	Control *foundControl = 0;
 	uint32 foundPriority = 0;

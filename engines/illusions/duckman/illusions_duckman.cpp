@@ -877,13 +877,13 @@ void IllusionsEngine_Duckman::pause(uint32 callerThreadId) {
 		_threads->pauseThreads(callerThreadId);
 		_camera->pause();
 		pauseFader();
-		// TODO largeObj_pauseControlActor(0x40004);
+		_controls->pauseActors(0x40004);
 	}
 }
 
 void IllusionsEngine_Duckman::unpause(uint32 callerThreadId) {
 	if (--_pauseCtr == 0) {
-		// TODO largeObj_unpauseControlActor(0x40004);
+		_controls->unpauseActors(0x40004);
 		unpauseFader();
 		_camera->unpause();
 		_threads->unpauseThreads(callerThreadId);
