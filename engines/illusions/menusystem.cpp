@@ -383,6 +383,18 @@ void BaseMenuSystem::handleClick(uint menuItemIndex, const Common::Point &mouseP
 	
 }
 
+void BaseMenuSystem::handleUpKey() {
+	// NOTE Up/down arrows seem to be used for switching pages in the current menu.
+	// Since the maximum number of items to be displayed at the same time
+	// is always set to the total number of items in activateMenu,
+	// these two functions have no effect.
+	// Still left in to avoid future confusion.
+}
+
+void BaseMenuSystem::handleDownKey() {
+	// NOTE See handleUpKey
+}
+
 uint BaseMenuSystem::drawMenuText(BaseMenu *menu) {
 	MenuTextBuilder *menuTextBuilder = new MenuTextBuilder();
 	uint lineCount = 0;
@@ -464,9 +476,9 @@ void BaseMenuSystem::update(Control *cursorControl) {
 	} else if (_vm->_input->pollEvent(kEventAbort) && _activeMenu->_defaultMenuItemIndex) {
 		handleClick(_activeMenu->_defaultMenuItemIndex, mousePos);
 	} else if (_vm->_input->pollEvent(kEventUp)) {
-		// TODO handleUpKey();
+		handleUpKey();
 	} else if (_vm->_input->pollEvent(kEventDown)) {
-		// TODO handleDownKey();
+		handleDownKey();
 	}
 	
 	updateTimeOut(resetTimeOut);

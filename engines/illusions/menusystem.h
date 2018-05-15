@@ -97,6 +97,8 @@ public:
 	void openMenu(BaseMenu *menu);
 	void closeMenu();
 	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
+	void handleUpKey();
+	void handleDownKey();
 	uint drawMenuText(BaseMenu *menu);
 	void update(Control *cursorControl);
 	void setTimeOutDuration(uint32 duration, uint timeOutMenuChoiceIndex);
