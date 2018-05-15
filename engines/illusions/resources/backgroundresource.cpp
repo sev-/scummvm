@@ -398,7 +398,8 @@ void BackgroundInstance::load(Resource *resource) {
 		
 	registerResources();
 
-	// TODO camera_fadeClear();
+	_vm->clearFader();
+
 	int index = _bgRes->findMasterBgIndex();
 	_vm->_camera->set(_bgRes->_bgInfos[index - 1]._panPoint, _bgRes->_bgInfos[index - 1]._surfInfo._dimensions);
 
@@ -438,7 +439,7 @@ void BackgroundInstance::unpause() {
 		_vm->_screenPalette->setPalette(_savedPalette, 1, 256);
 		delete[] _savedPalette;
 		_savedPalette = 0;
-		// TODO _vm->_screen->_fadeClear();
+		_vm->clearFader();
 		_vm->_camera->setActiveState(_savedCameraState);
 		_vm->_backgroundInstances->refreshPan();
 	}

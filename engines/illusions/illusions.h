@@ -171,6 +171,7 @@ public:
 	bool isSoundActive();
 
 	virtual void updateFader() {};
+	virtual void clearFader() {};
 	virtual void pauseFader() {};
 	virtual void unpauseFader() {};
 
