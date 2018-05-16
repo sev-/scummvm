@@ -81,6 +81,8 @@ public:
 	void stopCueing();
 	void start(int16 volume, int16 pan);
 	void stop();
+	void pause();
+	void unpause();
 	bool isPlaying();
 	bool isEnabled();
 	bool isCued();
@@ -88,6 +90,8 @@ protected:
 	Audio::SoundHandle _soundHandle;
 	Common::String _voiceName;
 	uint _voiceStatus;
+	bool _wasPlaying;
+	bool _isPaused;
 };
 
 class Sound {
@@ -125,6 +129,8 @@ public:
 	void stopCueingVoice();
 	void startVoice(int16 volume, int16 pan);
 	void stopVoice();
+	void pauseVoice();
+	void unpauseVoice();
 	bool isVoicePlaying();
 	bool isVoiceEnabled();
 	bool isVoiceCued();
