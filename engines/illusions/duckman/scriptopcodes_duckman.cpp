@@ -576,13 +576,13 @@ void ScriptOpcodes_Duckman::opStartCursorHoldingObject(ScriptThread *scriptThrea
 
 void ScriptOpcodes_Duckman::opPlayVideo(ScriptThread *scriptThread, OpCall &opCall) {
 	ARG_SKIP(2);
-	ARG_UINT32(objectId);
-	// NOTE This has no attached objectId or priority
-	// TODO _vm->playVideo(videoId, objectId, value, opCall._threadId);
-	
+	ARG_UINT32(videoId);
+#if 1 // TODO DEBUG Set to 0 to skip videos
+	_vm->playVideo(videoId, opCall._threadId);
+#else
 	//DEBUG Resume calling thread, later done by the video player
 	_vm->notifyThreadId(opCall._threadId);
-	
+#endif
 }
 
 void ScriptOpcodes_Duckman::opRunSpecialCode(ScriptThread *scriptThread, OpCall &opCall) {
