@@ -222,8 +222,7 @@ int IllusionsEngine::getRandom(int max) {
 }
 
 int IllusionsEngine::convertPanXCoord(int16 x) {
-	// TODO
-	return 0;
+	return _camera->convertPanXCoord(x);
 }
 
 bool IllusionsEngine::calcPointDirection(Common::Point &srcPt, Common::Point &dstPt, uint &facing) {

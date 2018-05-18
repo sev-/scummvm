@@ -358,6 +358,14 @@ void Camera::refreshPan(BackgroundInstance *backgroundItem, WidthHeight &dimensi
 	}
 }
 
+int Camera::convertPanXCoord(int16 x) {
+	// NOTE The original used pan values between -64..+64
+	Common::Point screenOffs = getCurrentPan();
+	if (ABS(x - screenOffs.x) < _screenWidth / 2)
+		return (x - screenOffs.x) * 256 / _screenWidth;
+	return x - screenOffs.x >= 0 ? 127 : -127;
+}
+
 void Camera::updateMode1(uint32 currTime) {
 	Common::Point ptOffs = getPtOffset(*_activeState._panToPositionPtr);
 	int deltaX = ptOffs.x - _activeState._currPan.x + _screenMidX - _activeState._centerPt.x;

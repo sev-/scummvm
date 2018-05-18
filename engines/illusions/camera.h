@@ -88,6 +88,7 @@ public:
 	void setActiveState(CameraState &state);
 	void getActiveState(CameraState &state);
 	void refreshPan(BackgroundInstance *backgroundItem, WidthHeight &dimensions);
+	int convertPanXCoord(int16 x);
 protected:
 	IllusionsEngine *_vm;
 	CameraState _activeState;
