@@ -241,7 +241,11 @@ void BaseMenuSystem::initActor318() {
 		WidthHeight dimensions;
 		dimensions._width = 300;
 		dimensions._height = 15;
-		_vm->_controls->placeSequenceLessActor(0x4013E, Common::Point(0, 0), dimensions, 18);
+		if (_vm->getGameId() == kGameIdBBDOU) {
+			_vm->_controls->placeSequenceLessActor(0x4013E, Common::Point(0, 0), dimensions, 91);
+		} else {
+			_vm->_controls->placeSequenceLessActor(0x4013E, Common::Point(0, 0), dimensions, 18);
+		}
 		v0 = _vm->getObjectControl(0x4013E);
 		v0->_flags |= 8;
 	}
@@ -289,9 +293,15 @@ void BaseMenuSystem::initActor323() {
 	Control *v0 = _vm->getObjectControl(0x40143);
 	if (!v0) {
 		WidthHeight dimensions;
-		dimensions._width = 300;
-		dimensions._height = 180;
-		_vm->_controls->placeSequenceLessActor(0x40143, Common::Point(0, 0), dimensions, 17);
+		if (_vm->getGameId() == kGameIdBBDOU) {
+			dimensions._width = 420;
+			dimensions._height = 180;
+			_vm->_controls->placeSequenceLessActor(0x40143, Common::Point(0, 0), dimensions, 90);
+		} else {
+			dimensions._width = 300;
+			dimensions._height = 180;
+			_vm->_controls->placeSequenceLessActor(0x40143, Common::Point(0, 0), dimensions, 17);
+		}
 		v0 = _vm->getObjectControl(0x40143);
 		v0->_flags |= 8;
 	}
@@ -315,7 +325,7 @@ void BaseMenuSystem::placeActor323() {
 
 	v0->setActorPosition(textInfoPosition);
 	v0->drawActorRect(Common::Rect(textInfoDimensions._width - 1, textInfoDimensions._height - 1), _activeMenu->_fieldC);
-	
+
 }
 
 void BaseMenuSystem::hideActor323() {
@@ -337,8 +347,12 @@ void BaseMenuSystem::openMenu(BaseMenu *menu) {
 	_savedCursorSequenceId = cursorControl->_actor->_sequenceId;
 	
 	setMenuCursorNum(1);
-	
-	setGameState(4);
+
+	if (_vm->getGameId() == kGameIdDuckman) {
+		setGameState(4);
+	} else if (_vm->getGameId() == kGameIdBBDOU) {
+		setGameState(3);
+	}
 	
 	activateMenu(menu);
 	
@@ -427,9 +441,15 @@ uint BaseMenuSystem::drawMenuText(BaseMenu *menu) {
 		flags = 0x10 | 0x08 | 0x01;
 		
 	WidthHeight dimensions;
-	dimensions._width = 300;
-	dimensions._height = 180;
-	
+
+	if (_vm->getGameId() == kGameIdDuckman) {
+		dimensions._width = 300;
+		dimensions._height = 180;
+	} else if (_vm->getGameId() == kGameIdBBDOU) {
+		dimensions._width = 580;
+		dimensions._height = 420;
+	}
+
 	uint16 *outTextPtr;
 	if (!_vm->_screenText->insertText(text, menu->_fontId, dimensions, textPt, flags, menu->_field8, menu->_fieldA, 0xFF, 0xFF, 0xFF, outTextPtr)) {
 		--lineCount;

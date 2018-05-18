@@ -543,6 +543,10 @@ void Screen8Bit::fillSurface(Graphics::Surface *surface, byte color) {
 	surface->fillRect(Common::Rect(surface->w, surface->h), color);
 }
 
+void Screen8Bit::fillSurfaceRect(Graphics::Surface *surface, Common::Rect r, byte color) {
+	surface->fillRect(r, color);
+}
+
 bool Screen8Bit::isSpritePixelSolid(Common::Point &testPt, Common::Point &drawPosition, Common::Point &drawOffset,
 	const SurfInfo &surfInfo, int16 scale, uint flags, byte *compressedPixels) {
 	// Unused in Duckman
@@ -740,6 +744,10 @@ int16 Screen16Bit::drawText(FontResource *font, Graphics::Surface *surface, int1
 
 void Screen16Bit::fillSurface(Graphics::Surface *surface, byte color) {
 	surface->fillRect(Common::Rect(surface->w, surface->h), convertColor(color));
+}
+
+void Screen16Bit::fillSurfaceRect(Graphics::Surface *surface, Common::Rect r, byte color) {
+	surface->fillRect(r, convertColor(color));
 }
 
 bool Screen16Bit::isSpritePixelSolid(Common::Point &testPt, Common::Point &drawPosition, Common::Point &drawOffset,
