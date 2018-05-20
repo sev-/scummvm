@@ -22,7 +22,7 @@
 
 #include "common/file.h"
 
-#include "video/srt_parser.h"
+#include "video/subtitles.h"
 
 namespace Video {
 
