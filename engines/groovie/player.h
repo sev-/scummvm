@@ -24,6 +24,7 @@
 #define GROOVIE_PLAYER_H
 
 #include "common/system.h"
+#include "video/subtitles.h"
 
 namespace Audio {
 class QueuingAudioStream;
@@ -42,6 +43,8 @@ public:
 	bool playFrame();
 	virtual void resetFlags() {}
 	virtual void setOrigin(int16 x, int16 y) {}
+
+	void loadSubtitles(const char *fname) { _subtitles.loadSRTFile(fname); }
 
 protected:
 	// To be implemented by subclasses
@@ -65,6 +68,8 @@ private:
 	uint16 _fps;
 	uint16 _millisBetweenFrames;
 	uint32 _lastFrameTime;
+
+	Video::Subtitles _subtitles;
 
 protected:
 	void waitFrame();

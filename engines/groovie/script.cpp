@@ -582,6 +582,18 @@ bool Script::playvideofromref(uint32 fileref) {
 			if (_version == kGroovieT7G && (_lastCursor == 7 || _lastCursor == 4) && _scriptFile == "script.grv")
 				_bitflags |= (1 << 15);
 			_vm->_videoPlayer->load(_videoFile, _bitflags);
+
+			// Find correct filename
+			ResInfo info;
+			_vm->_resMan->getResInfo(fileref, info);
+
+			// Remove the extension and add ".txt"
+			info.filename.deleteLastChar();
+			info.filename.deleteLastChar();
+			info.filename.deleteLastChar();
+			info.filename += "txt";
+
+			_vm->_videoPlayer->loadSubtitles(info.filename.c_str());
 		} else {
 			error("Couldn't open file");
 			return true;
