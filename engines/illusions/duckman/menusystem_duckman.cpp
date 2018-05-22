@@ -88,7 +88,7 @@ BaseMenu *DuckmanMenuSystem::createMainMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 0);
 	menu->addMenuItem(new MenuItem("Start New Game", new MenuActionReturnChoice(this, 11)));
 	menu->addMenuItem(new MenuItem("Load Saved Game", new MenuActionLoadGame(this, 1)));
-	// TODO menu->addMenuItem(new MenuItem("Options", new MenuActionEnterMenu(this, kDuckmanOptionsMenu)));
+	menu->addMenuItem(new MenuItem("Options", new MenuActionOptions(this)));
 	menu->addMenuItem(new MenuItem("Quit Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryQuitMenu, 12)));
 	return menu;
 }
@@ -107,15 +107,20 @@ BaseMenu *DuckmanMenuSystem::createPauseMenu() {
 	menu->addText("-------------------");
 	menu->addMenuItem(new MenuItem("Resume", new MenuActionReturnChoice(this, 21)));
 	menu->addMenuItem(new MenuItem("Load Game", new MenuActionLoadGame(this, 1)));
-	// TODO menu->addMenuItem(new MenuItem("Save Game", new MenuActionSaveGame(this, 11)));
-	// TODO menu->addMenuItem(new MenuItem("Restart Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryRestartMenu, 2)));
-	// TODO menu->addMenuItem(new MenuItem("Options", new MenuActionEnterMenu(this, kDuckmanOptionsMenu)));
+	// menu->addMenuItem(new MenuItem("Save Game", new MenuActionSaveGame(this, 11)));
+	menu->addMenuItem(new MenuItem("Restart Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryRestartMenu, 22)));
+	menu->addMenuItem(new MenuItem("Options", new MenuActionOptions(this)));
 	menu->addMenuItem(new MenuItem("Quit Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryQuitMenu, 23)));
 	return menu;
 }
 
 BaseMenu *DuckmanMenuSystem::createQueryRestartMenu() {
-	return 0; // TODO
+	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 2);
+	menu->addText("Do you really want to restart?");
+	menu->addText("-------------------------------");
+	menu->addMenuItem(new MenuItem("Yes, let's try again", new MenuActionReturnChoice(this, getQueryConfirmationChoiceIndex())));
+	menu->addMenuItem(new MenuItem("No, just kidding", new MenuActionLeaveMenu(this)));
+	return menu;
 }
 
 BaseMenu *DuckmanMenuSystem::createQueryQuitMenu() {
@@ -134,13 +139,16 @@ int DuckmanMenuSystem::convertRootMenuId(uint32 menuId) {
 	case 0x180002:
 		return kDuckmanPauseMenu;
 	/* Debug menus, not implemented
+	case 0x180003:
+	case 0x180004:
+	*/
+	/* TODO
 	case 0x180005:
 	case 0x180006:
 	case 0x180007:
 	*/
-	/* TODO CHECKME Another pause menu?
+	/* Another pause menu, never called in original
 	case 0x180008:
-		menuData = &g_menuDataPause;
 	*/
 	default:
 		error("DuckmanMenuSystem() Menu ID %08X not found", menuId);

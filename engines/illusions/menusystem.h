@@ -105,6 +105,7 @@ public:
 	void setMenuCallerThreadId(uint32 menuCallerThreadId);
 	void setMenuChoiceOffsets(MenuChoiceOffsets menuChoiceOffsets, int16 *menuChoiceOffset);
 	void setSavegameSlotNum(int slotNum);
+	void syncSoundSettings();
 	virtual bool initMenuCursor() = 0;
 	virtual int getGameState() = 0;
 	virtual void setGameState(int gameState) = 0;
@@ -165,11 +166,6 @@ protected:
 	
 	virtual BaseMenu *getMenuById(int menuId) = 0;
 };
-
-/*
-
-
-*/
 
 class MenuTextBuilder {	
 public:
@@ -239,6 +235,12 @@ public:
 	virtual void execute();
 protected:
 	uint _choiceIndex;
+};
+
+class MenuActionOptions : public BaseMenuAction {
+public:
+	MenuActionOptions(BaseMenuSystem *menuSystem);
+	virtual void execute();
 };
 
 } // End of namespace Illusions

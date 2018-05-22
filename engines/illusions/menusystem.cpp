@@ -30,7 +30,9 @@
 #include "illusions/time.h"
 #include "common/config-manager.h"
 #include "common/translation.h"
+#include "gui/options.h"
 #include "gui/saveload.h"
+#include "gui/widget.h"
 
 namespace Illusions {
 
@@ -530,6 +532,10 @@ void BaseMenuSystem::setSavegameSlotNum(int slotNum) {
 	_vm->_savegameSlotNum = slotNum;
 }
 
+void BaseMenuSystem::syncSoundSettings() {
+	_vm->syncSoundSettings();
+}
+
 void BaseMenuSystem::updateTimeOut(bool resetTimeOut) {
 
 	if (!_isTimeOutEnabled)
@@ -645,6 +651,39 @@ void MenuActionLoadGame::execute() {
 		_menuSystem->selectMenuChoiceIndex(_choiceIndex);
 	}
 
+}
+
+// MenuActionOptions
+
+class ConfigDialog : public GUI::OptionsDialog {
+public:
+	ConfigDialog();
+};
+
+ConfigDialog::ConfigDialog() : GUI::OptionsDialog("", "GlobalConfig") {
+	//
+	// Sound controllers
+	//
+
+	addVolumeControls(this, "GlobalConfig.");
+	setVolumeSettingsState(true); // could disable controls by GUI options
+
+	//
+	// Add the buttons
+	//
+
+	new GUI::ButtonWidget(this, "GlobalConfig.Ok", _("~O~K"), 0, GUI::kOKCmd);
+	new GUI::ButtonWidget(this, "GlobalConfig.Cancel", _("~C~ancel"), 0, GUI::kCloseCmd);
+}
+
+MenuActionOptions::MenuActionOptions(BaseMenuSystem *menuSystem)
+	: BaseMenuAction(menuSystem) {
+}
+
+void MenuActionOptions::execute() {
+	ConfigDialog dialog;
+	dialog.runModal();
+	_menuSystem->syncSoundSettings();
 }
 
 } // End of namespace Illusions
