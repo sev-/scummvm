@@ -26,6 +26,10 @@
 #include "common/str.h"
 #include "common/array.h"
 
+namespace Graphics {
+class Font;
+}
+
 namespace Video {
 
 struct SRTEntry {
@@ -59,10 +63,14 @@ public:
 	~Subtitles();
 
 	void loadSRTFile(const char *fname);
+	void loadFont(const char *fontname, int height = 30);
 
 private:
 	SRTParser _srtParser;
 	bool _loaded;
+
+	const Graphics::Font *_font;
+	int _fontHeight;
 };
 
 } // End of namespace Video
