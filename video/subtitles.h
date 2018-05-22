@@ -25,9 +25,11 @@
 
 #include "common/str.h"
 #include "common/array.h"
+#include "common/rect.h"
 
 namespace Graphics {
 class Font;
+struct Surface;
 }
 
 namespace Video {
@@ -64,6 +66,9 @@ public:
 
 	void loadSRTFile(const char *fname);
 	void loadFont(const char *fontname, int height = 30);
+	void setBBox(const Common::Rect bbox);
+	void setColor(int color) { _color = color; }
+	void drawSubtitle(uint32 timestamp, bool force = false);
 
 private:
 	SRTParser _srtParser;
@@ -71,6 +76,14 @@ private:
 
 	const Graphics::Font *_font;
 	int _fontHeight;
+
+	Graphics::Surface *_surface;
+
+	Common::Rect _bbox;
+	Common::Rect _dirtyRect;
+
+	Common::String _prevSubtitle;
+	uint32 _color;
 };
 
 } // End of namespace Video
