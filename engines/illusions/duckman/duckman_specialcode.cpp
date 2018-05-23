@@ -376,13 +376,13 @@ void DuckmanSpecialCode::spcSetTextDuration(OpCall &opCall) {
 
 void DuckmanSpecialCode::spcSetTempMasterSfxVolume(OpCall &opCall) {
 	ARG_INT16(sfxVolume);
-	// TODO _savedTempMasterSfxVolume = _vm->getMasterSfxVolume();
-	// TODO _vm->setMasterSfxVolume(sfxVolume);
+	_savedTempMasterSfxVolume = _vm->_mixer->getVolumeForSoundType(Audio::Mixer::kSFXSoundType);
+	_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kSFXSoundType, sfxVolume * 16);
 	_vm->notifyThreadId(opCall._threadId);
 }
 
 void DuckmanSpecialCode::spcRestoreTempMasterSfxVolume(OpCall &opCall) {
-	// TODO _vm->setMasterSfxVolume(_savedTempMasterSfxVolume);
+	_vm->_mixer->setVolumeForSoundType(Audio::Mixer::kSFXSoundType, _savedTempMasterSfxVolume);
 	_savedTempMasterSfxVolume = 16;
 	_vm->notifyThreadId(opCall._threadId);
 }
