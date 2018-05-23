@@ -23,6 +23,7 @@
 #include "common/debug.h"
 #include "common/file.h"
 #include "common/system.h"
+#include "common/ustr.h"
 
 #include "graphics/fonts/ttf.h"
 #include "graphics/font.h"
@@ -233,6 +234,38 @@ Subtitles::~Subtitles() {
 	delete _surface;
 }
 
+
+// HACK. This must be unified and moved to common/ FIXME
+static Common::U32String convertUtf8ToUtf32(const Common::String &str) {
+        // The String class, and therefore the Font class as well, assume one
+        // character is one byte, but in this case it's actually an UTF-8
+        // string with up to 4 bytes per character. To work around this,
+        // convert it to an U32String before drawing it, because our Font class
+        // can handle that.
+        Common::U32String u32str;
+        uint i = 0;
+        while (i < str.size()) {
+                uint32 chr = 0;
+                if ((str[i] & 0xF8) == 0xF0) {
+                        chr |= (str[i++] & 0x07) << 18;
+                        chr |= (str[i++] & 0x3F) << 12;
+                        chr |= (str[i++] & 0x3F) << 6;
+                        chr |= (str[i++] & 0x3F);
+                } else if ((str[i] & 0xF0) == 0xE0) {
+                        chr |= (str[i++] & 0x0F) << 12;
+                        chr |= (str[i++] & 0x3F) << 6;
+                        chr |= (str[i++] & 0x3F);
+                } else if ((str[i] & 0xE0) == 0xC0) {
+                        chr |= (str[i++] & 0x1F) << 6;
+                        chr |= (str[i++] & 0x3F);
+                } else {
+                        chr = (str[i++] & 0x7F);
+                }
+                u32str += chr;
+        }
+        return u32str;
+}
+
 void Subtitles::setFont(const char *fontname, int height) {
 	Common::File file;
 
@@ -287,9 +320,9 @@ void Subtitles::drawSubtitle(uint32 timestamp, bool force) {
 
 	_prevSubtitle = subtitle;
 
-	Common::Array<Common::String> lines;
+	Common::Array<Common::U32String> lines;
 
-	_font->wordWrapText(subtitle, _bbox.width(), lines);
+	_font->wordWrapText(convertUtf8ToUtf32(subtitle), _bbox.width(), lines);
 
 	int y = 0;
 
