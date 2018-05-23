@@ -79,6 +79,8 @@ BaseMenu *DuckmanMenuSystem::createMenuById(int menuId) {
 		return createQueryRestartMenu();
 	case kDuckmanQueryQuitMenu:
 		return createQueryQuitMenu();
+	case kDuckmanOptionsMenu:
+		return createOptionsMenu();
 	default:
 		error("DuckmanMenuSystem::createMenuById() Invalid menu id %d", menuId);
 	}
@@ -86,10 +88,10 @@ BaseMenu *DuckmanMenuSystem::createMenuById(int menuId) {
 
 BaseMenu *DuckmanMenuSystem::createMainMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 0);
-	menu->addMenuItem(new MenuItem("Start New Game", new MenuActionReturnChoice(this, 11)));
-	menu->addMenuItem(new MenuItem("Load Saved Game", new MenuActionLoadGame(this, 1)));
-	menu->addMenuItem(new MenuItem("Options", new MenuActionOptions(this)));
-	menu->addMenuItem(new MenuItem("Quit Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryQuitMenu, 12)));
+	menu->addMenuItem(new MenuActionReturnChoice(this, "Start New Game", 11));
+	menu->addMenuItem(new MenuActionLoadGame(this, "Load Saved Game", 1));
+	menu->addMenuItem(new MenuActionEnterMenu(this, "Options", kDuckmanOptionsMenu));
+	menu->addMenuItem(new MenuActionEnterQueryMenu(this, "Quit Game", kDuckmanQueryQuitMenu, 12));
 	return menu;
 }
 
@@ -98,19 +100,28 @@ BaseMenu *DuckmanMenuSystem::createLoadGameMenu() {
 }
 
 BaseMenu *DuckmanMenuSystem::createOptionsMenu() {
-	return 0; // TODO
+	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 0);
+	menu->addText("              GAME OPTIONS");
+	menu->addText("--------------------------------------");
+	menu->addMenuItem(new MenuSliderItem(this, "SFX Volume     @@", kSliderSFXVolume, 16, 16, 119, 0, 203, 12));
+	menu->addMenuItem(new MenuSliderItem(this, "Music Volume  @@@", kSliderMusicVolume, 16, 16, 119, 0, 203, 12));
+	menu->addMenuItem(new MenuSliderItem(this, "Speech Volume ", kSliderSpeechVolume, 16, 16, 119, 0, 203, 12));
+	menu->addMenuItem(new MenuSliderItem(this, "Text Duration @@@", kSliderTextDuration, 16, 16, 119, 0, 203, 12));
+	menu->addMenuItem(new MenuActionRestoreDefaultSettings(this, "Restore Defaults"));
+	menu->addMenuItem(new MenuActionLeaveMenu(this, "Back"));
+	return menu;
 }
 
 BaseMenu *DuckmanMenuSystem::createPauseMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 1);
 	menu->addText("   Game Paused");
 	menu->addText("-------------------");
-	menu->addMenuItem(new MenuItem("Resume", new MenuActionReturnChoice(this, 21)));
-	menu->addMenuItem(new MenuItem("Load Game", new MenuActionLoadGame(this, 1)));
-	// menu->addMenuItem(new MenuItem("Save Game", new MenuActionSaveGame(this, 11)));
-	menu->addMenuItem(new MenuItem("Restart Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryRestartMenu, 22)));
-	menu->addMenuItem(new MenuItem("Options", new MenuActionOptions(this)));
-	menu->addMenuItem(new MenuItem("Quit Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryQuitMenu, 23)));
+	menu->addMenuItem(new MenuActionReturnChoice(this, "Resume", 21));
+	menu->addMenuItem(new MenuActionLoadGame(this, "Load Game", 1));
+	// TODO menu->addMenuItem(new MenuActionSaveGame(this, "Save Game", 11)));
+	menu->addMenuItem(new MenuActionEnterQueryMenu(this, "Restart Game", kDuckmanQueryRestartMenu, 22));
+	menu->addMenuItem(new MenuActionEnterMenu(this, "Options", kDuckmanOptionsMenu));
+	menu->addMenuItem(new MenuActionEnterQueryMenu(this, "Quit Game", kDuckmanQueryQuitMenu, 23));
 	return menu;
 }
 
@@ -118,8 +129,8 @@ BaseMenu *DuckmanMenuSystem::createQueryRestartMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 2);
 	menu->addText("Do you really want to restart?");
 	menu->addText("-------------------------------");
-	menu->addMenuItem(new MenuItem("Yes, let's try again", new MenuActionReturnChoice(this, getQueryConfirmationChoiceIndex())));
-	menu->addMenuItem(new MenuItem("No, just kidding", new MenuActionLeaveMenu(this)));
+	menu->addMenuItem(new MenuActionReturnChoice(this, "Yes, let's try again", getQueryConfirmationChoiceIndex()));
+	menu->addMenuItem(new MenuActionLeaveMenu(this, "No, just kidding"));
 	return menu;
 }
 
@@ -127,8 +138,8 @@ BaseMenu *DuckmanMenuSystem::createQueryQuitMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 12, 17, 11, 27, 2);
 	menu->addText("Do you really want to quit?");
 	menu->addText("-------------------------------");
-	menu->addMenuItem(new MenuItem("Yes, I'm outta here", new MenuActionReturnChoice(this, getQueryConfirmationChoiceIndex())));
-	menu->addMenuItem(new MenuItem("No, just kidding", new MenuActionLeaveMenu(this)));
+	menu->addMenuItem(new MenuActionReturnChoice(this, "Yes, I'm outta here", getQueryConfirmationChoiceIndex()));
+	menu->addMenuItem(new MenuActionLeaveMenu(this, "No, just kidding"));
 	return menu;
 }
 

@@ -98,12 +98,12 @@ BaseMenu *BBDOUMenuSystem::createPauseMenu() {
 	BaseMenu *menu = new BaseMenu(this, 0x00120003, 218, 150, 80, 20, 1);
 	menu->addText("   Game Paused");
 	menu->addText("-------------------");
-	menu->addMenuItem(new MenuItem("Resume", new MenuActionReturnChoice(this, 1)));
-	// menu->addMenuItem(new MenuItem("Load Game", new MenuActionLoadGame(this, 1)));
-	// TODO menu->addMenuItem(new MenuItem("Save Game", new MenuActionSaveGame(this, 11)));
-	// TODO menu->addMenuItem(new MenuItem("Restart Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryRestartMenu, 2)));
-	// TODO menu->addMenuItem(new MenuItem("Options", new MenuActionEnterMenu(this, kDuckmanOptionsMenu)));
-	// menu->addMenuItem(new MenuItem("Quit Game", new MenuActionEnterQueryMenu(this, kDuckmanQueryQuitMenu, 23)));
+	menu->addMenuItem(new MenuActionReturnChoice(this, "Resume", 1));
+	// menu->addMenuItem(new MenuActionLoadGame(this, "Load Game", 1));
+	// TODO menu->addMenuItem(new MenuActionSaveGame(this, "Save Game", 11));
+	// TODO menu->addMenuItem(new MenuActionEnterQueryMenu(this, kDuckmanQueryRestartMenu, "Restart Game", 2));
+	// TODO menu->addMenuItem(new MenuActionEnterMenu(this, "Options", kDuckmanOptionsMenu));
+	// menu->addMenuItem(new MenuActionEnterQueryMenu(this, "Quit Game", kDuckmanQueryQuitMenu, 23));
 	return menu;
 }
 

@@ -36,18 +36,71 @@
 
 namespace Illusions {
 
-// MenuItem
+// BaseMenuItem
 
-MenuItem::MenuItem(const Common::String text, BaseMenuAction *action)
-	: _text(text), _action(action) {
+BaseMenuItem::BaseMenuItem(BaseMenuSystem *menuSystem)
+	: _menuSystem(menuSystem) {
 }
 
-MenuItem::~MenuItem() {
-	delete _action;
+// MenuActionItem
+
+MenuActionItem::MenuActionItem(BaseMenuSystem *menuSystem, const Common::String text)
+	: BaseMenuItem(menuSystem), _text(text) {
 }
 
-void MenuItem::executeAction() {
-	_action->execute();
+// MenuSliderItem
+
+MenuSliderItem::MenuSliderItem(BaseMenuSystem *menuSystem, const Common::String text, int sliderId, int maxValue, int defValue,
+	int x1, int y1, int x2, int y2)
+	: BaseMenuItem(menuSystem), _text(text), _sliderId(sliderId), _sliderText(text), _maxValue(maxValue), _defValue(defValue),
+	_x1(x1), _y1(y1), _x2(x2), _y2(y2), _currValue(0) {
+}
+
+void MenuSliderItem::refresh() {
+	_currValue = _menuSystem->getSliderValue(_sliderId);
+	buildSliderText();
+}
+
+void MenuSliderItem::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+	WRect menuItemRect;
+	_menuSystem->calcMenuItemRect(menuItemIndex, menuItemRect);
+	int x1 = menuItemRect._topLeft.x + _x1;
+	int x2 = menuItemRect._topLeft.x + _x2;
+	int y1 = menuItemRect._topLeft.y + _y1;
+	int y2 = menuItemRect._topLeft.y + _y2;
+	bool canUpdateSlider = false;
+	int newSliderValue = 0;
+
+	if (mousePos.y >= y1 && mousePos.y <= y2) {
+		if (mousePos.x >= x1 && mousePos.x <= x2) {
+			newSliderValue = _maxValue * (mousePos.x + (((x2 - x1) / _maxValue) / 2) - x1) / (x2 - x1);
+			if (newSliderValue >= _maxValue)
+				newSliderValue = _maxValue - 1;
+			canUpdateSlider = true;
+		} else if (mousePos.x >= x1 - _defValue && mousePos.x < x1) {
+			newSliderValue = 0;
+			canUpdateSlider = true;
+		} else if (mousePos.x > x2 && mousePos.x <= x2 + _defValue) {
+			newSliderValue = _maxValue - 1;
+			canUpdateSlider = true;
+		}
+	}
+
+	if (!canUpdateSlider) {
+		_menuSystem->playSoundEffect14();
+	} else if (_currValue != newSliderValue) {
+		_currValue = newSliderValue;
+		_menuSystem->setSliderValue(_sliderId, newSliderValue);
+	}
+
+}
+
+void MenuSliderItem::buildSliderText() {
+	_sliderText = _text;
+	_sliderText += '{';
+	for (int i = 0; i < _maxValue; ++i)
+		_sliderText += i == _currValue ? '|' : '~';
+	_sliderText += '}';
 }
 
 // BaseMenu
@@ -68,7 +121,7 @@ void BaseMenu::addText(const Common::String text) {
 	_text.push_back(text);
 }
 
-void BaseMenu::addMenuItem(MenuItem *menuItem) {
+void BaseMenu::addMenuItem(BaseMenuItem *menuItem) {
 	_menuItems.push_back(menuItem);
 }
 
@@ -84,12 +137,13 @@ uint BaseMenu::getMenuItemsCount() {
 	return _menuItems.size();
 }
 
-MenuItem *BaseMenu::getMenuItem(uint index) {
+BaseMenuItem *BaseMenu::getMenuItem(uint index) {
 	return _menuItems[index];
 }
 
-void BaseMenu::enterMenu() {
-	// Empty, implemented if neccessary by the inherited class when the menu is entered
+void BaseMenu::refresh() {
+	for (MenuItems::iterator it = _menuItems.begin(); it != _menuItems.end(); ++it)
+		(*it)->refresh();
 }
 
 // BaseMenuSystem
@@ -224,6 +278,7 @@ void BaseMenuSystem::setMousePos(Common::Point &mousePos) {
 void BaseMenuSystem::activateMenu(BaseMenu *menu) {
 	_activeMenu = menu;
 	// TODO Run menu enter callback if neccessary
+	menu->refresh();
 	_menuLinesCount = menu->getHeaderLinesCount();
 	menu->_field2C18 = menu->getMenuItemsCount();
 	_hoveredMenuItemIndex3 = 1;
@@ -235,6 +290,29 @@ void BaseMenuSystem::activateMenu(BaseMenu *menu) {
 	else
 		_menuItemCount = v2;
 
+}
+
+void BaseMenuSystem::updateMenu(BaseMenu *menu) {
+	_activeMenu = menu;
+	_vm->_screenText->removeText();
+	menu->refresh();
+	_menuLinesCount = menu->getHeaderLinesCount();
+	menu->_field2C18 = menu->getMenuItemsCount();
+	_field54 = menu->_field2C18;
+
+	if (_hoveredMenuItemIndex > menu->_field2C18)
+		_hoveredMenuItemIndex = menu->_field2C18;
+	if (_hoveredMenuItemIndex2 > menu->_field2C18)
+		_hoveredMenuItemIndex2 = menu->_field2C18;
+
+	uint v2 = drawMenuText(menu);
+	if (menu->_field2C18 <= v2)
+		_menuItemCount = menu->_field2C18;
+	else if (_hoveredMenuItemIndex3 == 1)
+		_menuItemCount = v2;
+
+	placeActor318();
+	placeActor323();
 }
 
 void BaseMenuSystem::initActor318() {
@@ -337,6 +415,7 @@ void BaseMenuSystem::hideActor323() {
 }
 
 void BaseMenuSystem::openMenu(BaseMenu *menu) {
+	loadSettings();
 	
 	_isActive = true;
 	_menuStack.clear();
@@ -384,6 +463,8 @@ void BaseMenuSystem::closeMenu() {
 		mouseCursor->disappearActor();
 	_vm->_input->discardAllEvents();
 	_isActive = false;
+	saveSettings();
+	syncSoundSettings();
 }
 
 void BaseMenuSystem::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
@@ -394,8 +475,8 @@ void BaseMenuSystem::handleClick(uint menuItemIndex, const Common::Point &mouseP
 	    return;
 	}
 
-	MenuItem *menuItem = _activeMenu->getMenuItem(menuItemIndex - 1);
-	menuItem->executeAction();
+	BaseMenuItem *menuItem = _activeMenu->getMenuItem(menuItemIndex - 1);
+	menuItem->executeAction(menuItemIndex, mousePos);
 	
 }
 
@@ -532,8 +613,97 @@ void BaseMenuSystem::setSavegameSlotNum(int slotNum) {
 	_vm->_savegameSlotNum = slotNum;
 }
 
+void BaseMenuSystem::loadSettings() {
+	_musicVolume = ConfMan.getInt("music_volume");
+	_sfxVolume = ConfMan.getInt("sfx_volume");
+	_speechVolume = ConfMan.getInt("speech_volume");
+	_textDuration = 255 - ConfMan.getInt("talkspeed");
+}
+
+void BaseMenuSystem::saveSettings() {
+	ConfMan.setInt("music_volume", _musicVolume);
+	ConfMan.setInt("sfx_volume", _sfxVolume);
+	ConfMan.setInt("speech_volume", _speechVolume);
+	ConfMan.setInt("talkspeed", 255 - _textDuration);
+}
+
 void BaseMenuSystem::syncSoundSettings() {
 	_vm->syncSoundSettings();
+}
+
+void BaseMenuSystem::playTestSound(int volume) {
+	// TODO
+}
+
+int BaseMenuSystem::getDefaultSfxVolume() {
+	return 11 * 16;
+}
+
+int BaseMenuSystem::getDefaultMusicVolume() {
+	return 11 * 16;
+}
+
+int BaseMenuSystem::getDefaultSpeechVolume() {
+	return 15 * 16;
+}
+
+int BaseMenuSystem::getDefaultTextDuration() {
+	return 240;
+}
+
+void BaseMenuSystem::restoreDefaultSettings() {
+	_sfxVolume = getDefaultSfxVolume();
+	_musicVolume = getDefaultMusicVolume();
+	_speechVolume = getDefaultSpeechVolume();
+	_textDuration = getDefaultTextDuration();
+	updateMenu(_activeMenu);
+}
+
+int BaseMenuSystem::getSliderValue(int sliderId) {
+	switch (sliderId) {
+	case kSliderSFXVolume:
+		return _sfxVolume / 16;
+	case kSliderMusicVolume:
+		return _musicVolume / 16;
+	case kSliderSpeechVolume:
+		return _speechVolume / 16;
+	case kSliderTextDuration:
+		return _textDuration / 60;
+	default:
+		return 0;
+	}
+}
+
+void BaseMenuSystem::setSliderValue(int sliderId, int value) {
+	switch (sliderId) {
+	case kSliderSFXVolume:
+		_sfxVolume = value * 16;
+		playTestSound(_sfxVolume);
+		break;
+	case kSliderMusicVolume:
+		_musicVolume = value * 16;
+		playTestSound(_sfxVolume);
+		break;
+	case kSliderSpeechVolume:
+		_speechVolume = value * 16;
+		playTestSound(_speechVolume);
+		if (_speechVolume == 0 && _textDuration == 0) {
+			// Enable text if speech is silent
+			_textDuration = getDefaultTextDuration();
+		}
+		break;
+	case kSliderTextDuration:
+		_textDuration = value * 60;
+		playTestSound(_sfxVolume);
+		if (_textDuration == 0 && _speechVolume == 0) {
+			// Enable speech if text is disabled
+			_speechVolume = getDefaultSpeechVolume();
+		}
+		break;
+	default:
+		break;
+	}
+	updateMenu(_activeMenu);
 }
 
 void BaseMenuSystem::updateTimeOut(bool resetTimeOut) {
@@ -580,61 +750,55 @@ void MenuTextBuilder::finalize() {
 	_text[_pos] = '\0';
 }
 
-// BaseMenuAction
-
-BaseMenuAction::BaseMenuAction(BaseMenuSystem *menuSystem)
-	: _menuSystem(menuSystem) {
-}
-
 // MenuActionEnterMenu
 
-MenuActionEnterMenu::MenuActionEnterMenu(BaseMenuSystem *menuSystem, int menuId)
-	: BaseMenuAction(menuSystem), _menuId(menuId) {
+MenuActionEnterMenu::MenuActionEnterMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId)
+	: MenuActionItem(menuSystem, text), _menuId(menuId) {
 }
 
-void MenuActionEnterMenu::execute() {
+void MenuActionEnterMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->enterSubMenuById(_menuId);
 }
 
 // MenuActionLeaveMenu
 
-MenuActionLeaveMenu::MenuActionLeaveMenu(BaseMenuSystem *menuSystem)
-	: BaseMenuAction(menuSystem) {
+MenuActionLeaveMenu::MenuActionLeaveMenu(BaseMenuSystem *menuSystem, const Common::String text)
+	: MenuActionItem(menuSystem, text) {
 }
 
-void MenuActionLeaveMenu::execute() {
+void MenuActionLeaveMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->leaveMenu();
 }
 
 // MenuActionReturnChoice
 
-MenuActionReturnChoice::MenuActionReturnChoice(BaseMenuSystem *menuSystem, uint choiceIndex)
-	: BaseMenuAction(menuSystem), _choiceIndex(choiceIndex) {
+MenuActionReturnChoice::MenuActionReturnChoice(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex)
+	: MenuActionItem(menuSystem, text), _choiceIndex(choiceIndex) {
 }
 
-void MenuActionReturnChoice::execute() {
+void MenuActionReturnChoice::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->playSoundEffect13();
 	_menuSystem->selectMenuChoiceIndex(_choiceIndex);
 }
 
 // MenuActionEnterQueryMenu
 
-MenuActionEnterQueryMenu::MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, int menuId, uint confirmationChoiceIndex)
-	: BaseMenuAction(menuSystem), _menuId(menuId), _confirmationChoiceIndex(confirmationChoiceIndex) {
+MenuActionEnterQueryMenu::MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId, uint confirmationChoiceIndex)
+	: MenuActionItem(menuSystem, text), _menuId(menuId), _confirmationChoiceIndex(confirmationChoiceIndex) {
 }
 
-void MenuActionEnterQueryMenu::execute() {
+void MenuActionEnterQueryMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->setQueryConfirmationChoiceIndex(_confirmationChoiceIndex);
 	_menuSystem->enterSubMenuById(_menuId);
 }
 
 // MenuActionLoadGame
 
-MenuActionLoadGame::MenuActionLoadGame(BaseMenuSystem *menuSystem, uint choiceIndex)
-	: BaseMenuAction(menuSystem), _choiceIndex(choiceIndex) {
+MenuActionLoadGame::MenuActionLoadGame(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex)
+	: MenuActionItem(menuSystem, text), _choiceIndex(choiceIndex) {
 }
 
-void MenuActionLoadGame::execute() {
+void MenuActionLoadGame::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
 	const EnginePlugin *plugin = NULL;
 	EngineMan.findGame(ConfMan.get("gameid"), &plugin);
 	GUI::SaveLoadChooser *dialog;
@@ -653,37 +817,14 @@ void MenuActionLoadGame::execute() {
 
 }
 
-// MenuActionOptions
+// MenuActionRestoreDefaultSettings
 
-class ConfigDialog : public GUI::OptionsDialog {
-public:
-	ConfigDialog();
-};
-
-ConfigDialog::ConfigDialog() : GUI::OptionsDialog("", "GlobalConfig") {
-	//
-	// Sound controllers
-	//
-
-	addVolumeControls(this, "GlobalConfig.");
-	setVolumeSettingsState(true); // could disable controls by GUI options
-
-	//
-	// Add the buttons
-	//
-
-	new GUI::ButtonWidget(this, "GlobalConfig.Ok", _("~O~K"), 0, GUI::kOKCmd);
-	new GUI::ButtonWidget(this, "GlobalConfig.Cancel", _("~C~ancel"), 0, GUI::kCloseCmd);
+MenuActionRestoreDefaultSettings::MenuActionRestoreDefaultSettings(BaseMenuSystem *menuSystem, const Common::String text)
+	: MenuActionItem(menuSystem, text) {
 }
 
-MenuActionOptions::MenuActionOptions(BaseMenuSystem *menuSystem)
-	: BaseMenuAction(menuSystem) {
-}
-
-void MenuActionOptions::execute() {
-	ConfigDialog dialog;
-	dialog.runModal();
-	_menuSystem->syncSoundSettings();
+void MenuActionRestoreDefaultSettings::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+	_menuSystem->restoreDefaultSettings();
 }
 
 } // End of namespace Illusions

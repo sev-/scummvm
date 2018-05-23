@@ -41,15 +41,46 @@ class BaseMenuAction;
 
 const uint kMenuTextSize = 4096;
 
-class MenuItem {
+class BaseMenuItem {
 public:
-	MenuItem(const Common::String text, BaseMenuAction *action);
-	~MenuItem();
-	void executeAction();
+	BaseMenuItem(BaseMenuSystem *menuSystem);
+	virtual ~BaseMenuItem() {}
+	virtual void refresh() {}
+	virtual void executeAction(uint menuItemIndex, const Common::Point &mousePos) = 0;
+	virtual const Common::String& getText() const = 0;
+protected:
+	BaseMenuSystem *_menuSystem;
+};
+
+class MenuActionItem : public BaseMenuItem {
+public:
+	MenuActionItem(BaseMenuSystem *menuSystem, const Common::String text);
 	const Common::String& getText() const { return _text; }
 protected:
 	Common::String _text;
-	BaseMenuAction *_action;
+};
+
+enum {
+	kSliderSFXVolume,
+	kSliderMusicVolume,
+	kSliderSpeechVolume,
+	kSliderTextDuration
+};
+
+class MenuSliderItem : public BaseMenuItem {
+public:
+	MenuSliderItem(BaseMenuSystem *menuSystem, const Common::String text, int sliderId, int maxValue, int defValue,
+		int x1, int y1, int x2, int y2);
+	void refresh();
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	const Common::String& getText() const { return _sliderText; }
+protected:
+	Common::String _text;
+	int _sliderId;
+	Common::String _sliderText;
+	int _maxValue, _defValue, _currValue;
+	int _x1, _y1, _x2, _y2;
+	void buildSliderText();
 };
 
 class BaseMenu {
@@ -58,14 +89,14 @@ public:
 		uint defaultMenuItemIndex);
 	virtual ~BaseMenu();
 	void addText(const Common::String text);
-	void addMenuItem(MenuItem *menuItem);
+	void addMenuItem(BaseMenuItem *menuItem);
 	uint getHeaderLinesCount();
 	const Common::String& getHeaderLine(uint index);
 	uint getMenuItemsCount();
-	MenuItem *getMenuItem(uint index);
-	virtual void enterMenu();
+	BaseMenuItem *getMenuItem(uint index);
+	virtual void refresh();
 public://protected://TODO
-	typedef Common::Array<MenuItem*> MenuItems;
+	typedef Common::Array<BaseMenuItem*> MenuItems;
 	BaseMenuSystem *_menuSystem;
 	uint32 _fontId;
 	byte _field8, _fieldA, _fieldC, _fieldE;
@@ -105,11 +136,22 @@ public:
 	void setMenuCallerThreadId(uint32 menuCallerThreadId);
 	void setMenuChoiceOffsets(MenuChoiceOffsets menuChoiceOffsets, int16 *menuChoiceOffset);
 	void setSavegameSlotNum(int slotNum);
+	void loadSettings();
+	void saveSettings();
 	void syncSoundSettings();
+	void playTestSound(int volume);
+	int getDefaultSfxVolume();
+	int getDefaultMusicVolume();
+	int getDefaultSpeechVolume();
+	int getDefaultTextDuration();
+	void restoreDefaultSettings();
 	virtual bool initMenuCursor() = 0;
 	virtual int getGameState() = 0;
 	virtual void setGameState(int gameState) = 0;
 	virtual void setMenuCursorNum(int cursorNum) = 0;
+	virtual int getSliderValue(int sliderId);
+	virtual void setSliderValue(int sliderId, int value);
+	void calcMenuItemRect(uint menuItemIndex, WRect &rect);
 protected:
 	IllusionsEngine *_vm;
 	MenuStack _menuStack;
@@ -144,14 +186,17 @@ protected:
 	uint _hoveredMenuItemIndex3;
 
 	BaseMenu *_activeMenu;
+
+	int _musicVolume, _sfxVolume, _speechVolume, _textDuration;
+
 	void setMouseCursorToMenuItem(int menuItemIndex);
 	
-	void calcMenuItemRect(uint menuItemIndex, WRect &rect);
 	bool calcMenuItemMousePos(uint menuItemIndex, Common::Point &pt);
 	bool calcMenuItemIndexAtPoint(Common::Point pt, uint &menuItemIndex);
 	void setMousePos(Common::Point &mousePos);
 	
 	void activateMenu(BaseMenu *menu);
+	void updateMenu(BaseMenu *menu);
 	
 	void updateTimeOut(bool resetTimeOut);
 	
@@ -163,7 +208,7 @@ protected:
 	void initActor323();
 	void placeActor323();
 	void hideActor323();
-	
+
 	virtual BaseMenu *getMenuById(int menuId) = 0;
 };
 
@@ -181,66 +226,57 @@ protected:
 
 // Menu actions
 
-class BaseMenuAction {
-public:
-	BaseMenuAction(BaseMenuSystem *menuSystem);
-	virtual ~BaseMenuAction() {}
-	virtual void execute() = 0;
-protected:
-	BaseMenuSystem *_menuSystem;
-};
-
 // Type 1: Enter a submenu
 
-class MenuActionEnterMenu : public BaseMenuAction {
+class MenuActionEnterMenu : public MenuActionItem {
 public:
-	MenuActionEnterMenu(BaseMenuSystem *menuSystem, int menuId);
-	virtual void execute();
+	MenuActionEnterMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _menuId;
 };
 
 // Type 4: Leave a submenu or the whole menu if on the main menu level
 
-class MenuActionLeaveMenu : public BaseMenuAction {
+class MenuActionLeaveMenu : public MenuActionItem {
 public:
-	MenuActionLeaveMenu(BaseMenuSystem *menuSystem);
-	virtual void execute();
+	MenuActionLeaveMenu(BaseMenuSystem *menuSystem, const Common::String text);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 };
 
 // Type 5: Return a menu choice index and exit the menu
 
-class MenuActionReturnChoice : public BaseMenuAction {
+class MenuActionReturnChoice : public MenuActionItem {
 public:
-	MenuActionReturnChoice(BaseMenuSystem *menuSystem, uint choiceIndex);
-	virtual void execute();
+	MenuActionReturnChoice(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _choiceIndex;
 };
 
 // Type 8: Return a menu choice index and exit the menu after displaying a query message
 
-class MenuActionEnterQueryMenu : public BaseMenuAction {
+class MenuActionEnterQueryMenu : public MenuActionItem {
 public:
-	MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, int menuId, uint confirmationChoiceIndex);
-	virtual void execute();
+	MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId, uint confirmationChoiceIndex);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _menuId;
 	uint _confirmationChoiceIndex;
 };
 
-class MenuActionLoadGame : public BaseMenuAction {
+class MenuActionLoadGame : public MenuActionItem {
 public:
-	MenuActionLoadGame(BaseMenuSystem *menuSystem, uint choiceIndex);
-	virtual void execute();
+	MenuActionLoadGame(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	uint _choiceIndex;
 };
 
-class MenuActionOptions : public BaseMenuAction {
+class MenuActionRestoreDefaultSettings : public MenuActionItem {
 public:
-	MenuActionOptions(BaseMenuSystem *menuSystem);
-	virtual void execute();
+	MenuActionRestoreDefaultSettings(BaseMenuSystem *menuSystem, const Common::String text);
+	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
 };
 
 } // End of namespace Illusions
