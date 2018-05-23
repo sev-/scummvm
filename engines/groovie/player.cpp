@@ -30,7 +30,13 @@ namespace Groovie {
 
 VideoPlayer::VideoPlayer(GroovieEngine *vm) :
 	_vm(vm), _syst(vm->_system), _file(NULL), _audioStream(NULL), _fps(0), _overrideSpeed(false), _flags(0),
-	_begunPlaying(false), _millisBetweenFrames(0), _lastFrameTime(0) {
+	_begunPlaying(false), _millisBetweenFrames(0), _lastFrameTime(0), _firstTimeFrame(0) {
+
+	int16 h = g_system->getOverlayHeight();
+
+	_subtitles.setBBox(Common::Rect(20, h - 120, g_system->getOverlayWidth() - 20, h - 20));
+	_subtitles.setColor(0xff, 0xff, 0xff);
+	_subtitles.setFont("FreeSans.ttf");
 }
 
 bool VideoPlayer::load(Common::SeekableReadStream *file, uint16 flags) {
@@ -69,6 +75,9 @@ bool VideoPlayer::playFrame() {
 		end = playFrameInternal();
 	}
 
+	uint32 currTime = _syst->getMillis();
+	_subtitles.drawSubtitle(currTime - _firstTimeFrame);
+
 	// The file has been completely processed
 	if (end) {
 		_file = NULL;
@@ -83,6 +92,8 @@ bool VideoPlayer::playFrame() {
 				end = false;
 			}
 		}
+
+		g_system->hideOverlay();
 	}
 
 	return end;
@@ -93,6 +104,10 @@ void VideoPlayer::waitFrame() {
 	if (!_begunPlaying) {
 		_begunPlaying = true;
 		_lastFrameTime = currTime;
+		_firstTimeFrame = currTime;
+
+		g_system->showOverlay();
+		g_system->clearOverlay();
 	} else {
 		uint32 millisDiff = currTime - _lastFrameTime;
 		if (millisDiff < _millisBetweenFrames) {

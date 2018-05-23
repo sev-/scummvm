@@ -68,6 +68,7 @@ private:
 	uint16 _fps;
 	uint16 _millisBetweenFrames;
 	uint32 _lastFrameTime;
+	uint32 _firstTimeFrame;
 
 	Video::Subtitles _subtitles;
 
