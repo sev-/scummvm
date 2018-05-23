@@ -69,6 +69,7 @@ protected:
 	void opFaceActor(Control *control, OpCall &opCall);
 	void opNotifyThreadId1(Control *control, OpCall &opCall);
 	void opSetPathCtrY(Control *control, OpCall &opCall);
+	void opDisablePathWalkPoints(Control *control, OpCall &opCall);
 	void opSetPathWalkPoints(Control *control, OpCall &opCall);
 	void opDisableAutoScale(Control *control, OpCall &opCall);
 	void opSetScale(Control *control, OpCall &opCall);
