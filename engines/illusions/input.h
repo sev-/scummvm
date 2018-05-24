@@ -90,18 +90,21 @@ public:
 	void setCursorPosition(Common::Point mousePos);
 	Common::Point getCursorDelta();
 	InputEvent& setInputEvent(uint evt, uint bitMask);
+	bool isCursorMovedByKeyboard() const { return _cursorMovedByKeyboard; }
 protected:
 	uint _buttonStates, _newButtons, _buttonsDown;
 	uint _enabledButtons;
 	uint _newKeys;
 	Common::Point _cursorPos, _prevCursorPos;
 	InputEvent _inputEvents[kEventMax];
+	bool _cursorMovedByKeyboard;
 	void handleKey(Common::KeyCode key, int mouseButton, bool down);
 	void handleMouseButton(int mouseButton, bool down);
 	void discardButtons(uint bitMask);
 	bool lookButtonStates(uint bitMask);
 	bool lookNewButtons(uint bitMask);
 	void setButtonState(uint bitMask);
+	void moveCursorByKeyboard(int deltaX, int deltaY);
 };
 
 } // End of namespace Illusions
