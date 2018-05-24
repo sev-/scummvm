@@ -244,7 +244,6 @@ bool IllusionsEngine_Duckman::hasFeature(EngineFeature f) const {
 }
 
 void IllusionsEngine_Duckman::initInput() {
-	// TODO Check if these are correct...
 	_input->setInputEvent(kEventLeftClick, 0x01)
 		.addMouseButton(MOUSE_LEFT_BUTTON)
 		.addKey(Common::KEYCODE_RETURN);
@@ -287,8 +286,6 @@ void IllusionsEngine_Duckman::initUpdateFunctions() {
 #undef UPDATEFUNCTION
 
 int IllusionsEngine_Duckman::updateScript(uint flags) {
-	// TODO Some more stuff
-
 	if (_screen->isDisplayOn() && !_screenPalette->isFaderActive() && _pauseCtr == 0) {
 		if (_input->pollEvent(kEventAbort)) {
 			startScriptThread(0x00020342, 0);
@@ -296,7 +293,6 @@ int IllusionsEngine_Duckman::updateScript(uint flags) {
 			startScriptThread(0x0002033F, 0);
 		}
 	}
-
 	_threads->updateThreads();
 	return kUFNext;
 }
