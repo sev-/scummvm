@@ -61,7 +61,15 @@ void MenuSliderItem::refresh() {
 	buildSliderText();
 }
 
-void MenuSliderItem::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuSliderItem::handleSlider(int delta) {
+	int newSliderValue = _currValue + delta;
+	if (newSliderValue >= 0 && newSliderValue < _maxValue) {
+		_currValue = newSliderValue;
+		_menuSystem->setSliderValue(_sliderId, newSliderValue);
+	}
+}
+
+void MenuSliderItem::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	WRect menuItemRect;
 	_menuSystem->calcMenuItemRect(menuItemIndex, menuItemRect);
 	int x1 = menuItemRect._topLeft.x + _x1;
@@ -153,6 +161,10 @@ BaseMenuSystem::BaseMenuSystem(IllusionsEngine *vm)
 }
 
 BaseMenuSystem::~BaseMenuSystem() {
+}
+
+void BaseMenuSystem::playSoundEffect12() {
+	// TODO
 }
 
 void BaseMenuSystem::playSoundEffect13() {
@@ -270,9 +282,14 @@ bool BaseMenuSystem::calcMenuItemIndexAtPoint(Common::Point pt, uint &menuItemIn
 }
 
 void BaseMenuSystem::setMousePos(Common::Point &mousePos) {
-	//TODO Strange behavior _vm->_input->setCursorPosition(mousePos);
+	_vm->_input->setCursorPosition(mousePos);
 	Control *mouseCursor = _vm->getObjectControl(0x40004);
 	mouseCursor->_actor->_position = mousePos;
+}
+
+Common::Point BaseMenuSystem::getMousePos() {
+	Control *mouseCursor = _vm->getObjectControl(0x40004);
+	return mouseCursor->_actor->_position;
 }
 
 void BaseMenuSystem::activateMenu(BaseMenu *menu) {
@@ -476,7 +493,7 @@ void BaseMenuSystem::handleClick(uint menuItemIndex, const Common::Point &mouseP
 	}
 
 	BaseMenuItem *menuItem = _activeMenu->getMenuItem(menuItemIndex - 1);
-	menuItem->executeAction(menuItemIndex, mousePos);
+	menuItem->handleClick(menuItemIndex, mousePos);
 	
 }
 
@@ -548,11 +565,54 @@ uint BaseMenuSystem::drawMenuText(BaseMenu *menu) {
 }
 
 void BaseMenuSystem::update(Control *cursorControl) {
-    Common::Point mousePos = _vm->_input->getCursorPosition();
-	setMousePos(mousePos);
-	
-	uint newHoveredMenuItemIndex;
 	bool resetTimeOut = false;
+    Common::Point mousePos;
+
+	if (_vm->_input->isCursorMovedByKeyboard()) {
+		Common::Point mousePosDelta = _vm->_input->getCursorDelta();
+		if (mousePosDelta.x != 0) {
+			// Move volume slider left/right
+			if (_hoveredMenuItemIndex > 0 && _activeMenu) {
+				_activeMenu->getMenuItem(_hoveredMenuItemIndex - 1)->handleSlider(mousePosDelta.x < 0 ? 1 : -1);
+				resetTimeOut = true;
+			}
+			mousePos = getMousePos();
+		} else if (mousePosDelta.y != 0) {
+			uint newHoveredMenuItemIndex = _hoveredMenuItemIndex;
+			uint visibleItemCount = _menuItemCount;
+			if (_hoveredMenuItemIndex3 + visibleItemCount - 1 > _field54)
+				visibleItemCount = _field54 - _hoveredMenuItemIndex3 + 1;
+			if (_hoveredMenuItemIndex) {
+				if (mousePosDelta.y < 0) {
+					if (newHoveredMenuItemIndex < _hoveredMenuItemIndex3 + visibleItemCount - 1) {
+						++newHoveredMenuItemIndex;
+					} else {
+						newHoveredMenuItemIndex = _hoveredMenuItemIndex3;
+					}
+				} else {
+					if (newHoveredMenuItemIndex > _hoveredMenuItemIndex3) {
+						--newHoveredMenuItemIndex;
+					} else {
+						newHoveredMenuItemIndex = _hoveredMenuItemIndex3 + visibleItemCount - 1;
+					}
+				}
+			} else {
+				newHoveredMenuItemIndex = _hoveredMenuItemIndex2;
+			}
+			calcMenuItemMousePos(newHoveredMenuItemIndex, mousePos);
+			if (_hoveredMenuItemIndex != newHoveredMenuItemIndex)
+				playSoundEffect12();
+		} else {
+			mousePos = getMousePos();
+		}
+		// g_system->delayMillis(100); // TODO Slow down keyboard input, no idea how
+	} else {
+		mousePos = _vm->_input->getCursorPosition();
+	}
+
+	setMousePos(mousePos);
+
+	uint newHoveredMenuItemIndex;
 	
 	if (calcMenuItemIndexAtPoint(mousePos, newHoveredMenuItemIndex)) {
 		if (newHoveredMenuItemIndex != _hoveredMenuItemIndex) {
@@ -756,7 +816,7 @@ MenuActionEnterMenu::MenuActionEnterMenu(BaseMenuSystem *menuSystem, const Commo
 	: MenuActionItem(menuSystem, text), _menuId(menuId) {
 }
 
-void MenuActionEnterMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionEnterMenu::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->enterSubMenuById(_menuId);
 }
 
@@ -766,7 +826,7 @@ MenuActionLeaveMenu::MenuActionLeaveMenu(BaseMenuSystem *menuSystem, const Commo
 	: MenuActionItem(menuSystem, text) {
 }
 
-void MenuActionLeaveMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionLeaveMenu::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->leaveMenu();
 }
 
@@ -776,7 +836,7 @@ MenuActionReturnChoice::MenuActionReturnChoice(BaseMenuSystem *menuSystem, const
 	: MenuActionItem(menuSystem, text), _choiceIndex(choiceIndex) {
 }
 
-void MenuActionReturnChoice::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionReturnChoice::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->playSoundEffect13();
 	_menuSystem->selectMenuChoiceIndex(_choiceIndex);
 }
@@ -787,7 +847,7 @@ MenuActionEnterQueryMenu::MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, c
 	: MenuActionItem(menuSystem, text), _menuId(menuId), _confirmationChoiceIndex(confirmationChoiceIndex) {
 }
 
-void MenuActionEnterQueryMenu::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionEnterQueryMenu::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->setQueryConfirmationChoiceIndex(_confirmationChoiceIndex);
 	_menuSystem->enterSubMenuById(_menuId);
 }
@@ -798,7 +858,7 @@ MenuActionLoadGame::MenuActionLoadGame(BaseMenuSystem *menuSystem, const Common:
 	: MenuActionItem(menuSystem, text), _choiceIndex(choiceIndex) {
 }
 
-void MenuActionLoadGame::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionLoadGame::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	const EnginePlugin *plugin = NULL;
 	EngineMan.findGame(ConfMan.get("gameid"), &plugin);
 	GUI::SaveLoadChooser *dialog;
@@ -823,7 +883,7 @@ MenuActionRestoreDefaultSettings::MenuActionRestoreDefaultSettings(BaseMenuSyste
 	: MenuActionItem(menuSystem, text) {
 }
 
-void MenuActionRestoreDefaultSettings::executeAction(uint menuItemIndex, const Common::Point &mousePos) {
+void MenuActionRestoreDefaultSettings::handleClick(uint menuItemIndex, const Common::Point &mousePos) {
 	_menuSystem->restoreDefaultSettings();
 }
 

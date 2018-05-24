@@ -46,7 +46,8 @@ public:
 	BaseMenuItem(BaseMenuSystem *menuSystem);
 	virtual ~BaseMenuItem() {}
 	virtual void refresh() {}
-	virtual void executeAction(uint menuItemIndex, const Common::Point &mousePos) = 0;
+	virtual void handleSlider(int delta) {}
+	virtual void handleClick(uint menuItemIndex, const Common::Point &mousePos) = 0;
 	virtual const Common::String& getText() const = 0;
 protected:
 	BaseMenuSystem *_menuSystem;
@@ -72,7 +73,8 @@ public:
 	MenuSliderItem(BaseMenuSystem *menuSystem, const Common::String text, int sliderId, int maxValue, int defValue,
 		int x1, int y1, int x2, int y2);
 	void refresh();
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleSlider(int delta);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 	const Common::String& getText() const { return _sliderText; }
 protected:
 	Common::String _text;
@@ -115,6 +117,7 @@ class BaseMenuSystem {
 public:
 	BaseMenuSystem(IllusionsEngine *vm);
 	virtual ~BaseMenuSystem();
+	void playSoundEffect12();
 	void playSoundEffect13();
 	void playSoundEffect14();
 	void selectMenuChoiceIndex(uint choiceIndex);
@@ -194,6 +197,7 @@ protected:
 	bool calcMenuItemMousePos(uint menuItemIndex, Common::Point &pt);
 	bool calcMenuItemIndexAtPoint(Common::Point pt, uint &menuItemIndex);
 	void setMousePos(Common::Point &mousePos);
+	Common::Point getMousePos();
 	
 	void activateMenu(BaseMenu *menu);
 	void updateMenu(BaseMenu *menu);
@@ -231,7 +235,7 @@ protected:
 class MenuActionEnterMenu : public MenuActionItem {
 public:
 	MenuActionEnterMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _menuId;
 };
@@ -241,7 +245,7 @@ protected:
 class MenuActionLeaveMenu : public MenuActionItem {
 public:
 	MenuActionLeaveMenu(BaseMenuSystem *menuSystem, const Common::String text);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 };
 
 // Type 5: Return a menu choice index and exit the menu
@@ -249,7 +253,7 @@ public:
 class MenuActionReturnChoice : public MenuActionItem {
 public:
 	MenuActionReturnChoice(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _choiceIndex;
 };
@@ -259,7 +263,7 @@ protected:
 class MenuActionEnterQueryMenu : public MenuActionItem {
 public:
 	MenuActionEnterQueryMenu(BaseMenuSystem *menuSystem, const Common::String text, int menuId, uint confirmationChoiceIndex);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	int _menuId;
 	uint _confirmationChoiceIndex;
@@ -268,7 +272,7 @@ protected:
 class MenuActionLoadGame : public MenuActionItem {
 public:
 	MenuActionLoadGame(BaseMenuSystem *menuSystem, const Common::String text, uint choiceIndex);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 protected:
 	uint _choiceIndex;
 };
@@ -276,7 +280,7 @@ protected:
 class MenuActionRestoreDefaultSettings : public MenuActionItem {
 public:
 	MenuActionRestoreDefaultSettings(BaseMenuSystem *menuSystem, const Common::String text);
-	void executeAction(uint menuItemIndex, const Common::Point &mousePos);
+	void handleClick(uint menuItemIndex, const Common::Point &mousePos);
 };
 
 } // End of namespace Illusions
