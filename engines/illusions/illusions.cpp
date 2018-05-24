@@ -246,10 +246,6 @@ bool IllusionsEngine::calcPointDirection(Common::Point &srcPt, Common::Point &ds
 	return facing != 0;
 }
 
-void IllusionsEngine::playVideo(uint32 videoId, uint32 objectId, uint32 priority, uint32 threadId) {
-	// TODO
-}
-
 bool IllusionsEngine::isSoundActive() {
 	// TODO
 	return true;
