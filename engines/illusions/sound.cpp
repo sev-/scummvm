@@ -359,7 +359,6 @@ SoundMan::~SoundMan() {
 
 void SoundMan::update() {
 	updateMidi();
-	// TODO voc_testCued();
 	if (_musicNotifyThreadId && !_musicPlayer->isPlaying())
 		_vm->notifyThreadId(_musicNotifyThreadId);
 }

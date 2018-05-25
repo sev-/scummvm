@@ -321,7 +321,8 @@ void ScriptOpcodes_Duckman::opStartModalScene(ScriptThread *scriptThread, OpCall
 void ScriptOpcodes_Duckman::opExitModalScene(ScriptThread *scriptThread, OpCall &opCall) {
 	_vm->_input->discardAllEvents();
 	if (_vm->_scriptResource->_properties.get(0x000E0027)) {
-		// TODO _vm->startScriptThread2(0x10002, 0x20001, 0);
+		// NOTE This would switch to the debug menu which is not/won't be supported
+		// _vm->startScriptThread2(0x10002, 0x20001, 0);
 		opCall._result = kTSTerminate;
 	} else {
 		_vm->dumpCurrSceneFiles(_vm->getCurrentScene(), opCall._callerThreadId);
@@ -578,7 +579,7 @@ void ScriptOpcodes_Duckman::opStartCursorHoldingObject(ScriptThread *scriptThrea
 void ScriptOpcodes_Duckman::opPlayVideo(ScriptThread *scriptThread, OpCall &opCall) {
 	ARG_SKIP(2);
 	ARG_UINT32(videoId);
-#if 1 // TODO DEBUG Set to 0 to skip videos
+#if 1 // NOTE DEBUG Set to 0 to skip videos
 	_vm->playVideo(videoId, opCall._threadId);
 #else
 	//DEBUG Resume calling thread, later done by the video player

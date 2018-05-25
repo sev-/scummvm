@@ -88,7 +88,6 @@ Actor::Actor(IllusionsEngine *vm)
 		_subobjects[i] = 0;
 	_notifyThreadId1 = 0;
 	_notifyThreadId2 = 0;
-	_surfaceTextFlag = 0;
 	_entryTblPtr = 0;
 	_seqCodeIp = 0;
 	_sequenceId = 0;
@@ -130,16 +129,15 @@ void Actor::unpause() {
 
 void Actor::createSurface(SurfInfo &surfInfo) {
 	_surface = _vm->_screen->allocSurface(surfInfo);
-	if (_frameIndex) {
-		if (_surfaceTextFlag) {
-			/* TODO
-			Font *font = _vm->findFont(_fontId);
-			_surface->fillRect(Common::Rect(surfInfo._dimensions._width, surfInfo._dimensions._height), 0);
-			gfx_sub_40CA70(_surface, font, _field18C, _surfInfo._dimensions, _field198);
-			*/
+	if (_vm->getGameId() == kGameIdDuckman) {
+		if (_flags & 1) {
+			if (_frameIndex) {
+				_flags |= 0x2000;
+			}
 			_flags |= 0x4000;
 		}
-		else {
+	} else {
+		if (_frameIndex) {
 			_flags |= 0x2000;
 			_flags |= 0x4000;
 		}
@@ -193,10 +191,10 @@ Control::Control(IllusionsEngine *vm)
 	_pauseCtr = 0;
 	_priority = 0;
 	_objectId = 0;
-	_unkPt.x = 0;
-	_unkPt.y = 0;
-	_pt.x = 0;
-	_pt.y = 0;
+	_bounds._topLeft.x = 0;
+	_bounds._topLeft.y = 0;
+	_bounds._bottomRight.x = 0;
+	_bounds._bottomRight.y = 0;
 	_feetPt.x = 0;
 	_feetPt.y = 0;
 	_position.x = 0;
@@ -211,10 +209,11 @@ Control::~Control() {
 
 void Control::pause() {
 
-	_vm->_dict->setObjectControl(_objectId, 0);
-
-	if (_objectId == 0x40004)
-		_vm->setCursorControl(0);
+	if (_vm->getGameId() == kGameIdBBDOU || !(_flags & 4)) {
+		_vm->_dict->setObjectControl(_objectId, 0);
+		if (_objectId == 0x40004)
+			_vm->setCursorControl(0);
+	}
 
 	if (_actor && !(_actor->_flags & 0x0200))
 		_actor->destroySurface();
@@ -223,10 +222,11 @@ void Control::pause() {
 
 void Control::unpause() {
 
-	_vm->_dict->setObjectControl(_objectId, this);
-
-	if (_objectId == 0x40004)
-		_vm->setCursorControl(this);
+	if (_vm->getGameId() == kGameIdBBDOU || !(_flags & 4)) {
+		_vm->_dict->setObjectControl(_objectId, this);
+		if (_objectId == 0x40004)
+			_vm->setCursorControl(this);
+	}
   
 	if (_actor && !(_actor->_flags & 0x0200)) {
 		SurfInfo surfInfo;
@@ -314,11 +314,11 @@ void Control::deactivateObject() {
 }
 
 void Control::readPointsConfig(byte *pointsConfig) {
-	_unkPt.x = READ_LE_UINT16(pointsConfig + 0);
-	_unkPt.y = READ_LE_UINT16(pointsConfig + 2);
+	_bounds._topLeft.x = READ_LE_UINT16(pointsConfig + 0);
+	_bounds._topLeft.y = READ_LE_UINT16(pointsConfig + 2);
 	pointsConfig += 4;
-	_pt.x = READ_LE_UINT16(pointsConfig + 0);
-	_pt.y = READ_LE_UINT16(pointsConfig + 2);
+	_bounds._bottomRight.x = READ_LE_UINT16(pointsConfig + 0);
+	_bounds._bottomRight.y = READ_LE_UINT16(pointsConfig + 2);
 	pointsConfig += 4;
 	_feetPt.x = READ_LE_UINT16(pointsConfig + 0);
 	_feetPt.y = READ_LE_UINT16(pointsConfig + 2);
@@ -486,7 +486,7 @@ void Control::getCollisionRectAccurate(Common::Rect &collisionRect) {
 			-_position.x + _actor->_surfInfo._dimensions._width - 1,
 			-_position.y + _actor->_surfInfo._dimensions._height - 1);
 	} else {
-		collisionRect = Common::Rect(_unkPt.x, _unkPt.y, _pt.x, _pt.y);
+		collisionRect = Common::Rect(_bounds._topLeft.x, _bounds._topLeft.y, _bounds._bottomRight.x, _bounds._bottomRight.y);
 	}
 
 	if (_actor) {
@@ -507,7 +507,7 @@ void Control::getCollisionRectAccurate(Common::Rect &collisionRect) {
 }
 
 void Control::getCollisionRect(Common::Rect &collisionRect) {
-	collisionRect = Common::Rect(_unkPt.x, _unkPt.y, _pt.x, _pt.y);
+	collisionRect = Common::Rect(_bounds._topLeft.x, _bounds._topLeft.y, _bounds._bottomRight.x, _bounds._bottomRight.y);
 	if (_actor) {
 		if (_actor->_scale != 100) {
 			collisionRect.left = collisionRect.left * _actor->_scale / 100;
@@ -766,144 +766,143 @@ PointArray *Control::createPath(Common::Point destPt) {
 
 void Control::updateActorMovement(uint32 deltaTime) {
 	// TODO This needs some cleanup
-	// TODO Move while loop to caller
 
 	static const int16 kAngleTbl[] = {60, 0, 120, 0, 60, 0, 120, 0};
 	bool fastWalked = false;
 
 	while (1) {
 
-	if (!fastWalked && _vm->testMainActorFastWalk(this)) {
-		fastWalked = true;
-		disappearActor();
-		_actor->_flags |= 0x8000;
-		_actor->_seqCodeIp = 0;
-		deltaTime = 2;
-	}
-
-	if (_vm->testMainActorCollision(this))
-		break;
-
-	Common::Point prevPt;
-	if (_actor->_pathPointIndex == 0) {
-		if (_actor->_pathInitialPosFlag) {
-			_actor->_pathCtrX = 0;
-			_actor->_pathInitialPos = _actor->_position;
-			_actor->_pathInitialPosFlag = false;
-		}
-		prevPt = _actor->_pathInitialPos;
-	} else {
-		prevPt = (*_actor->_pathNode)[_actor->_pathPointIndex - 1];
-	}
-
-	Common::Point currPt = (*_actor->_pathNode)[_actor->_pathPointIndex];
-
-	int16 deltaX = currPt.x - prevPt.x;
-	int16 deltaY = currPt.y - prevPt.y;
-
-	if (!_actor->_pathFlag50) {
-
-		FP16 angle;
-		if (currPt.x == prevPt.x) {
-			if (prevPt.y >= currPt.y)
-				angle = fixedMul(-0x5A0000, 0x478);
-			else
-				angle = fixedMul(0x5A0000, 0x478);
-		} else {
-			angle = fixedAtan(fixedDiv(deltaY << 16, deltaX << 16));
-		}
-		_actor->_pathAngle = angle;
-
-		int16 v13 = (fixedTrunc(fixedMul(angle, 0x394BB8)) + 360) % 360;
-		if (deltaX >= 0)
-			v13 += 180;
-		v13 = (v13 + 90) % 360;
-		int16 v15 = kAngleTbl[0] / -2;
-		uint newFacing = 1;
-		for (uint i = 0; i < 8; ++i) {
-			v15 += kAngleTbl[i];
-			if (v13 < v15) {
-				newFacing = 1 << i;
-				break;
-			}
-		}
-		if (newFacing != _actor->_facing) {
-			refreshSequenceCode();
-			faceActor(newFacing);
+		if (!fastWalked && _vm->testMainActorFastWalk(this)) {
+			fastWalked = true;
+			disappearActor();
+			_actor->_flags |= 0x8000;
+			_actor->_seqCodeIp = 0;
+			deltaTime = 2;
 		}
 
-		_actor->_pathFlag50 = true;
-
-	}
-
-	FP16 deltaX24, deltaY24;
-
-	if (_actor->_flags & 0x0400) {
-
-		FP16 v20 = fixedMul((deltaTime + _actor->_pathCtrX) << 16, _actor->_pathCtrY << 16);
-		FP16 v21 = fixedDiv(v20, 100 << 16);
-		FP16 v22 = fixedMul(v21, _actor->_scale << 16);
-		FP16 v23 = fixedDiv(v22, 100 << 16);
-		_actor->_seqCodeValue1 = 100 * _actor->_pathCtrY * deltaTime / 100;
-		if (v23) {
-			FP16 prevDistance = fixedDistance(prevPt.x << 16, prevPt.y << 16, _actor->_posXShl, _actor->_posYShl);
-			FP16 distance = prevDistance + v23;
-			if (prevPt.x > currPt.x)
-				distance = -distance;
-			deltaX24 = fixedMul(fixedCos(_actor->_pathAngle), distance);
-			deltaY24 = fixedMul(fixedSin(_actor->_pathAngle), distance);
-		} else {
-			deltaX24 = _actor->_posXShl - (prevPt.x << 16);
-			deltaY24 = _actor->_posYShl - (prevPt.y << 16);
-		}
-	} else {
-		if (100 * (int)deltaTime <= _actor->_seqCodeValue2)
+		if (_vm->testMainActorCollision(this))
 			break;
-		deltaX24 = deltaX << 16;
-		deltaY24 = deltaY << 16;
-	}
 
-	if (ABS(deltaX24) < ABS(deltaX << 16) ||
-		ABS(deltaY24) < ABS(deltaY << 16)) {
-		FP16 newX = (prevPt.x << 16) + deltaX24;
-		FP16 newY = (prevPt.y << 16) + deltaY24;
-		if (newX == _actor->_posXShl &&	newY == _actor->_posYShl) {
-			_actor->_pathCtrX += deltaTime;
+		Common::Point prevPt;
+		if (_actor->_pathPointIndex == 0) {
+			if (_actor->_pathInitialPosFlag) {
+				_actor->_pathCtrX = 0;
+				_actor->_pathInitialPos = _actor->_position;
+				_actor->_pathInitialPosFlag = false;
+			}
+			prevPt = _actor->_pathInitialPos;
 		} else {
-			_actor->_pathCtrX = 0;
-			_actor->_posXShl = newX;
-			_actor->_posYShl = newY;
-			_actor->_position.x = fixedTrunc(_actor->_posXShl);
-			_actor->_position.y = fixedTrunc(_actor->_posYShl);
+			prevPt = (*_actor->_pathNode)[_actor->_pathPointIndex - 1];
 		}
-	} else {
-		_actor->_position = currPt;
-		_actor->_posXShl = _actor->_position.x << 16;
-		_actor->_posYShl = _actor->_position.y << 16;
-		--_actor->_pathPointsCount;
-		++_actor->_pathPointIndex;
-		++_actor->_pathPoints;
-		_actor->_pathInitialPosFlag = true;
-		if (_actor->_pathPointsCount == 0) {
-			if (_actor->_flags & 0x0400) {
-				delete _actor->_pathNode;
-				_actor->_flags &= ~0x0400;
-			}
-			_actor->_pathNode = 0;
-			_actor->_pathPoints = 0;
-			_actor->_pathPointsCount = 0;
-			_actor->_pathPointIndex = 0;
-			if (_actor->_notifyId3C) {
-				_vm->notifyThreadId(_actor->_notifyId3C);
-				_actor->_walkCallerThreadId1 = 0;
-			}
-			fastWalked = false;
-		}
-		_actor->_pathFlag50 = false;
-	}
 
-	if (!fastWalked)
-		break;
+		Common::Point currPt = (*_actor->_pathNode)[_actor->_pathPointIndex];
+
+		int16 deltaX = currPt.x - prevPt.x;
+		int16 deltaY = currPt.y - prevPt.y;
+
+		if (!_actor->_pathFlag50) {
+
+			FP16 angle;
+			if (currPt.x == prevPt.x) {
+				if (prevPt.y >= currPt.y)
+					angle = fixedMul(-0x5A0000, 0x478);
+				else
+					angle = fixedMul(0x5A0000, 0x478);
+			} else {
+				angle = fixedAtan(fixedDiv(deltaY << 16, deltaX << 16));
+			}
+			_actor->_pathAngle = angle;
+
+			int16 v13 = (fixedTrunc(fixedMul(angle, 0x394BB8)) + 360) % 360;
+			if (deltaX >= 0)
+				v13 += 180;
+			v13 = (v13 + 90) % 360;
+			int16 v15 = kAngleTbl[0] / -2;
+			uint newFacing = 1;
+			for (uint i = 0; i < 8; ++i) {
+				v15 += kAngleTbl[i];
+				if (v13 < v15) {
+					newFacing = 1 << i;
+					break;
+				}
+			}
+			if (newFacing != _actor->_facing) {
+				refreshSequenceCode();
+				faceActor(newFacing);
+			}
+
+			_actor->_pathFlag50 = true;
+
+		}
+
+		FP16 deltaX24, deltaY24;
+
+		if (_actor->_flags & 0x0400) {
+
+			FP16 v20 = fixedMul((deltaTime + _actor->_pathCtrX) << 16, _actor->_pathCtrY << 16);
+			FP16 v21 = fixedDiv(v20, 100 << 16);
+			FP16 v22 = fixedMul(v21, _actor->_scale << 16);
+			FP16 v23 = fixedDiv(v22, 100 << 16);
+			_actor->_seqCodeValue1 = 100 * _actor->_pathCtrY * deltaTime / 100;
+			if (v23) {
+				FP16 prevDistance = fixedDistance(prevPt.x << 16, prevPt.y << 16, _actor->_posXShl, _actor->_posYShl);
+				FP16 distance = prevDistance + v23;
+				if (prevPt.x > currPt.x)
+					distance = -distance;
+				deltaX24 = fixedMul(fixedCos(_actor->_pathAngle), distance);
+				deltaY24 = fixedMul(fixedSin(_actor->_pathAngle), distance);
+			} else {
+				deltaX24 = _actor->_posXShl - (prevPt.x << 16);
+				deltaY24 = _actor->_posYShl - (prevPt.y << 16);
+			}
+		} else {
+			if (100 * (int)deltaTime <= _actor->_seqCodeValue2)
+				break;
+			deltaX24 = deltaX << 16;
+			deltaY24 = deltaY << 16;
+		}
+
+		if (ABS(deltaX24) < ABS(deltaX << 16) ||
+			ABS(deltaY24) < ABS(deltaY << 16)) {
+			FP16 newX = (prevPt.x << 16) + deltaX24;
+			FP16 newY = (prevPt.y << 16) + deltaY24;
+			if (newX == _actor->_posXShl &&	newY == _actor->_posYShl) {
+				_actor->_pathCtrX += deltaTime;
+			} else {
+				_actor->_pathCtrX = 0;
+				_actor->_posXShl = newX;
+				_actor->_posYShl = newY;
+				_actor->_position.x = fixedTrunc(_actor->_posXShl);
+				_actor->_position.y = fixedTrunc(_actor->_posYShl);
+			}
+		} else {
+			_actor->_position = currPt;
+			_actor->_posXShl = _actor->_position.x << 16;
+			_actor->_posYShl = _actor->_position.y << 16;
+			--_actor->_pathPointsCount;
+			++_actor->_pathPointIndex;
+			++_actor->_pathPoints;
+			_actor->_pathInitialPosFlag = true;
+			if (_actor->_pathPointsCount == 0) {
+				if (_actor->_flags & 0x0400) {
+					delete _actor->_pathNode;
+					_actor->_flags &= ~0x0400;
+				}
+				_actor->_pathNode = 0;
+				_actor->_pathPoints = 0;
+				_actor->_pathPointsCount = 0;
+				_actor->_pathPointIndex = 0;
+				if (_actor->_notifyId3C) {
+					_vm->notifyThreadId(_actor->_notifyId3C);
+					_actor->_walkCallerThreadId1 = 0;
+				}
+				fastWalked = false;
+			}
+			_actor->_pathFlag50 = false;
+		}
+
+		if (!fastWalked)
+			break;
 
 	}
 
@@ -1098,10 +1097,10 @@ void Controls::placeSequenceLessActor(uint32 objectId, Common::Point placePt, Wi
 	control->_flags = 0;
 	control->_priority = priority;
 	control->_objectId = objectId;
-	control->_unkPt.x = 0;
-	control->_unkPt.y = 0;
-	control->_pt.y = dimensions._height - 1;
-	control->_pt.x = dimensions._width - 1;
+	control->_bounds._topLeft.x = 0;
+	control->_bounds._topLeft.y = 0;
+	control->_bounds._bottomRight.x = dimensions._width - 1;
+	control->_bounds._bottomRight.y = dimensions._height - 1;
 	control->_feetPt.x = dimensions._width / 2;
 	control->_feetPt.y = dimensions._height / 2;
 	control->_position.x = 0;
@@ -1127,11 +1126,11 @@ void Controls::placeSequenceLessActor(uint32 objectId, Common::Point placePt, Wi
 void Controls::placeActorLessObject(uint32 objectId, Common::Point feetPt, Common::Point pt, int16 priority, uint flags) {
 	Control *control = newControl();
 	control->_flags = flags;
-	control->_unkPt = feetPt;
 	control->_feetPt = feetPt;
 	control->_priority = priority;
 	control->_objectId = objectId;
-	control->_pt = pt;
+	control->_bounds._topLeft = feetPt;
+	control->_bounds._bottomRight = pt;
 	control->_position.x = 0;
 	control->_position.y = 0;
 	control->_actorTypeId = 0;
@@ -1479,10 +1478,10 @@ uint32 Controls::newTempObjectId() {
 
 void Controls::destroyControlInternal(Control *control) {
 
-	if (!(control->_flags & 4) && control->_pauseCtr <= 0)
+	if ((_vm->getGameId() == kGameIdBBDOU || !(control->_flags & 4)) && control->_pauseCtr <= 0)
 		_vm->_dict->setObjectControl(control->_objectId, 0);
 
-	if (!(control->_flags & 4) && control->_objectId == 0x40004 && control->_pauseCtr <= 0)
+	if ((_vm->getGameId() == kGameIdBBDOU || !(control->_flags & 4)) && control->_objectId == 0x40004 && control->_pauseCtr <= 0)
 		_vm->setCursorControl(0);
 
 	if (control->_actor) {
@@ -1490,10 +1489,6 @@ void Controls::destroyControlInternal(Control *control) {
 			delete control->_actor->_pathNode;
 		if (!(control->_actor->_flags & 0x200))
 			control->_actor->destroySurface();
-		/* TODO
-		if (control->_actor->_field2)
-			largeObj_sub_4061E0();
-		*/
 		delete control->_actor;
 		control->_actor = 0;
 	}
