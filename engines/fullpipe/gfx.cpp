@@ -128,7 +128,7 @@ bool PictureObject::load(MfcArchive &file, bool bigPicture) {
 	_ox2 = _ox;
 	_oy2 = _oy;
 
-#if 0
+#if 1
 	_picture->displayPicture();
 #endif
 

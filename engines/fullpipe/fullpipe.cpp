@@ -270,9 +270,31 @@ Common::Error FullpipeEngine::run() {
 
 	_isSaveAllowed = false;
 
-	NGIArchive arch("3896.nl");
+#if 0
+	_gameProjectVersion = 12;
+	NGIArchive arch("0858.nl");
+
+	StaticANIObject st;
+
+	Common::SeekableReadStream *file = arch.createReadStreamForMember("53215323.STA");
+
+	debug("File size: %d", file->size());
+
+	byte buf[512];
+
+	file->read(buf, 512);
+
+	//Common::hexdump(buf, 512);
+	file->seek(0);
+
+	MfcArchive archive(file);
+
+	st.load(archive);
+
+	//pic.displayPicture();
 
 	return Common::kNoError;
+#endif
 
 	if (debugChannelSet(-1, kDebugXML))
 		loadGameObjH();
