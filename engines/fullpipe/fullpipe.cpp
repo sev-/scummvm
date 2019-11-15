@@ -43,6 +43,8 @@
 #include "fullpipe/console.h"
 #include "fullpipe/constants.h"
 
+#include "fullpipe/ngiarchive.h"
+
 namespace Fullpipe {
 
 FullpipeEngine *g_fp = nullptr;
@@ -267,6 +269,10 @@ Common::Error FullpipeEngine::run() {
 	_globalPalette = &_defaultPalette;
 
 	_isSaveAllowed = false;
+
+	NGIArchive arch("3896.nl");
+
+	return Common::kNoError;
 
 	if (debugChannelSet(-1, kDebugXML))
 		loadGameObjH();
