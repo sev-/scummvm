@@ -112,6 +112,8 @@ public:
 
 	int _x, _y;
 
+	void displayPicture();
+
 protected:
 	Common::Rect _rect;
 	Common::ScopedPtr<Bitmap> _convertedBitmap;
@@ -124,7 +126,6 @@ protected:
 	int _alpha;
 	Palette _paletteData;
 
-	void displayPicture();
 };
 
 class BigPicture : public Picture {
