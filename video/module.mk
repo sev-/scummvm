@@ -10,7 +10,9 @@ MODULE_OBJS := \
 	psx_decoder.o \
 	qt_decoder.o \
 	smk_decoder.o \
-	video_decoder.o
+	video_decoder.o \
+	mkv/mkvparser.o \
+	mkv/mkvreader.o
 
 ifdef USE_BINK
 MODULE_OBJS += \
