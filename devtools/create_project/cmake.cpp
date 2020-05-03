@@ -49,6 +49,7 @@ const CMakeProvider::Library *CMakeProvider::getLibraryFromFeature(const char *f
 		{ "vorbis",    kSDLVersionAny, 0,              0,          0,                       0,                     "vorbisfile vorbis" },
 		{ "tremor",    kSDLVersionAny, 0,              0,          0,                       0,                     "vorbisidec" },
 		{ "theora",    kSDLVersionAny, 0,              0,          0,                       0,                     "theoradec"  },
+		{ "vpx",       kSDLVersionAny, 0,              0,          0,                       0,                     "vpx"        },
 		{ "fluidsynth",kSDLVersionAny, 0,              0,          0,                       0,                     "fluidsynth" },
 		{ "faad",      kSDLVersionAny, 0,              0,          0,                       0,                     "faad"       },
 		{ "fribidi",   kSDLVersionAny, 0,              0,          0,                       0,                     "fribidi"    },

@@ -1027,6 +1027,7 @@ const Feature s_features[] = {
 	{      "faad",        "USE_FAAD", true, false, "AAC support" },
 	{     "mpeg2",       "USE_MPEG2", true, false, "MPEG-2 support" },
 	{    "theora",   "USE_THEORADEC", true, true,  "Theora decoding support" },
+	{       "vpx",         "USE_VPX", true, false, "VP8/VP9 decoding support" },
 	{  "freetype",   "USE_FREETYPE2", true, true,  "FreeType support" },
 	{      "jpeg",        "USE_JPEG", true, true,  "libjpeg support" },
 	{"fluidsynth",  "USE_FLUIDSYNTH", true, true,  "FluidSynth support" },
