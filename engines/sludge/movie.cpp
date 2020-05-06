@@ -335,6 +335,9 @@ int playMovie(int fileNumber) {
 
 	decoder.loadStream(&video);
 
+	g_sludge->_resMan->finishAccess();
+	setResourceForFatal(-1);
+
 #if 0
 	if (specialSettings & SPECIAL_SILENT)
 	return 0;
