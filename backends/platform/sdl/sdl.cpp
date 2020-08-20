@@ -42,7 +42,6 @@
 #include "backends/events/default/default-events.h"
 #include "backends/events/sdl/legacy-sdl-events.h"
 #include "backends/keymapper/hardware-input.h"
-#include "backends/mutex/sdl/sdl-mutex.h"
 #include "backends/timer/sdl/sdl-timer.h"
 #include "backends/graphics/surfacesdl/surfacesdl-graphics.h"
 #ifdef USE_OPENGL
@@ -123,8 +122,6 @@ OSystem_SDL::~OSystem_SDL() {
 #endif
 
 	_timerManager = 0;
-	delete _mutexManager;
-	_mutexManager = 0;
 
 	delete _logger;
 	_logger = 0;
@@ -147,11 +144,6 @@ void OSystem_SDL::init() {
 
 	// Disable OS cursor
 	SDL_ShowCursor(SDL_DISABLE);
-
-	// Creates the early needed managers, if they don't exist yet
-	// (we check for this to allow subclasses to provide their own).
-	if (_mutexManager == 0)
-		_mutexManager = new SdlMutexManager();
 
 	if (_window == 0)
 		_window = new SdlWindow();

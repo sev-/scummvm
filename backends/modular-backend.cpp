@@ -23,7 +23,6 @@
 #include "backends/modular-backend.h"
 
 #include "backends/graphics/graphics.h"
-#include "backends/mutex/mutex.h"
 #include "gui/EventRecorder.h"
 
 #include "audio/mixer.h"
@@ -32,7 +31,6 @@
 
 ModularBackend::ModularBackend()
 	:
-	_mutexManager(0),
 	_graphicsManager(0),
 	_mixer(0) {
 
@@ -43,11 +41,8 @@ ModularBackend::~ModularBackend() {
 	_graphicsManager = 0;
 	delete _mixer;
 	_mixer = 0;
-	// _timerManager needs to be deleted before _mutexManager to avoid a crash.
 	delete _timerManager;
 	_timerManager = 0;
-	delete _mutexManager;
-	_mutexManager = 0;
 }
 
 bool ModularBackend::hasFeature(Feature f) {
@@ -249,26 +244,6 @@ void ModularBackend::setMouseCursor(const void *buf, uint w, uint h, int hotspot
 
 void ModularBackend::setCursorPalette(const byte *colors, uint start, uint num) {
 	_graphicsManager->setCursorPalette(colors, start, num);
-}
-
-OSystem::MutexRef ModularBackend::createMutex() {
-	assert(_mutexManager);
-	return _mutexManager->createMutex();
-}
-
-void ModularBackend::lockMutex(MutexRef mutex) {
-	assert(_mutexManager);
-	_mutexManager->lockMutex(mutex);
-}
-
-void ModularBackend::unlockMutex(MutexRef mutex) {
-	assert(_mutexManager);
-	_mutexManager->unlockMutex(mutex);
-}
-
-void ModularBackend::deleteMutex(MutexRef mutex) {
-	assert(_mutexManager);
-	_mutexManager->deleteMutex(mutex);
 }
 
 Audio::Mixer *ModularBackend::getMixer() {

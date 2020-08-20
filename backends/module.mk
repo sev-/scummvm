@@ -143,7 +143,6 @@ MODULE_OBJS += \
 	graphics/sdl/sdl-graphics.o \
 	graphics/surfacesdl/surfacesdl-graphics.o \
 	mixer/sdl/sdl-mixer.o \
-	mutex/sdl/sdl-mutex.o \
 	plugins/sdl/sdl-provider.o \
 	timer/sdl/sdl-timer.o
 

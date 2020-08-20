@@ -20,27 +20,26 @@
  *
  */
 
+#include "common/scummsys.h"
 #include "common/debug.h"
 #include "common/mutex.h"
-#include "common/system.h"
 
 namespace Common {
 
 Mutex::Mutex() {
-	assert(g_system);
-	_mutex = g_system->createMutex();
+	_mutex = CREATE_MUTEX();
 }
 
 Mutex::~Mutex() {
-	g_system->deleteMutex(_mutex);
+	DELETE_MUTEX(_mutex);
 }
 
 void Mutex::lock() {
-	g_system->lockMutex(_mutex);
+	LOCK_MUTEX(_mutex);
 }
 
 void Mutex::unlock() {
-	g_system->unlockMutex(_mutex);
+	UNLOCK_MUTEX(_mutex);
 }
 
 
@@ -65,14 +64,14 @@ void StackLock::lock() {
 	if (_mutexName != nullptr)
 		debug(6, "Locking mutex %s", _mutexName);
 
-	g_system->lockMutex(_mutex);
+	LOCK_MUTEX(_mutex);
 }
 
 void StackLock::unlock() {
 	if (_mutexName != nullptr)
 		debug(6, "Unlocking mutex %s", _mutexName);
 
-	g_system->unlockMutex(_mutex);
+	UNLOCK_MUTEX(_mutex);
 }
 
 } // End of namespace Common

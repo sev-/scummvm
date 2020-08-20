@@ -25,6 +25,7 @@
 #if defined(SDL_BACKEND)
 #include "backends/graphics/surfacesdl/surfacesdl-graphics.h"
 #include "backends/events/sdl/sdl-events.h"
+#include "backends/mutex/mutex.h"
 #include "common/config-manager.h"
 #include "common/mutex.h"
 #include "common/textconsole.h"
@@ -175,7 +176,7 @@ SurfaceSdlGraphicsManager::SurfaceSdlGraphicsManager(SdlEventSource *sdlEventSou
 
 	_mouseBackup.x = _mouseBackup.y = _mouseBackup.w = _mouseBackup.h = 0;
 
-	_graphicsMutex = g_system->createMutex();
+	_graphicsMutex = CREATE_MUTEX();
 
 #ifdef USE_SDL_DEBUG_FOCUSRECT
 	if (ConfMan.hasKey("use_sdl_debug_focusrect"))
@@ -214,7 +215,7 @@ SurfaceSdlGraphicsManager::~SurfaceSdlGraphicsManager() {
 	if (_mouseSurface) {
 		SDL_FreeSurface(_mouseSurface);
 	}
-	g_system->deleteMutex(_graphicsMutex);
+	DELETE_MUTEX(_graphicsMutex);
 	free(_currentPalette);
 	free(_cursorPalette);
 	delete[] _mouseData;
@@ -1518,7 +1519,7 @@ Graphics::Surface *SurfaceSdlGraphicsManager::lockScreen() {
 	assert(_transactionMode == kTransactionNone);
 
 	// Lock the graphics mutex
-	g_system->lockMutex(_graphicsMutex);
+	LOCK_MUTEX(_graphicsMutex);
 
 	// paranoia check
 	assert(!_screenIsLocked);
@@ -1547,7 +1548,7 @@ void SurfaceSdlGraphicsManager::unlockScreen() {
 	_forceRedraw = true;
 
 	// Finally unlock the graphics mutex
-	g_system->unlockMutex(_graphicsMutex);
+	UNLOCK_MUTEX(_graphicsMutex);
 }
 
 void SurfaceSdlGraphicsManager::fillScreen(uint32 col) {

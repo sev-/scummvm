@@ -1199,38 +1199,6 @@ public:
 
 	typedef struct OpaqueMutex *MutexRef;
 
-	/**
-	 * Create a new mutex.
-	 * @return the newly created mutex, or 0 if an error occurred.
-	 */
-	virtual MutexRef createMutex() = 0;
-
-	/**
-	 * Lock the given mutex.
-	 *
-	 * @note ScummVM code assumes that the mutex implementation supports
-	 * recursive locking. That is, a thread may lock a mutex twice w/o
-	 * deadlocking. In case of a multilock, the mutex has to be unlocked
-	 * as many times as it was locked befored it really becomes unlocked.
-	 *
-	 * @param mutex	the mutex to lock.
-	 */
-	virtual void lockMutex(MutexRef mutex) = 0;
-
-	/**
-	 * Unlock the given mutex.
-	 * @param mutex	the mutex to unlock.
-	 */
-	virtual void unlockMutex(MutexRef mutex) = 0;
-
-	/**
-	 * Delete the given mutex. Make sure the mutex is unlocked before you delete it.
-	 * If you delete a locked mutex, the behavior is undefined, in particular, your
-	 * program may crash.
-	 * @param mutex	the mutex to delete.
-	 */
-	virtual void deleteMutex(MutexRef mutex) = 0;
-
 	//@}
 
 

@@ -40,18 +40,18 @@ void lockMemoryPoolMutex() {
 	if (!g_system || !g_system->backendInitialized())
 		return;
 	if (!g_refCountPoolMutex)
-		g_refCountPoolMutex = g_system->createMutex();
-	g_system->lockMutex(g_refCountPoolMutex);
+		g_refCountPoolMutex = CREATE_MUTEX();
+	LOCK_MUTEX(g_refCountPoolMutex);
 }
 
 void unlockMemoryPoolMutex() {
 	if (g_refCountPoolMutex)
-		g_system->unlockMutex(g_refCountPoolMutex);
+		UNLOCK_MUTEX(g_refCountPoolMutex);
 }
 
 void String::releaseMemoryPoolMutex() {
 	if (g_refCountPoolMutex){
-		g_system->deleteMutex(g_refCountPoolMutex);
+		DELETE_MUTEX(g_refCountPoolMutex);
 		g_refCountPoolMutex = nullptr;
 	}
 }

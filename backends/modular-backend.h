@@ -26,7 +26,6 @@
 #include "backends/base-backend.h"
 
 class GraphicsManager;
-class MutexManager;
 
 /**
  * Base class for modular backends.
@@ -115,16 +114,6 @@ public:
 
 	//@}
 
-	/** @name Mutex handling */
-	//@{
-
-	virtual MutexRef createMutex() override final;
-	virtual void lockMutex(MutexRef mutex) override final;
-	virtual void unlockMutex(MutexRef mutex) override final;
-	virtual void deleteMutex(MutexRef mutex) override final;
-
-	//@}
-
 	/** @name Sound */
 	//@{
 
@@ -144,7 +133,6 @@ protected:
 	/** @name Managers variables */
 	//@{
 
-	MutexManager *_mutexManager;
 	GraphicsManager *_graphicsManager;
 	Audio::Mixer *_mixer;
 
