@@ -613,7 +613,9 @@ int Channel::mix(int16 *data, uint len) {
 	} else {
 		assert(_converter);
 		_samplesConsumed = _samplesDecoded;
+		LOCK_MUTEX(g_system_mutex);
 		_mixerTimeStamp = g_system->getMillis(true);
+		UNLOCK_MUTEX(g_system_mutex);
 		_pauseTime = 0;
 		res = _converter->flow(*_stream, data, len, _volL, _volR);
 		_samplesDecoded += res;

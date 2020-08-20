@@ -38,6 +38,7 @@
 #include "backends/timer/default/default-timer.h"
 
 OSystem *g_system = nullptr;
+OSystem::MutexRef g_system_mutex = 0;
 
 OSystem::OSystem() {
 	_audiocdManager = nullptr;
@@ -122,9 +123,15 @@ void OSystem::initBackend() {
 }
 
 void OSystem::destroy() {
+	LOCK_MUTEX(g_system_mutex);
+
 	_backendInitialized = false;
 	Common::String::releaseMemoryPoolMutex();
+
 	delete this;
+
+	g_system = nullptr;
+	UNLOCK_MUTEX(g_system_mutex);
 }
 
 bool OSystem::setGraphicsMode(const char *name) {

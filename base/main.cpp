@@ -383,6 +383,7 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 
 	// Verify that the backend has been initialized (i.e. g_system has been set).
 	assert(g_system);
+	g_system_mutex = CREATE_MUTEX();
 	OSystem &system = *g_system;
 
 	// Register config manager defaults
@@ -674,6 +675,8 @@ extern "C" int scummvm_main(int argc, const char * const argv[]) {
 #endif
 	EngineManager::destroy();
 	Graphics::YUVToRGBManager::destroy();
+
+	DELETE_MUTEX(g_system_mutex);
 
 	return 0;
 }

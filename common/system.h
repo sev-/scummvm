@@ -1520,5 +1520,6 @@ protected:
 
 /** The global OSystem instance. Initialized in main(). */
 extern OSystem *g_system;
+extern OSystem::MutexRef g_system_mutex;
 
 #endif
