@@ -64,8 +64,6 @@ GuiManager::GuiManager() : _redrawStatus(kRedrawDisabled), _stateIsSaved(false),
 
 	_system = g_system;
 	_lastScreenChangeID = _system->getScreenChangeID();
-	_width = _system->getOverlayWidth();
-	_height = _system->getOverlayHeight();
 
 	computeScaleFactor();
 
@@ -588,8 +586,6 @@ bool GuiManager::checkScreenChange() {
 
 void GuiManager::screenChange() {
 	_lastScreenChangeID = _system->getScreenChangeID();
-	_width = _system->getOverlayWidth();
-	_height = _system->getOverlayHeight();
 
 	computeScaleFactor();
 
