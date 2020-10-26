@@ -111,6 +111,8 @@ ThemeParser::ThemeParser(ThemeEngine *parent) : XMLParser() {
 	_defaultStepGlobal = defaultDrawStep();
 	_defaultStepLocal = nullptr;
 	_theme = parent;
+
+	_baseWidth = _baseHeight = 0;
 }
 
 ThemeParser::~ThemeParser() {
@@ -904,7 +906,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 					return false;
 
 				if (wtoken.lastChar() == '%')
-					width = g_system->getOverlayWidth() * width / 100;
+					width = _baseWidth * width / 100;
 			}
 
 			htoken = tokenizer.nextToken();
@@ -918,7 +920,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 					return false;
 
 				if (htoken.lastChar() == '%')
-					height = g_system->getOverlayHeight() * height / 100;
+					height = _baseHeight * height / 100;
 			}
 
 			if (!tokenizer.empty())
@@ -944,7 +946,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 				if (!_theme->getEvaluator()->hasVar(var + "Width"))
 					return false;
 
-				x = (g_system->getOverlayWidth() / 2) - (_theme->getEvaluator()->getVar(var + "Width") / 2);
+				x = (_baseWidth / 2) - (_theme->getEvaluator()->getVar(var + "Width") / 2);
 
 			} else if (_theme->getEvaluator()->hasVar(xpos)) {
 				x = _theme->getEvaluator()->getVar(xpos);
@@ -955,7 +957,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 					return false;
 
 				if (xpos.lastChar() == 'r')
-					x = g_system->getOverlayWidth() - x;
+					x = _baseWidth - x;
 			}
 
 			ypos = tokenizer.nextToken();
@@ -964,7 +966,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 				if (!_theme->getEvaluator()->hasVar(var + "Height"))
 					return false;
 
-				y = (g_system->getOverlayHeight() / 2) - (_theme->getEvaluator()->getVar(var + "Height") / 2);
+				y = (_baseHeight / 2) - (_theme->getEvaluator()->getVar(var + "Height") / 2);
 
 			} else if (_theme->getEvaluator()->hasVar(ypos)) {
 				y = _theme->getEvaluator()->getVar(ypos);
@@ -975,7 +977,7 @@ bool ThemeParser::parseCommonLayoutProps(ParserNode *node, const Common::String 
 					return false;
 
 				if (ypos.lastChar() == 'b')
-					y = g_system->getOverlayHeight() - y;
+					y = _baseHeight - y;
 			}
 
 			if (!tokenizer.empty())
@@ -1029,9 +1031,9 @@ bool ThemeParser::resolutionCheck(const Common::String &resolution) {
 		}
 
 		if (cur[0] == 'x') {
-			val = g_system->getOverlayWidth();
+			val = _baseWidth;
 		} else if (cur[0] == 'y') {
-			val = g_system->getOverlayHeight();
+			val = _baseHeight;
 		} else {
 			warning("Error parsing theme 'resolution' token '%s'", resolution.c_str());
 			return false;
