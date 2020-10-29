@@ -281,7 +281,7 @@ void OpenGLSdlGraphicsManager::updateScreen() {
 void OpenGLSdlGraphicsManager::notifyVideoExpose() {
 }
 
-void OpenGLSdlGraphicsManager::notifyResize(const int width, const int height) {
+void OpenGLSdlGraphicsManager::notifyResize(const int w, const int h) {
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	// We sometime get outdated resize events from SDL2. So check that the size we get
 	// is the actual current window size. If not ignore the resize.
@@ -292,9 +292,14 @@ void OpenGLSdlGraphicsManager::notifyResize(const int width, const int height) {
 	// event is processed after recreating the window at the new resolution.
 	int currentWidth, currentHeight;
 	getWindowSizeFromSdl(&currentWidth, &currentHeight);
+	uint scale;
+	getDpiScalingFactor(&scale);
+	int width = w * scale;
+	int height = h * scale;
+	debug(3, "req: %d x %d  cur: %d x %d, scale: %d", width, height, currentWidth, currentHeight, scale);
 	if (width != currentWidth || height != currentHeight)
 		return;
-	// TODO: Implement high DPI support
+
 	handleResize(width, height, 90, 90);
 #else
 	if (!_ignoreResizeEvents && _hwScreen && !(_hwScreen->flags & SDL_FULLSCREEN)) {
@@ -416,7 +421,8 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 		_glContext = nullptr;
 	}
 
-	uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+	uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
 	if (_wantsFullScreen) {
 		// On Linux/X11, when toggling to fullscreen, the window manager saves
 		// the window size to be able to restore it when going back to windowed mode.
@@ -453,8 +459,8 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 	notifyContextCreate(rgba8888, rgba8888);
 	int actualWidth, actualHeight;
 	getWindowSizeFromSdl(&actualWidth, &actualHeight);
-	// TODO: Implement high DPI support
-	handleResize(actualWidth, actualHeight, 90, 90);
+
+	handleResize(actualWidth, actualHeight, 72, 72);
 	return true;
 #else
 	// WORKAROUND: Working around infamous SDL bugs when switching
@@ -501,6 +507,7 @@ bool OpenGLSdlGraphicsManager::setupMode(uint width, uint height) {
 
 	if (_hwScreen) {
 		notifyContextCreate(rgba8888, rgba8888);
+		// TODO: hidpi
 		handleResize(_hwScreen->w, _hwScreen->h, 90, 90);
 	}
 
