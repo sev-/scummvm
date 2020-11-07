@@ -318,10 +318,11 @@ public:
 	/** Default destructor */
 	~ThemeEngine();
 
+	void setBaseResolution(int w, int h, float s);
 	bool init();
 	void clearAll();
 
-	void refresh(int16 baseWidth, int16 baseHeight, float scaleFactor);
+	void refresh();
 	void enable();
 
 	void showCursor();
@@ -725,6 +726,9 @@ protected:
 
 	/** Current graphics mode */
 	GraphicsMode _graphicsMode;
+
+	int16 _baseWidth, _baseHeight;
+	float _scaleFactor;
 
 	/** Font info. */
 	const Graphics::Font *_font;
