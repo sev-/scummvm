@@ -638,6 +638,9 @@ void GuiManager::processEvent(const Common::Event &event, Dialog *const activeDi
 		if (mouse.x != _lastMousePosition.x || mouse.y != _lastMousePosition.y) {
 			setLastMousePos(mouse.x, mouse.y);
 		}
+		redraw();
+		_system->updateScreen();
+		g_system->delayMillis(5);
 
 		break;
 		// We don't distinguish between mousebuttons (for now at least)
