@@ -179,7 +179,7 @@ void DatFile::load(const char *filename) {
 		}
 		fd.read(_animCode[type].code, codeSize);
 	}
-	debug("%08X", fd.pos());
+	debug("%08lX", fd.pos());
 
 	// Load AdLib music
 	_musicItemsCount = fd.readUint32LE();

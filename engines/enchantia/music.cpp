@@ -125,7 +125,7 @@ void AdlibMusicPlayer::play(const byte *data, int size) {
 		track.loopCounter = 0;
 		track.currBaseNote = 0;
 		if (trackOffs != 0xFFFF)
-			track.codeOffset = (uint16*)(_data + trackOffs);
+			track.codeOffset = (const uint16 *)(_data + trackOffs);
 		else
 			track.codeOffset = NULL;
 	}
@@ -223,7 +223,7 @@ void AdlibMusicPlayer::processTrack(uint trackNum) {
 						// Jump
 						uint16 jumpOffs = READ_LE_UINT16(track.codeOffset);
 						debug(2, "[Track %02d] Jump to %04X", trackNum, jumpOffs);
-						track.codeOffset = (uint16*)(_data + jumpOffs);
+						track.codeOffset = (const uint16 *)(_data + jumpOffs);
 					} else {
 						// Play notes
 						debug(2, "[Track %02d] Play notes from %04X", trackNum, trackCmd);
