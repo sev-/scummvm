@@ -33,10 +33,7 @@ const ADGameDescription gameDescriptions[] = {
 	{
 		"enchantia",
 		"",
-		{
-			{"title.dat", 0, "839b7c735f720bea86623d0599d5025c", 47064},
-			AD_LISTEND
-		},
+		AD_ENTRY1s("title.dat","839b7c735f720bea86623d0599d5025c", 47064),
 		Common::EN_ANY,
 		Common::kPlatformDOS,
 		ADGF_NO_FLAGS,
