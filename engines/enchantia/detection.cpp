@@ -33,7 +33,8 @@ const ADGameDescription gameDescriptions[] = {
 	{
 		"enchantia",
 		"",
-		AD_ENTRY1s("title.dat","839b7c735f720bea86623d0599d5025c", 47064),
+		AD_ENTRY2s("title.dat", "839b7c735f720bea86623d0599d5025c", 47064,
+				   "curse.rs2", "d8bee05a01c20626cc48df3040b2caab", 3011),
 		Common::EN_ANY,
 		Common::kPlatformDOS,
 		ADGF_NO_FLAGS,
