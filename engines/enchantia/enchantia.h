@@ -533,6 +533,10 @@ struct Point {
 	int16 x, y;
 };
 
+struct Color {
+	uint8 r, g, b;
+};
+
 const uint kSpriteCount = 70;
 const uint kSceneDecorationCount = 10;
 const uint kMenuBarTableCount = 10;
@@ -742,6 +746,8 @@ private:
 
 	Sprite& cursorSprite() { return _sprites[0]; }
 	Sprite& actorSprite() { return _sprites[1]; }
+
+	void setPaletteColor(uint16 index, Color c);
 
 	// Logic functions
 	void handleSceneInit(SceneInitItem &sceneInitItem, int16 sceneLink);

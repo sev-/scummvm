@@ -1850,15 +1850,14 @@ void EnchantiaEngine::playSound(byte soundNum, Sprite &sprite) {
 }
 
 void EnchantiaEngine::runMenuBar() {
-#if 0 // TODO
-	static const struct { byte r, g, b; } menuBarColorTable[] = {
+	static const Color menuBarColorTable[] = {
 		{7, 0, 0}, {15, 0, 0}, {23, 0, 0}, {31, 0, 0}, {39, 0, 0},
 		{47, 0, 0}, {55, 0, 0}, {63, 0, 0}, {0, 7, 0}, {0, 15, 0},
 		{0, 23, 0}, {0, 31, 0}, {0, 39, 0}, {0, 47, 0}, {0, 55, 0},
 		{0, 63, 0}, {0, 0, 7}, {0, 0, 15}, {0, 0, 23}, {0, 0, 31},
 		{0, 0, 39}, {0, 0, 47}, {0, 0, 55}, {0, 0, 63},
 	};
-#endif
+
 	enum { stRunning, stAction, stDone } status = stRunning;
 	uint rectPalCounter = 1, colorIndex = 0, menuCounter = 0;
 	int16 cursorX, y;
@@ -1894,11 +1893,13 @@ void EnchantiaEngine::runMenuBar() {
 		_screen->frameRect(Common::Rect(slotIndex * 32, y, slotIndex * 32 + 32, y + 32), 0xFF);
 		_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, y), 320, 0, y, 320, 32);
 		menuCounter++;
-		if (--rectPalCounter == 0) {
-			// TODO Set RGB values for index 255
-			if (++colorIndex >= 24)
-				colorIndex = 0;
-		}
+
+		// TODO Set RGB values for index 255
+		if (++colorIndex >= 24)
+			colorIndex = 0;
+
+		setPaletteColor(0xFF, menuBarColorTable[colorIndex]);
+
 		updateEvents();
 		cursorX = _mouseX;
 		if (_mouseButton == kLeftButton)
@@ -1928,6 +1929,13 @@ void EnchantiaEngine::runMenuBar() {
 	delete savedScreen;
 	_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, 0), 320, 0, 0, 320, 200);
 	_system->updateScreen();
+}
+
+void EnchantiaEngine::setPaletteColor(uint16 index, Color c) {
+	_palette[index * 3] = c.r;
+	_palette[index * 3 + 1] = c.g;
+	_palette[index * 3 + 2] = c.b;
+	setVgaPalette(_palette);
 }
 
 void EnchantiaEngine::updateMenuBar() {
