@@ -1859,6 +1859,7 @@ void EnchantiaEngine::runMenuBar() {
 	};
 
 	enum { stRunning, stAction, stDone } status = stRunning;
+	enum { kMenuTop, kMenuBottom } menuPosition = kMenuBottom;
 	uint rectPalCounter = 1, colorIndex = 0, menuCounter = 0;
 	int16 cursorX, y;
 	uint slotIndex = 0, prevSlotIndex = 0xFFFF;
@@ -1876,7 +1877,14 @@ void EnchantiaEngine::runMenuBar() {
 	_walkInfos[2].next = NULL;
 
 	cursorX = _mouseX;
-	y = _mouseY < 100 ? 0 : 168;
+	uint32 savedMouseY = _mouseY;
+	if (_mouseY < 100) {
+		menuPosition = kMenuTop;
+		y = 0;
+	} else {
+		menuPosition = kMenuBottom;
+		y = 168;
+	}
 
 	while (status != stDone && !shouldQuit()) {
 
@@ -1894,13 +1902,14 @@ void EnchantiaEngine::runMenuBar() {
 		_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, y), 320, 0, y, 320, 32);
 		menuCounter++;
 
-		// TODO Set RGB values for index 255
 		if (++colorIndex >= 24)
 			colorIndex = 0;
-
 		setPaletteColor(0xFF, menuBarColorTable[colorIndex]);
 
 		updateEvents();
+
+		_system->warpMouse(_mouseX, menuPosition == kMenuTop ? 16 : 184);
+
 		cursorX = _mouseX;
 		if (_mouseButton == kLeftButton)
 			status = stAction;
@@ -1922,6 +1931,8 @@ void EnchantiaEngine::runMenuBar() {
 				status = stDone;
 		}
 	}
+
+	_system->warpMouse(_mouseX, savedMouseY);
 
 	// Restore command bar background
 	_screen->copyFrom(*savedScreen);
