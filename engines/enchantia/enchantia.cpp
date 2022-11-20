@@ -2014,7 +2014,10 @@ void EnchantiaEngine::buildMenuBar(MenuSlotAction menu) {
 			_menuSlots[i].id = i;
 		updateMenuBar();
 		if (actorSprite().anim.codeId != 0) {
-			// TODO seg000:DEBE
+			SpriteResource *gridSpr = new SpriteResource();
+			gridSpr->loadSingle(_dat->getGridSprite());
+			drawSprite(_menuSurface, gridSpr->getFrame(0), 36, 4);
+
 			_menuSlots[1].action = kMenuMain;
 			_menuSlots[2].action = kMenuMain;
 		}

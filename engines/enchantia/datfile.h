@@ -82,6 +82,7 @@ public:
 	const SoundItem &getSound(byte soundNum, int16 sceneIndex);
 	void saveSpriteDefs(Common::OutSaveFile *out);
 	void restoreSpriteDefs(Common::InSaveFile *in);
+	byte *getGridSprite();
 protected:
 	SceneItemInfo *_sceneItemInfos;
 	uint _sceneItemInfosCount;
@@ -107,6 +108,8 @@ protected:
 	SoundItem *_soundItems;
 	uint _sceneSoundRefsCount;
 	byte *_sceneSoundRefs;
+	uint _gridSpriteCount;
+	byte *_gridSprite;
 	byte *getAnyAnimCode(uint type, uint16 id);
 };
 

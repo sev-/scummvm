@@ -419,6 +419,19 @@ void extractSpriteTemplatesByTable(const uint32 *table, uint32 count) {
 			extractSpriteTemplate(table[i]);
 }
 
+// Not part of any table
+void extractGridSprite() {
+	byte* sprStart = data + dataStart + 0xBC10;
+	byte* sprEnd   = data + dataStart + 0xBDD2;
+	writeUint32LE(datFile, 0xBDD2 - 0xBC10);
+
+	byte* i = sprStart;
+	while (i < sprEnd) {
+		writeByte(datFile, *i);
+		i++;
+	}
+}
+
 void extractMusic(uint32 offset, uint32 endOffset, uint32 notesOffset) {
 	byte *musicStart = data + 0x200 + offset;
 	byte *tracksEnd = data + 0x200 + notesOffset;
@@ -500,7 +513,8 @@ int main(int argc, char *argv[]) {
 
 	//dataStart = 0xFE00;
 	dataStart = 0xF510;
-	loadExe("curse.exe");
+	// TODO: get filename from arguments
+	loadExe("CURSE.EXE");
 
 	datFile = fopen("enchantia.dat", "wb");
 
@@ -584,6 +598,8 @@ int main(int argc, char *argv[]) {
 	extractMusic(0x945B, 0x958F, 0x94D7);
 
 	extractSoundTablesSB();
+
+	extractGridSprite();
 
 	fclose(datFile);
 

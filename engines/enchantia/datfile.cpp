@@ -42,7 +42,8 @@ DatFile::DatFile() :
 	_sceneFilenames(NULL), _brdFilenames(NULL),
 	_sceneInitItems(NULL), _spriteDefs(NULL),
 	_spriteTemplates(NULL), _musicItems(NULL),
-	_soundItems(NULL), _sceneSoundRefs(NULL) {
+	_soundItems(NULL), _sceneSoundRefs(NULL),
+	_gridSprite(NULL), _gridSpriteCount(0) {
 
 }
 
@@ -203,6 +204,10 @@ void DatFile::load(const char *filename) {
 	_sceneSoundRefs = new byte[_sceneSoundRefsCount];
 	fd.read(_sceneSoundRefs, _sceneSoundRefsCount);
 
+	_gridSpriteCount = fd.readUint32LE();
+	_gridSprite = new byte[_gridSpriteCount];
+	fd.read(_gridSprite, _gridSpriteCount);
+
 	fd.close();
 }
 
@@ -268,6 +273,10 @@ void DatFile::restoreSpriteDefs(Common::InSaveFile *in) {
 		spriteDef->y = in->readUint16LE();
 		spriteDef->templateId = in->readUint16LE();
 	}
+}
+
+byte *DatFile::getGridSprite() {
+	return _gridSprite;
 }
 
 } // End of namespace Enchantia

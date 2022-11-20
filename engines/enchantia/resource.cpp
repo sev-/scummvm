@@ -55,7 +55,7 @@ void SpriteResource::load(const char *filename) {
 		byte *data = new byte[size];
 		fd.seek(offsets[i]);
 		fd.read(data, size);
-		_frames.push_back(unpackFrame(data, size));
+		_frames.push_back(unpackFrame(data));
 		delete[] data;
 	}
 
@@ -63,6 +63,12 @@ void SpriteResource::load(const char *filename) {
 
 	fd.close();
 
+}
+
+void SpriteResource::loadSingle(byte *src) {
+	free();
+
+	_frames.push_back(unpackFrame(src));
 }
 
 void SpriteResource::free() {
@@ -73,7 +79,7 @@ void SpriteResource::free() {
 	_frames.clear();
 }
 
-Graphics::Surface *SpriteResource::unpackFrame(byte *data, int32 size) {
+Graphics::Surface *SpriteResource::unpackFrame(byte *data) {
 	Graphics::Surface *frame = new Graphics::Surface();
 	uint16 width = READ_LE_UINT16(data + 0);
 	uint16 height = READ_LE_UINT16(data + 2);
