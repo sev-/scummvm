@@ -1898,7 +1898,7 @@ void EnchantiaEngine::runMenuBar() {
 			needRedraw = false;
 			drawSurface(_screen, _menuSurface, 0, y);
 		}
-		_screen->frameRect(Common::Rect(slotIndex * 32, y, slotIndex * 32 + 32, y + 32), 0xFF);
+		_screen->frameRect(Common::Rect(slotIndex * 32 + 3, y + 3, slotIndex * 32 + 29, y + 29), 0xFF);
 		_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, y), 320, 0, y, 320, 32);
 		menuCounter++;
 
