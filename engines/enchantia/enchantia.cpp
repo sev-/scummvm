@@ -2126,9 +2126,11 @@ MenuSlotAction EnchantiaEngine::runMenuBarAction(uint slotIndex) {
 		if (id != idWishCoin && _dat->getSceneItemInfo(id).frameIndex == 31) {
 			// Any money (except the wishing well coin) gets 1 point
 			_theScore += 1;
+			performCommand(kCmdTake, idNone, id);
 		} else if (_dat->getSceneItemInfo(id).frameIndex == 34) {
 			// Any jewel (in the long hall after the dungeon) gets 2 points
 			_theScore += 2;
+			performCommand(kCmdTake, idNone, id);
 		} else if (id != idMoneyPouch51 && id != idWoman && !addInventoryItem(id)) {
 			// Try to add the inventory item (except the money and woman from the wishing well)
 			// Exit if it fails, i.e. the inventory is full

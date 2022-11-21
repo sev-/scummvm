@@ -1241,6 +1241,7 @@ void EnchantiaEngine::updateSprites() {
 				break;
 
 			case 0x409:
+				// TODO
 				debug("TODO sprite id %03X", sprite->id);
 				break;
 
@@ -1657,7 +1658,7 @@ bool EnchantiaEngine::performCommand(int cmd, int item1, int item2) {
 	#define FIGHT(item) ACTION1(kCmdFight, item)
 	#define JUMP(item) ACTION1(kCmdJump, item)
 	
-	#define MUDCOMBI(item1, item2) ((item1 << 8) | item2)		
+	#define MUDCOMBI(item1, item2) ((item1 << 8) | item2)
 
 	static const SpriteListItem throwCoin47SpriteList1[] = {
 		{26, -19,      0, 0x9E60},
