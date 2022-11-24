@@ -1238,26 +1238,30 @@ void EnchantiaEngine::debugDrawWalkBoxes() {
 	// DEBUG: Draw some walk boxes
 	for (uint i = 0; i < _walkBoxes.size(); i++) {
 		const WalkBox &walkBox = _walkBoxes[i];
-		// Action box
-		if (walkBox.type == 3) {
-			byte color = 255;
-			int16 x1 = walkBox.x1 - _cameraStripX, x2 = walkBox.x2 - _cameraStripX;
-			int16 y1 = walkBox.y1, y2 = walkBox.y2;
-			_screen->hLine(x1, y1, x2 - 1, color);
-			_screen->hLine(x1, y2 - 1, x2 - 1, color);
-			_screen->vLine(x1, y1, y2 - 1, color);
-			_screen->vLine(x2 - 1, y1, y2 - 1, color);
+		byte color = 0;
+		switch (walkBox.type) {
+		case 0:
+			color = 0xE0;
+			break;
+		case 1:
+			color = 0xE3;
+			break;
+		case 2:
+			color = 0xE6;
+			break;
+		case 3:
+			color = 0xD7;
+			break;
+		default:
+			color = 0xFF;
 		}
-		// Scene change box
-		if (walkBox.type == 2) {
-			byte color = 252;
-			int16 x1 = walkBox.x1 - _cameraStripX, x2 = walkBox.x2 - _cameraStripX;
-			int16 y1 = walkBox.y1, y2 = walkBox.y2;
-			_screen->hLine(x1, y1, x2 - 1, color);
-			_screen->hLine(x1, y2 - 1, x2 - 1, color);
-			_screen->vLine(x1, y1, y2 - 1, color);
-			_screen->vLine(x2 - 1, y1, y2 - 1, color);
-		}
+
+		int16 x1 = walkBox.x1 - _cameraStripX, x2 = walkBox.x2 - _cameraStripX;
+		int16 y1 = walkBox.y1, y2 = walkBox.y2;
+		_screen->hLine(x1, y1, x2 - 1, color);
+		_screen->hLine(x1, y2 - 1, x2 - 1, color);
+		_screen->vLine(x1, y1, y2 - 1, color);
+		_screen->vLine(x2 - 1, y1, y2 - 1, color);
 	}
 }
 
@@ -1727,6 +1731,7 @@ void EnchantiaEngine::queryWalkBoxInfo(int16 x1, int16 y1, int16 x2, int16 y2, i
 				// If the scene can't be changed this walk box is ignored
 				if (handleBoxSceneChange(type, param))
 					return;
+				break;
 			case 3:
 				if (walkBox.param == 0 || walkBox.param == 1 || walkBox.param == 2 || walkBox.param == 3 ||
 					walkBox.param == 4 || walkBox.param == 9 || walkBox.param == 10 || walkBox.param == 11) {
