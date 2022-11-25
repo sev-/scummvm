@@ -1377,7 +1377,15 @@ void EnchantiaEngine::updateSprites() {
 				break;
 
 			case 0x411:
-				debug("TODO sprite id %03X", sprite->id);
+				// TODO: unknown sprite - to be tested
+				{
+					int16 calc = sprite->x + sprite->width - actorSprite().x;
+					if (sprite->y > 69 && calc > 0)  {
+						if (calc - sprite->width - actorSprite().width < 0) {
+							updateFunc411h();
+						}
+					}
+				}
 				break;
 
 			case 0x412:
