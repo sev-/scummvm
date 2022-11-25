@@ -91,7 +91,7 @@ void EnchantiaEngine::savegame(const char *filename, const char *description) {
 	// Sprites
 	// Start at index 1 since 0 is the mouse cursor
 	out->writeUint16LE(_sceneSpritesCount);
-	for (uint i = 1; i < _sceneSpritesCount + 2; ++i) {
+	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
 		Sprite *sprite = &_sprites[i];
 		out->writeByte(sprite->status);
 		out->writeByte(sprite->frameIndex);
@@ -188,7 +188,7 @@ void EnchantiaEngine::loadgame(const char *filename) {
 	_sceneSpritesCount = in->readUint16LE();
 	for (uint i = 0; i < kSpriteCount - 1; i++)
 		_sprites[i].status = 0;
-	for (uint i = 1; i < _sceneSpritesCount + 2; ++i) {
+	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
 		Sprite *sprite = &_sprites[i];
 		sprite->status = in->readByte();
 		sprite->frameIndex = in->readByte();
