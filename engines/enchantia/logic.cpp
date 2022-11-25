@@ -1241,8 +1241,19 @@ void EnchantiaEngine::updateSprites() {
 				break;
 
 			case 0x409:
-				// TODO
-				debug("TODO sprite id %03X", sprite->id);
+				// Dungeon hall guard
+				_queryBoxX1 = _cameraStripX + sprite->x;
+				_queryBoxX2 = _cameraStripX + sprite->x + sprite->width;
+				_queryBoxY2 = 199;
+				if (_flgCanRunBoxClick) {
+					if (sprite->x - actorSprite().x < 28) {
+						resetActor();
+						actorSprite().y = 138;
+						actorSprite().changeCodeSync(0x0FC8, 0x0FD9, 0xFE3);
+					} else if (sprite->anim.index != 0 && sprite->anim.index != 3) {
+						sprite->x -= 2;
+					}
+				}
 				break;
 
 			case 0x40A:
@@ -1366,7 +1377,7 @@ void EnchantiaEngine::updateSprites() {
 				break;
 
 			case 0x411:
-				//debug("TODO sprite id %03X", sprite->id);
+				debug("TODO sprite id %03X", sprite->id);
 				break;
 
 			case 0x412:
