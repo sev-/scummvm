@@ -89,7 +89,6 @@ void EnchantiaEngine::savegame(const char *filename, const char *description) {
 	// Header end
 
 	// Sprites
-	// Start at index 1 since 0 is the mouse cursor
 	out->writeUint16LE(_sceneSpritesCount);
 	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
 		Sprite *sprite = &_sprites[i];
@@ -184,7 +183,6 @@ void EnchantiaEngine::loadgame(const char *filename) {
 	g_engine->setTotalPlayTime(header.playTime * 1000);
 
 	// Sprites
-	// Start at index 1 since 0 is the mouse cursor
 	_sceneSpritesCount = in->readUint16LE();
 	for (uint i = 0; i < kSpriteCount - 1; i++)
 		_sprites[i].status = 0;
