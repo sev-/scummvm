@@ -295,8 +295,11 @@ void MKVDecoder::readNextPacket() {
 	// First, let's get our frame
 	if (_cluster == nullptr || _cluster->EOS()) {
 		_videoTrack->setEndOfVideo();
+		warning("EOS");
 		return;
 	}
+
+	warning("trackNum: %d frameCounter: %d frameCount: %d, time_ns: %d", tn, frameCounter, frameCount, time_ns);
 
 	if (frameCounter >= frameCount) {
 		int res = _cluster->GetNext(pBlockEntry, pBlockEntry);
