@@ -201,6 +201,9 @@ Common::Error EnchantiaEngine::run() {
 	_mouseSpr = new SpriteResource();
 	_mouseSpr->load("mouse.spr");
 
+	_fontSpr = new SpriteResource();
+	_fontSpr->load("font.spr");
+
 	loadRaw("std.sfx", &_stdSfx);
 	_currSoundPriority = 0;
 
@@ -312,6 +315,7 @@ Common::Error EnchantiaEngine::run() {
 	delete _midiPlayer;
 	delete _dat;
 	delete _iconsSpr;
+	delete _fontSpr;
 	delete _sceneSpr;
 	_menuSurface->free();
 	delete _menuSurface;
@@ -2165,12 +2169,99 @@ MenuSlotAction EnchantiaEngine::runMenuBarAction(uint slotIndex) {
 		performCommand(kCmdJump, idNone, id);
 		break;
 
+	case kMenuActionInfo:
+		showInfo();
+		break;
+
 	default:
 		menu = _menuSlots[slotIndex].action;
 
 	}
 
 	return menu;
+}
+
+void EnchantiaEngine::showInfo() {
+	// TODO: extract from exe into dat file?
+	byte charTransTable[] = {0x2D, 0x2A, 0x1E, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+							 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+							 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+							 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+							 0xFF, 0x1F, 0xFF, 0xFF, 0xFF, 0xFF, 0x2C, 0xFF, 0x1B, 0xFF,
+							 0xFF, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29,
+							 0x1A, 0xFF, 0xFF, 0xFF, 0xFF, 0x2B, 0xFF, 0x00, 0x01, 0x02, 0x03,
+							 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+							 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1C, 0xFF,
+							 0x1D, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A,
+							 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55,
+							 0x56, 0x57, 0x58, 0x59, 0x5A, 0x3A, 0x2D, 0x5B, 0x5D, 0xFF, 0x26,
+							 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0xFF,
+							 0x3F, 0x2B, 0xFF};
+
+	int score = _theScore;
+	int percentage = score * 100 / 478;
+
+	Graphics::Surface *savedScreen = new Graphics::Surface();
+	savedScreen->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	savedScreen->copyFrom(*_screen);
+
+	byte *creditsTxt = _dat->getScoreCreditsTxt();
+	byte *i = creditsTxt;
+	uint16 addr = *(i + 1) << 8 | *i;
+	while (addr != 0xFFFF) {
+		byte *paragraphPtr = creditsTxt + addr;
+
+		uint16 textX = *(paragraphPtr + 1) << 8 | *paragraphPtr;
+		uint16 textY = *(paragraphPtr + 3) << 8 | *(paragraphPtr + 2);
+		uint16 centerTextX = (~textX + 320) >> 1;
+		uint16 centerTextY = (~textY + 200) >> 1;
+		paragraphPtr += 4;
+
+		int offset = (112 * centerTextY) + (centerTextX >> 2);
+
+		_screen->fillRect(Common::Rect(centerTextX, centerTextY, centerTextX + textX, centerTextY + textY), 0x01);
+
+		byte *txtPtr = paragraphPtr;
+		int16 x = centerTextX + 8;
+		int16 y = centerTextY + 5;
+		Point startPos = { x, y };
+		Point currPos = { startPos.x, startPos.y };
+
+		byte c = *txtPtr++;
+		while (true) {
+			byte fontIndex = charTransTable[c];
+			if (c != 0xFF && c != 0xFE && fontIndex != 0xFF) {
+				drawSprite(_screen, _fontSpr->getFrame(fontIndex), currPos.x, currPos.y);
+			} else if (c == 0xFF) {
+				currPos.x = startPos.x;
+				currPos.y += 10;
+			} else if (c == 0xFE) {
+				break;
+			}
+
+			currPos.x += 8;
+			c = *(txtPtr++);
+		}
+
+		_system->copyRectToScreen((const byte *)_screen->getBasePtr(centerTextX, centerTextY), 320, centerTextX, centerTextY, textX, textY);
+		_system->updateScreen();
+
+		while (true) {
+			updateEvents();
+			if (_mouseButton == kLeftButton)
+				break;
+		}
+
+		_screen->copyFrom(*savedScreen);
+		_system->copyRectToScreen((const byte*)_screen->getBasePtr(0, 0), 320, 0, 0, 320, 200);
+		_system->updateScreen();
+
+		i += 2;
+		addr = *(i + 1) << 8 | *i;
+	}
+
+	savedScreen->free();
+	delete savedScreen;
 }
 
 void EnchantiaEngine::updateFunc411h() {

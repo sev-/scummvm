@@ -83,6 +83,7 @@ public:
 	void saveSpriteDefs(Common::OutSaveFile *out);
 	void restoreSpriteDefs(Common::InSaveFile *in);
 	byte *getGridSprite();
+	byte *getScoreCreditsTxt();
 protected:
 	SceneItemInfo *_sceneItemInfos;
 	uint _sceneItemInfosCount;
@@ -110,6 +111,8 @@ protected:
 	byte *_sceneSoundRefs;
 	uint _gridSpriteCount;
 	byte *_gridSprite;
+	uint _scoreCreditsCount;
+	byte *_scoreCreditsTxt;
 	byte *getAnyAnimCode(uint type, uint16 id);
 };
 

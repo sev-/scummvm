@@ -432,6 +432,29 @@ void extractGridSprite() {
 	}
 }
 
+void extractCreditsText() {
+	byte* txtStart = data + dataStart + 0xB74E;
+	byte* txtEnd   = data + dataStart + 0xB949;
+	writeUint16LE(datFile, 0xB949 - 0xB74E);
+
+	byte* i = txtStart;
+	// First bytes point to positions of paragraphs of text - rewrite them relative to starting offset
+	while (true) {
+		uint16 addr = *(i + 1) << 8 | *(i);
+		i = i + 2;
+
+		if (addr == 0xFFFF) {
+			writeUint16LE(datFile, 0xFFFF);
+			break;
+		}
+		writeUint16LE(datFile, addr - 0xB74E);
+	}
+	while (i < txtEnd) {
+		writeByte(datFile, *i);
+		i++;
+	}
+}
+
 void extractMusic(uint32 offset, uint32 endOffset, uint32 notesOffset) {
 	byte *musicStart = data + 0x200 + offset;
 	byte *tracksEnd = data + 0x200 + notesOffset;
@@ -600,6 +623,8 @@ int main(int argc, char *argv[]) {
 	extractSoundTablesSB();
 
 	extractGridSprite();
+
+	extractCreditsText();
 
 	fclose(datFile);
 

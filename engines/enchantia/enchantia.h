@@ -305,7 +305,8 @@ enum Command {
 	kCmdTalk			= 9,
 	kCmdLook			= 10,
 	kCmdFight			= 11,
-	kCmdJump			= 12
+	kCmdJump			= 12,
+	kCmdInfo			= 13
 };
 
 enum MenuSlotAction {
@@ -605,6 +606,7 @@ private:
 	SpriteResource *_currBrd;
 	SpriteResource *_iconsSpr;
 	SpriteResource *_mouseSpr;
+	SpriteResource *_fontSpr;
 	SpriteResource *_sceneSpr;
 
 	byte *_stdSfx, *_sceneSfx;
@@ -796,6 +798,7 @@ public:
 	static Common::String getSavegameFilename(const Common::String &target, int num);
 	static kReadSaveHeaderError readSaveHeader(Common::SeekableReadStream *in, bool loadThumbnail, SaveHeader &header);
 
+	void showInfo();
 };
 
 } // End of namespace Enchantia
