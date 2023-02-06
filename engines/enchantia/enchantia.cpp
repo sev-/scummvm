@@ -2206,7 +2206,6 @@ void EnchantiaEngine::showInfo() {
 	savedScreen->copyFrom(*_screen);
 
 	byte *creditsTxt = _dat->getScoreCreditsTxt();
-	// TODO: get fixed positions of score/percentage and substitute with actual score/percentage - probably the best solution?
 	byte scorePos = 0xB772 - 0xB74E;
 	byte percentagePos = 0xB78C - 0xB74E;
 
@@ -2216,29 +2215,31 @@ void EnchantiaEngine::showInfo() {
 	int scoreLen = Common::strnlen(scoreStr, 10);
 	int percentageLen = Common::strnlen(percentageStr, 10);
 
-//	int start = 3 - scoreLen;
-//	int n = 0;
-//	while (true) {
-//		if (start > 0) {
-//			creditsTxt[scorePos++] = 20;
-//			start--;
-//		} else {
-//			creditsTxt[scorePos++] = scoreStr[n++];
-//			if (n + scoreLen > 3) break;
-//		}
-//	}
-//	start = 3 - percentageLen;
-//	n = 0;
-//	while (true) {
-//		if (start > 0) {
-//			creditsTxt[percentagePos++] = 20;
-//			start--;
-//		} else {
-//			creditsTxt[percentagePos++] = percentageStr[n++];
-//			if (n + percentageLen > 3) break;
-//		}
-//	}
+	// hardcode score and percentage into credits text
+	int start = 3 - scoreLen;
+	int n = 0;
+	while (true) {
+		if (start > 0) {
+			creditsTxt[scorePos++] = 20;
+			start--;
+		} else {
+			creditsTxt[scorePos++] = scoreStr[n++];
+			if (n >= scoreLen) break;
+		}
+	}
+	start = 3 - percentageLen;
+	n = 0;
+	while (true) {
+		if (start > 0) {
+			creditsTxt[percentagePos++] = 20;
+			start--;
+		} else {
+			creditsTxt[percentagePos++] = percentageStr[n++];
+			if (n >= percentageLen) break;
+		}
+	}
 
+	// draw dialog text
 	byte *i = creditsTxt;
 	uint16 addr = *(i + 1) << 8 | *i;
 	while (addr != 0xFFFF) {
