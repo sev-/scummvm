@@ -2206,6 +2206,39 @@ void EnchantiaEngine::showInfo() {
 	savedScreen->copyFrom(*_screen);
 
 	byte *creditsTxt = _dat->getScoreCreditsTxt();
+	// TODO: get fixed positions of score/percentage and substitute with actual score/percentage - probably the best solution?
+	byte scorePos = 0xB772 - 0xB74E;
+	byte percentagePos = 0xB78C - 0xB74E;
+
+	char scoreStr[4], percentageStr[4];
+	Common::U32String::itoa(score, scoreStr, 10);
+	Common::U32String::itoa(percentage, percentageStr, 10);
+	int scoreLen = Common::strnlen(scoreStr, 10);
+	int percentageLen = Common::strnlen(percentageStr, 10);
+
+//	int start = 3 - scoreLen;
+//	int n = 0;
+//	while (true) {
+//		if (start > 0) {
+//			creditsTxt[scorePos++] = 20;
+//			start--;
+//		} else {
+//			creditsTxt[scorePos++] = scoreStr[n++];
+//			if (n + scoreLen > 3) break;
+//		}
+//	}
+//	start = 3 - percentageLen;
+//	n = 0;
+//	while (true) {
+//		if (start > 0) {
+//			creditsTxt[percentagePos++] = 20;
+//			start--;
+//		} else {
+//			creditsTxt[percentagePos++] = percentageStr[n++];
+//			if (n + percentageLen > 3) break;
+//		}
+//	}
+
 	byte *i = creditsTxt;
 	uint16 addr = *(i + 1) << 8 | *i;
 	while (addr != 0xFFFF) {
@@ -2219,27 +2252,29 @@ void EnchantiaEngine::showInfo() {
 
 		int offset = (112 * centerTextY) + (centerTextX >> 2);
 
-		_screen->fillRect(Common::Rect(centerTextX, centerTextY, centerTextX + textX, centerTextY + textY), 0x01);
+		_screen->fillRect(Common::Rect(centerTextX, centerTextY, centerTextX + textX, centerTextY + textY), 0x00);
 
 		byte *txtPtr = paragraphPtr;
 		int16 x = centerTextX + 8;
 		int16 y = centerTextY + 5;
 		Point startPos = { x, y };
-		Point currPos = { startPos.x, startPos.y };
+		Point currPos = { x, y };
 
 		byte c = *txtPtr++;
 		while (true) {
 			byte fontIndex = charTransTable[c];
 			if (c != 0xFF && c != 0xFE && fontIndex != 0xFF) {
 				drawSprite(_screen, _fontSpr->getFrame(fontIndex), currPos.x, currPos.y);
+				currPos.x += 8;
 			} else if (c == 0xFF) {
 				currPos.x = startPos.x;
 				currPos.y += 10;
 			} else if (c == 0xFE) {
 				break;
+			} else {
+				currPos.x += 8;
 			}
 
-			currPos.x += 8;
 			c = *(txtPtr++);
 		}
 
