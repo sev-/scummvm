@@ -1948,7 +1948,7 @@ void ScummEngine_v72he::o72_readINI() {
 	switch (subOp) {
 	case ScummEngine_v100he::SO_DWORD: // HE 100
 	case SO_DWORD: // number
-		if (!strcmp((char *)option, "DisablePrinting") || !strcmp((char *)option, "NoPrinting")) {
+		if ((!strcmp((char *)option, "DisablePrinting") || !strcmp((char *)option, "NoPrinting")) && !_system->hasFeature(OSystem::Feature::kFeaturePrinting)) {
 			push(1);
 		} else if (!strcmp((char *)option, "DisableMaiaUpdates")) {
 			// WORKAROUND: Override the update checks.
