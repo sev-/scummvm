@@ -89,6 +89,7 @@ typedef Array<Keymap *> KeymapArray;
 class AudioCDManager;
 class FilesystemFactory;
 class PaletteManager;
+class PrintingManager;
 
 /**
  * Structure describing time and date.
@@ -271,6 +272,13 @@ protected:
 	 * Used by the DLC Manager implementation
 	 */
 	DLC::Store *_dlcStore;
+
+	/**
+	 * No default value is provided for _printingManager by OSystem.
+	 *
+	 * @note _printingManager is deleted by the OSystem destructor.
+	*/
+	PrintingManager *_printingManager;
 
 	/**
 	 * Used by the default clipboard implementation, for backends that don't
@@ -633,6 +641,11 @@ public:
 		* Covers a wide range of platforms, Apple Macs, XBox 360, PS3, and more
 		*/
 		kFeatureCpuAltivec,
+
+		/**
+		* Putting text and/or images on physical paper
+		*/
+		kFeaturePrinting,
 	};
 
 	/**
@@ -1732,6 +1745,15 @@ public:
 	 */
 	virtual Common::TextToSpeechManager *getTextToSpeechManager() {
 		return _textToSpeechManager;
+	}
+
+	/**
+	 * Return the PrintingManager, used to handle printing.
+	 *
+	 * @return The PrintingManager for the current architecture.
+	 */
+	virtual PrintingManager *getPrintingManager() {
+		return _printingManager;
 	}
 
 #if defined(USE_SYSDIALOGS)
