@@ -1097,6 +1097,7 @@ const Feature s_features[] = {
 	{ "retrowave",   "USE_RETROWAVE", true, false, "RetroWave OPL3 support" },
 
 	// Feature flags
+	{       "langdetect",                "USE_DETECTLANG", false, true,  "System language detection support" }, // This feature actually depends on "translation", there
 	{               "bink",                      "USE_BINK", false, true,  "Bink video support" },
 	{            "scalers",                   "USE_SCALERS", false, true,  "Scalers" },
 	{          "hqscalers",                "USE_HQ_SCALERS", false, true,  "HQ scalers" },
@@ -1117,6 +1118,7 @@ const Feature s_features[] = {
 	{        "translation",               "USE_TRANSLATION", false, true,  "Translation support" },
 	{             "vkeybd",                 "ENABLE_VKEYBD", false, false, "Virtual keyboard support"},
 	{      "eventrecorder",          "ENABLE_EVENTRECORDER", false, false, "Event recorder support"},
+	{           "printing",                  "USE_PRINTING", true,  false, "Printing support"},
 	{            "updates",                   "USE_UPDATES", false, false, "Updates support"},
 	{            "dialogs",                "USE_SYSDIALOGS", false, true,  "System dialogs support"},
 	{         "langdetect",                "USE_DETECTLANG", false, true,  "System language detection support" }, // This feature actually depends on "translation", there

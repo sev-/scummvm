@@ -80,7 +80,8 @@ std::string MSVCProvider::getLibraryFromFeature(const char *feature, const Build
 		{   "updates", "winsparkle.lib",            nullptr,         nullptr                                           },
 		{       "tts", nullptr,                     nullptr,         "sapi.lib"                                        },
 		{    "opengl", nullptr,                     nullptr,         "opengl32.lib"                                    },
-		{      "enet", nullptr,                     nullptr,         "winmm.lib ws2_32.lib"                            }
+		{      "enet", nullptr,                     nullptr,         "winmm.lib ws2_32.lib"                            },
+		{  "printing", nullptr,                     nullptr,         "Msimg32.lib",                                    }
 	};
 
 	// HACK for switching SDL_net to SDL2_net
