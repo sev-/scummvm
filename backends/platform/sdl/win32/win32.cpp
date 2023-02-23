@@ -84,8 +84,6 @@ void OSystem_Win32::init() {
 #if defined(USE_JPEG)
 	initializeJpegLibraryForWin95();
 #endif
-	_printingManager = createWin32PrintingManager();
-
 	// Invoke parent implementation of this method
 	OSystem_SDL::init();
 }
@@ -136,6 +134,10 @@ void OSystem_Win32::initBackend() {
 	_textToSpeechManager = new WindowsTextToSpeechManager();
 #endif
 
+#if defined(USE_PRINTING)
+	_printingManager = createWin32PrintingManager();
+#endif
+
 	// Invoke parent implementation of this method
 	OSystem_SDL::initBackend();
 }
@@ -155,8 +157,10 @@ bool OSystem_Win32::hasFeature(Feature f) {
 		return true;
 #endif
 
+#ifdef USE_PRINTING
 	if (f == kFeaturePrinting)
 		return true;
+#endif
 
 	return OSystem_SDL::hasFeature(f);
 }
