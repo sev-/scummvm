@@ -61,6 +61,7 @@ protected:
 	// version.
 	AudioCDManager *createAudioCDManager() override;
 
+public:
 	HWND getHwnd() { return ((SdlWindow_Win32*)_window)->getHwnd(); }
 
 	uint32 getOSDoubleClickTime() const override;
