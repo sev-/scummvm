@@ -30,7 +30,11 @@ PrintJob *PrintingManager::createJob(const Common::String &jobName) {
 }
 
 void PrintingManager::printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale) {
-	PrintJob *job = createJob(jobName);
+	PrintSettings settings = getDefaultPrintSettings();
+
+	settings.landscapeOrientation = surf.w > surf.h;
+
+	PrintJob *job = createJob(jobName, settings);
 
 	job->beginPage();
 
