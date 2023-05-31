@@ -34,14 +34,15 @@
 #include "common/ustr.h"
 
 class Win32PrintJob;
+class Win32PrintSettings;
 
 class Win32PrintingManager : public PrintingManager {
 public:
 	virtual ~Win32PrintingManager();
 	
-	PrintJob *createJob(const Common::String &jobName, PrintSettings settings);
+	PrintJob *createJob(const Common::String &jobName, PrintSettings *settings);
 
-	PrintSettings getDefaultPrintSettings() const;
+	PrintSettings *getDefaultPrintSettings() const;
 	DEVMODE *getDefaultDevmode() const;
 	DEVMODE *getDefaultDevmode(LPTSTR devName) const;
 };
@@ -50,7 +51,7 @@ class Win32PrintJob : public PrintJob {
 public:
 	friend class Win32PrintingManager;
 
-	Win32PrintJob(const Common::String &jobName, DEVMODE *devmode);
+	Win32PrintJob(const Common::String &jobName, Win32PrintSettings *settings);
 	~Win32PrintJob();
 
 	void drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos);
@@ -66,7 +67,9 @@ public:
 	Common::Point getPrintableAreaOffset() const;
 	Common::Rect getPaperDimensions() const;
 
-	PrintSettings getPrintSettings() const;
+	const PrintSettings *getPrintSettings() const {
+		return (const PrintSettings *)(settings);
+	}
 
 	void beginPage();
 	void endPage();
@@ -80,24 +83,39 @@ private:
 
 	HDC hdcPrint;
 	bool jobActive;
-	DEVMODE *devmode;
+	Win32PrintSettings *settings;
+
+	friend class Win32PrintSettings;
 };
 
-PrintSettings devmodeToPrintSettings(DEVMODE *);
-void applySettingsToDevmode(DEVMODE *, PrintSettings settings);
+class Win32PrintSettings : public PrintSettings {
+public:
+	Win32PrintSettings(DEVMODE *devmode) : devmode(devmode){};
+	~Win32PrintSettings() {
+		free(devmode);
+	}
+
+	
+	DuplexMode getDuplexMode() const;
+	void setDuplexMode(DuplexMode mode);
+	bool getLandscapeOrientation() const;
+	void setLandscapeOrientation(bool);
+	bool getColorPrinting() const;
+	void setColorPrinting(bool);
+
+private:
+	DEVMODE *devmode;
+		friend HDC Win32PrintJob::createPrinterContext(LPTSTR devName);
+};
 
 Win32PrintingManager::~Win32PrintingManager() {}
 
-PrintJob *Win32PrintingManager::createJob(const Common::String &jobName, PrintSettings settings) {
-	DEVMODE *devmode = getDefaultDevmode();
-
-	applySettingsToDevmode(devmode, settings);
-
-	return new Win32PrintJob(jobName, devmode);
+PrintJob *Win32PrintingManager::createJob(const Common::String &jobName, PrintSettings *settings) {
+	return new Win32PrintJob(jobName, (Win32PrintSettings*)settings);
 }
 
 
-Win32PrintJob::Win32PrintJob(const Common::String &jobName, DEVMODE *devmode) : jobActive(true), hdcPrint(NULL), devmode(devmode) {
+Win32PrintJob::Win32PrintJob(const Common::String &jobName, Win32PrintSettings *settings) : jobActive(true), hdcPrint(NULL), settings(settings) {
 	hdcPrint = createDefaultPrinterContext();
 
 	DOCINFOA info;
@@ -115,7 +133,7 @@ Win32PrintJob::~Win32PrintJob() {
 		warning("Printjob still active during destruction!");
 	}
 	DeleteDC(hdcPrint);
-	free(devmode);
+	delete settings;
 }
 
 void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos) {
@@ -230,10 +248,6 @@ Common::Rect Win32PrintJob::getPaperDimensions() const {
 	);
 }
 
-PrintSettings Win32PrintJob::getPrintSettings() const {
-	return devmodeToPrintSettings(devmode);
-}
-
 void Win32PrintJob::beginPage() {
 	StartPage(hdcPrint);
 }
@@ -264,20 +278,17 @@ HDC Win32PrintJob::createDefaultPrinterContext() {
 	return createPrinterContext(szPrinter);
 }
 HDC Win32PrintJob::createPrinterContext(LPTSTR devName) {
-
-	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode);
+	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, settings->devmode);
 	return printerDC;
 }
 
-PrintSettings Win32PrintingManager::getDefaultPrintSettings() const {
+PrintSettings *Win32PrintingManager::getDefaultPrintSettings() const {
 	DEVMODE *devmode = getDefaultDevmode();
 
 	if (!devmode)
-		return PrintSettings();
+		return nullptr;
 
-	return devmodeToPrintSettings(devmode);
-
-	free(devmode);
+	return new Win32PrintSettings(devmode);
 }
 
 DEVMODE *Win32PrintingManager::getDefaultDevmode() const {
@@ -360,28 +371,31 @@ PrintingManager *createWin32PrintingManager() {
 	return new Win32PrintingManager();
 }
 
+PrintSettings::DuplexMode Win32PrintSettings::getDuplexMode() const {
+	return (PrintSettings::DuplexMode)devmode->dmDuplex;
+}
+
+void Win32PrintSettings::setDuplexMode(PrintSettings::DuplexMode mode) {
+	devmode->dmDuplex = mode;
+}
+
+bool Win32PrintSettings::getLandscapeOrientation() const {
+	return devmode->dmOrientation == DMORIENT_LANDSCAPE;
+}
+
+void Win32PrintSettings::setLandscapeOrientation(bool landscapeOrientation) {
+	devmode->dmOrientation = landscapeOrientation ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+}
+
+bool Win32PrintSettings::getColorPrinting() const {
+	return devmode->dmColor == DMCOLOR_COLOR;
+}
+
+void Win32PrintSettings::setColorPrinting(bool colorPrinting) {
+	devmode->dmColor = colorPrinting ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
+}
+
+
+
 #endif // USE_PRINTING
 #endif // WIN32
-
-PrintSettings devmodeToPrintSettings(DEVMODE *devmode) {
-	PrintSettings settings;
-
-	settings.colorPrinting = devmode->dmColor == DMCOLOR_COLOR;
-	settings.landscapeOrientation = devmode->dmOrientation == DMORIENT_LANDSCAPE;
-
-	if ((devmode->dmFields & DM_DUPLEX) == 0) {
-		settings.duplexMode = PrintSettings::DuplexMode::Unknown;
-	} else {
-		settings.duplexMode = (PrintSettings::DuplexMode)devmode->dmDuplex;
-	}
-
-	return settings;
-}
-
-void applySettingsToDevmode(DEVMODE *devmode, PrintSettings settings) {
-	devmode->dmDuplex = settings.duplexMode;
-	devmode->dmColor = settings.colorPrinting ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
-	devmode->dmOrientation = settings.landscapeOrientation ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
-}
-
-

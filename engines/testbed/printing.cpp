@@ -104,7 +104,7 @@ TestExitStatus PrintingTests::printTestPage() {
 
 	job->beginPage();
 
-	PrintSettings settings = job->getPrintSettings();
+	const PrintSettings *settings = job->getPrintSettings();
 
 	Common::Point pos(20,0);
 
@@ -116,7 +116,7 @@ TestExitStatus PrintingTests::printTestPage() {
 	job->drawText(gScummVMVersionDate, pos);
 	pos += Common::Point(0, job->getTextBounds(gScummVMVersionDate).height());
 
-	if (settings.colorPrinting) {
+	if (settings->getColorPrinting()) {
 		job->setTextColor(255, 0, 0);
 		job->drawText("Red text", pos);
 		pos += Common::Point(0, job->getTextBounds("Red text").height());

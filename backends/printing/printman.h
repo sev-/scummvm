@@ -32,14 +32,16 @@
 #include "graphics/managed_surface.h"
 
 class PrintJob;
-struct PrintSettings;
+class PrintSettings;
 
 class PrintingManager {
 public:
 	virtual ~PrintingManager();
 
 	PrintJob *createJob(const Common::String &jobName);
-	virtual PrintJob *createJob(const Common::String &jobName, PrintSettings settings) = 0;
+
+	//takes ownership of the PrintSettings object
+	virtual PrintJob *createJob(const Common::String &jobName, PrintSettings *settings) = 0;
 
 	void printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale=false);
 
@@ -50,12 +52,14 @@ public:
 	void printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file);
 	void printPlainTextFile(Common::File &file);
 
-	virtual PrintSettings getDefaultPrintSettings() const = 0;
+	//creates a new PrintSettings object. either hand ownership back using createJob or delete it yourself. Not both.
+	virtual PrintSettings *getDefaultPrintSettings() const = 0;
 };
 
 class TextMetrics;
 
-struct PrintSettings {
+class PrintSettings {
+
 public:
 	enum DuplexMode {
 		Unknown = 0,
@@ -63,11 +67,16 @@ public:
 		Vertical = 2,
 		Horizontal = 3
 	};
+	
+	virtual ~PrintSettings() {}
 
 public:
-	DuplexMode duplexMode;
-	bool landscapeOrientation;
-	bool colorPrinting;
+	virtual DuplexMode getDuplexMode() const = 0;
+	virtual void setDuplexMode(DuplexMode mode) = 0;
+	virtual bool getLandscapeOrientation() const = 0;
+	virtual void setLandscapeOrientation(bool landscapeOrientation) = 0;
+	virtual bool getColorPrinting() const = 0;
+	virtual void setColorPrinting(bool colorMode) = 0;
 };
 
 class PrintJob {
@@ -92,7 +101,8 @@ public:
 	// Size of the paper
 	virtual Common::Rect getPaperDimensions() const = 0;
 
-	virtual PrintSettings getPrintSettings() const = 0;
+	//Does not give away ownership of the PrintSettings object
+	virtual const PrintSettings *getPrintSettings() const = 0;
 
 	virtual void beginPage() = 0;
 	virtual void endPage() = 0;
