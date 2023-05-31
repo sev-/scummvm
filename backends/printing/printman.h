@@ -32,12 +32,14 @@
 #include "graphics/managed_surface.h"
 
 class PrintJob;
+struct PrintSettings;
 
 class PrintingManager {
 public:
 	virtual ~PrintingManager();
 
-	virtual PrintJob *createJob(const Common::String &jobName) = 0;
+	PrintJob *createJob(const Common::String &jobName);
+	virtual PrintJob *createJob(const Common::String &jobName, PrintSettings settings) = 0;
 
 	void printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale=false);
 
@@ -47,9 +49,26 @@ public:
 
 	void printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file);
 	void printPlainTextFile(Common::File &file);
+
+	virtual PrintSettings getDefaultPrintSettings() const = 0;
 };
 
 class TextMetrics;
+
+struct PrintSettings {
+public:
+	enum DuplexMode {
+		Unknown = 0,
+		Simplex = 1,
+		Vertical = 2,
+		Horizontal = 3
+	};
+
+public:
+	DuplexMode duplexMode;
+	bool landscapeOrientation;
+	bool colorPrinting;
+};
 
 class PrintJob {
 public:
@@ -66,23 +85,14 @@ public:
 
 	virtual Common::Rational getPixelAspectRatio() const = 0;
 
-	enum DuplexMode {
-		Unknown = 0,
-		Simplex = 1,
-		Vertical = 2,
-		Horizontal = 3
-	};
-
 	// Size of the printable area, in pixels
 	virtual Common::Rect getPrintableArea() const = 0;
 	// Offset from the top left corner of the paper to the printable area
 	virtual Common::Point getPrintableAreaOffset() const = 0;
 	// Size of the paper
 	virtual Common::Rect getPaperDimensions() const = 0;
-	virtual DuplexMode getDuplexMode() const = 0;
-	// The paper orientation
-	virtual bool isLandscapeOrientation() const = 0;
-	virtual bool supportsColors() const = 0;
+
+	virtual PrintSettings getPrintSettings() const = 0;
 
 	virtual void beginPage() = 0;
 	virtual void endPage() = 0;

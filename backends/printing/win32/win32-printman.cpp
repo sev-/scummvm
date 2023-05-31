@@ -39,14 +39,18 @@ class Win32PrintingManager : public PrintingManager {
 public:
 	virtual ~Win32PrintingManager();
 	
-	PrintJob *createJob(const Common::String &jobName);
+	PrintJob *createJob(const Common::String &jobName, PrintSettings settings);
+
+	PrintSettings getDefaultPrintSettings() const;
+	DEVMODE *getDefaultDevmode() const;
+	DEVMODE *getDefaultDevmode(LPTSTR devName) const;
 };
 
 class Win32PrintJob : public PrintJob {
 public:
 	friend class Win32PrintingManager;
 
-	Win32PrintJob(const Common::String &jobName);
+	Win32PrintJob(const Common::String &jobName, DEVMODE *devmode);
 	~Win32PrintJob();
 
 	void drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos);
@@ -61,9 +65,8 @@ public:
 	Common::Rect getPrintableArea() const;
 	Common::Point getPrintableAreaOffset() const;
 	Common::Rect getPaperDimensions() const;
-	DuplexMode getDuplexMode() const;
-	bool supportsColors() const;
-	bool isLandscapeOrientation() const;
+
+	PrintSettings getPrintSettings() const;
 
 	void beginPage();
 	void endPage();
@@ -71,8 +74,8 @@ public:
 	void abortJob();
 
 private:
-	HDC createDefaultPrinterContext(bool showDocPropsDialog = false);
-	HDC createPrinterContext(LPTSTR devName, bool showDocPropsDialog = false);
+	HDC createDefaultPrinterContext();
+	HDC createPrinterContext(LPTSTR devName);
 	HBITMAP buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf);
 
 	HDC hdcPrint;
@@ -80,16 +83,23 @@ private:
 	DEVMODE *devmode;
 };
 
+PrintSettings devmodeToPrintSettings(DEVMODE *);
+void applySettingsToDevmode(DEVMODE *, PrintSettings settings);
 
 Win32PrintingManager::~Win32PrintingManager() {}
 
-PrintJob *Win32PrintingManager::createJob(const Common::String &jobName) {
-	return new Win32PrintJob(jobName);
+PrintJob *Win32PrintingManager::createJob(const Common::String &jobName, PrintSettings settings) {
+	DEVMODE *devmode = getDefaultDevmode();
+
+	applySettingsToDevmode(devmode, settings);
+
+	return new Win32PrintJob(jobName, devmode);
 }
 
 
-Win32PrintJob::Win32PrintJob(const Common::String &jobName) : jobActive(true), hdcPrint(NULL), devmode(nullptr) {
+Win32PrintJob::Win32PrintJob(const Common::String &jobName, DEVMODE *devmode) : jobActive(true), hdcPrint(NULL), devmode(devmode) {
 	hdcPrint = createDefaultPrinterContext();
+
 	DOCINFOA info;
 	info.cbSize = sizeof(info);
 	info.fwType = 0;
@@ -220,18 +230,8 @@ Common::Rect Win32PrintJob::getPaperDimensions() const {
 	);
 }
 
-PrintJob::DuplexMode Win32PrintJob::getDuplexMode() const {
-	if ((devmode->dmFields & DM_DUPLEX) == 0)
-		return Unknown;
-	return (DuplexMode)devmode->dmDuplex;
-}
-
-bool Win32PrintJob::supportsColors() const {
-	return devmode->dmColor == DMCOLOR_COLOR;
-}
-
-bool Win32PrintJob::isLandscapeOrientation() const {
-	return devmode->dmOrientation == DMORIENT_LANDSCAPE;
+PrintSettings Win32PrintJob::getPrintSettings() const {
+	return devmodeToPrintSettings(devmode);
 }
 
 void Win32PrintJob::beginPage() {
@@ -252,7 +252,7 @@ void Win32PrintJob::abortJob() {
 	jobActive = false;
 }
 
-HDC Win32PrintJob::createDefaultPrinterContext(bool showDocPropsDialog) {
+HDC Win32PrintJob::createDefaultPrinterContext() {
 	TCHAR szPrinter[MAX_PATH];
 	BOOL success;
 	DWORD cchPrinter(ARRAYSIZE(szPrinter));
@@ -261,33 +261,62 @@ HDC Win32PrintJob::createDefaultPrinterContext(bool showDocPropsDialog) {
 	if (!success)
 		return NULL;
 
-	return createPrinterContext(szPrinter, showDocPropsDialog);
+	return createPrinterContext(szPrinter);
 }
-HDC Win32PrintJob::createPrinterContext(LPTSTR devName, bool showDocPropsDialog) {
+HDC Win32PrintJob::createPrinterContext(LPTSTR devName) {
+
+	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode);
+	return printerDC;
+}
+
+PrintSettings Win32PrintingManager::getDefaultPrintSettings() const {
+	DEVMODE *devmode = getDefaultDevmode();
+
+	if (!devmode)
+		return PrintSettings();
+
+	return devmodeToPrintSettings(devmode);
+
+	free(devmode);
+}
+
+DEVMODE *Win32PrintingManager::getDefaultDevmode() const {
+	TCHAR szPrinter[MAX_PATH];
+	BOOL success;
+	DWORD cchPrinter(ARRAYSIZE(szPrinter));
+
+	success = GetDefaultPrinter(szPrinter, &cchPrinter);
+	if (!success)
+		return nullptr;
+
+	return getDefaultDevmode(szPrinter);
+}
+
+DEVMODE *Win32PrintingManager::getDefaultDevmode(LPTSTR devName) const {
 	HANDLE handle;
 	BOOL success;
 
 	HWND parent = (dynamic_cast<OSystem_Win32 *>(g_system))->getHwnd();
 
-	success=OpenPrinter(devName, &handle, NULL);
+	success = OpenPrinter(devName, &handle, NULL);
 	if (!success)
-		return NULL;
+		return nullptr;
 
 	int size = DocumentProperties(parent, handle, devName, NULL, NULL, 0);
-	devmode = (DEVMODE *)malloc(size);
+	DEVMODE *devmode = (DEVMODE *)malloc(size);
 	DocumentProperties(parent, handle, devName, devmode, NULL, DM_OUT_BUFFER);
 
 	// Apply setting presets here
 
-	if (showDocPropsDialog) {
+	if (false) {
 		DocumentProperties(parent, handle, devName, devmode, devmode, DM_IN_BUFFER | DM_IN_PROMPT | DM_OUT_BUFFER);
 	}
 
 	ClosePrinter(handle);
 
-	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode);
-	return printerDC;
+	return devmode;
 }
+
 
 HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf) {
 	const uint colorCount = 256;
@@ -333,3 +362,26 @@ PrintingManager *createWin32PrintingManager() {
 
 #endif // USE_PRINTING
 #endif // WIN32
+
+PrintSettings devmodeToPrintSettings(DEVMODE *devmode) {
+	PrintSettings settings;
+
+	settings.colorPrinting = devmode->dmColor == DMCOLOR_COLOR;
+	settings.landscapeOrientation = devmode->dmOrientation == DMORIENT_LANDSCAPE;
+
+	if ((devmode->dmFields & DM_DUPLEX) == 0) {
+		settings.duplexMode = PrintSettings::DuplexMode::Unknown;
+	} else {
+		settings.duplexMode = (PrintSettings::DuplexMode)devmode->dmDuplex;
+	}
+
+	return settings;
+}
+
+void applySettingsToDevmode(DEVMODE *devmode, PrintSettings settings) {
+	devmode->dmDuplex = settings.duplexMode;
+	devmode->dmColor = settings.colorPrinting ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
+	devmode->dmOrientation = settings.landscapeOrientation ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+}
+
+

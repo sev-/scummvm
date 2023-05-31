@@ -25,6 +25,10 @@
 
 PrintingManager::~PrintingManager() {}
 
+PrintJob *PrintingManager::createJob(const Common::String &jobName) {
+	return createJob(jobName, getDefaultPrintSettings());
+}
+
 void PrintingManager::printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale) {
 	PrintJob *job = createJob(jobName);
 
