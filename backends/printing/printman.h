@@ -22,6 +22,8 @@
 #ifndef BACKENDS_PRINTING_PRINTMAN_H
 #define BACKENDS_PRINTING_PRINTMAN_H
 
+#include "common/scummsys.h"
+
 #ifdef USE_PRINTING
 
 #include "common/rect.h"
