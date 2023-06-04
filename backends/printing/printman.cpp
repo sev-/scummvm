@@ -35,6 +35,10 @@ void PrintingManager::printImage(const Common::String &jobName, const Graphics::
 	settings->setLandscapeOrientation(surf.w > surf.h);
 
 	PrintJob *job = createJob(jobName, settings);
+	
+	if(!job) {
+		error("Creating printjob failed");
+	}
 
 	job->beginPage();
 
@@ -65,6 +69,10 @@ void PrintingManager::printPlainTextFile(Common::File &file) {
 
 void PrintingManager::printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file) {
 	PrintJob *job = createJob(jobName);
+	
+	if(!job) {
+		error("Creating printjob failed");
+	}
 
 	Common::Rect printArea = job->getPrintableArea();
 
