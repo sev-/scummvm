@@ -22,6 +22,8 @@
 #ifndef TESTBED_PRINTING_H
 #define TESTBED_PRINTING_H
 
+#include "common/scummsys.h"
+
 #ifdef USE_PRINTING
 
 #include "testbed/testsuite.h"
