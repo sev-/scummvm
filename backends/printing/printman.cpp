@@ -18,10 +18,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+ 
+#include "printman.h"
 
 #ifdef USE_PRINTING
-
-#include "printman.h"
 
 PrintingManager::~PrintingManager() {}
 
