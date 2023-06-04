@@ -18,6 +18,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+ 
+#include "testbed/printing.h"
 
 #ifdef USE_PRINTING
 
@@ -37,7 +39,6 @@
 
 #include "backends/printing/printman.h"
 
-#include "testbed/printing.h"
 
 namespace Testbed {
 
