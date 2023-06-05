@@ -27,6 +27,7 @@
 #ifdef USE_PRINTING
 
 #include "common/rect.h"
+#include "common/noncopyable.h"
 #include "common/rational.h"
 #include "common/scummsys.h"
 #include "common/str.h"
@@ -36,7 +37,7 @@
 class PrintJob;
 class PrintSettings;
 
-class PrintingManager {
+class PrintingManager : Common::NonCopyable {
 public:
 	virtual ~PrintingManager();
 
@@ -60,7 +61,7 @@ public:
 
 class TextMetrics;
 
-class PrintSettings {
+class PrintSettings : Common::NonCopyable {
 
 public:
 	enum DuplexMode {
@@ -81,7 +82,7 @@ public:
 	virtual void setColorPrinting(bool colorMode) = 0;
 };
 
-class PrintJob {
+class PrintJob : Common::NonCopyable {
 public:
 	friend class PrintingManager;
 	virtual ~PrintJob();
