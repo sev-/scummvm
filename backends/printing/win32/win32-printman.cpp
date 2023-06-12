@@ -40,7 +40,7 @@ class Win32PrintingManager : public PrintingManager {
 public:
 	virtual ~Win32PrintingManager();
 	
-	PrintJob *createJob(const Common::String &jobName, PrintSettings *settings);
+	PrintJob *createJob(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) override;
 
 	PrintSettings *getDefaultPrintSettings() const;
 	DEVMODE *getDefaultDevmode() const;
@@ -51,7 +51,7 @@ class Win32PrintJob : public PrintJob {
 public:
 	friend class Win32PrintingManager;
 
-	Win32PrintJob(const Common::String &jobName, Win32PrintSettings *settings);
+	Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings);
 	~Win32PrintJob();
 
 	void drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos);
@@ -86,6 +86,9 @@ private:
 	Win32PrintSettings *settings;
 
 	friend class Win32PrintSettings;
+
+protected:
+	void print() override;
 };
 
 class Win32PrintSettings : public PrintSettings {
@@ -110,12 +113,12 @@ private:
 
 Win32PrintingManager::~Win32PrintingManager() {}
 
-PrintJob *Win32PrintingManager::createJob(const Common::String &jobName, PrintSettings *settings) {
-	return new Win32PrintJob(jobName, (Win32PrintSettings*)settings);
+PrintJob *Win32PrintingManager::createJob(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) {
+	return new Win32PrintJob(cb, jobName, (Win32PrintSettings*)settings);
 }
 
 
-Win32PrintJob::Win32PrintJob(const Common::String &jobName, Win32PrintSettings *settings) : jobActive(true), hdcPrint(NULL), settings(settings) {
+Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings) : PrintJob(cb), jobActive(true), hdcPrint(NULL), settings(settings) {
 	hdcPrint = createDefaultPrinterContext();
 
 	DOCINFOA info;
@@ -365,6 +368,10 @@ HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf
 
 	free(bitmapInfo);
 	return bitmap;
+}
+
+void Win32PrintJob::print() {
+	this->printCallback(this);
 }
 
 PrintingManager *createWin32PrintingManager() {

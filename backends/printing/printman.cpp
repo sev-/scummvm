@@ -25,8 +25,18 @@
 
 PrintingManager::~PrintingManager() {}
 
-PrintJob *PrintingManager::createJob(const Common::String &jobName) {
-	return createJob(jobName, getDefaultPrintSettings());
+PrintJob *PrintingManager::createJob(PrintCallback cb, const Common::String &jobName) {
+	return createJob(cb, jobName, getDefaultPrintSettings());
+}
+
+void PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName) {
+	printCustom(cb, jobName, getDefaultPrintSettings());
+}
+
+void PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) {
+	PrintJob *job = createJob(cb, jobName, settings);
+	job->print();
+	delete job;
 }
 
 void PrintingManager::printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale) {
@@ -107,7 +117,12 @@ void PrintingManager::printPlainTextFile(const Common::String &jobName, Common::
 
 
 
-PrintJob::~PrintJob() {}
+PrintJob::PrintJob(PrintCallback cb) : printCallback(cb) {
+}
+
+PrintJob::~PrintJob() {
+	delete printCallback;
+}
 
 void PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos) {
 	drawBitmap(surf, Common::Rect(pos.x, pos.y, pos.x + surf.w, pos.y + surf.w));

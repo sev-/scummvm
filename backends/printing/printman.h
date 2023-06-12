@@ -32,19 +32,22 @@
 #include "common/scummsys.h"
 #include "common/str.h"
 #include "common/file.h"
+#include "common/func.h"
 #include "graphics/managed_surface.h"
 
 class PrintJob;
 class PrintSettings;
 
+typedef Common::Functor1<PrintJob *, void> *PrintCallback;
+
 class PrintingManager : Common::NonCopyable {
 public:
 	virtual ~PrintingManager();
 
-	PrintJob *createJob(const Common::String &jobName);
-
-	//takes ownership of the PrintSettings object
-	virtual PrintJob *createJob(const Common::String &jobName, PrintSettings *settings) = 0;
+	void printCustom(PrintCallback cb) { printCustom(cb, "ScummVM"); }
+	void printCustom(PrintCallback cb, PrintSettings *settings) { printCustom(cb, "ScummVM", settings); }
+	void printCustom(PrintCallback cb, const Common::String &jobName);
+	void printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings);
 
 	void printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale=false);
 
@@ -57,6 +60,12 @@ public:
 
 	//creates a new PrintSettings object. either hand ownership back using createJob or delete it yourself. Not both.
 	virtual PrintSettings *getDefaultPrintSettings() const = 0;
+
+protected:
+	PrintJob *createJob(PrintCallback cb, const Common::String &jobName);
+
+	// takes ownership of the PrintSettings object
+	virtual PrintJob *createJob(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) = 0;
 };
 
 class TextMetrics;
@@ -85,6 +94,7 @@ public:
 class PrintJob : Common::NonCopyable {
 public:
 	friend class PrintingManager;
+	PrintJob(PrintCallback cb);
 	virtual ~PrintJob();
 
 	virtual void drawBitmap(const Graphics::ManagedSurface &surf, Common::Point pos);
@@ -111,6 +121,11 @@ public:
 	virtual void endPage() = 0;
 	virtual void endDoc() = 0;
 	virtual void abortJob() = 0;
+
+protected:
+	PrintCallback printCallback;
+
+	virtual void print()=0;
 };
 
 class TextMetrics {
