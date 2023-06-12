@@ -402,6 +402,28 @@ private:
 };
 
 /**
+ * Functor object for an unary lambda function.
+ * Usage is like with Functor0Lamb. The resulting functor object
+ * will take one parameter though.
+ *
+ * @see Functor0Mem
+ */
+template<class Res, class Lamb>
+class Functor0Lamb : public Functor0<Res> {
+public:
+	Functor0Lamb(Lamb lamb) : lamb(lamb) {}
+
+	bool isValid() const { return true; }
+
+	Res operator()() const {
+		return lamb();
+	}
+
+private:
+	Lamb lamb;
+};
+
+/**
  * Generic functor object for unary function objects.
  *
  * A typical usage for an unary function object is for executing opcodes
@@ -465,6 +487,28 @@ private:
 };
 
 /**
+ * Functor object for an unary lambda function.
+ * Usage is like with Functor0Lamb. The resulting functor object
+ * will take one parameter though.
+ *
+ * @see Functor0Mem
+ */
+template<class Arg, class Res, class Lamb>
+class Functor1Lamb : public Functor1<Arg, Res> {
+public:
+	Functor1Lamb(Lamb lamb) : lamb(lamb) {}
+
+	bool isValid() const { return true; }
+
+	Res operator()(Arg v1) const {
+		return lamb(v1);
+	}
+
+private:
+	Lamb lamb;
+};
+
+/**
  * Generic functor object for binary function objects.
  *
  * @see Functor1
@@ -518,6 +562,28 @@ public:
 private:
 	mutable T *_t;
 	const FuncType _func;
+};
+
+/**
+ * Functor object for a binary lambda function.
+ * Usage is like with Functor0Lamb. The resulting functor object
+ * will take two parameters though.
+ *
+ * @see Functor0Mem
+ */
+template<class Arg1, class Arg2, class Res, class Lamb>
+class Functor2Lamb : public Functor2<Arg1, Arg2, Res> {
+public:
+	Functor2Lamb(Lamb lamb) : lamb(lamb) {}
+
+	bool isValid() const { return true; }
+
+	Res operator()(Arg1 v1, Arg2 v2) const {
+		return lamb(v1, v2);
+	}
+
+private:
+	Lamb lamb;
 };
 
 /**
