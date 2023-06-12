@@ -59,13 +59,13 @@ TestExitStatus PrintingTests::abortJob() {
 		return kTestFailed;
 	}
 
-	PrintJob *job = pm->createJob("ScummVM to be aborted");
-	if (!job) {
-		warning("Creating PrintJob failed!");
-		return kTestFailed;
-	}
-	job->abortJob();
-	delete job;
+	auto lambda = [](PrintJob *job) -> void {
+		job->abortJob();
+	};
+
+	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
+
+	pm->printCustom(cb, "ScummVM to be aborted");
 
 	return kTestPassed;
 }
@@ -97,55 +97,54 @@ TestExitStatus PrintingTests::printTestPage() {
 		return kTestFailed;
 	}
 
-	PrintJob *job = pm->createJob("ScummVM Test page");
-	if (!job) {
-		warning("Creating PrintJob failed!");
-		return kTestFailed;
-	}
+	auto lambda = [&logo](PrintJob *job) -> void {
+		job->beginPage();
 
-	job->beginPage();
+		const PrintSettings *settings = job->getPrintSettings();
 
-	const PrintSettings *settings = job->getPrintSettings();
+		Common::Point pos(20, 0);
 
-	Common::Point pos(20,0);
+		Common::Rect logoArea(pos.x, pos.y, pos.x + logo->w * 4, pos.y + logo->h * 4);
+		// Logo is 32 bpp
+		job->drawBitmap(*logo, logoArea);
+		pos += Common::Point(0, logoArea.height());
 
-	Common::Rect logoArea(pos.x, pos.y, pos.x + logo->w * 4, pos.y+logo->h * 4);
-	// Logo is 32 bpp
-	job->drawBitmap(*logo, logoArea);
-	pos += Common::Point(0, logoArea.height());
+		job->drawText(gScummVMVersionDate, pos);
+		pos += Common::Point(0, job->getTextBounds(gScummVMVersionDate).height());
 
-	job->drawText(gScummVMVersionDate, pos);
-	pos += Common::Point(0, job->getTextBounds(gScummVMVersionDate).height());
+		if (settings->getColorPrinting()) {
+			job->setTextColor(255, 0, 0);
+			job->drawText("Red text", pos);
+			pos += Common::Point(0, job->getTextBounds("Red text").height());
 
-	if (settings->getColorPrinting()) {
-		job->setTextColor(255, 0, 0);
-		job->drawText("Red text", pos);
-		pos += Common::Point(0, job->getTextBounds("Red text").height());
+			job->setTextColor(0, 255, 0);
+			job->drawText("Green text", pos);
+			pos += Common::Point(0, job->getTextBounds("Green text").height());
 
-		job->setTextColor(0, 255, 0);
-		job->drawText("Green text", pos);
-		pos += Common::Point(0, job->getTextBounds("Green text").height());
+			job->setTextColor(0, 0, 255);
+			job->drawText("Blue text", pos);
+			pos += Common::Point(0, job->getTextBounds("Blue text").height());
 
-		job->setTextColor(0, 0, 255);
-		job->drawText("Blue text", pos);
-		pos += Common::Point(0, job->getTextBounds("Blue text").height());
+			job->setTextColor(0, 0, 0);
+			job->drawText("Black text", pos);
+			pos += Common::Point(0, job->getTextBounds("Black text").height());
+		} else {
+			job->drawText("Grayscale printing only, no text color test", pos);
+			pos += Common::Point(0, job->getTextBounds("Grayscale printing only, no text color test").height());
+		}
 
-		job->setTextColor(0, 0, 0);
-		job->drawText("Black text", pos);
-		pos += Common::Point(0, job->getTextBounds("Black text").height());
-	} else {
-		job->drawText("Grayscale printing only, no text color test", pos);
-		pos += Common::Point(0, job->getTextBounds("Grayscale printing only, no text color test").height());
-	}
+		// The test pattern is CLUT-8
+		Graphics::ManagedSurface *testPattern = Graphics::renderPM5544(800, 800);
+		job->drawBitmap(*testPattern, Common::Rect(pos.x, pos.y, pos.x + testPattern->w, pos.y + testPattern->h));
+		delete testPattern;
 
-	// The test pattern is CLUT-8
-	Graphics::ManagedSurface *testPattern = Graphics::renderPM5544(800, 800);
-	job->drawBitmap(*testPattern, Common::Rect(pos.x, pos.y, pos.x+testPattern->w, pos.y+testPattern->h));
-	delete testPattern;
+		job->endPage();
+		job->endDoc();
+	};
 
-	job->endPage();
-	job->endDoc();
-	delete job;
+	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
+
+	pm->printCustom(cb, "ScummVM Testpage");
 	
 	return kTestPassed;
 }

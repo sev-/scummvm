@@ -371,7 +371,7 @@ HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf
 }
 
 void Win32PrintJob::print() {
-	this->printCallback(this);
+	(*printCallback)(this);
 }
 
 PrintingManager *createWin32PrintingManager() {

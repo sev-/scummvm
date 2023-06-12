@@ -44,33 +44,31 @@ void PrintingManager::printImage(const Common::String &jobName, const Graphics::
 
 	settings->setLandscapeOrientation(surf.w > surf.h);
 
-	PrintJob *job = createJob(jobName, settings);
-	
-	if(!job) {
-		error("Creating printjob failed");
-	}
+	auto lambda = [&surf, scale](PrintJob *job) -> void {
+		job->beginPage();
 
-	job->beginPage();
+		if (scale) {
+			Common::Rect printArea = job->getPrintableArea();
 
-	if (scale) {
-		Common::Rect printArea=job->getPrintableArea();
+			Common::Rational xRatio(printArea.width(), surf.w);
+			Common::Rational yRatio(printArea.height(), surf.h);
 
-		Common::Rational xRatio(printArea.width(), surf.w);
-		Common::Rational yRatio(printArea.height(), surf.h);
+			Common::Rational scaleFactor = ((xRatio < yRatio) ? xRatio : yRatio);
 
-		Common::Rational scaleFactor = ((xRatio < yRatio) ? xRatio : yRatio);
+			Common::Rect bitmapArea(surf.w * scaleFactor.toDouble(), surf.h * scaleFactor.toDouble());
 
-		Common::Rect bitmapArea(surf.w * scaleFactor.toDouble(), surf.h * scaleFactor.toDouble());
+			job->drawBitmap(surf, bitmapArea);
+		} else {
+			job->drawBitmap(surf, Common::Point());
+		}
 
-		job->drawBitmap(surf, bitmapArea);
-	} else {
-		job->drawBitmap(surf, Common::Point());
-	}
+		job->endPage();
+		job->endDoc();
+	};
 
-	job->endPage();
-	job->endDoc();
+	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	delete job;
+	printCustom(cb, jobName);
 }
 
 void PrintingManager::printPlainTextFile(Common::File &file) {
@@ -78,41 +76,40 @@ void PrintingManager::printPlainTextFile(Common::File &file) {
 }
 
 void PrintingManager::printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file) {
-	PrintJob *job = createJob(jobName);
-	
-	if(!job) {
-		error("Creating printjob failed");
-	}
+	auto lambda = [&file](PrintJob *job) -> void {
+		Common::Rect printArea = job->getPrintableArea();
 
-	Common::Rect printArea = job->getPrintableArea();
+		Common::Point textPos;
 
-	Common::Point textPos;
+		TextMetrics metrics = job->getTextMetrics();
 
-	TextMetrics metrics = job->getTextMetrics();
+		job->beginPage();
 
-	job->beginPage();
+		while (!file.eos()) {
+			Common::String line = file.readLine();
 
-	while (!file.eos()) {
-		Common::String line = file.readLine();
+			Common::Rect bounds(1, metrics.getHeight());
 
-		Common::Rect bounds(1, metrics.getHeight());
+			bounds.moveTo(textPos);
 
-		bounds.moveTo(textPos);
+			if (!printArea.contains(bounds)) {
+				textPos.y = 0;
+				job->endPage();
+				job->beginPage();
+			}
 
-		if (!printArea.contains(bounds)) {
-			textPos.y = 0;
-			job->endPage();
-			job->beginPage();
+			job->drawText(line, textPos);
+
+			textPos.y += metrics.getLineHeight();
 		}
+		job->endPage();
 
-		job->drawText(line, textPos);
+		job->endDoc();
+	};
 
-		textPos.y += metrics.getLineHeight();
-	}
-	job->endPage();
+	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	job->endDoc();
-	delete job;
+	printCustom(cb, jobName);
 }
 
 
