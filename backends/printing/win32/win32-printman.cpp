@@ -25,6 +25,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <winspool.h>
+#include <Objbase.h>
+#include <commdlg.h>
 
 #include "common/system.h"
 #include "backends/platform/sdl/win32/win32.h"
@@ -43,8 +45,8 @@ public:
 	PrintJob *createJob(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) override;
 
 	PrintSettings *getDefaultPrintSettings() const;
-	DEVMODE *getDefaultDevmode() const;
-	DEVMODE *getDefaultDevmode(LPTSTR devName) const;
+	HGLOBAL getDefaultDevmodeGlobal() const;
+	HGLOBAL getDefaultDevmodeGlobal(LPTSTR devName) const;
 };
 
 class Win32PrintJob : public PrintJob {
@@ -77,6 +79,8 @@ public:
 	void abortJob();
 
 private:
+	void showPrinterDialog();
+
 	HDC createDefaultPrinterContext();
 	HDC createPrinterContext(LPTSTR devName);
 	HBITMAP buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf);
@@ -93,9 +97,9 @@ protected:
 
 class Win32PrintSettings : public PrintSettings {
 public:
-	Win32PrintSettings(DEVMODE *devmode) : devmode(devmode){};
+	Win32PrintSettings(HGLOBAL devmodeGlobal) : devmodeGlobal(devmodeGlobal) {}
 	~Win32PrintSettings() {
-		free(devmode);
+		GlobalFree(devmodeGlobal);
 	}
 
 	
@@ -106,9 +110,14 @@ public:
 	bool getColorPrinting() const;
 	void setColorPrinting(bool);
 
+	HGLOBAL getDevModeGlobal() { return devmodeGlobal; }
+	void setDevModeGlobal(HGLOBAL);
+
+	DEVMODE *lockDevmode() const;
+	void unlockDevmode() const;
+
 private:
-	DEVMODE *devmode;
-		friend HDC Win32PrintJob::createPrinterContext(LPTSTR devName);
+	HGLOBAL devmodeGlobal;
 };
 
 Win32PrintingManager::~Win32PrintingManager() {}
@@ -119,7 +128,9 @@ PrintJob *Win32PrintingManager::createJob(PrintCallback cb, const Common::String
 
 
 Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings) : PrintJob(cb), jobActive(true), hdcPrint(NULL), settings(settings) {
-	hdcPrint = createDefaultPrinterContext();
+	//hdcPrint = createDefaultPrinterContext();
+
+	showPrinterDialog();
 
 	DOCINFOA info;
 	info.cbSize = sizeof(info);
@@ -269,6 +280,38 @@ void Win32PrintJob::abortJob() {
 	jobActive = false;
 }
 
+void Win32PrintJob::showPrinterDialog() {
+	PRINTDLGEX dlg;
+
+	HWND parent = (dynamic_cast<OSystem_Win32 *>(g_system))->getHwnd();
+
+	memset(&dlg, 0, sizeof(dlg));
+	dlg.lStructSize = sizeof(dlg);
+
+	dlg.hwndOwner = parent;
+
+	dlg.Flags = PD_NOSELECTION | PD_RETURNDC | PD_USEDEVMODECOPIESANDCOLLATE | PD_NOCURRENTPAGE | PD_NOPAGENUMS;
+	dlg.nStartPage = START_PAGE_GENERAL;
+	dlg.hDevMode = settings->getDevModeGlobal();
+
+	HRESULT res=PrintDlgEx(&dlg);
+
+	if (res != S_OK) {
+		error("PrintDlgEx failed");
+		return;
+	}
+
+	GlobalFree(dlg.hDevNames);
+
+	settings->setDevModeGlobal(dlg.hDevMode);
+
+	if (dlg.dwResultAction != PD_RESULT_PRINT) {
+		return;
+	}
+
+	this->hdcPrint = dlg.hDC;
+}
+
 HDC Win32PrintJob::createDefaultPrinterContext() {
 	TCHAR szPrinter[MAX_PATH];
 	BOOL success;
@@ -281,12 +324,14 @@ HDC Win32PrintJob::createDefaultPrinterContext() {
 	return createPrinterContext(szPrinter);
 }
 HDC Win32PrintJob::createPrinterContext(LPTSTR devName) {
-	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, settings->devmode);
+	DEVMODE *devmode = settings->lockDevmode();
+	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode);
+	settings->unlockDevmode();
 	return printerDC;
 }
 
 PrintSettings *Win32PrintingManager::getDefaultPrintSettings() const {
-	DEVMODE *devmode = getDefaultDevmode();
+	HGLOBAL devmode = getDefaultDevmodeGlobal();
 
 	if (!devmode)
 		return nullptr;
@@ -294,7 +339,7 @@ PrintSettings *Win32PrintingManager::getDefaultPrintSettings() const {
 	return new Win32PrintSettings(devmode);
 }
 
-DEVMODE *Win32PrintingManager::getDefaultDevmode() const {
+HGLOBAL Win32PrintingManager::getDefaultDevmodeGlobal() const {
 	TCHAR szPrinter[MAX_PATH];
 	BOOL success;
 	DWORD cchPrinter(ARRAYSIZE(szPrinter));
@@ -303,10 +348,10 @@ DEVMODE *Win32PrintingManager::getDefaultDevmode() const {
 	if (!success)
 		return nullptr;
 
-	return getDefaultDevmode(szPrinter);
+	return getDefaultDevmodeGlobal(szPrinter);
 }
 
-DEVMODE *Win32PrintingManager::getDefaultDevmode(LPTSTR devName) const {
+HGLOBAL Win32PrintingManager::getDefaultDevmodeGlobal(LPTSTR devName) const {
 	HANDLE handle;
 	BOOL success;
 
@@ -317,7 +362,8 @@ DEVMODE *Win32PrintingManager::getDefaultDevmode(LPTSTR devName) const {
 		return nullptr;
 
 	int size = DocumentProperties(parent, handle, devName, NULL, NULL, 0);
-	DEVMODE *devmode = (DEVMODE *)malloc(size);
+	HGLOBAL devmodeGlobal = GlobalAlloc(GMEM_MOVEABLE, size);
+	DEVMODE *devmode = (DEVMODE *)GlobalLock(devmodeGlobal);
 	DocumentProperties(parent, handle, devName, devmode, NULL, DM_OUT_BUFFER);
 
 	// Apply setting presets here
@@ -326,9 +372,11 @@ DEVMODE *Win32PrintingManager::getDefaultDevmode(LPTSTR devName) const {
 		DocumentProperties(parent, handle, devName, devmode, devmode, DM_IN_BUFFER | DM_IN_PROMPT | DM_OUT_BUFFER);
 	}
 
+	GlobalUnlock(devmodeGlobal);
+
 	ClosePrinter(handle);
 
-	return devmode;
+	return devmodeGlobal;
 }
 
 
@@ -379,29 +427,59 @@ PrintingManager *createWin32PrintingManager() {
 }
 
 PrintSettings::DuplexMode Win32PrintSettings::getDuplexMode() const {
-	return (PrintSettings::DuplexMode)devmode->dmDuplex;
+	PrintSettings::DuplexMode mode;
+	DEVMODE *devmode = lockDevmode();
+	mode = (PrintSettings::DuplexMode)devmode->dmDuplex;
+	unlockDevmode();
+	return mode;
 }
 
 void Win32PrintSettings::setDuplexMode(PrintSettings::DuplexMode mode) {
+	DEVMODE *devmode = lockDevmode();
 	devmode->dmDuplex = mode;
+	unlockDevmode();
 }
 
 bool Win32PrintSettings::getLandscapeOrientation() const {
-	return devmode->dmOrientation == DMORIENT_LANDSCAPE;
+	bool landscape;
+	DEVMODE *devmode = lockDevmode();
+	landscape = devmode->dmOrientation == DMORIENT_LANDSCAPE;
+	unlockDevmode();
+	return landscape;
 }
 
 void Win32PrintSettings::setLandscapeOrientation(bool landscapeOrientation) {
+	DEVMODE *devmode = lockDevmode();
 	devmode->dmOrientation = landscapeOrientation ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
+	unlockDevmode();
 }
 
 bool Win32PrintSettings::getColorPrinting() const {
-	return devmode->dmColor == DMCOLOR_COLOR;
+	bool color;
+	DEVMODE *devmode = lockDevmode();
+	color = devmode->dmColor == DMCOLOR_COLOR;
+	unlockDevmode();
+	return color;
 }
 
 void Win32PrintSettings::setColorPrinting(bool colorPrinting) {
+	DEVMODE *devmode = lockDevmode();
 	devmode->dmColor = colorPrinting ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
+	unlockDevmode();
 }
 
+void Win32PrintSettings::setDevModeGlobal(HGLOBAL newGlobal) {
+	GlobalFree(devmodeGlobal);
+	devmodeGlobal = newGlobal;
+}
+
+DEVMODE *Win32PrintSettings::lockDevmode() const {
+	return (DEVMODE *) GlobalLock(devmodeGlobal);
+}
+
+void Win32PrintSettings::unlockDevmode() const {
+	GlobalUnlock(devmodeGlobal);
+}
 
 
 #endif // USE_PRINTING
