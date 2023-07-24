@@ -1516,6 +1516,35 @@ uint8 *Wiz::drawWizImage(int resNum, int state, int maskNum, int maskState, int 
 
 			return 0;
 		}
+		case 1: {
+			uint8 *wizd = _vm->findWrappedBlock(MKTAG('W', 'I', 'Z', 'D'), dataPtr, state, 0);
+			assert(wizd);
+
+			Graphics::ManagedSurface surf(width,height,Graphics::PixelFormat::createFormatCLUT8());
+
+			Common::Rect r1(0, 0, width, height);
+
+			dst = (uint8_t *)surf.getBasePtr(0, 0);
+
+			uint8 *pal = _vm->findWrappedBlock(MKTAG('R', 'G', 'B', 'S'), dataPtr, state, 0);
+			assert(pal);
+			surf.setPalette(pal, 0, 256);
+
+			if (xmapPtr) {
+				decompressWizImage<kWizXMap>(dst, surf.pitch, kDstMemory, wizd, r1, flags, palPtr, xmapPtr, surf.format.bytesPerPixel);
+			} else if (palPtr) {
+				decompressWizImage<kWizRMap>(dst, surf.pitch, kDstMemory, wizd, r1, flags, palPtr, NULL, surf.format.bytesPerPixel);
+			} else {
+				decompressWizImage<kWizCopy>(dst, surf.pitch, kDstMemory, wizd, r1, flags, NULL, NULL, surf.format.bytesPerPixel);
+			}
+
+			surf.markAllDirty();
+
+			PrintingManager *pm = _vm->_system->getPrintingManager();
+			pm->printImage(surf, true);
+
+			return 0;
+		}
 		default:
 			error("Unsupported compression mode %d", comp);
 		}
