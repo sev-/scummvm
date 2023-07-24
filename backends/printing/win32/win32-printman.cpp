@@ -78,8 +78,11 @@ public:
 	void endDoc();
 	void abortJob();
 
+	Common::String jobName;
+
 private:
 	void showPrinterDialog();
+	void beginDocument();
 
 	HDC createDefaultPrinterContext();
 	HDC createPrinterContext(LPTSTR devName);
@@ -127,11 +130,13 @@ PrintJob *Win32PrintingManager::createJob(PrintCallback cb, const Common::String
 }
 
 
-Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings) : PrintJob(cb), jobActive(true), hdcPrint(NULL), settings(settings) {
-	//hdcPrint = createDefaultPrinterContext();
+Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings) : PrintJob(cb), jobName(jobName), jobActive(false), hdcPrint(NULL), settings(settings) {
+	// hdcPrint = createDefaultPrinterContext();
 
 	showPrinterDialog();
+}
 
+void Win32PrintJob::beginDocument() {
 	DOCINFOA info;
 	info.cbSize = sizeof(info);
 	info.fwType = 0;
@@ -139,6 +144,7 @@ Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Wi
 	info.lpszOutput = nullptr;
 	info.lpszDocName = const_cast<const char *>(jobName.c_str());
 	StartDocA(hdcPrint, &info);
+	jobActive = true;
 }
 
 Win32PrintJob::~Win32PrintJob() {
@@ -419,6 +425,7 @@ HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf
 }
 
 void Win32PrintJob::print() {
+	beginDocument();
 	(*printCallback)(this);
 }
 
