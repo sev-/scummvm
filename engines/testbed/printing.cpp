@@ -102,35 +102,37 @@ TestExitStatus PrintingTests::printTestPage() {
 
 		const PrintSettings *settings = job->getPrintSettings();
 
+
 		Common::Point pos(20, 0);
+		
+		auto printLine = [&job, &pos](Common::String line) -> void {
+			job->drawText(line, pos);
+			pos += Common::Point(0, job->getTextBounds(line).height());
+		};
 
 		Common::Rect logoArea(pos.x, pos.y, pos.x + logo->w * 4, pos.y + logo->h * 4);
 		// Logo is 32 bpp
 		job->drawBitmap(*logo, logoArea);
 		pos += Common::Point(0, logoArea.height());
 
-		job->drawText(gScummVMVersionDate, pos);
-		pos += Common::Point(0, job->getTextBounds(gScummVMVersionDate).height());
+		printLine(gScummVMVersionDate);
+		printLine(gScummVMCompiler);
+		printLine(gScummVMFeatures);
 
 		if (settings->getColorPrinting()) {
 			job->setTextColor(255, 0, 0);
-			job->drawText("Red text", pos);
-			pos += Common::Point(0, job->getTextBounds("Red text").height());
+			printLine("Red text");
 
 			job->setTextColor(0, 255, 0);
-			job->drawText("Green text", pos);
-			pos += Common::Point(0, job->getTextBounds("Green text").height());
+			printLine("Green text");
 
 			job->setTextColor(0, 0, 255);
-			job->drawText("Blue text", pos);
-			pos += Common::Point(0, job->getTextBounds("Blue text").height());
+			printLine("Blue text");
 
 			job->setTextColor(0, 0, 0);
-			job->drawText("Black text", pos);
-			pos += Common::Point(0, job->getTextBounds("Black text").height());
+			printLine("Black text");
 		} else {
-			job->drawText("Grayscale printing only, no text color test", pos);
-			pos += Common::Point(0, job->getTextBounds("Grayscale printing only, no text color test").height());
+			printLine("Grayscale printing only, no text color test");
 		}
 
 		// The test pattern is CLUT-8
