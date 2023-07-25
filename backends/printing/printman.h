@@ -125,7 +125,7 @@ public:
 protected:
 	PrintCallback printCallback;
 
-	virtual void print()=0;
+	virtual bool print()=0;
 };
 
 class TextMetrics {

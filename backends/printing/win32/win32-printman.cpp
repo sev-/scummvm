@@ -81,8 +81,8 @@ public:
 	Common::String jobName;
 
 private:
-	void showPrinterDialog();
-	void beginDocument();
+	bool showPrinterDialog();
+	bool beginDocument();
 
 	HDC createDefaultPrinterContext();
 	HDC createPrinterContext(LPTSTR devName);
@@ -95,7 +95,7 @@ private:
 	friend class Win32PrintSettings;
 
 protected:
-	void print() override;
+	bool print() override;
 };
 
 class Win32PrintSettings : public PrintSettings {
@@ -131,20 +131,21 @@ PrintJob *Win32PrintingManager::createJob(PrintCallback cb, const Common::String
 
 
 Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Win32PrintSettings *settings) : PrintJob(cb), jobName(jobName), jobActive(false), hdcPrint(NULL), settings(settings) {
-	// hdcPrint = createDefaultPrinterContext();
 
-	showPrinterDialog();
 }
 
-void Win32PrintJob::beginDocument() {
+bool Win32PrintJob::beginDocument() {
 	DOCINFOA info;
 	info.cbSize = sizeof(info);
 	info.fwType = 0;
 	info.lpszDatatype = nullptr;
 	info.lpszOutput = nullptr;
 	info.lpszDocName = const_cast<const char *>(jobName.c_str());
-	StartDocA(hdcPrint, &info);
+	int success=StartDocA(hdcPrint, &info);
+	if (success <= 0)
+		return false;
 	jobActive = true;
+	return true;
 }
 
 Win32PrintJob::~Win32PrintJob() {
@@ -286,7 +287,7 @@ void Win32PrintJob::abortJob() {
 	jobActive = false;
 }
 
-void Win32PrintJob::showPrinterDialog() {
+bool Win32PrintJob::showPrinterDialog() {
 	PRINTDLGEX dlg;
 
 	HWND parent = (dynamic_cast<OSystem_Win32 *>(g_system))->getHwnd();
@@ -304,7 +305,7 @@ void Win32PrintJob::showPrinterDialog() {
 
 	if (res != S_OK) {
 		error("PrintDlgEx failed");
-		return;
+		return false;
 	}
 
 	GlobalFree(dlg.hDevNames);
@@ -312,10 +313,12 @@ void Win32PrintJob::showPrinterDialog() {
 	settings->setDevModeGlobal(dlg.hDevMode);
 
 	if (dlg.dwResultAction != PD_RESULT_PRINT) {
-		return;
+		return false;
 	}
 
 	this->hdcPrint = dlg.hDC;
+
+	return true;
 }
 
 HDC Win32PrintJob::createDefaultPrinterContext() {
@@ -424,9 +427,19 @@ HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf
 	return bitmap;
 }
 
-void Win32PrintJob::print() {
-	beginDocument();
+bool Win32PrintJob::print() {
+	// hdcPrint = createDefaultPrinterContext();
+
+	bool doPrint=showPrinterDialog();
+	if (!doPrint)
+		return false;
+
+	doPrint=beginDocument();
+	if (!doPrint)
+		return false;
 	(*printCallback)(this);
+
+	return true;
 }
 
 PrintingManager *createWin32PrintingManager() {
