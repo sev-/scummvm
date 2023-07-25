@@ -32,6 +32,8 @@
 #include "common/file.h"
 
 #include "engines/engine.h"
+#include "engines/metaengine.h"
+#include "base/plugins.h"
 
 #include "graphics/pm5544.h"
 
@@ -133,6 +135,25 @@ TestExitStatus PrintingTests::printTestPage() {
 			printLine("Black text");
 		} else {
 			printLine("Grayscale printing only, no text color test");
+		}
+
+		pos.y += 8;		
+		printLine("Engines:");
+		pos.y += 4;
+
+		int16 listStart = pos.y;
+
+		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE_DETECTION);
+		PluginList::const_iterator iter = plugins.begin();
+		for (; iter != plugins.end(); ++iter) {
+			auto &plug = (*iter);
+			auto &meta = plug->get<MetaEngineDetection>();
+			printLine(meta.getEngineName());
+
+			if (pos.y >= job->getPrintableArea().bottom) {
+				pos.y = listStart;
+				pos.x = job->getPrintableArea().width() / 2;
+			}
 		}
 
 		// The test pattern is CLUT-8
