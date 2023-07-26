@@ -1545,6 +1545,28 @@ uint8 *Wiz::drawWizImage(int resNum, int state, int maskNum, int maskState, int 
 
 			return 0;
 		}
+#ifdef USE_RGB_COLOR
+		case 2: {
+			if(mask) {
+				warning("Printing with comp 2 and masks isn't implemented. Pretending that there is no mask.");
+			}
+
+			Graphics::ManagedSurface surf;
+			surf.w = width;
+			surf.h = height;
+			surf.format = Graphics::PixelFormat(2, 5,5,5,0, 10,5,0,15);
+
+			uint8 *wizd = _vm->findWrappedBlock(MKTAG('W', 'I', 'Z', 'D'), dataPtr, state, 0);
+			assert(wizd);
+
+			surf.setPixels(wizd);
+
+			PrintingManager *pm = _vm->_system->getPrintingManager();
+			pm->printImage(surf, true);
+
+			return 0;
+		}
+#endif
 		default:
 			error("Unsupported compression mode %d", comp);
 		}
