@@ -224,8 +224,13 @@ TestExitStatus PrintingTests::printEngineList() {
 				delete logoSurf;
 			} else {
 				Common::String displayName(meta.getEngineName());
-				displayName.wordWrap(16);
-				job->drawText(displayName, pos);
+				displayName.wordWrap(12);
+				auto lines = splitString(displayName, '\n');
+				Common::Point linePos=pos;
+				for (Common::String line : lines) {
+					job->drawText(line, linePos);
+					linePos += Common::Point(0, job->getTextBounds(line).height());
+				}
 			}
 
 			pos.x += logoSize + logoPadding;
