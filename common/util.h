@@ -125,6 +125,8 @@ namespace Common {
 class String;
 class U32String;
 
+template<class T> class Array;
+
 /**
  * @addtogroup common_util
  * @{
@@ -414,6 +416,8 @@ bool isBlank(int c);
  * @return String with a floating point number representing the given size.
  */
 Common::String getHumanReadableBytes(uint64 bytes, const char *&unitsOut);
+
+Common::Array<Common::String> splitString(const Common::String &, char deliminator);
 
 /** @} */
 

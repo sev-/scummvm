@@ -210,4 +210,21 @@ Common::String getHumanReadableBytes(uint64 bytes, const char *&unitsOut) {
 	return Common::String::format("%.1f", floating);
 }
 
+Common::Array<Common::String> splitString(const Common::String &base, char deliminator) {
+	Common::Array<Common::String> arr;
+
+	uint32 pos = 0;
+	for(;;) {
+		uint32 newPos = base.find(deliminator, pos);
+		if (newPos == Common::String::npos) {
+			arr.push_back(base.substr(pos));
+			break;
+		}
+		arr.push_back(base.substr(pos, newPos - pos));
+		pos = newPos+1;
+	}
+
+	return arr;
+}
+
 } // End of namespace Common
