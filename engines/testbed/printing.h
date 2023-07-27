@@ -35,6 +35,7 @@ namespace PrintingTests {
 // Helper functions for Printing tests
 TestExitStatus abortJob();
 TestExitStatus printTestPage();
+TestExitStatus printEngineList();
 TestExitStatus printGPL();
 
 } // End of namespace PrintingTests

@@ -41,6 +41,9 @@
 
 #include "backends/printing/printman.h"
 
+namespace GUI {
+	Graphics::ManagedSurface *loadSurfaceFromFile(const Common::String &name, int renderWidth = 0, int renderHeight = 0);
+}
 
 namespace Testbed {
 
@@ -48,6 +51,7 @@ namespace Testbed {
 PrintingTestSuite::PrintingTestSuite() {
 	addTest("Abort Job", &PrintingTests::abortJob);
 	addTest("Print Test Page", &PrintingTests::printTestPage);
+	addTest("Print Engine List", &PrintingTests::printEngineList);
 	addTest("Print the GPL", &PrintingTests::printGPL);
 }
 
@@ -104,6 +108,7 @@ TestExitStatus PrintingTests::printTestPage() {
 
 		const PrintSettings *settings = job->getPrintSettings();
 
+		const Common::Rect printArea = job->getPrintableArea();
 
 		Common::Point pos(20, 0);
 		
@@ -112,10 +117,12 @@ TestExitStatus PrintingTests::printTestPage() {
 			pos += Common::Point(0, job->getTextBounds(line).height());
 		};
 
-		Common::Rect logoArea(pos.x, pos.y, pos.x + logo->w * 4, pos.y + logo->h * 4);
-		// Logo is 32 bpp
-		job->drawBitmap(*logo, logoArea);
-		pos += Common::Point(0, logoArea.height());
+		{
+			Common::Rect logoArea(pos.x, pos.y, pos.x + logo->w * 4, pos.y + logo->h * 4);
+			// Logo is 32 bpp
+			job->drawBitmap(*logo, logoArea);
+			pos += Common::Point(0, logoArea.height());
+		}
 
 		printLine(gScummVMVersionDate);
 		printLine(gScummVMCompiler);
@@ -137,25 +144,6 @@ TestExitStatus PrintingTests::printTestPage() {
 			printLine("Grayscale printing only, no text color test");
 		}
 
-		pos.y += 8;		
-		printLine("Engines:");
-		pos.y += 4;
-
-		int16 listStart = pos.y;
-
-		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE_DETECTION);
-		PluginList::const_iterator iter = plugins.begin();
-		for (; iter != plugins.end(); ++iter) {
-			auto &plug = (*iter);
-			auto &meta = plug->get<MetaEngineDetection>();
-			printLine(meta.getEngineName());
-
-			if (pos.y >= job->getPrintableArea().bottom) {
-				pos.y = listStart;
-				pos.x = job->getPrintableArea().width() / 2;
-			}
-		}
-
 		// The test pattern is CLUT-8
 		Graphics::ManagedSurface *testPattern = Graphics::renderPM5544(800, 800);
 		job->drawBitmap(*testPattern, Common::Rect(pos.x, pos.y, pos.x + testPattern->w, pos.y + testPattern->h));
@@ -169,6 +157,93 @@ TestExitStatus PrintingTests::printTestPage() {
 
 	pm->printCustom(cb, "ScummVM Testpage");
 	
+	return kTestPassed;
+}
+
+TestExitStatus PrintingTests::printEngineList() {
+	if (!ConfParams.isSessionInteractive()) {
+		return kTestSkipped;
+	}
+
+	if (Testsuite::handleInteractiveInput("Print an engine list?", "OK", "Skip", kOptionRight)) {
+		Testsuite::logPrintf("Info! Skipping test : printEngineList\n");
+		return kTestSkipped;
+	}
+
+	PrintingManager *pm = g_system->getPrintingManager();
+	if (!pm) {
+		warning("No PrintingManager!");
+		return kTestFailed;
+	}
+
+	auto lambda = [](PrintJob *job) -> void {
+		job->beginPage();
+
+		const Common::Rect printArea = job->getPrintableArea();
+
+		Common::Point pos(20, 0);
+
+		auto printLine = [&job, &pos](Common::String line) -> void {
+			job->drawText(line, pos);
+			pos += Common::Point(0, job->getTextBounds(line).height());
+		};
+		printLine("Engines:");
+
+		const int logoSize = 500;
+		const int logoPadding = 20;
+
+		const PluginList &plugins = EngineMan.getPlugins(PLUGIN_TYPE_ENGINE_DETECTION);
+		PluginList::const_iterator iter = plugins.begin();
+		for (; iter != plugins.end(); ++iter) {
+			auto &plug = (*iter);
+			auto &meta = plug->get<MetaEngineDetection>();
+
+			// Try normal engine icon first
+			Common::String path = Common::String::format("icons/%s.png", plug->getName());
+
+			Graphics::ManagedSurface *logoSurf = GUI::loadSurfaceFromFile(path);
+
+			if (!logoSurf) {
+				// Check for a single game engine too
+				path = Common::String::format("icons/%s-%s.png", plug->getName(), plug->getName());
+				logoSurf = GUI::loadSurfaceFromFile(path);
+			}
+
+			if (logoSurf) {
+				Common::Rational xRatio(logoSize, logoSurf->w);
+				Common::Rational yRatio(logoSize, logoSurf->h);
+
+				Common::Rational scaleFactor = ((xRatio < yRatio) ? xRatio : yRatio);
+
+				Common::Rect logoArea(logoSurf->w * scaleFactor.toDouble(), logoSurf->h * scaleFactor.toDouble());
+
+				logoArea.moveTo(pos);
+
+				job->drawBitmap(*logoSurf, logoArea);
+
+				delete logoSurf;
+			} else {
+				Common::String displayName(meta.getEngineName());
+				displayName.wordWrap(16);
+				job->drawText(displayName, pos);
+			}
+
+			pos.x += logoSize + logoPadding;
+
+			if (!printArea.contains(pos.x + logoSize, pos.y + logoSize)) {
+				pos.y += logoSize + logoPadding;
+				pos.x = 0;
+			}
+		}
+
+		job->endPage();
+		job->endDoc();
+	};
+
+	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
+
+	pm->printCustom(cb, "ScummVM Engines");
+
 	return kTestPassed;
 }
 
