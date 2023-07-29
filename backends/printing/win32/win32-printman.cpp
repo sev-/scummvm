@@ -32,6 +32,7 @@
 #include "backends/platform/sdl/win32/win32.h"
 
 #include "backends/printing/printman.h"
+#include "backends/printing/win32/hglobal.h"
 #include "win32-printman.h"
 #include "common/ustr.h"
 
@@ -100,11 +101,9 @@ protected:
 
 class Win32PrintSettings : public PrintSettings {
 public:
-	Win32PrintSettings(HGLOBAL devmodeGlobal) : devmodeGlobal(devmodeGlobal) {}
+	Win32PrintSettings(HGLOBAL devModeGlobal) : devModeGlobal(devModeGlobal) {}
 	~Win32PrintSettings() {
-		GlobalFree(devmodeGlobal);
 	}
-
 	
 	DuplexMode getDuplexMode() const;
 	void setDuplexMode(DuplexMode mode);
@@ -113,14 +112,13 @@ public:
 	bool getColorPrinting() const;
 	void setColorPrinting(bool);
 
-	HGLOBAL getDevModeGlobal() { return devmodeGlobal; }
-	void setDevModeGlobal(HGLOBAL);
+	Win32::HGlobalPtr<DEVMODE> lockDevMode() const;
 
-	DEVMODE *lockDevmode() const;
-	void unlockDevmode() const;
+	void setDevModeGlobal(HGLOBAL);
+	HGLOBAL getDevModeGlobal() const;
 
 private:
-	HGLOBAL devmodeGlobal;
+	mutable Win32::HGlobalObject<DEVMODE> devModeGlobal;
 };
 
 Win32PrintingManager::~Win32PrintingManager() {}
@@ -333,9 +331,8 @@ HDC Win32PrintJob::createDefaultPrinterContext() {
 	return createPrinterContext(szPrinter);
 }
 HDC Win32PrintJob::createPrinterContext(LPTSTR devName) {
-	DEVMODE *devmode = settings->lockDevmode();
-	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode);
-	settings->unlockDevmode();
+	Win32::HGlobalPtr<DEVMODE> devmode = settings->lockDevMode();
+	HDC printerDC = CreateDC(TEXT("WINSPOOL"), devName, NULL, devmode.get());
 	return printerDC;
 }
 
@@ -447,60 +444,46 @@ PrintingManager *createWin32PrintingManager() {
 }
 
 PrintSettings::DuplexMode Win32PrintSettings::getDuplexMode() const {
-	PrintSettings::DuplexMode mode;
-	DEVMODE *devmode = lockDevmode();
-	mode = (PrintSettings::DuplexMode)devmode->dmDuplex;
-	unlockDevmode();
-	return mode;
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
+	return (PrintSettings::DuplexMode)devmode->dmDuplex;
 }
 
 void Win32PrintSettings::setDuplexMode(PrintSettings::DuplexMode mode) {
-	DEVMODE *devmode = lockDevmode();
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
 	devmode->dmDuplex = mode;
-	unlockDevmode();
 }
 
 bool Win32PrintSettings::getLandscapeOrientation() const {
-	bool landscape;
-	DEVMODE *devmode = lockDevmode();
-	landscape = devmode->dmOrientation == DMORIENT_LANDSCAPE;
-	unlockDevmode();
-	return landscape;
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
+	return devmode->dmOrientation == DMORIENT_LANDSCAPE;
 }
 
 void Win32PrintSettings::setLandscapeOrientation(bool landscapeOrientation) {
-	DEVMODE *devmode = lockDevmode();
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
 	devmode->dmOrientation = landscapeOrientation ? DMORIENT_LANDSCAPE : DMORIENT_PORTRAIT;
-	unlockDevmode();
 }
 
 bool Win32PrintSettings::getColorPrinting() const {
-	bool color;
-	DEVMODE *devmode = lockDevmode();
-	color = devmode->dmColor == DMCOLOR_COLOR;
-	unlockDevmode();
-	return color;
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
+	return devmode->dmColor == DMCOLOR_COLOR;
 }
 
 void Win32PrintSettings::setColorPrinting(bool colorPrinting) {
-	DEVMODE *devmode = lockDevmode();
+	Win32::HGlobalPtr<DEVMODE> devmode = lockDevMode();
 	devmode->dmColor = colorPrinting ? DMCOLOR_COLOR : DMCOLOR_MONOCHROME;
-	unlockDevmode();
 }
 
 void Win32PrintSettings::setDevModeGlobal(HGLOBAL newGlobal) {
-	GlobalFree(devmodeGlobal);
-	devmodeGlobal = newGlobal;
+	devModeGlobal.set(newGlobal);
 }
 
-DEVMODE *Win32PrintSettings::lockDevmode() const {
-	return (DEVMODE *) GlobalLock(devmodeGlobal);
+HGLOBAL Win32PrintSettings::getDevModeGlobal() const {
+	return devModeGlobal.get();
 }
 
-void Win32PrintSettings::unlockDevmode() const {
-	GlobalUnlock(devmodeGlobal);
+Win32::HGlobalPtr<DEVMODE> Win32PrintSettings::lockDevMode() const {
+	return devModeGlobal.lock();
 }
-
 
 #endif // USE_PRINTING
 #endif // WIN32
