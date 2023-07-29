@@ -112,9 +112,13 @@ TestExitStatus PrintingTests::printTestPage() {
 
 		Common::Point pos(20, 0);
 		
-		auto printLine = [&job, &pos](Common::String line) -> void {
-			job->drawText(line, pos);
-			pos += Common::Point(0, job->getTextBounds(line).height());
+		auto printLine = [&job, &pos](Common::String text) -> void {
+			text.wordWrap(80);
+			auto lines = splitString(text, '\n');
+			for (Common::String line : lines) {
+				job->drawText(line, pos);
+				pos += Common::Point(0, job->getTextBounds(line).height());
+			}
 		};
 
 		{
