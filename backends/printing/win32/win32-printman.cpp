@@ -164,21 +164,23 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Poi
 		return;
 	}
 
+	BOOL success;
+
 	SelectObject(hdcImg, bitmap);
 	if (surf.hasTransparentColor()) {
 		byte pal[4];
 		surf.grabPalette(pal, surf.getTransparentColor(), 1);
 		UINT transpColor = RGB(pal[0], pal[1], pal[2]);
-		TransparentBlt(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, surf.w, surf.h, transpColor);
+		success = TransparentBlt(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, surf.w, surf.h, transpColor);
 	} else if (surf.format.aBits()>0) {
 		BLENDFUNCTION blend;
 		blend.AlphaFormat = AC_SRC_ALPHA;
 		blend.BlendFlags = 0;
 		blend.BlendOp = AC_SRC_OVER;
 		blend.SourceConstantAlpha = 255;
-		AlphaBlend(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, surf.w, surf.h, blend);
+		success = AlphaBlend(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, surf.w, surf.h, blend);
 	} else {
-		BitBlt(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, SRCCOPY);
+		success = BitBlt(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, SRCCOPY);
 	}
 	DeleteObject(bitmap);
 	DeleteDC(hdcImg);
@@ -193,21 +195,23 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Rec
 		return;
 	}
 
+	BOOL success;
+
 	SelectObject(hdcImg, bitmap);
 	if (surf.hasTransparentColor()) {
 		byte pal[4];
 		surf.grabPalette(pal, surf.getTransparentColor(), 1);
 		UINT transpColor=RGB(pal[0],pal[1],pal[2]);
-		TransparentBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, transpColor);
-	} else if (surf.format.aBits() > 0) {
+		success = TransparentBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, transpColor);
+	} else if (surf.format.aBits() > 0 && false) {
 		BLENDFUNCTION blend;
 		blend.AlphaFormat = AC_SRC_ALPHA;
 		blend.BlendFlags = 0;
 		blend.BlendOp = AC_SRC_OVER;
 		blend.SourceConstantAlpha = 255;
-		AlphaBlend(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, blend);
+		success = AlphaBlend(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, blend);
 	} else {
-		StretchBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, SRCCOPY);
+		success = StretchBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, SRCCOPY);
 	}
 	DeleteObject(bitmap);
 	DeleteDC(hdcImg);
