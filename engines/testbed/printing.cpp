@@ -71,6 +71,7 @@ TestExitStatus PrintingTests::abortJob() {
 
 	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
+	//ignore return value, since failure is expected
 	pm->printCustom(cb, "ScummVM to be aborted");
 
 	return kTestPassed;
@@ -159,9 +160,9 @@ TestExitStatus PrintingTests::printTestPage() {
 
 	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	pm->printCustom(cb, "ScummVM Testpage");
+	bool success = pm->printCustom(cb, "ScummVM Testpage");
 	
-	return kTestPassed;
+	return success ? kTestPassed: kTestFailed;
 }
 
 TestExitStatus PrintingTests::printEngineList() {
@@ -251,7 +252,9 @@ TestExitStatus PrintingTests::printEngineList() {
 
 	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	pm->printCustom(cb, "ScummVM Engines");
+	if (!pm->printCustom(cb, "ScummVM Engines")) {
+		return kTestFailed;
+	}
 
 	return kTestPassed;
 }
@@ -279,11 +282,11 @@ TestExitStatus PrintingTests::printGPL() {
 		return kTestFailed;
 	}
 
-	pm->printPlainTextFile("The GPL", f);
+	bool success = pm->printPlainTextFile("The GPL", f);
 
 	f.close();
 
-	return kTestPassed;
+	return success?kTestPassed:kTestFailed;
 }
 
 } // End of namespace Testbed
