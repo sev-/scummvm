@@ -242,7 +242,7 @@ TestExitStatus PrintingTests::printEngineList() {
 
 			if (!printArea.contains(pos.x + logoSize, pos.y + logoSize)) {
 				pos.y += logoSize + logoPadding;
-				pos.x = 0;
+				pos.x = 20;
 			}
 		}
 
