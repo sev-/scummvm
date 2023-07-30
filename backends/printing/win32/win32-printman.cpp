@@ -397,8 +397,8 @@ HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf
 	bitmapInfo->bmiHeader.biWidth = surf.w;
 	bitmapInfo->bmiHeader.biHeight = -((LONG)surf.h); // Blame the OS2 team for bitmaps being upside down
 	bitmapInfo->bmiHeader.biPlanes = 1;
-	bitmapInfo->bmiHeader.biBitCount = (surf.format.isCLUT8()?8:((surf.format.bpp()+7)&~7));
 	bitmapInfo->bmiHeader.biCompression = BI_RGB;
+	bitmapInfo->bmiHeader.biBitCount = (surf.format.isCLUT8()?8:(surf.format.bytesPerPixel*8));
 	bitmapInfo->bmiHeader.biSizeImage = 0;
 	bitmapInfo->bmiHeader.biClrUsed = (surf.format.isCLUT8()?colorCount:0);
 	bitmapInfo->bmiHeader.biClrImportant = (surf.format.isCLUT8() ? colorCount : 0);
