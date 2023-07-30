@@ -44,19 +44,19 @@ class PrintingManager : Common::NonCopyable {
 public:
 	virtual ~PrintingManager();
 
-	void printCustom(PrintCallback cb) { printCustom(cb, "ScummVM"); }
-	void printCustom(PrintCallback cb, PrintSettings *settings) { printCustom(cb, "ScummVM", settings); }
-	void printCustom(PrintCallback cb, const Common::String &jobName);
-	void printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings);
+	bool printCustom(PrintCallback cb) { printCustom(cb, "ScummVM"); }
+	bool printCustom(PrintCallback cb, PrintSettings *settings) { printCustom(cb, "ScummVM", settings); }
+	bool printCustom(PrintCallback cb, const Common::String &jobName);
+	bool printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings);
 
-	void printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale=false);
+	bool printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale=false);
 
-	void printImage(const Graphics::ManagedSurface &surf, bool scale = false) {
-		printImage("ScummVM", surf, scale);
+	bool printImage(const Graphics::ManagedSurface &surf, bool scale = false) {
+		return printImage("ScummVM", surf, scale);
 	}
 
-	void printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file);
-	void printPlainTextFile(Common::File &file);
+	bool printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file);
+	bool printPlainTextFile(Common::File &file);
 
 	//creates a new PrintSettings object. either hand ownership back using createJob or delete it yourself. Not both.
 	virtual PrintSettings *getDefaultPrintSettings() const = 0;

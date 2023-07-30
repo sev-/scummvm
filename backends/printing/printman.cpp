@@ -29,17 +29,18 @@ PrintJob *PrintingManager::createJob(PrintCallback cb, const Common::String &job
 	return createJob(cb, jobName, getDefaultPrintSettings());
 }
 
-void PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName) {
-	printCustom(cb, jobName, getDefaultPrintSettings());
+bool PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName) {
+	return printCustom(cb, jobName, getDefaultPrintSettings());
 }
 
-void PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) {
+bool PrintingManager::printCustom(PrintCallback cb, const Common::String &jobName, PrintSettings *settings) {
 	PrintJob *job = createJob(cb, jobName, settings);
-	job->print();
+	bool success = job->print();
 	delete job;
+	return success;
 }
 
-void PrintingManager::printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale) {
+bool PrintingManager::printImage(const Common::String &jobName, const Graphics::ManagedSurface &surf, bool scale) {
 	PrintSettings *settings = getDefaultPrintSettings();
 
 	settings->setLandscapeOrientation(surf.w > surf.h);
@@ -68,14 +69,14 @@ void PrintingManager::printImage(const Common::String &jobName, const Graphics::
 
 	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	printCustom(cb, jobName);
+	return printCustom(cb, jobName);
 }
 
-void PrintingManager::printPlainTextFile(Common::File &file) {
-	printPlainTextFile(file.getName(), file);
+bool PrintingManager::printPlainTextFile(Common::File &file) {
+	return printPlainTextFile(file.getName(), file);
 }
 
-void PrintingManager::printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file) {
+bool PrintingManager::printPlainTextFile(const Common::String &jobName, Common::SeekableReadStream &file) {
 	auto lambda = [&file](PrintJob *job) -> void {
 		Common::Rect printArea = job->getPrintableArea();
 
@@ -109,7 +110,7 @@ void PrintingManager::printPlainTextFile(const Common::String &jobName, Common::
 
 	PrintCallback cb = new Common::Functor1Lamb<PrintJob *, void, decltype(lambda)>(lambda);
 
-	printCustom(cb, jobName);
+	return printCustom(cb, jobName);
 }
 
 
