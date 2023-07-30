@@ -88,6 +88,7 @@ private:
 	HDC createDefaultPrinterContext();
 	HDC createPrinterContext(LPTSTR devName);
 	HBITMAP buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf);
+	HBITMAP buildBitmapReal(HDC hdc, const Graphics::ManagedSurface &surf);
 
 	HDC hdcPrint;
 	bool jobActive;
@@ -203,7 +204,7 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Rec
 		surf.grabPalette(pal, surf.getTransparentColor(), 1);
 		UINT transpColor=RGB(pal[0],pal[1],pal[2]);
 		success = TransparentBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, transpColor);
-	} else if (surf.format.aBits() > 0 && false) {
+	} else if (surf.format.aBits() > 0) {
 		BLENDFUNCTION blend;
 		blend.AlphaFormat = AC_SRC_ALPHA;
 		blend.BlendFlags = 0;
@@ -389,8 +390,22 @@ HGLOBAL Win32PrintingManager::getDefaultDevmodeGlobal(LPTSTR devName) const {
 	return devmodeGlobal;
 }
 
-
 HBITMAP Win32PrintJob::buildBitmap(HDC hdc, const Graphics::ManagedSurface &surf) {
+	const Graphics::PixelFormat nativeFormat(4, 8, 8, 8, 8, 16, 8, 0, 24);
+
+	if (surf.format.isCLUT8() || surf.format.bytesPerPixel == 2 || surf.format == nativeFormat) {
+		return buildBitmapReal(hdc, surf);
+	}
+
+	Graphics::ManagedSurface convertedSurf(surf.w, surf.h, nativeFormat);
+
+	convertedSurf.blitFrom(surf);
+
+	return buildBitmapReal(hdc, convertedSurf);
+}
+
+
+HBITMAP Win32PrintJob::buildBitmapReal(HDC hdc, const Graphics::ManagedSurface &surf) {
 	const uint colorCount = 256;
 	BITMAPINFO *bitmapInfo = (BITMAPINFO *)malloc(sizeof(BITMAPINFO) + sizeof(RGBQUAD) * (colorCount - 1));
 
