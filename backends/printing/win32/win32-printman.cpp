@@ -173,7 +173,7 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Poi
 
 	BOOL success;
 
-	SelectObject(hdcImg, bitmap);
+	HGDIOBJ oldBitmap = SelectObject(hdcImg, bitmap);
 	if (surf.hasTransparentColor()) {
 		byte pal[4];
 		surf.grabPalette(pal, surf.getTransparentColor(), 1);
@@ -189,6 +189,7 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Poi
 	} else {
 		success = BitBlt(hdcPrint, pos.x, pos.y, surf.w, surf.h, hdcImg, 0, 0, SRCCOPY);
 	}
+	SelectObject(hdcImg, oldBitmap);
 	DeleteObject(bitmap);
 	DeleteDC(hdcImg);
 }
@@ -204,7 +205,7 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Rec
 
 	BOOL success;
 
-	SelectObject(hdcImg, bitmap);
+	HGDIOBJ oldBitmap = SelectObject(hdcImg, bitmap);
 	if (surf.hasTransparentColor()) {
 		byte pal[4];
 		surf.grabPalette(pal, surf.getTransparentColor(), 1);
@@ -220,6 +221,7 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Rec
 	} else {
 		success = StretchBlt(hdcPrint, posAndSize.left, posAndSize.top, posAndSize.width(), posAndSize.height(), hdcImg, 0, 0, surf.w, surf.h, SRCCOPY);
 	}
+	SelectObject(hdcImg, oldBitmap);
 	DeleteObject(bitmap);
 	DeleteDC(hdcImg);
 }
