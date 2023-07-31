@@ -30,6 +30,7 @@
 
 #include "common/system.h"
 #include "backends/platform/sdl/win32/win32.h"
+#include "backends/platform/sdl/win32/win32_wrapper.h"
 
 #include "backends/printing/printman.h"
 #include "backends/printing/win32/hglobal.h"
@@ -134,13 +135,18 @@ Win32PrintJob::Win32PrintJob(PrintCallback cb, const Common::String &jobName, Wi
 }
 
 bool Win32PrintJob::beginDocument() {
-	DOCINFOA info;
+	TCHAR *tname = Win32::stringToTchar(jobName);
+
+	DOCINFO info;
 	info.cbSize = sizeof(info);
 	info.fwType = 0;
 	info.lpszDatatype = nullptr;
 	info.lpszOutput = nullptr;
-	info.lpszDocName = const_cast<const char *>(jobName.c_str());
-	int success=StartDocA(hdcPrint, &info);
+	info.lpszDocName = tname;
+	int success=StartDoc(hdcPrint, &info);
+
+	free(tname);
+
 	if (success <= 0)
 		return false;
 	jobActive = true;
@@ -219,7 +225,9 @@ void Win32PrintJob::drawBitmap(const Graphics::ManagedSurface &surf, Common::Rec
 }
 
 void Win32PrintJob::drawText(const Common::String &text, Common::Point pos) {
-	TextOutA(hdcPrint, pos.x, pos.y, const_cast<char *>(text.c_str()), text.size());
+	TCHAR *tstring = Win32::stringToTchar(text);
+	TextOut(hdcPrint, pos.x, pos.y, tstring, text.size());
+	free(tstring);
 }
 
 void Win32PrintJob::setTextColor(int r, int g, int b) {
