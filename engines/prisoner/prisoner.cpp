@@ -36,6 +36,7 @@
 
 //#include "graphics/cursorman.h"
 
+#include "engines/advancedDetector.h"
 #include "engines/util.h"
 
 #include "audio/mididrv.h"
@@ -53,8 +54,8 @@
 
 namespace Prisoner {
 
-PrisonerEngine::PrisonerEngine(OSystem *syst, const PrisonerGameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
-	const Common::FSNode gameDataDir(ConfMan.get("path"));
+PrisonerEngine::PrisonerEngine(OSystem *syst, const ADGameDescription *gameDesc) : Engine(syst), _gameDescription(gameDesc) {
+	const Common::FSNode gameDataDir(ConfMan.getPath("path"));
 	SearchMan.addSubDirectoryMatching(gameDataDir, "e_video");
 
 	// Setup mixer
@@ -74,7 +75,7 @@ PrisonerEngine::~PrisonerEngine() {
 }
 
 Common::Error PrisonerEngine::run() {
-	initGraphics(640, 480, false);
+	initGraphics(640, 480);
 
 	_languageChar = 'E';
 	_currModuleIndex = 2;
