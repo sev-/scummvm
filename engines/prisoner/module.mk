@@ -10,6 +10,7 @@ MODULE_OBJS = \
 	font.o \
 	inventory.o \
 	kroarchive.o \
+	metaengine.o \
 	midi.o \
 	muxplayer.o \
 	palette.o \
@@ -36,3 +37,6 @@ endif
 
 # Include common rules
 include $(srcdir)/rules.mk
+
+# Detection objects
+DETECT_OBJS += $(MODULE)/detection.o
