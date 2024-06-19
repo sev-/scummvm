@@ -26,8 +26,6 @@
 #ifndef PRISONER_MENUMANAGER_H
 #define PRISONER_MENUMANAGER_H
 
-#include "common/scummsys.h"
-
 namespace Prisoner {
 
 enum MENU_PANELS {
@@ -62,14 +60,6 @@ struct _MenuOffset {
 	int16 x2;
 	int16 y2;
 };
-
-//class MenuManager {
-//public:
-//	MenuManager();
-//	void update(int16 x, int16 y);
-//
-//protected:
-//};
 
 } // namespace Prisoner
 
