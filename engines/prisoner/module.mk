@@ -13,6 +13,7 @@ MODULE_OBJS = \
 	menumgr.o \
 	metaengine.o \
 	midi.o \
+	music.o \
 	muxplayer.o \
 	palette.o \
 	path.o \
