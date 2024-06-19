@@ -10,6 +10,7 @@ MODULE_OBJS = \
 	font.o \
 	inventory.o \
 	kroarchive.o \
+	menumgr.o \
 	metaengine.o \
 	midi.o \
 	muxplayer.o \
