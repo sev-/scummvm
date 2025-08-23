@@ -310,6 +310,8 @@ void AlcachofaEngine::pauseEngineIntern(bool pause) {
 }
 
 bool AlcachofaEngine::canLoadGameStateCurrently(U32String *msg) {
+	if (_menu == nullptr)
+		return false; // the autosave wants to trigger even during error() while starting the game
 	if (!_eventLoopSemaphore.isReleased())
 		return false;
 	return

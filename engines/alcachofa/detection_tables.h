@@ -127,6 +127,22 @@ const AlcachofaGameDescription gameDescriptions[] = {
 		EngineVersion::V3_0
 	},
 
+	{
+		// Disk files copied into disk1/disk2
+		{
+			"aventuradecine",
+			"Mortadelo y Filemón: Una Aventura de Cine - Edición Original",
+			AD_ENTRY2s(
+				"disk1/Install/oeste.emc", "b4c1084557d4cfbae336f0e741ec9e9f", 183099320,
+				"disk2/Install/terror.emc", "dc9357ee618bff160e2e2afa168ba913", 170113868
+			),
+			Common::ES_ESP,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+		},
+		EngineVersion::V1_0
+	},
+
 	{ AD_TABLE_END_MARKER, EngineVersion::V1_0 }
 };
 
