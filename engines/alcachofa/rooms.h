@@ -164,6 +164,7 @@ public:
 	inline Inventory &inventory() const { assert(_inventory != nullptr); return *_inventory; }
 	inline MainCharacter &filemon() const { assert(_filemon != nullptr); return *_filemon; }
 	inline MainCharacter &mortadelo() const { assert(_mortadelo != nullptr);  return *_mortadelo; }
+	inline GameFileReference scriptFileRef() const { return _scriptFileRef; }
 	inline const Common::String &initScriptName() const { return _initScriptName; }
 	inline uint8 loadedMapCount() const { return _loadedMapCount; }
 
@@ -185,8 +186,14 @@ public:
 	void toggleObject(MainCharacterKind character, const char *objName, bool isEnabled);
 	void syncGame(Common::Serializer &s);
 
+	GameFileReference readFileRef(Common::SeekableReadStream &stream) const;
+	Common::ScopedPtr<Common::SeekableReadStream> openFileRef(const GameFileReference &ref) const;
+
 private:
-	bool loadWorldFile(const char *path);
+	using ReadRoomFunc = Room *(*)(World *, Common::SeekableReadStream &);
+	bool loadWorldFileV3(const char *path);
+	bool loadWorldFileV1(const char *path);
+	void readRooms(ReadRoomFunc readRoom, Common::File &file);
 	void loadLocalizedNames();
 	void loadDialogLines();
 
@@ -195,9 +202,11 @@ private:
 		bool operator()(const char *a, const char *b) const { return strcmp(a, b) == 0; }
 	};
 
+	Common::Array<Common::SharedPtr<Common::File>> _files; ///< only used in V1 to read embedded files
 	Common::Array<Room *> _rooms;
-	Common::String _globalAnimationNames[(int)GlobalAnimationKind::Count];
+	GameFileReference _globalAnimations[(int)GlobalAnimationKind::Count];
 	Common::String _initScriptName;
+	GameFileReference _scriptFileRef;
 	Room *_globalRoom;
 	Inventory *_inventory;
 	MainCharacter *_filemon, *_mortadelo;
@@ -207,6 +216,7 @@ private:
 		StringEqualTo> _localizedNames;
 	Common::Array<const char *> _dialogLines;
 	Common::Array<char> _namesChunk, _dialogChunk; ///< holds the memory for localizedNames / dialogLines
+	bool _isLoading = true;
 };
 
 }

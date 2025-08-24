@@ -208,6 +208,10 @@ public:
 		return kMapFiles;
 	}
 
+	GameFileReference getScriptFileRef() {
+		return { "Script/SCRIPT.COD" };
+	}
+
 	Span<const ScriptOp> getScriptOpMap() override {
 		return { kScriptOpMap, ARRAYSIZE(kScriptOpMap) };
 	}

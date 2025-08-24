@@ -52,6 +52,7 @@ public:
 	virtual void onLoadedGameFiles();
 	virtual Common::Point getResolution() = 0;
 	virtual const char *const *getMapFiles() = 0; ///< Returns a nullptr-terminated list
+	virtual GameFileReference getScriptFileRef() = 0;
 	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
 	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 	virtual void updateScriptVariables() = 0;

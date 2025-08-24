@@ -26,6 +26,7 @@
 #include "alcachofa/menu.h"
 
 #include "common/file.h"
+#include "common/substream.h"
 
 using namespace Common;
 
@@ -494,13 +495,19 @@ void Room::debugPrint(bool withObjects) const {
 }
 
 World::World() {
+	_scriptFileRef = g_engine->game().getScriptFileRef();
+
+	auto loadWorldFile =
+		g_engine->isV1() ? &World::loadWorldFileV1
+		: &World::loadWorldFileV3;
 	const char *const *mapFiles = g_engine->game().getMapFiles();
 	for (auto *itMapFile = mapFiles; *itMapFile != nullptr; itMapFile++) {
-		if (loadWorldFile(*itMapFile))
+		if ((*this.*loadWorldFile)(*itMapFile))
 			_loadedMapCount++;
 	}
 	loadLocalizedNames();
 	loadDialogLines();
+	_isLoading = false;
 
 	_globalRoom = getRoomByName("GLOBAL");
 	if (_globalRoom == nullptr)
@@ -608,7 +615,8 @@ void World::toggleObject(MainCharacterKind character, const char *objName, bool 
 const Common::String &World::getGlobalAnimationName(GlobalAnimationKind kind) const {
 	int kindI = (int)kind;
 	assert(kindI >= 0 && kindI < (int)GlobalAnimationKind::Count);
-	return _globalAnimationNames[kindI];
+	error("You broke this, remember?");
+	//return _globalAnimationNames[kindI];
 }
 
 const char *World::getLocalizedName(const String &name) const {
@@ -624,7 +632,7 @@ const char *World::getDialogLine(int32 dialogId) const {
 	return _dialogLines[dialogId];
 }
 
-static Room *readRoom(World *world, SeekableReadStream &stream) {
+static Room *readRoomV3(World *world, SeekableReadStream &stream) {
 	const auto type = readVarString(stream);
 	if (type == Room::kClassName)
 		return new Room(world, stream);
@@ -642,45 +650,98 @@ static Room *readRoom(World *world, SeekableReadStream &stream) {
 	}
 }
 
-bool World::loadWorldFile(const char *path) {
-	Common::File file;
+/* World files start with a self-description of the data format (after 1-2 offsets)
+ * We ignore the self-description and just read the actual data
+ * The first offset points to the room room data
+ * (Only V1) The second offset points to the script file
+ */
+
+bool World::loadWorldFileV3(const char *path) {
+	File file;
 	if (!file.open(path)) {
-		// this is not necessarily an error, apparently the demos just have less
-		// chapter files. Being a demo is then also stored in some script vars
+		// this is not necessarily an error, the demos just have less chapter files.
+		// Being a demo is then also stored in some script vars
 		warning("Could not open world file %s\n", path);
 		return false;
 	}
 
-	// the first chunk seems to be debug symbols and/or info about the file structure
-	// it is ignored in the published game.
-	auto startOffset = file.readUint32LE();
+	uint32 startOffset = file.readUint32LE();
 	file.seek(startOffset, SEEK_SET);
-	skipVarString(file); // some more unused strings related to development files?
-	skipVarString(file);
-	skipVarString(file);
-	skipVarString(file);
-	skipVarString(file);
-	skipVarString(file);
+	skipVarString(file); // always "CMundo"
+	skipVarString(file); // name of the CMundo object
+	skipVarString(file); // path to sound files
+	skipVarString(file); // path to animation files
+	skipVarString(file); // path to background files
+	skipVarString(file); // path to masks (static object animations) files
 
 	_initScriptName = readVarString(file);
 	skipVarString(file); // would be _updateScriptName, but it is never called
 	for (int i = 0; i < (int)GlobalAnimationKind::Count; i++)
-		_globalAnimationNames[i] = readVarString(file);
+		_globalAnimations[i] = readFileRef(file);
 
+	readRooms(readRoomV3, file);
+
+	return true;
+}
+
+static void readEmbeddedArchive(SharedPtr<File> file);
+
+bool World::loadWorldFileV1(const char *path) {
+	auto file = SharedPtr<File>(new File());
+	if (!file->open(path)) {
+		// this is not necessarily an error, the demos just have less chapter files.
+		// Being a demo is then also stored in some script vars
+		warning("Could not open world file %s\n", path);
+		return false;
+	}
+
+	uint32 startOffset = file->readUint32LE();
+	uint32 scriptOffset = file->readUint32LE();
+	file->seek(scriptOffset, SEEK_SET);
+	if (file->readByte() == 1)
+		_scriptFileRef = { "SCRIPT", _files.size(), file->pos(), (uint32)(file->size() - file->pos())};
+
+	file->seek(startOffset, SEEK_SET);
+	skipVarString(*file); // always "CMundo"
+	skipVarString(*file); // name of the CMundo object
+	skipVarString(*file); // *second* name of the CMundo object
+	file->readByte(); // would be "isFinalFile", but always one for released games
+	readEmbeddedArchive(file);
+	_initScriptName = readVarString(*file);
+	skipVarString(*file); // _updateScriptName
+
+	const auto readGlobalAnim = [&] (
+		GlobalAnimationKind kind1,
+		GlobalAnimationKind kind2 = GlobalAnimationKind::Count) {
+		auto fileRef = readFileRef(*file);
+		_globalAnimations[(int)kind1] = fileRef;
+		if (kind2 != GlobalAnimationKind::Count)
+			_globalAnimations[(int)kind2] = fileRef;
+	};
+	readGlobalAnim(GlobalAnimationKind::GeneralFont, GlobalAnimationKind::DialogFont);
+	readGlobalAnim(GlobalAnimationKind::Cursor);
+	readGlobalAnim(GlobalAnimationKind::MortadeloIcon, GlobalAnimationKind::MortadeloDisabledIcon);
+	readGlobalAnim(GlobalAnimationKind::FilemonIcon, GlobalAnimationKind::FilemonDisabledIcon);
+	readGlobalAnim(GlobalAnimationKind::InventoryIcon, GlobalAnimationKind::InventoryDisabledIcon);
+
+	readRooms(readRoomV3, *file);
+	_files.emplace_back(move(file));
+	return true;
+}
+
+void World::readRooms(World::ReadRoomFunc readRoom, File &file) {
 	uint32 roomEnd = file.readUint32LE();
 	while (roomEnd > 0) {
 		Room *room = readRoom(this, file);
 		if (room != nullptr)
 			_rooms.push_back(room);
 		if (file.pos() < roomEnd) {
-			g_engine->game().notEnoughRoomDataRead(path, file.pos(), roomEnd);
+			g_engine->game().notEnoughRoomDataRead(file.getName(), file.pos(), roomEnd);
 			file.seek(roomEnd, SEEK_SET);
 		} else if (file.pos() > roomEnd) // this surely is not recoverable
-			error("Read past the room data for world %s", path);
+			error("Read past the room data for world %s", file.getName());
 		roomEnd = file.readUint32LE();
 	}
-
-	return true;
 }
 
 /**
@@ -788,6 +849,130 @@ void World::loadDialogLines() {
 void World::syncGame(Serializer &s) {
 	for (Room *room : _rooms)
 		room->syncGame(s);
+}
+
+GameFileReference World::readFileRef(SeekableReadStream &stream) const {
+	assert(_isLoading);
+	auto name = readVarString(stream);
+	if (g_engine->isV1()) {
+		uint32 size = stream.readUint32LE();
+		stream.skip(size);
+		return { name, (uint32)_files.size(), (uint32)stream.pos(), size };
+	} else
+		return { name };
+}
+
+ScopedPtr<SeekableReadStream> World::openFileRef(const GameFileReference &ref) const {
+	assert(!_isLoading);
+	if (!ref.isValid())
+		return nullptr;
+	else if (ref._fileIndex != UINT32_MAX) {
+		assert(ref._fileIndex < _files.size());
+		auto &file = _files[ref._fileIndex];
+		if (!file->seek(ref._position, SEEK_SET))
+			error("Could not seek to inline file %s at %u", ref._path.c_str(), ref._position);
+		return ScopedPtr<SeekableReadStream>(
+			new SeekableSubReadStream(file.get(), ref._position, ref._position + ref._size, DisposeAfterUse::NO));
+	} else {
+		ScopedPtr<File> file(new File());
+		if (!file->open(Path(ref._path)))
+			return nullptr;
+		return file;
+	}
+}
+
+class EmbeddedArchive;
+class EmbeddedArchiveMember : public GenericArchiveMember {
+	friend class EmbeddedArchive;
+	uint32 _offset;
+	uint32 _end;
+
+	EmbeddedArchiveMember(const String &pathStr, const EmbeddedArchive &parent, uint32 offset, uint32 end);
+};
+
+class EmbeddedArchive : public Archive {
+public:
+	EmbeddedArchive(SharedPtr<File> file) : _file(move(file)) {
+		// the stored filenames have their original full paths,
+		// e.g. c:\myf2000\textos\dialogos.txt
+		// but the filenames alone do not clash so we flatten everything
+
+		skipVarString(*file);
+		uint32 totalSize = _file->readUint32LE();
+		int64 endPosition = _file->pos() + totalSize;
+		_file->skip(2);
+		uint32 fileCount = _file->readUint32LE();
+		_members.reserve((uint)fileCount);
+
+		for (uint32 i = 0; i < fileCount; i++) {
+			auto fullPath = readVarString(*_file);
+			auto extension = readVarString(*_file);
+			uint32 fileSize = _file->readUint32LE();
+			uint32 fileOffset = (uint32)_file->pos();
+			_file->skip(fileSize);
+
+			uint32 lastSep = fullPath.findLastOf('\\');
+			if (lastSep == String::npos)
+				lastSep = 0;
+			auto fileName = String::format("%s.%s", fullPath.c_str() + lastSep, extension.c_str());
+			_members.emplace_back(
+				new EmbeddedArchiveMember(fileName, *this, fileOffset, fileOffset + fileSize));
+		}
+
+		if (_file->pos() > endPosition)
+			error("Read past the specified archive total size in %s", _file->getName());
+		_file->seek(endPosition, SEEK_SET);
+		scumm_assert(!_file->err());
+	}
+
+	bool hasFile(const Path &path) const override {
+		return getMember(path) != nullptr;
+	}
+
+	int listMembers(ArchiveMemberList &list) const override {
+		for (const auto &member : _members)
+			list.emplace_back(member);
+		return (int)_members.size();
+	}
+
+	const ArchiveMemberPtr getMember(const Path &path) const {
+		return getMemberInternal(path);
+	}
+
+	SeekableReadStream *createReadStreamForMember(const Path &path) const {
+		auto member = getMemberInternal(path);
+		if (member == nullptr)
+			return nullptr;
+		if (!_file->seek(member->_offset, SEEK_SET))
+			error("Could not seek to embedded file: %s at %u", path.toString().c_str(), member->_offset);
+		return new SeekableSubReadStream(_file.get(), member->_offset, member->_end, DisposeAfterUse::NO);
+	}
+
+private:
+	const SharedPtr<EmbeddedArchiveMember> getMemberInternal(const Path &path) const {
+		for (const auto &member : _members) {
+			if (member->getPathInArchive() == path)
+				return member;
+		}
+		return nullptr;
+	}
+
+	SharedPtr<File> _file;
+	Array<SharedPtr<EmbeddedArchiveMember>> _members;
+};
+
+EmbeddedArchiveMember::EmbeddedArchiveMember(
+	const String &pathStr,
+	const EmbeddedArchive &parent,
+	uint32 offset,
+	uint32 end)
+	: GenericArchiveMember(pathStr, parent)
+	, _offset(offset)
+	, _end(end) {}
+
+static void readEmbeddedArchive(SharedPtr<File> file) {
+	auto archive = new EmbeddedArchive(file);
+	SearchMan.add(file->getName(), archive);
 }
 
 }

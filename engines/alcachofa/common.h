@@ -166,6 +166,40 @@ inline void syncEnum(Common::Serializer &serializer, T &enumValue) {
 	enumValue = static_cast<T>(intValue);
 }
 
+/**
+ * @brief References a game file either as path or as embedded byte range
+ *
+ * In V1 all files (except videos) are stored within the EMC file. Some of
+ * those are within an embedded archive, most animations however are stored
+ * at their graphics and have their original filenames. We reference them
+ * by their byte range.
+ *
+ * V2/V3 store files outside with normal paths to use
+ */
+struct GameFileReference {
+	Common::String _path;
+	uint32
+		_fileIndex = UINT32_MAX,
+		_position = UINT32_MAX,
+		_size = 0;
+
+	GameFileReference() {}
+
+	GameFileReference(const Common::String &path)
+		: _path(path) {}
+
+	// in this case, path is only for debugging purposes
+	GameFileReference(const Common::String &path, uint32 fileIndex, int64 position, uint32 size)
+		: _path(path)
+		, _fileIndex(fileIndex)
+		, _position(position)
+		, _size(size) {}
+
+	inline bool isValid() const {
+		return !_path.empty() || _position >= 0;
+	}
+};
+
 }
 
 #endif // ALCACHOFA_COMMON_H

@@ -53,6 +53,11 @@ public:
 	const char *const *getMapFiles() {
 		return kMapFiles;
 	}
+
+	GameFileReference getScriptFileRef() {
+		// V1 embeds the script into global.emc, it is overridden during world load
+		return {};
+	}
 };
 
 Game *Game::createForMovieAdventureOriginal() {
