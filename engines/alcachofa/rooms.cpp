@@ -32,7 +32,9 @@ using namespace Common;
 
 namespace Alcachofa {
 
-Room::Room(World *world, SeekableReadStream &stream) : Room(world, stream, false) {}
+Room::Room(World *world) : _world(world) {}
+
+RoomV3::RoomV3(World *world, SeekableReadStream &stream) : RoomV3(world, stream, false) {}
 
 static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadStream &stream) {
 	if (type == ObjectBase::kClassName)
@@ -85,9 +87,10 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 		return nullptr; // handled in Room::Room
 }
 
-Room::Room(World *world, SeekableReadStream &stream, bool hasUselessByte)
-	: _world(world) {
+RoomV3::RoomV3(World *world, SeekableReadStream &stream, bool hasUselessByte)
+	: Room(world) {
 	_name = readVarString(stream);
+	_backgroundName = _name;
 	_musicId = (int)stream.readByte();
 	_characterAlphaTint = stream.readByte();
 	auto backgroundScale = stream.readSint16LE();
@@ -99,6 +102,10 @@ Room::Room(World *world, SeekableReadStream &stream, bool hasUselessByte)
 	if (hasUselessByte)
 		stream.readByte();
 
+	readObjectsAndBackground(stream, backgroundScale);
+}
+
+void Room::readObjectsAndBackground(SeekableReadStream &stream, int16 backgroundScale) {
 	uint32 objectEnd = stream.readUint32LE();
 	while (objectEnd > 0) {
 		const auto type = readVarString(stream);
@@ -117,10 +124,30 @@ Room::Room(World *world, SeekableReadStream &stream, bool hasUselessByte)
 		objectEnd = stream.readUint32LE();
 	}
 	if (g_engine->game().doesRoomHaveBackground(this))
-		_objects.push_back(new Background(this, _name, backgroundScale));
+		_objects.push_back(new Background(this, _backgroundName, backgroundScale));
 
 	if (!_floors[0].empty())
 		_activeFloorI = 0;
+}
+
+RoomV1::RoomV1(World *world, SeekableReadStream &stream, bool readObjects)
+	: Room(world) {
+	_name = readVarString(stream);
+	_backgroundName = readVarString(stream);
+	_musicId = (int)stream.readByte();
+	_characterAlphaTint = stream.readByte();
+	skipVarString(stream);
+
+	if (readObjects)
+		readObjectsAndBackground(stream, kBaseScale);
+}
+
+RoomV1WithFloor::RoomV1WithFloor(World *world, SeekableReadStream &stream)
+	: RoomV1(world, stream, false) {
+	_floors[0] = PathFindingShape(stream);
+	_floors[1] = PathFindingShape(stream);
+
+	readObjectsAndBackground(stream, kBaseScale);
 }
 
 Room::~Room() {
@@ -322,7 +349,7 @@ ShapeObject *Room::getSelectedObject(ShapeObject *best) const {
 }
 
 OptionsMenu::OptionsMenu(World *world, SeekableReadStream &stream)
-	: Room(world, stream, true) {}
+	: RoomV3(world, stream, true) {}
 
 bool OptionsMenu::updateInput() {
 	if (!Room::updateInput())
@@ -356,19 +383,19 @@ void OptionsMenu::clearLastSelectedObject() {
 }
 
 ConnectMenu::ConnectMenu(World *world, SeekableReadStream &stream)
-	: Room(world, stream, true) {}
+	: RoomV3(world, stream, true) {}
 
 ListenMenu::ListenMenu(World *world, SeekableReadStream &stream)
-	: Room(world, stream, true) {}
+	: RoomV3(world, stream, true) {}
 
-Inventory::Inventory(World *world, SeekableReadStream &stream)
-	: Room(world, stream, true) {}
+InventoryV3::InventoryV3(World *world, SeekableReadStream &stream)
+	: RoomV3(world, stream, true) {}
 
-Inventory::~Inventory() {
+InventoryV3::~InventoryV3() {
 	// No need to delete items, they are room objects and thus deleted in Room::~Room
 }
 
-bool Inventory::updateInput() {
+bool InventoryV3::updateInput() {
 	auto &player = g_engine->player();
 	auto &input = g_engine->input();
 	auto *hoveredItem = getHoveredItem();
@@ -411,7 +438,7 @@ bool Inventory::updateInput() {
 	return player.currentRoom() == this;
 }
 
-Item *Inventory::getHoveredItem() {
+Item *InventoryV3::getHoveredItem() {
 	auto mousePos = g_engine->input().mousePos2D();
 	for (auto item : _items) {
 		if (!item->isEnabled())
@@ -431,7 +458,7 @@ Item *Inventory::getHoveredItem() {
 	return nullptr;
 }
 
-void Inventory::initItems() {
+void InventoryV3::initItems() {
 	auto &mortadelo = world().mortadelo();
 	auto &filemon = world().filemon();
 	for (auto object : _objects) {
@@ -444,14 +471,14 @@ void Inventory::initItems() {
 	}
 }
 
-void Inventory::updateItemsByActiveCharacter() {
+void InventoryV3::updateItemsByActiveCharacter() {
 	auto *character = g_engine->player().activeCharacter();
 	assert(character != nullptr);
 	for (auto *item : _items)
 		item->toggle(character->hasItem(item->name()));
 }
 
-void Inventory::drawAsOverlay(int32 scrollY) {
+void InventoryV3::drawAsOverlay(int32 scrollY) {
 	for (auto object : _objects) {
 		auto graphic = object->graphic();
 		if (graphic == nullptr)
@@ -469,15 +496,21 @@ void Inventory::drawAsOverlay(int32 scrollY) {
 	}
 }
 
-void Inventory::open() {
+void InventoryV3::open() {
 	g_engine->camera().backup(1);
 	g_engine->player().changeRoom(name(), true);
 	updateItemsByActiveCharacter();
 }
 
-void Inventory::close() {
+void InventoryV3::close() {
 	g_engine->camera().restore(1);
 	g_engine->globalUI().startClosingInventory();
+}
+
+InventoryV1::InventoryV1(World *world, SeekableReadStream &stream)
+	: RoomV1(world, stream, false) {
+	stream.skip(1); // denoted as "sinusar" but unused
+	readObjectsAndBackground(stream, kBaseScale);
 }
 
 void Room::debugPrint(bool withObjects) const {
@@ -512,7 +545,7 @@ World::World() {
 	_globalRoom = getRoomByName("GLOBAL");
 	if (_globalRoom == nullptr)
 		error("Could not find GLOBAL room");
-	_inventory = dynamic_cast<Inventory *>(getRoomByName("INVENTARIO"));
+	_inventory = dynamic_cast<InventoryV3 *>(getRoomByName("INVENTARIO"));
 	if (_inventory == nullptr)
 		error("Could not find INVENTARIO");
 	_filemon = dynamic_cast<MainCharacter *>(_globalRoom->getObjectByName("FILEMON"));
@@ -635,15 +668,29 @@ const char *World::getDialogLine(int32 dialogId) const {
 static Room *readRoomV3(World *world, SeekableReadStream &stream) {
 	const auto type = readVarString(stream);
 	if (type == Room::kClassName)
-		return new Room(world, stream);
+		return new RoomV3(world, stream);
 	else if (type == OptionsMenu::kClassName)
 		return new OptionsMenu(world, stream);
 	else if (type == ConnectMenu::kClassName)
 		return new ConnectMenu(world, stream);
 	else if (type == ListenMenu::kClassName)
 		return new ListenMenu(world, stream);
-	else if (type == Inventory::kClassName)
-		return new Inventory(world, stream);
+	else if (type == InventoryV3::kClassName)
+		return new InventoryV3(world, stream);
+	else {
+		g_engine->game().unknownRoomType(type);
+		return nullptr;
+	}
+}
+
+static Room *readRoomV1(World *world, SeekableReadStream &stream) {
+	const auto type = readVarString(stream);
+	if (type == Room::kClassName)
+		return new RoomV1(world, stream);
+	else if (type == RoomV1WithFloor::kClassName)
+		return new RoomV1WithFloor(world, stream);
+	else if (type == InventoryV1::kClassName)
+		return new InventoryV1(world, stream);
 	else {
 		g_engine->game().unknownRoomType(type);
 		return nullptr;
@@ -724,7 +771,7 @@ bool World::loadWorldFileV1(const char *path) {
 	readGlobalAnim(GlobalAnimationKind::FilemonIcon, GlobalAnimationKind::FilemonDisabledIcon);
 	readGlobalAnim(GlobalAnimationKind::InventoryIcon, GlobalAnimationKind::InventoryDisabledIcon);
 
-	readRooms(readRoomV3, *file);
+	readRooms(readRoomV1, *file);
 	_files.emplace_back(move(file));
 	return true;
 }
@@ -742,6 +789,7 @@ void World::readRooms(World::ReadRoomFunc readRoom, File &file) {
 			error("Read past the room data for world %s", file.getName());
 		roomEnd = file.readUint32LE();
 	}
+	scumm_assert(!file.err());
 }
 
 /**

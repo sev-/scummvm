@@ -31,7 +31,6 @@ class World;
 class Room {
 public:
 	static constexpr const char *kClassName = "CHabitacion";
-	Room(World *world, Common::SeekableReadStream &stream);
 	virtual ~Room();
 
 	inline World &world() { return *_world; }
@@ -65,7 +64,8 @@ public:
 	void debugPrint(bool withObjects) const;
 
 protected:
-	Room(World *world, Common::SeekableReadStream &stream, bool hasUselessByte);
+	Room(World *world);
+	void readObjectsAndBackground(Common::SeekableReadStream &stream, int16 backgroundScale);
 	void updateScripts();
 	void updateRoomBounds();
 	void updateInteraction();
@@ -75,19 +75,38 @@ protected:
 	ShapeObject *getSelectedObject(ShapeObject *best = nullptr) const;
 
 	World *_world;
-	Common::String _name;
+	Common::String _name, _backgroundName;
 	PathFindingShape _floors[2];
 	bool _fixedCameraOnEntering;
 	int8 _activeFloorI = -1;
 	int _musicId = -1;
 	uint8
-		_characterAlphaTint,
-		_characterAlphaPremultiplier; ///< for some reason in percent instead of 0-255
+		_characterAlphaTint = 0,
+		_characterAlphaPremultiplier = 100; ///< for some reason in percent instead of 0-255
 
 	Common::Array<ObjectBase *> _objects;
 };
 
-class OptionsMenu final : public Room {
+class RoomV3 : public Room {
+public:
+	RoomV3(World *world, Common::SeekableReadStream &stream);
+
+protected:
+	RoomV3(World *world, Common::SeekableReadStream &stream, bool hasUselessByte);
+};
+
+class RoomV1 : public Room {
+public:
+	RoomV1(World *world, Common::SeekableReadStream &stream, bool readObjects = true);
+};
+
+class RoomV1WithFloor final : public RoomV1 {
+public:
+	static constexpr const char *kClassName = "CHabitacionConSuelo";
+	RoomV1WithFloor(World *world, Common::SeekableReadStream &stream);
+};
+
+class OptionsMenu final : public RoomV3 {
 public:
 	static constexpr const char *kClassName = "CHabitacionMenuOpciones";
 	OptionsMenu(World *world, Common::SeekableReadStream &stream);
@@ -104,23 +123,23 @@ private:
 	SlideButton *_currentSlideButton = nullptr;
 };
 
-class ConnectMenu final : public Room {
+class ConnectMenu final : public RoomV3 {
 public:
 	static constexpr const char *kClassName = "CHabitacionConectar";
 	ConnectMenu(World *world, Common::SeekableReadStream &stream);
 };
 
-class ListenMenu final : public Room {
+class ListenMenu final : public RoomV3 {
 public:
 	static constexpr const char *kClassName = "CHabitacionEsperar";
 	ListenMenu(World *world, Common::SeekableReadStream &stream);
 };
 
-class Inventory final : public Room {
+class InventoryV3 final : public RoomV3 {
 public:
 	static constexpr const char *kClassName = "CInventario";
-	Inventory(World *world, Common::SeekableReadStream &stream);
-	~Inventory() override;
+	InventoryV3(World *world, Common::SeekableReadStream &stream);
+	~InventoryV3() override;
 
 	bool updateInput() override;
 
@@ -134,6 +153,12 @@ private:
 	Item *getHoveredItem();
 
 	Common::Array<Item *> _items;
+};
+
+class InventoryV1 final : public RoomV1 {
+public:
+	static constexpr const char *kClassName = "CInventario";
+	InventoryV1(World *world, Common::SeekableReadStream &stream);
 };
 
 enum class GlobalAnimationKind {
@@ -161,7 +186,7 @@ public:
 	inline RoomIterator beginRooms() const { return _rooms.begin(); }
 	inline RoomIterator endRooms() const { return _rooms.end(); }
 	inline Room &globalRoom() const { assert(_globalRoom != nullptr); return *_globalRoom; }
-	inline Inventory &inventory() const { assert(_inventory != nullptr); return *_inventory; }
+	inline InventoryV3 &inventory() const { assert(_inventory != nullptr); return *_inventory; }
 	inline MainCharacter &filemon() const { assert(_filemon != nullptr); return *_filemon; }
 	inline MainCharacter &mortadelo() const { assert(_mortadelo != nullptr);  return *_mortadelo; }
 	inline GameFileReference scriptFileRef() const { return _scriptFileRef; }
@@ -208,7 +233,7 @@ private:
 	Common::String _initScriptName;
 	GameFileReference _scriptFileRef;
 	Room *_globalRoom;
-	Inventory *_inventory;
+	InventoryV3 *_inventory;
 	MainCharacter *_filemon, *_mortadelo;
 	uint8 _loadedMapCount = 0;
 	Common::HashMap<const char *, const char *,
