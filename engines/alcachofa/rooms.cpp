@@ -34,7 +34,7 @@ namespace Alcachofa {
 
 Room::Room(World *world, SeekableReadStream &stream) : Room(world, stream, false) {}
 
-static ObjectBase *readRoomObject(Room *room, const String &type, ReadStream &stream) {
+static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadStream &stream) {
 	if (type == ObjectBase::kClassName)
 		return new ObjectBase(room, stream);
 	else if (type == PointObject::kClassName)

@@ -32,7 +32,7 @@ namespace Alcachofa {
 
 const char *MenuButton::typeName() const { return "MenuButton"; }
 
-MenuButton::MenuButton(Room *room, ReadStream &stream)
+MenuButton::MenuButton(Room *room, SeekableReadStream &stream)
 	: PhysicalObject(room, stream)
 	, _actionId(stream.readSint32LE())
 	, _graphicNormal(stream)
@@ -105,12 +105,12 @@ void MenuButton::trigger() {
 
 const char *InternetMenuButton::typeName() const { return "InternetMenuButton"; }
 
-InternetMenuButton::InternetMenuButton(Room *room, ReadStream &stream)
+InternetMenuButton::InternetMenuButton(Room *room, SeekableReadStream &stream)
 	: MenuButton(room, stream) {}
 
 const char *OptionsMenuButton::typeName() const { return "OptionsMenuButton"; }
 
-OptionsMenuButton::OptionsMenuButton(Room *room, ReadStream &stream)
+OptionsMenuButton::OptionsMenuButton(Room *room, SeekableReadStream &stream)
 	: MenuButton(room, stream) {}
 
 void OptionsMenuButton::update() {
@@ -126,7 +126,7 @@ void OptionsMenuButton::trigger() {
 
 const char *MainMenuButton::typeName() const { return "MainMenuButton"; }
 
-MainMenuButton::MainMenuButton(Room *room, ReadStream &stream)
+MainMenuButton::MainMenuButton(Room *room, SeekableReadStream &stream)
 	: MenuButton(room, stream) {}
 
 void MainMenuButton::update() {
@@ -143,7 +143,7 @@ void MainMenuButton::trigger() {
 
 const char *PushButton::typeName() const { return "PushButton"; }
 
-PushButton::PushButton(Room *room, ReadStream &stream)
+PushButton::PushButton(Room *room, SeekableReadStream &stream)
 	: PhysicalObject(room, stream)
 	, _alwaysVisible(readBool(stream))
 	, _graphic1(stream)
@@ -152,7 +152,7 @@ PushButton::PushButton(Room *room, ReadStream &stream)
 
 const char *EditBox::typeName() const { return "EditBox"; }
 
-EditBox::EditBox(Room *room, ReadStream &stream)
+EditBox::EditBox(Room *room, SeekableReadStream &stream)
 	: PhysicalObject(room, stream)
 	, i1(stream.readSint32LE())
 	, p1(Shape(stream).firstPoint())
@@ -169,7 +169,7 @@ EditBox::EditBox(Room *room, ReadStream &stream)
 
 const char *CheckBox::typeName() const { return "CheckBox"; }
 
-CheckBox::CheckBox(Room *room, ReadStream &stream)
+CheckBox::CheckBox(Room *room, SeekableReadStream &stream)
 	: PhysicalObject(room, stream)
 	, _isChecked(readBool(stream))
 	, _graphicUnchecked(stream)
@@ -234,14 +234,14 @@ void CheckBox::trigger() {
 
 const char *CheckBoxAutoAdjustNoise::typeName() const { return "CheckBoxAutoAdjustNoise"; }
 
-CheckBoxAutoAdjustNoise::CheckBoxAutoAdjustNoise(Room *room, ReadStream &stream)
+CheckBoxAutoAdjustNoise::CheckBoxAutoAdjustNoise(Room *room, SeekableReadStream &stream)
 	: CheckBox(room, stream) {
 	stream.readByte(); // unused and ignored byte
 }
 
 const char *SlideButton::typeName() const { return "SlideButton"; }
 
-SlideButton::SlideButton(Room *room, ReadStream &stream)
+SlideButton::SlideButton(Room *room, SeekableReadStream &stream)
 	: ObjectBase(room, stream)
 	, _valueId(stream.readSint32LE())
 	, _minPos(Shape(stream).firstPoint())
@@ -313,14 +313,14 @@ bool SlideButton::isMouseOver() const {
 
 const char *IRCWindow::typeName() const { return "IRCWindow"; }
 
-IRCWindow::IRCWindow(Room *room, ReadStream &stream)
+IRCWindow::IRCWindow(Room *room, SeekableReadStream &stream)
 	: ObjectBase(room, stream)
 	, _p1(Shape(stream).firstPoint())
 	, _p2(Shape(stream).firstPoint()) {}
 
 const char *MessageBox::typeName() const { return "MessageBox"; }
 
-MessageBox::MessageBox(Room *room, ReadStream &stream)
+MessageBox::MessageBox(Room *room, SeekableReadStream &stream)
 	: ObjectBase(room, stream)
 	, _graph1(stream)
 	, _graph2(stream)
@@ -336,7 +336,7 @@ MessageBox::MessageBox(Room *room, ReadStream &stream)
 
 const char *VoiceMeter::typeName() const { return "VoiceMeter"; }
 
-VoiceMeter::VoiceMeter(Room *room, ReadStream &stream)
+VoiceMeter::VoiceMeter(Room *room, SeekableReadStream &stream)
 	: GraphicObject(room, stream) {
 	stream.readByte(); // unused and ignored byte
 }

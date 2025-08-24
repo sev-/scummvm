@@ -32,7 +32,7 @@ namespace Alcachofa {
 
 const char *Item::typeName() const { return "Item"; }
 
-Item::Item(Room *room, ReadStream &stream)
+Item::Item(Room *room, SeekableReadStream &stream)
 	: GraphicObject(room, stream) {
 	stream.readByte(); // unused and ignored byte
 }
@@ -70,7 +70,7 @@ void Item::trigger() {
 		player.triggerObject(heldItem, name().c_str());
 }
 
-ITriggerableObject::ITriggerableObject(ReadStream &stream)
+ITriggerableObject::ITriggerableObject(SeekableReadStream &stream)
 	: _interactionPoint(Shape(stream).firstPoint())
 	, _interactionDirection((Direction)stream.readSint32LE()) {}
 
@@ -86,7 +86,7 @@ void ITriggerableObject::onClick() {
 
 const char *InteractableObject::typeName() const { return "InteractableObject"; }
 
-InteractableObject::InteractableObject(Room *room, ReadStream &stream)
+InteractableObject::InteractableObject(Room *room, SeekableReadStream &stream)
 	: PhysicalObject(room, stream)
 	, ITriggerableObject(stream)
 	, _relatedObject(readVarString(stream)) {
@@ -120,7 +120,7 @@ void InteractableObject::toggle(bool isEnabled) {
 
 const char *Door::typeName() const { return "Door"; }
 
-Door::Door(Room *room, ReadStream &stream)
+Door::Door(Room *room, SeekableReadStream &stream)
 	: InteractableObject(room, stream)
 	, _targetRoom(readVarString(stream))
 	, _targetObject(readVarString(stream))
@@ -162,7 +162,7 @@ void Door::trigger(const char *_) {
 
 const char *Character::typeName() const { return "Character"; }
 
-Character::Character(Room *room, ReadStream &stream)
+Character::Character(Room *room, SeekableReadStream &stream)
 	: ShapeObject(room, stream)
 	, ITriggerableObject(stream)
 	, _graphicNormal(stream)
@@ -498,7 +498,7 @@ Task *Character::lerpLodBias(Process &process, float targetLodBias, int32 durati
 
 const char *WalkingCharacter::typeName() const { return "WalkingCharacter"; }
 
-WalkingCharacter::WalkingCharacter(Room *room, ReadStream &stream)
+WalkingCharacter::WalkingCharacter(Room *room, SeekableReadStream &stream)
 	: Character(room, stream) {
 	for (int32 i = 0; i < kDirectionCount; i++) {
 		auto fileName = readVarString(stream);
@@ -803,7 +803,7 @@ Task *WalkingCharacter::waitForArrival(Process &process) {
 
 const char *MainCharacter::typeName() const { return "MainCharacter"; }
 
-MainCharacter::MainCharacter(Room *room, ReadStream &stream)
+MainCharacter::MainCharacter(Room *room, SeekableReadStream &stream)
 	: WalkingCharacter(room, stream)
 	, _semaphore(name().firstChar() == 'M' ? "mortadelo" : "filemon") {
 	stream.readByte(); // unused byte
@@ -1155,7 +1155,7 @@ Background::Background(Room *room, const String &animationFileName, int16 scale)
 
 const char *FloorColor::typeName() const { return "FloorColor"; }
 
-FloorColor::FloorColor(Room *room, ReadStream &stream)
+FloorColor::FloorColor(Room *room, SeekableReadStream &stream)
 	: ObjectBase(room, stream)
 	, _shape(stream) {}
 

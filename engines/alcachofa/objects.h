@@ -37,7 +37,7 @@ class ObjectBase {
 public:
 	static constexpr const char *kClassName = "CObjetoBase";
 	ObjectBase(Room *room, const char *name);
-	ObjectBase(Room *room, Common::ReadStream &stream);
+	ObjectBase(Room *room, Common::SeekableReadStream &stream);
 	virtual ~ObjectBase() {}
 
 	inline const Common::String &name() const { return _name; }
@@ -65,7 +65,7 @@ private:
 class PointObject : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CObjetoPunto";
-	PointObject(Room *room, Common::ReadStream &stream);
+	PointObject(Room *room, Common::SeekableReadStream &stream);
 
 	inline Common::Point &position() { return _pos; }
 	inline Common::Point position() const { return _pos; }
@@ -85,7 +85,7 @@ enum class GraphicObjectType : byte
 class GraphicObject : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CObjetoGrafico";
-	GraphicObject(Room *room, Common::ReadStream &stream);
+	GraphicObject(Room *room, Common::SeekableReadStream &stream);
 	~GraphicObject() override {}
 
 	void draw() override;
@@ -109,7 +109,7 @@ protected:
 class SpecialEffectObject final : public GraphicObject {
 public:
 	static constexpr const char *kClassName = "CObjetoGraficoMuare";
-	SpecialEffectObject(Room *room, Common::ReadStream &stream);
+	SpecialEffectObject(Room *room, Common::SeekableReadStream &stream);
 
 	void draw() override;
 	const char *typeName() const override;
@@ -122,7 +122,7 @@ private:
 
 class ShapeObject : public ObjectBase {
 public:
-	ShapeObject(Room *room, Common::ReadStream &stream);
+	ShapeObject(Room *room, Common::SeekableReadStream &stream);
 	~ShapeObject() override {}
 
 	inline int8 order() const { return _order; }
@@ -154,14 +154,14 @@ private:
 
 class PhysicalObject : public ShapeObject {
 public:
-	PhysicalObject(Room *room, Common::ReadStream &stream);
+	PhysicalObject(Room *room, Common::SeekableReadStream &stream);
 	const char *typeName() const override;
 };
 
 class MenuButton : public PhysicalObject {
 public:
 	static constexpr const char *kClassName = "CBotonMenu";
-	MenuButton(Room *room, Common::ReadStream &stream);
+	MenuButton(Room *room, Common::SeekableReadStream &stream);
 	~MenuButton() override {}
 
 	inline int32 actionId() const { return _actionId; }
@@ -196,7 +196,7 @@ private:
 class InternetMenuButton final : public MenuButton {
 public:
 	static constexpr const char *kClassName = "CBotonMenuInternet";
-	InternetMenuButton(Room *room, Common::ReadStream &stream);
+	InternetMenuButton(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 };
@@ -204,7 +204,7 @@ public:
 class OptionsMenuButton final : public MenuButton {
 public:
 	static constexpr const char *kClassName = "CBotonMenuOpciones";
-	OptionsMenuButton(Room *room, Common::ReadStream &stream);
+	OptionsMenuButton(Room *room, Common::SeekableReadStream &stream);
 
 	void update() override;
 	void trigger() override;
@@ -214,7 +214,7 @@ public:
 class MainMenuButton final : public MenuButton {
 public:
 	static constexpr const char *kClassName = "CBotonMenuPrincipal";
-	MainMenuButton(Room *room, Common::ReadStream &stream);
+	MainMenuButton(Room *room, Common::SeekableReadStream &stream);
 
 	void update() override;
 	void trigger() override;
@@ -224,7 +224,7 @@ public:
 class PushButton final : public PhysicalObject {
 public:
 	static constexpr const char *kClassName = "CPushButton";
-	PushButton(Room *room, Common::ReadStream &stream);
+	PushButton(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 
@@ -237,7 +237,7 @@ private:
 class EditBox final : public PhysicalObject {
 public:
 	static constexpr const char *kClassName = "CEditBox";
-	EditBox(Room *room, Common::ReadStream &stream);
+	EditBox(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 
@@ -253,7 +253,7 @@ private:
 class CheckBox : public PhysicalObject {
 public:
 	static constexpr const char *kClassName = "CCheckBox";
-	CheckBox(Room *room, Common::ReadStream &stream);
+	CheckBox(Room *room, Common::SeekableReadStream &stream);
 	~CheckBox() override {}
 
 	inline bool &isChecked() { return _isChecked; }
@@ -284,7 +284,7 @@ private:
 class SlideButton final : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CSlideButton";
-	SlideButton(Room *room, Common::ReadStream &stream);
+	SlideButton(Room *room, Common::SeekableReadStream &stream);
 	~SlideButton() override {}
 
 	inline float &value() { return _value; }
@@ -310,7 +310,7 @@ private:
 class CheckBoxAutoAdjustNoise final : public CheckBox {
 public:
 	static constexpr const char *kClassName = "CCheckBoxAutoAjustarRuido";
-	CheckBoxAutoAdjustNoise(Room *room, Common::ReadStream &stream);
+	CheckBoxAutoAdjustNoise(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 };
@@ -318,7 +318,7 @@ public:
 class IRCWindow final : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CVentanaIRC";
-	IRCWindow(Room *room, Common::ReadStream &stream);
+	IRCWindow(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 
@@ -329,7 +329,7 @@ private:
 class MessageBox final : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CMessageBox";
-	MessageBox(Room *room, Common::ReadStream &stream);
+	MessageBox(Room *room, Common::SeekableReadStream &stream);
 	~MessageBox() override {}
 
 	const char *typeName() const override;
@@ -346,7 +346,7 @@ private:
 class VoiceMeter final : public GraphicObject {
 public:
 	static constexpr const char *kClassName = "CVuMeter";
-	VoiceMeter(Room *room, Common::ReadStream &stream);
+	VoiceMeter(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 };
@@ -354,7 +354,7 @@ public:
 class Item : public GraphicObject { //-V690
 public:
 	static constexpr const char *kClassName = "CObjetoInventario";
-	Item(Room *room, Common::ReadStream &stream);
+	Item(Room *room, Common::SeekableReadStream &stream);
 	Item(const Item &other);
 	// no copy-assign operator as it is non-sensical, the copy ctor is a special case for item-handling
 
@@ -365,7 +365,7 @@ public:
 
 class ITriggerableObject {
 public:
-	ITriggerableObject(Common::ReadStream &stream);
+	ITriggerableObject(Common::SeekableReadStream &stream);
 	virtual ~ITriggerableObject() {}
 
 	inline Direction interactionDirection() const { return _interactionDirection; }
@@ -383,7 +383,7 @@ protected:
 class InteractableObject : public PhysicalObject, public ITriggerableObject {
 public:
 	static constexpr const char *kClassName = "CObjetoTipico";
-	InteractableObject(Room *room, Common::ReadStream &stream);
+	InteractableObject(Room *room, Common::SeekableReadStream &stream);
 	~InteractableObject() override {}
 
 	void drawDebug() override;
@@ -399,7 +399,7 @@ private:
 class Door final : public InteractableObject {
 public:
 	static constexpr const char *kClassName = "CPuerta";
-	Door(Room *room, Common::ReadStream &stream);
+	Door(Room *room, Common::SeekableReadStream &stream);
 
 	inline const Common::String &targetRoom() const { return _targetRoom; }
 	inline const Common::String &targetObject() const { return _targetObject; }
@@ -419,7 +419,7 @@ private:
 class Character : public ShapeObject, public ITriggerableObject {
 public:
 	static constexpr const char *kClassName = "CPersonaje";
-	Character(Room *room, Common::ReadStream &stream);
+	Character(Room *room, Common::SeekableReadStream &stream);
 	~Character() override {}
 
 	void update() override;
@@ -461,7 +461,7 @@ protected:
 class WalkingCharacter : public Character {
 public:
 	static constexpr const char *kClassName = "CPersonajeAnda";
-	WalkingCharacter(Room *room, Common::ReadStream &stream);
+	WalkingCharacter(Room *room, Common::SeekableReadStream &stream);
 	~WalkingCharacter() override {}
 
 	inline bool isWalking() const { return _isWalking; }
@@ -528,7 +528,7 @@ struct DialogMenuLine {
 class MainCharacter final : public WalkingCharacter {
 public:
 	static constexpr const char *kClassName = "CPersonajePrincipal";
-	MainCharacter(Room *room, Common::ReadStream &stream);
+	MainCharacter(Room *room, Common::SeekableReadStream &stream);
 	~MainCharacter() override;
 
 	inline MainCharacterKind kind() const { return _kind; }
@@ -588,7 +588,7 @@ public:
 class FloorColor final : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CSueloColor";
-	FloorColor(Room *room, Common::ReadStream &stream);
+	FloorColor(Room *room, Common::SeekableReadStream &stream);
 	~FloorColor() override {}
 
 	void update() override;
