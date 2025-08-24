@@ -493,18 +493,9 @@ void Room::debugPrint(bool withObjects) const {
 	}
 }
 
-static constexpr const char *kMapFiles[] = {
-	"MAPAS/MAPA5.EMC",
-	"MAPAS/MAPA4.EMC",
-	"MAPAS/MAPA3.EMC",
-	"MAPAS/MAPA2.EMC",
-	"MAPAS/MAPA1.EMC",
-	"MAPAS/GLOBAL.EMC",
-	nullptr
-};
-
 World::World() {
-	for (auto *itMapFile = kMapFiles; *itMapFile != nullptr; itMapFile++) {
+	const char *const *mapFiles = g_engine->game().getMapFiles();
+	for (auto *itMapFile = mapFiles; *itMapFile != nullptr; itMapFile++) {
 		if (loadWorldFile(*itMapFile))
 			_loadedMapCount++;
 	}

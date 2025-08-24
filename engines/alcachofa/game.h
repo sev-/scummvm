@@ -100,7 +100,9 @@ public:
 	virtual bool isKnownBadVideo(int32 videoId);
 	virtual void invalidVideo(int32 videoId, const char *context);
 
-	static Game *createForMovieAdventure();
+	static Game *create();
+	static Game *createForMovieAdventureSpecial();
+	static Game *createForMovieAdventureOriginal();
 
 	const Message _message;
 };

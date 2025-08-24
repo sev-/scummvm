@@ -199,4 +199,17 @@ void Game::invalidVideo(int32 videoId, const char *context) {
 	_message("Could not play video %d (%s)", videoId, context);
 }
 
+Game *Game::create() {
+	const auto &desc = g_engine->gameDescription();
+	switch (desc.engineVersion) {
+	case EngineVersion::V1:
+		return createForMovieAdventureOriginal();
+	case EngineVersion::V3:
+		return createForMovieAdventureSpecial();
+	default:
+		error("Unsupported or invalid engine version: %d", (int)desc.engineVersion);
+		break;
+	}
+}
+
 }

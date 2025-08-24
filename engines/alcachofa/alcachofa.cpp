@@ -78,8 +78,8 @@ Common::String AlcachofaEngine::getGameId() const {
 Common::Error AlcachofaEngine::run() {
 	g_system->showMouse(false);
 	setDebugger(_console);
-	_game.reset(Game::createForMovieAdventure());
-	_renderer.reset(IRenderer::createOpenGLRenderer(Common::Point(1024, 768)));
+	_game.reset(Game::create());
+	_renderer.reset(IRenderer::createOpenGLRenderer(game().getResolution()));
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
 	_world.reset(new World());
 	_script.reset(new Script());

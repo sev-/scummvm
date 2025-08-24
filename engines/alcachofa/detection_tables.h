@@ -28,7 +28,7 @@ const PlainGameDescriptor alcachofaGames[] = {
 
 const AlcachofaGameDescription gameDescriptions[] = {
 	//
-	// A Movie Adventure
+	// A Movie Adventure - Edicion Especial
 	//
 	{
 		{
@@ -127,6 +127,9 @@ const AlcachofaGameDescription gameDescriptions[] = {
 		EngineVersion::V3_0
 	},
 
+	//
+	// A Movie Adventure - Edicion Original
+	//
 	{
 		// Disk files copied into disk1/disk2
 		{
@@ -143,7 +146,7 @@ const AlcachofaGameDescription gameDescriptions[] = {
 		EngineVersion::V1_0
 	},
 
-	{ AD_TABLE_END_MARKER, EngineVersion::V1_0 }
+	{ AD_TABLE_END_MARKER }
 };
 
 } // End of namespace Alcachofa
