@@ -77,7 +77,7 @@ protected:
 	World *_world;
 	Common::String _name, _backgroundName;
 	PathFindingShape _floors[2];
-	bool _fixedCameraOnEntering;
+	bool _fixedCameraOnEntering = false;
 	int8 _activeFloorI = -1;
 	int _musicId = -1;
 	uint8
@@ -174,6 +174,9 @@ enum class GlobalAnimationKind {
 
 	Count
 };
+
+constexpr char kNoXORKey = 0;
+constexpr char kEmbeddedXORKey = -128;
 
 class World final {
 public:

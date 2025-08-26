@@ -794,26 +794,39 @@ void World::readRooms(World::ReadRoomFunc readRoom, File &file) {
 }
 
 /**
- * @brief Behold the incredible encryption of text files:
+ * @brief Behold the incredible encryption of text files (for V3):
  *   - first 32 bytes are cipher
  *   - next byte is the XOR key
  *   - next 4 bytes are garbage
  *   - rest of the file is cipher
+ *
+ * V1 is unencrypted
+ * V2 uses a constant key
  */
-static void loadEncryptedFile(const char *path, Array<char> &output) {
+static void loadEncryptedFile(const char *path, char key, Array<char> &output) {
 	constexpr uint kHeaderSize = 32;
 	File file;
 	if (!file.open(path))
 		error("Could not open text file %s", path);
-	output.resize(file.size() - 4 - 1 + 1); // garbage bytes, key and we add a zero terminator for safety
-	if (file.read(output.data(), kHeaderSize) != kHeaderSize)
-		error("Could not read text file header");
-	char key = file.readSByte();
-	uint remainingSize = output.size() - kHeaderSize - 1;
-	if (!file.skip(4) || file.read(output.data() + kHeaderSize, remainingSize) != remainingSize)
-		error("Could not read text file body");
-	for (auto &ch : output)
-		ch ^= key;
+
+	if (key == kEmbeddedXORKey) {
+		output.resize(file.size() - 4 - 1 + 1); // garbage bytes, key and we add a zero terminator for safety
+		if (file.read(output.data(), kHeaderSize) != kHeaderSize)
+			error("Could not read text file header");
+		key = file.readSByte();
+		uint remainingSize = output.size() - kHeaderSize - 1;
+		if (!file.skip(4) || file.read(output.data() + kHeaderSize, remainingSize) != remainingSize)
+			error("Could not read text file body");
+	} else {
+		output.resize(file.size() + 1);
+		if (file.read(output.data(), output.size() - 1) != output.size() - 1)
+			error("Could not read text file");
+	}
+
+	if (key != kNoXORKey) {
+		for (auto &ch : output)
+			ch ^= key;
+	}
 	output.back() = '\0'; // one for good measure and a zero-terminator
 }
 
@@ -836,24 +849,50 @@ static char *trimTrailing(char *start, char *end) {
 }
 
 void World::loadLocalizedNames() {
-	loadEncryptedFile("Textos/OBJETOS.nkr", _namesChunk);
+	loadEncryptedFile(
+		g_engine->game().getObjectFileName(),
+		g_engine->game().getTextFileKey(),
+		_namesChunk);
 	char *lineStart = _namesChunk.begin(), *fileEnd = _namesChunk.end() - 1;
-	while (lineStart < fileEnd) {
-		char *lineEnd = find(lineStart, fileEnd, '\n');
-		char *keyEnd = find(lineStart, lineEnd, '#');
-		if (keyEnd == lineStart || keyEnd == lineEnd || keyEnd + 1 == lineEnd)
-			error("Invalid localized name line separator");
-		char *valueEnd = trimTrailing(keyEnd + 1, lineEnd);
 
-		*keyEnd = 0;
-		*valueEnd = 0;
-		if (valueEnd == keyEnd + 1) {
-			// happens in the english version of Movie Adventure
-			warning("Empty localized name for %s", lineStart);
+	if (*lineStart == '\"') {
+		// "key" "value"
+		while (lineStart < fileEnd) {
+			char *lineEnd = find(lineStart, fileEnd, '\n');
+			char *keyStart = find(lineStart, lineEnd, '\"');
+			char *keyEnd = find(MIN(keyStart + 1, lineEnd), lineEnd, '\"');
+			char *valueStart = find(MIN(keyEnd + 1, lineEnd), lineEnd, '\"');
+			char *valueEnd = find(MIN(valueStart + 1, lineEnd), lineEnd, '\"');
+			if (keyStart == lineEnd || keyEnd == lineEnd || keyStart + 1 == keyEnd ||
+				valueStart == lineEnd || valueEnd == lineEnd)
+				error("Invalid localized name line");
+
+			keyStart++;
+			*keyEnd = 0;
+			valueStart++;
+			*valueEnd = 0;
+			_localizedNames[keyStart] = valueStart;
+			lineStart = lineEnd + 1;
 		}
+	} else {
+		// key#value
+		while (lineStart < fileEnd) {
+			char *lineEnd = find(lineStart, fileEnd, '\n');
+			char *keyEnd = find(lineStart, lineEnd, '#');
+			if (keyEnd == lineStart || keyEnd == lineEnd || keyEnd + 1 == lineEnd)
+				error("Invalid localized name line separator");
+			char *valueEnd = trimTrailing(keyEnd + 1, lineEnd);
 
-		_localizedNames[lineStart] = keyEnd + 1;
-		lineStart = lineEnd + 1;
+			*keyEnd = 0;
+			*valueEnd = 0;
+			if (valueEnd == keyEnd + 1) {
+				// happens in the english version of Movie Adventure
+				warning("Empty localized name for %s", lineStart);
+			}
+
+			_localizedNames[lineStart] = keyEnd + 1;
+			lineStart = lineEnd + 1;
+		}
 	}
 }
 
@@ -866,7 +905,10 @@ void World::loadDialogLines() {
 	 * - The ID does not have to be correct, it is ignored by the original engine.
 	 * - We only need the dialog line and insert null-terminators where appropriate.
 	 */
-	loadEncryptedFile("Textos/DIALOGOS.nkr", _dialogChunk);
+	loadEncryptedFile(
+		g_engine->game().getDialogFileName(),
+		g_engine->game().getTextFileKey(),
+		_dialogChunk);
 	char *lineStart = _dialogChunk.begin(), *fileEnd = _dialogChunk.end() - 1;
 	while (lineStart < fileEnd) {
 		char *lineEnd = find(lineStart, fileEnd, '\n');

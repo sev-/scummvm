@@ -58,6 +58,9 @@ public:
 	virtual void updateScriptVariables() = 0;
 	virtual bool shouldClipCamera() = 0;
 	virtual void drawScreenStates();
+	virtual const char *getDialogFileName() = 0;
+	virtual const char *getObjectFileName() = 0;
+	virtual char getTextFileKey() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);

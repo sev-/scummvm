@@ -40,7 +40,7 @@ public:
 		}
 	}
 
-	Point getResolution() {
+	Point getResolution() override {
 		return Point(800, 600);
 	}
 
@@ -50,13 +50,25 @@ public:
 		"global.emc",
 		nullptr
 	};
-	const char *const *getMapFiles() {
+	const char *const *getMapFiles() override {
 		return kMapFiles;
 	}
 
-	GameFileReference getScriptFileRef() {
+	GameFileReference getScriptFileRef() override {
 		// V1 embeds the script into global.emc, it is overridden during world load
 		return {};
+	}
+
+	const char *getDialogFileName() override {
+		return "TEXTOS.TXT";
+	}
+
+	const char *getObjectFileName() override {
+		return "OBJETOS.TXT";
+	}
+
+	char getTextFileKey() override {
+		return kNoXORKey;
 	}
 };
 

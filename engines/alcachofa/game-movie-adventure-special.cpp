@@ -208,12 +208,24 @@ public:
 		return kMapFiles;
 	}
 
-	GameFileReference getScriptFileRef() {
+	GameFileReference getScriptFileRef() override {
 		return GameFileReference("Script/SCRIPT.COD");
 	}
 
 	Span<const ScriptOp> getScriptOpMap() override {
 		return { kScriptOpMap, ARRAYSIZE(kScriptOpMap) };
+	}
+
+	const char *getDialogFileName() override {
+		return "Textos/DIALOGOS.nkr";
+	}
+
+	const char *getObjectFileName() override {
+		return "Textos/OBJETOS.nkr";
+	}
+
+	char getTextFileKey() override {
+		return kEmbeddedXORKey;
 	}
 
 	void updateScriptVariables() override {

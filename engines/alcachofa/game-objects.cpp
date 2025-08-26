@@ -533,12 +533,14 @@ WalkingCharacter::WalkingCharacter(Room *room, SeekableReadStream &stream)
 	for (int32 i = 0; i < kDirectionCount; i++) {
 		auto fileRef = world.readFileRef(stream);
 		_walkingAnimations[i].reset(new Animation(move(fileRef)));
-		world.readFileRef(stream);
+		if (g_engine->isV1())
+			world.readFileRef(stream);
 	}
 	for (int32 i = 0; i < kDirectionCount; i++) {
 		auto fileRef = world.readFileRef(stream);
 		_talkingAnimations[i].reset(new Animation(move(fileRef)));
-		world.readFileRef(stream);
+		if (g_engine->isV1())
+			world.readFileRef(stream);
 	}
 }
 
