@@ -31,8 +31,8 @@ namespace Alcachofa {
 Player::Player()
 	: _activeCharacter(&g_engine->world().mortadelo())
 	, _semaphore("player") {
-	const auto &cursorPath = g_engine->world().getGlobalAnimationName(GlobalAnimationKind::Cursor);
-	_cursorAnimation.reset(new Animation(cursorPath));
+	const auto &cursorRef = g_engine->world().getGlobalAnimation(GlobalAnimationKind::Cursor);
+	_cursorAnimation.reset(new Animation(cursorRef));
 	_cursorAnimation->load();
 }
 

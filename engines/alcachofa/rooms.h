@@ -177,8 +177,8 @@ enum class GlobalAnimationKind {
 
 class World final {
 public:
-	World();
 	~World();
+	void load(); ///< unfortunately has to be split from ctor, so g_engine->world() is already set during load
 
 	// reference-returning queries will error if the object does not exist
 
@@ -204,7 +204,7 @@ public:
 	ObjectBase *getObjectByName(const char *name) const;
 	ObjectBase *getObjectByName(MainCharacterKind character, const char *name) const;
 	ObjectBase *getObjectByNameFromAnyRoom(const char *name) const;
-	const Common::String &getGlobalAnimationName(GlobalAnimationKind kind) const;
+	const GameFileReference &getGlobalAnimation(GlobalAnimationKind kind) const;
 	const char *getLocalizedName(const Common::String &name) const;
 	const char *getDialogLine(int32 dialogId) const;
 

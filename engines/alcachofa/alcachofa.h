@@ -127,7 +127,7 @@ public:
 	inline Input &input() { return _input; }
 	inline Sounds &sounds() { return _sounds; }
 	inline Player &player() { return *_player; }
-	inline World &world() { return *_world; }
+	inline World &world() { return _world; }
 	inline Script &script() { return *_script; }
 	inline GlobalUI &globalUI() { return *_globalUI; }
 	inline Menu &menu() { return *_menu; }
@@ -182,12 +182,12 @@ private:
 	Common::ScopedPtr<IDebugHandler> _debugHandler;
 	Common::ScopedPtr<IRenderer> _renderer;
 	Common::ScopedPtr<DrawQueue> _drawQueue;
-	Common::ScopedPtr<World> _world;
 	Common::ScopedPtr<Script> _script;
 	Common::ScopedPtr<Player> _player;
 	Common::ScopedPtr<GlobalUI> _globalUI;
 	Common::ScopedPtr<Menu> _menu;
 	Common::ScopedPtr<Game> _game;
+	World _world;
 	Camera _camera;
 	Input _input;
 	Sounds _sounds;

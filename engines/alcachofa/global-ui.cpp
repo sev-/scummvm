@@ -46,11 +46,11 @@ Rect closeInventoryTriggerBounds() {
 
 GlobalUI::GlobalUI() {
 	auto &world = g_engine->world();
-	_generalFont.reset(new Font(world.getGlobalAnimationName(GlobalAnimationKind::GeneralFont)));
-	_dialogFont.reset(new Font(world.getGlobalAnimationName(GlobalAnimationKind::DialogFont)));
-	_iconMortadelo.reset(new Animation(world.getGlobalAnimationName(GlobalAnimationKind::MortadeloIcon)));
-	_iconFilemon.reset(new Animation(world.getGlobalAnimationName(GlobalAnimationKind::FilemonIcon)));
-	_iconInventory.reset(new Animation(world.getGlobalAnimationName(GlobalAnimationKind::InventoryIcon)));
+	_generalFont.reset(new Font(world.getGlobalAnimation(GlobalAnimationKind::GeneralFont)));
+	_dialogFont.reset(new Font(world.getGlobalAnimation(GlobalAnimationKind::DialogFont)));
+	_iconMortadelo.reset(new Animation(world.getGlobalAnimation(GlobalAnimationKind::MortadeloIcon)));
+	_iconFilemon.reset(new Animation(world.getGlobalAnimation(GlobalAnimationKind::FilemonIcon)));
+	_iconInventory.reset(new Animation(world.getGlobalAnimation(GlobalAnimationKind::InventoryIcon)));
 
 	_generalFont->load();
 	_dialogFont->load();

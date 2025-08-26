@@ -34,7 +34,11 @@ const char *Item::typeName() const { return "Item"; }
 
 Item::Item(Room *room, SeekableReadStream &stream)
 	: GraphicObject(room, stream) {
-	stream.readByte(); // unused and ignored byte
+	// unused data in any case
+	if (g_engine->isV1())
+		skipVarString(stream);
+	else
+		stream.skip(1);
 }
 
 Item::Item(const Item &other)
@@ -70,9 +74,14 @@ void Item::trigger() {
 		player.triggerObject(heldItem, name().c_str());
 }
 
-ITriggerableObject::ITriggerableObject(SeekableReadStream &stream)
-	: _interactionPoint(Shape(stream).firstPoint())
-	, _interactionDirection((Direction)stream.readSint32LE()) {}
+ITriggerableObject::ITriggerableObject(SeekableReadStream &stream) {
+	read(stream);
+}
+
+void ITriggerableObject::read(SeekableReadStream &stream) {
+	_interactionPoint = Shape(stream).firstPoint();
+	_interactionDirection = readDirection(stream);
+}
 
 void ITriggerableObject::onClick() {
 	auto heldItem = g_engine->player().heldItem();
@@ -91,6 +100,9 @@ InteractableObject::InteractableObject(Room *room, SeekableReadStream &stream)
 	, ITriggerableObject(stream)
 	, _relatedObject(readVarString(stream)) {
 	_relatedObject.toUppercase();
+
+	if (g_engine->isV1())
+		skipVarString(stream); // unused script field
 }
 
 void InteractableObject::drawDebug() {
@@ -124,7 +136,7 @@ Door::Door(Room *room, SeekableReadStream &stream)
 	: InteractableObject(room, stream)
 	, _targetRoom(readVarString(stream))
 	, _targetObject(readVarString(stream))
-	, _characterDirection((Direction)stream.readSint32LE()) {
+	, _characterDirection(readDirection(stream)) {
 	_targetRoom.replace(' ', '_');
 }
 
@@ -163,13 +175,28 @@ void Door::trigger(const char *_) {
 const char *Character::typeName() const { return "Character"; }
 
 Character::Character(Room *room, SeekableReadStream &stream)
-	: ShapeObject(room, stream)
-	, ITriggerableObject(stream)
-	, _graphicNormal(stream)
-	, _graphicTalking(stream) {
+	: ShapeObject(room, stream) {
+	if (g_engine->isV1()) {
+		// the structure in V1 is quite redundant
+		toggle(readBool(stream));
+		_order = stream.readByte();
+		ITriggerableObject::read(stream);
+		skipVarString(stream); // unused "relatedGraphicObject" field
+		skipVarString(stream); // unused "script" field
+		toggle(readBool(stream));
+		_graphicNormal = Graphic(stream);
+		auto talkingFileRef = g_engine->world().readFileRef(stream);
+		_graphicTalking = _graphicNormal;
+		_graphicTalking.setAnimation(talkingFileRef, AnimationFolder::Animations);
+	} else {
+		ITriggerableObject::read(stream);
+		_graphicNormal = Graphic(stream);
+		_graphicTalking = Graphic(stream);
+		_order = _graphicNormal.order();
+	}
+
 	_graphicNormal.start(true);
 	_graphicNormal.frameI() = _graphicTalking.frameI() = 0;
-	_order = _graphicNormal.order();
 }
 
 static Graphic *graphicOf(ObjectBase *object, Graphic *fallback = nullptr) {
@@ -500,13 +527,18 @@ const char *WalkingCharacter::typeName() const { return "WalkingCharacter"; }
 
 WalkingCharacter::WalkingCharacter(Room *room, SeekableReadStream &stream)
 	: Character(room, stream) {
+	// every other animation is for an unused direction
+
+	const auto &world = g_engine->world();
 	for (int32 i = 0; i < kDirectionCount; i++) {
-		auto fileName = readVarString(stream);
-		_walkingAnimations[i].reset(new Animation(Common::move(fileName)));
+		auto fileRef = world.readFileRef(stream);
+		_walkingAnimations[i].reset(new Animation(move(fileRef)));
+		world.readFileRef(stream);
 	}
 	for (int32 i = 0; i < kDirectionCount; i++) {
-		auto fileName = readVarString(stream);
-		_talkingAnimations[i].reset(new Animation(Common::move(fileName)));
+		auto fileRef = world.readFileRef(stream);
+		_talkingAnimations[i].reset(new Animation(move(fileRef)));
+		world.readFileRef(stream);
 	}
 }
 
@@ -1148,7 +1180,7 @@ const char *Background::typeName() const { return "Background"; }
 Background::Background(Room *room, const String &animationFileName, int16 scale)
 	: GraphicObject(room, "BACKGROUND") {
 	toggle(true);
-	_graphic.setAnimation(animationFileName, AnimationFolder::Backgrounds);
+	_graphic.setAnimation(GameFileReference(animationFileName), AnimationFolder::Backgrounds);
 	_graphic.scale() = scale;
 	_graphic.order() = 59;
 }

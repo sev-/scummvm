@@ -677,11 +677,11 @@ private:
 			if (character == nullptr)
 				g_engine->game().unknownScriptCharacter("stop-and-turn", getStringArg(0));
 			else
-				character->stopWalking((Direction)getNumberArg(1));
+				character->stopWalking(intToDirection(getNumberArg(1)));
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::StopAndTurnMe: {
-			relatedCharacter().stopWalking((Direction)getNumberArg(0));
+			relatedCharacter().stopWalking(intToDirection(getNumberArg(0)));
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::Go: {

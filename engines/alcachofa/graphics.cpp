@@ -59,8 +59,8 @@ void IDebugRenderer::debugShape(const Shape &shape, Color color) {
 	}
 }
 
-AnimationBase::AnimationBase(String fileName, AnimationFolder folder)
-	: _fileName(reencode(fileName))
+AnimationBase::AnimationBase(GameFileReference fileRef, AnimationFolder folder)
+	: _fileRef(move(fileRef))
 	, _folder(folder) {}
 
 AnimationBase::~AnimationBase() {
@@ -70,6 +70,8 @@ AnimationBase::~AnimationBase() {
 void AnimationBase::load() {
 	if (_isLoaded)
 		return;
+
+	assert(!_fileRef.isEmbedded());
 
 	String fullPath;
 	switch (_folder) {
@@ -86,14 +88,14 @@ void AnimationBase::load() {
 		assert(false && "Invalid AnimationFolder");
 		break;
 	}
-	if (_fileName.size() < 4 || scumm_strnicmp(_fileName.end() - 4, ".AN0", 4) != 0)
-		_fileName += ".AN0";
-	fullPath += _fileName;
+	if (_fileRef._path.size() < 4 || scumm_strnicmp(_fileRef._path.end() - 4, ".AN0", 4) != 0)
+		_fileRef._path += ".AN0";
+	fullPath += _fileRef._path;
 
 	File file;
 	if (!file.open(fullPath.c_str())) {
 		// original fallback
-		fullPath = "Mascaras/" + _fileName;
+		fullPath = "Mascaras/" + _fileRef._path;
 		if (!file.open(fullPath.c_str())) {
 			loadMissingAnimation();
 			return;
@@ -170,7 +172,7 @@ ManagedSurface *AnimationBase::readImage(SeekableReadStream &stream) const {
 	SeekableSubReadStream subStream(&stream, stream.pos(), stream.size());
 	TGADecoder decoder;
 	if (!decoder.loadStream(subStream))
-		error("Failed to load TGA from animation %s", _fileName.c_str());
+		error("Failed to load TGA from animation %s", _fileRef._path.c_str());
 
 	// The length of the image is unknown but TGADecoder does not read
 	// the end marker, so let's search for it.
@@ -183,7 +185,7 @@ ManagedSurface *AnimationBase::readImage(SeekableReadStream &stream) const {
 		if (potentialStart < buffer + kMarkerLength)
 			memmove(buffer, potentialStart, kMarkerLength - nextRead);
 		if (stream.read(buffer + kMarkerLength - nextRead, nextRead) != nextRead)
-			error("Unexpected end-of-file in animation %s", _fileName.c_str());
+			error("Unexpected end-of-file in animation %s", _fileRef._path.c_str());
 		potentialStart = find(buffer + 1, buffer + kMarkerLength, kExpectedMarker[0]);
 	} while (strncmp(buffer, kExpectedMarker, kMarkerLength) != 0);
 
@@ -202,7 +204,7 @@ ManagedSurface *AnimationBase::readImage(SeekableReadStream &stream) const {
 
 void AnimationBase::loadMissingAnimation() {
 	// only allow missing animations we know are faulty in the original game
-	g_engine->game().missingAnimation(_fileName);
+	g_engine->game().missingAnimation(_fileRef._path);
 
 	// otherwise setup a functioning but empty animation
 	_isLoaded = true;
@@ -248,8 +250,8 @@ Point AnimationBase::imageSize(int32 imageI) const {
 	return image == nullptr ? Point() : Point(image->w, image->h);
 }
 
-Animation::Animation(String fileName, AnimationFolder folder)
-	: AnimationBase(fileName, folder) {}
+Animation::Animation(GameFileReference fileRef, AnimationFolder folder)
+	: AnimationBase(move(fileRef), folder) {}
 
 void Animation::load() {
 	if (_isLoaded)
@@ -447,7 +449,7 @@ void Animation::drawEffect(int32 frameI, Vector3d topLeft, Vector2d size, Vector
 	renderer.quad(as2D(topLeft), size, kWhite, rotation, texMin + texOffset, texMax + texOffset);
 }
 
-Font::Font(String fileName) : AnimationBase(fileName) {}
+Font::Font(GameFileReference fileRef) : AnimationBase(move(fileRef)) {}
 
 void Font::load() {
 	if (_isLoaded)
@@ -487,7 +489,7 @@ void Font::load() {
 	}
 	_texture = g_engine->renderer().createTexture(atlasSurface.w, atlasSurface.h, false);
 	_texture->update(atlasSurface);
-	debugCN(1, kDebugGraphics, "Rendered font atlas %s at %dx%d", _fileName.c_str(), atlasSurface.w, atlasSurface.h);
+	debugCN(1, kDebugGraphics, "Rendered font atlas %s at %dx%d", _fileRef._path.c_str(), atlasSurface.w, atlasSurface.h);
 }
 
 void Font::freeImages() {
@@ -512,29 +514,27 @@ void Font::drawCharacter(int32 imageI, Point centerPoint, Color color) {
 
 Graphic::Graphic() {}
 
-Graphic::Graphic(ReadStream &stream) {
-	_topLeft.x = stream.readSint16LE();
-	_topLeft.y = stream.readSint16LE();
-	_scale = stream.readSint16LE();
-	_order = stream.readSByte();
-	auto animationName = readVarString(stream);
-	if (!animationName.empty())
-		setAnimation(animationName, AnimationFolder::Animations);
+Graphic::Graphic(SeekableReadStream &stream) {
+	if (g_engine->isV1()) {
+		_topLeft = readPoint(stream);
+		_scale = stream.readSint16LE();
+		_order = (int8)stream.readSint16LE();
+	} else {
+		_topLeft.x = stream.readSint16LE();
+		_topLeft.y = stream.readSint16LE();
+		_scale = stream.readSint16LE();
+		_order = stream.readSByte();
+	}
+	auto animationRef = g_engine->world().readFileRef(stream);
+	if (animationRef.isValid())
+		setAnimation(animationRef, AnimationFolder::Animations);
 }
 
-Graphic::Graphic(const Graphic &other)
-	: _animation(other._animation)
-	, _topLeft(other._topLeft)
-	, _scale(other._scale)
-	, _order(other._order)
-	, _color(other._color)
-	, _isPaused(other._isPaused)
-	, _isLooping(other._isLooping)
-	, _lastTime(other._lastTime)
-	, _frameI(other._frameI)
-	, _depthScale(other._depthScale) {}
+Graphic::Graphic(const Graphic &other) {
+	*this = other;
+}
 
-Graphic &Graphic::operator= (const Graphic &other) {
+Graphic &Graphic::operator=(const Graphic &other) {
 	_ownedAnimation.reset();
 	_animation = other._animation;
 	_topLeft = other._topLeft;
@@ -602,8 +602,8 @@ void Graphic::reset() {
 	_lastTime = _isPaused ? 0 : g_engine->getMillis();
 }
 
-void Graphic::setAnimation(const Common::String &fileName, AnimationFolder folder) {
-	_ownedAnimation.reset(new Animation(fileName, folder));
+void Graphic::setAnimation(const GameFileReference &fileRef, AnimationFolder folder) {
+	_ownedAnimation.reset(new Animation(fileRef, folder));
 	_animation = _ownedAnimation.get();
 }
 

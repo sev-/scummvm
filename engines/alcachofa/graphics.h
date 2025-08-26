@@ -148,7 +148,7 @@ struct AnimationFrame {
  */
 class AnimationBase {
 protected:
-	AnimationBase(Common::String fileName, AnimationFolder folder = AnimationFolder::Animations);
+	AnimationBase(GameFileReference fileRef, AnimationFolder folder = AnimationFolder::Animations);
 	~AnimationBase();
 
 	void load();
@@ -165,7 +165,7 @@ protected:
 		int offsetY);
 
 	static constexpr const uint kMaxSpriteIDs = 256;
-	Common::String _fileName;
+	GameFileReference _fileRef;
 	AnimationFolder _folder;
 	bool _isLoaded = false;
 	uint32 _totalDuration = 0;
@@ -185,7 +185,7 @@ protected:
  */
 class Animation : private AnimationBase {
 public:
-	Animation(Common::String fileName, AnimationFolder folder = AnimationFolder::Animations);
+	Animation(GameFileReference fileRef, AnimationFolder folder = AnimationFolder::Animations);
 
 	void load();
 	void freeImages();
@@ -241,7 +241,7 @@ private:
 
 class Font : private AnimationBase {
 public:
-	Font(Common::String fileName);
+	Font(GameFileReference fileRef);
 
 	void load();
 	void freeImages();
@@ -259,9 +259,11 @@ private:
 class Graphic {
 public:
 	Graphic();
-	Graphic(Common::ReadStream &stream);
+	Graphic(Common::SeekableReadStream &stream);
 	Graphic(const Graphic &other); // animation reference is taken, so keep other alive
-	Graphic &operator= (const Graphic &other);
+	Graphic(Graphic &&other) = default;
+	Graphic &operator=(const Graphic &other);
+	Graphic &operator=(Graphic &&other) = default;
 
 	inline Common::Point &topLeft() { return _topLeft; }
 	inline int8 &order() { return _order; }
@@ -287,7 +289,7 @@ public:
 	void start(bool looping);
 	void pause();
 	void reset();
-	void setAnimation(const Common::String &fileName, AnimationFolder folder);
+	void setAnimation(const GameFileReference &fileRef, AnimationFolder folder);
 	void setAnimation(Animation *animation); ///< no memory ownership is given, but for prerendering it has to be mutable
 	void syncGame(Common::Serializer &serializer);
 

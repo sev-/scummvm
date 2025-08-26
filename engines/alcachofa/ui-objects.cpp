@@ -30,6 +30,13 @@ using namespace Common;
 
 namespace Alcachofa {
 
+const char *ButtonV1::typeName() const { return "ButtonV1"; }
+
+ButtonV1::ButtonV1(Room *room, Common::SeekableReadStream &stream)
+	: PhysicalObject(room, stream)
+	, _actionId(stream.readByte())
+	, _actionName(readVarString(stream)) {}
+
 const char *MenuButton::typeName() const { return "MenuButton"; }
 
 MenuButton::MenuButton(Room *room, SeekableReadStream &stream)

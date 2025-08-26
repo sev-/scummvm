@@ -102,8 +102,8 @@ protected:
 	GraphicObject(Room *room, const char *name);
 
 	Graphic _graphic;
-	GraphicObjectType _type;
-	int32 _posterizeAlpha;
+	GraphicObjectType _type = GraphicObjectType::Normal;
+	int32 _posterizeAlpha = 100;
 };
 
 class SpecialEffectObject final : public GraphicObject {
@@ -147,15 +147,31 @@ protected:
 	int8 _order = 0;
 private:
 	Shape _shape;
-	CursorType _cursorType;
+	CursorType _cursorType = CursorType::Point;
 	bool _isNewlySelected = false,
 		_wasSelected = false;
 };
 
 class PhysicalObject : public ShapeObject {
 public:
+	static constexpr const char *kClassName = "CObjetoFisico";
 	PhysicalObject(Room *room, Common::SeekableReadStream &stream);
 	const char *typeName() const override;
+};
+
+class ButtonV1 : public PhysicalObject {
+public:
+	static constexpr const char *kClassName = "CBoton";
+	ButtonV1(Room *room, Common::SeekableReadStream &stream);
+
+	inline byte actionId() const { return _actionId; }
+	inline const Common::String &actionName() const { return _actionName; }
+
+	const char *typeName() const override;
+
+private:
+	byte _actionId;
+	Common::String _actionName;
 };
 
 class MenuButton : public PhysicalObject {
@@ -374,6 +390,8 @@ public:
 	virtual void trigger(const char *action) = 0;
 
 protected:
+	ITriggerableObject() = default;
+	void read(Common::SeekableReadStream &stream);
 	void onClick();
 
 	Common::Point _interactionPoint;

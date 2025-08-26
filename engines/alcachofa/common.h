@@ -47,6 +47,13 @@ enum class Direction {
 	Down,
 	Left,
 
+	// V1 has some fields with these additional directions
+	// but they are largely irrelevant so we map them to the main four
+	UpRight,
+	DownRight,
+	DownLeft,
+	UpLeft,
+
 	Invalid = -1
 };
 
@@ -64,6 +71,7 @@ enum class EasingType {
 };
 
 constexpr const int32 kDirectionCount = 4;
+constexpr const int32 kFullDirectionCount = 8; ///< only to be used for IO or mapping V1 values
 constexpr const int8 kOrderCount = 70;
 constexpr const int8 kForegroundOrderCount = 10;
 
@@ -133,6 +141,8 @@ Common::Point readPoint(Common::ReadStream &stream);
 Common::String readVarString(Common::ReadStream &stream);
 void skipVarString(Common::SeekableReadStream &stream);
 void syncPoint(Common::Serializer &serializer, Common::Point &point);
+Direction intToDirection(int32 value);
+Direction readDirection(Common::ReadStream &stream);
 
 template<typename T>
 inline void syncArray(Common::Serializer &serializer, Common::Array<T> &array, void (*serializeFunction)(Common::Serializer &, T &)) {
@@ -185,7 +195,7 @@ struct GameFileReference {
 
 	GameFileReference() {}
 
-	GameFileReference(const Common::String &path)
+	explicit GameFileReference(const Common::String &path)
 		: _path(path) {}
 
 	// in this case, path is only for debugging purposes
@@ -196,7 +206,11 @@ struct GameFileReference {
 		, _size(size) {}
 
 	inline bool isValid() const {
-		return !_path.empty() || _position >= 0;
+		return !_path.empty() || _fileIndex != UINT32_MAX;
+	}
+
+	inline bool isEmbedded() const {
+		return _fileIndex != UINT32_MAX;
 	}
 };
 

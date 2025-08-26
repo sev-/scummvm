@@ -209,7 +209,7 @@ public:
 	}
 
 	GameFileReference getScriptFileRef() {
-		return { "Script/SCRIPT.COD" };
+		return GameFileReference("Script/SCRIPT.COD");
 	}
 
 	Span<const ScriptOp> getScriptOpMap() override {

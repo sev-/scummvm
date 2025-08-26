@@ -83,6 +83,8 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 		return new MainCharacter(room, stream);
 	else if (type == FloorColor::kClassName)
 		return new FloorColor(room, stream);
+	else if (type == ButtonV1::kClassName)
+		return new ButtonV1(room, stream);
 	else
 		return nullptr; // handled in Room::Room
 }
@@ -117,7 +119,7 @@ void Room::readObjectsAndBackground(SeekableReadStream &stream, int16 background
 			g_engine->game().notEnoughObjectDataRead(_name.c_str(), stream.pos(), objectEnd);
 			stream.seek(objectEnd, SEEK_SET);
 		} else if (stream.pos() > objectEnd) // this is probably not recoverable
-			error("Read past the object data (%u > %lld) in room %s", objectEnd, (long long int)stream.pos(), _name.c_str());
+			error("Read past the object data (%u < %lld) in room %s", objectEnd, (long long int)stream.pos(), _name.c_str());
 
 		if (object != nullptr)
 			_objects.push_back(object);
@@ -527,7 +529,7 @@ void Room::debugPrint(bool withObjects) const {
 	}
 }
 
-World::World() {
+void World::load() {
 	_scriptFileRef = g_engine->game().getScriptFileRef();
 
 	auto loadWorldFile =
@@ -645,11 +647,10 @@ void World::toggleObject(MainCharacterKind character, const char *objName, bool 
 		object->toggle(isEnabled);
 }
 
-const Common::String &World::getGlobalAnimationName(GlobalAnimationKind kind) const {
+const GameFileReference &World::getGlobalAnimation(GlobalAnimationKind kind) const {
 	int kindI = (int)kind;
 	assert(kindI >= 0 && kindI < (int)GlobalAnimationKind::Count);
-	error("You broke this, remember?");
-	//return _globalAnimationNames[kindI];
+	return _globalAnimations[kindI];
 }
 
 const char *World::getLocalizedName(const String &name) const {
@@ -904,10 +905,11 @@ GameFileReference World::readFileRef(SeekableReadStream &stream) const {
 	auto name = readVarString(stream);
 	if (g_engine->isV1()) {
 		uint32 size = stream.readUint32LE();
+		uint32 offset = (uint32)stream.pos();
 		stream.skip(size);
-		return { name, (uint32)_files.size(), (uint32)stream.pos(), size };
+		return { name, (uint32)_files.size(), offset, size };
 	} else
-		return { name };
+		return GameFileReference(reencode(name));
 }
 
 ScopedPtr<SeekableReadStream> World::openFileRef(const GameFileReference &ref) const {

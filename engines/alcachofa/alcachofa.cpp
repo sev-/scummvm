@@ -79,9 +79,9 @@ Common::Error AlcachofaEngine::run() {
 	g_system->showMouse(false);
 	setDebugger(_console);
 	_game.reset(Game::create());
+	_world.load();
 	_renderer.reset(IRenderer::createOpenGLRenderer(game().getResolution()));
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
-	_world.reset(new World());
 	_script.reset(new Script());
 	_player.reset(new Player());
 	_globalUI.reset(new GlobalUI());
