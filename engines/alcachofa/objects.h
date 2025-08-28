@@ -581,7 +581,7 @@ protected:
 	void onArrived() override;
 
 private:
-	friend class InventoryV3;
+	friend class Inventory;
 	friend struct DialogMenuTask;
 	Item *getItemByName(const Common::String &name) const;
 	void drawInner();

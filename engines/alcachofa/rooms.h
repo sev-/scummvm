@@ -31,6 +31,7 @@ class World;
 class Room {
 public:
 	static constexpr const char *kClassName = "CHabitacion";
+	Room(World *world, Common::SeekableReadStream &stream);
 	virtual ~Room();
 
 	inline World &world() { return *_world; }
@@ -65,6 +66,8 @@ public:
 
 protected:
 	Room(World *world);
+	void readRoomV1(Common::SeekableReadStream &stream, bool readObjects);
+	void readRoomV3(Common::SeekableReadStream &stream, bool hasUselessByte);
 	void readObjectsAndBackground(Common::SeekableReadStream &stream, int16 backgroundScale);
 	void updateScripts();
 	void updateRoomBounds();
@@ -87,26 +90,14 @@ protected:
 	Common::Array<ObjectBase *> _objects;
 };
 
-class RoomV3 : public Room {
-public:
-	RoomV3(World *world, Common::SeekableReadStream &stream);
-
-protected:
-	RoomV3(World *world, Common::SeekableReadStream &stream, bool hasUselessByte);
-};
-
-class RoomV1 : public Room {
-public:
-	RoomV1(World *world, Common::SeekableReadStream &stream, bool readObjects = true);
-};
-
-class RoomV1WithFloor final : public RoomV1 {
+// only used for V1 where Rooms by default have no floor
+class RoomWithFloor final : public Room {
 public:
 	static constexpr const char *kClassName = "CHabitacionConSuelo";
-	RoomV1WithFloor(World *world, Common::SeekableReadStream &stream);
+	RoomWithFloor(World *world, Common::SeekableReadStream &stream);
 };
 
-class OptionsMenu final : public RoomV3 {
+class OptionsMenu final : public Room {
 public:
 	static constexpr const char *kClassName = "CHabitacionMenuOpciones";
 	OptionsMenu(World *world, Common::SeekableReadStream &stream);
@@ -123,23 +114,23 @@ private:
 	SlideButton *_currentSlideButton = nullptr;
 };
 
-class ConnectMenu final : public RoomV3 {
+class ConnectMenu final : public Room {
 public:
 	static constexpr const char *kClassName = "CHabitacionConectar";
 	ConnectMenu(World *world, Common::SeekableReadStream &stream);
 };
 
-class ListenMenu final : public RoomV3 {
+class ListenMenu final : public Room {
 public:
 	static constexpr const char *kClassName = "CHabitacionEsperar";
 	ListenMenu(World *world, Common::SeekableReadStream &stream);
 };
 
-class InventoryV3 final : public RoomV3 {
+class Inventory final : public Room {
 public:
 	static constexpr const char *kClassName = "CInventario";
-	InventoryV3(World *world, Common::SeekableReadStream &stream);
-	~InventoryV3() override;
+	Inventory(World *world, Common::SeekableReadStream &stream);
+	~Inventory() override;
 
 	bool updateInput() override;
 
@@ -153,12 +144,6 @@ private:
 	Item *getHoveredItem();
 
 	Common::Array<Item *> _items;
-};
-
-class InventoryV1 final : public RoomV1 {
-public:
-	static constexpr const char *kClassName = "CInventario";
-	InventoryV1(World *world, Common::SeekableReadStream &stream);
 };
 
 enum class GlobalAnimationKind {
@@ -189,7 +174,7 @@ public:
 	inline RoomIterator beginRooms() const { return _rooms.begin(); }
 	inline RoomIterator endRooms() const { return _rooms.end(); }
 	inline Room &globalRoom() const { assert(_globalRoom != nullptr); return *_globalRoom; }
-	inline InventoryV3 &inventory() const { assert(_inventory != nullptr); return *_inventory; }
+	inline Inventory &inventory() const { assert(_inventory != nullptr); return *_inventory; }
 	inline MainCharacter &filemon() const { assert(_filemon != nullptr); return *_filemon; }
 	inline MainCharacter &mortadelo() const { assert(_mortadelo != nullptr);  return *_mortadelo; }
 	inline GameFileReference scriptFileRef() const { return _scriptFileRef; }
@@ -218,10 +203,9 @@ public:
 	Common::ScopedPtr<Common::SeekableReadStream> openFileRef(const GameFileReference &ref) const;
 
 private:
-	using ReadRoomFunc = Room *(*)(World *, Common::SeekableReadStream &);
 	bool loadWorldFileV3(const char *path);
 	bool loadWorldFileV1(const char *path);
-	void readRooms(ReadRoomFunc readRoom, Common::File &file);
+	void readRooms(Common::File &file);
 	void loadLocalizedNames();
 	void loadDialogLines();
 
@@ -236,7 +220,7 @@ private:
 	Common::String _initScriptName;
 	GameFileReference _scriptFileRef;
 	Room *_globalRoom;
-	InventoryV3 *_inventory;
+	Inventory *_inventory;
 	MainCharacter *_filemon, *_mortadelo;
 	uint8 _loadedMapCount = 0;
 	Common::HashMap<const char *, const char *,
