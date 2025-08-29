@@ -160,7 +160,11 @@ bool readBool(ReadStream &stream) {
 	return stream.readByte() != 0;
 }
 
-Point readPoint(ReadStream &stream) {
+Point readPoint16(ReadStream &stream) {
+	return { stream.readSint16LE(), stream.readSint16LE() };
+}
+
+Point readPoint32(ReadStream &stream) {
 	return { (int16)stream.readSint32LE(), (int16)stream.readSint32LE() };
 }
 

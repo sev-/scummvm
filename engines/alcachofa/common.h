@@ -137,7 +137,8 @@ Math::Vector2d as2D(const Math::Vector3d &v);
 Math::Vector2d as2D(Common::Point p);
 
 bool readBool(Common::ReadStream &stream);
-Common::Point readPoint(Common::ReadStream &stream);
+Common::Point readPoint16(Common::ReadStream &stream);
+Common::Point readPoint32(Common::ReadStream &stream);
 Common::String readVarString(Common::ReadStream &stream);
 void skipVarString(Common::SeekableReadStream &stream);
 void syncPoint(Common::Serializer &serializer, Common::Point &point);

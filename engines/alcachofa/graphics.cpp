@@ -59,6 +59,92 @@ void IDebugRenderer::debugShape(const Shape &shape, Color color) {
 	}
 }
 
+ImageV1::ImageV1(SeekableReadStream &stream) {
+	_drawOffset = readPoint16(stream);
+	stream.skip(4); // another point
+	_size = readPoint16(stream);
+	uint32 pixelCount = stream.readUint32LE();
+	stream.skip(5); // yet another point and some flag
+	bool isPaletted = readBool(stream);
+
+	// for segments we could either scan the file first to sum the total segment count
+	// or we can not use reserve and rely on the capacity doubling as heuristic
+	// using reserve will guarantee we always reallocate _segments
+	scumm_assert(_size.x >= 0 && _size.y >= 0);
+	_lines.reserve(_size.y);
+	for (int16 y = 0; y < _size.y; y++) {
+		uint16 segmentCount = stream.readUint16LE();
+		_lines.push_back({ _segments.size(), _segments.size() + segmentCount });
+		for (uint16 i = 0; i < segmentCount; i++) {
+			_segments.push_back({
+				stream.readUint16LE(),
+				stream.readUint16LE(),
+				stream.readUint32LE() });
+		}
+	}
+
+	_pixels.resize(pixelCount);
+	stream.read(_pixels.data(), pixelCount);
+	if (isPaletted) {
+		_palette.resize(PALETTE_SIZE);
+		stream.read(_palette.data(), PALETTE_SIZE);
+	}
+	scumm_assert(!stream.err());
+}
+
+ManagedSurface *ImageV1::render() const {
+	ManagedSurface *surface = new ManagedSurface(_size.x, _size.y, PixelFormat::createFormatARGB32());
+	render(*surface, {});
+	return surface;
+}
+
+void ImageV1::render(ManagedSurface &target, Point dstOffset) const {
+	assert(target.format == PixelFormat::createFormatARGB32());
+	Point srcOffset = {};
+	if (dstOffset.x < 0) {
+		srcOffset.x = -dstOffset.x;
+		dstOffset.x = 0;
+	}
+	if (dstOffset.y < 0) {
+		srcOffset.y = -dstOffset.y;
+		dstOffset.y = 0;
+	}
+	if (dstOffset.x >= target.w || dstOffset.y >= target.h ||
+		srcOffset.x >= _size.x || srcOffset.y >= _size.y)
+		return;
+	const int maxSrcY = MIN((int)_size.y, target.h - dstOffset.y);
+	const uint bpp = _palette.empty() ? 3 : 1;
+
+	int dstY = dstOffset.y;
+	for (int srcY = srcOffset.y; srcY < maxSrcY; srcY++, dstY++) {
+		const auto line = _lines[srcY];
+		int dstX = dstOffset.x;
+		for (uint segmentI = line._start; segmentI < line._end; segmentI++) {
+			const auto segment = _segments[segmentI];
+			dstX += segment._xOffset;
+			if (dstX >= target.w)
+				break;
+			if (dstX + segment._width < 0)
+				continue;
+			uint srcPixelI = segment._dataOffset;
+			if (dstX < 0)
+				srcPixelI += -dstX * bpp;
+			uint width = MIN((int)segment._width, target.w - dstX);
+
+			byte* dstPixel = (byte*)target.getBasePtr(dstX, dstY);
+			for (uint x = 0; x < width; x++) {
+				const byte* srcPixel = _palette.empty()
+					? _pixels.data() + srcPixelI
+					: _palette.data() + 3 * _pixels[srcPixelI];
+				memcpy(dstPixel, srcPixel, 3);
+				dstPixel[3] = 0xff;
+				dstPixel += 4;
+				srcPixelI += bpp;
+			}
+		}
+	}
+}
+
 AnimationBase::AnimationBase(GameFileReference fileRef, AnimationFolder folder)
 	: _fileRef(move(fileRef))
 	, _folder(folder) {}
@@ -103,16 +189,28 @@ void AnimationBase::load() {
 	}
 	// Reading the images is a major bottleneck in loading, buffering helps a lot with that
 	ScopedPtr<SeekableReadStream> stream(wrapBufferedSeekableReadStream(&file, file.size(), DisposeAfterUse::NO));
+	if (g_engine->isV1())
+		readV1(*stream);
+	else
+		readV3(*stream);
 
-	uint spriteCount = stream->readUint32LE();
+	_isLoaded = true;
+}
+
+void AnimationBase::readV1(SeekableReadStream &stream) {
+	assert(false);
+}
+
+void AnimationBase::readV3(SeekableReadStream &stream) {
+	uint spriteCount = stream.readUint32LE();
 	assert(spriteCount < kMaxSpriteIDs);
 	_spriteBases.reserve(spriteCount);
 
-	uint imageCount = stream->readUint32LE();
+	uint imageCount = stream.readUint32LE();
 	_images.reserve(imageCount);
 	_imageOffsets.reserve(imageCount);
 	for (uint i = 0; i < imageCount; i++) {
-		_images.push_back(readImage(*stream));
+		_images.push_back(readImageV3(stream));
 	}
 
 	// an inconsistency, maybe a historical reason:
@@ -120,37 +218,35 @@ void AnimationBase::load() {
 	// have to be contiguous we do not need to do that ourselves.
 	// but let's check in Debug to be sure
 	for (uint i = 0; i < spriteCount; i++) {
-		_spriteBases.push_back(stream->readUint32LE());
+		_spriteBases.push_back(stream.readUint32LE());
 		assert(_spriteBases.back() < imageCount);
 	}
 #ifdef ALCACHOFA_DEBUG
 	for (uint i = spriteCount; i < kMaxSpriteIDs; i++)
-		assert(stream->readSint32LE() == 0);
+		assert(stream.readSint32LE() == 0);
 #else
-	stream->skip(sizeof(int32) * (kMaxSpriteIDs - spriteCount));
+	stream.skip(sizeof(int32) * (kMaxSpriteIDs - spriteCount));
 #endif
 
 	for (uint i = 0; i < imageCount; i++)
-		_imageOffsets.push_back(readPoint(*stream));
+		_imageOffsets.push_back(readPoint32(stream));
 	for (uint i = 0; i < kMaxSpriteIDs; i++)
-		_spriteIndexMapping[i] = stream->readSint32LE();
+		_spriteIndexMapping[i] = stream.readSint32LE();
 
-	uint frameCount = stream->readUint32LE();
+	uint frameCount = stream.readUint32LE();
 	_frames.reserve(frameCount);
 	_spriteOffsets.reserve(frameCount * spriteCount);
 	_totalDuration = 0;
 	for (uint i = 0; i < frameCount; i++) {
 		for (uint j = 0; j < spriteCount; j++)
-			_spriteOffsets.push_back(stream->readUint32LE());
+			_spriteOffsets.push_back(stream.readUint32LE());
 		AnimationFrame frame;
-		frame._center = readPoint(*stream);
-		frame._offset = readPoint(*stream);
-		frame._duration = stream->readUint32LE();
+		frame._center = readPoint32(stream);
+		frame._offset = readPoint32(stream);
+		frame._duration = stream.readUint32LE();
 		_frames.push_back(frame);
 		_totalDuration += frame._duration;
 	}
-
-	_isLoaded = true;
 }
 
 void AnimationBase::freeImages() {
@@ -168,7 +264,7 @@ void AnimationBase::freeImages() {
 	_isLoaded = false;
 }
 
-ManagedSurface *AnimationBase::readImage(SeekableReadStream &stream) const {
+ManagedSurface *AnimationBase::readImageV3(SeekableReadStream &stream) const {
 	SeekableSubReadStream subStream(&stream, stream.pos(), stream.size());
 	TGADecoder decoder;
 	if (!decoder.loadStream(subStream))
@@ -516,7 +612,7 @@ Graphic::Graphic() {}
 
 Graphic::Graphic(SeekableReadStream &stream) {
 	if (g_engine->isV1()) {
-		_topLeft = readPoint(stream);
+		_topLeft = readPoint32(stream);
 		_scale = stream.readSint16LE();
 		_order = (int8)stream.readSint16LE();
 	} else {
