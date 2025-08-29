@@ -29,6 +29,78 @@ using namespace Common;
 
 namespace Alcachofa {
 
+static constexpr const ScriptOp kScriptOpMap[] = {
+	ScriptOp::Nop,
+	ScriptOp::Dup,
+	ScriptOp::PushAddr,
+	ScriptOp::PushValue,
+	ScriptOp::Deref,
+	ScriptOp::Nop,
+	ScriptOp::Pop1,
+	ScriptOp::Store,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::PushDynAddr,
+	ScriptOp::Nop,
+	ScriptOp::ScriptCall,
+	ScriptOp::KernelCall,
+	ScriptOp::JumpIfFalse,
+	ScriptOp::JumpIfTrue,
+	ScriptOp::Jump,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Add,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Equals,
+	ScriptOp::NotEquals,
+	ScriptOp::BitAnd,
+	ScriptOp::BitOr,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::Nop,
+	ScriptOp::ReturnVoid
+};
+
+static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
+	ScriptKernelTask::Nop,
+	ScriptKernelTask::SayText,
+	ScriptKernelTask::Go,
+	ScriptKernelTask::Delay,
+	ScriptKernelTask::PlaySound,
+	ScriptKernelTask::FadeIn,
+	ScriptKernelTask::FadeOut,
+	ScriptKernelTask::Put,
+	ScriptKernelTask::ChangeRoom,
+	ScriptKernelTask::PlayVideo,
+	ScriptKernelTask::StopAndTurn,
+	ScriptKernelTask::StopAndTurnMe,
+	ScriptKernelTask::On,
+	ScriptKernelTask::Off,
+	ScriptKernelTask::Pickup,
+	ScriptKernelTask::Animate,
+	ScriptKernelTask::SheriffTakesCharacter,
+	ScriptKernelTask::ChangeCharacter,
+	ScriptKernelTask::LerpCamToObjectKeepingZ,
+	ScriptKernelTask::Drop,
+	ScriptKernelTask::ChangeDoor,
+	ScriptKernelTask::Disguise,
+	ScriptKernelTask::ToggleRoomFloor,
+	ScriptKernelTask::SetDialogLineReturn,
+	ScriptKernelTask::DialogMenu,
+	ScriptKernelTask::ChangeCharacterRoom,
+	ScriptKernelTask::PlayMusic,
+	ScriptKernelTask::StopMusic,
+	ScriptKernelTask::WaitForMusicToEnd
+};
+
 class GameMovieAdventureOriginal : public Game {
 public:
 	GameMovieAdventureOriginal() {
@@ -69,6 +141,14 @@ public:
 
 	char getTextFileKey() override {
 		return kNoXORKey;
+	}
+
+	Span<const ScriptOp> getScriptOpMap() override {
+		return { kScriptOpMap, ARRAYSIZE(kScriptOpMap) };
+	}
+
+	Span<const ScriptKernelTask> getScriptKernelTaskMap() override {
+		return { kScriptKernelTaskMap, ARRAYSIZE(kScriptKernelTaskMap) };
 	}
 };
 

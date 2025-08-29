@@ -61,6 +61,8 @@ public:
 	virtual const char *getDialogFileName() = 0;
 	virtual const char *getObjectFileName() = 0;
 	virtual char getTextFileKey() = 0;
+	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
+	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);
