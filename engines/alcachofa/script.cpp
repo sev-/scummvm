@@ -44,57 +44,62 @@ ScriptInstruction::ScriptInstruction(ReadStream &stream)
 	, _arg(stream.readSint32LE()) {}
 
 Script::Script() {
-	File file;
-	if (!file.open("script/SCRIPT.COD"))
+	auto file = g_engine->world().openFileRef(g_engine->world().scriptFileRef());
+	if (!file)
 		error("Could not open script");
 
-	uint32 stringBlobSize = file.readUint32LE();
-	uint32 memorySize = file.readUint32LE();
+	uint32 stringBlobSize = file->readUint32LE();
+	uint32 memorySize = g_engine->isV1() ? 0 : file->readUint32LE();
 	_strings = SpanOwner<Span<char>>({ new char[stringBlobSize], stringBlobSize });
-	if (file.read(&_strings[0], stringBlobSize) != stringBlobSize)
+	if (file->read(&_strings[0], stringBlobSize) != stringBlobSize)
 		error("Could not read script string blob");
 	if (_strings[stringBlobSize - 1] != 0)
 		error("String blob does not end with null terminator");
 
-	if (memorySize % sizeof(int32) != 0)
-		error("Unexpected size of script memory");
-	_variables.resize(memorySize / sizeof(int32), 0);
-
-	uint32 variableCount = file.readUint32LE();
+	uint32 variableCount = file->readUint32LE();
 	for (uint32 i = 0; i < variableCount; i++) {
-		String name = readVarString(file);
-		uint32 offset = file.readUint32LE();
+		String name = readVarString(*file);
+		uint32 offset = file->readUint32LE();
 		if (offset % sizeof(int32) != 0)
 			error("Unaligned variable offset");
 		_variableNames[name] = offset / 4;
 	}
 
-	uint32 procedureCount = file.readUint32LE();
+	if (memorySize == 0) {
+		// in V1 the memory size is implicitly stored in the variables
+		for (const auto &variable : _variableNames)
+			memorySize = MAX(memorySize, variable._value + (uint32)sizeof(int32));
+	}
+	if (memorySize % sizeof(int32) != 0)
+		error("Unexpected size of script memory");
+	_variables.resize(memorySize / sizeof(int32), 0);
+
+	uint32 procedureCount = file->readUint32LE();
 	for (uint32 i = 0; i < procedureCount; i++) {
-		String name = readVarString(file);
-		uint32 offset = file.readUint32LE();
-		file.skip(sizeof(uint32));
+		String name = readVarString(*file);
+		uint32 offset = file->readUint32LE();
+		file->skip(sizeof(uint32));
 		_procedures[name] = offset - 1; // originally one-based, but let's not.
 	}
 
-	uint32 behaviorCount = file.readUint32LE();
+	uint32 behaviorCount = file->readUint32LE();
 	for (uint32 i = 0; i < behaviorCount; i++) {
-		String behaviorName = readVarString(file) + '/';
-		variableCount = file.readUint32LE(); // not used by the original game
+		String behaviorName = readVarString(*file) + '/';
+		variableCount = file->readUint32LE(); // not used by the original game
 		assert(variableCount == 0);
-		procedureCount = file.readUint32LE();
+		procedureCount = file->readUint32LE();
 		for (uint32 j = 0; j < procedureCount; j++) {
-			String name = behaviorName + readVarString(file);
-			uint32 offset = file.readUint32LE();
-			file.skip(sizeof(uint32));
+			String name = behaviorName + readVarString(*file);
+			uint32 offset = file->readUint32LE();
+			file->skip(sizeof(uint32));
 			_procedures[name] = offset - 1;
 		}
 	}
 
-	uint32 instructionCount = file.readUint32LE();
+	uint32 instructionCount = file->readUint32LE();
 	_instructions.reserve(instructionCount);
 	for (uint32 i = 0; i < instructionCount; i++)
-		_instructions.push_back(ScriptInstruction(file));
+		_instructions.push_back(ScriptInstruction(*file));
 }
 
 static void syncAsSint32LE(Serializer &s, int32 &value) {
