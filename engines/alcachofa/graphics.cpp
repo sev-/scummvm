@@ -157,48 +157,118 @@ void AnimationBase::load() {
 	if (_isLoaded)
 		return;
 
-	assert(!_fileRef.isEmbedded());
-
-	String fullPath;
-	switch (_folder) {
-	case AnimationFolder::Animations:
-		fullPath = "Animaciones/";
-		break;
-	case AnimationFolder::Masks:
-		fullPath = "Mascaras/";
-		break;
-	case AnimationFolder::Backgrounds:
-		fullPath = "Fondos/";
-		break;
-	default:
-		assert(false && "Invalid AnimationFolder");
-		break;
-	}
-	if (_fileRef._path.size() < 4 || scumm_strnicmp(_fileRef._path.end() - 4, ".AN0", 4) != 0)
-		_fileRef._path += ".AN0";
-	fullPath += _fileRef._path;
-
-	File file;
-	if (!file.open(fullPath.c_str())) {
-		// original fallback
-		fullPath = "Mascaras/" + _fileRef._path;
-		if (!file.open(fullPath.c_str())) {
-			loadMissingAnimation();
-			return;
+	ScopedPtr<SeekableReadStream> rawStream;
+	if (_fileRef.isEmbedded())
+		rawStream = g_engine->world().openFileRef(_fileRef);
+	else {
+		// for real file paths we have to apply the folder and do some fallback
+		String fullPath;
+		switch (_folder) {
+		case AnimationFolder::Animations:
+			fullPath = "Animaciones/";
+			break;
+		case AnimationFolder::Masks:
+			fullPath = "Mascaras/";
+			break;
+		case AnimationFolder::Backgrounds:
+			fullPath = "Fondos/";
+			break;
+		default:
+			assert(false && "Invalid AnimationFolder");
+			break;
 		}
+		fullPath += _fileRef._path;
+		if (_fileRef._path.size() < 4 || scumm_strnicmp(_fileRef._path.end() - 4, ".AN0", 4) != 0)
+			fullPath += ".AN0";
+
+		File *file = new File();
+		if (!file->open(fullPath.c_str())) {
+			// original fallback
+			fullPath = "Mascaras/" + _fileRef._path;
+			if (!file->open(fullPath.c_str())) {
+				delete file;
+				file = nullptr;
+			}
+		}
+		rawStream.reset(file);
 	}
+	
+	if (rawStream == nullptr) {
+		loadMissingAnimation();
+		return;
+	}
+
 	// Reading the images is a major bottleneck in loading, buffering helps a lot with that
-	ScopedPtr<SeekableReadStream> stream(wrapBufferedSeekableReadStream(&file, file.size(), DisposeAfterUse::NO));
+	ScopedPtr<SeekableReadStream> stream(
+		wrapBufferedSeekableReadStream(rawStream.get(), rawStream->size(), DisposeAfterUse::NO));
 	if (g_engine->isV1())
 		readV1(*stream);
 	else
 		readV3(*stream);
-
 	_isLoaded = true;
 }
 
 void AnimationBase::readV1(SeekableReadStream &stream) {
-	assert(false);
+	skipVarString(stream); // another internal, unused name
+	uint spriteCount = stream.readUint32LE();
+	uint frameCount = stream.readUint32LE();
+	assert(spriteCount < kMaxSpriteIDsV1);
+	_spriteBases.reserve(spriteCount);
+	_spriteEnabled.reserve(spriteCount);
+	_spriteOffsets.reserve(spriteCount * frameCount);
+	
+	readPoint16(stream); // "totalSize", unused for now
+	stream.skip(4); // unknown
+	_totalDuration = stream.readUint32LE();
+	stream.skip(4);
+	byte alpha = stream.readByte(); // TODO: We *should* use this
+	stream.skip(8);
+
+	Array<byte> spriteOrder;
+	spriteOrder.reserve(spriteCount);
+	for (uint i = 0; i < spriteCount; i++) {
+		uint imageCount = stream.readUint32LE();
+		spriteOrder.push_back(stream.readByte());
+		_spriteEnabled.push_back(!readBool(stream));
+		stream.skip(4);
+
+		_spriteBases.push_back(_images.size());
+		for (uint j = 0; j < imageCount; j++) {
+			ImageV1 image(stream);
+			_imageOffsets.push_back(image.drawOffset());
+			_images.push_back(image.render());
+		}
+	}
+
+	// Sprite order is setup by setting up reverse index sequence and
+	// then stable sort descending by order (here: Bubblesort)
+	for (uint i = 0; i < spriteCount; i++)
+		_spriteIndexMapping[i] = (spriteCount - 1 - i);
+	for (uint i = 0; i < spriteCount; i++) {
+		bool hadChange = false;
+		for (uint j = 0; j < spriteCount - i - 1; j++) {
+			if (spriteOrder[_spriteIndexMapping[j]] < spriteOrder[_spriteIndexMapping[j + 1]])
+				SWAP(_spriteIndexMapping[j], _spriteIndexMapping[j + 1]);
+		}
+		if (!hadChange)
+			break;
+	}
+
+	for (uint i = 0; i < frameCount; i++) {
+		for (uint j = 0; j < spriteCount; j++) {
+			int imageI = stream.readSint32LE();
+			if (imageI <= 0) // we make sure that spriteBases + imageI <= 0 if the local imageI <= 0
+				imageI = -(int)_spriteOffsets.size();
+			_spriteOffsets.push_back(imageI);
+		}
+		stream.skip((kMaxSpriteIDsV1 - spriteCount) * 4);
+
+		AnimationFrame frame;
+		frame._center = readPoint16(stream);
+		frame._offset = readPoint16(stream);
+		frame._duration = stream.readUint16LE();
+		_frames.push_back(frame);
+	}
 }
 
 void AnimationBase::readV3(SeekableReadStream &stream) {
@@ -219,7 +289,7 @@ void AnimationBase::readV3(SeekableReadStream &stream) {
 	// but let's check in Debug to be sure
 	for (uint i = 0; i < spriteCount; i++) {
 		_spriteBases.push_back(stream.readUint32LE());
-		assert(_spriteBases.back() < imageCount);
+		assert((uint)_spriteBases.back() < imageCount);
 	}
 #ifdef ALCACHOFA_DEBUG
 	for (uint i = spriteCount; i < kMaxSpriteIDs; i++)

@@ -128,6 +128,8 @@ class ImageV1 {
 public:
 	ImageV1(Common::SeekableReadStream &stream);
 
+	inline Common::Point drawOffset() const { return _drawOffset; }
+
 	void render(Graphics::ManagedSurface &target, Common::Point offset) const;
 	Graphics::ManagedSurface *render() const;
 	
@@ -192,13 +194,14 @@ protected:
 		int offsetY);
 
 	static constexpr const uint kMaxSpriteIDs = 256;
+	static constexpr const uint kMaxSpriteIDsV1 = 8;
 	GameFileReference _fileRef;
 	AnimationFolder _folder;
 	bool _isLoaded = false;
 	uint32 _totalDuration = 0;
 
 	int32 _spriteIndexMapping[kMaxSpriteIDs] = { 0 }; ///< establishes render order back-to-front
-	Common::Array<uint32>
+	Common::Array<int32>
 		_spriteOffsets, ///< index offset per sprite and animation frame
 		_spriteBases; ///< base index per sprite
 	Common::Array<bool> _spriteEnabled;
