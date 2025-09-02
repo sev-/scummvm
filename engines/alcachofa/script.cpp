@@ -69,6 +69,7 @@ Script::Script() {
 		// in V1 the memory size is implicitly stored in the variables
 		for (const auto &variable : _variableNames)
 			memorySize = MAX(memorySize, variable._value + (uint32)sizeof(int32));
+		memorySize *= sizeof(int32); // _variableNames already works with indices
 	}
 	if (memorySize % sizeof(int32) != 0)
 		error("Unexpected size of script memory");

@@ -94,6 +94,7 @@ Common::Error AlcachofaEngine::run() {
 		_scheduler.run();
 		// we run once to set the initial room, otherwise we could run into currentRoom == nullptr
 	}
+	assert(_player->currentRoom() != nullptr);
 
 	Common::Event e;
 	Graphics::FrameLimiter limiter(g_system, kDefaultFramerate, false);
