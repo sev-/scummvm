@@ -130,8 +130,8 @@ public:
 
 	inline Common::Point drawOffset() const { return _drawOffset; }
 
-	void render(Graphics::ManagedSurface &target, Common::Point offset) const;
-	Graphics::ManagedSurface *render() const;
+	void render(Graphics::ManagedSurface &target, Common::Point offset, byte alpha = 255) const;
+	Graphics::ManagedSurface *render(byte alpha = 255) const;
 	
 private:
 	struct Segment {

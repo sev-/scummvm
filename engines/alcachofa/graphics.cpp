@@ -83,8 +83,9 @@ ImageV1::ImageV1(SeekableReadStream &stream) {
 		}
 	}
 
-	_pixels.resize(pixelCount);
-	stream.read(_pixels.data(), pixelCount);
+	const uint bpp = isPaletted ? 1 : 3;
+	_pixels.resize(pixelCount * bpp);
+	stream.read(_pixels.data(), pixelCount * bpp);
 	if (isPaletted) {
 		_palette.resize(PALETTE_SIZE);
 		stream.read(_palette.data(), PALETTE_SIZE);
@@ -92,14 +93,14 @@ ImageV1::ImageV1(SeekableReadStream &stream) {
 	scumm_assert(!stream.err());
 }
 
-ManagedSurface *ImageV1::render() const {
-	ManagedSurface *surface = new ManagedSurface(_size.x, _size.y, PixelFormat::createFormatARGB32());
-	render(*surface, {});
+ManagedSurface *ImageV1::render(byte alpha) const {
+	ManagedSurface *surface = new ManagedSurface(_size.x, _size.y, BlendBlit::getSupportedPixelFormat());
+	render(*surface, {}, alpha);
 	return surface;
 }
 
-void ImageV1::render(ManagedSurface &target, Point dstOffset) const {
-	assert(target.format == PixelFormat::createFormatARGB32());
+void ImageV1::render(ManagedSurface &target, Point dstOffset, byte alpha) const {
+	assert(target.format.bytesPerPixel == 4);
 	Point srcOffset = {};
 	if (dstOffset.x < 0) {
 		srcOffset.x = -dstOffset.x;
@@ -131,14 +132,13 @@ void ImageV1::render(ManagedSurface &target, Point dstOffset) const {
 				srcPixelI += -dstX * bpp;
 			uint width = MIN((int)segment._width, target.w - dstX);
 
-			byte* dstPixel = (byte*)target.getBasePtr(dstX, dstY);
+			uint32* dstPixel = (uint32*)target.getBasePtr(dstX, dstY);
 			for (uint x = 0; x < width; x++) {
 				const byte* srcPixel = _palette.empty()
 					? _pixels.data() + srcPixelI
 					: _palette.data() + 3 * _pixels[srcPixelI];
-				memcpy(dstPixel, srcPixel, 3);
-				dstPixel[3] = 0xff;
-				dstPixel += 4;
+				*dstPixel = target.format.ARGBToColor(alpha, srcPixel[0], srcPixel[1], srcPixel[2]);
+				dstPixel++;
 				srcPixelI += bpp;
 			}
 		}
@@ -209,10 +209,14 @@ void AnimationBase::load() {
 }
 
 void AnimationBase::readV1(SeekableReadStream &stream) {
+	char magic[4];
+	stream.read(magic, sizeof(magic));
+	scumm_assert(memcmp(magic, "ANI", 4) == 0);
+
 	skipVarString(stream); // another internal, unused name
 	uint spriteCount = stream.readUint32LE();
 	uint frameCount = stream.readUint32LE();
-	assert(spriteCount < kMaxSpriteIDsV1);
+	scumm_assert(spriteCount < kMaxSpriteIDsV1);
 	_spriteBases.reserve(spriteCount);
 	_spriteEnabled.reserve(spriteCount);
 	_spriteOffsets.reserve(spriteCount * frameCount);
@@ -221,7 +225,7 @@ void AnimationBase::readV1(SeekableReadStream &stream) {
 	stream.skip(4); // unknown
 	_totalDuration = stream.readUint32LE();
 	stream.skip(4);
-	byte alpha = stream.readByte(); // TODO: We *should* use this
+	byte alpha = stream.readByte();
 	stream.skip(8);
 
 	Array<byte> spriteOrder;
@@ -236,7 +240,7 @@ void AnimationBase::readV1(SeekableReadStream &stream) {
 		for (uint j = 0; j < imageCount; j++) {
 			ImageV1 image(stream);
 			_imageOffsets.push_back(image.drawOffset());
-			_images.push_back(image.render());
+			_images.push_back(image.render(alpha));
 		}
 	}
 
@@ -256,12 +260,12 @@ void AnimationBase::readV1(SeekableReadStream &stream) {
 
 	for (uint i = 0; i < frameCount; i++) {
 		for (uint j = 0; j < spriteCount; j++) {
-			int imageI = stream.readSint32LE();
+			int imageI = stream.readSByte();
 			if (imageI <= 0) // we make sure that spriteBases + imageI <= 0 if the local imageI <= 0
 				imageI = -(int)_spriteOffsets.size();
 			_spriteOffsets.push_back(imageI);
 		}
-		stream.skip((kMaxSpriteIDsV1 - spriteCount) * 4);
+		stream.skip(kMaxSpriteIDsV1 - spriteCount);
 
 		AnimationFrame frame;
 		frame._center = readPoint16(stream);
@@ -622,13 +626,13 @@ void Font::load() {
 		return;
 	AnimationBase::load();
 	// We now render all frames into a 16x16 atlas and fill up to power of two size just because it is easy here
-	// However in two out of three fonts the character 128 is massive, it looks like a bug
+	// However for V3 in two out of three fonts the character 128 is massive, it looks like a bug
 	// as we want easy regular-sized characters it is ignored
 
 	Point cellSize;
 	for (auto image : _images) {
 		assert(image != nullptr); // no fake pictures in fonts please
-		if (image == _images[128])
+		if (g_engine->isV3() && image == _images[128])
 			continue;
 		cellSize.x = MAX(cellSize.x, image->w);
 		cellSize.y = MAX(cellSize.y, image->h);
@@ -642,7 +646,7 @@ void Font::load() {
 	const float invWidth = 1.0f / atlasSurface.w;
 	const float invHeight = 1.0f / atlasSurface.h;
 	for (uint i = 0; i < _images.size(); i++) {
-		if (i == 128) continue;
+		if (g_engine->isV3() && i == 128) continue;
 
 		int offsetX = (i % 16) * cellSize.x + (cellSize.x - _images[i]->w) / 2;
 		int offsetY = (i / 16) * cellSize.y + (cellSize.y - _images[i]->h) / 2;
