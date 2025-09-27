@@ -90,7 +90,7 @@ Common::Error AlcachofaEngine::run() {
 	game().onLoadedGameFiles();
 
 	if (!tryLoadFromLauncher()) {
-		_script->createProcess(MainCharacterKind::None, "CREDITOS_INICIALES");
+		_script->createProcess(MainCharacterKind::None, _game->getInitScriptName());
 		_scheduler.run();
 		// we run once to set the initial room, otherwise we could run into currentRoom == nullptr
 	}

@@ -228,6 +228,10 @@ public:
 		return kEmbeddedXORKey;
 	}
 
+	const char *getInitScriptName() override {
+		return "CREDITOS_INICIALES";
+	}
+
 	void updateScriptVariables() override {
 		Script &script = g_engine->script();
 		if (g_engine->input().wasAnyMousePressed()) // yes, this variable is never reset by the engine (only by script)

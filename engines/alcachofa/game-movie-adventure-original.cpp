@@ -101,6 +101,38 @@ static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
 	ScriptKernelTask::WaitForMusicToEnd
 };
 
+static constexpr const int kKernelTaskArgCounts[] = {
+	0,
+	2,
+	3,
+	1,
+	2,
+	1,
+	1,
+	2,
+	1,
+	1,
+	2,
+	1,
+	1,
+	1,
+	2,
+	2,
+	0,
+	1,
+	2,
+	1,
+	1,
+	1,
+	0,
+	1,
+	0,
+	2,
+	1,
+	0,
+	0
+};
+
 class GameMovieAdventureOriginal : public Game {
 public:
 	GameMovieAdventureOriginal() {
@@ -143,12 +175,21 @@ public:
 		return kNoXORKey;
 	}
 
+	const char *getInitScriptName() override {
+		return "INICIALIZAR_MUNDO";
+	}
+
 	Span<const ScriptOp> getScriptOpMap() override {
 		return { kScriptOpMap, ARRAYSIZE(kScriptOpMap) };
 	}
 
 	Span<const ScriptKernelTask> getScriptKernelTaskMap() override {
 		return { kScriptKernelTaskMap, ARRAYSIZE(kScriptKernelTaskMap) };
+	}
+
+	int32 getKernelTaskArgCount(int32 taskI) override {
+		assert(taskI >= 0 && taskI < ARRAYSIZE(kKernelTaskArgCounts));
+		return kKernelTaskArgCounts[taskI];
 	}
 };
 

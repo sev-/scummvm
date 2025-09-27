@@ -28,8 +28,10 @@ static const char *const ScriptOpNames[] = {
 	"Nop",
 	"Dup",
 	"PushAddr",
+	"PushDynAddr",
 	"PushValue",
 	"Deref",
+	"Pop1",
 	"PopN",
 	"Store",
 	"LoadString",
@@ -110,7 +112,11 @@ static const char *const KernelCallNames[] = {
 	"FadeIn2",
 	"FadeOut2",
 	"LerpCamXYZ",
-	"LerpCamToObjectKeepingZ"
+	"LerpCamToObjectKeepingZ",
+
+	"SheriffTakesCharacter",
+	"ChangeDoor",
+	"Disguise"
 };
 
 }

@@ -39,6 +39,11 @@ void Game::onLoadedGameFiles() {}
 
 void Game::drawScreenStates() {}
 
+int32 Game::getKernelTaskArgCount(int32 kernelTaskI) {
+	(void)kernelTaskI;
+	return 0;
+}
+
 bool Game::doesRoomHaveBackground(const Room *room) {
 	return true;
 }

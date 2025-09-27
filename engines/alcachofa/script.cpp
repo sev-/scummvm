@@ -250,8 +250,12 @@ struct ScriptTask final : public Task {
 				error("Script process reached instruction out-of-bounds");
 			const auto &instruction = _script._instructions[_pc++];
 			if (debugChannelSet(SCRIPT_DEBUG_LVL_INSTRUCTIONS, kDebugScript)) {
+				const char *opName = "<invalid>";
+				if (instruction._op >= 0 && (uint32)instruction._op < opMap.size())
+					opName = ScriptOpNames[(int)opMap[(uint32)instruction._op]];
+
 				debugN("%u: %5u %-12s %8d Stack: ",
-					process().pid(), _pc - 1, ScriptOpNames[(int)instruction._op], instruction._arg);
+					process().pid(), _pc - 1, opName, instruction._arg);
 				if (_stack.empty())
 					debug("empty");
 				else {
@@ -290,11 +294,23 @@ struct ScriptTask final : public Task {
 			case ScriptOp::PushAddr:
 				pushVariable(instruction._arg);
 				break;
+			case ScriptOp::PushDynAddr: {
+				int32 address = popNumber();
+				if (address < 0 || (uint32)address >= _script._strings->size())
+					error("Script tried to push invalid address: %d", address);
+				else if ((uint32)address < _script._variables.size() * 4)
+					pushVariable(address);
+				else
+					pushString((uint32)address);
+			}break;
 			case ScriptOp::PushValue:
 				pushNumber(instruction._arg);
 				break;
 			case ScriptOp::Deref:
 				pushNumber(popVariable());
+				break;
+			case ScriptOp::Pop1:
+				popN(1);
 				break;
 			case ScriptOp::PopN:
 				popN(instruction._arg);
@@ -370,6 +386,11 @@ struct ScriptTask final : public Task {
 			case ScriptOp::BitOr:
 				pushNumber(popNumber() | popNumber()); //-V501
 				break;
+			case ScriptOp::ReturnVoid: {
+				_pc = popInstruction();
+				if (_pc == UINT_MAX)
+					return TaskReturn::finish(0);
+			}break;
 			case ScriptOp::ReturnValue: {
 				int32 returnValue = popNumber();
 				_pc = popInstruction();
@@ -418,16 +439,25 @@ struct ScriptTask final : public Task {
 private:
 	void setCharacterVariables() {
 		_script.variable("m_o_f") = (int32)process().character();
-		_script.variable("m_o_f_real") = (int32)g_engine->player().activeCharacterKind();
+		if (g_engine->isV3())
+			_script.variable("m_o_f_real") = (int32)g_engine->player().activeCharacterKind();
 	}
 
 	void handleReturnFromKernelCall(int32 returnValue) {
-		// this is also original done, every KernelCall is followed by a PopN of the arguments
-		// only *after* the PopN the return value is pushed so that the following script can use it
-		scumm_assert(
-			_pc < _script._instructions.size() &&
-			g_engine->game().getScriptOpMap()[_script._instructions[_pc]._op] == ScriptOp::PopN);
-		popN(_script._instructions[_pc++]._arg);
+		// before pushing the return value the arguments have to be popped
+		// in V3 this is "by the script" by having a special PopN op
+		// in V1 we have to know the proper number of arguments per kernel call, so we do it in kernelCall
+
+		if (g_engine->isV3()) {
+			scumm_assert(
+				_pc < _script._instructions.size() &&
+				g_engine->game().getScriptOpMap()[_script._instructions[_pc]._op] == ScriptOp::PopN);
+			popN(_script._instructions[_pc++]._arg);
+		}
+		else {
+			assert(g_engine->isV1());
+			popN(g_engine->game().getKernelTaskArgCount(_lastKernelTaskI));
+		}
 		pushNumber(returnValue);
 	}
 
@@ -558,6 +588,7 @@ private:
 			g_engine->game().unknownKernelTask(taskI);
 			return TaskReturn::finish(-1);
 		}
+		_lastKernelTaskI = taskI;
 		const auto task = taskMap[taskI];
 
 		debugC(SCRIPT_DEBUG_LVL_KERNELCALLS, kDebugScript, "%u: %5u Kernel %-25s",
@@ -975,6 +1006,7 @@ private:
 	Stack<StackEntry> _stack;
 	String _name;
 	uint32 _pc = 0;
+	int32 _lastKernelTaskI = 0;
 	bool _returnsFromKernelCall = false;
 	bool _isFirstExecution = true;
 	FakeLock _lock;
