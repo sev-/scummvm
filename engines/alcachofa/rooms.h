@@ -68,7 +68,7 @@ protected:
 	Room(World *world);
 	void readRoomV1(Common::SeekableReadStream &stream, bool readObjects);
 	void readRoomV3(Common::SeekableReadStream &stream, bool hasUselessByte);
-	void readObjectsAndBackground(Common::SeekableReadStream &stream, int16 backgroundScale);
+	void readObjects(Common::SeekableReadStream &stream, int16 backgroundScale);
 	void updateScripts();
 	void updateRoomBounds();
 	void updateInteraction();
@@ -78,6 +78,7 @@ protected:
 	ShapeObject *getSelectedObject(ShapeObject *best = nullptr) const;
 
 	World *_world;
+	ObjectBase *_backgroundObject = nullptr;
 	Common::String _name, _backgroundName;
 	PathFindingShape _floors[2];
 	bool _fixedCameraOnEntering = false;

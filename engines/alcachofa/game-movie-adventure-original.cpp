@@ -191,6 +191,25 @@ public:
 		assert(taskI >= 0 && taskI < ARRAYSIZE(kKernelTaskArgCounts));
 		return kKernelTaskArgCounts[taskI];
 	}
+
+	void missingAnimation(const String &fileName) override {
+		static const char *exemptions[] = {
+			nullptr
+		};
+
+		const auto isInExemptions = [&] (const char *const *const list) {
+			for (const char *const *exemption = list; *exemption != nullptr; exemption++) {
+				if (fileName.equalsIgnoreCase(*exemption))
+					return true;
+			}
+			return false;
+		};
+
+		if (isInExemptions(exemptions))
+			debugC(1, kDebugGraphics, "Animation exemption triggered: %s", fileName.c_str());
+		else
+			Game::missingAnimation(fileName);
+	}
 };
 
 Game *Game::createForMovieAdventureOriginal() {

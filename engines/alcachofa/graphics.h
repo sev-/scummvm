@@ -179,8 +179,8 @@ protected:
 	~AnimationBase();
 
 	void load();
-	void loadMissingAnimation();
 	void freeImages();
+	void setToEmpty();
 	void readV1(Common::SeekableReadStream &stream);
 	void readV3(Common::SeekableReadStream &stream);
 	Graphics::ManagedSurface *readImageV3(Common::SeekableReadStream &stream) const;

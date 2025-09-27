@@ -94,15 +94,20 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 		return nullptr; // handled in Room::Room
 }
 
-void Room::readRoomV1(SeekableReadStream &stream, bool readObjects) {
+void Room::readRoomV1(SeekableReadStream &stream, bool shouldReadObjects) {
 	_name = readVarString(stream);
 	_backgroundName = readVarString(stream);
 	_musicId = (int)stream.readByte();
 	_characterAlphaTint = stream.readByte();
 	skipVarString(stream);
 
-	if (readObjects)
-		readObjectsAndBackground(stream, kBaseScale);
+	if (shouldReadObjects)
+		readObjects(stream, kBaseScale);
+
+	if (!_backgroundName.empty() && g_engine->game().doesRoomHaveBackground(this)) {
+		// in V1 _backgroundName refers to an object which represents the background
+		_backgroundObject = getObjectByName(_backgroundName.c_str());
+	}
 }
 
 void Room::readRoomV3(SeekableReadStream &stream, bool hasUselessByte) {
@@ -119,10 +124,16 @@ void Room::readRoomV3(SeekableReadStream &stream, bool hasUselessByte) {
 	if (hasUselessByte)
 		stream.readByte();
 
-	readObjectsAndBackground(stream, backgroundScale);
+	readObjects(stream, backgroundScale);
+
+	if (g_engine->game().doesRoomHaveBackground(this)) {
+		// in V3 _background is the name of an animation, we have to create the object
+		_backgroundObject = new Background(this, _backgroundName, backgroundScale);
+		_objects.push_back(_backgroundObject);
+	}
 }
 
-void Room::readObjectsAndBackground(SeekableReadStream &stream, int16 backgroundScale) {
+void Room::readObjects(SeekableReadStream &stream, int16 backgroundScale) {
 	uint32 objectEnd = stream.readUint32LE();
 	while (objectEnd > 0) {
 		const auto type = readVarString(stream);
@@ -140,8 +151,6 @@ void Room::readObjectsAndBackground(SeekableReadStream &stream, int16 background
 			_objects.push_back(object);
 		objectEnd = stream.readUint32LE();
 	}
-	if (g_engine->game().doesRoomHaveBackground(this))
-		_objects.push_back(new Background(this, _backgroundName, backgroundScale));
 
 	if (!_floors[0].empty())
 		_activeFloorI = 0;
@@ -151,7 +160,7 @@ RoomWithFloor::RoomWithFloor(World *world, SeekableReadStream &stream) : Room(wo
 	readRoomV1(stream, false);
 	_floors[0] = PathFindingShape(stream);
 	_floors[1] = PathFindingShape(stream);
-	readObjectsAndBackground(stream, kBaseScale);
+	readObjects(stream, kBaseScale);
 }
 
 Room::~Room() {
@@ -252,8 +261,7 @@ void Room::updateInteraction() {
 }
 
 void Room::updateRoomBounds() {
-	auto background = getObjectByName("Background");
-	auto graphic = background == nullptr ? nullptr : background->graphic();
+	auto graphic = _backgroundObject == nullptr ? nullptr : _backgroundObject->graphic();
 	if (graphic != nullptr) {
 		auto bgSize = graphic->animation().imageSize(0);
 		/* This fixes a bug where if the background image is invalid the original engine
@@ -399,7 +407,7 @@ Inventory::Inventory(World *world, SeekableReadStream &stream) : Room(world) {
 	if (g_engine->isV1()) {
 		readRoomV1(stream, false);
 		stream.skip(1); // denoted as "sinusar" but unused
-		readObjectsAndBackground(stream, kBaseScale);
+		readObjects(stream, kBaseScale);
 	} else
 		readRoomV3(stream, true);
 }
@@ -501,7 +509,7 @@ void Inventory::drawAsOverlay(int32 scrollY) {
 		int8 oldOrder = graphic->order();
 		graphic->topLeft().y += scrollY;
 		graphic->order() = -kForegroundOrderCount;
-		if (object->name().equalsIgnoreCase("Background"))
+		if (object == _backgroundObject)
 			graphic->order()++;
 		object->draw();
 		graphic->topLeft().y = oldY;

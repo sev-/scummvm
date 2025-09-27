@@ -158,9 +158,15 @@ void AnimationBase::load() {
 		return;
 
 	ScopedPtr<SeekableReadStream> rawStream;
-	if (_fileRef.isEmbedded())
-		rawStream = g_engine->world().openFileRef(_fileRef);
-	else {
+	if (_fileRef.isEmbedded()) {
+		if (_fileRef._size == 0) {
+			// this happens for some special cases in original movie adventure
+			// we cannot really check against an allowlist here, so we don't
+			setToEmpty();
+			return;
+		} else
+			rawStream = g_engine->world().openFileRef(_fileRef);
+	} else {
 		// for real file paths we have to apply the folder and do some fallback
 		String fullPath;
 		switch (_folder) {
@@ -194,7 +200,9 @@ void AnimationBase::load() {
 	}
 	
 	if (rawStream == nullptr) {
-		loadMissingAnimation();
+		// only allow missing animations we know are faulty in the original game
+		g_engine->game().missingAnimation(_fileRef._path);
+		setToEmpty();
 		return;
 	}
 
@@ -372,11 +380,8 @@ ManagedSurface *AnimationBase::readImageV3(SeekableReadStream &stream) const {
 	return target;
 }
 
-void AnimationBase::loadMissingAnimation() {
-	// only allow missing animations we know are faulty in the original game
-	g_engine->game().missingAnimation(_fileRef._path);
-
-	// otherwise setup a functioning but empty animation
+void AnimationBase::setToEmpty() {
+	assert(!_isLoaded);
 	_isLoaded = true;
 	_totalDuration = 1;
 	_spriteIndexMapping[0] = 0;
