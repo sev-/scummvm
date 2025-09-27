@@ -68,7 +68,7 @@ Script::Script() {
 	if (memorySize == 0) {
 		// in V1 the memory size is implicitly stored in the variables
 		for (const auto &variable : _variableNames)
-			memorySize = MAX(memorySize, variable._value + (uint32)sizeof(int32));
+			memorySize = MAX(memorySize, variable._value + 1);
 		memorySize *= sizeof(int32); // _variableNames already works with indices
 	}
 	if (memorySize % sizeof(int32) != 0)
@@ -438,9 +438,11 @@ struct ScriptTask final : public Task {
 
 private:
 	void setCharacterVariables() {
-		_script.variable("m_o_f") = (int32)process().character();
-		if (g_engine->isV3())
+		if (g_engine->isV3()) {
+			_script.variable("m_o_f") = (int32)process().character();
 			_script.variable("m_o_f_real") = (int32)g_engine->player().activeCharacterKind();
+		} else
+			_script.variable("m_o_f") = (int32)g_engine->player().activeCharacterKind();
 	}
 
 	void handleReturnFromKernelCall(int32 returnValue) {
@@ -572,7 +574,13 @@ private:
 	}
 
 	MainCharacter &relatedCharacter() {
-		if (process().character() == MainCharacterKind::None)
+		if (g_engine->isV1()) {
+			auto character = g_engine->player().activeCharacter();
+			if (character == nullptr)
+				error("Script tried to use character before setting an active character");
+			return *character;
+		}
+		if (process().character() == MainCharacterKind::None) 
 			error("Script tried to use character from non-character-related process");
 		return g_engine->world().getMainCharacterByKind(process().character());
 	}
