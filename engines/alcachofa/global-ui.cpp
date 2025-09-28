@@ -252,6 +252,7 @@ void GlobalUI::drawScreenStates() {
 		return;
 
 	auto &drawQueue = g_engine->drawQueue();
+	int32 borderWidth;
 	if (_isPermanentFaded)
 		drawQueue.add<FadeDrawRequest>(FadeType::ToBlack, 1.0f, -9);
 	else

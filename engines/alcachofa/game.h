@@ -65,6 +65,8 @@ public:
 	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
 	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 	virtual int32 getKernelTaskArgCount(int32 kernelTaskI); // only necessary for V1
+	virtual void updateScriptVariables() = 0;
+	virtual bool shouldClipCamera() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);

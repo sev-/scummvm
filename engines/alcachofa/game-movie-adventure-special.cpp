@@ -241,6 +241,21 @@ public:
 		script.variable("textoson") = g_engine->config().subtitles() ? 1 : 0;
 	}
 
+	void updateScriptVariables() override {
+		Script &script = g_engine->script();
+		if (g_engine->input().wasAnyMousePressed()) // yes, this variable is never reset by the engine (only by script)
+			script.variable("SeHaPulsadoRaton") = 1;
+
+		script.setScriptTimer(!script.variable("CalcularTiempoSinPulsarRaton"));
+		script.variable("EstanAmbos") = g_engine->world().mortadelo().room() == g_engine->world().filemon().room();
+		script.variable("textoson") = g_engine->config().subtitles() ? 1 : 0;
+		script.variable("modored") = 0; // this is signalling whether a network connection is established
+	}
+
+	bool shouldClipCamera() override {
+		return g_engine->script().variable("EncuadrarCamara");
+	}
+
 	void onLoadedGameFiles() override {
 		// this notifies the script whether we are a demo
 		if (g_engine->world().loadedMapCount() == 2)

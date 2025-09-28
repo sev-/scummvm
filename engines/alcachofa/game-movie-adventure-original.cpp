@@ -192,6 +192,15 @@ public:
 		return kKernelTaskArgCounts[taskI];
 	}
 
+	void updateScriptVariables() override {
+		g_engine->script().variable("EstanAmbos") =
+			g_engine->world().mortadelo().room() == g_engine->world().filemon().room();
+	}
+
+	bool shouldClipCamera() override {
+		return true;
+	}
+
 	void missingAnimation(const String &fileName) override {
 		static const char *exemptions[] = {
 			nullptr
