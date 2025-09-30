@@ -36,6 +36,7 @@ static constexpr const float kInvBaseScale = 1.0f / kBaseScale;
 
 class Camera {
 public:
+	inline Math::Vector3d usedCenter() const { return _cur._usedCenter; }
 	inline Math::Angle rotation() const { return _cur._rotation; }
 	inline Math::Vector2d &shake() { return _shake; }
 	inline WalkingCharacter *followTarget() { return _followTarget; }
@@ -73,6 +74,7 @@ public:
 		int32 duration, EasingType moveEasingType, EasingType scaleEasingType);
 	Task *waitToStop(Process &process);
 	Task *shake(Process &process, Math::Vector2d amplitude, Math::Vector2d frequency, int32 duration);
+	Task *disguise(Process &process, int32 duration);
 
 private:
 	friend struct CamLerpTask;

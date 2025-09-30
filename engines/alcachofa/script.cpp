@@ -945,6 +945,9 @@ private:
 				as3D(pointObject->position()), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));
 		}
+		case ScriptKernelTask::Disguise:
+			// a somewhat bouncy vertical camera movement used in V1
+			return TaskReturn::waitFor(g_engine->camera().disguise(process(), getNumberArg(0)));
 
 		// Fades
 		case ScriptKernelTask::FadeType0:

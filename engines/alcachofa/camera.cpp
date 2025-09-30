@@ -668,4 +668,65 @@ Task *Camera::shake(Process &process, Math::Vector2d amplitude, Math::Vector2d f
 	return new CamShakeTask(process, amplitude, frequency, duration);
 }
 
+// The original name for this task is "disfraza" which I can only translate as "disguise"
+// It is a slightly bouncing vertical camera movement with fixed distance
+
+struct CamDisguiseTask final : public Task {
+	CamDisguiseTask(Process &process, int32 durationMs)
+		: Task(process)
+		, _camera(g_engine->camera())
+		, _durationMs(durationMs) {}
+
+	CamDisguiseTask(Process &process, Serializer &s)
+		: Task(process)
+		, _camera(g_engine->camera()) {
+		CamDisguiseTask::syncGame(s);
+	}
+
+	TaskReturn run() override {
+		if (_startTime == 0) {
+			_startPosition = { _camera.usedCenter().x(), _camera.usedCenter().y() };
+			_startTime = g_engine->getMillis();
+		}
+		if (_durationMs <= 0 || g_engine->getMillis() - _startTime >= (uint32)_durationMs)
+			return TaskReturn::finish(0);
+
+		Vector2d newPosition = _startPosition;
+		uint32 t = (g_engine->getMillis() - _startTime) * 5;
+		if (t <= 50)
+			newPosition.setY(_startPosition.getY() + t);
+		else if (t <= 150)
+			newPosition.setY(_startPosition.getY() - t + 100);
+		else if (t <= 200)
+			newPosition.setY(_startPosition.getY() + t - 200);
+		_camera.setPosition(newPosition);
+
+		return TaskReturn::yield();
+	}
+
+	void debugPrint() override {
+		g_engine->getDebugger()->debugPrintf("\"Disguise\" camera for %dms", _durationMs);
+	}
+
+	void syncGame(Serializer &s) override {
+		Task::syncGame(s);
+		s.syncAsSint32LE(_durationMs);
+		s.syncAsUint32LE(_startTime);
+		syncVector(s, _startPosition);
+	}
+
+	const char *taskName() const override;
+
+private:
+	Camera &_camera;
+	int32 _durationMs;
+	uint32 _startTime = 0;
+	Vector2d _startPosition;
+};
+DECLARE_TASK(CamDisguiseTask)
+
+Task *Camera::disguise(Process &process, int32 duration) {
+	return new CamDisguiseTask(process, duration);
+}
+
 } // namespace Alcachofa
