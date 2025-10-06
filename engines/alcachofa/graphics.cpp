@@ -169,28 +169,31 @@ void AnimationBase::load() {
 	} else {
 		// for real file paths we have to apply the folder and do some fallback
 		String fullPath;
-		switch (_folder) {
-		case AnimationFolder::Animations:
-			fullPath = "Animaciones/";
-			break;
-		case AnimationFolder::Masks:
-			fullPath = "Mascaras/";
-			break;
-		case AnimationFolder::Backgrounds:
-			fullPath = "Fondos/";
-			break;
-		default:
-			assert(false && "Invalid AnimationFolder");
-			break;
-		}
-		fullPath += _fileRef._path;
-		if (_fileRef._path.size() < 4 || scumm_strnicmp(_fileRef._path.end() - 4, ".AN0", 4) != 0)
-			fullPath += ".AN0";
+		const auto getFullPath = [&] (AnimationFolder folder) {
+			switch (folder) {
+			case AnimationFolder::Animations:
+				fullPath = "Animaciones/";
+				break;
+			case AnimationFolder::Masks:
+				fullPath = "Mascaras/";
+				break;
+			case AnimationFolder::Backgrounds:
+				fullPath = "Fondos/";
+				break;
+			default:
+				assert(false && "Invalid AnimationFolder");
+				break;
+			}
+			fullPath += _fileRef._path;
+			if (_fileRef._path.size() < 4 || scumm_strnicmp(_fileRef._path.end() - 4, ".AN0", 4) != 0)
+				fullPath += ".AN0";
+		};
+		getFullPath(_folder);
 
 		File *file = new File();
 		if (!file->open(fullPath.c_str())) {
 			// original fallback
-			fullPath = "Mascaras/" + _fileRef._path;
+			getFullPath(AnimationFolder::Masks);
 			if (!file->open(fullPath.c_str())) {
 				delete file;
 				file = nullptr;

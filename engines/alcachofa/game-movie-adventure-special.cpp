@@ -418,34 +418,36 @@ public:
 
 	void missingAnimation(const String &fileName) override {
 		static const char *exemptions[] = {
-			"ANIMACION.AN0",
-			"DESPACHO_SUPER2_OL_SOMBRAS2.AN0",
-			"PP_MORTA.AN0",
-			"DESPACHO_SUPER2___FONDO_PP_SUPER.AN0",
-			"ESTOMAGO.AN0",
-			"CREDITOS.AN0",
-			"MONITOR___OL_EFECTO_FONDO.AN0",
+			"ANIMACION",
+			"DESPACHO_SUPER2_OL_SOMBRAS2",
+			"PP_MORTA",
+			"DESPACHO_SUPER2___FONDO_PP_SUPER",
+			"ESTOMAGO",
+			"CREDITOS",
+			"MONITOR___OL_EFECTO_FONDO",
 			nullptr
 		};
 
 		// these only happen in the german demo
 		static const char *demoExemptions[] = {
-			"TROZO_1.AN0",
-			"TROZO_2.AN0",
-			"TROZO_3.AN0",
-			"TROZO_4.AN0",
-			"TROZO_5.AN0",
-			"TROZO_6.AN0",
-			"NOTA_CINE_NEGRO.AN0",
-			"PP_JOHN_WAYNE_2.AN0",
-			"ARQUEOLOGO_ESTATICO_TIA.AN0",
-			"ARQUEOLOGO_HABLANDO_TIA.AN0",
+			"TROZO_1",
+			"TROZO_2",
+			"TROZO_3",
+			"TROZO_4",
+			"TROZO_5",
+			"TROZO_6",
+			"NOTA_CINE_NEGRO",
+			"PP_JOHN_WAYNE_2",
+			"ARQUEOLOGO_ESTATICO_TIA",
+			"ARQUEOLOGO_HABLANDO_TIA",
 			nullptr
 		};
 
+		bool hasExtension = fileName.hasSuffixIgnoreCase(".AN0");
 		const auto isInExemptions = [&] (const char *const *const list) {
 			for (const char *const *exemption = list; *exemption != nullptr; exemption++) {
-				if (fileName.equalsIgnoreCase(*exemption))
+				if ((hasExtension && fileName.hasPrefixIgnoreCase(*exemption)) ||
+					(!hasExtension && fileName.equalsIgnoreCase(*exemption)))
 					return true;
 			}
 			return false;
