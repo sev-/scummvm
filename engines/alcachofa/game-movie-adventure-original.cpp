@@ -197,6 +197,10 @@ public:
 			g_engine->world().mortadelo().room() == g_engine->world().filemon().room();
 	}
 
+	Path getVideoPath(int32 videoId) override {
+		return Path(String::format("disk1/Install/bin/data%02d.bin", videoId));
+	}
+
 	bool shouldClipCamera() override {
 		return true;
 	}

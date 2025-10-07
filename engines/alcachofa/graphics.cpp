@@ -94,7 +94,7 @@ ImageV1::ImageV1(SeekableReadStream &stream) {
 }
 
 ManagedSurface *ImageV1::render(byte alpha) const {
-	ManagedSurface *surface = new ManagedSurface(_size.x, _size.y, BlendBlit::getSupportedPixelFormat());
+	ManagedSurface *surface = new ManagedSurface(_size.x, _size.y, g_engine->renderer().getPixelFormat());
 	render(*surface, {}, alpha);
 	return surface;
 }

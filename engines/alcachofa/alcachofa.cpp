@@ -145,7 +145,7 @@ void AlcachofaEngine::playVideo(int32 videoId) {
 	// Video files are either MPEG PS or AVI
 	FakeLock lock("playVideo", _eventLoopSemaphore);
 	File *file = new File();
-	if (!file->open(Path(Common::String::format("Data/DATA%02d.BIN", videoId + 1)))) {
+	if (!file->open(game().getVideoPath(videoId))) {
 		delete file;
 		game().invalidVideo(videoId, "open file");
 		return;

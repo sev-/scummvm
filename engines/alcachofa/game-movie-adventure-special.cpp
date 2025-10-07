@@ -252,6 +252,10 @@ public:
 		script.variable("modored") = 0; // this is signalling whether a network connection is established
 	}
 
+	Path getVideoPath(int32 videoId) override {
+		return Path(String::format("Data/DATA%02d.BIN", videoId + 1));
+	}
+
 	bool shouldClipCamera() override {
 		return g_engine->script().variable("EncuadrarCamara");
 	}
