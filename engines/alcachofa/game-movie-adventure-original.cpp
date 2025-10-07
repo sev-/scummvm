@@ -201,6 +201,16 @@ public:
 		return Path(String::format("disk1/Install/bin/data%02d.bin", videoId));
 	}
 
+	String getSoundPath(const char *filename) override {
+		return filename;
+	}
+
+	String getMusicPath(int32 trackId) override {
+		const Room *room = g_engine->player().currentRoom();
+		const int diskId = room != nullptr && room->mapIndex() == 1 ? 2 : 1;
+		return String::format("disk%d/track%02d", diskId, trackId);
+	}
+
 	bool shouldClipCamera() override {
 		return true;
 	}

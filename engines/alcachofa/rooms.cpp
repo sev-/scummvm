@@ -32,9 +32,13 @@ using namespace Common;
 
 namespace Alcachofa {
 
-Room::Room(World *world) : _world(world) {}
+Room::Room(World *world)
+	: _world(world)
+	, _mapIndex(world->loadedMapCount()) {}
 
-Room::Room(World *world, SeekableReadStream &stream) : _world(world) {
+Room::Room(World *world, SeekableReadStream &stream)
+	: _world(world)
+	, _mapIndex(world->loadedMapCount()) {
 	if (g_engine->isV1())
 		readRoomV1(stream, true);
 	else

@@ -112,26 +112,27 @@ static AudioStream *loadSND(File *file) {
 	}
 }
 
-static AudioStream *openAudio(const char *fileName) {
-	String path = String::format("Sonidos/%s.SND", fileName);
+static AudioStream *openAudio(const String &basePath) {
+	String path = basePath + ".SND";
 	File *file = new File();
 	if (file->open(path.c_str()))
 		return file->size() == 0 // Movie Adventure has some null-size audio files, they are treated like infinite silence
 			? makeSilentAudioStream(8000, false) 
 			: loadSND(file);
+
 	path.setChar('W', path.size() - 3);
 	path.setChar('A', path.size() - 2);
 	path.setChar('V', path.size() - 1);
 	if (file->open(path.c_str()))
 		return makeWAVStream(file, DisposeAfterUse::YES);
-	delete file;
 
-	g_engine->game().missingSound(fileName);
+	delete file;
+	g_engine->game().missingSound(basePath);
 	return nullptr;
 }
 
-SoundHandle Sounds::playSoundInternal(const char *fileName, byte volume, Mixer::SoundType type) {
-	AudioStream *stream = openAudio(fileName);
+SoundHandle Sounds::playSoundInternal(const String &path, byte volume, Mixer::SoundType type) {
+	AudioStream *stream = openAudio(path);
 	if (stream == nullptr && (type == Mixer::kSpeechSoundType || type == Mixer::kMusicSoundType)) {
 		/* If voice files are missing, the player could still read the subtitle
 		 * For this we return infinite silent audio which the user has to skip
@@ -199,12 +200,14 @@ SoundHandle Sounds::playSoundInternal(const char *fileName, byte volume, Mixer::
 
 SoundHandle Sounds::playVoice(const String &fileName, byte volume) {
 	debugC(1, kDebugSounds, "Play voice: %s at %d", fileName.c_str(), (int)volume);
-	return playSoundInternal(fileName.c_str(), volume, Mixer::kSpeechSoundType);
+	auto path = g_engine->game().getSoundPath(fileName.c_str());
+	return playSoundInternal(path.c_str(), volume, Mixer::kSpeechSoundType);
 }
 
 SoundHandle Sounds::playSFX(const String &fileName, byte volume) {
 	debugC(1, kDebugSounds, "Play SFX: %s at %d", fileName.c_str(), (int)volume);
-	return playSoundInternal(fileName.c_str(), volume, Mixer::kSFXSoundType);
+	auto path = g_engine->game().getSoundPath(fileName.c_str());
+	return playSoundInternal(path.c_str(), volume, Mixer::kSFXSoundType);
 }
 
 void Sounds::stopAll() {
@@ -305,10 +308,8 @@ void Sounds::startMusic(int musicId) {
 	debugC(2, kDebugSounds, "startMusic %d", musicId);
 	assert(musicId >= 0);
 	fadeMusic();
-	constexpr size_t kBufferSize = 16;
-	char filenameBuffer[kBufferSize];
-	snprintf(filenameBuffer, kBufferSize, "T%d", musicId);
-	_musicSoundID = playSoundInternal(filenameBuffer, Mixer::kMaxChannelVolume, Mixer::kMusicSoundType);
+	auto path = g_engine->game().getMusicPath(musicId);
+	_musicSoundID = playSoundInternal(path, Mixer::kMaxChannelVolume, Mixer::kMusicSoundType);
 	_isMusicPlaying = true;
 	_nextMusicID = musicId;
 }

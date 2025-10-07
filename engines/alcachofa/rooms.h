@@ -35,6 +35,7 @@ public:
 	virtual ~Room();
 
 	inline World &world() { return *_world; }
+	inline uint8 mapIndex() const { return _mapIndex; }
 	inline const Common::String &name() const { return _name; }
 	inline const PathFindingShape *activeFloor() const {
 		return _activeFloorI < 0 ? nullptr : &_floors[_activeFloorI];
@@ -85,6 +86,7 @@ protected:
 	int8 _activeFloorI = -1;
 	int _musicId = -1;
 	uint8
+		_mapIndex,
 		_characterAlphaTint = 0,
 		_characterAlphaPremultiplier = 100; ///< for some reason in percent instead of 0-255
 

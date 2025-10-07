@@ -256,6 +256,14 @@ public:
 		return Path(String::format("Data/DATA%02d.BIN", videoId + 1));
 	}
 
+	String getSoundPath(const char *filename) override {
+		return String("Sonidos/") + filename;
+	}
+
+	String getMusicPath(int32 trackId) override {
+		return String::format("Sonidos/T%d", trackId);
+	}
+
 	bool shouldClipCamera() override {
 		return g_engine->script().variable("EncuadrarCamara");
 	}

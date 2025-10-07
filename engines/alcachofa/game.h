@@ -67,6 +67,8 @@ public:
 	virtual int32 getKernelTaskArgCount(int32 kernelTaskI); // only necessary for V1
 	virtual void updateScriptVariables() = 0;
 	virtual Common::Path getVideoPath(int32 videoId) = 0;
+	virtual Common::String getSoundPath(const char *filename) = 0; ///< Without file-extension
+	virtual Common::String getMusicPath(int32 trackId) = 0; ///< Without file-extension
 	virtual bool shouldClipCamera() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
