@@ -125,8 +125,10 @@ void ImageV1::render(ManagedSurface &target, Point dstOffset, byte alpha) const 
 			dstX += segment._xOffset;
 			if (dstX >= target.w)
 				break;
-			if (dstX + segment._width < 0)
+			if (dstX + segment._width < 0) {
+				dstX += segment._width;
 				continue;
+			}
 			uint srcPixelI = segment._dataOffset;
 			if (dstX < 0)
 				srcPixelI += -dstX * bpp;
@@ -137,10 +139,11 @@ void ImageV1::render(ManagedSurface &target, Point dstOffset, byte alpha) const 
 				const byte* srcPixel = _palette.empty()
 					? _pixels.data() + srcPixelI
 					: _palette.data() + 3 * _pixels[srcPixelI];
-				*dstPixel = target.format.ARGBToColor(alpha, srcPixel[0], srcPixel[1], srcPixel[2]);
+				*dstPixel = target.format.ARGBToColor(alpha, srcPixel[2], srcPixel[1], srcPixel[0]);
 				dstPixel++;
 				srcPixelI += bpp;
 			}
+			dstX += segment._width;
 		}
 	}
 }
