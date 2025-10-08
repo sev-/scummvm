@@ -51,7 +51,9 @@ void Player::resetCursor() {
 }
 
 void Player::updateCursor() {
-	if (g_engine->menu().isOpen() || !_isGameLoaded)
+	if (g_engine->isV1())
+		_cursorFrameI = 0;
+	else if (g_engine->menu().isOpen() || !_isGameLoaded)
 		_cursorFrameI = 0;
 	else if (_selectedObject == nullptr)
 		_cursorFrameI = !g_engine->input().isMouseLeftDown() || _pressedObject != nullptr ? 6 : 7;
