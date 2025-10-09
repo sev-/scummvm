@@ -442,7 +442,7 @@ private:
 			_script.variable("m_o_f") = (int32)process().character();
 			_script.variable("m_o_f_real") = (int32)g_engine->player().activeCharacterKind();
 		} else
-			_script.variable("m_o_f") = (int32)g_engine->player().activeCharacterKind();
+			_script.variable("m_o_f") = (int32)g_engine->player().activeCharacterKind() - 1; // there is no "None" character kind in V1
 	}
 
 	void handleReturnFromKernelCall(int32 returnValue) {
@@ -538,6 +538,23 @@ private:
 		if (entry._type != StackEntryType::Number)
 			error("Expected number in argument %u for kernel call", argI);
 		return entry._number;
+	}
+
+	MainCharacterKind getMainCharacterKindArg(uint argI) {
+		int32 value = getNumberArg(argI);
+		if (g_engine->isV3()) {
+			if (value < 0 || value > 2)
+				error("Unexpected value for main character kind: %d", value);
+			else
+				return (MainCharacterKind)value;
+		}
+		else {
+			if (value < 0 || value > 1)
+				error("Unexpected value for main character kind: %d", value);
+			return value == 0
+				? MainCharacterKind::Mortadelo
+				: MainCharacterKind::Filemon;
+		}
 	}
 
 	const char *getStringArg(uint argI) {
@@ -638,12 +655,12 @@ private:
 			g_engine->scheduler().createProcess<ScriptTask>(process().character(), *this);
 			return TaskReturn::finish(0); // 0 means this is the forking process
 		case ScriptKernelTask::KillProcesses:
-			killProcessesFor((MainCharacterKind)getNumberArg(0));
+			killProcessesFor(getMainCharacterKindArg(0));
 			return TaskReturn::finish(1);
 
 		// player/world state changes
 		case ScriptKernelTask::ChangeCharacter: {
-			MainCharacterKind kind = (MainCharacterKind)getNumberArg(0);
+			MainCharacterKind kind = getMainCharacterKindArg(0);
 			killProcessesFor(MainCharacterKind::None); // yes, kill for all characters
 			auto &camera = g_engine->camera();
 			auto &player = g_engine->player();
@@ -846,7 +863,7 @@ private:
 			relatedCharacter().pickup(getStringArg(0), !getNumberArg(1));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterPickup: {
-			auto &character = g_engine->world().getMainCharacterByKind((MainCharacterKind)getNumberArg(1));
+			auto &character = g_engine->world().getMainCharacterByKind(getMainCharacterKindArg(1));
 			character.pickup(getStringArg(0), !getNumberArg(2));
 			return TaskReturn::finish(1);
 		}
@@ -854,12 +871,12 @@ private:
 			relatedCharacter().drop(getStringArg(0));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterDrop: {
-			auto &character = g_engine->world().getMainCharacterByKind((MainCharacterKind)getNumberArg(1));
+			auto &character = g_engine->world().getMainCharacterByKind(getMainCharacterKindArg(1));
 			character.drop(getOptionalStringArg(0));
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::ClearInventory:
-			switch ((MainCharacterKind)getNumberArg(0)) {
+			switch (getMainCharacterKindArg(0)) {
 			case MainCharacterKind::Mortadelo:
 				g_engine->world().mortadelo().clearInventory();
 				break;
@@ -877,8 +894,9 @@ private:
 			return TaskReturn::waitFor(g_engine->camera().waitToStop(process()));
 		case ScriptKernelTask::CamFollow: {
 			WalkingCharacter *target = nullptr;
-			if (getNumberArg(0) != 0)
-				target = &g_engine->world().getMainCharacterByKind((MainCharacterKind)getNumberArg(0));
+			auto kind = getMainCharacterKindArg(0);
+			if (kind != MainCharacterKind::None)
+				target = &g_engine->world().getMainCharacterByKind(kind);
 			g_engine->camera().setFollow(target, getNumberArg(1) != 0);
 			return TaskReturn::finish(1);
 		}
