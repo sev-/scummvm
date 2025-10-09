@@ -352,7 +352,7 @@ bool Player::isAllowedToOpenMenu() {
 		isGameLoaded() &&
 		!g_engine->menu().isOpen() &&
 		g_engine->sounds().musicSemaphore().isReleased() &&
-		!g_engine->script().variable("prohibirESC") &&
+		g_engine->game().isAllowedToOpenMenu() &&
 		!_isInTemporaryRoom; // we cannot reliably store this state across multiple room changes
 }
 

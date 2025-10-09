@@ -268,6 +268,10 @@ public:
 		return g_engine->script().variable("EncuadrarCamara");
 	}
 
+	bool isAllowedToOpenMenu() override {
+		return !g_engine->script().variable("prohibirESC");
+	}
+
 	void onLoadedGameFiles() override {
 		// this notifies the script whether we are a demo
 		if (g_engine->world().loadedMapCount() == 2)

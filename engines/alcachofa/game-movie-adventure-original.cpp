@@ -215,6 +215,10 @@ public:
 		return true;
 	}
 
+	bool isAllowedToOpenMenu() override {
+		return dynamic_cast<RoomWithFloor *>(g_engine->player().currentRoom()) != nullptr;
+	}
+
 	void missingAnimation(const String &fileName) override {
 		static const char *exemptions[] = {
 			nullptr
