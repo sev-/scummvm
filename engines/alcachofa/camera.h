@@ -46,7 +46,8 @@ public:
 	Math::Vector3d transform3Dto2D(Math::Vector3d v) const;
 	Common::Point transform3Dto2D(Common::Point p) const;
 	void resetRotationAndScale();
-	void setRoomBounds(Common::Point bgSize, int16 bgScale);
+	void setRoomBounds(Common::Point min, Common::Point size, int16 bgScale); ///< Used in V1
+	void setRoomBounds(Common::Point bgSize, int16 bgScale); ///< Used in V3
 	void setFollow(WalkingCharacter *target, bool catchUp = false);
 	void setPosition(Math::Vector2d v);
 	void setPosition(Math::Vector3d v);

@@ -67,9 +67,10 @@ public:
 
 protected:
 	Room(World *world);
-	void readRoomV1(Common::SeekableReadStream &stream, bool readObjects);
+	void readRoomV1(Common::SeekableReadStream &stream);
 	void readRoomV3(Common::SeekableReadStream &stream, bool hasUselessByte);
-	void readObjects(Common::SeekableReadStream &stream, int16 backgroundScale);
+	void readObjects(Common::SeekableReadStream &stream);
+	void initBackground();
 	void updateScripts();
 	void updateRoomBounds();
 	void updateInteraction();
@@ -85,6 +86,7 @@ protected:
 	bool _fixedCameraOnEntering = false;
 	int8 _activeFloorI = -1;
 	int _musicId = -1;
+	int16 _backgroundScale = kBaseScale;
 	uint8
 		_mapIndex,
 		_characterAlphaTint = 0,

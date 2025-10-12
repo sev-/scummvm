@@ -39,10 +39,13 @@ Room::Room(World *world)
 Room::Room(World *world, SeekableReadStream &stream)
 	: _world(world)
 	, _mapIndex(world->loadedMapCount()) {
-	if (g_engine->isV1())
-		readRoomV1(stream, true);
+	if (g_engine->isV1()) {
+		readRoomV1(stream);
+		readObjects(stream);
+	}
 	else
 		readRoomV3(stream, false);
+	initBackground();
 }
 
 static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadStream &stream) {
@@ -98,20 +101,12 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 		return nullptr; // handled in Room::Room
 }
 
-void Room::readRoomV1(SeekableReadStream &stream, bool shouldReadObjects) {
+void Room::readRoomV1(SeekableReadStream &stream) {
 	_name = readVarString(stream);
 	_backgroundName = readVarString(stream);
 	_musicId = (int)stream.readByte();
 	_characterAlphaTint = stream.readByte();
 	skipVarString(stream);
-
-	if (shouldReadObjects)
-		readObjects(stream, kBaseScale);
-
-	if (!_backgroundName.empty() && g_engine->game().doesRoomHaveBackground(this)) {
-		// in V1 _backgroundName refers to an object which represents the background
-		_backgroundObject = getObjectByName(_backgroundName.c_str());
-	}
 }
 
 void Room::readRoomV3(SeekableReadStream &stream, bool hasUselessByte) {
@@ -119,7 +114,7 @@ void Room::readRoomV3(SeekableReadStream &stream, bool hasUselessByte) {
 	_backgroundName = _name;
 	_musicId = (int)stream.readByte();
 	_characterAlphaTint = stream.readByte();
-	auto backgroundScale = stream.readSint16LE();
+	_backgroundScale = stream.readSint16LE();
 	_floors[0] = PathFindingShape(stream);
 	_floors[1] = PathFindingShape(stream);
 	_fixedCameraOnEntering = readBool(stream);
@@ -128,16 +123,25 @@ void Room::readRoomV3(SeekableReadStream &stream, bool hasUselessByte) {
 	if (hasUselessByte)
 		stream.readByte();
 
-	readObjects(stream, backgroundScale);
+	readObjects(stream);
+}
 
-	if (g_engine->game().doesRoomHaveBackground(this)) {
-		// in V3 _background is the name of an animation, we have to create the object
-		_backgroundObject = new Background(this, _backgroundName, backgroundScale);
+void Room::initBackground() {
+	if (!g_engine->game().doesRoomHaveBackground(this))
+		return;
+
+	if (g_engine->isV1()) {
+		// in V1 _backgroundName refers to an object which represents the background
+		if (!_backgroundName.empty())
+			_backgroundObject = getObjectByName(_backgroundName.c_str());
+	} else {
+		// in V3 _backgroundName is the name of an animation, we have to create the object
+		_backgroundObject = new Background(this, _backgroundName, _backgroundScale);
 		_objects.push_back(_backgroundObject);
 	}
 }
 
-void Room::readObjects(SeekableReadStream &stream, int16 backgroundScale) {
+void Room::readObjects(SeekableReadStream &stream) {
 	uint32 objectEnd = stream.readUint32LE();
 	while (objectEnd > 0) {
 		const auto type = readVarString(stream);
@@ -161,10 +165,11 @@ void Room::readObjects(SeekableReadStream &stream, int16 backgroundScale) {
 }
 
 RoomWithFloor::RoomWithFloor(World *world, SeekableReadStream &stream) : Room(world) {
-	readRoomV1(stream, false);
+	readRoomV1(stream);
 	_floors[0] = PathFindingShape(stream);
 	_floors[1] = PathFindingShape(stream);
-	readObjects(stream, kBaseScale);
+	readObjects(stream);
+	initBackground();
 }
 
 Room::~Room() {
@@ -268,13 +273,20 @@ void Room::updateRoomBounds() {
 	auto graphic = _backgroundObject == nullptr ? nullptr : _backgroundObject->graphic();
 	if (graphic != nullptr) {
 		auto bgSize = graphic->animation().imageSize(0);
-		/* This fixes a bug where if the background image is invalid the original engine
-		 * would not update the background size. This would be around 1024,768 due to
-		 * previous rooms in the bug instances I found.
-		 */
-		if (bgSize == Point(0, 0))
-			bgSize = Point(1024, 768);
-		g_engine->camera().setRoomBounds(bgSize, graphic->scale());
+		if (g_engine->isV1()) {
+			g_engine->camera().setRoomBounds(
+				graphic->topLeft() + Point(400, 300),
+				bgSize - Point(800, 600),
+				graphic->scale());
+		} else {
+			/* The fallback fixes a bug where if the background image is invalid the original engine
+			 * would not update the background size. This would be around 1024,768 due to
+			 * previous rooms in the bug instances I found.
+			 */
+			if (bgSize == Point(0, 0))
+				bgSize = Point(1024, 768);
+			g_engine->camera().setRoomBounds(bgSize, graphic->scale());
+		}
 	}
 }
 
@@ -366,6 +378,7 @@ ShapeObject *Room::getSelectedObject(ShapeObject *best) const {
 
 OptionsMenu::OptionsMenu(World *world, SeekableReadStream &stream) : Room(world) {
 	readRoomV3(stream, true);
+	initBackground();
 }
 
 bool OptionsMenu::updateInput() {
@@ -401,19 +414,22 @@ void OptionsMenu::clearLastSelectedObject() {
 
 ConnectMenu::ConnectMenu(World *world, SeekableReadStream &stream) : Room(world) {
 	readRoomV3(stream, true);
+	initBackground();
 }
 
 ListenMenu::ListenMenu(World *world, SeekableReadStream &stream) : Room(world) {
 	readRoomV3(stream, true);
+	initBackground();
 }
 
 Inventory::Inventory(World *world, SeekableReadStream &stream) : Room(world) {
 	if (g_engine->isV1()) {
-		readRoomV1(stream, false);
+		readRoomV1(stream);
 		stream.skip(1); // denoted as "sinusar" but unused
-		readObjects(stream, kBaseScale);
+		readObjects(stream);
 	} else
 		readRoomV3(stream, true);
+	initBackground();
 }
 
 Inventory::~Inventory() {

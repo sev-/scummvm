@@ -568,6 +568,15 @@ void Animation::prerenderFrame(int32 frameI) {
 	_renderedPremultiplyAlpha = _premultiplyAlpha;
 }
 
+struct TexCoords {
+	TexCoords(const Rect &inner, int16 outerW, int16 outerH) {
+		_min = Vector2d(0.5f / outerW, 0.5f / outerH);
+		_max = Vector2d((inner.width() - 0.5f) / outerW, (inner.height() - 0.5f) / outerH);
+	}
+
+	Vector2d _min, _max;
+};
+
 void Animation::outputRect2D(int32 frameI, float scale, Vector2d &topLeft, Vector2d &size) const {
 	auto bounds = frameBounds(frameI);
 	topLeft += as2D(totalFrameOffset(frameI)) * scale;
@@ -577,8 +586,7 @@ void Animation::outputRect2D(int32 frameI, float scale, Vector2d &topLeft, Vecto
 void Animation::draw2D(int32 frameI, Vector2d topLeft, float scale, BlendMode blendMode, Color color) {
 	prerenderFrame(frameI);
 	auto bounds = frameBounds(frameI);
-	Vector2d texMin(0, 0);
-	Vector2d texMax((float)bounds.width() / _renderedSurface.w, (float)bounds.height() / _renderedSurface.h);
+	TexCoords tex(bounds, _renderedSurface.w, _renderedSurface.h);
 
 	Vector2d size;
 	outputRect2D(frameI, scale, topLeft, size);
@@ -586,7 +594,7 @@ void Animation::draw2D(int32 frameI, Vector2d topLeft, float scale, BlendMode bl
 	auto &renderer = g_engine->renderer();
 	renderer.setTexture(_renderedTexture.get());
 	renderer.setBlendMode(blendMode);
-	renderer.quad(topLeft, size, color, Angle(), texMin, texMax);
+	renderer.quad(topLeft, size, color, Angle(), tex._min, tex._max);
 }
 
 void Animation::outputRect3D(int32 frameI, float scale, Vector3d &topLeft, Vector2d &size) const {
@@ -599,8 +607,7 @@ void Animation::outputRect3D(int32 frameI, float scale, Vector3d &topLeft, Vecto
 void Animation::draw3D(int32 frameI, Vector3d topLeft, float scale, BlendMode blendMode, Color color) {
 	prerenderFrame(frameI);
 	auto bounds = frameBounds(frameI);
-	Vector2d texMin(0, 0);
-	Vector2d texMax((float)bounds.width() / _renderedSurface.w, (float)bounds.height() / _renderedSurface.h);
+	TexCoords tex(bounds, _renderedSurface.w, _renderedSurface.h);
 
 	Vector2d size;
 	outputRect3D(frameI, scale, topLeft, size);
@@ -609,14 +616,13 @@ void Animation::draw3D(int32 frameI, Vector3d topLeft, float scale, BlendMode bl
 	auto &renderer = g_engine->renderer();
 	renderer.setTexture(_renderedTexture.get());
 	renderer.setBlendMode(blendMode);
-	renderer.quad(as2D(topLeft), size, color, rotation, texMin, texMax);
+	renderer.quad(as2D(topLeft), size, color, rotation, tex._min, tex._max);
 }
 
 void Animation::drawEffect(int32 frameI, Vector3d topLeft, Vector2d size, Vector2d texOffset, BlendMode blendMode) {
 	prerenderFrame(frameI);
 	auto bounds = frameBounds(frameI);
-	Vector2d texMin(0, 0);
-	Vector2d texMax((float)bounds.width() / _renderedSurface.w, (float)bounds.height() / _renderedSurface.h);
+	TexCoords tex(bounds, _renderedSurface.w, _renderedSurface.h);
 
 	topLeft += as3D(totalFrameOffset(frameI));
 	topLeft = g_engine->camera().transform3Dto2D(topLeft);
@@ -627,7 +633,7 @@ void Animation::drawEffect(int32 frameI, Vector3d topLeft, Vector2d size, Vector
 	auto &renderer = g_engine->renderer();
 	renderer.setTexture(_renderedTexture.get());
 	renderer.setBlendMode(blendMode);
-	renderer.quad(as2D(topLeft), size, kWhite, rotation, texMin + texOffset, texMax + texOffset);
+	renderer.quad(as2D(topLeft), size, kWhite, rotation, tex._min + texOffset, tex._max + texOffset);
 }
 
 Font::Font(GameFileReference fileRef)
@@ -646,7 +652,7 @@ static void fixFontAtlasColors(ManagedSurface &surface) {
 	assert(surface.format.bytesPerPixel == 4);
 	const uint32 alphaMask = uint32(255) << surface.format.aShift;
 	const uint32 black = alphaMask;
-	const uint32 white = ~0;
+	const uint32 white = ~uint32(0);
 
 	for (int16 y = 0; y < surface.h; y++) {
 		uint32 *pixel = (uint32 *)surface.getBasePtr(0, y);
