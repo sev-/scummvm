@@ -276,13 +276,17 @@ public:
 
 	void load();
 	void freeImages();
-	void drawCharacter(int32 imageI, Common::Point center, Color color);
+	void drawCharacter(byte ch, Common::Point center, Color color);
 
 	using AnimationBase::isLoaded;
 	using AnimationBase::imageSize;
+	bool isVisibleChar(byte ch) const;
+	Common::Point characterSize(byte ch) const;
+	Common::Point spaceSize() const;
 	inline uint imageCount() const { return _images.size(); }
 
 private:
+	const byte _charToImage, _spaceImageI, _charSpacing;
 	Common::Array<Math::Vector2d> _texMins, _texMaxs;
 	Common::ScopedPtr<ITexture> _texture;
 };

@@ -630,7 +630,33 @@ void Animation::drawEffect(int32 frameI, Vector3d topLeft, Vector2d size, Vector
 	renderer.quad(as2D(topLeft), size, kWhite, rotation, texMin + texOffset, texMax + texOffset);
 }
 
-Font::Font(GameFileReference fileRef) : AnimationBase(move(fileRef)) {}
+Font::Font(GameFileReference fileRef)
+	: AnimationBase(move(fileRef))
+	, _charToImage(g_engine->isV1() ? 33 : 32)
+	, _spaceImageI(g_engine->isV1() ? 94 : 0)
+	, _charSpacing(g_engine->isV1() ? 3 : 0) {}
+
+static void fixFontAtlasColors(ManagedSurface &surface) {
+	// In V1 the font contains green and black pixels where
+	//  - black pixels should stay black
+	//  - green pixels should be the text color
+	// The image segments determine the alpha.
+	// For rendering in OpenGL we want the green pixels to be white
+	// so multiplication with the text color still works (BlendMode::Tinted)
+	assert(surface.format.bytesPerPixel == 4);
+	const uint32 alphaMask = uint32(255) << surface.format.aShift;
+	const uint32 black = alphaMask;
+	const uint32 white = ~0;
+
+	for (int16 y = 0; y < surface.h; y++) {
+		uint32 *pixel = (uint32 *)surface.getBasePtr(0, y);
+		for (int16 x = 0; x < surface.w; x++, pixel++) {
+			auto alpha = *pixel & alphaMask;
+			*pixel = !alpha ? *pixel
+				: (*pixel & ~alphaMask) ? white : black;
+		}
+	}
+}
 
 void Font::load() {
 	if (_isLoaded)
@@ -668,6 +694,9 @@ void Font::load() {
 		_texMaxs[i].setX((offsetX + _images[i]->w) * invWidth);
 		_texMaxs[i].setY((offsetY + _images[i]->h) * invHeight);
 	}
+	if (g_engine->isV1())
+		fixFontAtlasColors(atlasSurface);
+
 	_texture = g_engine->renderer().createTexture(atlasSurface.w, atlasSurface.h, false);
 	_texture->update(atlasSurface);
 	debugCN(1, kDebugGraphics, "Rendered font atlas %s at %dx%d", _fileRef._path.c_str(), atlasSurface.w, atlasSurface.h);
@@ -682,15 +711,37 @@ void Font::freeImages() {
 	_texMaxs.clear();
 }
 
-void Font::drawCharacter(int32 imageI, Point centerPoint, Color color) {
-	assert(imageI >= 0 && (uint)imageI < _images.size());
-	Vector2d center = as2D(centerPoint + _imageOffsets[imageI]);
+void Font::drawCharacter(byte ch, Point centerPoint, Color color) {
+	if (!isVisibleChar(ch))
+		return;
+
+	int32 imageI = ch - _charToImage;
+	Point offset = g_engine->isV1()
+		? Point(0, spaceSize().y - _images[imageI]->h)
+		: _imageOffsets[imageI];
+	Vector2d center = as2D(centerPoint + offset);
 	Vector2d size(_images[imageI]->w, _images[imageI]->h);
 
 	auto &renderer = g_engine->renderer();
 	renderer.setTexture(_texture.get());
 	renderer.setBlendMode(BlendMode::Tinted);
 	renderer.quad(center, size, color, Angle(), _texMins[imageI], _texMaxs[imageI]);
+}
+
+bool Font::isVisibleChar(byte ch) const {
+	return ch >= _charToImage &&
+		(uint)(ch - _charToImage) < _images.size() &&
+		ch - _charToImage != _spaceImageI;
+}
+
+Point Font::characterSize(byte ch) const {
+	return isVisibleChar(ch)
+		? imageSize(ch - _charToImage) + Point(_charSpacing, 0)
+		: imageSize(_spaceImageI);
+}
+
+Point Font::spaceSize() const {
+	return imageSize(_spaceImageI);
 }
 
 Graphic::Graphic() {}
@@ -870,14 +921,6 @@ static const byte *trimTrailing(const byte *text, const byte *begin, bool trimSp
 	return text;
 }
 
-static Point characterSize(const Font &font, byte ch) {
-	if (ch <= ' ' || (uint)(ch - ' ') >= font.imageCount())
-		ch = 0;
-	else
-		ch -= ' ';
-	return font.imageSize(ch);
-}
-
 TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos, int maxWidth, bool centered, Color color, int8 order)
 	: IDrawRequest(order)
 	, _font(font)
@@ -904,7 +947,7 @@ TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos
 		}
 
 		if (*itChar != '\r' && *itChar)
-			lineWidth += characterSize(font, *itChar).x;
+			lineWidth += font.characterSize(*itChar).x;
 		if (lineWidth <= maxWidth && *itChar != '\r' && *itChar) {
 			itChar++;
 			continue;
@@ -936,7 +979,7 @@ TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos
 		lineWidth = 0;
 		for (auto ch : _lines[i]) {
 			if (ch != '\r' && ch)
-				lineWidth += characterSize(font, ch).x;
+				lineWidth += font.characterSize(ch).x;
 		}
 		_posX[i] = lineWidth;
 		_width = MAX(_width, lineWidth);
@@ -954,7 +997,7 @@ TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos
 		fill(_posX.begin(), _posX.end(), pos.x);
 
 	// setup height and y position
-	_height = (int)lineCount * (font.imageSize(0).y * 4 / 3);
+	_height = (int)lineCount * (font.spaceSize().y * 4 / 3);
 	_posY = pos.y;
 	if (centered)
 		_posY -= _height / 2;
@@ -965,17 +1008,15 @@ TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos
 }
 
 void TextDrawRequest::draw() {
-	const Point spaceSize = _font.imageSize(0);
 	Point cursor(0, _posY);
 	for (uint i = 0; i < _lines.size(); i++) {
 		cursor.x = _posX[i];
 		for (auto ch : _lines[i]) {
-			const Point charSize = characterSize(_font, ch);
-			if (ch > ' ' && (uint)(ch - ' ') < _font.imageCount())
-				_font.drawCharacter(ch - ' ', Point(cursor.x, cursor.y), _color);
+			const Point charSize = _font.characterSize(ch);
+			_font.drawCharacter(ch, Point(cursor.x, cursor.y), _color);
 			cursor.x += charSize.x;
 		}
-		cursor.y += spaceSize.y * 4 / 3;
+		cursor.y += _font.spaceSize().y * 4 / 3;
 	}
 }
 
