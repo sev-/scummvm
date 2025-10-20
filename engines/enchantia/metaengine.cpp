@@ -20,8 +20,9 @@
  */
 
 #include "enchantia/metaengine.h"
-#include "enchantia/detection.h"
 #include "enchantia/enchantia.h"
+
+#include "common/system.h"
 
 const char *EnchantiaMetaEngine::getName() const {
 	return "enchantia";
@@ -34,13 +35,15 @@ Common::Error EnchantiaMetaEngine::createInstance(OSystem *syst, Engine **engine
 
 bool EnchantiaMetaEngine::hasFeature(MetaEngineFeature f) const {
 	return
+		(f == kSavesUseExtendedFormat) ||
+		(f == kSimpleSavesNames) ||
 		(f == kSupportsListSaves) ||
-		(f == kSupportsLoadingDuringStartup) ||
 		(f == kSupportsDeleteSave) ||
 		(f == kSavesSupportMetaInfo) ||
 		(f == kSavesSupportThumbnail) ||
 		(f == kSavesSupportCreationDate) ||
-		(f == kSavesSupportPlayTime);
+		(f == kSavesSupportPlayTime) ||
+		(f == kSupportsLoadingDuringStartup);
 }
 
 bool Enchantia::EnchantiaEngine::hasFeature(EngineFeature f) const {
@@ -52,7 +55,7 @@ bool Enchantia::EnchantiaEngine::hasFeature(EngineFeature f) const {
 
 SaveStateList EnchantiaMetaEngine::listSaves(const char *target) const {
 	Common::SaveFileManager *saveFileMan = g_system->getSavefileManager();
-	Enchantia::EnchantiaEngine::SaveHeader header;
+	ExtendedSavegameHeader header;
 	Common::String pattern = target;
 	pattern += ".???";
 	Common::StringArray filenames;
@@ -65,7 +68,7 @@ SaveStateList EnchantiaMetaEngine::listSaves(const char *target) const {
 		if (slotNum >= 0 && slotNum <= 999) {
 			Common::InSaveFile *in = saveFileMan->openForLoading(file->c_str());
 			if (in) {
-				if (Enchantia::EnchantiaEngine::readSaveHeader(in, false, header) == Enchantia::EnchantiaEngine::kRSHENoError) {
+				if (MetaEngine::readSavegameHeader(in, &header, false)) {
 					saveList.push_back(SaveStateDescriptor(this, slotNum, header.description));
 				}
 				delete in;
@@ -103,20 +106,27 @@ SaveStateDescriptor EnchantiaMetaEngine::querySaveMetaInfos(const char *target, 
 	Common::String filename = Enchantia::EnchantiaEngine::getSavegameFilename(target, slot);
 	Common::InSaveFile *in = g_system->getSavefileManager()->openForLoading(filename.c_str());
 	if (in) {
-		Enchantia::EnchantiaEngine::SaveHeader header;
-		Enchantia::EnchantiaEngine::kReadSaveHeaderError error;
-		error = Enchantia::EnchantiaEngine::readSaveHeader(in, true, header);
-		delete in;
-		if (error == Enchantia::EnchantiaEngine::kRSHENoError) {
+		ExtendedSavegameHeader header;
+		if (MetaEngine::readSavegameHeader(in, &header)) {
+			delete in;
 			SaveStateDescriptor desc(this, slot, header.description);
 			desc.setDeletableFlag(true);
 			desc.setWriteProtectedFlag(false);
 			desc.setThumbnail(header.thumbnail);
-			desc.setSaveDate(header.saveDate & 0xFFFF, (header.saveDate >> 16) & 0xFF, (header.saveDate >> 24) & 0xFF);
-			desc.setSaveTime((header.saveTime >> 16) & 0xFF, (header.saveTime >> 8) & 0xFF);
-			desc.setPlayTime(header.playTime * 1000);
+
+			int day = (header.date >> 24) & 0xFF;
+			int month = (header.date >> 16) & 0xFF;
+			int year = header.date & 0xFFFF;
+			desc.setSaveDate(year, month, day);
+
+			int hour = (header.time >> 8) & 0xFF;
+			int min = header.time & 0xFF;
+			desc.setSaveTime(hour, min);
+
+			desc.setPlayTime(header.playtime * 1000);
 			return desc;
 		}
+		delete in;
 	}
 	return SaveStateDescriptor();
 }

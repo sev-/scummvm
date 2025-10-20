@@ -37,6 +37,7 @@
 #include "graphics/palette.h"
 #include "graphics/fontman.h"
 #include "graphics/font.h"
+#include "graphics/scaler.h"
 
 #include "enchantia/enchantia.h"
 #include "enchantia/datfile.h"
@@ -1879,7 +1880,7 @@ void EnchantiaEngine::runMenuBar() {
 	savedScreen->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
 	savedScreen->copyFrom(*_screen);
 
-	_isSaveAllowed = false;
+	_isSaveAllowed = true;
 
 	_walkInfos[0].next = NULL;
 	_walkInfos[1].next = NULL;
@@ -2091,6 +2092,7 @@ void EnchantiaEngine::buildMenuBar(MenuSlotAction menu) {
 		break;
 
 	case kMenuDisk:
+		g_engine->openMainMenuDialog();
 		break;
 
 	default:

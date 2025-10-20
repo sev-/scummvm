@@ -80,8 +80,8 @@ public:
 	SpriteDef *getSceneSpriteDef(uint sceneIndex, uint index);
 	MusicItem *getMusic(uint index) { return &_musicItems[index]; }
 	const SoundItem &getSound(byte soundNum, int16 sceneIndex);
-	void saveSpriteDefs(Common::OutSaveFile *out);
-	void restoreSpriteDefs(Common::InSaveFile *in);
+	void saveSpriteDefs(Common::WriteStream *out);
+	void restoreSpriteDefs(Common::ReadStream *in);
 	byte *getGridSprite();
 	byte *getScoreCreditsTxt();
 protected:

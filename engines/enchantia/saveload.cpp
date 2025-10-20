@@ -68,26 +68,6 @@ void EnchantiaEngine::savegame(const char *filename, const char *description) {
 	TimeDate curTime;
 	g_system->getTimeAndDate(curTime);
 
-	// Header start
-	out->writeUint32LE(ENCHANTIA_SAVEGAME_VERSION);
-
-	byte descriptionLen = strlen(description);
-	out->writeByte(descriptionLen);
-	out->write(description, descriptionLen);
-
-	Graphics::saveThumbnail(*out);
-
-	// Not used yet, reserved for future usage
-	out->writeByte(0);
-	out->writeUint32LE(0);
-	uint32 saveDate = ((curTime.tm_mday & 0xFF) << 24) | (((curTime.tm_mon + 1) & 0xFF) << 16) | ((curTime.tm_year + 1900) & 0xFFFF);
-	uint32 saveTime = ((curTime.tm_hour & 0xFF) << 16) | (((curTime.tm_min) & 0xFF) << 8) | ((curTime.tm_sec) & 0xFF);
-	uint32 playTime = g_engine->getTotalPlayTime() / 1000;
-	out->writeUint32LE(saveDate);
-	out->writeUint32LE(saveTime);
-	out->writeUint32LE(playTime);
-	// Header end
-
 	// Sprites
 	out->writeUint16LE(_sceneSpritesCount);
 	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
@@ -263,17 +243,6 @@ void EnchantiaEngine::loadgame(const char *filename) {
 
 }
 
-Common::Error EnchantiaEngine::loadGameState(int slot) {
-	const char *fileName = getSavegameFilename(slot);
-	loadgame(fileName);
-	return Common::kNoError;
-}
-
-Common::Error EnchantiaEngine::saveGameState(int slot, const Common::String &description, bool isAutosave) {
-	const char *fileName = getSavegameFilename(slot);
-	savegame(fileName, description.c_str());
-	return Common::kNoError;
-}
 
 const char *EnchantiaEngine::getSavegameFilename(int num) {
 	static Common::String filename;
@@ -284,6 +253,167 @@ const char *EnchantiaEngine::getSavegameFilename(int num) {
 Common::String EnchantiaEngine::getSavegameFilename(const Common::String &target, int num) {
 	assert(num >= 0 && num <= 999);
 	return Common::String::format("%s.%03d", target.c_str(), num);
+}
+
+Common::Error EnchantiaEngine::loadGameStream(Common::SeekableReadStream *in) {
+
+	// Sprites
+	_sceneSpritesCount = in->readUint16LE();
+
+	for (uint i = 0; i < kSpriteCount - 1; i++)
+		_sprites[i].status = 0;
+
+	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
+		Sprite *sprite = &_sprites[i];
+		sprite->status = in->readByte();
+		sprite->frameIndex = in->readByte();
+		sprite->x = in->readUint16LE();
+		sprite->y = in->readUint16LE();
+		sprite->width = in->readUint16LE();
+		sprite->height = in->readUint16LE();
+		sprite->heightAdd = in->readUint16LE();
+		sprite->yAdd = in->readUint16LE();
+		sprite->id = in->readUint16LE();
+		sprite->anim.codeId = in->readUint16LE();
+		sprite->anim.index = in->readUint16LE();
+		sprite->anim.ticks = in->readUint16LE();
+		sprite->anim.initialTicks = in->readUint16LE();
+		sprite->moveX.codeId = in->readUint16LE();
+		sprite->moveX.index = in->readUint16LE();
+		sprite->moveX.ticks = in->readUint16LE();
+		sprite->moveX.initialTicks = in->readUint16LE();
+		sprite->moveY.codeId = in->readUint16LE();
+		sprite->moveY.index = in->readUint16LE();
+		sprite->moveY.ticks = in->readUint16LE();
+		sprite->moveY.initialTicks = in->readUint16LE();
+		sprite->spriteResource = _sceneSpr;
+	}
+
+	// Scene decorations
+	_sceneDecorationCount = in->readUint16LE();
+	for (uint i = 0; i < _sceneDecorationCount; ++i) {
+		SceneDecoration *sceneDecoration = &_sceneDecorations[i];
+		sceneDecoration->x = in->readUint16LE();
+		sceneDecoration->y = in->readUint16LE();
+		sceneDecoration->frameIndex = in->readByte();
+		sceneDecoration->spriteResource = _sceneSpr;
+	}
+
+	_spriteResourceType = in->readByte();
+	_scrollBorderLeft = in->readUint16LE();
+	_scrollBorderRight = in->readUint16LE();
+	_cameraStripX = in->readUint16LE();
+	_collectItemIgnoreActorPosition = in->readByte() != 0;
+	_flgCanRunBoxClick = in->readByte() != 0;
+	_flgCanRunMenu = in->readByte() != 0;
+	_flgWalkBoxEnabled = in->readByte() != 0;
+	_cameraStripNum = in->readByte();
+	_currSceneLink = in->readUint16LE();
+	_walkDistance = in->readUint16LE();
+	_walkIncrY2 = in->readUint16LE();
+	_walkErrorX = in->readUint16LE();
+	_someX = in->readUint16LE();
+	_walkErrorY = in->readUint16LE();
+	_someY = in->readUint16LE();
+	_walkSlopeErrX = in->readUint16LE();
+	_walkSlopeX = in->readUint16LE();
+	_walkSlopeErrY = in->readUint16LE();
+	_walkSlopeY = in->readUint16LE();
+	for (uint i = 0; i < 10; ++i)
+		_actorXTable[i] = in->readUint16LE();
+	_theScore = in->readUint16LE();
+	_flags1 = in->readByte();
+	_flags2 = in->readByte();
+	_rockBasherCounters[0] = in->readByte();
+	_rockBasherCounters[1] = in->readByte();
+	_rockBasherCounters[2] = in->readByte();
+	_scene63BabySleepCounter = in->readByte();
+	_dat->restoreSpriteDefs(in);
+	for (uint i = 0; i < kInventoryTableCount; ++i)
+		_inventoryTable[i] = in->readUint16LE();
+	for (uint i = 0; i < kTalkTableCount; ++i)
+		_talkTable[i] = in->readUint16LE();
+
+	// Extended save header is automatically read by Engine::loadGameState()
+	loadScene(_currSceneLink, true);
+
+	return Common::kNoError;
+}
+
+Common::Error EnchantiaEngine::saveGameStream(Common::WriteStream *out, bool isAutosave) {
+	// Sprites
+	out->writeUint16LE(_sceneSpritesCount);
+	for (uint i = 0; i < _sceneSpritesCount + 2; ++i) {
+		Sprite *sprite = &_sprites[i];
+		out->writeByte(sprite->status);
+		out->writeByte(sprite->frameIndex);
+		out->writeUint16LE(sprite->x);
+		out->writeUint16LE(sprite->y);
+		out->writeUint16LE(sprite->width);
+		out->writeUint16LE(sprite->height);
+		out->writeUint16LE(sprite->heightAdd);
+		out->writeUint16LE(sprite->yAdd);
+		out->writeUint16LE(sprite->id);
+		out->writeUint16LE(sprite->anim.codeId);
+		out->writeUint16LE(sprite->anim.index);
+		out->writeUint16LE(sprite->anim.ticks);
+		out->writeUint16LE(sprite->anim.initialTicks);
+		out->writeUint16LE(sprite->moveX.codeId);
+		out->writeUint16LE(sprite->moveX.index);
+		out->writeUint16LE(sprite->moveX.ticks);
+		out->writeUint16LE(sprite->moveX.initialTicks);
+		out->writeUint16LE(sprite->moveY.codeId);
+		out->writeUint16LE(sprite->moveY.index);
+		out->writeUint16LE(sprite->moveY.ticks);
+		out->writeUint16LE(sprite->moveY.initialTicks);
+	}
+
+	// Scene decorations
+	out->writeUint16LE(_sceneDecorationCount);
+	for (uint i = 0; i < _sceneDecorationCount; ++i) {
+		SceneDecoration *sceneDecoration = &_sceneDecorations[i];
+		out->writeUint16LE(sceneDecoration->x);
+		out->writeUint16LE(sceneDecoration->y);
+		out->writeByte(sceneDecoration->frameIndex);
+	}
+
+	out->writeByte(_spriteResourceType);
+	out->writeUint16LE(_scrollBorderLeft);
+	out->writeUint16LE(_scrollBorderRight);
+	out->writeUint16LE(_cameraStripX);
+	out->writeByte(_collectItemIgnoreActorPosition ? 1 : 0);
+	out->writeByte(_flgCanRunBoxClick ? 1 : 0);
+	out->writeByte(_flgCanRunMenu ? 1 : 0);
+	out->writeByte(_flgWalkBoxEnabled ? 1 : 0);
+	out->writeByte(_cameraStripNum);
+	out->writeUint16LE(_currSceneLink);
+	out->writeUint16LE(_walkDistance);
+	out->writeUint16LE(_walkIncrY2);
+	out->writeUint16LE(_walkErrorX);
+	out->writeUint16LE(_someX);
+	out->writeUint16LE(_walkErrorY);
+	out->writeUint16LE(_someY);
+	out->writeUint16LE(_walkSlopeErrX);
+	out->writeUint16LE(_walkSlopeX);
+	out->writeUint16LE(_walkSlopeErrY);
+	out->writeUint16LE(_walkSlopeY);
+	for (uint i = 0; i < 10; ++i)
+		out->writeUint16LE(_actorXTable[i]);
+	out->writeUint16LE(_theScore);
+	out->writeByte(_flags1);
+	out->writeByte(_flags2);
+	out->writeByte(_rockBasherCounters[0]);
+	out->writeByte(_rockBasherCounters[1]);
+	out->writeByte(_rockBasherCounters[2]);
+	out->writeByte(_scene63BabySleepCounter);
+	_dat->saveSpriteDefs(out);
+	for (uint i = 0; i < kInventoryTableCount; ++i)
+		out->writeUint16LE(_inventoryTable[i]);
+	for (uint i = 0; i < kTalkTableCount; ++i)
+		out->writeUint16LE(_talkTable[i]);
+
+	// Extended save header is automatically appended by Engine::saveGameState()
+	return Common::kNoError;
 }
 
 } // End of namespace Enchantia

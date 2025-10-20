@@ -22,7 +22,6 @@
 #ifndef ENCHANTIA_METAENGINE_H
 #define ENCHANTIA_METAENGINE_H
 
-#include "common/achievements.h"
 #include "engines/advancedDetector.h"
 
 class EnchantiaMetaEngine : public AdvancedMetaEngine {

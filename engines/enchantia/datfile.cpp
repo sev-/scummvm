@@ -254,7 +254,7 @@ const SoundItem &DatFile::getSound(byte soundNum, int16 sceneIndex) {
 		return _soundItems[_sceneSoundRefs[sceneIndex] + soundNum - 15];
 }
 
-void DatFile::saveSpriteDefs(Common::OutSaveFile *out) {
+void DatFile::saveSpriteDefs(Common::WriteStream *out) {
 	for (uint i = 0; i < _spriteDefsCount; ++i) {
 		SpriteDef *spriteDef = &_spriteDefs[i];
 		out->writeUint16LE(spriteDef->selfId);
@@ -267,7 +267,7 @@ void DatFile::saveSpriteDefs(Common::OutSaveFile *out) {
 	}
 }
 
-void DatFile::restoreSpriteDefs(Common::InSaveFile *in) {
+void DatFile::restoreSpriteDefs(Common::ReadStream *in) {
 	for (uint i = 0; i < _spriteDefsCount; ++i) {
 		SpriteDef *spriteDef = &_spriteDefs[i];
 		spriteDef->selfId = in->readUint16LE();
