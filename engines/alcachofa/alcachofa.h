@@ -117,10 +117,6 @@ public:
 	inline bool isV3() const { return gameDescription().isVersionBetween(30, 39); }
 
 	inline const AlcachofaGameDescription &gameDescription() const { return *_gameDescription; }
-	inline bool isV1() const { return _gameDescription->engineVersion == EngineVersion::V1; }
-	inline bool isV2() const { return _gameDescription->engineVersion == EngineVersion::V2; }
-	inline bool isV3() const { return _gameDescription->engineVersion == EngineVersion::V3; }
-
 	inline IRenderer &renderer() { return *_renderer; }
 	inline DrawQueue &drawQueue() { return *_drawQueue; }
 	inline Camera &camera() { return _camera; }

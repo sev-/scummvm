@@ -241,17 +241,6 @@ public:
 		script.variable("textoson") = g_engine->config().subtitles() ? 1 : 0;
 	}
 
-	void updateScriptVariables() override {
-		Script &script = g_engine->script();
-		if (g_engine->input().wasAnyMousePressed()) // yes, this variable is never reset by the engine (only by script)
-			script.variable("SeHaPulsadoRaton") = 1;
-
-		script.setScriptTimer(!script.variable("CalcularTiempoSinPulsarRaton"));
-		script.variable("EstanAmbos") = g_engine->world().mortadelo().room() == g_engine->world().filemon().room();
-		script.variable("textoson") = g_engine->config().subtitles() ? 1 : 0;
-		script.variable("modored") = 0; // this is signalling whether a network connection is established
-	}
-
 	Path getVideoPath(int32 videoId) override {
 		return Path(String::format("Data/DATA%02d.BIN", videoId + 1));
 	}

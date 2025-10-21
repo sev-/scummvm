@@ -56,16 +56,12 @@ public:
 	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
 	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 	virtual void updateScriptVariables() = 0;
-	virtual bool shouldClipCamera() = 0;
 	virtual void drawScreenStates();
 	virtual const char *getDialogFileName() = 0;
 	virtual const char *getObjectFileName() = 0;
 	virtual char getTextFileKey() = 0;
 	virtual const char *getInitScriptName() = 0;
-	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
-	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 	virtual int32 getKernelTaskArgCount(int32 kernelTaskI); // only necessary for V1
-	virtual void updateScriptVariables() = 0;
 	virtual Common::Path getVideoPath(int32 videoId) = 0;
 	virtual Common::String getSoundPath(const char *filename) = 0; ///< Without file-extension
 	virtual Common::String getMusicPath(int32 trackId) = 0; ///< Without file-extension
