@@ -53,7 +53,7 @@ void Player::resetCursor() {
 void Player::updateCursor() {
 	if (g_engine->isV1())
 		_cursorFrameI = 0;
-	else if (g_engine->menu().isOpen() || !_isGameLoaded)
+	else if (g_engine->menu().isOpen())
 		_cursorFrameI = 0;
 	else if (_selectedObject == nullptr)
 		_cursorFrameI = !g_engine->input().isMouseLeftDown() || _pressedObject != nullptr ? 6 : 7;
@@ -349,7 +349,6 @@ void Player::setActiveCharacter(MainCharacterKind kind) {
 
 bool Player::isAllowedToOpenMenu() {
 	return
-		isGameLoaded() &&
 		!g_engine->menu().isOpen() &&
 		g_engine->sounds().musicSemaphore().isReleased() &&
 		g_engine->game().isAllowedToOpenMenu() &&
@@ -386,7 +385,6 @@ void Player::syncGame(Serializer &s) {
 		_pressedObject = nullptr;
 		_heldItem = nullptr;
 		_nextLastDialogCharacter = 0;
-		_isGameLoaded = true;
 		_roomBeforeInventory = nullptr;
 		_isInTemporaryRoom = false;
 		fill(_lastDialogCharacters, _lastDialogCharacters + kMaxLastDialogCharacters, nullptr);

@@ -79,7 +79,7 @@ void GlobalUI::updateClosingInventory() {
 
 bool GlobalUI::updateOpeningInventory() {
 	static constexpr float kSpeed = 10 / 3.0f / 1000.0f;
-	if (g_engine->menu().isOpen() || !g_engine->player().isGameLoaded())
+	if (g_engine->menu().isOpen())
 		return false;
 
 	const bool userWantsToOpenInventory =
@@ -127,7 +127,6 @@ bool GlobalUI::isHoveringChangeButton() const {
 bool GlobalUI::updateChangingCharacter() {
 	auto &player = g_engine->player();
 	if (g_engine->menu().isOpen() ||
-		!player.isGameLoaded() ||
 		_isOpeningInventory)
 		return false;
 	_changeButton.frameI() = 0;
@@ -164,7 +163,6 @@ bool GlobalUI::updateChangingCharacter() {
 void GlobalUI::drawChangingButton() {
 	auto &player = g_engine->player();
 	if (g_engine->menu().isOpen() ||
-		!player.isGameLoaded() ||
 		!player.semaphore().isReleased() ||
 		_isOpeningInventory ||
 		_isClosingInventory)

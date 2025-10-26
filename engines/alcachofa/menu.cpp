@@ -215,7 +215,6 @@ void Menu::triggerMainMenuAction(MainMenuAction action) {
 		break;
 	case MainMenuAction::NewGame:
 		// this action might be unused just like the only room it would appear: MENUPRINCIPALINICIO
-		g_engine->player().isGameLoaded() = true;
 		g_engine->script().createProcess(MainCharacterKind::None, g_engine->world().initScriptName());
 		break;
 	default:
@@ -360,10 +359,7 @@ void Menu::triggerOptionsValue(OptionsMenuValue valueId, float value) {
 void Menu::continueMainMenu() {
 	g_engine->config().saveToScummVM();
 	g_engine->syncSoundSettings();
-	g_engine->player().changeRoom(
-		g_engine->player().isGameLoaded() ? "MENUPRINCIPAL" : "MENUPRINCIPALINICIO",
-		true
-	);
+	g_engine->player().changeRoom("MENUPRINCIPAL", true);
 
 	updateSelectedSavefile(false);
 }

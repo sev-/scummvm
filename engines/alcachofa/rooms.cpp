@@ -230,7 +230,7 @@ bool Room::updateInput() {
 
 	bool canInteract = !player.activeCharacter()->isBusy();
 	// A complicated network condition can prevent interaction at this point
-	if (g_engine->menu().isOpen() || !player.isGameLoaded())
+	if (g_engine->menu().isOpen())
 		canInteract = true;
 	if (canInteract) {
 		player.resetCursor();
