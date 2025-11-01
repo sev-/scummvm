@@ -473,6 +473,21 @@ void Inter_v7::o7_deleteFile() {
 	Common::Path file(_vm->_game->_script->evalString(), '\\');
 
 	debugC(2, kDebugFileIO, "Delete file \"%s\"", file.toString().c_str());
+	if (_vm->getGameType() == kGameTypeAdi4 && ConfMan.hasKey("save_slot") && (file == "TEMP" || file.toString().hasSuffix(".DEP"))) {
+		// HACK to prevent reseting some temporary files when returning from Adi4 game box through ChainedGamesManager
+		debugC(2, kDebugFileIO, "o7_deleteFile: skipping deletion of %s when returning from Adi4 game box", file.toString().c_str());
+		if (file == "PAROLE.DEP") {
+			// Last file whose deletion should be skipped when returning from Adi4 game box
+			// Restore the saved state and continue normally
+			_vm->_saveLoad->load("RETURN_FROM_GAMEBOX", 0, 0, 0);
+			ConfMan.removeKey("save_slot", Common::ConfigManager::kTransientDomain);
+		}
+
+		return;
+	}
+
+	if (_vm->getGameType() == kGameTypeAdi4 && file == "TEMP")
+		file /= "*"; // WORKAROUND: This file is actually a directory, and we only support deleting their content using patterns
 
 	bool isPattern = file.toString().contains('*') || file.toString().contains('?');
 	Common::List<Common::Path> files;
@@ -662,6 +677,12 @@ void Inter_v7::o7_playVmdOrMusic() {
 
 	if (props.startFrame == -20 || props.startFrame == -200) {
 		props.startFrame = -2;
+	}
+
+	if (_vm->getGameType() == kGameTypeAdi4 && 	ConfMan.hasKey("save_slot") && file == "INTRO") {
+		// HACK to simulate returning from Adi4 game box seamlessly, after relaunching it through ChainedGamesManager
+		debugC(2, kDebugVideo, "o7_playVmdOrMusic: skipping INTRO when returning from Adi4 game box");
+		return;
 	}
 
 	debugC(1, kDebugVideo, "Playing video \"%s\" @ %d+%d, frames %d - %d, "
