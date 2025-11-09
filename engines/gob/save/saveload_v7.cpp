@@ -1841,9 +1841,9 @@ bool SaveLoad_v7::GameFileHandler::save(const byte *ptrRaw, int16 dataVar, int32
 	}
 
 	int32 fileSize = getSize();
-	int32 newFileSize = size;
-	if (fileSize > 0) {
-		newFileSize = MAX<int32>(fileSize, size + offset);
+	int32 newFileSize = size + offset;
+	if (fileSize > newFileSize) {
+		newFileSize = fileSize;
 	}
 
 	SavePartVars vars(_vm, newFileSize);
