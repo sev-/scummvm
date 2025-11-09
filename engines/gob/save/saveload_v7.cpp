@@ -954,6 +954,7 @@ SaveLoad_v7::SaveFile SaveLoad_v7::_saveFiles[] = {
 	{"nouveau.dep", kSaveModeSave, nullptr, nullptr},
 	{"DATA/iduser.inf", kSaveModeSave, nullptr, nullptr},
 	{"adi.inf", kSaveModeSave, nullptr, nullptr},
+	{"adi.bis", kSaveModeSave, nullptr, nullptr},
 	{"DATA/ado4.inf", kSaveModeSave, nullptr, nullptr},
 	{"DATA/mcurrent.inf", kSaveModeSave, nullptr, nullptr},
 
@@ -2137,15 +2138,19 @@ SaveLoad_v7::SaveLoad_v7(GobEngine *vm, const char *targetName) :
 
 	_saveFiles[index++].handler = _adi4GameFileHandler[indexAdi4file++] = new GameFileHandler(_vm,
 																							  targetName,
-																							  "adi");
+																							  "adi_inf");
 
 	_saveFiles[index++].handler = _adi4GameFileHandler[indexAdi4file++] = new GameFileHandler(_vm,
 																							  targetName,
-																							  "ado4");
+																							  "adi_bis");
 
 	_saveFiles[index++].handler = _adi4GameFileHandler[indexAdi4file++] = new GameFileHandler(_vm,
 																							  targetName,
-																							  "mcurrent");
+																							  "ado4_inf");
+
+	_saveFiles[index++].handler = _adi4GameFileHandler[indexAdi4file++] = new GameFileHandler(_vm,
+																							  targetName,
+																							  "mcurrent_inf");
 
 	for (uint32 i = 0; i < kChildrenCount; i++) {
 		_saveFiles[index++].handler = _adi4GameFileHandler[indexAdi4file++] = new GameFileHandler(_vm,
