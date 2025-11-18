@@ -258,7 +258,12 @@ public:
 	}
 
 	bool isAllowedToOpenMenu() override {
-		return !g_engine->script().variable("prohibirESC");
+		return !g_engine->script().variable("prohibirESC") &&
+			g_engine->sounds().musicSemaphore().isReleased();
+	}
+
+	bool isAllowedToInteract() override {
+		return g_engine->player().semaphore().isReleased();
 	}
 
 	bool shouldScriptLockInteraction() override {

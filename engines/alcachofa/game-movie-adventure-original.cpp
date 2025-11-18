@@ -216,7 +216,12 @@ public:
 	}
 
 	bool isAllowedToOpenMenu() override {
-		return dynamic_cast<RoomWithFloor *>(g_engine->player().currentRoom()) != nullptr;
+		return g_engine->player().semaphore().isReleased() &&
+			dynamic_cast<RoomWithFloor *>(g_engine->player().currentRoom()) != nullptr;
+	}
+
+	bool isAllowedToInteract() override {
+		return true; // original would be checking an unused script variable "Ocupados"
 	}
 
 	bool shouldScriptLockInteraction() override {

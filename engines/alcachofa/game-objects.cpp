@@ -855,7 +855,7 @@ MainCharacter::~MainCharacter() {
 }
 
 bool MainCharacter::isBusy() const {
-	return !_semaphore.isReleased() || !g_engine->player().semaphore().isReleased();
+	return !_semaphore.isReleased() || !g_engine->game().isAllowedToInteract();
 }
 
 void MainCharacter::update() {
