@@ -38,7 +38,7 @@ class Process;
 struct ScriptInstruction;
 
 /**
- * @brief Provides functionality specific to a game title.
+ * @brief Provides functionality specific to a game title / engine version.
  * Also includes all exemptions to inconsistencies in the original games.
  *
  * If an error is truly unrecoverable or a warning never an engine bug, no method is necessary here
@@ -67,6 +67,8 @@ public:
 	virtual Common::String getMusicPath(int32 trackId) = 0; ///< Without file-extension
 	virtual bool shouldClipCamera() = 0;
 	virtual bool isAllowedToOpenMenu() = 0; ///< only the game-specific condition
+	virtual bool shouldScriptLockInteraction() = 0;
+	virtual bool shouldChangeCharacterUseGameLock() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);

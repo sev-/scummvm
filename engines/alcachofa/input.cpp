@@ -102,4 +102,31 @@ void Input::updateMousePos3D() {
 	_mousePos3D = { (int16)pos3D.x(), (int16)pos3D.y() };
 }
 
+struct WaitForInputTask final : public Task {
+	WaitForInputTask(Process &process) : Task(process) {}
+
+	WaitForInputTask(Process &process, Serializer &s) : Task(process) {}
+
+	TaskReturn run() override {
+		TASK_BEGIN;
+		process().unlockInteraction();
+		do {
+			TASK_YIELD(1);
+		} while(!g_engine->input().wasAnyMousePressed());
+		process().lockInteraction();
+		TASK_END;
+	}
+
+	void debugPrint() override {
+		g_engine->getDebugger()->debugPrintf("Wait for input");
+	}
+
+	const char *taskName() const override;
+};
+DECLARE_TASK(WaitForInputTask)
+
+Task *Input::waitForInput(Process &process) {
+	return new WaitForInputTask(process);
+}
+
 }

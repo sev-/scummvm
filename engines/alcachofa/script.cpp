@@ -213,7 +213,7 @@ struct ScriptTask final : public Task {
 		, _script(g_engine->script())
 		, _name(name)
 		, _pc(pc)
-		, _lock(Common::move(lock)) {
+		, _characterLock(Common::move(lock)) {
 		pushInstruction(UINT_MAX);
 		debugC(SCRIPT_DEBUG_LVL_TASKS, kDebugScript, "%u: Script start at %u", process.pid(), pc);
 	}
@@ -223,7 +223,7 @@ struct ScriptTask final : public Task {
 		, _script(g_engine->script())
 		, _name(forkParent._name + " FORKED")
 		, _pc(forkParent._pc)
-		, _lock(forkParent._lock) {
+		, _characterLock(forkParent._characterLock) {
 		for (uint i = 0; i < forkParent._stack.size(); i++)
 			_stack.push(forkParent._stack[i]);
 		pushNumber(1); // this task is the forked one
@@ -237,6 +237,8 @@ struct ScriptTask final : public Task {
 	}
 
 	TaskReturn run() override {
+		if (_isFirstExecution)
+			process().lockInteraction();
 		if (_isFirstExecution || _returnsFromKernelCall)
 			setCharacterVariables();
 		if (_returnsFromKernelCall) {
@@ -411,7 +413,7 @@ struct ScriptTask final : public Task {
 	}
 
 	void syncGame(Serializer &s) override {
-		assert(s.isSaving() || (_lock.isReleased() && _stack.empty()));
+		assert(s.isSaving() || (_characterLock.isReleased() && _stack.empty()));
 
 		s.syncString(_name);
 		s.syncAsUint32LE(_pc);
@@ -428,10 +430,10 @@ struct ScriptTask final : public Task {
 				_stack[i].syncGame(s);
 		}
 
-		bool hasLock = !_lock.isReleased();
+		bool hasLock = !_characterLock.isReleased();
 		s.syncAsByte(hasLock);
 		if (s.isLoading() && hasLock)
-			_lock = FakeLock("script", g_engine->player().semaphoreFor(process().character()));
+			_characterLock = FakeLock("script-character", g_engine->player().semaphoreFor(process().character()));
 	}
 
 	const char *taskName() const override;
@@ -661,7 +663,6 @@ private:
 		// player/world state changes
 		case ScriptKernelTask::ChangeCharacter: {
 			MainCharacterKind kind = getMainCharacterKindArg(0);
-			killProcessesFor(MainCharacterKind::None); // yes, kill for all characters
 			auto &camera = g_engine->camera();
 			auto &player = g_engine->player();
 			camera.resetRotationAndScale();
@@ -672,9 +673,14 @@ private:
 				camera.setFollow(player.activeCharacter());
 				camera.backup(0);
 			}
-			process().character() = MainCharacterKind::None;
-			assert(player.semaphore().isReleased());
-			_lock = FakeLock("script", player.semaphore());
+
+			if (g_engine->game().shouldChangeCharacterUseGameLock()) {
+				killProcessesFor(MainCharacterKind::None); // yes, kill for all characters
+				kind = MainCharacterKind::None;
+			}
+			process().character() = kind;
+			_characterLock = FakeLock("script", player.semaphoreFor(kind));
+			
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::ChangeRoom:
@@ -963,9 +969,14 @@ private:
 				as3D(pointObject->position()), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));
 		}
-		case ScriptKernelTask::Disguise:
+		case ScriptKernelTask::Disguise: {
 			// a somewhat bouncy vertical camera movement used in V1
-			return TaskReturn::waitFor(g_engine->camera().disguise(process(), getNumberArg(0)));
+			// or waiting for user to click
+			const auto duration = getNumberArg(0);
+			return TaskReturn::waitFor(duration == 0
+				? g_engine->input().waitForInput(process())
+				: g_engine->camera().disguise(process(), duration));
+		}
 
 		// Fades
 		case ScriptKernelTask::FadeType0:
@@ -1025,7 +1036,7 @@ private:
 		g_engine->scheduler().killAllProcessesFor(kind);
 		g_engine->sounds().fadeOutVoiceAndSFX(200);
 		g_engine->player().stopLastDialogCharacters();
-		_lock.release(); // yes this seems dangerous, but it is original..
+		_characterLock.release(); // yes this seems dangerous, but it is original..
 		auto &character = g_engine->world().getMainCharacterByKind(kind);
 		character.resetUsingObjectAndDialogMenu();
 		assert(character.semaphore().isReleased()); // this process should be the last to hold a lock if at all...
@@ -1038,7 +1049,7 @@ private:
 	int32 _lastKernelTaskI = 0;
 	bool _returnsFromKernelCall = false;
 	bool _isFirstExecution = true;
-	FakeLock _lock;
+	FakeLock _characterLock;
 };
 DECLARE_TASK(ScriptTask)
 

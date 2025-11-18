@@ -27,6 +27,9 @@
 
 namespace Alcachofa {
 
+struct Task;
+class Process;
+
 class Input {
 public:
 	inline bool wasMouseLeftPressed() const { return _wasMouseLeftPressed; }
@@ -47,6 +50,7 @@ public:
 	void nextFrame();
 	bool handleEvent(const Common::Event &event);
 	void toggleDebugInput(bool debugMode); ///< Toggles input debug mode which blocks any input not retrieved with debugInput
+	Task *waitForInput(Process &process);
 
 private:
 	void updateMousePos3D();

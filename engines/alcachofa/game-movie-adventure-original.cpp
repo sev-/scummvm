@@ -219,6 +219,14 @@ public:
 		return dynamic_cast<RoomWithFloor *>(g_engine->player().currentRoom()) != nullptr;
 	}
 
+	bool shouldScriptLockInteraction() override {
+		return true;
+	}
+
+	bool shouldChangeCharacterUseGameLock() override {
+		return false;
+	}
+
 	void missingAnimation(const String &fileName) override {
 		static const char *exemptions[] = {
 			nullptr

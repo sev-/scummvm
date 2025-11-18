@@ -261,6 +261,14 @@ public:
 		return !g_engine->script().variable("prohibirESC");
 	}
 
+	bool shouldScriptLockInteraction() override {
+		return false;
+	}
+
+	bool shouldChangeCharacterUseGameLock() override {
+		return true;
+	}
+
 	void onLoadedGameFiles() override {
 		// this notifies the script whether we are a demo
 		if (g_engine->world().loadedMapCount() == 2)

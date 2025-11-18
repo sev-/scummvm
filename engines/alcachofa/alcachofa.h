@@ -60,10 +60,11 @@ static constexpr int16 kBigThumbnailWidth = 341; // for in-game
 static constexpr int16 kBigThumbnailHeight = 256;
 
 
-enum class SaveVersion : Common::Serializer::Version {
-	Initial = 0
+namespace SaveVersion {
+	static constexpr const Common::Serializer::Version kInitial = 0;
+	static constexpr const Common::Serializer::Version kWithEngineV10 = 1;
 };
-static constexpr SaveVersion kCurrentSaveVersion = SaveVersion::Initial;
+static constexpr const Common::Serializer::Version kCurrentSaveVersion = SaveVersion::kInitial;
 
 class MySerializer : public Common::Serializer {
 public:
