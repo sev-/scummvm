@@ -543,7 +543,7 @@ void Inventory::open() {
 	updateItemsByActiveCharacter();
 }
 
-void InventoryV3::close() {
+void Inventory::close() {
 	g_engine->camera().restore(1);
 	g_engine->globalUI().startClosingInventory();
 }
