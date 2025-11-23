@@ -32,22 +32,23 @@ Common::Rect closeInventoryTriggerBounds();
 class GlobalUI {
 public:
 	GlobalUI();
+	virtual ~GlobalUI() {}
 
 	inline Font &generalFont() const { assert(_generalFont != nullptr); return *_generalFont; }
 	inline Font &dialogFont() const { assert(_dialogFont != nullptr); return *_dialogFont; }
 	inline bool &isPermanentFaded() { return _isPermanentFaded; }
 
 	bool updateChangingCharacter();
-	void drawChangingButton();
+	virtual void drawChangingButton() = 0;
 	bool updateOpeningInventory();
 	void updateClosingInventory();
 	void startClosingInventory();
 	void drawScreenStates(); // black borders and/or permanent fade
 	void syncGame(Common::Serializer &s);
 
-private:
+protected:
 	Animation *activeAnimation() const;
-	bool isHoveringChangeButton() const;
+	virtual bool isHoveringChangeButton() const = 0;
 
 	Graphic _changeButton;
 	Common::ScopedPtr<Font>
@@ -63,6 +64,22 @@ private:
 		_isClosingInventory = false,
 		_isPermanentFaded = false;
 	uint32 _timeForInventory = 0;
+};
+
+class GlobalUIV1 final : public GlobalUI {
+public:
+	void drawChangingButton() override;
+
+protected:
+	bool isHoveringChangeButton() const override;
+};
+
+class GlobalUIV3 final : public GlobalUI {
+public:
+	void drawChangingButton() override;
+
+protected:
+	bool isHoveringChangeButton() const override;
 };
 
 Task *showCenterBottomText(Process &process, int32 dialogId, uint32 durationMs);

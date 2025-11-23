@@ -84,7 +84,7 @@ Common::Error AlcachofaEngine::run() {
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
 	_script.reset(new Script());
 	_player.reset(new Player());
-	_globalUI.reset(new GlobalUI());
+	_globalUI.reset(isV1() ? static_cast<GlobalUI *>(new GlobalUIV1()) : new GlobalUIV3());
 	_menu.reset(new Menu());
 	setMillis(0);
 	game().onLoadedGameFiles();

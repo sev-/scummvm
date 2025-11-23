@@ -789,8 +789,8 @@ bool World::loadWorldFileV1(const char *path) {
 	};
 	readGlobalAnim(GlobalAnimationKind::GeneralFont, GlobalAnimationKind::DialogFont);
 	readGlobalAnim(GlobalAnimationKind::Cursor);
+	readGlobalAnim(GlobalAnimationKind::FilemonIcon, GlobalAnimationKind::FilemonDisabledIcon); // note this is swapped in V1
 	readGlobalAnim(GlobalAnimationKind::MortadeloIcon, GlobalAnimationKind::MortadeloDisabledIcon);
-	readGlobalAnim(GlobalAnimationKind::FilemonIcon, GlobalAnimationKind::FilemonDisabledIcon);
 	readGlobalAnim(GlobalAnimationKind::InventoryIcon, GlobalAnimationKind::InventoryDisabledIcon);
 
 	readRooms(*file);

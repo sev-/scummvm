@@ -211,6 +211,10 @@ public:
 		return String::format("disk%d/track%02d", diskId, trackId);
 	}
 
+	int32 getCharacterJingle(MainCharacterKind kind) override {
+		return kind == MainCharacterKind::Mortadelo ? 15 : 16;
+	}
+
 	bool shouldClipCamera() override {
 		return true;
 	}

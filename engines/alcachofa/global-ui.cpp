@@ -113,17 +113,6 @@ Animation *GlobalUI::activeAnimation() const {
 		: _iconMortadelo.get();
 }
 
-bool GlobalUI::isHoveringChangeButton() const {
-	auto mousePos = g_engine->input().mousePos2D();
-	auto anim = activeAnimation();
-	auto offset = anim->totalFrameOffset(0);
-	auto bounds = anim->frameBounds(0);
-
-	const int minX = g_system->getWidth() + offset.x;
-	const int maxY = bounds.height() + offset.y;
-	return mousePos.x >= minX && mousePos.y <= maxY;
-}
-
 bool GlobalUI::updateChangingCharacter() {
 	auto &player = g_engine->player();
 	if (g_engine->menu().isOpen() ||
@@ -147,12 +136,7 @@ bool GlobalUI::updateChangingCharacter() {
 	player.changeRoom(player.activeCharacter()->room()->name(), false);
 	g_engine->game().onUserChangedCharacter();
 
-	int32 characterJingle = g_engine->script().variable(
-		player.activeCharacterKind() == MainCharacterKind::Mortadelo
-		? "PistaMorta"
-		: "PistaFile"
-	);
-	g_engine->sounds().startMusic(characterJingle);
+	g_engine->sounds().startMusic(g_engine->game().getCharacterJingle(player.activeCharacterKind()));
 	g_engine->sounds().queueMusic(player.currentRoom()->musicID());
 
 	_changeButton.setAnimation(activeAnimation());
@@ -160,7 +144,18 @@ bool GlobalUI::updateChangingCharacter() {
 	return true;
 }
 
-void GlobalUI::drawChangingButton() {
+bool GlobalUIV3::isHoveringChangeButton() const {
+	auto mousePos = g_engine->input().mousePos2D();
+	auto anim = activeAnimation();
+	auto offset = anim->totalFrameOffset(0);
+	auto bounds = anim->frameBounds(0);
+
+	const int minX = g_system->getWidth() + offset.x;
+	const int maxY = bounds.height() + offset.y;
+	return mousePos.x >= minX && mousePos.y <= maxY;
+}
+
+void GlobalUIV3::drawChangingButton() {
 	auto &player = g_engine->player();
 	if (g_engine->menu().isOpen() ||
 		!player.semaphore().isReleased() ||
@@ -186,6 +181,26 @@ void GlobalUI::drawChangingButton() {
 	_changeButton.order() = -9;
 	_changeButton.update();
 	g_engine->drawQueue().add<AnimationDrawRequest>(_changeButton, false, BlendMode::AdditiveAlpha);
+}
+
+bool GlobalUIV1::isHoveringChangeButton() const {
+	auto mousePos = g_engine->input().mousePos2D();
+	auto imageSize = activeAnimation()->imageSize(0);
+
+	return mousePos.x >= g_system->getWidth() - imageSize.x && mousePos.y < imageSize.y;
+}
+
+void GlobalUIV1::drawChangingButton() {
+	if (g_engine->menu().isOpen())
+		return;
+
+	auto anim = activeAnimation();
+	_changeButton.setAnimation(anim);
+	_changeButton.topLeft() = { (int16)(g_system->getWidth() - anim->imageSize(0).x), 0 };
+	_changeButton.reset(); // make sure frameI == 0
+	g_engine->drawQueue().add<AnimationDrawRequest>(_changeButton, false, BlendMode::AdditiveAlpha);
+
+	//g_engine->drawQueue().add<AnimationDrawRequest>(anim, 0, Math::Vector2d(x, 0), -9);
 }
 
 struct CenterBottomTextTask final : public Task {

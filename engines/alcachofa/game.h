@@ -36,6 +36,7 @@ class Door;
 class Room;
 class Process;
 struct ScriptInstruction;
+class GlobalUI;
 
 /**
  * @brief Provides functionality specific to a game title / engine version.
@@ -65,6 +66,7 @@ public:
 	virtual Common::Path getVideoPath(int32 videoId) = 0;
 	virtual Common::String getSoundPath(const char *filename) = 0; ///< Without file-extension
 	virtual Common::String getMusicPath(int32 trackId) = 0; ///< Without file-extension
+	virtual int32 getCharacterJingle(MainCharacterKind kind) = 0;
 	virtual bool shouldClipCamera() = 0;
 	virtual bool isAllowedToInteract() = 0;
 	virtual bool isAllowedToOpenMenu() = 0; ///< only the game-specific condition

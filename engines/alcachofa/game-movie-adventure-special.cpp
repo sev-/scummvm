@@ -253,6 +253,11 @@ public:
 		return String::format("Sonidos/T%d", trackId);
 	}
 
+	int32 getCharacterJingle(MainCharacterKind kind) override {
+		return g_engine->script().variable(
+			kind == MainCharacterKind::Mortadelo ? "PistaMorta" : "PistaFile");
+	}
+
 	bool shouldClipCamera() override {
 		return g_engine->script().variable("EncuadrarCamara");
 	}
