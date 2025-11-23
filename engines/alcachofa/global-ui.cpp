@@ -28,22 +28,6 @@ using namespace Common;
 
 namespace Alcachofa {
 
-// originally the inventory only reacts to exactly top-left/bottom-right which is fine in
-// fullscreen when you just slam the mouse cursor into the corner.
-// In any other scenario this is cumbersome so I expand this area.
-// And it is still pretty bad, especially in windowed mode so there is a key to open/close as well
-static constexpr int16 kInventoryTriggerSize = 10;
-
-Rect openInventoryTriggerBounds() {
-	int16 size = kInventoryTriggerSize * 1024 / g_system->getWidth();
-	return Rect(0, 0, size, size);
-}
-
-Rect closeInventoryTriggerBounds() {
-	int16 size = kInventoryTriggerSize * 1024 / g_system->getWidth();
-	return Rect(g_system->getWidth() - size, g_system->getHeight() - size, g_system->getWidth(), g_system->getHeight());
-}
-
 GlobalUI::GlobalUI() {
 	auto &world = g_engine->world();
 	_generalFont.reset(new Font(world.getGlobalAnimation(GlobalAnimationKind::GeneralFont)));
@@ -59,7 +43,11 @@ GlobalUI::GlobalUI() {
 	_iconInventory->load();
 }
 
-void GlobalUI::startClosingInventory() {
+void GlobalUIV1::startClosingInventory() {
+	// nothing to do here, the inventory closes instantly
+}
+
+void GlobalUIV3::startClosingInventory() {
 	_isOpeningInventory = false;
 	_isClosingInventory = true;
 	_timeForInventory = g_engine->getMillis();
@@ -77,13 +65,20 @@ void GlobalUI::updateClosingInventory() {
 		g_engine->world().inventory().drawAsOverlay((int32)(g_system->getHeight() * (deltaTime * kSpeed)));
 }
 
-bool GlobalUI::updateOpeningInventory() {
+// originally the inventory only reacts to exactly top-left/bottom-right which is fine in
+// fullscreen when you just slam the mouse cursor into the corner.
+// In any other scenario this is cumbersome so I expand this area.
+// And it is still pretty bad, especially in windowed mode so there is a key to open/close as well
+static constexpr int16 kInventoryTriggerSizeV3 = 10;
+
+bool GlobalUIV3::updateOpeningInventory() {
 	static constexpr float kSpeed = 10 / 3.0f / 1000.0f;
 	if (g_engine->menu().isOpen())
 		return false;
 
+	int16 size = kInventoryTriggerSizeV3 * 1024 / g_system->getWidth();
 	const bool userWantsToOpenInventory =
-		openInventoryTriggerBounds().contains(g_engine->input().mousePos2D()) ||
+		Rect(0, 0, size, size).contains(g_engine->input().mousePos2D()) ||
 		g_engine->input().wasInventoryKeyPressed();
 
 	if (_isOpeningInventory) {
@@ -105,6 +100,23 @@ bool GlobalUI::updateOpeningInventory() {
 		return true;
 	}
 	return false;
+}
+
+bool GlobalUIV1::updateOpeningInventory() {
+	auto mousePos = g_engine->input().mousePos2D();
+	auto imageSize = _iconInventory->imageSize(0);
+	const bool isHovering = mousePos.x < imageSize.x && mousePos.y < imageSize.y;
+	const bool userClickedOnButton = isHovering && g_engine->input().wasMouseLeftReleased();
+
+	if (g_engine->menu().isOpen())
+		return false;
+	if (userClickedOnButton || g_engine->input().wasInventoryKeyPressed()) {
+		g_engine->player().activeCharacter()->stopWalking();
+		g_engine->world().inventory().updateItemsByActiveCharacter();
+		g_engine->world().inventory().open();
+		return true;
+	}
+	return isHovering;
 }
 
 Animation *GlobalUI::activeAnimation() const {
@@ -183,6 +195,16 @@ void GlobalUIV3::drawChangingButton() {
 	g_engine->drawQueue().add<AnimationDrawRequest>(_changeButton, false, BlendMode::AdditiveAlpha);
 }
 
+bool GlobalUIV3::isHoveringInventoryExit() const {
+	int16 size = kInventoryTriggerSizeV3 * 1024 / g_system->getWidth();
+	auto bounds = Rect(g_system->getWidth() - size, g_system->getHeight() - size, g_system->getWidth(), g_system->getHeight());;
+	return bounds.contains(g_engine->input().mousePos2D());
+}
+
+void GlobalUIV3::drawInventoryButton() {
+	// while there are animations for the inventory button, they are unused in V3
+}
+
 bool GlobalUIV1::isHoveringChangeButton() const {
 	auto mousePos = g_engine->input().mousePos2D();
 	auto imageSize = activeAnimation()->imageSize(0);
@@ -191,7 +213,7 @@ bool GlobalUIV1::isHoveringChangeButton() const {
 }
 
 void GlobalUIV1::drawChangingButton() {
-	if (g_engine->menu().isOpen())
+	if (g_engine->menu().isOpen() || !g_engine->player().semaphore().isReleased())
 		return;
 
 	auto anim = activeAnimation();
@@ -201,6 +223,25 @@ void GlobalUIV1::drawChangingButton() {
 	g_engine->drawQueue().add<AnimationDrawRequest>(_changeButton, false, BlendMode::AdditiveAlpha);
 
 	//g_engine->drawQueue().add<AnimationDrawRequest>(anim, 0, Math::Vector2d(x, 0), -9);
+}
+
+static constexpr int16 kInventoryTriggerSizeV1 = 70;
+
+bool GlobalUIV1::isHoveringInventoryExit() const {
+	auto mousePos = g_engine->input().mousePos2D();
+
+	return mousePos.x >= g_system->getWidth() - kInventoryTriggerSizeV1 &&
+		mousePos.y >= g_system->getHeight() - kInventoryTriggerSizeV1;
+}
+
+void GlobalUIV1::drawInventoryButton() {
+	if (g_engine->menu().isOpen())
+		return;
+
+	_inventoryButton.setAnimation(_iconInventory.get());
+	_inventoryButton.reset();
+	_inventoryButton.order() = -9;
+	g_engine->drawQueue().add<AnimationDrawRequest>(_inventoryButton, false, BlendMode::AdditiveAlpha);
 }
 
 struct CenterBottomTextTask final : public Task {

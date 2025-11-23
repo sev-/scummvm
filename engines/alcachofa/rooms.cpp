@@ -240,6 +240,7 @@ bool Room::updateInput() {
 			player.updateCursor();
 		}
 		player.drawCursor();
+		g_engine->globalUI().drawInventoryButton();
 	}
 
 	if (player.currentRoom() == this) {
@@ -440,11 +441,11 @@ bool Inventory::updateInput() {
 	auto &player = g_engine->player();
 	auto &input = g_engine->input();
 	auto *hoveredItem = getHoveredItem();
+	if (player.activeCharacter()->isBusy())
+		return true;
+	player.drawCursor(0);
 
-	if (!player.activeCharacter()->isBusy())
-		player.drawCursor(0);
-
-	if (hoveredItem != nullptr && !player.activeCharacter()->isBusy()) {
+	if (hoveredItem != nullptr) {
 		if ((input.wasMouseLeftPressed() && player.heldItem() == nullptr) ||
 			(input.wasMouseLeftReleased() && player.heldItem() != nullptr) ||
 			input.wasMouseRightReleased()) {
@@ -460,18 +461,15 @@ bool Inventory::updateInput() {
 	}
 
 	const bool userWantsToCloseInventory =
-		closeInventoryTriggerBounds().contains(input.mousePos2D()) ||
+		g_engine->globalUI().isHoveringInventoryExit() ||
 		input.wasMenuKeyPressed() ||
 		input.wasInventoryKeyPressed();
-	if (!player.activeCharacter()->isBusy() &&
-		userWantsToCloseInventory) {
+	if (userWantsToCloseInventory) {
 		player.changeRoomToBeforeInventory();
 		close();
 	}
 
-	if (!player.activeCharacter()->isBusy() &&
-		hoveredItem == nullptr &&
-		input.wasMouseRightReleased()) {
+	if (hoveredItem == nullptr && input.wasMouseRightReleased()) {
 		player.heldItem() = nullptr;
 		return false;
 	}

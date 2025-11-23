@@ -26,9 +26,6 @@
 
 namespace Alcachofa {
 
-Common::Rect openInventoryTriggerBounds();
-Common::Rect closeInventoryTriggerBounds();
-
 class GlobalUI {
 public:
 	GlobalUI();
@@ -40,9 +37,11 @@ public:
 
 	bool updateChangingCharacter();
 	virtual void drawChangingButton() = 0;
-	bool updateOpeningInventory();
+	virtual void drawInventoryButton() = 0;
+	virtual bool updateOpeningInventory() = 0; ///< returns true iff interaction is handled
+	virtual void startClosingInventory() = 0;
+	virtual bool isHoveringInventoryExit() const = 0;
 	void updateClosingInventory();
-	void startClosingInventory();
 	void drawScreenStates(); // black borders and/or permanent fade
 	void syncGame(Common::Serializer &s);
 
@@ -50,7 +49,7 @@ protected:
 	Animation *activeAnimation() const;
 	virtual bool isHoveringChangeButton() const = 0;
 
-	Graphic _changeButton;
+	Graphic _changeButton, _inventoryButton;
 	Common::ScopedPtr<Font>
 		_generalFont,
 		_dialogFont;
@@ -69,6 +68,10 @@ protected:
 class GlobalUIV1 final : public GlobalUI {
 public:
 	void drawChangingButton() override;
+	void drawInventoryButton() override;
+	bool updateOpeningInventory() override;
+	void startClosingInventory() override;
+	bool isHoveringInventoryExit() const override;
 
 protected:
 	bool isHoveringChangeButton() const override;
@@ -77,6 +80,10 @@ protected:
 class GlobalUIV3 final : public GlobalUI {
 public:
 	void drawChangingButton() override;
+	void drawInventoryButton() override;
+	bool updateOpeningInventory() override;
+	void startClosingInventory() override;
+	bool isHoveringInventoryExit() const override;
 
 protected:
 	bool isHoveringChangeButton() const override;
