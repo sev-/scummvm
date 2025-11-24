@@ -51,6 +51,7 @@ Console::Console() : GUI::Debugger() {
 	registerCmd("tp", WRAP_METHOD(Console, cmdTeleport));
 	registerCmd("toggleRoomFloor", WRAP_METHOD(Console, cmdToggleRoomFloor));
 	registerCmd("playVideo", WRAP_METHOD(Console, cmdPlayVideo));
+	registerCmd("script", WRAP_METHOD(Console, cmdScript));
 }
 
 Console::~Console() {}
@@ -292,6 +293,25 @@ bool Console::cmdPlayVideo(int argc, const char **args) {
 	} else
 		debugPrintf("usage: playVideo <id>\n");
 	return true;
+}
+
+bool Console::cmdScript(int argc, const char **args) {
+	if (argc != 2) {
+		debugPrintf("usage: %s <procedure name>\n", args[0]);
+		return true;
+	}
+
+	auto process = g_engine->script().createProcess(
+		g_engine->player().activeCharacterKind(),
+		args[1],
+		ScriptFlags::AllowMissing);
+	if (process == nullptr) {
+		debugPrintf("No such procedure exists");
+		return true;
+	} else {
+		process->name() += " (Console)";
+		return false;
+	}
 }
 
 } // End of namespace Alcachofa
