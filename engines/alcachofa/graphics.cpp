@@ -230,7 +230,7 @@ void AnimationBase::readV1(SeekableReadStream &stream) {
 	skipVarString(stream); // another internal, unused name
 	uint spriteCount = stream.readUint32LE();
 	uint frameCount = stream.readUint32LE();
-	scumm_assert(spriteCount < kMaxSpriteIDsV1);
+	scumm_assert(spriteCount <= kMaxSpriteIDsV1);
 	_spriteBases.reserve(spriteCount);
 	_spriteEnabled.reserve(spriteCount);
 	_spriteOffsets.reserve(spriteCount * frameCount);
@@ -258,15 +258,17 @@ void AnimationBase::readV1(SeekableReadStream &stream) {
 		}
 	}
 
-	// Sprite order is setup by setting up reverse index sequence and
+	// Sprite order is setup by setting up index sequence and
 	// then stable sort descending by order (here: Bubblesort)
 	for (uint i = 0; i < spriteCount; i++)
-		_spriteIndexMapping[i] = (spriteCount - 1 - i);
+		_spriteIndexMapping[i] = i;
 	for (uint i = 0; i < spriteCount; i++) {
 		bool hadChange = false;
 		for (uint j = 0; j < spriteCount - i - 1; j++) {
-			if (spriteOrder[_spriteIndexMapping[j]] < spriteOrder[_spriteIndexMapping[j + 1]])
+			if (spriteOrder[_spriteIndexMapping[j]] < spriteOrder[_spriteIndexMapping[j + 1]]) {
 				SWAP(_spriteIndexMapping[j], _spriteIndexMapping[j + 1]);
+				hadChange = true;
+			}
 		}
 		if (!hadChange)
 			break;
