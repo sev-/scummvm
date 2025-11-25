@@ -390,6 +390,7 @@ struct ScriptTask final : public Task {
 				break;
 			case ScriptOp::ReturnVoid: {
 				_pc = popInstruction();
+				pushNumber(instruction._arg); // this does not seem to be original, but it works..
 				if (_pc == UINT_MAX)
 					return TaskReturn::finish(0);
 			}break;
