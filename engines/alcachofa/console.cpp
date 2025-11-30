@@ -52,6 +52,7 @@ Console::Console() : GUI::Debugger() {
 	registerCmd("toggleRoomFloor", WRAP_METHOD(Console, cmdToggleRoomFloor));
 	registerCmd("playVideo", WRAP_METHOD(Console, cmdPlayVideo));
 	registerCmd("script", WRAP_METHOD(Console, cmdScript));
+	registerCmd("toggleObject", WRAP_METHOD(Console, cmdToggleObject));
 }
 
 Console::~Console() {}
@@ -306,12 +307,30 @@ bool Console::cmdScript(int argc, const char **args) {
 		args[1],
 		ScriptFlags::AllowMissing);
 	if (process == nullptr) {
-		debugPrintf("No such procedure exists");
+		debugPrintf("No such procedure exists\n");
 		return true;
 	} else {
 		process->name() += " (Console)";
 		return false;
 	}
+}
+
+bool Console::cmdToggleObject(int argc, const char **args) {
+	if (argc < 2) {
+		debugPrintf("usage: %s <object> [<object> ...]\n", args[0]);
+		return true;
+	}
+
+	for (int i = 1; i < argc; i++) {
+		auto object = g_engine->world().getObjectByName(args[i]);
+		if (object == nullptr)
+			object = g_engine->world().getObjectByNameFromAnyRoom(args[i]);
+		if (object == nullptr)
+			debugPrintf("No such object: %s\n", args[i]);
+		else
+			object->toggle(!object->isEnabled());
+	}
+	return true;
 }
 
 } // End of namespace Alcachofa

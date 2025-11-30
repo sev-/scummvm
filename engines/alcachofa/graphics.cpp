@@ -601,7 +601,10 @@ void Animation::draw2D(int32 frameI, Vector2d topLeft, float scale, BlendMode bl
 
 void Animation::outputRect3D(int32 frameI, float scale, Vector3d &topLeft, Vector2d &size) const {
 	auto bounds = frameBounds(frameI);
-	topLeft += as3D(totalFrameOffset(frameI)) * scale;
+	if (g_engine->isV3())
+		topLeft += as3D(totalFrameOffset(frameI)) * scale;
+	else // scale by depth position is not used in V1
+		topLeft += as3D(totalFrameOffset(frameI)) * scale / (topLeft.z() * kInvBaseScale);
 	topLeft = g_engine->camera().transform3Dto2D(topLeft);
 	size = Vector2d(bounds.width(), bounds.height()) * scale * topLeft.z();
 }

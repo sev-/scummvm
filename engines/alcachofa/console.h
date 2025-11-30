@@ -62,6 +62,7 @@ private:
 	bool cmdToggleRoomFloor(int argc, const char **args);
 	bool cmdPlayVideo(int argc, const char **args);
 	bool cmdScript(int argc, const char **args);
+	bool cmdToggleObject(int argc, const char **args);
 
 	bool _showGraphics = false;
 	bool _showInteractables = false;

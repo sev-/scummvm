@@ -275,10 +275,7 @@ void Room::updateRoomBounds() {
 	if (graphic != nullptr) {
 		auto bgSize = graphic->animation().imageSize(0);
 		if (g_engine->isV1()) {
-			g_engine->camera().setRoomBounds(
-				graphic->topLeft() + Point(400, 300),
-				bgSize - Point(800, 600),
-				graphic->scale());
+			g_engine->camera().setRoomBounds(graphic->topLeft(), bgSize);
 		} else {
 			/* The fallback fixes a bug where if the background image is invalid the original engine
 			 * would not update the background size. This would be around 1024,768 due to

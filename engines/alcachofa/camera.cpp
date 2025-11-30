@@ -37,11 +37,11 @@ void Camera::resetRotationAndScale() {
 	_cur._usedCenter.z() = 0;
 }
 
-void Camera::setRoomBounds(Point min, Point size, int16 bgScale) {
-	float scaleFactor = bgScale * kInvBaseScale;
-	_roomMin = as2D(min) * scaleFactor;
-	_roomMax = _roomMin + as2D(size) * scaleFactor;
-	_roomScale = 0.0f;
+void Camera::setRoomBounds(Point min, Point size) {
+	Point screenSize(g_system->getWidth(), g_system->getHeight());
+	_roomMin = as2D(min + screenSize / 2);
+	_roomMax = _roomMin + as2D(size - screenSize);
+	_roomScale = 0;
 }
 
 void Camera::setRoomBounds(Point bgSize, int16 bgScale) {
