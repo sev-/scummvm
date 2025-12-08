@@ -52,6 +52,7 @@ public:
 
 	virtual void onLoadedGameFiles();
 	virtual Common::Point getResolution() = 0;
+	virtual Common::Point getThumbnailResolution() = 0;
 	virtual const char *const *getMapFiles() = 0; ///< Returns a nullptr-terminated list
 	virtual GameFileReference getScriptFileRef() = 0;
 	virtual Common::Span<const ScriptOp> getScriptOpMap() = 0;
@@ -61,6 +62,7 @@ public:
 	virtual const char *getDialogFileName() = 0;
 	virtual const char *getObjectFileName() = 0;
 	virtual char getTextFileKey() = 0;
+	virtual const char *getMenuRoom() = 0;
 	virtual const char *getInitScriptName() = 0;
 	virtual int32 getKernelTaskArgCount(int32 kernelTaskI); // only necessary for V1
 	virtual Common::Path getVideoPath(int32 videoId) = 0;
@@ -106,6 +108,7 @@ public:
 	virtual void unknownCamLerpTarget(const char *action, const char *name);
 	virtual void unknownKernelTask(int task);
 	virtual void unknownScriptProcedure(const Common::String &procedure);
+	virtual void unknownMenuAction(int32 actionId);
 
 	virtual void missingAnimation(const Common::String &fileName);
 	virtual void missingSound(const Common::String &fileName);

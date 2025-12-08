@@ -148,6 +148,10 @@ public:
 		return Point(800, 600);
 	}
 
+	Point getThumbnailResolution() override {
+		return Point(266, 200);
+	}
+
 	static constexpr const char *kMapFiles[] = {
 		"oeste.emc",
 		"terror.emc",
@@ -173,6 +177,10 @@ public:
 
 	char getTextFileKey() override {
 		return kNoXORKey;
+	}
+
+	const char *getMenuRoom() override {
+		return "MENU";
 	}
 
 	const char *getInitScriptName() override {

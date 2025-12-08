@@ -24,6 +24,7 @@
 
 #include "alcachofa/shape.h"
 #include "alcachofa/graphics.h"
+#include "alcachofa/menu.h"
 
 #include "common/serializer.h"
 
@@ -164,14 +165,20 @@ public:
 	static constexpr const char *kClassName = "CBoton";
 	ButtonV1(Room *room, Common::SeekableReadStream &stream);
 
-	inline byte actionId() const { return _actionId; }
-	inline const Common::String &actionName() const { return _actionName; }
-
+	void loadResources() override;
+	void draw();
+	void update() override;
+	void onHoverUpdate() override;
+	void onClick() override;
 	const char *typeName() const override;
 
 private:
-	byte _actionId;
-	Common::String _actionName;
+	MenuV1 &menu();
+
+	MainMenuAction _action = {};
+	Common::String _graphicName;
+	ObjectBase *_graphicObject = nullptr;
+	bool _isHovered = false;
 };
 
 class MenuButton : public PhysicalObject {

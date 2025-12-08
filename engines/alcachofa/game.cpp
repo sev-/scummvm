@@ -180,6 +180,10 @@ void Game::unknownScriptProcedure(const String &procedure) {
 	_message("Unknown required procedure: %s", procedure.c_str());
 }
 
+void Game::unknownMenuAction(int32 actionId) {
+	_message("Unknown button action: %d", actionId);
+}
+
 void Game::missingSound(const String &fileName) {
 	_message("Missing sound file: %s", fileName.c_str());
 }

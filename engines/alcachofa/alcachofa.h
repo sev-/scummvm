@@ -56,9 +56,7 @@ struct AlcachofaGameDescription;
 
 constexpr int16 kSmallThumbnailWidth = 160; // for ScummVM
 constexpr int16 kSmallThumbnailHeight = 120;
-static constexpr int16 kBigThumbnailWidth = 341; // for in-game
-static constexpr int16 kBigThumbnailHeight = 256;
-
+// the in-game save thumbnail size is determined by engine verison
 
 namespace SaveVersion {
 	static constexpr const Common::Serializer::Version kInitial = 0;

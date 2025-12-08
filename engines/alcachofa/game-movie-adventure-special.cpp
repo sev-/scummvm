@@ -204,6 +204,10 @@ public:
 		return Point(1024, 768);
 	}
 
+	Point getThumbnailResolution() override {
+		return Point(341, 256);
+	}
+
 	const char *const *getMapFiles() override {
 		return kMapFiles;
 	}
@@ -226,6 +230,10 @@ public:
 
 	char getTextFileKey() override {
 		return kEmbeddedXORKey;
+	}
+
+	const char *getMenuRoom() override {
+		return "MENUPRINCIPAL";
 	}
 
 	const char *getInitScriptName() override {

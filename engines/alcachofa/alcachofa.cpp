@@ -85,7 +85,7 @@ Common::Error AlcachofaEngine::run() {
 	_script.reset(new Script());
 	_player.reset(new Player());
 	_globalUI.reset(isV1() ? static_cast<GlobalUI *>(new GlobalUIV1()) : new GlobalUIV3());
-	_menu.reset(new Menu());
+	_menu.reset(isV1() ? static_cast<Menu *>(new MenuV1()) : new MenuV3());
 	setMillis(0);
 	game().onLoadedGameFiles();
 
@@ -415,7 +415,8 @@ void AlcachofaEngine::getSavegameThumbnail(Graphics::Surface &thumbnail) {
 	}
 
 	// otherwise we have to rerender
-	thumbnail.create(kBigThumbnailWidth, kBigThumbnailHeight, g_engine->renderer().getPixelFormat());
+	auto size = g_engine->game().getThumbnailResolution();
+	thumbnail.create(size.x, size.y, g_engine->renderer().getPixelFormat());
 	if (g_engine->player().currentRoom() == nullptr)
 		return; // but without a room we would render only black anyway
 

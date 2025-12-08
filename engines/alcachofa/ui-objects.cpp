@@ -33,9 +33,140 @@ namespace Alcachofa {
 const char *ButtonV1::typeName() const { return "ButtonV1"; }
 
 ButtonV1::ButtonV1(Room *room, Common::SeekableReadStream &stream)
-	: PhysicalObject(room, stream)
-	, _actionId(stream.readByte())
-	, _actionName(readVarString(stream)) {}
+	: PhysicalObject(room, stream) {
+	byte actionId = stream.readByte();
+	_graphicName = readVarString(stream);
+
+	switch (actionId) {
+	case 0:
+		_action = MainMenuAction::Save;
+		break;
+	case 1:
+		_action = MainMenuAction::Load;
+		break;
+	case 2:
+		_action = MainMenuAction::ContinueGame;
+		break;
+	case 3:
+		_action = MainMenuAction::Exit;
+		break;
+	case 4:
+		_action = MainMenuAction::InternetMenu;
+		break;
+	case 5:
+		_action = MainMenuAction::OptionsMenu;
+		break;
+	case 6:
+		_action = MainMenuAction::PrevSave;
+		break;
+	case 7:
+		_action = MainMenuAction::NextSave;
+		break;
+	case 10:
+		_action = MainMenuAction::ConfirmSavestate;
+		break;
+	default:
+		g_engine->game().unknownMenuAction(actionId);
+		break;
+	}
+}
+
+void ButtonV1::loadResources() {
+	if (!_graphicName.empty()) {
+		_graphicObject = room()->getObjectByName(_graphicName.c_str());
+		scumm_assert(_graphicObject != nullptr);
+		_graphicObject->toggle(false);
+	}
+}
+
+void ButtonV1::draw() {
+	if (menu()._currentState != _action)
+		return;
+
+	static constexpr uint kBufferSize = 32;
+	static char buffer[kBufferSize];
+	const char *text = nullptr;
+	switch (_action) {
+	case MainMenuAction::Save:
+		if (menu().isOnNewSlot())
+			text = "ENTRAR VACIA";
+		break;
+	case MainMenuAction::OptionsMenu:
+		int volumePercent = g_engine->config().musicVolume() * 10 / Audio::Mixer::kMaxChannelVolume;
+		snprintf(buffer, kBufferSize, "%s: %d", "VOLUMEN", volumePercent * 10);
+		text = buffer;
+		break;
+	}
+	if (text != nullptr) {
+		g_engine->drawQueue().add<TextDrawRequest>(
+			g_engine->globalUI().dialogFont(),
+			text,
+			Point(300, 250),
+			200,
+			true,
+			kWhite,
+			1
+		);
+	}
+}
+
+void ButtonV1::update() {
+	PhysicalObject::update();
+
+	if (_graphicObject != nullptr)
+		_graphicObject->toggle(_isHovered || menu()._currentState == _action);
+	_isHovered = false;
+
+	if (_action == MainMenuAction::ContinueGame && g_engine->input().wasMenuKeyPressed())
+		onClick();
+}
+
+void ButtonV1::onHoverUpdate() {
+	// we mainly override this function to disable drawing the object name
+
+	// only savegame selection buttons highlight on hover
+	if (_action == MainMenuAction::PrevSave || _action == MainMenuAction::NextSave)
+		_isHovered = true;
+}
+
+void ButtonV1::onClick() {
+	auto &menuState = menu()._currentState;
+	switch (_action) {
+	case MainMenuAction::Save:
+	case MainMenuAction::Load:
+	case MainMenuAction::OptionsMenu:
+		g_engine->config().saveToScummVM();
+		menu().switchToState(_action);
+		break;
+	case MainMenuAction::NextSave:
+	case MainMenuAction::PrevSave:
+		if (menuState == MainMenuAction::Load ||
+			menuState == MainMenuAction::Save ||
+			menuState == MainMenuAction::OptionsMenu)
+			g_engine->menu().triggerMainMenuAction(_action);
+		break;
+	case MainMenuAction::ContinueGame:
+	case MainMenuAction::InternetMenu:
+	case MainMenuAction::Exit:
+		g_engine->config().saveToScummVM();
+		g_engine->menu().triggerMainMenuAction(_action);
+		break;
+	case MainMenuAction::ConfirmSavestate:
+		if (menuState == MainMenuAction::Load ||
+			menuState == MainMenuAction::Save)
+			g_engine->menu().triggerMainMenuAction(menuState);
+		break;
+	default:
+		assert(false && "Unimplemented ButtonV1 action");
+		break;
+	}
+}
+
+MenuV1 &ButtonV1::menu() {
+	auto menuPtr = dynamic_cast<MenuV1 *>(&g_engine->menu());
+	assert(menuPtr != nullptr);
+	return *menuPtr;
+}
 
 const char *MenuButton::typeName() const { return "MenuButton"; }
 
