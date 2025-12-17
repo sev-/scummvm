@@ -37,6 +37,7 @@ void Input::nextFrame() {
 	_wasMouseRightReleased = false;
 	_wasMenuKeyPressed = false;
 	_wasInventoryKeyPressed = false;
+	_wasSubtitlesKeyPressed = false;
 	updateMousePos3D(); // camera transformation might have changed
 }
 
@@ -76,6 +77,9 @@ bool Input::handleEvent(const Common::Event &event) {
 			return true;
 		case EventAction::InputInventory:
 			_wasInventoryKeyPressed = true;
+			return true;
+		case EventAction::InputSubtitles:
+			_wasSubtitlesKeyPressed = true;
 			return true;
 		default:
 			return false;

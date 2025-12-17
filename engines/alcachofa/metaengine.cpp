@@ -105,7 +105,12 @@ KeymapArray AlcachofaMetaEngine::initKeymaps(const char *target) const {
 	act = new Action("INVENTORY", _("Inventory"));
 	act->setCustomEngineActionEvent((CustomEventType)EventAction::InputInventory);
 	act->addDefaultInputMapping("SPACE");
-	act->addDefaultInputMapping("JOY_B");
+	act->addDefaultInputMapping("JOY_X");
+	keymap->addAction(act);
+
+	act = new Action("SUBTITLES", _("Toggle subtitles"));
+	act->setCustomEngineActionEvent((CustomEventType)EventAction::InputSubtitles);
+	act->addDefaultInputMapping("C+t");
 	keymap->addAction(act);
 
 	return Keymap::arrayOf(keymap);

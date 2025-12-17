@@ -39,6 +39,13 @@ Player::Player()
 void Player::preUpdate() {
 	_selectedObject = nullptr;
 	_cursorFrameI = 0;
+
+	if (g_engine->input().wasSubtitlesKeyPressed()) {
+		auto &config = g_engine->config();
+		config.subtitles() = !config.subtitles();
+		config.saveToScummVM();
+		debug(1, "Toggled subtitles to %s", config.subtitles() ? "on" : "off");
+	}
 }
 
 void Player::postUpdate() {
