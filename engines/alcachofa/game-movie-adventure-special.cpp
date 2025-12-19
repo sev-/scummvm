@@ -232,6 +232,10 @@ public:
 		return kEmbeddedXORKey;
 	}
 
+	Point getSubtitlePos() override {
+		return Point(g_system->getWidth() / 2, g_system->getHeight() - 200);
+	}
+
 	const char *getMenuRoom() override {
 		return "MENUPRINCIPAL";
 	}

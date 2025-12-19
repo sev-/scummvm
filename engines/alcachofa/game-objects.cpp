@@ -350,7 +350,7 @@ struct SayTextTask final : public Task {
 				g_engine->drawQueue().add<TextDrawRequest>(
 					g_engine->globalUI().dialogFont(),
 					g_engine->world().getDialogLine(_dialogId),
-					Point(g_system->getWidth() / 2, g_system->getHeight() - 200),
+					g_engine->game().getSubtitlePos(),
 					-1, true, kWhite, -kForegroundOrderCount);
 			}
 

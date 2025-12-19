@@ -179,6 +179,10 @@ public:
 		return kNoXORKey;
 	}
 
+	Point getSubtitlePos() override {
+		return Point(g_system->getWidth() / 2, 150);
+	}
+
 	const char *getMenuRoom() override {
 		return "MENU";
 	}

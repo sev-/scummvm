@@ -865,10 +865,15 @@ static char *trimTrailing(char *start, char *end) {
 }
 
 void World::loadLocalizedNames() {
-	loadEncryptedFile(
-		g_engine->game().getObjectFileName(),
-		g_engine->game().getTextFileKey(),
-		_namesChunk);
+	const char *filename = g_engine->game().getObjectFileName();
+	char textFileKey = g_engine->game().getTextFileKey();
+#ifdef ALCACHOFA_DEBUG
+	if (File::exists("OBJETOS.MOD.TXT")) {
+		filename = "OBJETOS.MOD.TXT";
+		textFileKey = 0;
+	}
+#endif
+	loadEncryptedFile(filename, textFileKey, _namesChunk);
 	char *lineStart = _namesChunk.begin(), *fileEnd = _namesChunk.end() - 1;
 
 	if (*lineStart == '\"') {
@@ -921,10 +926,15 @@ void World::loadDialogLines() {
 	 * - The ID does not have to be correct, it is ignored by the original engine.
 	 * - We only need the dialog line and insert null-terminators where appropriate.
 	 */
-	loadEncryptedFile(
-		g_engine->game().getDialogFileName(),
-		g_engine->game().getTextFileKey(),
-		_dialogChunk);
+	const char *filename = g_engine->game().getDialogFileName();
+	char textFileKey = g_engine->game().getTextFileKey();
+#ifdef ALCACHOFA_DEBUG
+	if (File::exists("TEXTOS.MOD.TXT")) {
+		filename = "TEXTOS.MOD.TXT";
+		textFileKey = 0;
+	}
+#endif
+	loadEncryptedFile(filename, textFileKey, _dialogChunk);
 	char *lineStart = _dialogChunk.begin(), *fileEnd = _dialogChunk.end() - 1;
 	while (lineStart < fileEnd) {
 		char *lineEnd = find(lineStart, fileEnd, '\n');
