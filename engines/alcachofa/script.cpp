@@ -107,6 +107,10 @@ static void syncAsSint32LE(Serializer &s, int32 &value) {
 	s.syncAsSint32LE(value);
 }
 
+static void syncAsUint32LE(Serializer &s, uint32 &value) {
+	s.syncAsUint32LE(value);
+}
+
 void Script::syncGame(Serializer &s) {
 	s.syncArray(_variables.data(), _variables.size(), syncAsSint32LE);
 }
@@ -224,8 +228,8 @@ struct ScriptTask final : public Task {
 		, _name(forkParent._name + " FORKED")
 		, _pc(forkParent._pc)
 		, _characterLock(forkParent._characterLock) {
-		for (uint i = 0; i < forkParent._stack.size(); i++)
-			_stack.push(forkParent._stack[i]);
+		for (uint i = 0; i < forkParent._valueStack.size(); i++)
+			_valueStack.push(forkParent._valueStack[i]);
 		pushNumber(1); // this task is the forked one
 		debugC(SCRIPT_DEBUG_LVL_TASKS, kDebugScript, "%u: Script fork from %u at %u", process.pid(), forkParent.process().pid(), _pc);
 	}
@@ -258,10 +262,10 @@ struct ScriptTask final : public Task {
 
 				debugN("%u: %5u %-12s %8d Stack: ",
 					process().pid(), _pc - 1, opName, instruction._arg);
-				if (_stack.empty())
+				if (_valueStack.empty())
 					debug("empty");
 				else {
-					const auto &top = _stack.top();
+					const auto &top = _valueStack.top();
 					switch (top._type) {
 					case StackEntryType::Number:
 						debug("Number %d", top._number);
@@ -289,9 +293,9 @@ struct ScriptTask final : public Task {
 			switch (opMap[instruction._op]) {
 			case ScriptOp::Nop: break;
 			case ScriptOp::Dup:
-				if (_stack.empty())
+				if (_valueStack.empty())
 					error("Script tried to duplicate stack top, but stack is empty");
-				_stack.push(_stack.top());
+				_valueStack.push(_valueStack.top());
 				break;
 			case ScriptOp::PushAddr:
 				pushVariable(instruction._arg);
@@ -414,22 +418,31 @@ struct ScriptTask final : public Task {
 	}
 
 	void syncGame(Serializer &s) override {
-		assert(s.isSaving() || (_characterLock.isReleased() && _stack.empty()));
+		assert(s.isSaving() || (
+			_characterLock.isReleased() && _valueStack.empty() && _callStack.empty()));
 
 		s.syncString(_name);
 		s.syncAsUint32LE(_pc);
 		s.syncAsByte(_returnsFromKernelCall);
 		s.syncAsByte(_isFirstExecution);
 
-		uint count = _stack.size();
+		uint count = _valueStack.size();
 		s.syncAsUint32LE(count);
 		if (s.isLoading()) {
-			for (uint i = 0; i < count; i++)
-				_stack.push(StackEntry(s));
+			for (uint i = 0; i < count; i++) {
+				const StackEntry entry(s);
+				if (entry._type == StackEntryType::Instruction)
+					// we still have to support old saves
+					_callStack.push(entry._index);
+				else
+					_valueStack.push(entry);
+			}
 		} else {
 			for (uint i = 0; i < count; i++)
-				_stack[i].syncGame(s);
+				_valueStack[i].syncGame(s);
 		}
+
+		syncStack(s, _callStack, syncAsUint32LE, SaveVersion::kWithEngineV10);
 
 		bool hasLock = !_characterLock.isReleased();
 		s.syncAsByte(hasLock);
@@ -467,7 +480,7 @@ private:
 	}
 
 	void pushNumber(int32 value) {
-		_stack.push({ StackEntryType::Number, value });
+		_valueStack.push({ StackEntryType::Number, value });
 	}
 
 	// For the following methods error recovery is not really viable
@@ -476,23 +489,23 @@ private:
 		uint32 index = offset / sizeof(int32);
 		if (offset % sizeof(int32) != 0 || index >= _script._variables.size())
 			error("Script tried to push invalid variable offset");
-		_stack.push({ StackEntryType::Variable, index });
+		_valueStack.push({ StackEntryType::Variable, index });
 	}
 
 	void pushString(uint32 offset) {
 		if (offset >= _script._strings->size())
 			error("Script tried to push invalid string offset");
-		_stack.push({ StackEntryType::String, offset });
+		_valueStack.push({ StackEntryType::String, offset });
 	}
 
 	void pushInstruction(uint32 pc) {
-		_stack.push({ StackEntryType::Instruction, pc });
+		_callStack.push(pc);
 	}
 
 	StackEntry pop() {
-		if (_stack.empty())
+		if (_valueStack.empty())
 			error("Script tried to pop empty stack");
-		return _stack.pop();
+		return _valueStack.pop();
 	}
 
 	int32 popNumber() {
@@ -517,23 +530,24 @@ private:
 	}
 
 	uint32 popInstruction() {
-		auto entry = pop();
-		if (entry._type != StackEntryType::Instruction)
-			error("Script tried to pop but top of stack is not an instruction");
-		return entry._index;
+		if (_callStack.empty()) {
+			warning("Script tried to pop empty call stack");
+			return UINT_MAX; // this will just exit script execution
+		}
+		return _callStack.pop();
 	}
 
 	void popN(int32 count) {
-		if (count < 0 || (uint)count > _stack.size())
+		if (count < 0 || (uint)count > _valueStack.size())
 			error("Script tried to pop more entries than are available on the stack");
 		for (int32 i = 0; i < count; i++)
-			_stack.pop();
+			_valueStack.pop();
 	}
 
 	StackEntry getArg(uint argI) {
-		if (_stack.size() < argI + 1)
+		if (_valueStack.size() < argI + 1)
 			error("Script did not supply enough arguments for kernel call");
-		return _stack[_stack.size() - 1 - argI];
+		return _valueStack[_valueStack.size() - 1 - argI];
 	}
 
 	int32 getNumberArg(uint argI) {
@@ -1044,7 +1058,10 @@ private:
 	}
 
 	Script &_script;
-	Stack<StackEntry> _stack;
+	// in V3 value and call return addresses used the same stack
+	// in V1 they are separate, but the two-stack-solution should be compatible with V3
+	Stack<StackEntry> _valueStack;
+	Stack<uint32> _callStack;
 	String _name;
 	uint32 _pc = 0;
 	int32 _lastKernelTaskI = 0;

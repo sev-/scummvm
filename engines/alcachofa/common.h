@@ -154,7 +154,14 @@ inline void syncArray(Common::Serializer &serializer, Common::Array<T> &array, v
 }
 
 template<typename T>
-inline void syncStack(Common::Serializer &serializer, Common::Stack<T> &stack, void (*serializeFunction)(Common::Serializer &, T &)) {
+inline void syncStack(
+	Common::Serializer &serializer,
+	Common::Stack<T> &stack,
+	void (*serializeFunction)(Common::Serializer &, T &),
+	Common::Serializer::Version minVersion = 0) {
+	if (serializer.getVersion() < minVersion)
+		return;
+
 	auto size = stack.size();
 	serializer.syncAsUint32LE(size);
 	if (serializer.isLoading()) {
