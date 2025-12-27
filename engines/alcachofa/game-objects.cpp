@@ -1074,6 +1074,7 @@ struct DialogMenuTask final : public Task {
 	TaskReturn run() override {
 		TASK_BEGIN;
 		layoutLines();
+		process().unlockInteraction();
 		while (true) {
 			TASK_YIELD(1);
 			if (g_engine->player().activeCharacter() != _character) //-V779
@@ -1085,6 +1086,7 @@ struct DialogMenuTask final : public Task {
 			_clickedLineI = updateLines();
 			if (_clickedLineI != UINT_MAX) {
 				TASK_YIELD(2);
+				process().lockInteraction();
 				TASK_WAIT(3, _character->sayText(process(), _character->_dialogLines[_clickedLineI]._dialogId));
 				int32 returnValue = _character->_dialogLines[_clickedLineI]._returnValue;
 				_character->_dialogLines.clear();
