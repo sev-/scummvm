@@ -867,10 +867,10 @@ private:
 			Character *_character = strcmp(characterName, "AMBOS") == 0
 				? &relatedCharacter()
 				: getObjectArg<Character>(0);
-			if (_character == nullptr) {
-				g_engine->game().unknownSayTextCharacter(characterName, dialogId);
+			if (_character == nullptr)
+				_character = g_engine->game().unknownSayTextCharacter(characterName, dialogId);
+			if (_character == nullptr)
 				return TaskReturn::finish(1);
-			}
 			return TaskReturn::waitFor(_character->sayText(process(), dialogId));
 		};
 		case ScriptKernelTask::SetDialogLineReturn:

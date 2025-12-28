@@ -103,7 +103,7 @@ public:
 	virtual PointObject *unknownGoPutTarget(const Process &process, const char *action, const char *name); ///< May return an alternative target to use
 	virtual void unknownChangeCharacterRoom(const char *name);
 	virtual void unknownAnimateCharacterObject(const char *name);
-	virtual void unknownSayTextCharacter(const char *name, int32 dialogId);
+	virtual Character *unknownSayTextCharacter(const char *name, int32 dialogId);
 	virtual void unknownAnimateTalkingObject(const char *name);
 	virtual void unknownClearInventoryTarget(int characterKind);
 	virtual void unknownCamLerpTarget(const char *action, const char *name);

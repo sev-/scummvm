@@ -148,8 +148,9 @@ void Game::missingAnimation(const String &fileName) {
 	_message("Could not open animation %s", fileName.c_str());
 }
 
-void Game::unknownSayTextCharacter(const char *name, int32) {
+Character *Game::unknownSayTextCharacter(const char *name, int32) {
 	unknownScriptCharacter("say text", name);
+	return nullptr;
 }
 
 void Game::unknownChangeCharacterRoom(const char *name) {

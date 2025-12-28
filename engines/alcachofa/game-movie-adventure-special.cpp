@@ -501,10 +501,10 @@ public:
 		Game::unknownAnimateObject(name);
 	}
 
-	void unknownSayTextCharacter(const char *name, int32 dialogId) override {
+	Character *unknownSayTextCharacter(const char *name, int32 dialogId) override {
 		if (!scumm_stricmp(name, "OFELIA") && dialogId == 3737)
-			return;
-		Game::unknownSayTextCharacter(name, dialogId);
+			return nullptr;
+		return Game::unknownSayTextCharacter(name, dialogId);
 	}
 
 	void missingSound(const String &fileName) override {

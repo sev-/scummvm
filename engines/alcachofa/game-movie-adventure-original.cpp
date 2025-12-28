@@ -248,6 +248,13 @@ public:
 		return false;
 	}
 
+	Character *unknownSayTextCharacter(const char *name, int32 dialogId) override {
+		// an original bug in room POBLADO_INDIO, a dialog line would be skipped
+		if (!scumm_stricmp(name, "JEFE_INDIO_HABLA_POSTE"))
+			return dynamic_cast<Character *>(g_engine->player().currentRoom()->getObjectByName("JEFE_HABLA_POSTE"));
+		return Game::unknownSayTextCharacter(name, dialogId);
+	}
+
 	void missingAnimation(const String &fileName) override {
 		static const char *exemptions[] = {
 			nullptr
@@ -265,6 +272,39 @@ public:
 			debugC(1, kDebugGraphics, "Animation exemption triggered: %s", fileName.c_str());
 		else
 			Game::missingAnimation(fileName);
+	}
+
+	void onUserChangedCharacter() override {
+		// An original bug in room POBLADO_INDIO if filemon is bound and mortadelo enters the room
+		// the door A_PUENTE which was disabled is reenabled to allow mortadelo leaving
+		// However if the user now changes character, the door is still enabled and filemon can
+		// enter a ghost state walking through a couple rooms and softlocking.
+		if (g_engine->player().currentRoom()->name().equalsIgnoreCase("POBLADO_INDIO"))
+			g_engine->script().createProcess(g_engine->player().activeCharacterKind(), "ENTRAR_POBLADO_INDIO");
+	}
+
+	PointObject *unknownGoPutTarget(const Process &process, const char *action, const char *name) override {
+		if (scumm_stricmp(action, "put"))
+			return Game::unknownGoPutTarget(process, action, name);
+
+		if (!scumm_stricmp("A_Poblado_Indio", name)) {
+			// A_Poblado_Indio is a Door but is originally cast into a PointObject
+			// a pointer and the draw order is then interpreted as position and the character snapped onto the floor shape.
+			// Instead I just use the A_Poblado_Indio1 object which exists as counter-part for A_Poblado_Indio2 which should have been used
+			auto target = dynamic_cast<PointObject *>(
+				g_engine->world().getObjectByName(process.character(), "A_Poblado_Indio1"));
+			if (target == nullptr)
+				_message("Unknown put target A_Poblado_Indio1 during exemption for A_Poblado_Indio");
+			return target;
+		}
+
+		return Game::unknownGoPutTarget(process, action, name);
+	}
+
+	void missingSound(const Common::String &fileName) override {
+		if (fileName == "CHAS")
+			return;
+		return Game::missingSound(fileName);
 	}
 };
 
