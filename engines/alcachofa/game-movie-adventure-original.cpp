@@ -317,6 +317,11 @@ public:
 			return target;
 		}
 
+		if (!scumm_stricmp("Puerta_Casa_Freddy_Intermedia", name)) {
+			// Another case of a door being cast into a PointObject
+			return nullptr;
+		}
+
 		// an original bug, Pos_Final_Morta/File is defined in room ENTRADA_PUEBLO
 		// but the current room is ENTRADA_PUEBLO_INTRO
 		if (!scumm_stricmp(name, "Pos_Final_Morta"))
