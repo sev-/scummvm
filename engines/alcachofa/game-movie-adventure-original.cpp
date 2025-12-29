@@ -303,6 +303,9 @@ public:
 	}
 
 	PointObject *unknownGoPutTarget(const Process &process, const char *action, const char *name) override {
+		if (!*name) // this can happen when a variable address is misused as string
+			return nullptr;
+
 		if (scumm_stricmp(action, "put"))
 			return Game::unknownGoPutTarget(process, action, name);
 

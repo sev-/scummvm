@@ -552,9 +552,15 @@ private:
 
 	int32 getNumberArg(uint argI) {
 		auto entry = getArg(argI);
-		if (entry._type != StackEntryType::Number)
+		switch (entry._type) {
+		case StackEntryType::Number:
+			return entry._number;
+		case StackEntryType::Variable:
+			warning("Misuse of variable address as number for arg %u at %u", argI, _pc);
+			return entry._number;
+		default:
 			error("Expected number in argument %u for kernel call", argI);
-		return entry._number;
+		}
 	}
 
 	MainCharacterKind getMainCharacterKindArg(uint argI) {
@@ -576,9 +582,15 @@ private:
 
 	const char *getStringArg(uint argI) {
 		auto entry = getArg(argI);
-		if (entry._type != StackEntryType::String)
+		switch (entry._type) {
+		case StackEntryType::String:
+			return &_script._strings[entry._index];
+		case StackEntryType::Variable:
+			warning("Misuse of variable address as string for arg %u at %u", argI, _pc);
+			return "";
+		default:
 			error("Expected string in argument %u for kernel call", argI);
-		return &_script._strings[entry._index];
+		}
 	}
 
 	int32 getNumberOrStringArg(uint argI) {
