@@ -106,7 +106,7 @@ public:
 	virtual Character *unknownSayTextCharacter(const char *name, int32 dialogId);
 	virtual void unknownAnimateTalkingObject(const char *name);
 	virtual void unknownClearInventoryTarget(int characterKind);
-	virtual void unknownCamLerpTarget(const char *action, const char *name);
+	virtual PointObject *unknownCamLerpTarget(const char *action, const char *name);
 	virtual void unknownKernelTask(int task);
 	virtual void unknownScriptProcedure(const Common::String &procedure);
 	virtual void unknownMenuAction(int32 actionId);

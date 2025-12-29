@@ -169,8 +169,9 @@ void Game::unknownClearInventoryTarget(int characterKind) {
 	_message("Invalid clear inventory character kind: %d", characterKind);
 }
 
-void Game::unknownCamLerpTarget(const char *action, const char *name) {
+PointObject *Game::unknownCamLerpTarget(const char *action, const char *name) {
 	_message("Invalid target object for %s: %s", action, name);
+	return nullptr;
 }
 
 void Game::unknownKernelTask(int task) {

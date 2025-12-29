@@ -950,10 +950,10 @@ private:
 			if (!process().isActiveForPlayer())
 				return TaskReturn::finish(0); // contrary to ...ResettingZ this one does not delay if not active
 			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr) {
-				g_engine->game().unknownCamLerpTarget("LerpCamToObjectKeepingZ", getStringArg(0));
+			if (pointObject == nullptr)
+				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectKeepingZ", getStringArg(0));
+			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			}
 			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
 				as2D(pointObject->position()),
 				getNumberArg(1), EasingType::Linear));
@@ -962,10 +962,10 @@ private:
 			if (!process().isActiveForPlayer())
 				return TaskReturn::waitFor(delay(getNumberArg(1)));
 			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr) {
-				g_engine->game().unknownCamLerpTarget("LerpCamToObjectResettingZ", getStringArg(0));
+			if (pointObject == nullptr)
+				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectResettingZ", getStringArg(0));
+			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			}
 			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
 				as3D(pointObject->position()),
 				getNumberArg(1), (EasingType)getNumberArg(2)));
@@ -976,10 +976,10 @@ private:
 				// the scale will wait then snap the scale
 				return TaskReturn::waitFor(g_engine->camera().lerpScale(process(), targetScale, getNumberArg(2), EasingType::Linear));
 			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr) {
-				g_engine->game().unknownCamLerpTarget("LerpCamToObjectWithScale", getStringArg(0));
+			if (pointObject == nullptr)
+				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectWithScale", getStringArg(0));
+			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			}
 			return TaskReturn::waitFor(g_engine->camera().lerpPosScale(process(),
 				as3D(pointObject->position()), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));

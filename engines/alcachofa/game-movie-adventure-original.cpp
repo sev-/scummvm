@@ -283,6 +283,25 @@ public:
 			g_engine->script().createProcess(g_engine->player().activeCharacterKind(), "ENTRAR_POBLADO_INDIO");
 	}
 
+	PointObject *getPointFromRoom(const char *roomName, const char *objectName, const char *action) {
+		const auto *room = g_engine->world().getRoomByName(roomName);
+		if (room == nullptr) {
+			_message("Could not find room %s to get %s for %s");
+			return nullptr;
+		}
+		auto *object = room->getObjectByName(objectName);
+		if (object == nullptr) {
+			_message("Could not find object %s in room %s for %s");
+			return nullptr;
+		}
+		auto *point = dynamic_cast<PointObject *>(object);
+		if (point == nullptr) {
+			_message("Object %s in room %s for %s is not a point object");
+			return nullptr;
+		}
+		return point;
+	}
+
 	PointObject *unknownGoPutTarget(const Process &process, const char *action, const char *name) override {
 		if (scumm_stricmp(action, "put"))
 			return Game::unknownGoPutTarget(process, action, name);
@@ -298,7 +317,22 @@ public:
 			return target;
 		}
 
+		// an original bug, Pos_Final_Morta/File is defined in room ENTRADA_PUEBLO
+		// but the current room is ENTRADA_PUEBLO_INTRO
+		if (!scumm_stricmp(name, "Pos_Final_Morta"))
+			return getPointFromRoom("ENTRADA_PUEBLO", "Pos_Final_Morta", action);
+		if (!scumm_stricmp(name, "Pos_Final_File"))
+			return getPointFromRoom("ENTRADA_PUEBLO", "Pos_Final_File", action);
+
 		return Game::unknownGoPutTarget(process, action, name);
+	}
+
+	PointObject *unknownCamLerpTarget(const char *action, const char *name) override {
+		// the same bug as in unknownGoPutTarget
+		if (!scumm_stricmp(name, "Pos_Final_Morta"))
+			return getPointFromRoom("ENTRADA_PUEBLO", "Pos_Final_Morta", action);
+
+		return Game::unknownCamLerpTarget(action, name);
 	}
 
 	void missingSound(const Common::String &fileName) override {
