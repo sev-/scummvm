@@ -113,8 +113,11 @@ static AudioStream *loadSND(File *file) {
 }
 
 static AudioStream *openAudio(const String &basePath) {
-	String path = basePath + ".SND";
 	File *file = new File();
+	if (file->open(basePath.c_str())) // only very rarely the basePath already has the extension
+		return makeWAVStream(file, DisposeAfterUse::YES);
+
+	String path = basePath + ".SND";
 	if (file->open(path.c_str()))
 		return file->size() == 0 // Movie Adventure has some null-size audio files, they are treated like infinite silence
 			? makeSilentAudioStream(8000, false) 

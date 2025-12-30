@@ -1069,7 +1069,7 @@ public:
 private:
 	const SharedPtr<EmbeddedArchiveMember> getMemberInternal(const Path &path) const {
 		for (const auto &member : _members) {
-			if (member->getPathInArchive() == path)
+			if (member->getPathInArchive().equalsIgnoreCase(path))
 				return member;
 		}
 		return nullptr;
