@@ -311,6 +311,8 @@ void Sounds::startMusic(int musicId) {
 	debugC(2, kDebugSounds, "startMusic %d", musicId);
 	assert(musicId >= 0);
 	fadeMusic();
+	if (musicId == 0)
+		return;
 	auto path = g_engine->game().getMusicPath(musicId);
 	_musicSoundID = playSoundInternal(path, Mixer::kMaxChannelVolume, Mixer::kMusicSoundType);
 	_isMusicPlaying = true;
