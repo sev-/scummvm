@@ -126,8 +126,7 @@ enum class ScriptKernelTask {
 	LerpCamXYZ,
 	LerpCamToObjectKeepingZ,
 
-	SheriffTakesCharacter, ///< some special-case V1 tasks, unknown yet
-	ChangeDoor,
+	ChangeDoor, ///< some special-case V1 tasks, unknown yet
 	Disguise
 };
 

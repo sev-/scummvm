@@ -86,7 +86,7 @@ static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
 	ScriptKernelTask::Off,
 	ScriptKernelTask::Pickup,
 	ScriptKernelTask::Animate,
-	ScriptKernelTask::SheriffTakesCharacter,
+	ScriptKernelTask::HadNoMousePressFor,
 	ScriptKernelTask::ChangeCharacter,
 	ScriptKernelTask::LerpCamToObjectKeepingZ,
 	ScriptKernelTask::Drop,

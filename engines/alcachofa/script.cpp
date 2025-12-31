@@ -153,12 +153,20 @@ struct ScriptTimerTask final : public Task {
 	TaskReturn run() override {
 		TASK_BEGIN;
 		{
-			uint32 timeSinceTimer = g_engine->script()._scriptTimer == 0 ? 0
-				: (g_engine->getMillis() - g_engine->script()._scriptTimer) / 1000;
+			_didPressMouse |= g_engine->input().wasAnyMousePressed();
+
+			// only in V31 there is the variable "CalcularTiempoSinPulsarRaton" which controls
+			// resetting the timer, for all other versions we have to do it implicitly anyways
+			if (g_engine->script()._scriptTimer == 0)
+				g_engine->script()._scriptTimer = g_engine->getMillis();
+
+			uint32 timeSinceTimer =  (g_engine->getMillis() - g_engine->script()._scriptTimer) / 1000;
 			if (_durationSec >= (int32)timeSinceTimer)
-				_result = g_engine->script().variable("SeHaPulsadoRaton") ? 0 : 2;
-			else
+				_result = _didPressMouse ? 0 : 2;
+			else {
 				_result = 1;
+				g_engine->script()._scriptTimer = 0;
+			}
 			g_engine->player().drawCursor();
 		}
 		TASK_YIELD(1); // Wait a frame to not produce an endless loop
@@ -174,6 +182,7 @@ struct ScriptTimerTask final : public Task {
 		Task::syncGame(s);
 		s.syncAsSint32LE(_durationSec);
 		s.syncAsSint32LE(_result);
+		s.syncAsByte(_didPressMouse, SaveVersion::kWithEngineV10);
 	}
 
 	const char *taskName() const override;
@@ -181,6 +190,7 @@ struct ScriptTimerTask final : public Task {
 private:
 	int32 _durationSec = 0;
 	int32 _result = 1;
+	bool _didPressMouse = false;
 };
 DECLARE_TASK(ScriptTimerTask)
 
@@ -678,8 +688,10 @@ private:
 			return getNumberArg(0) <= 0
 				? TaskReturn::finish(0)
 				: TaskReturn::waitFor(delay((uint32)getNumberArg(0)));
-		case ScriptKernelTask::HadNoMousePressFor:
-			return TaskReturn::waitFor(new ScriptTimerTask(process(), getNumberArg(0)));
+		case ScriptKernelTask::HadNoMousePressFor: {
+			auto duration = g_engine->isV1() ? 60 : getNumberArg(0);
+			return TaskReturn::waitFor(new ScriptTimerTask(process(), duration));
+		}
 		case ScriptKernelTask::Fork:
 			g_engine->scheduler().createProcess<ScriptTask>(process().character(), *this);
 			return TaskReturn::finish(0); // 0 means this is the forking process
