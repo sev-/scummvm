@@ -133,33 +133,33 @@ static constexpr const int kKernelTaskArgCounts[] = {
 	0
 };
 
-class GameMovieAdventureOriginal : public Game {
-public:
-	GameMovieAdventureOriginal() {
-		const auto &desc = g_engine->gameDescription();
-		if (desc.desc.flags & ADGF_CD) {
-			const Path gameDir = ConfMan.getPath("path");
-			SearchMan.addDirectory(gameDir.append("disk1/Install"));
-			SearchMan.addDirectory(gameDir.append("disk2/Install"));
-		}
-	}
+static constexpr const char *kMapFilesMovieAdventure[] = {
+	"oeste.emc",
+	"terror.emc",
+	"global.emc",
+	nullptr
+};
 
+static constexpr const char *kMapFilesTerror[] = {
+	"terror.emc",
+	"global.emc",
+	nullptr
+};
+
+static constexpr const char *kMapFilesVaqueros[] = {
+	"oeste.emc",
+	"global.emc",
+	nullptr
+};
+
+class GameWithVersion1 : public Game {
+public:
 	Point getResolution() override {
 		return Point(800, 600);
 	}
 
 	Point getThumbnailResolution() override {
 		return Point(266, 200);
-	}
-
-	static constexpr const char *kMapFiles[] = {
-		"oeste.emc",
-		"terror.emc",
-		"global.emc",
-		nullptr
-	};
-	const char *const *getMapFiles() override {
-		return kMapFiles;
 	}
 
 	GameFileReference getScriptFileRef() override {
@@ -209,18 +209,8 @@ public:
 			g_engine->world().mortadelo().room() == g_engine->world().filemon().room();
 	}
 
-	Path getVideoPath(int32 videoId) override {
-		return Path(String::format("disk1/Install/bin/data%02d.bin", videoId));
-	}
-
 	String getSoundPath(const char *filename) override {
 		return filename;
-	}
-
-	String getMusicPath(int32 trackId) override {
-		const Room *room = g_engine->player().currentRoom();
-		const int diskId = room != nullptr && room->mapIndex() == 1 ? 2 : 1;
-		return String::format("disk%d/track%02d", diskId, trackId);
 	}
 
 	int32 getCharacterJingle(MainCharacterKind kind) override {
@@ -344,14 +334,100 @@ public:
 	}
 
 	void missingSound(const Common::String &fileName) override {
-		if (fileName == "CHAS")
+		if (fileName == "CHAS" || fileName == "0563" || fileName == "M2137")
 			return;
 		return Game::missingSound(fileName);
 	}
 };
 
+class GameMovieAdventureOriginal : public GameWithVersion1 {
+public:
+	GameMovieAdventureOriginal() {
+		const auto &desc = g_engine->gameDescription();
+		if (desc.desc.flags & ADGF_CD) {
+			const Path gameDir = ConfMan.getPath("path");
+			SearchMan.addDirectory(gameDir.append("disk1/Install"));
+			SearchMan.addDirectory(gameDir.append("disk2/Install"));
+		}
+	}
+
+	const char *const *getMapFiles() override {
+		return kMapFilesMovieAdventure;
+	}
+
+	Path getVideoPath(int32 videoId) override {
+		return Path(String::format("disk1/Install/bin/data%02d.bin", videoId));
+	}
+
+	String getMusicPath(int32 trackId) override {
+		const Room *room = g_engine->player().currentRoom();
+		const int diskId = room != nullptr && room->mapIndex() == 1 ? 2 : 1;
+		return String::format("disk%d/track%02d", diskId, trackId);
+	}
+
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 0;
+	}
+};
+
+class GameHalfMovieAdventure : public GameWithVersion1 {
+public:
+	Path getVideoPath(int32 videoId) override {
+		return Path(String::format("bin/data%02d.bin", videoId));
+	}
+
+	String getMusicPath(int32 trackId) override {
+		return String::format("track%02d", trackId);
+	}
+
+	// probably the original CDs have music, the Steam release has no music...
+	void missingSound(const Common::String &fileName) override {
+		if (fileName.contains("track")) {
+			if (!_warnedAboutMusic) {
+				_warnedAboutMusic = true;
+				warning("This release does not contain music or the music was not extracted.");
+			}
+		} else
+			GameWithVersion1::missingSound(fileName);
+	}
+
+private:
+	bool _warnedAboutMusic = false;
+};
+
+class GameVaqueros : public GameHalfMovieAdventure {
+public:
+	const char *const *getMapFiles() override {
+		return kMapFilesVaqueros;
+	}
+
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 1;
+	}
+};
+
+
+class GameTerror : public GameHalfMovieAdventure {
+public:
+	const char *const *getMapFiles() override {
+		return kMapFilesTerror;
+	}
+
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 2;
+	}
+};
+
 Game *Game::createForMovieAdventureOriginal() {
 	return new GameMovieAdventureOriginal();
+}
+
+Game *Game::createForVaqueros() {
+	return new GameVaqueros();
+}
+
+Game *Game::createForTerror() {
+	return new GameTerror();
 }
 
 }

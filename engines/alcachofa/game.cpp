@@ -214,14 +214,23 @@ Game *Game::create() {
 	const auto &desc = g_engine->gameDescription();
 	switch (desc.engineVersion) {
 	case EngineVersion::V1_0:
-		return createForMovieAdventureOriginal();
+		switch (*desc.desc.gameId) {
+		case 'm':
+			return createForMovieAdventureOriginal();
+		case 't':
+			return createForTerror();
+		case 'v':
+			return createForVaqueros();
+		}
+		break;
 	case EngineVersion::V3_0:
 	case EngineVersion::V3_1:
 		return createForMovieAdventureSpecial();
 	default:
-		error("Unsupported or invalid engine version: %d", (int)desc.engineVersion);
 		break;
 	}
+
+	error("Unsupported or invalid engine version: %d", (int)desc.engineVersion);
 }
 
 }

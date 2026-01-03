@@ -23,6 +23,8 @@ namespace Alcachofa {
 
 const PlainGameDescriptor alcachofaGames[] = {
 	{ "aventuradecine", "Mort & Phil: A Movie Adventure" },
+	{ "terror", "Mortadelo y Filemón: Terror, Espanto y Pavor"},
+	{ "vaqueros", "Mortadelo y Filemón: Dos vaqueros chapuceros"},
 	{ 0, 0 }
 };
 
@@ -139,6 +141,38 @@ const AlcachofaGameDescription gameDescriptions[] = {
 				"disk1/Install/oeste.emc", "b4c1084557d4cfbae336f0e741ec9e9f", 183099320,
 				"disk2/Install/terror.emc", "dc9357ee618bff160e2e2afa168ba913", 170113868
 			),
+			Common::ES_ESP,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+		},
+		EngineVersion::V1_0
+	},
+
+	//
+	// Terror, Espanto y Pavor
+	//
+	{
+		// Install folder from the disk/the ISO within the Steam distribution
+		{
+			"terror",
+			"Mortadelo y Filemón: Terror, Espanto y Pavor",
+			AD_ENTRY1s("terror.emc", "dc9357ee618bff160e2e2afa168ba913", 170113868),
+			Common::ES_ESP,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+		},
+		EngineVersion::V1_0
+	},
+
+	//
+	// Dos vaqueros chapuceros
+	//
+	{
+		// Install folder from the disk/the ISO within the Steam distribution
+		{
+			"vaqueros",
+			"Mortadelo y Filemón: Dos vaqueros chapuceros",
+			AD_ENTRY1s("oeste.emc", "b4c1084557d4cfbae336f0e741ec9e9f", 183099320),
 			Common::ES_ESP,
 			Common::kPlatformWindows,
 			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
