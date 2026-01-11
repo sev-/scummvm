@@ -685,7 +685,11 @@ const char *World::getLocalizedName(const String &name) const {
 	const char *localizedName;
 	return _localizedNames.tryGetVal(name.c_str(), localizedName)
 		? localizedName
+#ifdef ALCACHOFA_DEBUG
 		: name.c_str();
+#else
+		: "";
+#endif
 }
 
 const char *World::getDialogLine(int32 dialogId) const {

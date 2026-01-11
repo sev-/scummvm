@@ -944,6 +944,8 @@ TextDrawRequest::TextDrawRequest(Font &font, const char *originalText, Point pos
 	// allocate on drawQueue to prevent having destruct it
 	assert(originalText != nullptr);
 	auto textLen = strlen(originalText);
+	if (textLen == 0)
+		return;
 	char *text = (char *)g_engine->drawQueue().allocator().allocateRaw(textLen + 1, 1);
 	memcpy(text, originalText, textLen + 1);
 

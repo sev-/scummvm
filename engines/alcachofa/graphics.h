@@ -424,12 +424,12 @@ private:
 	using TextLine = Common::Span<const byte>; ///< byte to convert 128+ characters to image indices
 
 	Font &_font;
-	int _posY, _height, _width;
+	int _posY = 0, _height = 0, _width = 0;
 	Color _color;
 	Common::Span<TextLine> _lines;
 	Common::Span<int> _posX;
 	TextLine _allLines[kMaxLines];
-	int _allPosX[kMaxLines];
+	int _allPosX[kMaxLines] = { 0 };
 };
 
 enum class FadeType {
