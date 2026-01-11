@@ -215,7 +215,7 @@ Game *Game::create() {
 	switch (desc.engineVersion) {
 	case EngineVersion::V1_0:
 		switch (*desc.desc.gameId) {
-		case 'm':
+		case 'a':
 			return createForMovieAdventureOriginal();
 		case 't':
 			return createForTerror();
