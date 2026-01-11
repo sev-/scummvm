@@ -113,11 +113,11 @@ struct WaitForInputTask final : public Task {
 
 	TaskReturn run() override {
 		TASK_BEGIN;
-		process().unlockInteraction();
+
+		// originally this would unlock interaction
 		do {
 			TASK_YIELD(1);
 		} while(!g_engine->input().wasAnyMousePressed());
-		process().lockInteraction();
 		TASK_END;
 	}
 
