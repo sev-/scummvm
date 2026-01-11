@@ -704,9 +704,10 @@ struct CamDisguiseTask final : public Task {
 			newPosition.setY(_startPosition.getY() + t);
 		else if (t <= 150)
 			newPosition.setY(_startPosition.getY() - t + 100);
-		else if (t <= 200)
+		else if (t >= 200)
 			newPosition.setY(_startPosition.getY() + t - 200);
 		_camera.setPosition(newPosition);
+		_camera.setFollow(nullptr);
 
 		return TaskReturn::yield();
 	}
@@ -726,7 +727,7 @@ struct CamDisguiseTask final : public Task {
 
 private:
 	Camera &_camera;
-	int32 _durationMs;
+	int32 _durationMs = 0;
 	uint32 _startTime = 0;
 	Vector2d _startPosition;
 };
