@@ -19,8 +19,6 @@
  *
  */
 
-#if defined(USE_PRINTING)
-
 #ifndef GUI_PRINTING_DIALOGS_H
 #define GUI_PRINTING_DIALOGS_H
 
@@ -56,7 +54,5 @@ private:
 };
 
 } // End of namespace GUI
-
-#endif
 
 #endif

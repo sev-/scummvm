@@ -19,8 +19,6 @@
  *
  */
 
-#ifdef USE_PRINTING
-
 #include "common/config-manager.h"
 #include "common/file.h"
 #include "common/savefile.h"
@@ -96,6 +94,8 @@ void PrintingManager::saveAsImage(const Graphics::ManagedSurface &surf, const Co
 	delete saveFile;
 }
 
-} // End of namespace Common
+void PrintingManager::doPrint(const Graphics::ManagedSurface &surf) {
+	warning("PrintingManager::doPrint: No printing support in this backend");
+}
 
-#endif
+} // End of namespace Common

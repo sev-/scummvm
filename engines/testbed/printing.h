@@ -19,8 +19,6 @@
  *
  */
 
-#if defined(USE_PRINTING)
-
 #ifndef TESTBED_PRINTING_H
 #define TESTBED_PRINTING_H
 
@@ -50,7 +48,5 @@ public:
 };
 
 } // End of namespace Testbed
-
-#endif
 
 #endif

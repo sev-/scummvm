@@ -56,7 +56,7 @@ public:
 	void setJobName(const Common::String &jobName) { _jobName = jobName; }
 
 protected:
-	virtual void doPrint(const Graphics::ManagedSurface &surf) = 0;
+	virtual void doPrint(const Graphics::ManagedSurface &surf);
 
 	virtual Common::StringArray listPrinterNames() const;
 

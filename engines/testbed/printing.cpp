@@ -19,8 +19,6 @@
  *
  */
 
-#if defined(USE_PRINTING)
-
 #include "base/version.h"
 
 #include "common/rect.h"
@@ -82,5 +80,3 @@ TestExitStatus PrintingTests::printTestPage() {
 }
 
 } // End of namespace Testbed
-
-#endif

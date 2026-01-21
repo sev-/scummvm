@@ -19,8 +19,6 @@
  *
  */
 
-#if defined(USE_PRINTING)
-
 #include "common/translation.h"
 #include "common/system.h"
 
@@ -96,5 +94,3 @@ void PrintingDialog::handleCommand(GUI::CommandSender *sender, uint32 cmd, uint3
 }
 
 } // End of namespace GUI
-
-#endif

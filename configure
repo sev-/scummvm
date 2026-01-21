@@ -1409,8 +1409,8 @@ for ac_option in $@; do
 	--disable-vkeybd)            _vkeybd=no              ;;
 	--enable-eventrecorder)      _eventrec=yes           ;;
 	--disable-eventrecorder)     _eventrec=no            ;;
-	--enable-printing)           _printing=yes           ;;
-	--disable-printing)          _printing=no            ;;
+	--enable-system-printing)    _printing=yes           ;;
+	--disable-system-printing)   _printing=no            ;;
 	--enable-text-console)       _text_console=yes       ;;
 	--disable-text-console)      _text_console=no        ;;
 	--enable-ext-sse2)           _ext_sse2=yes           ;;
@@ -7238,8 +7238,12 @@ case $_host_os in
 mingw*)
 	echo "win32"
 	append_var LIBS '-lMsimg32'
+	;;
+*)
+	echo "no"
+	;;
 esac
-define_in_config_if_yes $_printing 'USE_PRINTING'
+define_in_config_if_yes $_printing 'USE_SYSTEM_PRINTING'
 
 #
 # Check whether to build system dialogs support

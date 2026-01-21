@@ -19,7 +19,7 @@
  *
  */
 
-#ifdef USE_PRINTING
+#ifdef USE_SYSTEM_PRINTING
 #ifdef WIN32
 
 #define WIN32_LEAN_AND_MEAN

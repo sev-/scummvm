@@ -85,7 +85,7 @@ void OSystem_Win32::init() {
 	initializeJpegLibraryForWin95();
 #endif
 
-#if defined(USE_PRINTING)
+#if defined(USE_SYSTEM_PRINTING)
 	_printingManager = createWin32PrintingManager();
 #endif
 
@@ -155,11 +155,6 @@ bool OSystem_Win32::hasFeature(Feature f) {
 
 #ifdef USE_SYSDIALOGS
 	if (f == kFeatureSystemBrowserDialog)
-		return true;
-#endif
-
-#ifdef USE_PRINTING
-	if (f == kFeaturePrinting)
 		return true;
 #endif
 

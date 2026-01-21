@@ -48,9 +48,7 @@ OSystem::OSystem() {
 	_eventManager = nullptr;
 	_timerManager = nullptr;
 	_savefileManager = nullptr;
-#if defined(USE_PRINTING)
 	_printingManager = nullptr;
-#endif
 #if defined(USE_TASKBAR)
 	_taskbarManager = nullptr;
 #endif
@@ -76,10 +74,8 @@ OSystem::~OSystem() {
 	delete _timerManager;
 	_timerManager = nullptr;
 
-#if defined(USE_PRINTING)
 	delete _printingManager;
 	_printingManager = nullptr;
-#endif
 
 #if defined(USE_TASKBAR)
 	delete _taskbarManager;
@@ -125,6 +121,10 @@ void OSystem::initBackend() {
 	// set it.
 // 	if (!_fsFactory)
 // 		error("Backend failed to instantiate fs factory");
+
+	// Initialize default printing manager unless overridden by backend
+	if (!_printingManager)
+		_printingManager = new Common::PrintingManager();
 
 	_backendInitialized = true;
 }
