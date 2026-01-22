@@ -27,6 +27,9 @@
 #include "graphics/cursorman.h"
 #include "graphics/primitives.h"
 #include "scumm/he/font_he.h"
+
+#include "backends/printing/printman.h"
+
 #include "scumm/he/logic_he.h"
 #include "scumm/he/intern_he.h"
 #include "scumm/resource.h"
@@ -457,7 +460,30 @@ WizPxShrdBuffer Wiz::drawAWizPrimEx(int globNum, int state, int x, int y, int z,
 
 	// Verify if it's a printing operation...
 	if (flags & kWRFPrint) {
-		warning("Wiz::drawAWizPrimEx(): Printing not yet supported");
+		switch (srcComp) {
+		case kWCTNone:
+			{
+				Graphics::ManagedSurface surf;
+				surf.w = srcWidth;
+				surf.h = srcHeight;
+				surf.format=Graphics::PixelFormat::createFormatCLUT8();
+
+				uint8 *wizd = getWizStateDataPrim(globNum, state);
+				assert(wizd);
+				surf.setPixels(wizd);
+
+				uint8 *pal = getWizStatePaletteDataPrim(globNum, state);
+				assert(pal);
+				surf.setPalette(pal, 0, 256);
+
+				Common::PrintingManager *pm = _vm->_system->getPrintingManager();
+				pm->printImage(surf);
+
+				break;
+			}
+		default:
+			error("Printing: Unsupported compression mode %d", srcComp);
+		}
 
 		if (_vm->_game.heversion <= 99 || (flags & kWRFAlloc) == 0)
 			destPtr = WizPxShrdBuffer();
@@ -701,7 +727,7 @@ int Wiz::hitTestWizPrim(int globNum, int state, int x, int y, int32 flags) {
 	byte *dataTmp = nullptr;
 
 	int outValue = 0;
-	
+
 	if (((ScummEngine_v90he *)_vm)->_logicHE && ((ScummEngine_v90he *)_vm)->_logicHE->overrideImageHitTest(&outValue, globNum, state, x, y, flags)) {
 		return outValue;
 	}
@@ -1784,7 +1810,7 @@ void Wiz::dwHandleComplexImageDraw(int image, int state, int x, int y, int shado
 			correctedAngle = (360 - correctedAngle);
 		}
 
-		// Get the upper left point so that our blit matches 
+		// Get the upper left point so that our blit matches
 		// in position the normal warp drawing function...
 		polyBuildBoundingRect(listOfPoints, 4, boundingRect);
 		x = boundingRect.left;
@@ -2332,7 +2358,7 @@ void Wiz::ensureNativeFormatImageForState(int image, int state) {
 		switch (compType) {
 		// These were in the original but they appear to be dead code.
 		// Not removing these just yet...
-		// 
+		//
 		// case kWCTNone16Bpp:
 		// 	newCompType += kWCTNone16BppBigEndian - kWCTNone16Bpp;
 		// 	break;
@@ -2381,7 +2407,7 @@ void Wiz::processWizImageRenderEllipseCmd(const WizImageCommand *params) {
 	}
 
 	int whichImage = params->image;
-	
+
 	// Make the clipping rect for this image / state...
 	getWizImageDim(whichImage, whichState, width, height);
 
@@ -2423,7 +2449,7 @@ void Wiz::processWizImageFontEndCmd(const WizImageCommand *params) {
 
 void Wiz::processWizImageFontCreateCmd(const WizImageCommand *params) {
 	// Used for TTF text in FreddisFunShop/PuttsFunShop/SamsFunShop
-	if (!(((ScummEngine_v99he *)_vm)->_heFont->createFont(params->image, 
+	if (!(((ScummEngine_v99he *)_vm)->_heFont->createFont(params->image,
 														  reinterpret_cast<const char *>(params->fontProperties.fontName),
 														  params->fontProperties.fgColor,
 														  params->fontProperties.bgColor,
