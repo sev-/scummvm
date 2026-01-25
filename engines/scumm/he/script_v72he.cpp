@@ -2085,7 +2085,7 @@ void ScummEngine_v72he::copyArray(int dstVariable, int dstDownMin, int dstDownMa
 
 				useMemcpy = (dstAcrossMin <= srcAcrossMin);
 			}
-			
+
 			if (useMemcpy) {
 				for (int dstDownCounter = dstDownMin; dstDownCounter <= dstDownMax; dstDownCounter++) {
 					memcpy(dstPtr, srcPtr, dataSize);
@@ -2140,7 +2140,7 @@ void ScummEngine_v72he::o72_readINI() {
 	case ScummEngine_v100he::SO_DWORD: // HE 100
 	case SO_DWORD: // number
 		if (!strcmp((char *)option, "DisablePrinting") || !strcmp((char *)option, "NoPrinting")) {
-			push(1);
+			push(0);
 		} else if (!strcmp((char *)option, "DisableMaiaUpdates")) {
 			// WORKAROUND: Override the update checks.
 			// This gets checked in Baseball 2001 and will check for
