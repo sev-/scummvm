@@ -136,6 +136,7 @@ protected:
 	Widget			*_startButton;
 	ButtonWidget	*_loadButton;
 	Widget			*_editButton;
+	Widget			*_mainHelpButton;
 	Common::StringArray		_domains;
 	BrowserDialog	*_browser;
 	SaveLoadChooser	*_loadDialog;
