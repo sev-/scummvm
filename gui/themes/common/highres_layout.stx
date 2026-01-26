@@ -48,7 +48,8 @@
 		<def var = 'ShowChooserPics' value = '1'/>
 		<def var = 'ShowChooserPageDisplay' value = '1'/>
 
-		<def var = 'Launcher.HelpButton.Width' value = '24'  scalable = 'yes'/> <!-- Button.Width * 3 -->
+		<def var = 'Launcher.HelpButton.Width' value = '24' scalable = 'yes'/> <!-- Button.Width * 3 -->
+		<def var = 'Launcher.ShowMainHelp' value = '1'/>
 
 		<def var = 'SaveLoadChooser.ExtInfo.Visible' value = '1'/>
 		<def var = 'RecorderDialog.ExtInfo.Visible' value = '1'/>
@@ -230,6 +231,9 @@
 					<space size = '5'/>
 					<space size = '5' resolution = 'y>420' />
 					<widget name = 'OptionsButton'
+							type = 'Button'
+					/>
+					<widget name = 'MainHelpButton'
 							type = 'Button'
 					/>
 					<widget name = 'AboutButton'
@@ -484,9 +488,14 @@
 
 	<dialog name = 'Browser' overlays = 'Dialog.Launcher.GameList' shading = 'dim'>
 		<layout type = 'vertical' padding = '8, 8, 8, 8'>
-			<widget name = 'Headline'
-					height = 'Globals.Line.Height'
-			/>
+			<layout type = 'horizontal' padding = '0, 0, 0, 0'>
+				<widget name = 'Headline'
+						height = 'Globals.Line.Height'
+				/>
+				<widget name = 'Help'
+						type = 'Button'
+				/>
+			</layout>
 			<widget name = 'Path'
 					height = 'Globals.Line.Height'
 			/>
@@ -1882,6 +1891,10 @@
 					height = 'Globals.Button.Height'
 			/>
 			<widget name = 'Help'
+					width = '150'
+					height = 'Globals.Button.Height'
+			/>
+			<widget name = 'MainHelp'
 					width = '150'
 					height = 'Globals.Button.Height'
 			/>

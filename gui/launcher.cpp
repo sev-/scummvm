@@ -269,6 +269,11 @@ void LauncherDialog::build() {
 
 	// I18N: Button About ScummVM program. b is the shortcut, Ctrl+b, put it in parens for non-latin (~b~)
 	new ButtonWidget(this, _title + ".AboutButton", _("A~b~out"), _("About ScummVM"), kAboutCmd);
+
+	_mainHelpButton = nullptr;
+	if (g_gui.xmlEval()->getVar("Globals.Launcher.ShowMainHelp") == 1)
+		_mainHelpButton = new ButtonWidget(this, _title + ".MainHelpButton", _("Help"), _("General help"), kHelpCmd);
+
 	// I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 	new ButtonWidget(this, _title + ".OptionsButton", _("Global ~O~ptions..."), _("Change global ScummVM options"), kOptionsCmd, 0, _c("Global ~O~pts...", "lowres"));
 
@@ -942,6 +947,18 @@ void LauncherDialog::reflowLayout() {
 	g_gui.addToTrash(_searchClearButton, this);
 	_searchClearButton = addClearButton(this, _title + ".SearchClearButton", kSearchClearCmd);
 #endif
+
+	if (g_gui.xmlEval()->getVar("Globals.Launcher.ShowMainHelp") == 1) {
+		if (!_mainHelpButton)
+			_mainHelpButton = new ButtonWidget(this, _title + ".MainHelpButton", _("Help"), _("General help"), kHelpCmd);
+	} else {
+		if (_mainHelpButton) {
+			removeWidget(_mainHelpButton);
+			g_gui.addToTrash(_mainHelpButton, this);
+			_mainHelpButton = nullptr;
+		}
+	}
+
 #ifndef DISABLE_LAUNCHERDISPLAY_GRID
 	addLayoutChooserButtons();
 #endif
@@ -1436,7 +1453,7 @@ void LauncherSimple::updateSelectionAfterRemoval() {
 	if (_list) {
 		_list->clearSelection();
 		const Common::Array<bool> &selectedItems = getSelectedItems();
-		
+
 		// Get the real data index of the last selected item and adjust with bounds
 		int lastSelectedDataItem = MIN((int)selectedItems.size() - 1, _list->getSelected());
 		// Convert real data index to visual index for marking
@@ -1790,7 +1807,7 @@ void LauncherGrid::build() {
 void LauncherGrid::updateSelectionAfterRemoval() {
 	if (_grid) {
 		_grid->clearSelection();
-		
+
 		// Select at the same index as before, or the last item if out of bounds
 		_grid->_lastSelectedEntryID = MIN((int)getSelectedItems().size() - 1, _grid->_lastSelectedEntryID);
 		_grid->markSelectedItem(_grid->_lastSelectedEntryID, true);
@@ -1803,7 +1820,7 @@ void LauncherDialog::confirmRemoveGames(const Common::Array<bool> &selectedItems
 	// Validate that at least one item is selected
 	if (!hasAnySelection(selectedItems))
 		return;
-	
+
 	// Count selected items
 	int selectedCount = 0;
 	for (int i = 0; i < (int)selectedItems.size(); ++i) {
