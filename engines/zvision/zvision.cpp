@@ -399,6 +399,17 @@ void ZVision::initializePath(const Common::FSNode &gamePath) {
 	SearchMan.setIgnoreClashes(true);
 
 	SearchMan.addDirectory(gamePath, 0, 1, true);
+
+	// Ensure addons (game patches) take search priority over files listed in .zix files
+	SearchMan.addSubDirectoryMatching(gameDataDir, "addon");
+	Common::ArchiveMemberList listAddon;
+	SearchMan.listMatchingMembers(listAddon,"*.zfs");
+	for (auto &member : listAddon) {
+		Common::Path path(member->getPathInArchive());
+		ZfsArchive *archive = new ZfsArchive(path);
+		SearchMan.add(path.toString(), archive);
+	}
+
 	switch (getGameId()) {
 	case GID_GRANDINQUISITOR:
 		break;
@@ -418,16 +429,6 @@ void ZVision::initializePath(const Common::FSNode &gamePath) {
 		const Common::FSNode gameExtraDir(gameExtraPath);
 		SearchMan.addSubDirectoryMatching(gameExtraDir, "auxvid");
 		SearchMan.addSubDirectoryMatching(gameExtraDir, "auxscr");
-	}
-
-	// Ensure addons (game patches) take search priority over files listed in .zix files
-	SearchMan.addSubDirectoryMatching(gameDataDir, "addon");
-	Common::ArchiveMemberList listAddon;
-	SearchMan.listMatchingMembers(listAddon,"*.zfs");
-	for (auto &member : listAddon) {
-		Common::Path path(member->getPathInArchive());
-		ZfsArchive *archive = new ZfsArchive(path);
-		SearchMan.add(path.toString(), archive);
 	}
 
 	switch (getGameId()) {
