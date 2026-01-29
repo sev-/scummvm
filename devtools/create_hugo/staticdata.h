@@ -2027,7 +2027,7 @@ hotspot_t hotspots_1d[] = {
 	{5,  262, 79,  280, 146, kALscr53_1d,   270, 140, Common::KEYCODE_RIGHT}, // Kitchen to dining room
 	{5,  212, 79,  244, 133, kALscr56_1d,   222, 140, Common::KEYCODE_UP},    // Kitchen to garden
 	{5,  25,  87,  43,  157, kALscr57_1d,   44,  150, Common::KEYCODE_LEFT},  // Kitchen to store room
-	{6,  232, 180, 312, 192, kALscr65_1d,   250, 180, Common::KEYCODE_DOWN},  // Garden to kitchen
+	{6,  232, 185, 312, 192, kALscr65_1d,   250, 180, Common::KEYCODE_DOWN},  // Garden to kitchen
 	{7,  263, 90,  285, 156, kALscr75_1d,   265, 150, Common::KEYCODE_RIGHT}, // Store room to kitchen
 	{8,  150, 141, 186, 143, kALscr89_1d,   152, 142, Common::KEYCODE_RIGHT}, // Basement to batcave
 	{8,  80,  30,  144, 58,  kALscr87_1d,   120, 60,  Common::KEYCODE_UP},    // Basement to storeroom
@@ -2037,7 +2037,7 @@ hotspot_t hotspots_1d[] = {
 	{10, 258, 57,  282, 122, kALscr1011_1d, 265, 125, Common::KEYCODE_UP},    // Mummy room to lake room
 	{11, 43,  180, 88,  193, kALscr1110_1d, 55,  182, Common::KEYCODE_DOWN},  // Lake room to mummy room
 	{11, 300, 30,  319, 86,  kALscr1112_1d, 300, 70,  Common::KEYCODE_RIGHT}, // Lake room to dead-end
-	{12, 52,  175, 295, 190, kALscr1211_1d, 142, 176, Common::KEYCODE_DOWN},  // Dead-end to lake room
+	{12, 52,  179, 295, 190, kALscr1211_1d, 142, 176, Common::KEYCODE_DOWN},  // Dead-end to lake room
 	{12, 137, 33,  178, 80,  kALscr1213_1d, 152, 75,  Common::KEYCODE_UP},    // Dead-end to jail
 	{15, 19,  110, 34,  182, kALscr151_1d,  30,  177, Common::KEYCODE_LEFT},  // Laboratory to hall
 	{15, 109, 150, 144, 156, kALbox_1d,     -1,  -1,  -1},                    // Professor's box
