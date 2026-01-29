@@ -936,13 +936,14 @@ void Inter_v7::o7_getSystemProperty() {
 	if (!scumm_stricmp(property, "TotalPhys")) {
 		// HACK
 		// NOTE: Any value lower than 8 MB will disable the icon bar animations in Adibou2/Sciences
-		storeValue(16000000);
+		// NOTE: Any value lower than or equal to 16 MB will disable some animations in Adi4 (e.g. clouds in Adi's room).
+		storeValue(32000000);
 		return;
 	}
 
 	if (!scumm_stricmp(property, "AvailPhys")) {
 		// HACK
-		storeValue(16000000);
+		storeValue(32000000);
 		return;
 	}
 
