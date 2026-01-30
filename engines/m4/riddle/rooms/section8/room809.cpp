@@ -168,7 +168,7 @@ void Room809::parser() {
 			int32 destY;
 			player_update_info(_G(my_walker), &_G(player_info));
 			if (_G(player_info).x >= _G(player).click_x) {
-				destX = imath_min(145, _G(player).x + 20);
+				destX = imath_min(_G(player_info).x, _G(player).click_x + 20);
 				destX = imath_max(destX, 145);
 				if (_G(player).click_y < 315) {
 					if (_playerFacing < 0)
