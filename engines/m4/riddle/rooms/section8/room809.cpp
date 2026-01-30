@@ -210,7 +210,7 @@ void Room809::parser() {
 
 	case 1: {
 		player_update_info();
-		if (_G(player_info).x < 1340 && -_G(game_buff_ptr)->x1 < 1259) {
+		if (_G(player_info).x >= 1340 && -_G(game_buff_ptr)->x1 < 1259) {
 			g_engine->camera_shift_xy(1259, 0);
 		}
 
