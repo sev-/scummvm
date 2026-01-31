@@ -5,6 +5,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  General:
    - Improved PC-Speaker emulation.
+   - Implemented multiselect in the GUI launcher games list.
 
  MM:
    - Fixed M&M1 memory corruption on exit.
