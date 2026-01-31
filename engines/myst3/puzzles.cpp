@@ -570,7 +570,7 @@ void Puzzles::pinball(int16 var) {
 		int16 endFrame;
 		int16 sound;
 		int16 targetLeftFrame;
-		int16 tragetRightFrame;
+		int16 targetRightFrame;
 		int16 type;
 	};
 
@@ -860,7 +860,7 @@ void Puzzles::pinball(int16 var) {
 			}
 
 			leftSideFrame = jump->targetLeftFrame;
-			rightSideFrame = jump->tragetRightFrame;
+			rightSideFrame = jump->targetRightFrame;
 			_vm->_state->setVar(34, leftSideFrame);
 			_vm->_state->setVar(35, rightSideFrame);
 
@@ -911,8 +911,8 @@ void Puzzles::pinball(int16 var) {
 		if (rightSideFrame < 500)
 			rightSideFrame += 300;
 
-		int32 crashedLeftFrame = ((((leftSideFrame + 25) / 50) >> 4) & 1) != 0 ? 550 : 500;
-		int32 crashedRightFrame = ((((rightSideFrame + 25) / 50) >> 4) & 1) != 0 ? 550 : 500;
+		int32 crashedLeftFrame = (((leftSideFrame + 50) >> 4) & 1) != 0 ? 550 : 500;
+		int32 crashedRightFrame = (((rightSideFrame + 50) >> 4) & 1) != 0 ? 550 : 500;
 
 		while (1) {
 			bool moviePlaying = false;
@@ -942,32 +942,30 @@ void Puzzles::pinball(int16 var) {
 				moviePlaying = true;
 			}
 
-			if (!moviePlaying) {
-				if ((rightComb->movie != 10201 || rightPanelFrame > 2)
-					&& rightPanelFrame != rightComb->expireFrame) {
+			if ((rightComb->movie != 10201 || rightPanelFrame > 2)
+				&& rightPanelFrame != rightComb->expireFrame) {
 
-					if (rightToLeftJumpCountdown) {
-						--rightToLeftJumpCountdown;
-					}
-					if (!rightToLeftJumpCountdown) {
-						_vm->_state->setVar(35, crashedRightFrame);
-						crashedRightFrame++;
-					}
-
-					_vm->_state->setVar(32, rightPanelFrame);
-
-					++rightPanelFrame;
-					rightSideFrame = rightPanelFrame;
-
-					for (uint i = 0; i < 3; i++) {
-						if (rightComb->pegFrames[i] == rightSideFrame) {
-							_vm->_sound->playEffect(1027, 50);
-							rightToLeftJumpCountdown = 5;
-						}
-					}
-
-					moviePlaying = true;
+				if (rightToLeftJumpCountdown) {
+					--rightToLeftJumpCountdown;
 				}
+				if (!rightToLeftJumpCountdown) {
+					_vm->_state->setVar(35, crashedRightFrame);
+					crashedRightFrame++;
+				}
+
+				_vm->_state->setVar(32, rightPanelFrame);
+
+				++rightPanelFrame;
+				rightSideFrame = rightPanelFrame;
+
+				for (uint i = 0; i < 3; i++) {
+					if (rightComb->pegFrames[i] == rightSideFrame) {
+						_vm->_sound->playEffect(1027, 50);
+						rightToLeftJumpCountdown = 5;
+					}
+				}
+
+				moviePlaying = true;
 			}
 
 			_drawXTicks(1);
