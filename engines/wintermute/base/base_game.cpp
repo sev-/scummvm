@@ -3407,7 +3407,8 @@ ScValue *BaseGame::scGetProperty(const char *name) {
 	//////////////////////////////////////////////////////////////////////////
 	// Platform (RO)
 	//////////////////////////////////////////////////////////////////////////
-	else if (strcmp(name, "Platform") == 0) {
+	else if (strcmp(name, "Platform") == 0 &&
+			 BaseEngine::instance().getGameId() != "royalmahjong") { // avoid clashing
 		_scValue->setString(BasePlatform::getPlatformName().c_str());
 		return _scValue;
 	}
