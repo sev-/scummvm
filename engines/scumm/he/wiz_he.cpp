@@ -1165,13 +1165,21 @@ void Wiz::loadWizCursor(int resId, int palette, bool useColor) {
 					((uint16 *)cursor)[i] = 0x7FFF;
 			}
 		}
+
+		const byte black[3] = { 0x00, 0x00, 0x00 };
+		const byte white[3] = { 0xFF, 0xFF, 0xFF };
+
+		CursorMan.replaceCursorPalette(black, 0, 1);
+		CursorMan.replaceCursorPalette(white, 15, 1);
 	}
 
 	_vm->setCursorHotspot(x, y);
 	_vm->setCursorFromBuffer(cursor, cw, ch, cw * _vm->_bytesPerPixel);
 
 	// Since we set up cursor palette for default cursor, disable it now...
-	CursorMan.disableCursorPalette(true);
+	if (useColor) {
+		CursorMan.disableCursorPalette(true);
+	}
 }
 
 #define ADD_REQUIRED_IMAGE(whatImageIsRequired) {                                                                                    \
