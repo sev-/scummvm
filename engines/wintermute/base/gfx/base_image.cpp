@@ -218,6 +218,11 @@ bool BaseImage::loadFile(const Common::String &filename) {
 	if (filename.hasPrefix("savegame:") || _filename.hasSuffix(".bmp")) {
 		_decoder = new Image::BitmapDecoder();
 	} else if (_filename.hasSuffix(".png")) {
+		if (BaseEngine::instance().getGameId() == "satanandsons" &&
+		    _filename.hasSuffix("\\plein\\kaars.1.png")) {
+			debug(2, "BaseImage::loadFile : Buggy PNG bitmap %s, skipping...", filename.c_str());
+			return false;
+		}
 		_decoder = new Image::PNGDecoder();
 	} else if (_filename.hasSuffix(".tga")) {
 		_decoder = new Image::TGADecoder();
