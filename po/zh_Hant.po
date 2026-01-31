@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-01-28 11:57+0000\n"
+"POT-Creation-Date: 2026-01-31 09:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -303,8 +303,8 @@ msgstr ""
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:152 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:421 gui/launcher.cpp:450
-#: gui/launcher.cpp:523 gui/launcher.cpp:1444 gui/launcher.cpp:1823
-#: gui/options.cpp:3485 gui/options.cpp:3859 base/main.cpp:594
+#: gui/launcher.cpp:523 gui/launcher.cpp:1841 gui/options.cpp:3485
+#: gui/options.cpp:3859 base/main.cpp:594
 #: backends/events/default/default-events.cpp:193 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:91 engines/director/events.cpp:102
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
@@ -322,8 +322,8 @@ msgstr ""
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:153 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:421 gui/launcher.cpp:450
-#: gui/launcher.cpp:523 gui/launcher.cpp:1444 gui/launcher.cpp:1823
-#: gui/options.cpp:3485 gui/options.cpp:3859 engines/buried/buried.cpp:598
+#: gui/launcher.cpp:523 gui/launcher.cpp:1841 gui/options.cpp:3485
+#: gui/options.cpp:3859 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:97 engines/director/events.cpp:102
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
 #: engines/efh/metaengine.cpp:368 engines/grim/grim.cpp:366
@@ -1466,88 +1466,89 @@ msgstr ""
 msgid "Grid view"
 msgstr ""
 
-#: gui/launcher.cpp:1117
+#: gui/launcher.cpp:1120
 msgid "~S~tart"
 msgstr ""
 
-#: gui/launcher.cpp:1117
+#: gui/launcher.cpp:1120
 msgid "Start selected game"
 msgstr ""
 
-#: gui/launcher.cpp:1120
+#: gui/launcher.cpp:1123
 msgid "~L~oad..."
 msgstr ""
 
-#: gui/launcher.cpp:1120
+#: gui/launcher.cpp:1123
 msgid "Load saved game for selected game"
 msgstr ""
 
-#: gui/launcher.cpp:1122
+#: gui/launcher.cpp:1125
 msgid "Record..."
 msgstr ""
 
-#: gui/launcher.cpp:1128
+#: gui/launcher.cpp:1131
 msgid "~G~ame Options..."
 msgstr ""
 
-#: gui/launcher.cpp:1128
+#: gui/launcher.cpp:1131
 msgid "Change game options"
 msgstr ""
 
-#: gui/launcher.cpp:1128
+#: gui/launcher.cpp:1131
 msgctxt "lowres"
 msgid "~G~ame Opts..."
 msgstr ""
 
-#: gui/launcher.cpp:1213
+#: gui/launcher.cpp:1217
 msgid "Add-on"
 msgstr ""
 
 #. I18N: List grouping when no engine is specified
-#: gui/launcher.cpp:1263 gui/launcher.cpp:1529
+#: gui/launcher.cpp:1268 gui/launcher.cpp:1513
 msgid "Unknown Engine"
 msgstr ""
 
 #. I18N: List grouping when no publisher is specified
 #. I18N: List group when no publisher is specified
-#: gui/launcher.cpp:1280 gui/launcher.cpp:1546
+#: gui/launcher.cpp:1285 gui/launcher.cpp:1530
 msgid "Unknown Publisher"
 msgstr ""
 
 #. I18N: List group when no game series is specified
 #. I18N: List grouping when no game series is specified
-#: gui/launcher.cpp:1297 gui/launcher.cpp:1563
+#: gui/launcher.cpp:1302 gui/launcher.cpp:1547
 msgid "No Series"
 msgstr ""
 
 #. I18N: List group when no language is specified
-#: gui/launcher.cpp:1311 gui/launcher.cpp:1577
+#: gui/launcher.cpp:1316 gui/launcher.cpp:1561
 msgid "Language not detected"
 msgstr ""
 
 #. I18N: List group when no platform is specified
-#: gui/launcher.cpp:1325 gui/launcher.cpp:1591
+#: gui/launcher.cpp:1330 gui/launcher.cpp:1575
 msgid "Platform not detected"
 msgstr ""
 
 #. I18N: List group when no year is specified
-#: gui/launcher.cpp:1342 gui/launcher.cpp:1608
+#: gui/launcher.cpp:1347 gui/launcher.cpp:1592
 msgid "Unknown Year"
 msgstr ""
 
-#: gui/launcher.cpp:1434 gui/launcher.cpp:1810
-msgid ""
-"Do you really want to remove the following game configurations?\n"
-"\n"
-msgstr ""
-
 #. I18N: Group for All items
-#: gui/launcher.cpp:1615 gui/widgets/groupedlist.cpp:81
+#: gui/launcher.cpp:1599 gui/widgets/groupedlist.cpp:81
 msgid "All"
 msgstr ""
 
-#: gui/launcher.cpp:1781
+#: gui/launcher.cpp:1767
 msgid "Icons per row:"
+msgstr ""
+
+#: gui/launcher.cpp:1817
+#, c-format
+msgid ""
+"Do you really want to remove the following %d game configuration(s)?\n"
+"\n"
 msgstr ""
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -2610,7 +2611,7 @@ msgstr ""
 msgid "Playback"
 msgstr ""
 
-#: gui/recorderdialog.cpp:77 gui/widgets/grid.cpp:360
+#: gui/recorderdialog.cpp:77 gui/widgets/grid.cpp:336
 msgid "Edit"
 msgstr ""
 
@@ -2795,11 +2796,11 @@ msgstr ""
 msgid "Clear value"
 msgstr ""
 
-#: gui/widgets/grid.cpp:354
+#: gui/widgets/grid.cpp:330
 msgid "Play"
 msgstr ""
 
-#: gui/widgets/grid.cpp:357
+#: gui/widgets/grid.cpp:333
 msgid "Saves"
 msgstr ""
 
