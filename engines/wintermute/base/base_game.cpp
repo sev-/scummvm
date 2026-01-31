@@ -263,10 +263,10 @@ BaseGame::BaseGame(const Common::String &targetName) : BaseObject(this), _target
 #ifdef ENABLE_WME3D
 	_maxShadowType = SHADOW_STENCIL;
 	_supportsRealTimeShadows = false;
+#endif
 
 	_editorResolutionWidth = 0;
 	_editorResolutionHeight = 0;
-#endif
 
 	_localSaveDir = nullptr;
 	BaseUtils::setString(&_localSaveDir, "saves");
@@ -4720,6 +4720,8 @@ bool BaseGame::persist(BasePersistenceManager *persistMgr) {
 	} else {
 		_editorResolutionWidth = _editorResolutionHeight = 0;
 	}
+#else
+	_editorResolutionWidth = _editorResolutionHeight = 0;
 #endif
 
 	persistMgr->transferSint32(TMEMBER_INT(_textEncoding));
