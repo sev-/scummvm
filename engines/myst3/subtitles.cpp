@@ -451,14 +451,17 @@ ResourceDescription Subtitles::loadText(int32 id, bool overriden) {
 void Subtitles::setFrame(int32 frame) {
 	const Phrase *phrase = nullptr;
 
-	for (uint i = 0; i < _phrases.size(); i++) {
+	uint phraseIdx = 0;
+	for (uint i = 0; i < _phrases.size(); ++i) {
 		if (_phrases[i].frame > frame)
 			break;
 
 		phrase = &_phrases[i];
+		phraseIdx = i;
 	}
 
-	if (!phrase) {
+	if (!phrase
+		|| (phraseIdx == _phrases.size() - 1 && phrase->string.empty())) {
 		freeTexture();
 		return;
 	}
