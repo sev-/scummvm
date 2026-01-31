@@ -116,7 +116,9 @@ void Player::drawCursor(bool forceDefaultCursor) {
 }
 
 void Player::changeRoom(const Common::String &targetRoomName, bool resetCamera, bool isTemporary) {
-	debugC(1, kDebugGameplay, "Change room to %s", targetRoomName.c_str());
+	debugC(1, kDebugGameplay, "Change room from %s%s to %s%s",
+		_currentRoom == nullptr ? "<none>" : _currentRoom->name().c_str(), _isInTemporaryRoom ? " (temp)" : "",
+		targetRoomName.c_str(), isTemporary ? " (temp)" : "");
 
 	// original would be to always free all resources from globalRoom, inventory, GlobalUI
 	// We don't do that, it is unnecessary, all resources would be loaded right after
@@ -126,6 +128,9 @@ void Player::changeRoom(const Common::String &targetRoomName, bool resetCamera, 
 		_currentRoom = nullptr;
 		return; // exiting game entirely
 	}
+	auto nextRoom = g_engine->world().getRoomByName(targetRoomName.c_str());
+	if (nextRoom == nullptr) // no good way to recover, leaving-the-room actions might already prevent further progress
+		error("Invalid room name: %s", targetRoomName.c_str());
 
 	if (_currentRoom != nullptr) {
 		g_engine->scheduler().killProcessByName("ACTUALIZAR_" + _currentRoom->name());
@@ -145,12 +150,11 @@ void Player::changeRoom(const Common::String &targetRoomName, bool resetCamera, 
 	// this fixes a bug with all original games where changing the room in the inventory (e.g. iFOTO in aventura de cine)
 	// would overwrite the actual game room thus returning from the inventory one would be stuck in the temporary room
 	// If we know that a transition is temporary we prevent that and only remember the real game room
+	if (isTemporary && _roomBeforeInventory == nextRoom)
+		isTemporary = false; // this only looked like a temporary room change, but is not
 	_isInTemporaryRoom = isTemporary;
 
-	_currentRoom = g_engine->world().getRoomByName(targetRoomName.c_str());
-	if (_currentRoom == nullptr) // no good way to recover, leaving-the-room actions might already prevent further progress
-		error("Invalid room name: %s", targetRoomName.c_str());
-
+	_currentRoom = nextRoom;
 	if (!_didLoadGlobalRooms) {
 		_didLoadGlobalRooms = true;
 		g_engine->world().inventory().loadResources();
