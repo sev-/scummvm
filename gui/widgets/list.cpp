@@ -282,14 +282,14 @@ int ListWidget::getVisualPos(int dataIndex) const {
 	if (_listIndex.empty()) {
 		return dataIndex;
 	}
-	
+
 	// Find visual index by searching _listIndex for dataIndex
 	for (uint i = 0; i < _listIndex.size(); ++i) {
 		if (_listIndex[i] == dataIndex) {
 			return i;
 		}
 	}
-	
+
 	// Not found
 	return -1;
 }
@@ -550,12 +550,21 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 		case Common::KEYCODE_DOWN:
 			// Down: Add next item to selection (Ctrl+Click logic without toggle)
 			if (_selectedItem < (int)_list.size() - 1) {
-				int newItem = _selectedItem + 1;
-				markSelectedItem(newItem, true);
-				_selectedItem = newItem;
-				_lastSelectionStartItem = newItem;
-				scrollToCurrent();
-				dirty = true;
+				if ( g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
+					int newItem = _selectedItem + 1;
+					if (_lastSelectionStartItem < newItem)
+						markSelectedItem(newItem, true);
+					else
+						markSelectedItem(_selectedItem, false);
+					_selectedItem = newItem;
+					scrollToCurrent();
+					dirty = true;
+				} else {
+					clearSelection();
+					_selectedItem++;
+					markSelectedItem(_selectedItem, true);
+					_lastSelectionStartItem = _selectedItem;
+				}
 			}
 			break;
 
@@ -592,12 +601,21 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 		case Common::KEYCODE_UP:
 			// Up: Add previous item to selection (Ctrl+Click logic without toggle)
 			if (_selectedItem > 0) {
-				int newItem = _selectedItem - 1;
-				markSelectedItem(newItem, true);
-				_selectedItem = newItem;
-				_lastSelectionStartItem = newItem;
-				scrollToCurrent();
-				dirty = true;
+				if (g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
+					int newItem = _selectedItem - 1;
+					if (_lastSelectionStartItem > newItem)
+						markSelectedItem(newItem, true);
+					else
+						markSelectedItem(_selectedItem, false);
+					_selectedItem = newItem;
+					scrollToCurrent();
+					dirty = true;
+				} else {
+					clearSelection();
+					_selectedItem--;
+					markSelectedItem(_selectedItem, true);
+					_lastSelectionStartItem = _selectedItem;
+				}
 			}
 			break;
 
