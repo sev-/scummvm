@@ -113,6 +113,7 @@ For a more comprehensive changelog of the latest experimental code, see:
 
  Hypno:
    - Added keymapper support.
+   - Added support for third party subtitles.
 
  Illusions:
    - Fixed a crash when triggering the game menu early in the game.
