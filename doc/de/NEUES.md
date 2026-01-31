@@ -17,7 +17,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Maus-Scrolling in Text-Fenstern implementiert.
 
 
-#### 2026.1.0 (31.01.2026)
+#### 2026.1.0 "Like a version" (31.01.2026)
 
  Neue Spiele:
    - Unterstützung für Dark Seed hinzugefügt.
