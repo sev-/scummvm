@@ -2812,6 +2812,22 @@ bool BaseGame::scCallMethod(ScScript *script, ScStack *stack, ScStack *thisStack
 		stack->pushInt(ret);
 
 		return STATUS_OK;
+	}
+	//////////////////////////////////////////////////////////////////////////
+	// SetWindowedMode
+	//////////////////////////////////////////////////////////////////////////
+	else if (strcmp(name, "SetWindowedMode") == 0) {
+		stack->correctParams(1);
+
+		/*bool mode = */stack->pop()->getBool(false);
+
+		// Disable controlling fullscreen mode from scripts.
+		// Better handing by backend.
+		//_renderer->setWindowed(mode);
+
+		stack->pushNULL();
+
+		return STATUS_OK;
 	} else {
 		return BaseObject::scCallMethod(script, stack, thisStack, name);
 	}
