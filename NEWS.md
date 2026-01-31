@@ -17,7 +17,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Implemented mouse scrolling of text window.
 
 
-#### 2026.1.0 (2026-01-31)
+#### 2026.1.0 "Like a version" (2026-01-31)
 
  New games:
    - Added support for Dark Seed.
