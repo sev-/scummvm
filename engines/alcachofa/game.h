@@ -76,6 +76,7 @@ public:
 	virtual bool shouldScriptLockInteraction() = 0;
 	virtual bool shouldChangeCharacterUseGameLock() = 0;
 	virtual bool shouldAvoidCollisions() = 0;
+	virtual Common::Point getMainCharacterSize() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);

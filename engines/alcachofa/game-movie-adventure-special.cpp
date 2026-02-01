@@ -295,6 +295,10 @@ public:
 		return true;
 	}
 
+	Point getMainCharacterSize() override {
+		return { 60, 310};
+	}
+
 	void onLoadedGameFiles() override {
 		// this notifies the script whether we are a demo
 		if (g_engine->world().loadedMapCount() == 2)

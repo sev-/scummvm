@@ -863,11 +863,10 @@ void MainCharacter::update() {
 		_currentlyUsingObject = nullptr;
 	WalkingCharacter::update();
 
-	const int16 halfWidth = (int16)(60 * _graphicNormal.depthScale());
-	const int16 height = (int16)(310 * _graphicNormal.depthScale());
+	const Point size = g_engine->game().getMainCharacterSize() * _graphicNormal.depthScale();
 	shape()->setAsRectangle(Rect(
-		_currentPos.x - halfWidth, _currentPos.y - height,
-		_currentPos.x + halfWidth, _currentPos.y));
+		_currentPos.x - size.x, _currentPos.y - size.y,
+		_currentPos.x + size.x, _currentPos.y));
 
 	// These are set as members as FloorColor might want to change them
 	_alphaPremultiplier = room()->characterAlphaPremultiplier();
