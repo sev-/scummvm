@@ -150,8 +150,12 @@ public abstract class ScummVM implements SurfaceHolder.Callback,
 			_sem_surface.notifyAll();
 		}
 
-		// clear values for the native code
-		setSurface(0, 0, 0);
+		// Don't call when EGL is not init:
+		// this avoids polluting the static variables with obsolete values
+		if (_egl != null) {
+			// clear values for the native code
+			setSurface(0, 0, 0);
+		}
 	}
 
 	final public void setAssetsUpdated(boolean assetsUpdated) {
