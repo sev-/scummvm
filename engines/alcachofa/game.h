@@ -75,6 +75,7 @@ public:
 	virtual bool isAllowedToOpenMenu() = 0; ///< only the game-specific condition
 	virtual bool shouldScriptLockInteraction() = 0;
 	virtual bool shouldChangeCharacterUseGameLock() = 0;
+	virtual bool shouldAvoidCollisions() = 0;
 
 	virtual bool doesRoomHaveBackground(const Room *room);
 	virtual void unknownRoomObject(const Common::String &type);

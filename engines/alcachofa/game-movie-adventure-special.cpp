@@ -291,6 +291,10 @@ public:
 		return true;
 	}
 
+	bool shouldAvoidCollisions() override {
+		return true;
+	}
+
 	void onLoadedGameFiles() override {
 		// this notifies the script whether we are a demo
 		if (g_engine->world().loadedMapCount() == 2)

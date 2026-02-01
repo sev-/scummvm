@@ -238,6 +238,10 @@ public:
 		return false;
 	}
 
+	bool shouldAvoidCollisions() override {
+		return false;
+	}
+
 	Character *unknownSayTextCharacter(const char *name, int32 dialogId) override {
 		// an original bug in room POBLADO_INDIO, a dialog line would be skipped
 		if (!scumm_stricmp(name, "JEFE_INDIO_HABLA_POSTE"))

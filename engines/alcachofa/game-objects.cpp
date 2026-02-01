@@ -912,7 +912,9 @@ void MainCharacter::walkTo(
 		strcmp(_activateAction, "MIRAR") != 0 &&
 		otherCharacter->currentlyUsing() != dynamic_cast<ObjectBase *>(_activateObject);
 
-	if (otherCharacter->room() == room() && evadeTarget.sqrDist(otherTarget) <= avoidanceDistSqr) {
+	if (otherCharacter->room() == room() &&
+		evadeTarget.sqrDist(otherTarget) <= avoidanceDistSqr &&
+		g_engine->game().shouldAvoidCollisions()) {
 		if (!otherCharacter->isBusy()) {
 			if (activeFloor != nullptr && activeFloor->findEvadeTarget(evadeTarget, activeDepthScale, avoidanceDistSqr, evadeTarget))
 				otherCharacter->WalkingCharacter::walkTo(evadeTarget);
