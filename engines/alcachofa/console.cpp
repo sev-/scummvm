@@ -53,6 +53,9 @@ Console::Console() : GUI::Debugger() {
 	registerCmd("playVideo", WRAP_METHOD(Console, cmdPlayVideo));
 	registerCmd("script", WRAP_METHOD(Console, cmdScript));
 	registerCmd("toggleObject", WRAP_METHOD(Console, cmdToggleObject));
+	registerCmd("playVoice", WRAP_METHOD(Console, cmdPlaySound));
+	registerCmd("playSFX", WRAP_METHOD(Console, cmdPlaySound));
+	registerCmd("dumpFile", WRAP_METHOD(Console, cmdDumpFile));
 }
 
 Console::~Console() {}
@@ -330,6 +333,48 @@ bool Console::cmdToggleObject(int argc, const char **args) {
 		else
 			object->toggle(!object->isEnabled());
 	}
+	return true;
+}
+
+bool Console::cmdPlaySound(int argc, const char **args) {
+	if (argc != 2) {
+		debugPrintf("usage: %s <sound-name>\n", args[0]);
+		return true;
+	}
+
+	if (tolower(args[0][5]) == 'V')
+		g_engine->sounds().playVoice(args[1]);
+	else
+		g_engine->sounds().playSFX(args[1]);
+	return false;
+}
+
+bool Console::cmdDumpFile(int argc, const char **args) {
+	if (argc != 2 && argc != 3) {
+		debugPrintf("usage: %s <input-path> [<output-path>]\n", args[0]);
+		return true;
+	}
+
+	File input;
+	if (!input.open(args[1])) {
+		debugPrintf("Could not find input file: %s\n", args[1]);
+		return true;
+	}
+
+	const char *outputPath = argc == 2 ? args[1] : args[2];
+	DumpFile output;
+	if (!output.open(outputPath)) {
+		debugPrintf("Could not open output file: %s\n", outputPath);
+		return true;
+	}
+
+	constexpr const uint kBufferSize = 1024;
+	uint32 read;
+	byte buffer[kBufferSize];
+	do {
+		read = input.read(buffer, kBufferSize);
+		output.write(buffer, read);
+	} while (read == kBufferSize);
 	return true;
 }
 

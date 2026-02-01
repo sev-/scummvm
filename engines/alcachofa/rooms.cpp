@@ -1067,7 +1067,7 @@ public:
 			return nullptr;
 		if (!_file->seek(member->_offset, SEEK_SET))
 			error("Could not seek to embedded file: %s at %u", path.toString().c_str(), member->_offset);
-		return new SeekableSubReadStream(_file.get(), member->_offset, member->_end, DisposeAfterUse::NO);
+		return new SafeSeekableSubReadStream(_file.get(), member->_offset, member->_end, DisposeAfterUse::NO);
 	}
 
 private:
