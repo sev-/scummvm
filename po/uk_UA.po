@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-01-31 09:46+0000\n"
-"PO-Revision-Date: 2026-01-27 12:42+0000\n"
+"PO-Revision-Date: 2026-02-01 10:04+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -1680,15 +1680,12 @@ msgid "Icons per row:"
 msgstr "Іконок на рядок:"
 
 #: gui/launcher.cpp:1817
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following game configurations?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
 msgstr ""
-"Ви дійсно хочете видалити налаштування для цієї гри?\n"
+"Ви дійсно хочете видалити %d налаштувань ігор?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -13048,6 +13045,10 @@ msgid ""
 "Since the One-Stop Fun Shop series makes extensive use of TTF fonts,\n"
 "some of the graphics on screen will be missing."
 msgstr ""
+"Схоже, ваша версія ScummVM не була зібрана з підтримкою шрифтів TrueType.\n"
+"\n"
+"Оскільки серія One-Stop Fun Shop широко використовує шрифти TTF,\n"
+"деяка графіка на екрані буде відсутня."
 
 #: engines/scumm/scumm.cpp:1831
 msgid ""
@@ -14926,7 +14927,7 @@ msgstr "Відкрити двері"
 
 #: engines/ultima/ultima4/metaengine.cpp:65
 msgid "Pass"
-msgstr "Передати"
+msgstr "Пройти"
 
 #. I18N: Peer is used to look through keyholes or other small openings
 #: engines/ultima/ultima4/metaengine.cpp:67
