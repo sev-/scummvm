@@ -101,10 +101,10 @@ void Walker::player_walker_callback(frac16 myMessage, machine *sender) {
 bool Walker::walk_load_walker_and_shadow_series() {
 	switch (_G(player).walker_type) {
 	case 0:
-		return ws_walk_load_walker_series(RIPLEY_SERIES_DIRS, RIPLEY_SERIES, true) &&
+		return ws_walk_load_walker_series(RIPLEY_SERIES_DIRS, RIPLEY_SERIES, false) &&
 			ws_walk_load_shadow_series(RIPLEY_SHADOWS_DIRS, RIPLEY_SHADOWS);
 	case 1:
-		return ws_walk_load_walker_series(SAFARI_SERIES_DIRS, SAFARI_SERIES, true) &&
+		return ws_walk_load_walker_series(SAFARI_SERIES_DIRS, SAFARI_SERIES, false) &&
 			ws_walk_load_shadow_series(SAFARI_SHADOWS_DIRS, SAFARI_SHADOWS);
 	default:
 		return false;
