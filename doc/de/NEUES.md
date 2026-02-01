@@ -5,6 +5,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
 
  Allgemein:
    - Verbesserte PC-Speaker-Emulation.
+   - Unterstützung für Mehrfach-Auswahl in der Spiele-Liste im ScummVM-Launcher hinzugefügt.
 
  MM:
    - Speicherkorruption beim Beenden von M&M1 behoben.
@@ -112,6 +113,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
 
  Hypno:
    - Unterstützung für Tastenkürzel hinzugefügt.
+   - Unterstützung für von Dritten erstellte Untertitel hinzugefügt.
 
  Illusions:
    - Absturz behoben, der dann auftritt, wenn früh im Spiel das Hauptmenü aufgerufen wird.
