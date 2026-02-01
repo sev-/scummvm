@@ -999,7 +999,7 @@ ScopedPtr<SeekableReadStream> World::openFileRef(const GameFileReference &ref) c
 		ScopedPtr<File> file(new File());
 		if (!file->open(Path(ref._path)))
 			return nullptr;
-		return file;
+		return ScopedPtr<SeekableReadStream>(file.release()); // Ubuntu 22 does allow the implicit conversion
 	}
 }
 
