@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-01 10:04+0000\n"
+"POT-Creation-Date: 2026-02-01 19:29+0000\n"
 "PO-Revision-Date: 2024-02-05 18:42+0000\n"
 "Last-Translator: Josu Igoa <josuigoa@ni.eus>\n"
 "Language-Team: Basque <https://translations.scummvm.org/projects/scummvm/"
@@ -4140,7 +4140,7 @@ msgstr "PC bozgoragailuaren emuladorea"
 msgid "IBM PCjr emulator"
 msgstr "IBM PCjr emuladorea"
 
-#: audio/softsynth/sid.cpp:1435
+#: audio/softsynth/sid.cpp:1466
 #, fuzzy
 msgid "C64 Audio emulator"
 msgstr "C64 Audio emuladorea"

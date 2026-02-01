@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.1.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-01 10:04+0000\n"
+"POT-Creation-Date: 2026-02-01 19:29+0000\n"
 "PO-Revision-Date: 2025-04-09 20:18+0000\n"
 "Last-Translator: Niv Baehr <bloop93@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.scummvm.org/projects/scummvm/"
@@ -4026,7 +4026,7 @@ msgstr "אמולטור PC Speaker"
 msgid "IBM PCjr emulator"
 msgstr "אמולטור IBM PCjr"
 
-#: audio/softsynth/sid.cpp:1435
+#: audio/softsynth/sid.cpp:1466
 msgid "C64 Audio emulator"
 msgstr "אמולטור C64 Audio"
 
