@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-01-31 09:46+0000\n"
+"POT-Creation-Date: 2026-02-01 10:04+0000\n"
 "PO-Revision-Date: 2026-01-31 19:56+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
@@ -1020,7 +1020,7 @@ msgstr "Interfaz"
 #: engines/mohawk/riven.cpp:853 engines/sludge/keymapper_tables.h:40
 #: engines/supernova/metaengine.cpp:226 engines/teenagent/metaengine.cpp:207
 #: engines/ultima/ultima4/metaengine.cpp:42
-#: engines/ultima/ultima4/metaengine.cpp:146 engines/voyeur/metaengine.cpp:192
+#: engines/ultima/ultima4/metaengine.cpp:147 engines/voyeur/metaengine.cpp:192
 msgid "Interact"
 msgstr "Interactuar"
 
@@ -1035,8 +1035,8 @@ msgstr "Interactuar"
 #: engines/twine/metaengine.cpp:497 engines/twp/metaengine.cpp:154
 #: engines/ultima/ultima0/metaengine.cpp:45
 #: engines/ultima/ultima4/metaengine.cpp:44
-#: engines/ultima/ultima4/metaengine.cpp:138
-#: engines/ultima/ultima4/metaengine.cpp:148
+#: engines/ultima/ultima4/metaengine.cpp:139
+#: engines/ultima/ultima4/metaengine.cpp:149
 #: engines/wintermute/keymapper_tables.h:1290
 #: engines/wintermute/keymapper_tables.h:1373
 #: engines/wintermute/keymapper_tables.h:1449
@@ -1056,8 +1056,8 @@ msgstr "Arriba"
 #: engines/twine/metaengine.cpp:505 engines/twp/metaengine.cpp:155
 #: engines/ultima/ultima0/metaengine.cpp:46
 #: engines/ultima/ultima4/metaengine.cpp:45
-#: engines/ultima/ultima4/metaengine.cpp:139
-#: engines/ultima/ultima4/metaengine.cpp:149
+#: engines/ultima/ultima4/metaengine.cpp:140
+#: engines/ultima/ultima4/metaengine.cpp:150
 #: engines/wintermute/keymapper_tables.h:1296
 #: engines/wintermute/keymapper_tables.h:1379
 #: engines/wintermute/keymapper_tables.h:1456
@@ -1075,8 +1075,8 @@ msgstr "Abajo"
 #: engines/scumm/metaengine.cpp:1000 engines/twine/metaengine.cpp:452
 #: engines/twine/metaengine.cpp:520 engines/twp/metaengine.cpp:152
 #: engines/ultima/ultima4/metaengine.cpp:46
-#: engines/ultima/ultima4/metaengine.cpp:140
-#: engines/ultima/ultima4/metaengine.cpp:150
+#: engines/ultima/ultima4/metaengine.cpp:141
+#: engines/ultima/ultima4/metaengine.cpp:151
 #: engines/wintermute/keymapper_tables.h:320
 #: engines/wintermute/keymapper_tables.h:1302
 #: engines/wintermute/keymapper_tables.h:1385
@@ -1095,8 +1095,8 @@ msgstr "Izquierda"
 #: engines/scumm/metaengine.cpp:1007 engines/twine/metaengine.cpp:444
 #: engines/twine/metaengine.cpp:513 engines/twp/metaengine.cpp:153
 #: engines/ultima/ultima4/metaengine.cpp:47
-#: engines/ultima/ultima4/metaengine.cpp:141
-#: engines/ultima/ultima4/metaengine.cpp:151
+#: engines/ultima/ultima4/metaengine.cpp:142
+#: engines/ultima/ultima4/metaengine.cpp:152
 #: engines/wintermute/keymapper_tables.h:326
 #: engines/wintermute/keymapper_tables.h:1308
 #: engines/wintermute/keymapper_tables.h:1391
@@ -3920,7 +3920,7 @@ msgstr "Asignación predet. del juego"
 #: engines/touche/metaengine.cpp:122 engines/trecision/metaengine.cpp:125
 #: engines/tsage/metaengine.cpp:178 engines/tucker/metaengine.cpp:172
 #: engines/ultima/ultima0/metaengine.cpp:180
-#: engines/ultima/ultima4/metaengine.cpp:226
+#: engines/ultima/ultima4/metaengine.cpp:227
 #: engines/ultima/nuvie/metaengine.cpp:238
 #: engines/ultima/ultima8/metaengine.cpp:139 engines/vcruise/metaengine.cpp:158
 #: engines/wintermute/keymapper_tables.h:42 engines/zvision/metaengine.cpp:203
@@ -3951,7 +3951,7 @@ msgstr "Clic central"
 #: engines/toon/metaengine.cpp:92 engines/touche/metaengine.cpp:128
 #: engines/trecision/metaengine.cpp:131 engines/tsage/metaengine.cpp:184
 #: engines/tucker/metaengine.cpp:178 engines/ultima/ultima0/metaengine.cpp:186
-#: engines/ultima/ultima4/metaengine.cpp:232
+#: engines/ultima/ultima4/metaengine.cpp:233
 #: engines/ultima/nuvie/metaengine.cpp:244
 #: engines/ultima/ultima8/metaengine.cpp:145
 #: engines/wintermute/keymapper_tables.h:48 engines/zvision/metaengine.cpp:209
@@ -6511,7 +6511,7 @@ msgstr "Coger"
 #: engines/sky/metaengine.cpp:95 engines/sludge/keymapper_tables.h:333
 #: engines/supernova/metaengine.cpp:356 engines/tot/metaengine.cpp:139
 #: engines/tsage/metaengine.cpp:211 engines/twp/metaengine.cpp:186
-#: engines/ultima/ultima4/metaengine.cpp:73
+#: engines/ultima/ultima4/metaengine.cpp:74
 #: engines/ultima/nuvie/metaengine.cpp:69
 #: engines/wintermute/keymapper_tables.h:140
 #: engines/wintermute/keymapper_tables.h:1552
@@ -6528,7 +6528,7 @@ msgstr "Ir a"
 #: engines/scumm/help.cpp:174 engines/scumm/help.cpp:226
 #: engines/sherlock/metaengine.cpp:415 engines/supernova/metaengine.cpp:361
 #: engines/tot/metaengine.cpp:124 engines/tsage/metaengine.cpp:216
-#: engines/ultima/ultima4/metaengine.cpp:72
+#: engines/ultima/ultima4/metaengine.cpp:73
 #: engines/ultima/nuvie/metaengine.cpp:68
 msgid "Talk"
 msgstr "Hablar"
@@ -10684,7 +10684,7 @@ msgstr "Reorganizar grupo"
 #. I18N: Action of hero party in Might & Magic 1
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to search the journal
 #: engines/mm/mm1/metaengine.cpp:111 engines/sherlock/metaengine.cpp:514
-#: engines/sherlock/metaengine.cpp:961 engines/ultima/ultima4/metaengine.cpp:70
+#: engines/sherlock/metaengine.cpp:961 engines/ultima/ultima4/metaengine.cpp:71
 msgid "Search"
 msgstr "Registrar"
 
@@ -10698,7 +10698,7 @@ msgstr "Golpear"
 msgid "Unlock"
 msgstr "Abrir con llave"
 
-#: engines/mm/mm1/metaengine.cpp:122 engines/ultima/ultima4/metaengine.cpp:111
+#: engines/mm/mm1/metaengine.cpp:122 engines/ultima/ultima4/metaengine.cpp:112
 msgid "Goto location"
 msgstr "Ir a lugar"
 
@@ -15080,9 +15080,9 @@ msgid "Dungeon Keys"
 msgstr "Teclas en mazmorras"
 
 #: engines/ultima/ultima4/metaengine.cpp:43
-#: engines/ultima/ultima4/metaengine.cpp:132
-#: engines/ultima/ultima4/metaengine.cpp:137
-#: engines/ultima/ultima4/metaengine.cpp:147
+#: engines/ultima/ultima4/metaengine.cpp:133
+#: engines/ultima/ultima4/metaengine.cpp:138
+#: engines/ultima/ultima4/metaengine.cpp:148
 msgid "Abort action"
 msgstr "Abortar acción"
 
@@ -15128,172 +15128,173 @@ msgstr "Orden nuevo"
 msgid "Open door"
 msgstr "Abrir puerta"
 
-#: engines/ultima/ultima4/metaengine.cpp:65
+#. I18N: Going over something carefully
+#: engines/ultima/ultima4/metaengine.cpp:66
 msgid "Pass"
 msgstr "Pasar"
 
 #. I18N: Peer is used to look through keyholes or other small openings
-#: engines/ultima/ultima4/metaengine.cpp:67
+#: engines/ultima/ultima4/metaengine.cpp:68
 msgid "Peer"
 msgstr "Observar"
 
-#: engines/ultima/ultima4/metaengine.cpp:68
+#: engines/ultima/ultima4/metaengine.cpp:69
 msgid "Quit and save"
 msgstr "Guardar y salir"
 
-#: engines/ultima/ultima4/metaengine.cpp:69
+#: engines/ultima/ultima4/metaengine.cpp:70
 msgid "Ready weapon"
 msgstr "Preparar arma"
 
-#: engines/ultima/ultima4/metaengine.cpp:71
+#: engines/ultima/ultima4/metaengine.cpp:72
 msgid "Stats"
 msgstr "Estadísticas"
 
-#: engines/ultima/ultima4/metaengine.cpp:74
+#: engines/ultima/ultima4/metaengine.cpp:75
 msgid "Wear armor"
 msgstr "Ponerse armardura"
 
-#: engines/ultima/ultima4/metaengine.cpp:75
+#: engines/ultima/ultima4/metaengine.cpp:76
 msgid "Yell"
 msgstr "Gritar"
 
-#: engines/ultima/ultima4/metaengine.cpp:81
+#: engines/ultima/ultima4/metaengine.cpp:82
 msgid "Speed up"
 msgstr "Acelerar"
 
-#: engines/ultima/ultima4/metaengine.cpp:82
+#: engines/ultima/ultima4/metaengine.cpp:83
 msgid "Speed down"
 msgstr "Decelerar"
 
-#: engines/ultima/ultima4/metaengine.cpp:83
+#: engines/ultima/ultima4/metaengine.cpp:84
 msgid "Speed normal"
 msgstr "Velocidad normal"
 
-#: engines/ultima/ultima4/metaengine.cpp:84
+#: engines/ultima/ultima4/metaengine.cpp:85
 msgid "Combat speed up"
 msgstr "Acelerar velocidad de combate"
 
-#: engines/ultima/ultima4/metaengine.cpp:85
+#: engines/ultima/ultima4/metaengine.cpp:86
 msgid "Combat speed down"
 msgstr "Decelerar velocidad de combate"
 
-#: engines/ultima/ultima4/metaengine.cpp:86
+#: engines/ultima/ultima4/metaengine.cpp:87
 msgid "Combat speed normal"
 msgstr "Restablecer velocidad de combate"
 
-#: engines/ultima/ultima4/metaengine.cpp:92
+#: engines/ultima/ultima4/metaengine.cpp:93
 msgid "Party - None"
 msgstr "Grupo: nadie"
 
-#: engines/ultima/ultima4/metaengine.cpp:93
+#: engines/ultima/ultima4/metaengine.cpp:94
 msgid "Party - Character #1"
 msgstr "Grupo: personaje 1"
 
-#: engines/ultima/ultima4/metaengine.cpp:94
+#: engines/ultima/ultima4/metaengine.cpp:95
 msgid "Party - Character #2"
 msgstr "Grupo: personaje 2"
 
-#: engines/ultima/ultima4/metaengine.cpp:95
+#: engines/ultima/ultima4/metaengine.cpp:96
 msgid "Party - Character #3"
 msgstr "Grupo: personaje 3"
 
-#: engines/ultima/ultima4/metaengine.cpp:96
+#: engines/ultima/ultima4/metaengine.cpp:97
 msgid "Party - Character #4"
 msgstr "Grupo: personaje 4"
 
-#: engines/ultima/ultima4/metaengine.cpp:97
+#: engines/ultima/ultima4/metaengine.cpp:98
 msgid "Party - Character #5"
 msgstr "Grupo: personaje 5"
 
-#: engines/ultima/ultima4/metaengine.cpp:98
+#: engines/ultima/ultima4/metaengine.cpp:99
 msgid "Party - Character #6"
 msgstr "Grupo: personaje 6"
 
-#: engines/ultima/ultima4/metaengine.cpp:99
+#: engines/ultima/ultima4/metaengine.cpp:100
 msgid "Party - Character #7"
 msgstr "Grupo: personaje 7"
 
-#: engines/ultima/ultima4/metaengine.cpp:100
+#: engines/ultima/ultima4/metaengine.cpp:101
 msgid "Party - Character #8"
 msgstr "Grupo: personaje 8"
 
-#: engines/ultima/ultima4/metaengine.cpp:106
+#: engines/ultima/ultima4/metaengine.cpp:107
 msgid "Destroy all creatures"
 msgstr "Destruir a todas las criaturas"
 
-#: engines/ultima/ultima4/metaengine.cpp:107
+#: engines/ultima/ultima4/metaengine.cpp:108
 msgid "Toggle collision handling"
 msgstr "Activar/Desactivar colisiones"
 
-#: engines/ultima/ultima4/metaengine.cpp:108
+#: engines/ultima/ultima4/metaengine.cpp:109
 msgid "Destroy object"
 msgstr "Destruir objeto"
 
-#: engines/ultima/ultima4/metaengine.cpp:109
+#: engines/ultima/ultima4/metaengine.cpp:110
 msgid "Full equipment"
 msgstr "Equipamiento completo"
 
-#: engines/ultima/ultima4/metaengine.cpp:110
+#: engines/ultima/ultima4/metaengine.cpp:111
 msgid "Flee combat"
 msgstr "Huir del combate"
 
-#: engines/ultima/ultima4/metaengine.cpp:112
+#: engines/ultima/ultima4/metaengine.cpp:113
 msgid "Help - Teleport to Lord British"
 msgstr "Ayuda: teletransportarte hasta Lord British"
 
-#: engines/ultima/ultima4/metaengine.cpp:113
+#: engines/ultima/ultima4/metaengine.cpp:114
 msgid "Give items"
 msgstr "Dar objetos"
 
-#: engines/ultima/ultima4/metaengine.cpp:114
+#: engines/ultima/ultima4/metaengine.cpp:115
 msgid "List karma"
 msgstr "Mostrar karma"
 
-#: engines/ultima/ultima4/metaengine.cpp:115
+#: engines/ultima/ultima4/metaengine.cpp:116
 msgid "Leave location"
 msgstr "Abandonar lugar"
 
-#: engines/ultima/ultima4/metaengine.cpp:116
+#: engines/ultima/ultima4/metaengine.cpp:117
 msgid "Give mixtures"
 msgstr "Dar mezclas"
 
-#: engines/ultima/ultima4/metaengine.cpp:117
+#: engines/ultima/ultima4/metaengine.cpp:118
 msgid "Combat encounters"
 msgstr "Encuentros de combate"
 
-#: engines/ultima/ultima4/metaengine.cpp:118
+#: engines/ultima/ultima4/metaengine.cpp:119
 msgid "Toggle overhead view"
 msgstr "Activar/Desactivar vista superior"
 
-#: engines/ultima/ultima4/metaengine.cpp:119
+#: engines/ultima/ultima4/metaengine.cpp:120
 msgid "Full party"
 msgstr "Grupo completo"
 
-#: engines/ultima/ultima4/metaengine.cpp:120
+#: engines/ultima/ultima4/metaengine.cpp:121
 msgid "Give reagents"
 msgstr "Dar reactivos"
 
-#: engines/ultima/ultima4/metaengine.cpp:121
+#: engines/ultima/ultima4/metaengine.cpp:122
 msgid "Full stats"
 msgstr "Estadísticas detalladas"
 
-#: engines/ultima/ultima4/metaengine.cpp:122
+#: engines/ultima/ultima4/metaengine.cpp:123
 msgid "Create transport"
 msgstr "Crear transporte"
 
-#: engines/ultima/ultima4/metaengine.cpp:123
+#: engines/ultima/ultima4/metaengine.cpp:124
 msgid "Up level"
 msgstr "Subir de nivel"
 
-#: engines/ultima/ultima4/metaengine.cpp:124
+#: engines/ultima/ultima4/metaengine.cpp:125
 msgid "Down level"
 msgstr "Bajar de nivel"
 
-#: engines/ultima/ultima4/metaengine.cpp:125
+#: engines/ultima/ultima4/metaengine.cpp:126
 msgid "Grant virtue"
 msgstr "Otorgar virtud"
 
-#: engines/ultima/ultima4/metaengine.cpp:126
+#: engines/ultima/ultima4/metaengine.cpp:127
 msgid "Change wind"
 msgstr "Cambiar dirección del viento"
 
