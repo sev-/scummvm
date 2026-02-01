@@ -7,6 +7,11 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Improved PC-Speaker emulation.
    - Implemented multiselect in the GUI launcher games list.
 
+ M4:
+   - Added music support in Ripley
+   - Fixed numerous bugs in Ripley
+   - Fixed some bugs in Orion Burger
+
  MM:
    - Fixed M&M1 memory corruption on exit.
    - Fixed M&M1 display issues/corruption getting items from treasure chests.
