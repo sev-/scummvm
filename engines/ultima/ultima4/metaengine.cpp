@@ -62,6 +62,7 @@ static const KeybindingRecord NORMAL_KEYS[] = {
 	{ KEYBIND_MIX, "MIX", _s("Mix reagents"), "mix", "m", nullptr },
 	{ KEYBIND_NEW_ORDER, "NEW-ORDER", _s("New order"), "order", "n", nullptr },
 	{ KEYBIND_OPEN_DOOR, "OPEN-DOOR", _s("Open door"), "open", "o", nullptr },
+	// I18N: Going over something carefully
 	{ KEYBIND_PASS, "PASS", _s("Pass"), "pass", "SPACE", nullptr },
 	// I18N: Peer is used to look through keyholes or other small openings
 	{ KEYBIND_PEER, "PEER", _s("Peer"), "peer", "p", nullptr },
