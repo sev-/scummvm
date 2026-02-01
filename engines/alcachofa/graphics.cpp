@@ -447,10 +447,10 @@ void Animation::load() {
 		texHeight = nextHigher2(maxBounds.height());
 	}
 	_renderedSurface.create(texWidth, texHeight, g_engine->renderer().getPixelFormat());
-	_renderedTexture = g_engine->renderer().createTexture(texWidth, texHeight, true);
+	_renderedTexture = g_engine->renderer().createTexture(texWidth, texHeight, g_engine->config().texFilter());
 
 	// We always create mipmaps, even for the backgrounds that usually do not scale much,
-	// the exception to this is the thumbnails for the savestates.
+	// the exception to this is the thumbnails for the savestates. (and disabling filter also disables mipmaps)
 	// If we need to reduce graphics memory usage in the future, we can change it right here
 }
 

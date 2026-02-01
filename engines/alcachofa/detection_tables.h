@@ -143,7 +143,8 @@ const AlcachofaGameDescription gameDescriptions[] = {
 			),
 			Common::ES_ESP,
 			Common::kPlatformWindows,
-			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD,
+			GUIO1(GAMEOPTION_TEXTURE_FILTER)
 		},
 		EngineVersion::V1_0
 	},
@@ -159,7 +160,8 @@ const AlcachofaGameDescription gameDescriptions[] = {
 			AD_ENTRY1s("terror.emc", "dc9357ee618bff160e2e2afa168ba913", 170113868),
 			Common::ES_ESP,
 			Common::kPlatformWindows,
-			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD,
+			GUIO1(GAMEOPTION_TEXTURE_FILTER)
 		},
 		EngineVersion::V1_0
 	},
@@ -175,7 +177,8 @@ const AlcachofaGameDescription gameDescriptions[] = {
 			AD_ENTRY1s("oeste.emc", "b4c1084557d4cfbae336f0e741ec9e9f", 183099320),
 			Common::ES_ESP,
 			Common::kPlatformWindows,
-			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD
+			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_CD,
+			GUIO1(GAMEOPTION_TEXTURE_FILTER)
 		},
 		EngineVersion::V1_0
 	},

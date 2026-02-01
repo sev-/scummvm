@@ -62,7 +62,7 @@ namespace SaveVersion {
 	static constexpr const Common::Serializer::Version kInitial = 0;
 	static constexpr const Common::Serializer::Version kWithEngineV10 = 1;
 };
-static constexpr const Common::Serializer::Version kCurrentSaveVersion = SaveVersion::kInitial;
+static constexpr const Common::Serializer::Version kCurrentSaveVersion = SaveVersion::kWithEngineV10;
 
 class MySerializer : public Common::Serializer {
 public:
@@ -81,14 +81,14 @@ public:
 
 class Config {
 public:
-	Config();
-
 	inline bool &subtitles() { return _subtitles; }
 	inline bool &highQuality() { return _highQuality; }
 	inline bool &bits32() { return _bits32; }
+	inline bool &texFilter() { return _texFilter; }
 	inline uint8 &musicVolume() { return _musicVolume; }
 	inline uint8 &speechVolume() { return _speechVolume; }
 
+	static void registerDefaults();
 	void loadFromScummVM();
 	void saveToScummVM();
 
@@ -96,7 +96,8 @@ private:
 	bool
 		_subtitles = true,
 		_highQuality = true,
-		_bits32 = true;
+		_bits32 = true,
+		_texFilter = true;
 	uint8
 		_musicVolume = 255,
 		_speechVolume = 255;

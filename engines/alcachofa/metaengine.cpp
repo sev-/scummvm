@@ -56,6 +56,17 @@ static const ADExtraGuiOptionsMap optionsList[] = {
 			0
 		}
 	},
+	{
+		GAMEOPTION_TEXTURE_FILTER,
+		{
+			_s("Filter textures"),
+			_s("Whether textures should be linearly filtered"),
+			"tex_filter",
+			false, // it is used for V1 where textures are normally not filtered, V3 originally always filters
+			0,
+			0
+		}
+	},
 	AD_EXTRA_GUI_OPTIONS_TERMINATOR
 };
 

@@ -217,6 +217,10 @@ public:
 		return kind == MainCharacterKind::Mortadelo ? 15 : 16;
 	}
 
+	bool shouldFilterTexturesByDefault() override {
+		return false;
+	}
+
 	bool shouldClipCamera() override {
 		return true;
 	}

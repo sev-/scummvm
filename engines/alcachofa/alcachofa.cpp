@@ -79,6 +79,8 @@ Common::Error AlcachofaEngine::run() {
 	g_system->showMouse(false);
 	setDebugger(_console);
 	_game.reset(Game::create());
+	Config::registerDefaults();
+	_config.loadFromScummVM();
 	_world.load();
 	_renderer.reset(IRenderer::createOpenGLRenderer(game().getResolution()));
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
@@ -441,8 +443,15 @@ bool AlcachofaEngine::tryLoadFromLauncher() {
 	return result;
 }
 
-Config::Config() {
-	loadFromScummVM();
+void Config::registerDefaults() {
+	Config c;
+	ConfMan.registerDefault("subtitles", c._subtitles);
+	ConfMan.registerDefault("high_quality", c._highQuality);
+	ConfMan.registerDefault("32_bits", c._bits32);
+	ConfMan.registerDefault("tex_filter", g_engine->game().shouldFilterTexturesByDefault());
+	ConfMan.registerDefault("music_volume", c._musicVolume);
+	ConfMan.registerDefault("speech_volume", c._speechVolume);
+	ConfMan.registerDefault("sfx_volume", c._speechVolume);
 }
 
 void Config::loadFromScummVM() {
@@ -451,12 +460,14 @@ void Config::loadFromScummVM() {
 	_subtitles = ConfMan.getBool("subtitles");
 	_highQuality = ConfMan.getBool("high_quality");
 	_bits32 = ConfMan.getBool("32_bits");
+	_texFilter = ConfMan.getBool("tex_filter");
 }
 
 void Config::saveToScummVM() {
 	ConfMan.setBool("subtitles", _subtitles);
 	ConfMan.setBool("high_quality", _highQuality);
 	ConfMan.setBool("32_bits", _bits32);
+	ConfMan.setBool("tex_filter", _texFilter);
 	ConfMan.setInt("music_volume", _musicVolume);
 	ConfMan.setInt("speech_volume", _speechVolume);
 	ConfMan.setInt("sfx_volume", _speechVolume);

@@ -270,6 +270,10 @@ public:
 			kind == MainCharacterKind::Mortadelo ? "PistaMorta" : "PistaFile");
 	}
 
+	bool shouldFilterTexturesByDefault() override {
+		return true;
+	}
+
 	bool shouldClipCamera() override {
 		return g_engine->script().variable("EncuadrarCamara");
 	}
