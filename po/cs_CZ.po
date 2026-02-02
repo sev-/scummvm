@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.7.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-01 19:29+0000\n"
-"PO-Revision-Date: 2026-01-23 14:00+0000\n"
+"PO-Revision-Date: 2026-02-02 17:22+0000\n"
 "Last-Translator: AsciiWolf <mail@asciiwolf.com>\n"
 "Language-Team: Czech <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/cs/>\n"
@@ -1631,12 +1631,13 @@ msgid "Icons per row:"
 msgstr ""
 
 #: gui/launcher.cpp:1817
-#, fuzzy, c-format
-#| msgid "Do you really want to remove this game configuration?"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
-msgstr "Opravdu chcete odstranit nastavení této hry?"
+msgstr ""
+"Opravdu chcete odstranit následující %d nastavení hry?\n"
+"\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
 msgid "... progress ..."
