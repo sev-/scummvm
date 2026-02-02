@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-01 19:29+0000\n"
-"PO-Revision-Date: 2026-01-18 21:22+0000\n"
-"Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
+"PO-Revision-Date: 2026-02-02 17:22+0000\n"
+"Last-Translator: Linus Väinämö Virtanen <linus.virtanen@protonmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fi/>\n"
 "Language: fi_FI\n"
@@ -859,7 +859,7 @@ msgstr "Käynnistä sähköpostiohjelma"
 
 #: gui/integrity-dialog.cpp:152
 msgid "This game includes add-ons, pick the part you want to be checked:"
-msgstr ""
+msgstr "Tämä peli sisältää lisäosia, valitse osa jota haluat tarkastella:"
 
 #: gui/integrity-dialog.cpp:258
 msgid "Calculation complete"
@@ -1679,7 +1679,7 @@ msgstr "~P~elin Asetukset..."
 
 #: gui/launcher.cpp:1217
 msgid "Add-on"
-msgstr ""
+msgstr "Lisäosa"
 
 #. I18N: List grouping when no engine is specified
 #: gui/launcher.cpp:1268 gui/launcher.cpp:1513
@@ -3837,6 +3837,9 @@ msgid ""
 "run independently. Please copy the add-on contents into a subdirectory of "
 "the base game, and start the base game itself."
 msgstr ""
+"Peli \"%s\" jota yrität lisätä on lisäosa varsinaiselle pelille \"%s\" jota "
+"ei voi pelata yksistään. Kopioi lisäosan sisältö varsinaisen pelin "
+"alikansioon, ja käynnistä tuo pääpeli pelataksesi lisäosaa."
 
 #: engines/engine.cpp:869
 msgid "This game is not supported."
@@ -3864,11 +3867,13 @@ msgid ""
 "The directory '%s' looks like an add-on for the game '%s', but ScummVM could "
 "not find any matching add-on in it."
 msgstr ""
+"Hakemisto '%s' näyttäisi olevan pelin '%s' lisäosa, mutta ScummVM ei "
+"löytänyt siitä yhtäkään täsmäävää lisäosaa."
 
 #: engines/engine.cpp:1241
 #, c-format
 msgid "Directory '%s' matches several add-ons, please pick one."
-msgstr ""
+msgstr "Hakemisto '%s' täsmää useammankin lisäosan kanssa,valitse yksi."
 
 #: engines/game.cpp:199
 #, c-format
@@ -5368,7 +5373,7 @@ msgstr "Virtuaalikontrollit"
 
 #: backends/platform/android/options.cpp:138
 msgid "Ignore safe areas in-game"
-msgstr ""
+msgstr "Sivuuta turvapaikat pelatessa"
 
 #: backends/platform/android/options.cpp:139
 #: backends/platform/ios7/ios7_options.mm:112
@@ -6586,7 +6591,7 @@ msgstr "Käytä"
 
 #: engines/access/metaengine.cpp:296
 msgid "Goto"
-msgstr ""
+msgstr "Mene"
 
 #: engines/access/metaengine.cpp:301 engines/access/metaengine.cpp:332
 #: engines/bbvs/metaengine.cpp:130 engines/drascula/metaengine.cpp:250
@@ -6871,7 +6876,7 @@ msgstr ""
 
 #: engines/agi/metaengine.cpp:207
 msgid "Use PCjr's sound chip in 16-bit shift mode"
-msgstr ""
+msgstr "Käytä PCjr -äänipiiriä 16-bittisessä vaihdantatilassa"
 
 #: engines/agi/metaengine.cpp:208
 msgid ""
@@ -6880,6 +6885,10 @@ msgid ""
 "especially in fanmade games, but original Sierra music designed strictly for "
 "PCjr may sound wrong."
 msgstr ""
+"PCjr-tila emuloi epästandardia SN76496 äänipiiriä. Samankaltaisia piirejä "
+"löytyy SEGA Master System -konsoleista. Tämä salii tietyt musiikkitehosteet, "
+"varsinkin fanien tekemissä peleissä, mutta alkuperäinen Sierra-musiikki joka "
+"on nimenomaan suunniteltu PCjr:lle saattaa kuulostaa vialliselta."
 
 #: engines/agi/metaengine.cpp:447 engines/asylum/asylum.cpp:655
 #: engines/buried/saveload.cpp:53 engines/mohawk/riven.cpp:759
@@ -7341,6 +7350,7 @@ msgstr ""
 #: engines/alcachofa/graphics-opengl.cpp:106
 msgid "Old OpenGL detected, some graphical errors will occur."
 msgstr ""
+"Vanha OpenGL-versio havaittu, tämä johtaa joihinkin graafisiin virheisiin."
 
 #: engines/alcachofa/metaengine.cpp:40
 msgid "High Quality"
@@ -7358,7 +7368,7 @@ msgstr "32 bittiä"
 
 #: engines/alcachofa/metaengine.cpp:52
 msgid "Whether to render the game in 16-bit color"
-msgstr ""
+msgstr "Hahmonnetaanko peli 16-bittisissä väreissä"
 
 #: engines/alcachofa/metaengine.cpp:87 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
@@ -7472,7 +7482,7 @@ msgstr "Lataa silti"
 
 #: engines/awe/metaengine.cpp:35
 msgid "Enable title and copy protection screens (if present)"
-msgstr ""
+msgstr "Kytke päälle pelin nimi- ja kopiosuojausnäkymät (mikäli saatavilla)"
 
 #: engines/awe/metaengine.cpp:36
 #, fuzzy
@@ -7543,7 +7553,7 @@ msgstr "Hätänappi (työpaikalle, tms.)"
 
 #: engines/bagel/metaengine.cpp:73
 msgid "End"
-msgstr ""
+msgstr "Loppu"
 
 #: engines/bagel/metaengine.cpp:180
 msgid "General Keys"
@@ -7999,27 +8009,27 @@ msgstr "Liiku eteenpäin"
 #. I18N: AI is Artificial Intelligence
 #: engines/buried/metaengine.cpp:230
 msgid "Replay last AI comment"
-msgstr ""
+msgstr "Toista viimeisin AI-kommentti"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the Artificial Intelligence biochip.
 #: engines/buried/metaengine.cpp:237
 msgid "Biochip AI"
-msgstr ""
+msgstr "Biosiru AI"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the blank biochip.
 #: engines/buried/metaengine.cpp:243
 msgid "Biochip blank"
-msgstr ""
+msgstr "Tyhjä biosiru"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the cloak biochip.
 #: engines/buried/metaengine.cpp:249
 msgid "Biochip cloak"
-msgstr ""
+msgstr "Biosiru-peitto"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the evidence biochip.
 #: engines/buried/metaengine.cpp:255
 msgid "Biochip evidence"
-msgstr ""
+msgstr "Todiste-biosiru"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the files biochip.
 #: engines/buried/metaengine.cpp:261
@@ -8031,17 +8041,17 @@ msgstr "Näytä piilotetut tiedostot"
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the interface biochip.
 #: engines/buried/metaengine.cpp:267
 msgid "Biochip interface"
-msgstr ""
+msgstr "Biosiru-käyttöliittymä"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the jump biochip.
 #: engines/buried/metaengine.cpp:273
 msgid "Biochip jump"
-msgstr ""
+msgstr "Hyppy-biosiru"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the translate biochip.
 #: engines/buried/metaengine.cpp:279
 msgid "Biochip translate"
-msgstr ""
+msgstr "Käännös-biosiru"
 
 #. I18N: Shows a summary of collected points in the game.
 #: engines/buried/metaengine.cpp:285
