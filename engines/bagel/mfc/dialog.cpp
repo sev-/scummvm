@@ -385,8 +385,11 @@ bool CDialog::handleEnterKey(LPMSG lpMsg) {
 
 	// Find default push button
 	CButton *pDefault = GetDefaultPushButton();
-	if (!pDefault)
-		return false;
+	if (!pDefault) {
+		// No default button, so go ahead and close dialog
+		OnOK();
+		return true;
+	}
 
 	if (!pDefault->IsWindowEnabled())
 		// consume Enter, do nothing
@@ -398,8 +401,15 @@ bool CDialog::handleEnterKey(LPMSG lpMsg) {
 }
 
 bool CDialog::handleEscapeKey(LPMSG lpMsg) {
+	// Get the default Cancel button
 	CButton *pCancel = dynamic_cast<CButton *>(GetDlgItem(IDCANCEL));
-	if (!pCancel || !pCancel->IsWindowEnabled())
+	if (!pCancel) {
+		// No button, so close directly
+		OnCancel();
+		return true;
+	}
+
+	if (!pCancel->IsWindowEnabled())
 		return true;
 
 	sendButtonClicked(pCancel);

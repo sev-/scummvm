@@ -12,6 +12,9 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fixed numerous bugs in Ripley
    - Fixed some bugs in Orion Burger
 
+ Bagel:
+   - Fix Enter/Escape keys in The Guessing Game guess dialog
+
  MM:
    - Fixed M&M1 memory corruption on exit.
    - Fixed M&M1 display issues/corruption getting items from treasure chests.
