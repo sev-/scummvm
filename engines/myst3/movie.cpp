@@ -234,6 +234,7 @@ ScriptedMovie::ScriptedMovie(Myst3Engine *vm, uint16 id) :
 		_enabled(false),
 		_disableWhenComplete(false),
 		_scriptDriven(false),
+		_isPreloaded(false),
 		_isLastFrame(false),
 		_soundHeading(0),
 		_soundAttenuation(0),
@@ -257,17 +258,49 @@ void ScriptedMovie::drawOverlay() {
 	Movie::drawOverlay();
 }
 
-void ScriptedMovie::update() {
+void ScriptedMovie::update(bool pauseAtFirstFrame) {
+	int32 effectiveStartFrame = _startFrame;
+	int32 effectiveEndFrame = _endFrame;
+
 	if (_startFrameVar) {
-		_startFrame = _vm->_state->getVar(_startFrameVar);
+		uint16 startFrameVarValue = _vm->_state->getVar(_startFrameVar);
+		if (startFrameVarValue == 0) {
+			effectiveStartFrame = startFrameVarValue;
+		} else {
+			effectiveStartFrame = startFrameVarValue - 1;
+		}
 	}
 
 	if (_endFrameVar) {
-		_endFrame = _vm->_state->getVar(_endFrameVar);
+		uint16 endFrameVarValue = _vm->_state->getVar(_endFrameVar);
+		if (endFrameVarValue == 0) {
+			effectiveEndFrame = endFrameVarValue;
+		} else {
+			effectiveEndFrame = endFrameVarValue - 1;
+		}
 	}
 
-	if (!_endFrame) {
-		_endFrame = _bink.getFrameCount();
+	uint32 frameCount = _bink.getFrameCount();
+	if (!effectiveEndFrame || (uint32)effectiveEndFrame >= frameCount) {
+		if ((uint32)effectiveEndFrame == frameCount) {
+			// A special case: if endFrame is equal to frameCount, decrease it by 1,
+			// but also decrease startFrame by 1 (if it wasn't explicitly set by startFrameVar)
+			// Example case: the looping movie 13011 of the swiming jellyfish at node LIFO 11
+			--effectiveEndFrame;
+			if (!_startFrameVar && effectiveStartFrame > 0) {
+				--effectiveStartFrame;
+			}
+		} else {
+			effectiveEndFrame = frameCount - 1;
+		}
+	}
+
+	if (!_startFrameVar && effectiveStartFrame > 0) {
+		--effectiveStartFrame;
+	}
+
+	if (effectiveStartFrame >= effectiveEndFrame) {
+		effectiveStartFrame = effectiveEndFrame;
 	}
 
 	if (_posUVar) {
@@ -293,11 +326,12 @@ void ScriptedMovie::update() {
 		_enabled = newEnabled;
 
 		if (newEnabled) {
+			int currFrame = _bink.getCurFrame();
 			if (_disableWhenComplete
-					|| _bink.getCurFrame() < _startFrame
-					|| _bink.getCurFrame() >= _endFrame
-					|| _bink.endOfVideo()) {
-				_bink.seekToFrame(_startFrame);
+			    || currFrame < effectiveStartFrame
+			    || currFrame >= effectiveEndFrame
+			    || _bink.endOfVideo()) {
+				_bink.seekToFrame(effectiveStartFrame);
 				_isLastFrame = false;
 			}
 
@@ -316,18 +350,35 @@ void ScriptedMovie::update() {
 	}
 
 	if (_enabled) {
+		if (_isPreloaded) {
+			if (pauseAtFirstFrame) {
+				if (!_bink.isPaused()) {
+					_bink.pauseVideo(true);
+				}
+				return;
+			} else {
+				_isPreloaded = false;
+				if (_bink.isPaused()) {
+					_bink.pauseVideo(false);
+				}
+			}
+		}
+
 		updateVolume();
 
+		bool drawnAFrame = false; // not taking into account the first frame when enabling the movie (intentional)
 		if (_nextFrameReadVar) {
 			int32 nextFrame = _vm->_state->getVar(_nextFrameReadVar);
 			if (nextFrame > 0 && nextFrame <= (int32)_bink.getFrameCount()) {
 				// Are we changing frame?
-				if (_bink.getCurFrame() != nextFrame - 1) {
+				int currFrame = _bink.getCurFrame();
+				if (currFrame != nextFrame - 1) {
 					// Don't seek if we just want to display the next frame
-					if (_bink.getCurFrame() + 1 != nextFrame - 1) {
+					if (currFrame + 1 != nextFrame - 1) {
 						_bink.seekToFrame(nextFrame - 1);
 					}
 					drawNextFrameToTexture();
+					drawnAFrame = true;
 				}
 
 				_vm->_state->setVar(_nextFrameReadVar, 0);
@@ -335,21 +386,20 @@ void ScriptedMovie::update() {
 			}
 		}
 
-		if (!_scriptDriven && (_bink.needsUpdate() || _isLastFrame)) {
+		if (!drawnAFrame && !_scriptDriven && (_bink.needsUpdate() || _isLastFrame)) {
 			bool complete = false;
 
 			if (_isLastFrame) {
 				_isLastFrame = false;
-
 				if (_loop) {
-					_bink.seekToFrame(_startFrame);
+					_bink.seekToFrame(effectiveStartFrame);
 					drawNextFrameToTexture();
 				} else {
 					complete = true;
 				}
 			} else {
 				drawNextFrameToTexture();
-				_isLastFrame = _bink.getCurFrame() == (_endFrame - 1);
+				_isLastFrame = _bink.getCurFrame() == effectiveEndFrame;
 			}
 
 			if (_nextFrameWriteVar) {
@@ -509,7 +559,7 @@ ProjectorMovie::~ProjectorMovie() {
 	}
 }
 
-void ProjectorMovie::update() {
+void ProjectorMovie::update(bool justFirstFrame) {
 	if (!_frame) {
 		// First call, get the alpha channel from the bink file
 		const Graphics::Surface *frame = _bink.decodeNextFrame();
