@@ -375,7 +375,18 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 				if (currFrame != nextFrame - 1) {
 					// Don't seek if we just want to display the next frame
 					if (currFrame + 1 != nextFrame - 1) {
-						_bink.seekToFrame(nextFrame - 1);
+						if (getId() == 12001 && nextFrame >= 200 && nextFrame < 250) {
+							// fix glitchy transition for rotation of the left turntable track (movie id 12001),
+							// eg. when the left dial panel has no wood pegs
+							if (nextFrame >= 247) {
+								// values 247 and 248 should stay at the same frame
+								_bink.seekToFrame(248);
+							} else {
+								_bink.seekToFrame(nextFrame + 1);
+							}
+						} else {
+							_bink.seekToFrame(nextFrame - 1);
+						}
 					}
 					drawNextFrameToTexture();
 					drawnAFrame = true;
