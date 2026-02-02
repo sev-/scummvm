@@ -1023,6 +1023,7 @@ void Room102::daemon() {
 			break;
 
 		case 72:
+		case 76:
 			digi_unload_stream_breaks(STREAMS6);
 			ws_unhide_walker();
 			wilbur_speech("102w011", 28);
@@ -1037,6 +1038,7 @@ void Room102::daemon() {
 			break;
 
 		case 74:
+		case 78:
 			digi_unload_stream_breaks(STREAMS7);
 			ws_unhide_walker();
 			wilbur_speech("102w011", 28);
@@ -1050,24 +1052,12 @@ void Room102::daemon() {
 			series_stream_with_breaks(STREAMS6, "102wi11", 6, 0x100, kCHANGE_WILBUR_ANIMATION);
 			break;
 
-		case 76:
-			digi_unload_stream_breaks(STREAMS6);
-			ws_unhide_walker();
-			wilbur_speech("102w011", 28);
-			break;
-
 		case 77:
 			ws_hide_walker();
 			_G(wilbur_should) = 78;
 			digi_preload_stream_breaks(STREAMS7);
 			series_play("102wi10s", 0x101, 0, -1, 6, 0, 100, 0, 0, 0, -1);
 			series_stream_with_breaks(STREAMS7, "102wi10", 6, 0x100, kCHANGE_WILBUR_ANIMATION);
-			break;
-
-		case 78:
-			digi_unload_stream_breaks(STREAMS7);
-			ws_unhide_walker();
-			wilbur_speech("102w011", 28);
 			break;
 
 		case 79:

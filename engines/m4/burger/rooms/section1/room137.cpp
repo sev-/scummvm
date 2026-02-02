@@ -616,6 +616,7 @@ void Room137::daemon() {
 			break;
 
 		case 2:
+		case 9:
 			ws_unhide_walker();
 			player_set_commands_allowed(true);
 			break;
@@ -668,11 +669,6 @@ void Room137::daemon() {
 			series_play_with_breaks(PLAY3, "137wi04", 0x100, kCHANGE_WILBUR_ANIMATION,
 				3, 6, 100, 0, 0);
 			hotspot_set_active("jawz o' life", false);
-			break;
-
-		case 9:
-			ws_unhide_walker();
-			player_set_commands_allowed(true);
 			break;
 
 		case 35:

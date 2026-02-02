@@ -1046,6 +1046,7 @@ void Room105::daemon() {
 
 	case 5:
 	case 6:
+	case 26:
 		player_set_commands_allowed(true);
 		break;
 
@@ -1159,11 +1160,8 @@ void Room105::daemon() {
 		break;
 
 	case 25:
+	case 46:
 		ws_unhide_walker();
-		break;
-
-	case 26:
-		player_set_commands_allowed(true);
 		break;
 
 	case 27:
@@ -1282,10 +1280,6 @@ void Room105::daemon() {
 
 	case 45:
 		terminateMachineAndNull(_series5);
-		break;
-
-	case 46:
-		ws_unhide_walker();
 		break;
 
 	case kCHANGE_WILBUR_ANIMATION:
