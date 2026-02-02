@@ -7291,6 +7291,7 @@ else
 	iphoneos)
 		echo "ios (AVSpeechSynthesizer)"
 		_tts=yes
+		append_var LIBS "-framework AVFoundation"
 		;;
 	emscripten)
 		echo "Web Speech API"
