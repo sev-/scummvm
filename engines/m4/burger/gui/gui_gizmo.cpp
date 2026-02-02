@@ -383,6 +383,9 @@ static bool gizmo_load_sprites(const char *name, size_t count) {
 		_GIZMO(spriteCount) = count;
 		_GIZMO(sprites) = (M4sprite **)mem_alloc(count * sizeof(M4sprite *), "*sprites array");
 
+		if (!_GIZMO(sprites))
+			error("gizmo_load_sprites - Unable to allocate GIZMO %ld sprites", count);
+
 		for (size_t idx = 0; idx < count; ++idx) {
 			_GIZMO(sprites)[idx] = CreateSprite(_GIZMO(seriesHandle), _GIZMO(celsOffset),
 				idx, nullptr, nullptr);
