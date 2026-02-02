@@ -43,6 +43,8 @@
 #include "backends/platform/android/jni-android.h"
 #include "backends/platform/android/asset-archive.h"
 
+#include "backends/networking/basic/android/jni.h"
+
 #include "base/main.h"
 #include "base/version.h"
 #include "common/config-manager.h"
@@ -814,6 +816,11 @@ void JNI::create(JNIEnv *env, jobject self, jobject asset_manager,
 #undef FIND_METHOD
 
 	assets_updated = assets_updated_;
+
+	// Initialize network bindings here in a Java thread
+	// If net called gets called for the first time in a timer thread,
+	// the class loader is lost and can't find our classes.
+	Networking::NetJNI::init(env);
 
 	pause = false;
 	// initial value of zero!
