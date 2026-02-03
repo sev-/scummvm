@@ -367,9 +367,12 @@ bool CDialog::IsDialogMessage(LPMSG lpMsg) {
 }
 
 bool CDialog::handleEnterKey(LPMSG lpMsg) {
+	// Check for a focused control. We can close immediately if there isn't
 	HWND hFocus = GetFocus();
-	if (!hFocus)
-		return false;
+	if (!hFocus) {
+		OnOK();
+		return true;
+	}
 
 	// Ask control what it wants
 	LRESULT dlgCode = MFC::SendMessage(hFocus, WM_GETDLGCODE,
