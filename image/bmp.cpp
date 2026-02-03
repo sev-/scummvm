@@ -205,7 +205,7 @@ bool writeBMP(Common::WriteStream &out, const Graphics::Surface &input, const by
 	/* === PALETTE === */
 	// Input palette: RGBRGBRGB...
 	// BMP palette: B G R 0
-	for (int i = 0; i < paletteCount; i++) {
+	for (uint i = 0; i < paletteCount; i++) {
 		out.writeByte(palette[i * 3 + 2]); // B
 		out.writeByte(palette[i * 3 + 1]); // G
 		out.writeByte(palette[i * 3 + 0]); // R
