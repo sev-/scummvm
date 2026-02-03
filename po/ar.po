@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-03 08:01+0000\n"
+"POT-Creation-Date: 2026-02-03 20:19+0000\n"
 "PO-Revision-Date: 2023-03-26 11:16+0000\n"
 "Last-Translator: Malek Bellasfar <bellasfarmalek450@gmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -3869,24 +3869,24 @@ msgstr "معرّف اللعبة غير مدعوم"
 msgid "Default game keymap"
 msgstr "خريطة مفاتيح اللعبة الافتراضية"
 
-#: engines/metaengine.cpp:82 engines/agos/metaengine.cpp:158
-#: engines/asylum/metaengine.cpp:159 engines/bbvs/metaengine.cpp:99
-#: engines/cge/metaengine.cpp:203 engines/cge2/metaengine.cpp:216
-#: engines/cine/metaengine.cpp:277 engines/composer/metaengine.cpp:114
-#: engines/cruise/metaengine.cpp:173 engines/draci/metaengine.cpp:200
-#: engines/groovie/metaengine.cpp:205 engines/hdb/metaengine.cpp:207
-#: engines/hopkins/metaengine.cpp:211 engines/hugo/metaengine.cpp:134
-#: engines/illusions/metaengine.cpp:94 engines/kyra/engine/eobcommon.cpp:369
-#: engines/kyra/engine/lol.cpp:502 engines/lure/metaengine.cpp:177
-#: engines/made/metaengine.cpp:137 engines/mads/metaengine.cpp:280
-#: engines/mtropolis/metaengine.cpp:161 engines/nancy/input.cpp:181
-#: engines/parallaction/metaengine.cpp:138 engines/saga/metaengine.cpp:278
-#: engines/sludge/keymapper_tables.h:561 engines/sludge/keymapper_tables.h:580
-#: engines/stark/metaengine.cpp:189 engines/sword1/metaengine.cpp:271
-#: engines/tinsel/metaengine.cpp:246 engines/toon/metaengine.cpp:86
-#: engines/touche/metaengine.cpp:122 engines/trecision/metaengine.cpp:125
-#: engines/tsage/metaengine.cpp:178 engines/tucker/metaengine.cpp:172
-#: engines/ultima/ultima0/metaengine.cpp:180
+#: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
+#: engines/agos/metaengine.cpp:158 engines/asylum/metaengine.cpp:159
+#: engines/bbvs/metaengine.cpp:99 engines/cge/metaengine.cpp:203
+#: engines/cge2/metaengine.cpp:216 engines/cine/metaengine.cpp:277
+#: engines/composer/metaengine.cpp:114 engines/cruise/metaengine.cpp:173
+#: engines/draci/metaengine.cpp:200 engines/groovie/metaengine.cpp:205
+#: engines/hdb/metaengine.cpp:207 engines/hopkins/metaengine.cpp:211
+#: engines/hugo/metaengine.cpp:134 engines/illusions/metaengine.cpp:94
+#: engines/kyra/engine/eobcommon.cpp:369 engines/kyra/engine/lol.cpp:502
+#: engines/lure/metaengine.cpp:177 engines/made/metaengine.cpp:137
+#: engines/mads/metaengine.cpp:280 engines/mtropolis/metaengine.cpp:161
+#: engines/nancy/input.cpp:181 engines/parallaction/metaengine.cpp:138
+#: engines/saga/metaengine.cpp:278 engines/sludge/keymapper_tables.h:561
+#: engines/sludge/keymapper_tables.h:580 engines/stark/metaengine.cpp:189
+#: engines/sword1/metaengine.cpp:271 engines/tinsel/metaengine.cpp:246
+#: engines/toon/metaengine.cpp:86 engines/touche/metaengine.cpp:122
+#: engines/trecision/metaengine.cpp:125 engines/tsage/metaengine.cpp:178
+#: engines/tucker/metaengine.cpp:172 engines/ultima/ultima0/metaengine.cpp:180
 #: engines/ultima/ultima4/metaengine.cpp:227
 #: engines/ultima/nuvie/metaengine.cpp:238
 #: engines/ultima/ultima8/metaengine.cpp:139 engines/vcruise/metaengine.cpp:158
@@ -3896,8 +3896,9 @@ msgstr "خريطة مفاتيح اللعبة الافتراضية"
 msgid "Left click"
 msgstr "الزر الأيسر"
 
-#: engines/metaengine.cpp:88 engines/mtropolis/metaengine.cpp:173
-#: engines/saga/metaengine.cpp:284 engines/wintermute/keymapper_tables.h:256
+#: engines/metaengine.cpp:88 backends/platform/maemo/maemo.cpp:165
+#: engines/mtropolis/metaengine.cpp:173 engines/saga/metaengine.cpp:284
+#: engines/wintermute/keymapper_tables.h:256
 #: engines/wintermute/keymapper_tables.h:300
 #: engines/wintermute/keymapper_tables.h:2166
 #, fuzzy
@@ -3905,23 +3906,24 @@ msgstr "الزر الأيسر"
 msgid "Middle click"
 msgstr "النقر الأوسط"
 
-#: engines/metaengine.cpp:93 engines/agos/metaengine.cpp:164
-#: engines/asylum/metaengine.cpp:165 engines/bbvs/metaengine.cpp:105
-#: engines/cge/metaengine.cpp:209 engines/cge2/metaengine.cpp:222
-#: engines/cine/metaengine.cpp:283 engines/composer/metaengine.cpp:120
-#: engines/cruise/metaengine.cpp:179 engines/draci/metaengine.cpp:206
-#: engines/groovie/metaengine.cpp:211 engines/hopkins/metaengine.cpp:217
-#: engines/hugo/metaengine.cpp:141 engines/illusions/metaengine.cpp:101
-#: engines/kyra/engine/eobcommon.cpp:370 engines/kyra/engine/lol.cpp:503
-#: engines/lure/metaengine.cpp:183 engines/made/metaengine.cpp:144
-#: engines/mads/metaengine.cpp:286 engines/mtropolis/metaengine.cpp:167
-#: engines/nancy/input.cpp:188 engines/parallaction/metaengine.cpp:144
-#: engines/saga/metaengine.cpp:289 engines/sludge/keymapper_tables.h:567
-#: engines/sludge/keymapper_tables.h:586 engines/stark/metaengine.cpp:195
-#: engines/sword1/metaengine.cpp:277 engines/tinsel/metaengine.cpp:252
-#: engines/toon/metaengine.cpp:92 engines/touche/metaengine.cpp:128
-#: engines/trecision/metaengine.cpp:131 engines/tsage/metaengine.cpp:184
-#: engines/tucker/metaengine.cpp:178 engines/ultima/ultima0/metaengine.cpp:186
+#: engines/metaengine.cpp:93 backends/platform/maemo/maemo.cpp:169
+#: engines/agos/metaengine.cpp:164 engines/asylum/metaengine.cpp:165
+#: engines/bbvs/metaengine.cpp:105 engines/cge/metaengine.cpp:209
+#: engines/cge2/metaengine.cpp:222 engines/cine/metaengine.cpp:283
+#: engines/composer/metaengine.cpp:120 engines/cruise/metaengine.cpp:179
+#: engines/draci/metaengine.cpp:206 engines/groovie/metaengine.cpp:211
+#: engines/hopkins/metaengine.cpp:217 engines/hugo/metaengine.cpp:141
+#: engines/illusions/metaengine.cpp:101 engines/kyra/engine/eobcommon.cpp:370
+#: engines/kyra/engine/lol.cpp:503 engines/lure/metaengine.cpp:183
+#: engines/made/metaengine.cpp:144 engines/mads/metaengine.cpp:286
+#: engines/mtropolis/metaengine.cpp:167 engines/nancy/input.cpp:188
+#: engines/parallaction/metaengine.cpp:144 engines/saga/metaengine.cpp:289
+#: engines/sludge/keymapper_tables.h:567 engines/sludge/keymapper_tables.h:586
+#: engines/stark/metaengine.cpp:195 engines/sword1/metaengine.cpp:277
+#: engines/tinsel/metaengine.cpp:252 engines/toon/metaengine.cpp:92
+#: engines/touche/metaengine.cpp:128 engines/trecision/metaengine.cpp:131
+#: engines/tsage/metaengine.cpp:184 engines/tucker/metaengine.cpp:178
+#: engines/ultima/ultima0/metaengine.cpp:186
 #: engines/ultima/ultima4/metaengine.cpp:233
 #: engines/ultima/nuvie/metaengine.cpp:244
 #: engines/ultima/ultima8/metaengine.cpp:145
@@ -5695,18 +5697,6 @@ msgstr ""
 #: backends/platform/maemo/maemo.cpp:157
 msgid "Click Mode"
 msgstr "وضعية النقر"
-
-#: backends/platform/maemo/maemo.cpp:161
-msgid "Left Click"
-msgstr "الزر الأيسر"
-
-#: backends/platform/maemo/maemo.cpp:165
-msgid "Middle Click"
-msgstr "النقر الأوسط"
-
-#: backends/platform/maemo/maemo.cpp:169
-msgid "Right Click"
-msgstr "انقر على اليمين"
 
 #: backends/platform/sdl/sdl.cpp:1163
 msgid "Keyboard"
@@ -17674,6 +17664,15 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Left Click"
+#~ msgstr "الزر الأيسر"
+
+#~ msgid "Middle Click"
+#~ msgstr "النقر الأوسط"
+
+#~ msgid "Right Click"
+#~ msgstr "انقر على اليمين"
 
 #~ msgid "Download patch"
 #~ msgstr "تحميل الباتش"
