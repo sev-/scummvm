@@ -809,9 +809,6 @@ void Room406::daemon() {
 			case 81:
 				_mayorShould = 74;
 				break;
-			case 82:
-				_mayorShould = 72;
-				break;
 			default:
 				break;
 			}
