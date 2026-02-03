@@ -108,7 +108,20 @@ const AlcachofaGameDescription gameDescriptions[] = {
 			AD_ENTRY1s("Textos/Objetos.nkr", "8a8b23c04fdc4ced8070a7bccd0177bb", 24467),
 			Common::ES_ESP,
 			Common::kPlatformWindows,
-			ADGF_UNSTABLE | ADGF_USEEXTRAASTITLE | ADGF_REMASTERED | ADGF_CD,
+			ADGF_USEEXTRAASTITLE | ADGF_REMASTERED | ADGF_CD,
+			GUIO2(GAMEOPTION_32BITS, GAMEOPTION_HIGH_QUALITY)
+		},
+		EngineVersion::V3_0
+	},
+	// the russian CD variant
+	{
+		{
+			"aventuradecine",
+			"Секретные агенты: Киномонстры атакуют",
+			AD_ENTRY1s("Textos/Objetos.nkr", "d0e5c0843e6d9e4dd81654fef3a0c9bf", 16604),
+			Common::RU_RUS,
+			Common::kPlatformWindows,
+			ADGF_USEEXTRAASTITLE | ADGF_REMASTERED | ADGF_CD,
 			GUIO2(GAMEOPTION_32BITS, GAMEOPTION_HIGH_QUALITY)
 		},
 		EngineVersion::V3_0
