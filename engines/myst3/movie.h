@@ -108,6 +108,9 @@ public:
 	void setVolumeVar(uint16 v) { _volumeVar = v; }
 	void setStartFrameVar(uint16 v) { _startFrameVar = v; }
 	void setPreloaded(bool b) { _isPreloaded = b; }
+	void setNoFrameSkip(bool b) { _noFrameSkip = b; }
+	void setUnk147(uint16 v) { _unk147 = v; }
+	void setUnk148(uint16 v) { _unk148 = v; }
 	void setCondition(int16 condition) { _condition = condition; }
 	void setConditionBit(int16 cb) { _conditionBit = cb; }
 	void setDisableWhenComplete(bool upd) { _disableWhenComplete = upd; }
@@ -126,6 +129,9 @@ protected:
 	bool _scriptDriven;
 	bool _isLastFrame;
 	bool _isPreloaded;
+	bool   _noFrameSkip;
+	uint16 _unk147;
+	uint16 _unk148;
 
 	int16 _condition;
 	uint16 _conditionBit;

@@ -1141,6 +1141,21 @@ void Myst3Engine::loadMovie(uint16 id, uint16 condition, bool resetCond, bool lo
 		_state->setMoviePreloadToMemory(0);
 	}
 
+	if (_state->getMovieNoFrameSkip()) {
+		movie->setNoFrameSkip(_state->getMovieNoFrameSkip());
+		_state->setMovieNoFrameSkip(0);
+	}
+
+	if (_state->getMovieUnk147()) {
+		movie->setUnk147(_state->getMovieUnk147());
+		_state->setMovieUnk147(0);
+	}
+
+	if (_state->getMovieUnk148()) {
+		movie->setUnk148(_state->getMovieUnk148());
+		_state->setMovieUnk148(0);
+	}
+
 	if (_state->getMovieStartFrameVar()) {
 		movie->setStartFrameVar(_state->getMovieStartFrameVar());
 		_state->setMovieStartFrameVar(0);
