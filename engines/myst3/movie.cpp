@@ -285,17 +285,7 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 
 	uint32 frameCount = _bink.getFrameCount();
 	if (!effectiveEndFrame || (uint32)effectiveEndFrame >= frameCount) {
-		if ((uint32)effectiveEndFrame == frameCount) {
-			// A special case: if endFrame is equal to frameCount, decrease it by 1,
-			// but also decrease startFrame by 1 (if it wasn't explicitly set by startFrameVar)
-			// Example case: the looping movie 13011 of the swiming jellyfish at node LIFO 11
-			--effectiveEndFrame;
-			if (!_startFrameVar && effectiveStartFrame > 0) {
-				--effectiveStartFrame;
-			}
-		} else {
-			effectiveEndFrame = frameCount - 1;
-		}
+		effectiveEndFrame = frameCount - 1;
 	}
 
 	if (!_startFrameVar && effectiveStartFrame > 0) {
@@ -304,6 +294,11 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 
 	if (effectiveStartFrame >= effectiveEndFrame) {
 		effectiveStartFrame = effectiveEndFrame;
+	}
+
+	if (getId() == 13011) {
+		// Special case for the looping movie 13011 of the looping swiming jellyfish at node LIFO 11
+		effectiveStartFrame = 0;
 	}
 
 	if (_posUVar) {
@@ -369,7 +364,6 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 
 		updateVolume();
 
-		bool drawnAFrame = false; // not taking into account the first frame when enabling the movie (intentional)
 		if (_nextFrameReadVar) {
 			int32 nextFrame = _vm->_state->getVar(_nextFrameReadVar);
 			if (nextFrame > 0 && nextFrame <= (int32)_bink.getFrameCount()) {
@@ -392,7 +386,6 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 						}
 					}
 					drawNextFrameToTexture();
-					drawnAFrame = true;
 				}
 
 				_vm->_state->setVar(_nextFrameReadVar, 0);
@@ -400,7 +393,7 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 			}
 		}
 
-		if (!drawnAFrame && !_scriptDriven && (_bink.needsUpdate() || _isLastFrame)) {
+		if (!_scriptDriven && (_bink.needsUpdate() || _isLastFrame)) {
 			bool complete = false;
 
 			if (_isLastFrame) {
