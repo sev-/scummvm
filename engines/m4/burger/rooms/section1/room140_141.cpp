@@ -477,7 +477,7 @@ void Room140_141::daemon() {
 				break;
 
 			case 24:
-				_elmoShould = 24;
+				_elmoMode = 24;
 				Series::series_play("140pe06", 0x500, 0, kCHANGE_ELMO_ANIMATION, 6, 0, 100, 0, 0, 0, 5);
 				kernel_timing_trigger(60, 19);
 				break;
