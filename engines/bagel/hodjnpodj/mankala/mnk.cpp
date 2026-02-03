@@ -642,7 +642,7 @@ void CMnkWindow::OnLButtonDown(unsigned int nFlags, CPoint point) {
 									MessageBox("Can't Conduct Animation Anymore", "Insufficient Memory");
 									break;
 								}
-								//MFC::Sleep(gSleepTime);
+								AfxGetApp()->pause();
 							}
 							pSpriteGlobe->EraseSprite(pDC);
 							pSpriteGlobe->UnlinkSprite();
@@ -679,7 +679,7 @@ void CMnkWindow::OnLButtonDown(unsigned int nFlags, CPoint point) {
 									MessageBox("Can't paint anymore animation", "Insufficient Memory");
 									break;
 								}
-								MFC::Sleep(110);    //10);
+								AfxGetApp()->pause();
 							}
 							pSpriteChair->EraseSprite(pDC);
 							pSpriteChair->UnlinkSprite();
