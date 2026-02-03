@@ -323,10 +323,10 @@ void CLife::evolution(CDC *pDC) {
 	CPoint sprite_loc;                  // center location of sprite on board
 	int i;                              // used to gen random village
 	int row, col;                           // indexs help find board cell
-	colony pColonyCopy((*pColony).row(), (*pColony).col());
+	colony colonyCopy((*pColony).row(), (*pColony).col());
 
 	// make copy of original pColony for later ref
-	pColonyCopy = (*pColony);
+	colonyCopy = (*pColony);
 	// Update stats
 	if (m_nYears == 0) //just starting evolution?
 		m_nCumLife = (*pColony).m_nColony_count;
@@ -337,7 +337,7 @@ void CLife::evolution(CDC *pDC) {
 	m_dScore = ((double) m_nCumLife) / ((double) m_nYears);
 
 	//Evolve internal board
-	(*pColony).evolve(*pColony);
+	(*pColony).evolve(colonyCopy);
 
 	// update score
 	if (m_nCumLife > LARGE && bIsInfiniteTurns) { // This prevents int overflow
@@ -350,13 +350,13 @@ void CLife::evolution(CDC *pDC) {
 	gMainWnd->RefreshStats();
 
 	//Update visual board
-	if (pColonyCopy != (*pColony))
+	if (colonyCopy != (*pColony))
 		for (row = 0; row < (*pColony).row(); row++)
 			for (col = 0; col < (*pColony).col(); col++) {
 				pSprite = CSprite::GetSpriteChain();
 
 				// Any change for this particular cell?
-				if (pColonyCopy.islife(row, col) == (*pColony).islife(row, col))
+				if (colonyCopy.islife(row, col) == (*pColony).islife(row, col))
 					continue;  // no change -- loop
 
 				if ((*pColony).islife(row, col)) { //Need to put a sprite there?
