@@ -465,13 +465,11 @@ void Section6::freeDigi(int state) {
 		digi_unload("600_007");
 		break;
 	case 6010:
+	case 6012:
 		digi_unload("600xxxxx");
 		break;
 	case 6011:
 		digi_unload("600_010");
-		break;
-	case 6012:
-		digi_unload("600xxxxx");
 		break;
 	default:
 		break;
