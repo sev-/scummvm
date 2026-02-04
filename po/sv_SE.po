@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-04 15:56+0000\n"
-"PO-Revision-Date: 2026-01-31 17:22+0000\n"
+"PO-Revision-Date: 2026-02-04 22:18+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/sv/>\n"
@@ -7194,14 +7194,12 @@ msgid "Whether to render the game in 16-bit color"
 msgstr "Huruvida spelet ska renderas i 16-bitars färg"
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Give mixtures"
 msgid "Filter textures"
-msgstr "Ge mixturer"
+msgstr "Filtrera texturer"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "Huruvida texturer ska linjärt filtreras"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
