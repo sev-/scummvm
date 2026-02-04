@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-03 20:19+0000\n"
+"POT-Creation-Date: 2026-02-04 15:56+0000\n"
 "PO-Revision-Date: 2026-01-23 13:01+0000\n"
 "Last-Translator: Antoniou Athanasios <a.antoniou79@gmail.com>\n"
 "Language-Team: Greek <https://translations.scummvm.org/projects/scummvm/"
@@ -6406,7 +6406,7 @@ msgstr "R2"
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:99 engines/grim/grim.cpp:545
+#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
 #: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
 #: engines/made/metaengine.cpp:186 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
@@ -6618,7 +6618,7 @@ msgstr "Πλοηγητής"
 msgid "Check for Updates..."
 msgstr "Έλεγχος Ενημερώσεων..."
 
-#: engines/access/metaengine.cpp:198 engines/alcachofa/metaengine.cpp:83
+#: engines/access/metaengine.cpp:198 engines/alcachofa/metaengine.cpp:94
 #: engines/bbvs/metaengine.cpp:92 engines/buried/metaengine.cpp:133
 #: engines/chamber/metaengine.cpp:59 engines/cine/metaengine.cpp:270
 #: engines/cruise/metaengine.cpp:168 engines/dm/metaengine.cpp:124
@@ -6794,7 +6794,7 @@ msgid "Take"
 msgstr "Πάρε"
 
 #. I18N: Action in In Cold Blood
-#: engines/access/metaengine.cpp:322 engines/alcachofa/metaengine.cpp:105
+#: engines/access/metaengine.cpp:322 engines/alcachofa/metaengine.cpp:116
 #: engines/cine/metaengine.cpp:337 engines/crab/input/input.cpp:251
 #: engines/cruise/metaengine.cpp:192 engines/draci/metaengine.cpp:237
 #: engines/dragons/metaengine.cpp:147 engines/drascula/metaengine.cpp:218
@@ -7548,7 +7548,7 @@ msgstr ""
 "αρχείων αποθήκευσης του ScummVM, ή\n"
 "2. Όποιο αρχείο .sav βρίσκεται εντός του φακέλου του παιχνιδιού QfG2 Remake"
 
-#: engines/alcachofa/graphics-opengl.cpp:106
+#: engines/alcachofa/graphics-opengl.cpp:108
 msgid "Old OpenGL detected, some graphical errors will occur."
 msgstr ""
 "Εντοπίστηκε παλιά έκδοση OpenGL. Ενδέχεται να προκύψουν σφάλματα στα γραφικά."
@@ -7569,18 +7569,33 @@ msgstr "32 bit"
 msgid "Whether to render the game in 16-bit color"
 msgstr "Aπεικόνιση του παιχνιδιού με 16-bit ή 32-bit χρώματα"
 
-#: engines/alcachofa/metaengine.cpp:87 engines/cine/metaengine.cpp:347
+#: engines/alcachofa/metaengine.cpp:62
+#, fuzzy
+#| msgid "Filter graphics"
+msgid "Filter textures"
+msgstr "Φίλτρο γραφικών"
+
+#: engines/alcachofa/metaengine.cpp:63
+msgid "Whether textures should be linearly filtered"
+msgstr ""
+
+#: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
 msgid "Activate"
 msgstr "Ενεργοποίησε"
 
-#: engines/alcachofa/metaengine.cpp:93 engines/queen/metaengine.cpp:279
+#: engines/alcachofa/metaengine.cpp:104 engines/queen/metaengine.cpp:279
 #: engines/saga/metaengine.cpp:354 engines/scumm/help.cpp:202
 #: engines/scumm/help.cpp:214 engines/twp/metaengine.cpp:182
 #: engines/wintermute/keymapper_tables.h:122
 #: engines/wintermute/keymapper_tables.h:1534
 msgid "Look at"
 msgstr "Κοίτα προς"
+
+#: engines/alcachofa/metaengine.cpp:122 engines/stark/metaengine.cpp:245
+#: engines/toon/metaengine.cpp:124 engines/wintermute/keymapper_tables.h:1345
+msgid "Toggle subtitles"
+msgstr "Εναλλαγή υπότιτλων"
 
 #: engines/alg/metaengine.cpp:34
 msgid "Use lower quality single speed CD-ROM video"
@@ -14737,11 +14752,6 @@ msgstr "Επανάληψη βίντεο"
 #: engines/stark/metaengine.cpp:235
 msgid "Game settings"
 msgstr "Ρυθμίσεις παιχνιδιού"
-
-#: engines/stark/metaengine.cpp:245 engines/toon/metaengine.cpp:124
-#: engines/wintermute/keymapper_tables.h:1345
-msgid "Toggle subtitles"
-msgstr "Εναλλαγή υπότιτλων"
 
 #: engines/stark/metaengine.cpp:250
 msgid "Quit to menu"
