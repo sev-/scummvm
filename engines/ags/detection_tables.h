@@ -2915,6 +2915,7 @@ const PlainGameDescriptor GAME_NAMES[] = {
 	{ "scenario5b", "Scenario 5B" },
 	{ "schnelltrial", "The Trial of the Schnellersparrow" },
 	{ "schoollout", "Schoollout" },
+	{ "schooltales", "School Tales" },
 	{ "science", "Science!" },
 	{ "sciencesfaer", "Les Sciences du Faër" },
 	{ "scnidersom", "Scnidersom" },
@@ -3765,6 +3766,7 @@ const PlainGameDescriptor GAME_NAMES[] = {
 	{ "beachbelly", "Beach Belly Bloodbath" },
 	{ "bearingdown", "Bearing Down" },
 	{ "bookertail", "Booker Tail" },
+	{ "brainrot", "Brainrot!" },
 	{ "bugadv", "Bug Adventure Game" },
 	{ "burncloset", "Burn Down The Closet: a game about being agender" },
 	{ "db0oops", "Double-0-Oops!" },
@@ -3791,6 +3793,7 @@ const PlainGameDescriptor GAME_NAMES[] = {
 	{ "castleescapech2", "Castle Escape - Chapter 2" },
 	{ "centralstandard", "Central Standard" },
 	{ "crescentrover", "Crescent Rover" },
+	{ "deadcipher", "Dead Cipher" },
 	{ "dreadmacfarlaneisep1", "Dread Mac Farlane Interactive Story - Episode 1" },
 	{ "dreadmacfarlaneisep2", "Dread Mac Farlane Interactive Story - Episode 2" },
 	{ "dustrust", "Dust 'n' Rust" },
@@ -4340,6 +4343,7 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	UNSUPPORTED_GAME_ENTRY_EN("beachbelly", "BeachBellyBloodbath.ags", "b9e0b0bbbb82a04d9c83efa455610eda", 11728709),  // Post-Jam v11
 	UNSUPPORTED_DEMO_ENTRY_EN("bearingdown", "Bear Game.ags", "f5271361fcbad7c5d588d863272a560b", 2576138),
 	UNSUPPORTED_DEMO_ENTRY_EN("bookertail", "Bookertail.ags", "036588310f7c60c40ae97be9f2ea641c", 8593198),
+	UNSUPPORTED_GAME_ENTRY_EN("brainrot", "brainrot.ags", "6f6d233e14167a68c257eb0599cd9234", 417226),
 	UNSUPPORTED_GAME_ENTRY_EN("brownieadv1", "Brownie1.exe", "a3a797d0ea4bacd17e75d06edc5a7c4b", 166779573),  // GOG v8.0
 	UNSUPPORTED_DEMO_ENTRY_EN("brownieadvfinal", "BA3ANR.exe", "ba3b67bd973d39c10871303118bbd31c", 207511283),
 	UNSUPPORTED_GAME_ENTRY_EN("bugadv", "bug game file.exe", "0ce1f999753709e6bb9d0aac5ab3c5b8", 330311727),
@@ -4394,6 +4398,7 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	AGS4_ENTRY_EN("castleescapech2", "CastleEscapeChapter2.ags", "3a1136db0175eb81b499bc4c755ecbee", 1549005),  // Linux
 	AGS4_ENTRY_EN("centralstandard", "Dunning-Kruger 2.ags", "db56a79e4a2472521e20cb441d7dc94b", 48001719),
 	AGS4_ENTRY_EN("crescentrover", "CrescentRover.ags", "bb0c6cd07e33c67f2893e13c362d90f0", 16762424),
+	AGS4_ENTRY_EN("deadcipher", "Dead Cipher.ags", "03e5683e257dec3ed3114b4bc98b70f3", 220117437),
 	AGS4_ENTRY_LANG("dreadmacfarlaneisep1", "Dread Mac Farlane 1.ags", "f9d45767a3cf610b6fe777da54c5234d", 468102549, Common::FR_FRA),
 	AGS4_ENTRY_EN("dreadmacfarlaneisep1", "Dread Mac Farlane 1_English.ags", "68999f3a425f0da1d558a72a8bff7f26", 468102549),
 	AGS4_ENTRY_LANG("dreadmacfarlaneisep2", "Dread Mac Farlane 2.ags", "df836f1cd98fdbf959d49701e47e2207", 296604541, Common::FR_FRA),
@@ -4458,6 +4463,7 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.exe", "031b525706d93c172a2329894d255feb", 250051066),  // Win v1.0
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.exe", "031b525706d93c172a2329894d255feb", 250052667),  // Win v1.1
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.exe", "031b525706d93c172a2329894d255feb", 250077784),  // Win v1.13.2
+	GAME_ENTRY_EN_STEAM("beekeeperpicnic", "beekeeperspicnic.exe", "031b525706d93c172a2329894d255feb", 250078885),  // Win v1.13.5
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.ags", "f98bc7b344c75e6ed5513cc4e04eeb44", 246874086),  // Linux v1.0
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.ags", "523256421463b5660db305cf4db5d9cc", 246875687),  // Linux v1.1
 	GAME_ENTRY_EN("beekeeperpicnic", "beekeeperspicnic.ags", "e659ea3ff2ef6130ec6fd0c5777985cf", 246900804),  // Linux v1.13.2
@@ -4778,6 +4784,8 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	GAME_ENTRY_STEAM("crystalshardadventurebundle", "bundle.ags", "9b7610e4330a7aa2118bc3bdb8d2ce7e", 1935844),  // Multilang
 	GAME_ENTRY_GOG("crystalshardadventurebundle", "bundle.ags", "d969de02802ea5edb7a76537fec974ec", 1935846),  // Multilang
 	GAME_ENTRY_EN("danewguys2", "jackass.exe", "029aab0fef5e9fff7b95ddf5d79d7718", 23932842), // Humble Store
+	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859245201, 0),  // Eng-Esp
+	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859247348, 0),
 	GAME_ENTRY_PLUGIN_STEAM_EN_NOAUTOSAVE("detectivebhdino", "Detective Boiled-Hard  Case File - Death of the Space Dino Hunter.exe", "4d5d25446373d4df71c6bda77a15230a", 49618396, 0),
 	GAME_ENTRY_STEAM("detectivegallo", "dgbuild.exe", "2e0678b5642c64e057022a79742743fb", 90740554),  // Multilang
 	GAME_ENTRY_GOG("detectivegallo", "dgbuild.exe", "2e0678b5642c64e057022a79742743fb", 90740772),
@@ -9120,6 +9128,7 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	GAME_ENTRY("scenario5b", "scenario.exe", "707c317aa3cf27d21107ae3a52296baa", 4151144),  // Eng-Ita
 	GAME_ENTRY_EN("schnelltrial", "TSS2.exe", "18456f28d9bf843b087e80072c85beca", 11217104),
 	GAME_ENTRY_LANG("schoollout", "Schoollout.exe", "3d40063da244931d67726a2d9600f1e8", 384873228, Common::CS_CZE),
+	GAME_ENTRY_LANG("schooltales", "School.exe", "0595b55383d72a99cd995092c5bf8475", 13646297, Common::ES_ESP),
 	GAME_ENTRY_EN("science", "orow3.exe", "f120690b506dd63cd7d1112ea6af2f77", 1330580),
 	GAME_ENTRY_LANG("sciencesfaer", "ProfM.exe", "a524cbb1c51589903c4043b98917f1d9", 9215301, Common::FR_FRA),
 	GAME_ENTRY_EN("scnidersom", "scnider.exe", "3128b9f90e2f954ba704414ae854d10b", 1189237),
