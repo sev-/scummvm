@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-03 20:19+0000\n"
-"PO-Revision-Date: 2026-01-24 10:33+0000\n"
+"PO-Revision-Date: 2026-02-04 10:22+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ka/>\n"
@@ -1552,15 +1552,12 @@ msgid "Icons per row:"
 msgstr "ხატულა მწკრივში:"
 
 #: gui/launcher.cpp:1817
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following game configurations?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
 msgstr ""
-"მართლა გნებავთ, წაშალოთ შემდეგი თამაშის კონფიგურაციები?\n"
+"მართლა გნებავთ, წაშალოთ შემდეგი %d თამაშის კონფიგურაცია?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
