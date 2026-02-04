@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-04 15:56+0000\n"
-"PO-Revision-Date: 2026-02-03 20:18+0000\n"
+"PO-Revision-Date: 2026-02-04 23:56+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -860,7 +860,7 @@ msgstr "Запустить почтовый клиент"
 
 #: gui/integrity-dialog.cpp:152
 msgid "This game includes add-ons, pick the part you want to be checked:"
-msgstr ""
+msgstr "Ця гра містить доповнення, виберіть частину, яку ви хочете перевірити:"
 
 #: gui/integrity-dialog.cpp:258
 msgid "Calculation complete"
@@ -1634,7 +1634,7 @@ msgstr "Настр. ~и~гры..."
 
 #: gui/launcher.cpp:1217
 msgid "Add-on"
-msgstr ""
+msgstr "Дополнение"
 
 #. I18N: List grouping when no engine is specified
 #: gui/launcher.cpp:1268 gui/launcher.cpp:1513
@@ -3803,6 +3803,9 @@ msgid ""
 "run independently. Please copy the add-on contents into a subdirectory of "
 "the base game, and start the base game itself."
 msgstr ""
+"Игра \"%s\", которую вы пытаетесь добавить, является дополнением для \"%s\", "
+"которое не может быть запущено независимо. Пожалуйста, скопируйте содержимое "
+"дополнения в подкаталог базовой игры и запустите саму базовую игру."
 
 #: engines/engine.cpp:869
 msgid "This game is not supported."
@@ -3830,11 +3833,15 @@ msgid ""
 "The directory '%s' looks like an add-on for the game '%s', but ScummVM could "
 "not find any matching add-on in it."
 msgstr ""
+"Каталог '%s' выглядит как дополнение к игре '%s', но ScummVM не смог найти в "
+"нем ни одного соответствующего дополнения."
 
 #: engines/engine.cpp:1241
 #, c-format
 msgid "Directory '%s' matches several add-ons, please pick one."
 msgstr ""
+"Каталог '%s' соответствует нескольким дополнениям, пожалуйста, выберите одно "
+"из них."
 
 #: engines/game.cpp:199
 #, c-format
@@ -3892,8 +3899,6 @@ msgstr "Левый щелчок"
 #: engines/wintermute/keymapper_tables.h:256
 #: engines/wintermute/keymapper_tables.h:300
 #: engines/wintermute/keymapper_tables.h:2166
-#, fuzzy
-#| msgid "Middle Click"
 msgid "Middle click"
 msgstr "Средний щелчок"
 
@@ -4398,32 +4403,22 @@ msgid "Right mouse button"
 msgstr "Правая кнопка мыши"
 
 #: backends/keymapper/hardware-input.cpp:246
-#, fuzzy
-#| msgid "Middle Mouse Button"
 msgid "Middle mouse button"
 msgstr "Средняя кнопка мыши"
 
 #: backends/keymapper/hardware-input.cpp:247
-#, fuzzy
-#| msgid "Mouse Wheel Up"
 msgid "Mouse wheel up"
 msgstr "Колесо мыши вверх"
 
 #: backends/keymapper/hardware-input.cpp:248
-#, fuzzy
-#| msgid "Mouse Wheel Down"
 msgid "Mouse wheel down"
 msgstr "Колесо мыши вниз"
 
 #: backends/keymapper/hardware-input.cpp:249
-#, fuzzy
-#| msgid "X1 Mouse Button"
 msgid "X1 mouse button"
 msgstr "Кнопка мыши X1"
 
 #: backends/keymapper/hardware-input.cpp:250
-#, fuzzy
-#| msgid "X2 Mouse Button"
 msgid "X2 mouse button"
 msgstr "Кнопка мыши X2"
 
@@ -4444,50 +4439,34 @@ msgid "Joy Y"
 msgstr "Джойстик Y"
 
 #: backends/keymapper/hardware-input.cpp:259
-#, fuzzy
-#| msgid "Joy Back"
 msgid "Joy back"
 msgstr "Джойстик назад"
 
 #: backends/keymapper/hardware-input.cpp:260
-#, fuzzy
-#| msgid "Joy Guide"
 msgid "Joy guide"
 msgstr "Джойстик меню"
 
 #: backends/keymapper/hardware-input.cpp:261
-#, fuzzy
-#| msgid "Joy Start"
 msgid "Joy start"
 msgstr "Джойстик старт"
 
 #: backends/keymapper/hardware-input.cpp:262
-#, fuzzy
-#| msgid "Left Stick"
 msgid "Left stick"
 msgstr "Левый стик"
 
 #: backends/keymapper/hardware-input.cpp:263
-#, fuzzy
-#| msgid "Right Stick"
 msgid "Right stick"
 msgstr "Правый стик"
 
 #: backends/keymapper/hardware-input.cpp:264 engines/dragons/metaengine.cpp:206
-#, fuzzy
-#| msgid "Left Shoulder"
 msgid "Left shoulder"
 msgstr "Левый курок"
 
 #: backends/keymapper/hardware-input.cpp:265 engines/dragons/metaengine.cpp:212
-#, fuzzy
-#| msgid "Right Shoulder"
 msgid "Right shoulder"
 msgstr "Правый курок"
 
 #: backends/keymapper/hardware-input.cpp:266
-#, fuzzy
-#| msgid "D-pad Up"
 msgid "D-pad up"
 msgstr "Крестовина вверх"
 
