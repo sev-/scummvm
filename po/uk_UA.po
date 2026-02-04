@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-04 15:56+0000\n"
-"PO-Revision-Date: 2026-02-01 10:04+0000\n"
+"PO-Revision-Date: 2026-02-04 23:56+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -7210,14 +7210,12 @@ msgid "Whether to render the game in 16-bit color"
 msgstr "Чи слід відображати гру в 16-бітному кольорі"
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Give mixtures"
 msgid "Filter textures"
-msgstr "Дати суміші"
+msgstr "Фільтрування текстур"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "Чи слід лінійно фільтрувати текстури"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
