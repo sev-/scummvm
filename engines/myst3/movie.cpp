@@ -385,7 +385,9 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 							_bink.seekToFrame(nextFrame - 1);
 						}
 					}
-					drawNextFrameToTexture();
+					if (_scriptDriven) {
+						drawNextFrameToTexture();
+					}
 				}
 
 				_vm->_state->setVar(_nextFrameReadVar, 0);
