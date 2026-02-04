@@ -141,12 +141,9 @@ void vmng_TextScrn_Destroy(TextScrn *myTextScrn) {
 }
 
 Dialog *DialogCreateAbsolute(int32 x1, int32 y1, int32 x2, int32 y2, uint32 scrnFlags) {
-	Dialog *dialog;
 	ButtonDrawRec bdr;
 
-	if ((dialog = (Dialog *)mem_alloc(sizeof(Dialog), STR_DIALOG)) == nullptr) {
-		return nullptr;
-	}
+	Dialog *dialog = (Dialog *)mem_alloc(sizeof(Dialog), STR_DIALOG);
 
 	dialog->w = x2 - x1 + 1;
 	dialog->h = y2 - y1 + 1;
@@ -1301,9 +1298,6 @@ TextScrn *TextScrn_Create(int32 x1, int32 y1, int32 x2, int32 y2, int32 luminanc
 
 	TextScrn *myTextScrn = (TextScrn *)mem_alloc(sizeof(TextScrn), STR_TEXTSCRN);
 
-	if (myTextScrn == nullptr)
-		return nullptr;
-
 	myTextScrn->w = x2 - x1 + 1;
 	myTextScrn->h = y2 - y1 + 1;
 	myTextScrn->textColor = textColor;
@@ -1349,8 +1343,6 @@ bool TextScrn_Add_TextItem(TextScrn *myTextScrn, int32 x, int32 y, int32 tag,
 	}
 
 	TextItem *myTextItem = (TextItem *)mem_alloc(sizeof(TextItem), "text item");
-	if (myTextItem == nullptr)
-		return false;
 
 	myTextItem->w = gr_font_string_width(prompt, 0); // No auto spacing
 	myTextItem->h = gr_font_get_height() + 1;
@@ -1388,8 +1380,6 @@ bool TextScrn_Add_Message(TextScrn *myTextScrn, int32 x, int32 y, int32 tag,
 		return false;
 	}
 	TextItem *myTextItem = (TextItem *)mem_alloc(sizeof(TextItem), "textscrn msg");
-	if (myTextItem == nullptr)
-		return false;
 
 	myTextItem->w = gr_font_string_width(prompt, 0); // No auto spacing
 	myTextItem->h = gr_font_get_height() + 1;

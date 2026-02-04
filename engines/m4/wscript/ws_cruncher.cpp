@@ -134,8 +134,7 @@ bool ws_InitCruncher(void) {
 	if (_GWS(memtypeEOS) < 0)
 		error_show(FL, 'WSCE');
 
-	if ((_GWS(myCruncher) = (cruncher *)mem_alloc(sizeof(cruncher), "cruncher")) == nullptr)
-		error_show(FL, 'OOM!', "%d bytes.", sizeof(cruncher));
+	_GWS(myCruncher) = (cruncher *)mem_alloc(sizeof(cruncher), "cruncher");
 
 	_GWS(myCruncher)->backLayerAnim8 = nullptr;
 	_GWS(myCruncher)->frontLayerAnim8 = nullptr;
@@ -144,9 +143,8 @@ bool ws_InitCruncher(void) {
 
 	// Set up stack
 	_GWS(stackSize) = 2048;
-	if ((_GWS(stackBase) = (uint32 *)mem_alloc(_GWS(stackSize), "crunchstack")) == nullptr) {
-		error_show(FL, 'OOM!', "%d bytes.", _GWS(stackSize));
-	}
+	_GWS(stackBase) = (uint32 *)mem_alloc(_GWS(stackSize), "crunchstack");
+
 	_GWS(stackTop) = _GWS(stackBase);
 	_GWS(stackLimit) = (uint32 *)((byte *)_GWS(stackBase) + (uint32)_GWS(stackSize));
 
@@ -181,10 +179,6 @@ Anim8 *ws_AddAnim8ToCruncher(machine *m, int32 sequHash) {
 
 	// Allocate an anim8 structure
 	Anim8 *myAnim8 = (Anim8 *)mem_alloc(sizeof(Anim8), "Anim8");
-	if (myAnim8 == nullptr) {
-		ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(Anim8));
-		return nullptr;
-	}
 
 	// Find the sequence
 	int32 numLocalVars;
@@ -196,10 +190,6 @@ Anim8 *ws_AddAnim8ToCruncher(machine *m, int32 sequHash) {
 
 	// Allocate an array of registers
 	frac16 *my_regs = (frac16 *)mem_alloc(sizeof(frac16) * (IDX_COUNT + numLocalVars), "Anim8 regs");
-	if (my_regs == nullptr) {
-		ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(frac16) * (IDX_COUNT + numLocalVars));
-		return nullptr;
-	}
 
 	// Initialize the Anim8 structure
 	myAnim8->active = true;
@@ -927,13 +917,8 @@ static void op_SETCEL(Anim8 *myAnim8) {
 
 	if (!myAnim8->myCCB) {
 		// Allocate and initialize a CCB structure
-		if ((myAnim8->myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB")) == nullptr) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d bytes.", sizeof(CCB));
-			ws_Error(myAnim8->myMachine, ERR_SEQU, 0x02fe, "setcel() failed.");
-		}
-		if (!InitCCB(myAnim8->myCCB)) {
-			ws_Error(myAnim8->myMachine, ERR_SEQU, 0x025d, "setcel() failed.");
-		}
+		myAnim8->myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB");
+		InitCCB(myAnim8->myCCB);
 	}
 
 	CCB *myCCB = myAnim8->myCCB;
@@ -1233,13 +1218,8 @@ static void op_OPEN_STREAM_SS(Anim8 *myAnim8) {
 
 	if (!myAnim8->myCCB) {
 		// Allocate and initialize a CCB structure
-		if ((myAnim8->myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB")) == nullptr) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(CCB));
-			ws_Error(myAnim8->myMachine, ERR_SEQU, 0x02fe, "open_ss_stream() failed.");
-		}
-		if (!InitCCB(myAnim8->myCCB)) {
-			ws_Error(myAnim8->myMachine, ERR_SEQU, 0x025d, "open_ss_stream() failed.");
-		}
+		myAnim8->myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB");
+		InitCCB(myAnim8->myCCB);
 	}
 
 	CCB *myCCB = myAnim8->myCCB;

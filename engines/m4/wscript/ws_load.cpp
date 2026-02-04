@@ -95,15 +95,10 @@ bool InitWSAssets() {
 	}
 
 	// Allocate space for the tables used by the loader and the resource io MACHine tables
-	if ((_GWS(globalMACHnames) = (char **)mem_alloc(sizeof(char *) * 256, "MACH resource table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalMACHHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalMACHoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "MACH offsets table")) == nullptr) {
-		return false;
-	}
+	_GWS(globalMACHnames) = (char **)mem_alloc(sizeof(char *) * 256, "MACH resource table");
+	_GWS(globalMACHHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table");
+	_GWS(globalMACHoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "MACH offsets table");
+
 	for (i = 0; i < 256; i++) {
 		_GWS(globalMACHnames)[i] = nullptr;
 		_GWS(globalMACHHandles)[i] = nullptr;
@@ -111,15 +106,10 @@ bool InitWSAssets() {
 	}
 
 	// SEQUence tables
-	if ((_GWS(globalSEQUnames) = (char **)mem_alloc(sizeof(char *) * 256, "SEQU resource table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalSEQUHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalSEQUoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "SEQU offsets table")) == nullptr) {
-		return false;
-	}
+	_GWS(globalSEQUnames) = (char **)mem_alloc(sizeof(char *) * 256, "SEQU resource table");
+	_GWS(globalSEQUHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table");
+	_GWS(globalSEQUoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "SEQU offsets table");
+	
 	for (i = 0; i < 256; i++) {
 		_GWS(globalSEQUnames)[i] = nullptr;
 		_GWS(globalSEQUHandles)[i] = nullptr;
@@ -127,15 +117,10 @@ bool InitWSAssets() {
 	}
 
 	// DATA tables
-	if ((_GWS(globalDATAnames) = (char **)mem_alloc(sizeof(char *) * 256, "DATA resource table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalDATAHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalDATAoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "DATA offsets table")) == nullptr) {
-		return false;
-	}
+	_GWS(globalDATAnames) = (char **)mem_alloc(sizeof(char *) * 256, "DATA resource table");
+	_GWS(globalDATAHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table");
+	_GWS(globalDATAoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "DATA offsets table");
+
 	for (i = 0; i < 256; i++) {
 		_GWS(globalDATAnames)[i] = nullptr;
 		_GWS(globalDATAHandles)[i] = nullptr;
@@ -143,18 +128,11 @@ bool InitWSAssets() {
 	}
 
 	// CELS tables
-	if ((_GWS(globalCELSnames) = (char **)mem_alloc(sizeof(char *) * 256, "CELS resource table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalCELSHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalCELSoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "CELS offsets table")) == nullptr) {
-		return false;
-	}
-	if ((_GWS(globalCELSPaloffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "CELS pal offsets table")) == nullptr) {
-		return false;
-	}
+	_GWS(globalCELSnames) = (char **)mem_alloc(sizeof(char *) * 256, "CELS resource table");
+	_GWS(globalCELSHandles) = (MemHandle *)mem_alloc(sizeof(MemHandle) * 256, "CELS Handles table");
+	_GWS(globalCELSoffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "CELS offsets table");
+	_GWS(globalCELSPaloffsets) = (int32 *)mem_alloc(sizeof(int32) * 256, "CELS pal offsets table");
+
 	for (i = 0; i < 256; i++) {
 		_GWS(globalCELSnames)[i] = nullptr;
 		_GWS(globalCELSHandles)[i] = nullptr;
@@ -507,10 +485,6 @@ M4sprite *CreateSprite(MemHandle resourceHandle, int32 handleOffset, int32 index
 
 	if (!mySprite) {
 		mySprite = (M4sprite *)mem_alloc(sizeof(M4sprite), "Sprite");
-		if (!mySprite) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(M4sprite));
-			return nullptr;
-		}
 	}
 
 	// Find the cels source  from the asset block
@@ -1144,24 +1118,18 @@ CCB *GetWSAssetCEL(uint32 hash, uint32 index, CCB *myCCB) {
 	//If a memory location to store the CCB has not been provided...
 	if (!myCCB) {
 		// Create the CCB struct
-		if ((myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB")) == nullptr) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d bytes", sizeof(CCB));
-			return nullptr;
-		}
+		myCCB = (CCB *)mem_alloc(sizeof(CCB), "CCB");
 
 		// Create the CCB current location and new location rectangles
-		if ((myCCB->currLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "M4Rect")) == nullptr) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d bytes", sizeof(M4Rect));
-			return nullptr;
-		}
+		myCCB->currLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "M4Rect");
+
 		myCCB->currLocation->x1 = 0;
 		myCCB->currLocation->y1 = 0;
 		myCCB->currLocation->x2 = 0;
 		myCCB->currLocation->y2 = 0;
-		if ((myCCB->newLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "M4Rect")) == nullptr) {
-			ws_LogErrorMsg(FL, "Out of memory - mem requested: %d bytes", sizeof(M4Rect));
-			return nullptr;
-		}
+
+		myCCB->newLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "M4Rect");
+		
 		myCCB->maxArea = nullptr;
 		myCCB->source = nullptr;
 	}
@@ -1523,15 +1491,10 @@ static int32 GetSSHeaderInfo(SysFile *sysFile, uint32 **data, RGB8 *myPalette) {
 		// If there is at least one color specified in this block
 		if (numColors > 0) {
 			uint32 *myColors = (uint32 *)mem_alloc(celsSize - 12, "ss pal info");
-			if (myColors == nullptr) {
-				ws_LogErrorMsg(FL, "Failed to mem_alloc() %d bytes.", celsSize - 12);
-				return -1;
-			}
 
 			// Read in the color info into a temp buffer
 			for (i = 0; i < numColors; ++i)
 				myColors[i] = sysFile->readUint32LE();
-
 
 			// If the chunk is in the wrong format, byte-swap the entire chunk
 			// note: we do this because we want the data stored in nrgb format
@@ -1601,10 +1564,7 @@ static int32 GetSSHeaderInfo(SysFile *sysFile, uint32 **data, RGB8 *myPalette) {
 	}
 
 	// Allocate a block to hold both the series header, and the sprite offset table
-	if ((*data = (uint32 *)mem_alloc((SS_HEAD_SIZE + numCels) * 4, "ss header")) == nullptr) {
-		ws_LogErrorMsg(FL, "Failed to mem_alloc() %d bytes.", (SS_HEAD_SIZE + numCels) << 2);
-		return -1;
-	}
+	*data = (uint32 *)mem_alloc((SS_HEAD_SIZE + numCels) * 4, "ss header");
 
 	// Read in the series header and the sprite offset table
 	// Since we already read in celsType and celsSize, SS_HEAD_SIZE-2
@@ -1685,10 +1645,6 @@ bool ws_OpenSSstream(SysFile *sysFile, Anim8 *anim8) {
 
 	if (!myCCB->source) {
 		myCCB->source = (M4sprite *)mem_alloc(sizeof(M4sprite), "Sprite");
-		if (!myCCB->source) {
-			ws_LogErrorMsg(FL, "Failed to mem_alloc() %d bytes.", sizeof(M4sprite));
-			return false;
-		}
 	}
 
 	term_message("Biggest frame was: %d, size: %d bytes (compressed)", obesest_frame, maxFrameSize);

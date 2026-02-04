@@ -189,9 +189,7 @@ void AddSystemHotkey(int32 myKey, HotkeyCB callback) {
 	if (myHotkey) {
 		myHotkey->callback = callback;
 	} else {
-		if ((myHotkey = (Hotkey *)mem_alloc(sizeof(Hotkey), "hotkey")) == nullptr) {
-			return;
-		}
+		myHotkey = (Hotkey *)mem_alloc(sizeof(Hotkey), "hotkey");
 
 		myHotkey->myKey = myKey;
 		myHotkey->callback = callback;

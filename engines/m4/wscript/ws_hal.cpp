@@ -481,19 +481,17 @@ void GetBezPoint(frac16 *x, frac16 *y, frac16 *coeffs, frac16 tVal) {
 				MulSF16(tVal, coeffs[1])))));
 }
 
-bool InitCCB(CCB *myCCB) {
+void InitCCB(CCB *myCCB) {
 	myCCB->flags = CCB_SKIP;
 	myCCB->source = nullptr;
-	if ((myCCB->currLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle")) == nullptr) {
-		return false;
-	}
+	myCCB->currLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle");
+
 	myCCB->currLocation->x1 = -1;
 	myCCB->currLocation->y1 = -1;
 	myCCB->currLocation->x2 = -1;
 	myCCB->currLocation->y2 = -1;
-	if ((myCCB->newLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle")) == nullptr) {
-		return false;
-	}
+	myCCB->newLocation = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle");
+
 	myCCB->newLocation->x1 = -1;
 	myCCB->newLocation->y1 = -1;
 	myCCB->newLocation->x2 = -1;
@@ -508,7 +506,6 @@ bool InitCCB(CCB *myCCB) {
 	myCCB->myStream = nullptr;
 	myCCB->seriesName = nullptr;
 
-	return true;
 }
 
 void HideCCB(CCB *myCCB) {
@@ -544,9 +541,8 @@ void MoveCCB(CCB *myCCB, frac16 deltaX, frac16 deltaY) {
 
 	if (myCCB->flags & CCB_STREAM) {
 		if (!myCCB->maxArea) {
-			if ((myCCB->maxArea = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle")) == nullptr) {
-				error_show(FL, 'OOM!');
-			}
+			myCCB->maxArea = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle");
+
 			myCCB->maxArea->x1 = myCCB->newLocation->x1;
 			myCCB->maxArea->y1 = myCCB->newLocation->y1;
 			myCCB->maxArea->x2 = myCCB->newLocation->x2;
@@ -624,9 +620,8 @@ void Cel_msr(Anim8 *myAnim8) {
 		myCCB->scaleX, myCCB->scaleY, myCCB->source->w, myCCB->source->h, myCCB->newLocation);
 	if (myCCB->flags & CCB_STREAM) {
 		if (!myCCB->maxArea) {
-			if ((myCCB->maxArea = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle")) == nullptr) {
-				error_show(FL, 'OOM!');
-			}
+			myCCB->maxArea = (M4Rect *)mem_alloc(sizeof(M4Rect), "Rectangle");
+
 			myCCB->maxArea->x1 = myCCB->newLocation->x1;
 			myCCB->maxArea->y1 = myCCB->newLocation->y1;
 			myCCB->maxArea->x2 = myCCB->newLocation->x2;

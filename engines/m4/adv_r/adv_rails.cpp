@@ -41,14 +41,10 @@ bool InitRails() {
 	}
 
 	// Create the stack. Since any path through a series of nodes can have at most MAXRAILNODES...
-	if ((_G(rails).stackBottom = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE)) == nullptr) {
-		return false;
-	}
+	_G(rails).stackBottom = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE);
 
 	// Allocate the array of railNode pointers and initialize...
-	if ((_G(rails).myNodes = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE)) == nullptr) {
-		return false;
-	}
+	_G(rails).myNodes = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE);
 
 	for (i = 0; i < MAXRAILNODES; i++) {
 		_G(rails).myNodes[i] = nullptr;
@@ -57,13 +53,7 @@ bool InitRails() {
 	// Calculate the size of the edge table, allocate, and initialize
 	// The edge table stores the upper triangle of a square matrix.
 	const int32 edgeTableSize = (MAXRAILNODES * (MAXRAILNODES - 1)) >> 1;
-	if ((_G(rails).myEdges = (int16 *)mem_alloc(sizeof(int16) * edgeTableSize, "edge table")) == nullptr) {
-		return false;
-	}
-
-	for (i = 0; i < edgeTableSize; i++) {
-		_G(rails).myEdges[i] = 0;
-	}
+	_G(rails).myEdges = (int16 *)mem_alloc(sizeof(int16) * edgeTableSize, "edge table");
 
 	// Set the parameters and return
 	_G(rails).noWalkRectList = nullptr;
@@ -121,18 +111,13 @@ void ClearRails(void) {
 
 
 noWalkRect *intr_add_no_walk_rect(int32 x1, int32 y1, int32 x2, int32 y2, int32 altX, int32 altY, Buffer *walkCodes) {
-	noWalkRect *newRect;
-
 	// Parameter verification
 	if ((x2 < x1) || (y2 < y1)) {
 		return nullptr;
 	}
 
 	// Create new noWalkRect structure
-	if ((newRect = (noWalkRect *)mem_alloc(sizeof(noWalkRect), "intr noWalkRect")) == nullptr) {
-		error_show(FL, 'IADN', "rect size: %d %d %d %d", x1, y1, x2, y2);
-		return nullptr;
-	}
+	noWalkRect *newRect = (noWalkRect *)mem_alloc(sizeof(noWalkRect), "intr noWalkRect");
 
 	// Initialize the new rect
 	newRect->x1 = x1;
@@ -603,9 +588,7 @@ int32 AddRailNode(int32 x, int32 y, Buffer *walkCodes, bool restoreEdges) {
 
 	if (i < MAXRAILNODES) {
 		railNode *newNode = (railNode *)mem_alloc(sizeof(railNode), "railNode");
-		if (newNode == nullptr) {
-			return -1;
-		}
+
 		newNode->nodeID = (Byte)i;
 		newNode->x = (int16)x;
 		newNode->y = (int16)y;
@@ -691,8 +674,6 @@ void DisposePath(railNode *pathStart) {
 }
 
 static railNode *DuplicatePath(railNode *pathStart) {
-	railNode *newNode;
-
 	// Initialize pointers
 	railNode *firstNode = nullptr;
 	railNode *prevNode = nullptr;
@@ -704,10 +685,8 @@ static railNode *DuplicatePath(railNode *pathStart) {
 	while (pathNode) {
 
 		// Create a new railNode, and duplicate values
-		if ((newNode = (railNode *)mem_alloc(sizeof(railNode), "+RAIL")) == nullptr) {
-			error_show(FL, 'OOM!', "Could not alloc railNode");
-			return nullptr;
-		}
+		railNode *newNode = (railNode *)mem_alloc(sizeof(railNode), "+RAIL");
+
 		newNode->x = pathNode->x;
 		newNode->y = pathNode->y;
 		newNode->shortPath = nullptr;
@@ -750,10 +729,6 @@ railNode *CreateCustomPath(int coord, ...) {
 
 		// Create a new node struct
 		railNode *newNode = (railNode *)mem_alloc(sizeof(railNode), "railNode");
-		if (newNode == nullptr) {
-			error_show(FL, 'OOM!', "could not alloc railNode");
-			return nullptr;
-		}
 
 		// Set the new node values...
 		newNode->x = x;

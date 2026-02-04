@@ -53,7 +53,7 @@ void ws_hal_RefreshWoodscriptBuffer(cruncher *myCruncher, Buffer *background,
 	int16 *depth_table, Buffer *screenCodes, uint8 *myPalette, uint8 *ICT);
 void GetBezCoeffs(frac16 *ctrlPoints, frac16 *coeffs);
 void GetBezPoint(frac16 *x, frac16 *y, frac16 *coeffs, frac16 tVal);
-bool InitCCB(CCB *myCCB);
+void InitCCB(CCB *myCCB);
 void HideCCB(CCB *myCCB);
 void ShowCCB(CCB *myCCB);
 //void SetLastCCB(CCB *myCCB);

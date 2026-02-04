@@ -57,8 +57,7 @@ static uint8 scale_sprite(Buffer *S, Buffer *D, uint32 ScaleX, uint32 ScaleY) {
 
 	/* allocate 'scaled' buffer */
 	uint8 *pScaled = (uint8 *)mem_alloc(D->h * D->stride, "scaled buffer");
-	if (!pScaled)
-		error_show(FL, 'OOM!', "scaled buffer h:%uld w:%uld", D->h, D->stride);
+
 	D->data = pScaled;
 	
 	uint16 ErrY = 50;
@@ -120,8 +119,7 @@ uint8 gr_sprite_draw(DrawRequest *drawReq) {
 	// Check for RLE encoding in case of shadows
 	// There is no RLE shadow draw routine, so we have to decode shadows ahead of time.
 	if ((source.encoding & RLE8) && (source.encoding & SHADOW)) {
-		if (!(shadowBuff = (uint8 *)mem_alloc(source.stride * source.h, "shadow buff")))
-			error_show(FL, 'OOM!', "buffer w:%uld, h:%uld", source.w, source.h);
+		shadowBuff = (uint8 *)mem_alloc(source.stride * source.h, "shadow buff");
 
 		RLE8Decode(source.data, shadowBuff, source.stride);
 		source.data = shadowBuff;
@@ -134,8 +132,7 @@ uint8 gr_sprite_draw(DrawRequest *drawReq) {
 		// Check if input is RLE8 encoded
 		// If it's scaled we decode it first
 		if (Rle) {
-			if (!(scaledBuff = (uint8 *)mem_alloc(source.stride * source.h, "scaled buffer")))
-				error_show(FL, 'OOM!', "no mem: buffer w:%d, h:%d", source.w, source.h);
+			scaledBuff = (uint8 *)mem_alloc(source.stride * source.h, "scaled buffer");
 
 			RLE8Decode(source.data, scaledBuff, source.stride);
 			source.data = scaledBuff;
@@ -244,16 +241,11 @@ uint32 gr_sprite_RLE8_encode(Buffer *Source, Buffer *Dest) {
 	Dest->encoding = RLE8;
 	Dest->stride = Source->stride;
 	Dest->data = (uint8 *)mem_alloc(Source->h * OutBuffSize(Source->stride), "sprite data");
-	
-	if (!Dest->data) {
-		return 0;
-	}
 
 	for (i = 0; i < Source->h - 1; ++i)
 		Offset += EncodeScan(Source->data + i * Source->stride, Dest->data + Offset, Source->w, EOL);
 
 	Offset += EncodeScan(Source->data + i * Source->stride, Dest->data + Offset, Source->w, EOB);
-
 	Dest->data = (uint8 *)mem_realloc(Dest->data, Offset, "rle8 sprite data");
 
 	return Offset;

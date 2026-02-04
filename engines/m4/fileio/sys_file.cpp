@@ -113,7 +113,6 @@ void SysFile::open_read_low_level() {
 				const byte hagfile = temp_fp.readByte();
 
 				Hag_Name_Record *temp_ptr = (Hag_Name_Record *)mem_alloc(sizeof(Hag_Name_Record), "hag_name_list");
-				assert(temp_ptr);
 
 				// Check hag file exists or not
 				Common::Path local_name(f_extension_new(hag_name, "HAG"));
@@ -301,12 +300,6 @@ bool SysFile::open_hash_file() {
 
 				// Add this new open hag file in resource dir into open hag file list
 				temp_ptr = (Hag_Record *)mem_alloc(sizeof(Hag_Record), "Hag_File_List");
-				if (!temp_ptr) {
-					f_io_close(temp_fp);
-					error("creating Hag_record");
-					hag_success = 0;
-					return 0;
-				}
 
 				Common::strcpy_s(temp_ptr->hag_name, temp_name.c_str());
 				temp_ptr->hag_fp = temp_fp;
@@ -329,12 +322,6 @@ bool SysFile::open_hash_file() {
 			else {
 				// add this new open hag file in exec dir into its list
 				temp_ptr = (Hag_Record *)mem_alloc(sizeof(Hag_Record), "Hag_File_List");
-				if (!temp_ptr) {
-					f_io_close(temp_fp);
-					error("creating hag_record");
-					hag_success = 0;
-					return 0;
-				}
 
 				Common::strcpy_s(temp_ptr->hag_name, hag_name.c_str());
 				temp_ptr->hag_fp = temp_fp;

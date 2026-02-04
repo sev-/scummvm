@@ -379,12 +379,8 @@ static bool gizmo_load_sprites(const char *name, size_t count) {
 			&_GIZMO(palOffset), _GIZMO(palette)) > 0) {
 		gr_pal_set_range(_GIZMO(palette), 64, 192);
 		_GIZMO(assetName) = mem_strdup(name);
-
 		_GIZMO(spriteCount) = count;
 		_GIZMO(sprites) = (M4sprite **)mem_alloc(count * sizeof(M4sprite *), "*sprites array");
-
-		if (!_GIZMO(sprites))
-			error("gizmo_load_sprites - Unable to allocate GIZMO %ld sprites", count);
 
 		for (size_t idx = 0; idx < count; ++idx) {
 			_GIZMO(sprites)[idx] = CreateSprite(_GIZMO(seriesHandle), _GIZMO(celsOffset),
@@ -800,8 +796,6 @@ static GizmoItem *gizmo_add_item(Gizmo *gizmo, int id,
 
 	// Create new item
 	GizmoItem *item = (GizmoItem *)mem_alloc(sizeof(GizmoItem), "*gui gizmo item");
-	if (!item)
-		error("gizmo_add_item - Not enough emory to create item (%zu bytes)", sizeof(GizmoItem));
 
 	// Put the new item at the head of the list
 	item->_next = gizmo->_items;
@@ -827,9 +821,6 @@ static GizmoItem *gizmo_add_item(Gizmo *gizmo, int id,
 	}
 
 	GizmoButton *btn = (GizmoButton *)mem_alloc(sizeof(GizmoButton), "*gizmo button");
-	if (!btn)
-		error("gizmo_add_item - Not enough emory to create btn (%zu bytes)", sizeof(GizmoButton));
-
 	btn->_state = selected ? SELECTED : NOTHING;
 	btn->_index = btnIndex;
 	btn->_field8 = arg9;
@@ -857,8 +848,6 @@ static Gizmo *gui_create_gizmo(M4sprite *sprite, int sx, int sy, uint scrnFlags)
 		return nullptr;
 
 	Gizmo *gui = (Gizmo *)mem_alloc(sizeof(Gizmo), "*gui gizmo");
-	if (!gui)
-		return nullptr;
 
 	GrBuff *grBuff = new GrBuff(sprite->w, sprite->h);
 	gui->_grBuff = grBuff;

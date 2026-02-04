@@ -120,29 +120,18 @@ bool guiMenu::initialize(RGB8 *myPalette) {
 	_GM(menuFont) = gr_font_load("FONTMENU.FNT");
 
 	// Alloc space for the save/load tables
-	if ((_GM(slotTitles) = (char **)mem_alloc(sizeof(char *) * MAX_SLOTS, "slot desc array")) == nullptr) {
-		return false;
-	}
+	_GM(slotTitles) = (char **)mem_alloc(sizeof(char *) * MAX_SLOTS, "slot desc array");
+
 	for (i = 0; i < MAX_SLOTS; i++) {
-		if ((_GM(slotTitles)[i] = (char *)mem_alloc(80, "slot title")) == nullptr) {
-			return false;
-		}
+		_GM(slotTitles)[i] = (char *)mem_alloc(80, "slot title");
 	}
 	_GM(slotInUse) = (bool *)mem_alloc(sizeof(bool) * MAX_SLOTS, "slotUnUse array");
-	if (_GM(slotInUse) == nullptr) {
-		return false;
-	}
 
 	// Allocate space for the thumbnail sprites
 	_GM(thumbNails) = (Sprite **)mem_alloc(sizeof(Sprite *) * MAX_SLOTS, "thumbNail array");
-	if (_GM(thumbNails) == nullptr) {
-		return false;
-	}
+
 	for (i = 0; i < MAX_SLOTS; i++) {
 		_GM(thumbNails)[i] = (Sprite *)mem_alloc(sizeof(Sprite), "thumbNail");
-		if (_GM(thumbNails)[i] == nullptr) {
-			return false;
-		}
 		_GM(thumbNails)[i]->sourceHandle = nullptr;
 	}
 
@@ -614,15 +603,11 @@ bool guiMenu::loadSprites(const char *series, int32 numSprites) {
 	_GM(spriteCount) = numSprites;
 
 	// Create the _GM(menuSprites) array
-	if ((_GM(menuSprites) = (Sprite **)mem_alloc(sizeof(Sprite *) * _GM(spriteCount), "sprites array")) == nullptr) {
-		return false;
-	}
+	_GM(menuSprites) = (Sprite **)mem_alloc(sizeof(Sprite *) * _GM(spriteCount), "sprites array");
 
 	// Create the menu sprites
 	for (int32 i = 0; i < _GM(spriteCount); i++) {
-		if ((_GM(menuSprites)[i] = CreateSprite(_GM(menuSeriesHandle), _GM(menuSeriesOffset), i, nullptr, nullptr)) == nullptr) {
-			return false;
-		}
+		_GM(menuSprites)[i] = CreateSprite(_GM(menuSeriesHandle), _GM(menuSeriesOffset), i, nullptr, nullptr);
 	}
 
 	return true;
@@ -2210,13 +2195,11 @@ menuItemTextField *menuItemTextField::add(guiMenu *myMenu, int32 tag, int32 x, i
 	}
 
 	menuItemTextField *textInfo = (menuItemTextField *)mem_alloc(sizeof(menuItemTextField), "menu item textfield");
-	if (textInfo == nullptr) {
-		return nullptr;
-	}
-	textInfo->itemFlags = initFlags;
 
+	textInfo->itemFlags = initFlags;
 	textInfo->specialTag = specialTag;
 	textInfo->pixWidth = w - 27;
+
 	if (prompt) {
 		Common::strcpy_s(&textInfo->prompt[0], 80, prompt);
 		textInfo->promptEnd = &textInfo->prompt[strlen(prompt)];

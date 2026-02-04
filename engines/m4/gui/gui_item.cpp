@@ -266,16 +266,12 @@ bool InitItems() {
 
 Item *Item_create(Item *parent, enum ItemType type, int32 tag, M4CALLBACK cb) {
 	Item *temp = (Item *)mem_alloc(sizeof(Item), STR_ITEM);
-	if (temp == nullptr)
-		return nullptr;
 
 	temp->callback = cb;
 	temp->type = type;
 	temp->prompt = nullptr;
-
 	temp->tag = tag;
 	temp->x = temp->y = temp->w = temp->h = 0;
-
 	temp->myList = nullptr;
 
 	// add to end of list
@@ -635,8 +631,6 @@ bool ListItemAdd(Item *myItem, char *prompt, int32 listTag, int32 addMode, ListI
 		newListItem = changedItem;
 	else {
 		newListItem = (ListItem *)mem_alloc(sizeof(ListItem), STR_LIST);
-		if (newListItem == nullptr)
-			return false;
 
 		Common::strlcpy(newListItem->prompt, prompt, 80);
 		newListItem->tag = listTag;

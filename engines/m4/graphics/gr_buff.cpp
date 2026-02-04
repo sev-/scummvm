@@ -134,12 +134,7 @@ int32 gr_buffer_init(Buffer *buf, const char *name, int32 w, int32 h) {
 	buf->w = w;
 	buf->h = h;
 	buf->stride = w;
-
 	buf->data = (uint8 *)mem_alloc(buf->stride * h, name);
-	if (buf->data == nullptr)
-		error_show(FL, 'OOM!', "buffer: %s - w:%d h:%d bytes:%d", name, buf->stride, h, buf->stride * h);
-
-	memset(buf->data, 0, buf->stride * h);
 
 	return (true);
 }

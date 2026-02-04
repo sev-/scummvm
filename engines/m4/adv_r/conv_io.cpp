@@ -373,8 +373,6 @@ static void conv_save_state(Conv *c) {
 		file_size = _GC(convSave).size();
 
 		conv_save_buff = (char *)mem_alloc(file_size, "conv save buff");
-		if (!conv_save_buff)
-			error_show(FL, 'OOM!');
 
 		Common::copy(&_GC(convSave)[0], &_GC(convSave)[0] + file_size, &conv_save_buff[0]);
 
@@ -396,8 +394,6 @@ static void conv_save_state(Conv *c) {
 
 			mem_free(conv_save_buff);
 			conv_save_buff = (char *)mem_alloc(amt_to_write + NAME_SIZE + sizeof(int32), "conv save buff");
-			if (!conv_save_buff)
-				error_show(FL, 'OOM!');
 
 			memcpy(&conv_save_buff[offset], fname, NAME_SIZE * sizeof(char));
 			offset += NAME_SIZE * sizeof(char);
@@ -411,8 +407,6 @@ static void conv_save_state(Conv *c) {
 		offset = 0;
 
 		conv_save_buff = (char *)mem_alloc(amt_to_write + NAME_SIZE + sizeof(int32), "conv save buff");
-		if (!conv_save_buff)
-			error_show(FL, 'OOM!');
 
 		memcpy(&conv_save_buff[offset], fname, NAME_SIZE * sizeof(char));
 		offset += NAME_SIZE * sizeof(char);
@@ -543,8 +537,6 @@ static Conv *conv_restore_state(Conv *c) {
 	}
 
 	char *conv_save_buff = (char *)mem_alloc(file_size, "conv save buff");
-	if (!conv_save_buff)
-		error_show(FL, 'OOM!');
 
 	// ------------------
 

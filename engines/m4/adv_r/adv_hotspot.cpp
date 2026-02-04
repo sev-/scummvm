@@ -89,8 +89,6 @@ void hotspot_newPrep(HotSpotRec *h, const char *prep) {
 
 HotSpotRec *hotspot_new(int x1, int y1, int x2, int y2) {
 	HotSpotRec *newSpot = (HotSpotRec *)mem_alloc(sizeof(HotSpotRec), STR_HOT_SPOT);
-	if (!newSpot)
-		return newSpot;
 
 	newSpot->ul_x = x1;
 	newSpot->ul_y = y1;
@@ -112,8 +110,6 @@ HotSpotRec *hotspot_new(int x1, int y1, int x2, int y2) {
 
 HotSpotRec *hotspot_duplicate(HotSpotRec *dupMe) {
 	HotSpotRec *newSpot = (HotSpotRec *)mem_alloc(sizeof(HotSpotRec), STR_HOT_SPOT);
-	if (!newSpot)
-		return newSpot;
 
 	newSpot->ul_x = dupMe->ul_x;
 	newSpot->ul_y = dupMe->ul_y;

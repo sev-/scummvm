@@ -81,9 +81,6 @@ strmRequest *f_stream_Open(SysFile *srcFile, int32 fileOffset, int32 strmMinBuff
 
 	// Allocate a new stream request struct
 	strmRequest *newStream = (strmRequest *)mem_alloc(sizeof(strmRequest), STR_STRMREQ);
-	if (newStream == nullptr) {
-		error_show(FL, 'OOM!', "%d", sizeof(strmRequest));
-	}
 
 	// Get memory. If there's not enough memory, a exception will be triggered in NewHandle
 	newStream->strmHandle = NewHandle(strmBuffSize, "stream buff");
@@ -191,9 +188,7 @@ static bool UnwrapStream(strmRequest *myStream) {
 
 		// Calculate how many bytes to store and copy to a temporary buffer
 		bytesToMove = (byte *)myStream->strmHead - (byte *)myStream->strmBuff;
-
-		if ((tempBuff = (uint8 *)mem_alloc(bytesToMove, "stream temp buff")) == nullptr)
-			error_show(FL, 'OOM!', "UnwrapStream() failed - temp buff avail: %d", bytesToMove);
+		tempBuff = (uint8 *)mem_alloc(bytesToMove, "stream temp buff");
 
 		memcpy(tempBuff, myStream->strmBuff, bytesToMove);
 	}

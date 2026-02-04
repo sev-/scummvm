@@ -168,9 +168,6 @@ Sprite *SaveLoadMenuBase::menu_CreateThumbnail(int32 *spriteSize) {
 
 	// Create a Sprite for the thumbNail
 	Sprite *thumbNailSprite = (Sprite *)mem_alloc(sizeof(Sprite), "sprite");
-	if (thumbNailSprite == nullptr) {
-		return nullptr;
-	}
 
 	GrBuff *thumbNail = new GrBuff((MAX_VIDEO_X + 1) / 3, (MAX_VIDEO_Y + 1) / 3);
 	Buffer *destBuff = thumbNail->get_buffer();

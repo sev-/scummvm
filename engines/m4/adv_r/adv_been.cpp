@@ -31,10 +31,6 @@ namespace M4 {
 bool player_been_init(int16 num_scenes) {
 	assert(num_scenes == TOTAL_SCENES);
 	_G(scene_list).table = (int16 *)mem_alloc(sizeof(int16) * num_scenes, "been_scenes");
-
-	if (!_G(scene_list).table)
-		error_show(FL, 'OOM!', "player_been_init");
-
 	_G(scene_list).total_scenes = num_scenes;
 	player_reset_been();
 

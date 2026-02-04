@@ -182,8 +182,6 @@ void gr_font_set_color(uint8 foreground) {
 
 Font *gr_font_create_system_font() {
 	_G(interfaceFont) = (Font *)mem_alloc(sizeof(Font), "Font");
-	if (!_G(interfaceFont))
-		error("font struct");
 
 	_G(interfaceFont)->max_y_size = font_intr_h;
 	_G(interfaceFont)->max_x_size = font_intr_w;
@@ -364,8 +362,6 @@ Font *gr_font_load(const char *fontName) {
 		error_show(FL, 'FNTL', "font: %s chkpnt: %d", (const char *)fontName, 0);
 
 	Font *newFont = (Font *)mem_alloc(sizeof(Font), STR_FONTSTRUCT);
-	if (!newFont)
-		error_show(FL, 'OOM!', "_G(font) struct");
 
 	newFont->max_y_size = fontFile.readByte();
 	newFont->max_x_size = fontFile.readByte();
@@ -378,8 +374,6 @@ Font *gr_font_load(const char *fontName) {
 
 	// width table
 	newFont->width = (byte *)mem_alloc(256, STR_FONTWIDTH);
-	if (!newFont->width)
-		error_show(FL, 'OOM!', "_G(font) width table");
 
 	fontFile.read(newFont->width, 256);
 
@@ -390,8 +384,6 @@ Font *gr_font_load(const char *fontName) {
 
 	// offset table
 	newFont->offset = (short *)mem_alloc(256 * sizeof(int16), STR_FONTOFF);
-	if (!newFont->offset)
-		error_show(FL, 'OOM!', "font offset table");
 
 	for (int i = 0; i < 256; i++)
 		newFont->offset[i] = fontFile.readSint16LE();
@@ -403,8 +395,6 @@ Font *gr_font_load(const char *fontName) {
 
 	// pixData
 	newFont->pixData = (byte *)mem_alloc(newFont->dataSize, STR_FONTDATA);
-	if (!newFont->pixData)
-		error_show(FL, 'OOM!', "font pix data");
 
 	fontFile.read(newFont->pixData, newFont->dataSize);
 

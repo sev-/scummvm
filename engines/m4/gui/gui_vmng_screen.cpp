@@ -219,8 +219,6 @@ bool AddScreenHotkey(void *scrnContent, int32 myKey, HotkeyCB callback) {
 		return false;
 
 	Hotkey *myHotkey = (Hotkey *)mem_alloc(sizeof(Hotkey), "hotkey");
-	if (myHotkey == nullptr)
-		return false;
 
 	myHotkey->myKey = myKey;
 	myHotkey->callback = callback;

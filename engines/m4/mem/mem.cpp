@@ -66,9 +66,7 @@ bool mem_register_stash_type(int32 *memType, int32 blockSize, int32 maxNumReques
 			maxNumRequests = MAX_REQUESTS;
 
 		_G(requests)[i] = maxNumRequests;
-
 		_G(memBlock)[i] = mem_alloc((blockSize + sizeof(uintptr)) * maxNumRequests, name.c_str());
-		memset(_G(memBlock)[i], 0, (blockSize + sizeof(uintptr)) * maxNumRequests);
 
 		return true;
 	}
@@ -90,10 +88,9 @@ void mem_free_to_stash(void *mem, int32 memType) {
 }
 
 void *mem_get_from_stash(int32 memType, const Common::String &name) {
-	int i;
 	int8 *b_ptr = (int8 *)_G(memBlock)[memType];
 
-	for (i = 0; i < _G(requests)[memType]; i++) {
+	for (int i = 0; i < _G(requests)[memType]; i++) {
 		if (!*(uintptr *)b_ptr) {
 			*(uintptr *)b_ptr = 1;
 			void *result = (void *)(b_ptr + sizeof(uintptr));
@@ -119,8 +116,6 @@ char *mem_strdup(const char *str) {
 	}
 
 	new_str = (char *)mem_alloc(strlen(str) + 1, "string");
-	if (!new_str)
-		return nullptr;
 
 	Common::strcpy_s(new_str, 256, str);
 	return new_str;

@@ -127,9 +127,7 @@ static void clear_persistent_msg_list(machine *m) {
 
 static msgRequest *new_msgRequest() {
 	msgRequest *newMsg = (msgRequest *)mem_alloc(sizeof(msgRequest), "msgRequest");
-	if (newMsg == nullptr) {
-		ws_LogErrorMsg(FL, "Failed to mem_alloc() %d bytes.", sizeof(msgRequest));
-	}
+
 	return newMsg;
 }
 
@@ -972,13 +970,6 @@ void IntoTheState(machine *m) {
 machine *TriggerMachineByHash(int32 myHash, Anim8 *parentAnim8, int32 dataHash, int32 dataRow, MessageCB CintrMsg, bool debug, const char *machName) {
 	machine *m = (machine *)mem_alloc(sizeof(machine), "machine");
 
-	if (m == nullptr) {
-		ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(machine));
-		ws_LogErrorMsg(FL, "Trying to trigger hash: %d, name: %s", myHash, machName);
-		ws_Error(m, ERR_INTERNAL, 0x2fe, "TriggerMachineByHash() failed.");
-		return nullptr;
-	}
-
 	// Initialize the identification fields
 	_GWS(machineIDCount)++;
 	if (_GWS(machineIDCount) == DEAD_MACHINE_ID) {
@@ -1174,10 +1165,7 @@ void sendWSMessage(uint32 msgHash, frac16 msgValue, machine *recvM,
 
 	// Prepare a global message structure
 	globalMsgReq *tempGlobalMsg = (globalMsgReq *)mem_alloc(sizeof(globalMsgReq), "globalMsgReq");
-	if (tempGlobalMsg == nullptr) {
-		ws_LogErrorMsg(FL, "Out of memory - mem requested: %d.", sizeof(machine));
-		ws_Error(nullptr, ERR_INTERNAL, 0x2fe, "SendWSMessage() failed.");
-	}
+
 	tempGlobalMsg->msgHash = msgHash;
 	tempGlobalMsg->msgValue = msgValue;
 	tempGlobalMsg->machHash = machHash;
