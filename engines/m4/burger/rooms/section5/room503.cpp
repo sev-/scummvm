@@ -277,14 +277,17 @@ Room503::Room503() : Section5Room() {
 	_state4 = 0;
 	_state5 = 0;
 	_state6 = 0;
+
+	for (int i = 0; i < 5; ++i)
+		_array1[i] = _array2[i] = -1;
 }
 
 void Room503::init() {
 	Section5Room::init();
 	_flag5 = false;
 
-	for (_val2 = 0; _val2 < 5; ++_val2)
-		_array1[_val2] = _array2[_val2] = -1;
+	for (_ctr = 0; _ctr < 5; ++_ctr)
+		_array1[_ctr] = _array2[_ctr] = -1;
 
 	switch (_G(game).previous_room) {
 	case KERNEL_RESTORING_GAME:
@@ -370,8 +373,8 @@ void Room503::daemon() {
 		if (_flag5) {
 			kernel_trigger_dispatch_now(1);
 		} else {
-			for (_val2 = 0; _val2 < 5; ++_val2) {
-				_array1[_val2] = _array2[_val2];
+			for (_ctr = 0; _ctr < 5; ++_ctr) {
+				_array1[_ctr] = _array2[_ctr];
 			}
 
 			kernel_trigger_dispatch_now(2);
@@ -381,10 +384,10 @@ void Room503::daemon() {
 	case 2:
 		_flag5 = true;
 
-		for (_val2 = 0; _val2 < 5; ++_val2) {
-			if (_array1[_val2] != -1) {
-				kernel_trigger_dispatch_now(_array1[_val2]);
-				_array1[_val2] = -1;
+		for (_ctr = 0; _ctr < 5; ++_ctr) {
+			if (_array1[_ctr] != -1) {
+				kernel_trigger_dispatch_now(_array1[_ctr]);
+				_array1[_ctr] = -1;
 			}
 		}
 

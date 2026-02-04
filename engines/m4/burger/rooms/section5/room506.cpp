@@ -118,6 +118,9 @@ int32 Room506::_state2;
 Room506::Room506() : Section5Room() {
 	_state1 = 0;
 	_state2 = 0;
+
+	for (int i = 0; i < 5; ++i)
+		_triggers[i] = -1;
 }
 
 void Room506::init() {

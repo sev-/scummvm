@@ -225,6 +225,9 @@ Room507::Room507() : Section5Room() {
 	_state3 = 0;
 	_state4 = 0;
 	_state5 = 0;
+
+	for (int i = 0; i < 5; ++i)
+		_triggers[i] = -1;
 }
 
 void Room507::init() {
