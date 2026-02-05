@@ -56,15 +56,17 @@ Resources::Entry *Resources::findAndSetResEntry(const Common::String &resourceNa
 			// if we searched every entry to no avail:
 			if ((hash_val = (hash_val + 1) & (HASHSIZE - 1)) == orig_hash_val) {
 				hash_val = orig_hash_val;
-				while (!(_resources[hash_val].Flags & MARKED_PURGE))
+				while (!(_resources[hash_val].Flags & MARKED_PURGE)) {
 					// if we searched every entry to no avail:
 					if ((hash_val = (hash_val + 1) & (HASHSIZE - 1)) == orig_hash_val) {
 						error("Out of resource space");
 					}
+				}
 
 				res = &_resources[hash_val];
 				delete[] res->RHandle;
 				res->RHandle = nullptr;
+				break;
 			}
 		}
 	}
