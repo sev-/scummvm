@@ -427,6 +427,7 @@ void Sections::pal_game_task() {
 
 				_cameraShift_vert_Amount -= delta;
 			}
+			MoveScreenDelta(game_buff_ptr, 0, delta);
 		}
 	}
 
