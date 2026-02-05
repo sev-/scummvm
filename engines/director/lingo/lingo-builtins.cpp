@@ -1787,7 +1787,12 @@ void LB::b_openXlib(int nargs) {
 
 	xlibName = getFileName(d.asString());
 
-	g_lingo->openXLib(xlibName, kNoneObj, xlibPath);
+	// TODO: Figure out a nicer way of differentiating Xtras from XLibs on Mac
+	if (xlibName.hasSuffixIgnoreCase(".x16") || xlibName.hasSuffixIgnoreCase(".x32")) {
+		g_lingo->openXLib(xlibName, kXtraObj, xlibPath);
+	} else {
+		g_lingo->openXLib(xlibName, kXObj, xlibPath);
+	}
 }
 
 void LB::b_save(int nargs) {
