@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-05 00:02+0000\n"
-"PO-Revision-Date: 2026-01-31 19:56+0000\n"
+"PO-Revision-Date: 2026-02-05 17:26+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/es/>\n"
@@ -4923,16 +4923,12 @@ msgid "R"
 msgstr "R"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "C-Pad X"
 msgid "C-pad X"
-msgstr "C-Pad X"
+msgstr "Eje X de palanca C"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "C-Pad Y"
 msgid "C-pad Y"
-msgstr "C-Pad Y"
+msgstr "Eje Y de palanca C"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -7288,14 +7284,12 @@ msgid "Whether to render the game in 16-bit color"
 msgstr "Indica si se debe renderizar el juego con color a 16 bits o no"
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Give mixtures"
 msgid "Filter textures"
-msgstr "Dar mezclas"
+msgstr "Filtrar texturas"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "Indica si se debe aplicar un filtro bilineal a las texturas"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
