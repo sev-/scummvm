@@ -166,7 +166,7 @@ inline void syncStack(
 	serializer.syncAsUint32LE(size);
 	if (serializer.isLoading()) {
 		for (uint i = 0; i < size; i++) {
-			T value;
+			T value = {};
 			serializeFunction(serializer, value);
 			stack.push(value);
 		}

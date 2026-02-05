@@ -780,14 +780,14 @@ bool World::loadWorldFileV1(const char *path) {
 
 	const auto readGlobalAnim = [&] (
 		GlobalAnimationKind kind1,
-		GlobalAnimationKind kind2 = GlobalAnimationKind::Count) {
+		GlobalAnimationKind kind2) {
 		auto fileRef = readFileRef(*file);
 		_globalAnimations[(int)kind1] = fileRef;
 		if (kind2 != GlobalAnimationKind::Count)
 			_globalAnimations[(int)kind2] = fileRef;
 	};
 	readGlobalAnim(GlobalAnimationKind::GeneralFont, GlobalAnimationKind::DialogFont);
-	readGlobalAnim(GlobalAnimationKind::Cursor);
+	readGlobalAnim(GlobalAnimationKind::Cursor, GlobalAnimationKind::Count);
 	readGlobalAnim(GlobalAnimationKind::FilemonIcon, GlobalAnimationKind::FilemonDisabledIcon); // note this is swapped in V1
 	readGlobalAnim(GlobalAnimationKind::MortadeloIcon, GlobalAnimationKind::MortadeloDisabledIcon);
 	readGlobalAnim(GlobalAnimationKind::InventoryIcon, GlobalAnimationKind::InventoryDisabledIcon);

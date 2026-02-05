@@ -92,9 +92,13 @@ void ButtonV1::draw() {
 			text = "ENTRAR VACIA";
 		break;
 	case MainMenuAction::OptionsMenu:
+	{
 		int volumePercent = g_engine->config().musicVolume() * 10 / Audio::Mixer::kMaxChannelVolume;
 		snprintf(buffer, kBufferSize, "%s: %d", "VOLUMEN", volumePercent * 10);
 		text = buffer;
+		break;
+	}
+	default:
 		break;
 	}
 	if (text != nullptr) {
