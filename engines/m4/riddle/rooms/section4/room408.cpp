@@ -93,7 +93,7 @@ void Room408::init() {
 				_wolfMode = 2001;
 				_wolfShould = 2200;
 				_wolf = series_load("WOLF CLPNG LOOP LOOKS TO SIDE");
-				_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, 0,
+				_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, false,
 					triggerMachineByHashCallback, "WOLFIE");
 				sendWSMessage_10000(1, _wolfie, _wolf, 1, 10, 110, _wolf, 10, 10, 0);
 			}
@@ -111,7 +111,7 @@ void Room408::init() {
 				if (_G(flags)[kWolfLocation] == 408) {
 					hotspot_set_active("WOLF", true);
 					_wolf = series_load("WOLF CLPNG LOOP LOOKS TO SIDE");
-					_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, 0,
+					_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, false,
 						triggerMachineByHashCallback, "WOLFIE");
 					sendWSMessage_10000(1, _wolfie, _wolf, 1, 10, 110, _wolf, 10, 10, 0);
 					_wolfMode = 2001;
@@ -142,7 +142,7 @@ void Room408::init() {
 			ws_demand_location(_G(my_walker), 201, 287, 4);
 			ws_hide_walker();
 
-			_exit = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, 0, 100, 0, 0,
+			_exit = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, 0, 100, 0, false,
 				triggerMachineByHashCallback, "RIP ENTERS from GIZMO");
 			sendWSMessage_10000(1, _exit, _ripExits, 1, 75, 40, _ripExits, 75, 75, 0);
 			digi_play("408_s01", 2);
@@ -161,7 +161,7 @@ void Room408::init() {
 			if (_G(flags)[kWolfLocation] == 408) {
 				hotspot_set_active("WOLF", true);
 				_wolf = series_load("WOLF CLPNG LOOP LOOKS TO SIDE");
-				_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, 0,
+				_wolfie = TriggerMachineByHash(1, 1, 0, 0, 0, 0, 0, -53, 100, 0xd00, false,
 					triggerMachineByHashCallback, "WOLFIE");
 				sendWSMessage_10000(1, _wolfie, _wolf, 1, 10, 110, _wolf, 10, 10, 0);
 				_wolfMode = 2001;
@@ -241,10 +241,10 @@ void Room408::daemon() {
 
 				player_update_info();
 				_ripley = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
-					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, 0,
+					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, false,
 					triggerMachineByHashCallback, "rip talks wolf");
 				_ripleyShadow = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
-					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, 0,
+					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, false,
 					triggerMachineByHashCallback, "rip talks wolf SHADOW");
 
 				sendWSMessage_10000(1, _ripley, _ripHandsBehindBack, 1, 15, 102,
@@ -267,10 +267,6 @@ void Room408::daemon() {
 				break;
 
 			case 1102:
-				sendWSMessage_10000(1, _ripley, _ripHandsBehindBack, 15, 15, 102,
-					_ripHandsBehindBack, 15, 15, 0);
-				break;
-
 			case 1103:
 				sendWSMessage_10000(1, _ripley, _ripHandsBehindBack, 15, 15, 102,
 					_ripHandsBehindBack, 15, 15, 0);
@@ -402,13 +398,14 @@ void Room408::daemon() {
 		player_update_info();
 		_ripley = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
 			_G(player_info).x, _G(player_info).y, _G(player_info).scale,
-			0x100, 0, triggerMachineByHashCallback, "rip talks wolf");
+			0x100, false, triggerMachineByHashCallback, "rip talks wolf");
 		_ripleyShadow = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
 			_G(player_info).x, _G(player_info).y, _G(player_info).scale,
-			0x100, 0, triggerMachineByHashCallback, "rip talks wolf SHADOW");
+			0x100, false, triggerMachineByHashCallback, "rip talks wolf SHADOW");
 
 		sendWSMessage_10000(1, _ripleyShadow, _ripShadowSeries, 1, 1, -1,
 			_ripShadowSeries, 1, 1, 0);
+		ws_hide_walker();
 		sendWSMessage_10000(1, _ripley, _ripTrekTwoHandTalk, 1, 6, 222,
 			_ripTrekTwoHandTalk, 6, 6, 0);
 		break;
@@ -576,9 +573,9 @@ void Room408::daemon() {
 }
 
 void Room408::pre_parser() {
-	bool takeFlag = player_said("take");
-	bool lookFlag = player_said_any("look", "look at");
-	bool enterFlag = player_said("enter");
+	const bool takeFlag = player_said("take");
+	const bool lookFlag = player_said_any("look", "look at");
+	const bool enterFlag = player_said("enter");
 
 	if (lookFlag && player_said(" "))
 		_G(player).resetWalk();
@@ -592,11 +589,11 @@ void Room408::pre_parser() {
 }
 
 void Room408::parser() {
-	bool lookFlag = player_said_any("look", "look at");
-	bool talkFlag = player_said_any("talk", "talk to");
-	bool takeFlag = player_said("take");
-	bool enterFlag = player_said("enter");
-	bool useFlag = player_said_any("push", "pull", "gear", "open", "close");
+	const bool lookFlag = player_said_any("look", "look at");
+	const bool talkFlag = player_said_any("talk", "talk to");
+	const bool takeFlag = player_said("take");
+	const bool enterFlag = player_said("enter");
+	const bool useFlag = player_said_any("push", "pull", "gear", "open", "close");
 
 	if (player_said("conv408a")) {
 		if (_G(kernel).trigger == 1) {
@@ -750,7 +747,7 @@ void Room408::parser() {
 }
 
 void Room408::conv408a() {
-	int who = conv_whos_talking();
+	const int who = conv_whos_talking();
 	_currentNode = conv_current_node();
 	const char *sound = conv_sound_to_play();
 
