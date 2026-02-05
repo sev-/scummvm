@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-05 00:02+0000\n"
-"PO-Revision-Date: 2026-02-05 17:26+0000\n"
+"PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ja/>\n"
@@ -7160,7 +7160,7 @@ msgstr "32ビット"
 
 #: engines/alcachofa/metaengine.cpp:52
 msgid "Whether to render the game in 16-bit color"
-msgstr ""
+msgstr "ゲームを16bitカラーでレンダリング"
 
 #: engines/alcachofa/metaengine.cpp:62
 #, fuzzy
@@ -7170,7 +7170,7 @@ msgstr "画像フィルター"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "テクスチャーを線形フィルタリングするか"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
@@ -7313,10 +7313,8 @@ msgstr "レベルを入力"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87
 #: engines/got/metaengine.cpp:105
-#, fuzzy
-#| msgid "Game Keymappings"
 msgid "Game Keys"
-msgstr "キーマッピング"
+msgstr "ゲームキー"
 
 #: engines/bagel/metaengine.cpp:45
 msgid "Wait"
@@ -7341,39 +7339,33 @@ msgid "Escape"
 msgstr "脱出"
 
 #: engines/bagel/metaengine.cpp:70
-#, fuzzy
-#| msgid "Rotate"
 msgid "Page Up"
-msgstr "回す"
+msgstr "Page Up"
 
 #: engines/bagel/metaengine.cpp:71
-#, fuzzy
-#| msgid "Rotate"
 msgid "Page Down"
-msgstr "回す"
+msgstr "Page Down"
 
 #: engines/bagel/metaengine.cpp:72
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: engines/bagel/metaengine.cpp:73
 msgid "End"
-msgstr ""
+msgstr "End"
 
 #: engines/bagel/metaengine.cpp:180
 msgid "General Keys"
 msgstr "キー全般"
 
 #: engines/bagel/metaengine.cpp:180
-#, fuzzy
-#| msgid "Minimal Volume"
 msgid "Minimal Keys"
-msgstr "最小の音量"
+msgstr "最小限のキー"
 
 #. I18N: Escape is a key
 #: engines/bbvs/metaengine.cpp:95
 msgid "Escape keymappings"
-msgstr "キーマッピング終了"
+msgstr "Escキーのマッピング"
 
 #: engines/bbvs/metaengine.cpp:117 engines/hopkins/metaengine.cpp:229
 #: engines/illusions/metaengine.cpp:147 engines/sherlock/metaengine.cpp:839
@@ -8320,15 +8312,15 @@ msgstr ""
 
 #: engines/darkseed/dialogs.cpp:127
 msgid "CD version SFX only"
-msgstr ""
+msgstr "CD版のSFXのみ"
 
 #: engines/darkseed/dialogs.cpp:131
 msgid "CD + extra floppy SFX"
-msgstr ""
+msgstr "CD版 + FD版のSFX"
 
 #: engines/darkseed/dialogs.cpp:135
 msgid "Floppy version SFX only"
-msgstr ""
+msgstr "FD版のSFXのみ"
 
 #. I18N: Perform action on object where cursor points
 #: engines/darkseed/metaengine.cpp:42 engines/dragons/metaengine.cpp:135
@@ -9792,7 +9784,7 @@ msgstr "簡単なマウスのインターフェイス"
 
 #: engines/hugo/metaengine.cpp:46
 msgid "Use mouse and toolbar from Windows version"
-msgstr ""
+msgstr "Windows版のマウスとツールバーを使用"
 
 #: engines/hugo/metaengine.cpp:148
 #, fuzzy
@@ -10212,11 +10204,11 @@ msgstr ""
 
 #: engines/kyra/metaengine.cpp:175
 msgid "Fix Ileria and Beohram NPCs"
-msgstr ""
+msgstr "IleriaとBeohramのNPCを修正"
 
 #: engines/kyra/metaengine.cpp:176
 msgid "Make Ileria a female and Beohram a paladin"
-msgstr ""
+msgstr "Ileriaを女性、Beohramをパラディンにします"
 
 #: engines/kyra/metaengine.cpp:187
 msgid "Enhanced thrown weapon reload"
