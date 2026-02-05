@@ -84,6 +84,8 @@ void Room408::init() {
 			hotspot_set_active("PLANK", true);
 		}
 
+		_ripShadowSeries = series_load("SAFARI SHADOW 3");
+
 		switch (_G(game).previous_room) {
 		case KERNEL_RESTORING_GAME:
 			digi_preload("950_s22");
@@ -243,14 +245,17 @@ void Room408::daemon() {
 				_ripley = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
 					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, false,
 					triggerMachineByHashCallback, "rip talks wolf");
+
 				_ripleyShadow = TriggerMachineByHash(1, 1, 0, 0, 0, 0,
 					_G(player_info).x, _G(player_info).y, _G(player_info).scale, 0x100, false,
 					triggerMachineByHashCallback, "rip talks wolf SHADOW");
 
 				sendWSMessage_10000(1, _ripley, _ripHandsBehindBack, 1, 15, 102,
 					_ripHandsBehindBack, 15, 15, 0);
+
 				sendWSMessage_10000(1, _ripleyShadow, _ripShadowSeries, 1, 1, -1,
 					_ripShadowSeries, 1, 1, 0);
+
 				_ripleyShould = 1101;
 				_wolfMode = 2000;
 				_wolfShould = 2100;
