@@ -80,9 +80,9 @@ byte getCPCPixelMode1(byte cpc_byte, int index) {
 byte getCPCPixelMode0(byte cpc_byte, int index) {
     if (index == 0) {
         // Extract Pixel 0 from the byte
-        return ((cpc_byte & 0x02) >> 1) |  // Bit 1 -> Bit 3 (MSB)
-               ((cpc_byte & 0x20) >> 4) |  // Bit 5 -> Bit 2
-               ((cpc_byte & 0x08) >> 1) |  // Bit 3 -> Bit 1
+        return ((cpc_byte & 0x02) << 2) |  // Bit 1 -> Bit 3 (MSB)
+               ((cpc_byte & 0x20) >> 3) |  // Bit 5 -> Bit 2
+               ((cpc_byte & 0x08) >> 2) |  // Bit 3 -> Bit 1
                ((cpc_byte & 0x80) >> 7);   // Bit 7 -> Bit 0 (LSB)
     }
     else if (index == 2) {
