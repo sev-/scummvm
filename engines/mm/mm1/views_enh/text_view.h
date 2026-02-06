@@ -30,7 +30,7 @@ namespace MM {
 namespace MM1 {
 namespace ViewsEnh {
 
-#define MM1_NEW_GFX
+//#define MM1_NEW_GFX
 
 #ifdef MM1_NEW_GFX
 constexpr int TEXT_COLOR = 9;
