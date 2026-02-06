@@ -42,6 +42,9 @@ public:
 
 private:
 	int _roomStates_field4 = -1;
+	GrBuff *_905_BuffTemp = nullptr;
+	GrBuff *_905_BuffTemp2 = nullptr;
+
 	static void escapePressed(void *, void *);
 	machine *_roomStates_tt = nullptr;
 };
