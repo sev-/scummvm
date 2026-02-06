@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-05 00:02+0000\n"
-"PO-Revision-Date: 2026-02-04 23:56+0000\n"
+"PO-Revision-Date: 2026-02-06 23:04+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -4486,8 +4486,6 @@ msgstr "Крестовина вверх"
 #: backends/platform/sdl/opendingux/opendingux.cpp:65
 #: backends/platform/sdl/ps3/ps3.cpp:58 backends/platform/sdl/psp2/psp2.cpp:57
 #: backends/platform/sdl/switch/switch.cpp:49
-#, fuzzy
-#| msgid "D-pad Down"
 msgid "D-pad down"
 msgstr "Крестовина вниз"
 
@@ -4499,8 +4497,6 @@ msgstr "Крестовина вниз"
 #: backends/platform/sdl/opendingux/opendingux.cpp:66
 #: backends/platform/sdl/ps3/ps3.cpp:59 backends/platform/sdl/psp2/psp2.cpp:58
 #: backends/platform/sdl/switch/switch.cpp:50
-#, fuzzy
-#| msgid "D-pad Left"
 msgid "D-pad left"
 msgstr "Крестовина влево"
 
@@ -4512,26 +4508,18 @@ msgstr "Крестовина влево"
 #: backends/platform/sdl/opendingux/opendingux.cpp:67
 #: backends/platform/sdl/ps3/ps3.cpp:60 backends/platform/sdl/psp2/psp2.cpp:59
 #: backends/platform/sdl/switch/switch.cpp:51
-#, fuzzy
-#| msgid "D-pad Right"
 msgid "D-pad right"
 msgstr "Крестовина вправо"
 
 #: backends/keymapper/hardware-input.cpp:270
-#, fuzzy
-#| msgid "D-pad Center"
 msgid "D-pad center"
 msgstr "Крестовина центр"
 
 #: backends/keymapper/hardware-input.cpp:275
-#, fuzzy
-#| msgid "Left Trigger"
 msgid "Left trigger"
 msgstr "Левый триггер"
 
 #: backends/keymapper/hardware-input.cpp:276
-#, fuzzy
-#| msgid "Right Trigger"
 msgid "Right trigger"
 msgstr "Правый триггер"
 
@@ -4539,8 +4527,6 @@ msgstr "Правый триггер"
 #: backends/platform/sdl/opendingux/opendingux.cpp:78
 #: backends/platform/sdl/ps3/ps3.cpp:67 backends/platform/sdl/psp2/psp2.cpp:64
 #: backends/platform/sdl/switch/switch.cpp:58
-#, fuzzy
-#| msgid "Left Stick X"
 msgid "Left stick X"
 msgstr "Левый стик ось X"
 
@@ -4548,24 +4534,18 @@ msgstr "Левый стик ось X"
 #: backends/platform/sdl/opendingux/opendingux.cpp:79
 #: backends/platform/sdl/ps3/ps3.cpp:68 backends/platform/sdl/psp2/psp2.cpp:65
 #: backends/platform/sdl/switch/switch.cpp:59
-#, fuzzy
-#| msgid "Left Stick Y"
 msgid "Left stick Y"
 msgstr "Левый стик ось Y"
 
 #: backends/keymapper/hardware-input.cpp:279
 #: backends/platform/sdl/ps3/ps3.cpp:69 backends/platform/sdl/psp2/psp2.cpp:66
 #: backends/platform/sdl/switch/switch.cpp:60
-#, fuzzy
-#| msgid "Right Stick X"
 msgid "Right stick X"
 msgstr "Правый стик ось X"
 
 #: backends/keymapper/hardware-input.cpp:280
 #: backends/platform/sdl/ps3/ps3.cpp:70 backends/platform/sdl/psp2/psp2.cpp:67
 #: backends/platform/sdl/switch/switch.cpp:61
-#, fuzzy
-#| msgid "Right Stick Y"
 msgid "Right stick Y"
 msgstr "Правый стик ось Y"
 
@@ -4913,8 +4893,6 @@ msgid "C-pad X"
 msgstr "C-пад X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "C-Pad Y"
 msgid "C-pad Y"
 msgstr "C-пад Y"
 
@@ -5042,75 +5020,6 @@ msgid "Touch Controls"
 msgstr "Управление касанием"
 
 #: backends/platform/android/android.cpp:1091
-#, fuzzy
-#| msgid ""
-#| "## Touch control modes\n"
-#| "The touch control mode can be changed by tapping or clicking on the "
-#| "controller icon in the upper right corner\n"
-#| "### Direct mouse \n"
-#| "\n"
-#| "The touch controls are direct. The pointer jumps to where the finger "
-#| "touches the screen (default for menus).\n"
-#| "\n"
-#| "  ![Direct mouse mode](mouse.png \"Direct mouse mode\"){w=10em}\n"
-#| "\n"
-#| "### Touchpad emulation \n"
-#| "\n"
-#| "The touch controls are indirect, like on a laptop touchpad.\n"
-#| "\n"
-#| "  ![Touchpad mode](touchpad.png \"Touchpad mode\"){w=10em}\n"
-#| "\n"
-#| "### Gamepad emulation \n"
-#| "\n"
-#| "Fingers must be placed on lower left and right of the screen to emulate a "
-#| "directional pad and action buttons.\n"
-#| "\n"
-#| "  ![Gamepad mode](gamepad.png \"Gamepad mode\"){w=10em}\n"
-#| "\n"
-#| "To select the preferred touch mode for menus, 2D games, and 3D games, go "
-#| "to **Global Options > Backend > Choose the preferred touch mode**.\n"
-#| "\n"
-#| "## Touch actions \n"
-#| "\n"
-#| "### Two finger scroll \n"
-#| "\n"
-#| "To scroll, slide two fingers up or down the screen\n"
-#| "### Two finger tap\n"
-#| "\n"
-#| "To do a two finger tap, hold one finger down and then tap with a second "
-#| "finger.\n"
-#| "\n"
-#| "### Three finger tap\n"
-#| "\n"
-#| "To do a three finger tap, start with holding down one finger and "
-#| "progressively touch down the other two fingers, one at a time, while "
-#| "still holding down the previous fingers. Imagine you are impatiently "
-#| "tapping your fingers on a surface, but then slow down that movement so it "
-#| "is rhythmic, but not too slow.\n"
-#| "\n"
-#| "### Immersive Sticky fullscreen mode\n"
-#| "\n"
-#| "Swipe from the edge to reveal the system bars.  They remain semi-"
-#| "transparent and disappear after a few seconds unless you interact with "
-#| "them.\n"
-#| "\n"
-#| "### Global Main Menu\n"
-#| "\n"
-#| "To open the Global Main Menu, tap on the menu icon at the top right of "
-#| "the screen.\n"
-#| "\n"
-#| "  ![Menu icon](menu.png \"Menu icon\"){w=10em}\n"
-#| "\n"
-#| "## Virtual keyboard\n"
-#| "\n"
-#| "To open the virtual keyboard, long press on the controller icon at the "
-#| "top right of the screen, or tap on any editable text field. To hide the "
-#| "virtual keyboard, tap the controller icon again, or tap outside the text "
-#| "field.\n"
-#| "\n"
-#| "\n"
-#| "  ![Keyboard icon](keyboard.png \"Keyboard icon\"){w=10em}\n"
-#| "\n"
 msgid ""
 "## Touch control modes\n"
 "The touch control mode can be changed by tapping or clicking on the "
@@ -5255,43 +5164,6 @@ msgid "Adding Games"
 msgstr "Добавление игр"
 
 #: backends/platform/android/android.cpp:1150
-#, fuzzy
-#| msgid ""
-#| "## Adding Games \n"
-#| "\n"
-#| "1. Select **Add Game...** from the launcher. \n"
-#| "\n"
-#| "2. Inside the ScummVM file browser, select **Go Up** until you reach the "
-#| "root folder which has the **<Add a new folder>** option. \n"
-#| "\n"
-#| "  ![ScummVM file browser root](browser-root.png \"ScummVM file browser "
-#| "root\"){w=70%}\n"
-#| "\n"
-#| "3. Double-tap **<Add a new folder>**. In your device's file browser, "
-#| "navigate to the folder containing all your game folders. For example, "
-#| "**SD Card > ScummVMgames**. \n"
-#| "\n"
-#| "4. Select **Use this folder**. \n"
-#| "\n"
-#| "  ![OS selectable folder](fs-folder.png \"OS selectable folder\"){w=70%}\n"
-#| "\n"
-#| "5. Select **ALLOW** to give ScummVM permission to access the folder. \n"
-#| "\n"
-#| "  ![OS access permission dialog](fs-permission.png \"OS access "
-#| "permission\"){w=70%}\n"
-#| "\n"
-#| "6. In the ScummVM file browser, double-tap to browse through your added "
-#| "folder. Add a game by selecting the sub-folder containing the game files, "
-#| "then tap **Choose**. \n"
-#| "\n"
-#| "  ![SAF folder added](browser-folder-in-list.png \"SAF folder added\")"
-#| "{w=70%}\n"
-#| "\n"
-#| "Step 2 and 3 are done only once. To add more games, repeat Steps 1 and "
-#| "6. \n"
-#| "\n"
-#| "See our [Android documentation](https://docs.scummvm.org/en/latest/"
-#| "other_platforms/android.html) for more information.\n"
 msgid ""
 "## Adding Games \n"
 "\n"
@@ -5337,7 +5209,7 @@ msgstr ""
 "корневой папки, в которой есть опция **<Добавить новую папку>**.\n"
 "\n"
 "   ![Корень файлового браузера ScummVM](browser-root.png \"Корневой файловый "
-"браузер ScummVM\"){w=70%}\n"
+"браузер ScummVM\"){w=70%,maxw=50em}\n"
 "\n"
 "3. Дважды коснитесь **<Добавить новую папку>**. В браузере файлов вашего "
 "устройства перейдите к папке, содержащей все папки вашей игры. Например, "
@@ -5345,20 +5217,21 @@ msgstr ""
 "\n"
 "4. Выберите **Использовать эту папку**.\n"
 "\n"
-"   ![Папка, выбираемая ОС](fs-folder.png \"Папка, выбираемая ОС\"){w=70%}\n"
+"   ![Папка, выбираемая ОС](fs-folder.png \"Папка, выбираемая ОС\")"
+"{w=70%,maxw=50em}\n"
 "\n"
 "5. Выберите **РАЗРЕШИТЬ**, чтобы предоставить ScummVM разрешение на доступ к "
 "папке.\n"
 "\n"
 "   ![Диалоговое окно разрешения доступа ОС](fs-permission.png \"Разрешение "
-"доступа ОС\"){w=70%}\n"
+"доступа ОС\"){w=70%,maxw=50em}\n"
 "\n"
 "6. В браузере файлов ScummVM дважды коснитесь, чтобы просмотреть добавленную "
 "папку. Добавьте игру, выбрав подпапку, содержащую файлы игры, затем нажмите "
 "**Выбрать**.\n"
 "\n"
 "   ![Добавлена папка SAF](browser-folder-in-list.png \"Добавлена папка SAF\")"
-"{w=70%}\n"
+"{w=70%,maxw=50em}\n"
 "\n"
 "Шаги 2 и 3 выполняются только один раз. Чтобы добавить больше игр, повторите "
 "шаги 1 и 6.\n"
@@ -5489,10 +5362,8 @@ msgstr ""
 
 #: backends/platform/android/options.cpp:284
 #: backends/platform/android/options.cpp:317
-#, fuzzy
-#| msgid "the shader could not be changed"
 msgid "The game saves couldn't be backed up"
-msgstr "шейдер не может быть изменён"
+msgstr "Сохранения игр не удалось скопировать"
 
 #: backends/platform/android/options.cpp:286
 msgid "An error occured while saving the backup."
@@ -5505,10 +5376,8 @@ msgid ""
 msgstr ""
 
 #: backends/platform/android/options.cpp:298
-#, fuzzy
-#| msgid "Select a Theme"
 msgid "Select backup file"
-msgstr "Выберите тему"
+msgstr "Выберите файл резервной копии"
 
 #: backends/platform/android/options.cpp:315
 msgid "The backup has been restored successfully."
@@ -5985,21 +5854,6 @@ msgid "Libretro playlist"
 msgstr "Плейлист Libretro"
 
 #: backends/platform/libretro/src/libretro-os-utils.cpp:236
-#, fuzzy
-#| msgid ""
-#| "## Libretro playlists for ScummVM core\n"
-#| "Playlists used in Libretro frontends (e.g. Retroarch) are plain text "
-#| "lists used to directly launch a game with a specific core from the user "
-#| "interface. Those lists are structured to pass to the core the path of a "
-#| "specific content file to be loaded (e.g. ROM).\n"
-#| "\n"
-#| "ScummVM core can accept as content the path to any of the files inside a "
-#| "valid game folder, the detection system will try to autodetect the game "
-#| "from the content file parent folder and run the game with default ScummVM "
-#| "options.\n"
-#| "\n"
-#| "The core also supports dedicated per game **hook** plain text files with "
-#| "**."
 msgid ""
 "## Libretro playlists for ScummVM core\n"
 "Playlists used in Libretro frontends (e.g. Retroarch) are plain text lists "
@@ -6456,16 +6310,12 @@ msgid "Default keymappings"
 msgstr "Раскладки клавиш по умолчанию"
 
 #: engines/access/metaengine.cpp:202
-#, fuzzy
-#| msgid "Go to next dialogue"
 msgid "Move / Interact / Skip"
-msgstr "Перейти к следующему диалогу"
+msgstr "Переместить / Взаимодействовать / Пропустить"
 
 #: engines/access/metaengine.cpp:214 engines/sherlock/metaengine.cpp:483
-#, fuzzy
-#| msgid "Skip video"
 msgid "Skip movie"
-msgstr "Пропустить видео"
+msgstr "Пропустить ролик"
 
 #. I18N: Move Actor to upwards direction
 #: engines/access/metaengine.cpp:220 engines/asylum/metaengine.cpp:171
@@ -6643,10 +6493,8 @@ msgid "Walk"
 msgstr "Идти"
 
 #: engines/access/metaengine.cpp:348
-#, fuzzy
-#| msgid "Page Up in save/load menu"
 msgid "Open save/load menu"
-msgstr "Страница вверх в меню сохр/загр"
+msgstr "Открыть меню сохранения/загрузки"
 
 #: engines/access/resources.cpp:43 engines/drascula/drascula.cpp:993
 #: engines/hugo/hugo.cpp:461 engines/lure/lure.cpp:57
@@ -7053,17 +6901,13 @@ msgstr "Увеличить громкость музыки"
 
 #: engines/agos/metaengine.cpp:194 engines/sherlock/metaengine.cpp:687
 #: engines/ultima/nuvie/metaengine.cpp:101 engines/vcruise/metaengine.cpp:201
-#, fuzzy
-#| msgid "Toggle mute"
 msgid "Toggle music"
-msgstr "Вкл/выкл звук"
+msgstr "Переключить музыку"
 
 #: engines/agos/metaengine.cpp:199 engines/sherlock/metaengine.cpp:702
 #: engines/vcruise/metaengine.cpp:206
-#, fuzzy
-#| msgid "Toggle sound effects on/off"
 msgid "Toggle sound effects"
-msgstr "Вкл/выкл звуковые эффекты"
+msgstr "Переключить звуковые эффекты"
 
 #. I18N: Speeds up the game to twice its normal speed
 #: engines/agos/metaengine.cpp:204 engines/queen/metaengine.cpp:192
@@ -7107,10 +6951,8 @@ msgid "Turn right"
 msgstr "Повернуть направо"
 
 #: engines/agos/metaengine.cpp:241
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle fight mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим боя"
 
 #: engines/agos/metaengine.cpp:250
 msgid "Text speed - Fast"
@@ -7129,10 +6971,8 @@ msgid "Show objects to interact"
 msgstr "Показывать объекты для взаимодействия"
 
 #: engines/agos/metaengine.cpp:272
-#, fuzzy
-#| msgid "Toggle background sounds on/off"
 msgid "Toggle background sounds"
-msgstr "Вкл/выкл фоновые звуки"
+msgstr "Переключить фоновые звуки"
 
 #. I18N: Characters are game actors
 #: engines/agos/metaengine.cpp:281
@@ -7140,10 +6980,8 @@ msgid "Switch characters"
 msgstr "Смена героя"
 
 #: engines/agos/metaengine.cpp:287
-#, fuzzy
-#| msgid "Toggle hitbox names on/off"
 msgid "Toggle hitbox names"
-msgstr "Вкл/выкл названия хитбоксов"
+msgstr "Переключить названия хитбоксов"
 
 #: engines/agos/metaengine.cpp:294
 msgid "Switches between speech only and combined speech and subtitles"
@@ -7260,14 +7098,9 @@ msgstr ""
 "Эта игра использует движок AGS версии до 2.5, который не поддерживается."
 
 #: engines/ags/ags.cpp:157
-#, fuzzy
-#| msgid ""
-#| "The selected game uses a pre-2.5 version of the AGS engine, which is not "
-#| "supported."
 msgid ""
 "The selected game uses version 4 of the AGS engine, which is not supported."
-msgstr ""
-"Эта игра использует движок AGS версии до 2.5, который не поддерживается."
+msgstr "Эта игра использует движок AGS версии 4, который не поддерживается."
 
 #: engines/ags/ags.cpp:165
 msgid ""
@@ -7358,10 +7191,8 @@ msgid "High Quality"
 msgstr "Высокое качество"
 
 #: engines/alcachofa/metaengine.cpp:41
-#, fuzzy
-#| msgid "Toggle sound effects on/off"
 msgid "Toggles some optional graphical effects"
-msgstr "Вкл/выкл звуковые эффекты"
+msgstr "Переключить некоторые опциональные графические эффекты"
 
 #: engines/alcachofa/metaengine.cpp:51
 msgid "32 Bits"
@@ -7372,10 +7203,8 @@ msgid "Whether to render the game in 16-bit color"
 msgstr ""
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Filter graphics"
 msgid "Filter textures"
-msgstr "Фильтрование графики"
+msgstr "Фильтрование текстур"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
@@ -7452,10 +7281,8 @@ msgid "Open character inventory"
 msgstr "Открыть инвентарь героя"
 
 #: engines/asylum/metaengine.cpp:226
-#, fuzzy
-#| msgid "Toggle animation on/off"
 msgid "Toggle animation"
-msgstr "Вкл/выкл анимацию"
+msgstr "Переключить анимацию"
 
 #: engines/asylum/metaengine.cpp:232
 msgid "Return to gameplay"
@@ -7500,15 +7327,12 @@ msgid "Enable title and copy protection screens (if present)"
 msgstr ""
 
 #: engines/awe/metaengine.cpp:36
-#, fuzzy
-#| msgid ""
-#| "Enable any copy protection that would otherwise be bypassed by default."
 msgid ""
 "Displays title and copy protection screens that would otherwise be bypassed "
 "by default."
 msgstr ""
-"Включает оригинальную защиту от копирования, которая в противном случае была "
-"бы обойдена по умолчанию."
+"Показывает титульные экран и защиту от копирования, которые в противном "
+"случае были бы обойдены по умолчанию."
 
 #: engines/awe/metaengine.cpp:61
 msgid "Select/Kick/Run"
@@ -7550,22 +7374,16 @@ msgid "Escape"
 msgstr "Клавиша Esc"
 
 #: engines/bagel/metaengine.cpp:70
-#, fuzzy
-#| msgid "Rotate up"
 msgid "Page Up"
-msgstr "Повернуть вверх"
+msgstr "Страница вверх"
 
 #: engines/bagel/metaengine.cpp:71
-#, fuzzy
-#| msgid "Rotate down"
 msgid "Page Down"
-msgstr "Повернуть вниз"
+msgstr "Страница вниз"
 
 #: engines/bagel/metaengine.cpp:72
-#, fuzzy
-#| msgid "Boss key"
 msgid "Home"
-msgstr "Босс-кнопка"
+msgstr "Домой"
 
 #: engines/bagel/metaengine.cpp:73
 msgid "End"
@@ -7576,10 +7394,8 @@ msgid "General Keys"
 msgstr "Общие клавиши"
 
 #: engines/bagel/metaengine.cpp:180
-#, fuzzy
-#| msgid "Minimal Volume"
 msgid "Minimal Keys"
-msgstr "Минимальная громкость"
+msgstr "Минимальные кнопки"
 
 #. I18N: Escape is a key
 #: engines/bbvs/metaengine.cpp:95
@@ -7741,10 +7557,8 @@ msgstr "Ходить / Смотреть / Говорить / Выбрать / С
 #. TOGGLE MCCOY'S COMBAT MODE
 #: engines/bladerunner/metaengine.cpp:220
 #: engines/ultima/nuvie/metaengine.cpp:73
-#, fuzzy
-#| msgid "Toggle Combat"
 msgid "Toggle combat"
-msgstr "Переключить режим боя"
+msgstr "Переключить бой"
 
 #. I18N: This keymap allows skipping video cutscenes
 #: engines/bladerunner/metaengine.cpp:229 engines/buried/metaengine.cpp:160
@@ -7766,8 +7580,6 @@ msgstr "Пропустить заставку"
 #: engines/sludge/keymapper_tables.h:535 engines/teenagent/metaengine.cpp:213
 #: engines/tetraedge/metaengine.cpp:98 engines/toltecs/metaengine.cpp:228
 #: engines/touche/metaengine.cpp:141
-#, fuzzy
-#| msgid "Skip dialogue"
 msgid "Skip dialog"
 msgstr "Пропустить диалог"
 
@@ -7776,10 +7588,8 @@ msgstr "Пропустить диалог"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. GAME OPTIONS
 #: engines/bladerunner/metaengine.cpp:253
-#, fuzzy
-#| msgid "Game Options"
 msgid "Game options"
-msgstr "Настройки Игры"
+msgstr "Опции игры"
 
 #. I18N: This keymap opens the KIA database on one of the investigation tabs,
 #. CRIME SCENE DATABASE, SUSPECT DATABASE and CLUES DATABASE.
@@ -7787,8 +7597,6 @@ msgstr "Настройки Игры"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. ACTIVATE KIA CLUE DATABASE SYSTEM
 #: engines/bladerunner/metaengine.cpp:264
-#, fuzzy
-#| msgid "Open KIA Database"
 msgid "Open KIA database"
 msgstr "Открыть базу KIA"
 
