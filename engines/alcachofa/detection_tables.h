@@ -126,7 +126,7 @@ const AlcachofaGameDescription gameDescriptions[] = {
 			ADGF_USEEXTRAASTITLE | ADGF_REMASTERED | ADGF_CD,
 			GUIO2(GAMEOPTION_32BITS, GAMEOPTION_HIGH_QUALITY)
 		},
-		EngineVersion::V3_0
+		EngineVersion::V3_1
 	},
 
 	//
