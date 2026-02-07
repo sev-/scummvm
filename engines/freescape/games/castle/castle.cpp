@@ -30,6 +30,8 @@
 #include "backends/keymapper/standard-actions.h"
 #include "common/translation.h"
 
+#include "audio/mods/protracker.h"
+
 #include "freescape/freescape.h"
 #include "freescape/games/castle/castle.h"
 #include "freescape/language/8bitDetokeniser.h"
@@ -361,6 +363,14 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 			playSound(13, true, _soundFxHandle);
 		else
 			playSound(_soundIndexStart, false, _soundFxHandle);
+
+		// Start ProTracker background music for Amiga demo
+		if (isAmiga() && !_modData.empty() && !_mixer->isSoundHandleActive(_musicHandle)) {
+			Common::MemoryReadStream modStream(_modData.data(), _modData.size());
+			Audio::AudioStream *musicStream = Audio::makeProtrackerStream(&modStream);
+			if (musicStream)
+				_mixer->playStream(Audio::Mixer::kMusicSoundType, &_musicHandle, musicStream);
+		}
 	} else if (areaID == _endArea && entranceID == _endEntrance) {
 		_pitch = -85;
 	} else {

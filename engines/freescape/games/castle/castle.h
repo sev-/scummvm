@@ -129,6 +129,7 @@ public:
 	Graphics::ManagedSurface *_endGameBackgroundFrame;
 	Graphics::ManagedSurface *_gameOverBackgroundFrame;
 
+	Common::Array<byte> _modData; // Embedded ProTracker module (Amiga demo)
 	Common::Array<int> _keysCollected;
 	bool _useRockTravel;
 	int _spiritsMeter;

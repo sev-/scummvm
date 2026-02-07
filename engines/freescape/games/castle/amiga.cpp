@@ -22,6 +22,8 @@
 #include "common/file.h"
 #include "common/memstream.h"
 
+#include "audio/mods/protracker.h"
+
 #include "freescape/freescape.h"
 #include "freescape/games/castle/castle.h"
 #include "freescape/language/8bitDetokeniser.h"
@@ -214,6 +216,18 @@ void CastleEngine::loadAssetsAmigaDemo() {
 
 	_riddleBottomFrame = loadFrameFromPlanesInterleaved(&file, 16, 8);
 	_riddleBottomFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
+
+	// Load embedded ProTracker module for background music
+	// Module is at file offset 0x3D5A6 (memory 0x3D58A), ~86260 bytes
+	static const int kModOffset = 0x3D5A6;
+	file.seek(0, SEEK_END);
+	int fileSize = file.pos();
+	int modSize = fileSize - kModOffset;
+	if (modSize > 0) {
+		file.seek(kModOffset);
+		_modData.resize(modSize);
+		file.read(_modData.data(), modSize);
+	}
 
 	file.close();
 
