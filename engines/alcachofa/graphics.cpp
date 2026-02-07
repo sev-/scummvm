@@ -679,7 +679,8 @@ void Font::load() {
 
 	Point cellSize;
 	for (auto image : _images) {
-		assert(image != nullptr); // no fake pictures in fonts please
+		if (image == nullptr)
+			continue; // the russian variant of adventuradecine-remastered unfortunately conatins fake images
 		if (g_engine->isV3() && image == _images[128])
 			continue;
 		cellSize.x = MAX(cellSize.x, image->w);
@@ -694,6 +695,7 @@ void Font::load() {
 	const float invWidth = 1.0f / atlasSurface.w;
 	const float invHeight = 1.0f / atlasSurface.h;
 	for (uint i = 0; i < _images.size(); i++) {
+		if (_images[i] == nullptr) continue;
 		if (g_engine->isV3() && i == 128) continue;
 
 		int offsetX = (i % 16) * cellSize.x + (cellSize.x - _images[i]->w) / 2;
@@ -742,6 +744,7 @@ void Font::drawCharacter(byte ch, Point centerPoint, Color color) {
 bool Font::isVisibleChar(byte ch) const {
 	return ch >= _charToImage &&
 		(uint)(ch - _charToImage) < _images.size() &&
+		_images[ch - _charToImage] != nullptr &&
 		ch - _charToImage != _spaceImageI;
 }
 
