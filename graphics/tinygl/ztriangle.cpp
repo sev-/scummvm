@@ -208,7 +208,7 @@ template <bool kSmoothMode, bool kDepthWrite, bool kFogMode, bool kAlphaTestEnab
 void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint *p2,
                                FrameBuffer::ColorMode colorMode, bool kInterpZ,
                                bool kInterpST, bool kInterpSTZ, bool stippleEnabled) {
-	const TexelBuffer *texture;
+	const TexelBuffer *texture = nullptr;
 	float fdzdx = 0, fndzdx = 0, ndszdx = 0, ndtzdx = 0;
 
 	ZBufferPoint *tp, *pr1 = 0, *pr2 = 0, *l1 = 0, *l2 = 0;
