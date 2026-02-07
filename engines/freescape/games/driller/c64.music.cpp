@@ -99,7 +99,7 @@ const int NUM_INSTRUMENTS = sizeof(instrumentDataA0) / 8;
 
 // Arpeggio Data (0x157A - 0x157E)
 const uint8_t arpeggio_data[] = {0x00, 0x0C, 0x18};
-const int NUM_ARPEGGIOS = 1; // Only one arpeggio table is defined
+// Only one arpeggio table is defined (3 entries: +0, +12, +24 semitones)
 
 // Music Data Pointers and Structures
 // Need to load the actual PRG file into a buffer (_musicData)
@@ -168,9 +168,8 @@ const int NUM_PATTERNS = sizeof(pattern_addresses) / sizeof(pattern_addresses[0]
 // Tune Data (0x1054, 0x15D5 - 0x15E5)
 const uint8_t tune_tempo_data[] = {0x00, 0x03, 0x03}; // tempos for tune 0, 1, 2
 const uint8_t *const tune_track_data[][3] = {
-	{nullptr, nullptr, nullptr},                               // Tune 0 (no data specified, likely silent/unused)
+	{nullptr, nullptr, nullptr},                               // Tune 0 (null pointers = stop)
 	{voice1_track_data, voice2_track_data, voice3_track_data}, // Tune 1
-	{voice1_track_data, voice2_track_data, voice3_track_data}  // Tune 2 (Assume same as tune 1 for now if needed)
 };
 const int NUM_TUNES = sizeof(tune_tempo_data) / sizeof(tune_tempo_data[0]);
 
@@ -183,9 +182,8 @@ const int voice_sid_offset[] = {0, 7, 14};
 DrillerSIDPlayer::DrillerSIDPlayer() : _sid(nullptr),
 														  _playState(STOPPED),
 														  _targetTuneIndex(0),
-														  _globalTempo(3),       // Default tempo
-														  _globalTempoCounter(1), // Start immediately
-														  _framePhase(0)
+														  _globalTempo(3),        // Default tempo
+														  _globalTempoCounter(1)  // Start immediately
 {
 	initSID();
 
@@ -290,22 +288,14 @@ void DrillerSIDPlayer::onTimer() {
 	}
 
 	// Corresponds to voice_done (0x09A1)
-	// The original code increments x by 7 for each voice, so the third voice call has x=14 (0x0E)
-	// This check ensures the tempo counter is handled only once after all voices are processed.
-	// cpx #$0E ; bne @done
-	_framePhase += 7;
-	if (_framePhase >= 14) { // In practice, this will be 21, but we just need to check it's the third voice's turn
-		_framePhase = 0;
+	// After all 3 voices processed (cpx #$0E), handle tempo counter once per frame
+	// dec tempo_ctr (0x09A5)
+	_globalTempoCounter--;
 
-		// dec tempo_ctr (0x09A5)
-		_globalTempoCounter--;
-
-		// bpl @done (0x09A8)
-		if (_globalTempoCounter < 0) {
-			// lda tempo; sta tempo_ctr (0x09AA)
-			_globalTempoCounter = _globalTempo;
-			debug(DEBUG_LEVEL >= 2, "Driller: Tempo Tick! Reloading counter to %d", _globalTempoCounter);
-		}
+	// bpl @done (0x09A8)
+	if (_globalTempoCounter < 0) {
+		// lda tempo; sta tempo_ctr (0x09AA)
+		_globalTempoCounter = _globalTempo;
 	}
 }
 
@@ -464,13 +454,7 @@ void DrillerSIDPlayer::playVoice(int voiceIndex) {
 	const uint8_t *instA0 = &instrumentDataA0[instBase];
 	const uint8_t *instA1 = &instrumentDataA1[instBase];
 
-	// Hard Restart / Buzz Effect Check (Inst A0[7] & 0x01) - Apply if active
-	// This check was previously in applyNote, moved here to match L1005 check location relative to effects
-	if (v.hardRestartActive) {
-		applyHardRestart(v, sidOffset, instA0, instA1);
-	}
-
-	// Glide down effect? (L094E) - Inst A0[7] & 0x04
+	// Waveform transition effect (L0944-L095E) - Inst A0[7] & 0x04
 	// This logic updates ctrl register $D404, likely wave or gate
 	if (instA0[7] & 0x04) {
 		if (v.glideDownTimer > 0) { // voice1_two_ctr,x (0xD3E)
@@ -550,8 +534,8 @@ void DrillerSIDPlayer::playVoice(int voiceIndex) {
 			}
 
 			// Reset state related to previous note/effects for gate control
-			_tempControl3 = 0xFF; // Reset gate mask (0x09D0) - Currently unused in C++ code
-			v.whatever0 = 0;      // Reset effect states (0x09D5 onwards)
+			v.gateMask = 0xFF; // Reset gate mask (0x09D0: lda #$FF; sta control3)
+			v.whatever0 = 0;   // Reset effect states (0x09D5 onwards)
 			v.whatever1 = 0;
 			v.whatever2 = 0;
 
@@ -611,23 +595,17 @@ void DrillerSIDPlayer::playVoice(int voiceIndex) {
 					}
 					uint8_t portaParam = v.patternDataPtr[v.patternIndex]; // Consume data byte
 
-					if (v.currentNote > 0) {
-						// Set porta type (1=Down(FB), 2=Up(FC)) or (3=DownH, 4=UpH)
-						if (cmd == 0xFB) {                            // effect_fb_1
-							v.whatever2 = (instA0[7] & 0x02) ? 3 : 1; // (0A01)
-							debug(DEBUG_LEVEL >= 2, "Driller V%d: Cmd FB, Porta Down Param = $%02X (Type %d)", voiceIndex, portaParam, v.whatever2);
-						} else {                                      // FC (effect_fc_2)
-							v.whatever2 = (instA0[7] & 0x02) ? 4 : 2; // (0A17 -> 0A01)
-							debug(DEBUG_LEVEL >= 2, "Driller V%d: Cmd FC, Porta Up Param = $%02X (Type %d)", voiceIndex, portaParam, v.whatever2);
-						}
-
-						v.portaStepRaw = portaParam; // Store raw porta speed (0A0A / 0A19->0A0A)
-						v.whatever0 = 0;             // Reset vibrato state (0A0D)
-						v.whatever1 = 0;             // Reset arpeggio state (0A0F)
-						v.portaSpeed = 0;            // Force recalc
-					} else {
-						debug(DEBUG_LEVEL >= 2, "Driller V%d: Ignoring FB/FC command, no note playing.", voiceIndex);
+					// FB = porta type 1 (down lo), FC = porta type 2 (up lo)
+					// Assembly: FB -> lda #$01 (0x09FF), FC -> lda #$02 (0x0A17)
+					if (cmd == 0xFB) {
+						v.whatever2 = 1; // (0x09FF: lda #$01; sta whatever+2)
+					} else { // FC
+						v.whatever2 = 2; // (0x0A17: lda #$02)
 					}
+					v.portaStepRaw = portaParam; // sta voice1_something (0x0A0A)
+					v.whatever1 = 0;             // sta whatever+1 (0x0A0F)
+					v.whatever0 = 0;             // sta whatever (0x0A12)
+					v.portaSpeed = 0;            // Force recalc
 					v.patternIndex++; // Continue reading pattern (0A15)
 
 				} else if (cmd == 0xFA) { // --- Effect FA: Set Instrument --- (0x0A1B)
@@ -684,168 +662,160 @@ void DrillerSIDPlayer::playVoice(int voiceIndex) {
 					v.patternIndex++;
 
 				} else {                 // --- Plain Note --- (0x0A1D -> 0A44)
-					v.currentNote = cmd; // Store note value (0A44)
-					debug(DEBUG_LEVEL >= 2, "Driller V%d: Note Cmd = $%02X (%d)", voiceIndex, v.currentNote, v.currentNote);
-					// Set delay counter based on previously read duration (FD command)
-					v.delayCounter = v.noteDuration; // (0A47 -> 0A4A)
+					v.currentNote = cmd; // Store note value (0A44: sta stuff+3)
+					// Set delay counter based on previously read duration (0A47-0A4A)
+					v.delayCounter = v.noteDuration;
 
-					// Reset hard restart counters (0A4D)
+					// Reset hard restart counters (0A4D-0A52)
 					v.whatever3 = 0;
 					v.whatever4 = 0;
 
-					// Reset glide down timer (0A55)
+					// Reset glide down timer (0A55-0A57)
 					v.glideDownTimer = 2; // voice1_two_ctr = 2
 
-					// Handle legato/slide (Instrument A0[7] & 0x02) (0A5D)
-					if (instA0[7] & 0x02) { // Check legato bit
-						debug(DEBUG_LEVEL >= 3, "Driller V%d: Legato instrument flag set.", voiceIndex);
-					}
-
-					// Apply Note Data
+					// Apply Note Data (0A5D-0AB3)
 					applyNote(v, sidOffset, instA0, instA1, voiceIndex);
 
-					// Continue reading pattern (but we are done with this note)
+					// Continue reading pattern
 					v.patternIndex++;
-					noteProcessed = true; // Exit the pattern reading loop for this frame
+					noteProcessed = true;
 				}
 
 			} // End while(!noteProcessed)
 			// --- End of inlined pattern reading logic ---
+
+			// L0AFC: Post-note effect setup - determine which continuous effect is active
+			postNoteEffectSetup(v, sidOffset, instA0, instA1);
 		}
 	}
 
-	// ALWAYS apply continuous effects for the current state of the voice, then return.
+	// ALWAYS apply continuous effects (L0B33+) for the current state of the voice.
+	// This runs every frame: on tempo ticks after note processing, and on non-tempo ticks directly.
 	applyContinuousEffects(v, sidOffset, instA0, instA1);
-
-	// After processing note or commands for this tick, if a note wasn't fully processed (e.g. pattern end)
-	// we might need to apply effects. But if noteProcessed = true, applyNote was called which handles final writes.
-	// If noteProcessed = false (e.g. loop break), effects might need applying.
-	// Let's assume effects are only applied when a note holds or on non-tempo ticks.
-	// The call to applyContinuousEffects happens *outside* this loop if the delay counter held.
 }
 
 // --- Note Application ---
-// --- Note Application ---
+// Corresponds to @plain_note (0x0A44) through L0AAD (0x0AB3)
 void DrillerSIDPlayer::applyNote(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1, int voiceIndex) {
-	// Corresponds to 0xA70 onwards
+	uint8_t note = v.currentNote; // Already stored at @plain_note (0x0A44)
+	// v.delayCounter already set from v.noteDuration (0x0A47-0x0A4A)
+	// v.whatever3/4 already reset to 0 (0x0A4D-0x0A52)
+	// v.glideDownTimer already set to 2 (0x0A55-0x0A57)
 
-	uint8_t note = v.currentNote;
-	uint16_t newPulseWidth = 0;
-	uint8_t pwLoByte = 0;
-	uint8_t pwHiNibble = 0;
-	bool isRest = (note == 0);
-	uint8_t writeAD = 0;
-	uint8_t writeSR = 0;
-	int currentInstNum = 0;
-
-	// --- EFFECT INITIALIZATION ---
-	// This block correctly determines which continuous effect (Arp, Vib, etc.)
-	// should be active for the new note based on the instrument data.
-	v.whatever0 = 0; // Vibrato flag
-	v.whatever1 = 0; // Arpeggio flag
-	v.whatever2 = 0; // Portamento flag
-	v.portaSpeed = 0;
-
-	if (instA1[4] != 0) { // Arpeggio from InstA1[4]
-		uint8_t arpData = instA1[4];
-		v.arpTableIndex = arpData & 0x0F;
-		v.arpSpeedHiNibble = (arpData & 0xF0) >> 4;
-		if (v.arpTableIndex >= NUM_ARPEGGIOS) v.arpTableIndex = 0;
-		v.stuff_arp_counter = 0;
-		v.stuff_arp_note_index = 0;
-		v.whatever1 = 1;
-	} else if (instA1[0] != 0) { // Vibrato from InstA1[0]
-		v.things_vib_depth = instA1[0];
-		v.things_vib_delay_reload = instA1[1];
-		v.things_vib_delay_ctr = v.things_vib_delay_reload;
-		v.things_vib_state = 0;
-		v.whatever0 = 1;
-	} else if (instA0[5] != 0) { // Arpeggio from InstA0[5]
-		uint8_t arpData = instA0[5];
-		v.arpTableIndex = arpData & 0x0F;
-		v.arpSpeedHiNibble = (arpData & 0xF0) >> 4;
-		if (v.arpTableIndex >= NUM_ARPEGGIOS) v.arpTableIndex = 0;
-		v.stuff_arp_counter = 0;
-		v.stuff_arp_note_index = 0;
-		v.whatever1 = 1;
+	// Check legato bit instA0[7] & 0x02 (0x0A5D-0x0A6D)
+	if (instA0[7] & 0x02) {
+		// Legato: restore PW values from FA command backup
+		v.something_else[0] = v.something_else[1]; // something_else+1 -> something_else+0
+		v.something_else[2] = v.ctrl0;              // ctrl0 -> something_else+2
 	}
 
-	// --- NOTE HANDLING ---
-	if (isRest) {
+	// Handle note=0 (rest) at L0A70
+	if (note == 0) {
+		// Load previous note from things+6 (0x0A75)
 		note = v.currentNoteSlideTarget;
-		v.currentNoteSlideTarget = 0;
-		if (note == 0) {
-			v.keyOn = false;
-			goto WriteFinalControlReg;
-		}
-		v.keyOn = true; // Keep gate on for slide
+		v.currentNote = note; // Update stuff+3 equivalent
+		v.currentNoteSlideTarget = 0; // Clear things+6 (0x0A7B-0x0A7D)
+
+		// dec control3 (0x0A83)
+		v.gateMask--;
+
+		// bne L0AAD - since control3 was 0xFF, now 0xFE, always branches
+		// Skip frequency write entirely for rests, jump to L0AAD
 	} else {
-		v.currentNoteSlideTarget = note;
-		v.keyOn = true;
+		// Non-zero note: store as previous note (L0A88)
+		v.currentNoteSlideTarget = note; // things+6 = note
+
+		// Set frequency from note (L0A8C-L0AA1)
+		if (note >= 96) note = 95;
+		SID_Write(sidOffset + 1, frq_hi[note]); // $D401
+		SID_Write(sidOffset + 0, frq_lo[note]); // $D400
+		// Store in stuff variables: stuff[0]=lo, stuff[1]=lo, stuff[2]=hi, stuff[4]=hi
+		uint8_t fLo = frq_lo[note];
+		uint8_t fHi = frq_hi[note];
+		v.stuff_freq_porta_vib = fLo | (fHi << 8); // stuff[0]/[4]
+		v.stuff_freq_base = fLo | (fHi << 8);       // stuff[1]/[2]
+		v.stuff_freq_hard_restart = fLo | (fHi << 8);
+		v.currentFreq = v.stuff_freq_porta_vib;
+
+		// Write initial waveform (gate-on transient): instA0[6] -> $D404 (L0AA7-L0AAA)
+		SID_Write(sidOffset + 4, instA0[6]);
 	}
 
-	// --- FREQUENCY ---
-	if (note >= 96) note = 95;
-	v.baseFreq = frq_lo[note] | (frq_hi[note] << 8);
-	v.stuff_freq_base = v.baseFreq;
-	v.stuff_freq_porta_vib = v.baseFreq;
-	v.stuff_freq_hard_restart = v.baseFreq;
-	v.currentFreq = v.baseFreq;
-	SID_Write(sidOffset + 0, frq_lo[note]);
-	SID_Write(sidOffset + 1, frq_hi[note]);
+	// L0AAD: Write control register with gate mask
+	// lda instA0[1]; AND control3; sta $D404 (0x0AAD-0x0AB3)
+	SID_Write(sidOffset + 4, instA0[1] & v.gateMask);
 
-	// --- WAVEFORM ---
-	v.waveform = instA0[6];
+	// Write ADSR from instrument (0x0AB6-0x0ABF)
+	SID_Write(sidOffset + 5, instA0[2]); // Attack / Decay
+	SID_Write(sidOffset + 6, instA0[3]); // Sustain / Release
 
-	// --- HARD RESTART ---
-	if (instA0[7] & 0x01) {
-		v.hardRestartActive = true;
-		v.hardRestartDelay = 0;
-		v.hardRestartCounter = 0;
-		v.hardRestartValue = instA1[5];
-	} else {
-		v.hardRestartActive = false;
+	// Write Pulse Width from something_else (0x0AC2-0x0ACB)
+	SID_Write(sidOffset + 2, v.something_else[0]); // PW Lo
+	SID_Write(sidOffset + 3, v.something_else[2]); // PW Hi
+
+	v.pulseWidth = v.something_else[0] | (v.something_else[2] << 8);
+}
+
+// --- Post-Note Effect Setup ---
+// Corresponds to L0AFC in the assembly. Runs after each note is applied.
+// Determines which continuous effect should be active based on instrument data.
+void DrillerSIDPlayer::postNoteEffectSetup(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1) {
+	// L0AFC: lda voice1_things+6,x; beq L0B33
+	if (v.currentNoteSlideTarget == 0)
+		return; // No note stored, skip to continuous effects (PW LFO etc.)
+
+	// Check if portamento already active from FB/FC pattern command (L0B04)
+	// lda voice1_whatever+2,x; bne L0B17
+	if (v.whatever2 != 0) {
+		// Already have porta from pattern command, go to porta processing
+		return; // Porta will run in applyContinuousEffects
 	}
 
-	// --- ADSR (Corrected) ---
-	// As per disassembly at 0xAB6, ADSR is read from instA0[2] and instA0[3].
-	writeAD = instA0[2];
-	writeSR = instA0[3];
-	currentInstNum = v.instrumentIndex / 8;
+	int instBase = v.instrumentIndex;
+	if (instBase < 0 || (size_t)instBase >= sizeof(instrumentDataA0))
+		instBase = 0;
 
-	// --- PATCH: Override ADSR for specific instruments ---
-	// Instruments 1 and 4 seem to have incorrect ADSR data in the disassembly,
-	// requiring this hardcoded override to sound correct.
-	if (currentInstNum == 1 || currentInstNum == 4) {
-		writeAD = 0xA0;
-		writeSR = 0xF0;
+	// Check instA1[4] for instrument-level portamento (L0B09)
+	// lda possibly_instrument_a1+4,y; beq L0B1A
+	if (instA1[4] != 0) {
+		v.whatever2 = instA1[4];       // Store as porta type (L0B0E)
+		v.portaStepRaw = instA1[3];    // Store porta speed (L0B11-L0B14)
+		v.portaSpeed = 0;              // Force recalc
+		return; // jmp L0C5A - porta will run in applyContinuousEffects
 	}
 
-	SID_Write(sidOffset + 5, writeAD); // Attack / Decay
-	SID_Write(sidOffset + 6, writeSR); // Sustain / Release
-	debug(DEBUG_LEVEL >= 3, "Driller V%d: Set ADSR = $%02X / $%02X", voiceIndex, writeAD, writeSR);
-
-	// --- PULSE WIDTH (Corrected) ---
-	// As per disassembly at 0xAC2, Pulse Width is derived from the nibbles of instA0[0],
-	// which are loaded into the `something_else` variables by the FA (Set Instrument) command.
-	pwLoByte = v.something_else[0];
-	pwHiNibble = v.something_else[2] & 0x0F;
-	newPulseWidth = pwLoByte | (pwHiNibble << 8);
-	v.pulseWidth = newPulseWidth;
-	SID_Write(sidOffset + 2, v.pulseWidth & 0xFF);
-	SID_Write(sidOffset + 3, (v.pulseWidth >> 8) & 0x0F);
-	debug(DEBUG_LEVEL >= 3, "Driller V%d: Set PW = %d ($%03X) from instA0[0] nibbles", voiceIndex, v.pulseWidth, v.pulseWidth);
-
-WriteFinalControlReg:
-	// --- FINAL CONTROL REGISTER (GATE/WAVEFORM) ---
-	uint8_t ctrl = v.waveform;
-	if (v.keyOn) {
-		ctrl |= 0x01; // Gate On
-	} else {
-		ctrl &= 0xFE; // Gate Off
+	// Check instA0[5] for arpeggio (L0B1A -> L0E67)
+	// lda possibly_instrument_a0+5,y; beq L0B22
+	if (instA0[5] != 0) {
+		// L0E67: arpeggio setup
+		uint8_t arpData = instA0[5];
+		v.arpTableIndex = arpData & 0x0F;                    // and #$0F -> ctrl1
+		v.arpSpeedHiNibble = (arpData & 0xF0) >> 4;         // and #$F0; lsr*4 -> stuff+5
+		v.stuff_arp_counter = 0;                             // sta stuff+6
+		v.whatever1 = 1;                                     // sta whatever+1
+		v.whatever0 = 0;                                     // sta whatever
+		return; // jmp voice_done
 	}
-	SID_Write(sidOffset + 4, ctrl);
-	debug(DEBUG_LEVEL >= 2, "Driller V%d: Final Control Reg Write = $%02X (Wave=$%02X, Gate=%d)", voiceIndex, ctrl, v.waveform, v.keyOn);
+
+	// L0B22: Clear arpeggio flag (A=0 from beq)
+	v.whatever1 = 0;
+
+	// Check instA1[0] for vibrato (L0B25 -> L0E89)
+	// lda possibly_instrument_a1,y; beq L0B2D
+	if (instA1[0] != 0) {
+		// L0E89: vibrato setup
+		v.things_vib_depth = instA1[0];                      // sta things+1
+		v.things_vib_delay_reload = instA1[1];               // sta things+2
+		v.things_vib_delay_ctr = v.things_vib_delay_reload;  // sta things+3
+		v.things_vib_state = 0;                              // sta things
+		v.whatever1 = 0;                                     // sta whatever+1
+		v.whatever0 = 1;                                     // sta whatever
+		return; // jmp voice_done
+	}
+
+	// L0B2D: Clear vibrato flag (A=0 from beq)
+	v.whatever0 = 0;
+	// jmp voice_done
 }
 
 // --- Continuous Effect Application (Vibrato, Porta, Arp) ---
@@ -855,155 +825,150 @@ void DrillerSIDPlayer::applyContinuousEffects(VoiceState &v, int sidOffset, cons
 	uint16_t freq = v.stuff_freq_porta_vib; // Start with base freq + porta/vib from previous step
 	bool freqDirty = false;                 // Track if frequency needs writing
 
-	// Instrument A0[4] based frequency LFO (L0B33) - PW LFO?
+	// PW LFO (L0B33-L0B82) - instA0[4] = modulation speed (stored in control1)
 	uint8_t lfoSpeed = instA0[4];
 	if (lfoSpeed != 0) {
-		// This LFO modifies 'something_else', which we mapped to PW registers based on FA command logic?
-		// Or does it modify PW directly based on current PW? Let's assume it modifies current PW.
-		uint16_t currentPW = v.pulseWidth;   // Use the state variable
-		if (v.whatever2_vibDirToggle == 0) { // Direction toggle (0B3B)
-			currentPW += lfoSpeed;
-			if (currentPW > 0x0E00 || currentPW < lfoSpeed) { // Check wrap around too
-				currentPW = 0x0E00;                           // Clamp
-				v.whatever2_vibDirToggle = 1;                 // Change direction (0B5D)
+		// Operates on something_else[0] (lo byte) and something_else[2] (hi nibble)
+		if (v.whatever2_vibDirToggle == 0) {
+			// Add phase (L0B40-L0B5D): clc; adc control1 on lo; adc #0 on hi
+			uint16_t sum = (uint16_t)v.something_else[0] + lfoSpeed;
+			v.something_else[0] = sum & 0xFF;
+			v.something_else[2] = v.something_else[2] + (sum >> 8);
+			SID_Write(sidOffset + 2, v.something_else[0]); // $D402
+			SID_Write(sidOffset + 3, v.something_else[2]); // $D403
+			// clc; cmp #$0E - check hi byte >= 0x0E (L0B59)
+			if (v.something_else[2] >= 0x0E) {
+				v.whatever2_vibDirToggle = 1; // inc whatever2 (L0B5D)
 			}
 		} else {
-			// Need signed arithmetic potentially if currentPW could go below lfoSpeed
-			if (currentPW >= lfoSpeed) {
-				currentPW -= lfoSpeed;
-			} else {
-				currentPW = 0;
-			}
-			if (currentPW < 0x0800) {         // Limit check (0B7B)
-				currentPW = 0x0800;           // Clamp
-				v.whatever2_vibDirToggle = 0; // Change direction (0B7F)
+			// Subtract phase (L0B62-L0B7F): sec; sbc control1 on lo; sbc #0 on hi
+			uint16_t diff = (uint16_t)v.something_else[0] + 0x100 - lfoSpeed;
+			v.something_else[0] = diff & 0xFF;
+			if (diff < 0x100) // borrow
+				v.something_else[2]--;
+			SID_Write(sidOffset + 2, v.something_else[0]); // $D402
+			SID_Write(sidOffset + 3, v.something_else[2]); // $D403
+			// clc; cmp #$08 - check hi byte < 0x08 (L0B7B)
+			if (v.something_else[2] < 0x08) {
+				v.whatever2_vibDirToggle = 0; // dec whatever2 (L0B7F)
 			}
 		}
-		currentPW &= 0x0FFF;
-		if (v.pulseWidth != currentPW) {
-			v.pulseWidth = currentPW;
-			SID_Write(sidOffset + 2, v.pulseWidth & 0xFF);        // Write PW Lo (0B4A / 0B6C)
-			SID_Write(sidOffset + 3, (v.pulseWidth >> 8) & 0x0F); // Write PW Hi (0B55 / 0B77)
-			debug(1, "Driller 1: PW LFO Updated PW = %d ($%03X)", v.pulseWidth, v.pulseWidth);
-		}
+		v.pulseWidth = v.something_else[0] | (v.something_else[2] << 8);
 	}
 
 	// Arpeggio (L0B82) - Check 'whatever1' flag
 	if (v.whatever1) {
-		const uint8_t *arpTable = &arpeggio_data[0]; // Only one table defined
-
-		// Speed calculation from 0B98 - checks counter against 'stuff+5' (arpSpeedHiNibble)
-		uint8_t speed = v.arpSpeedHiNibble; // This was set from InstA1[4] or InstA0[5] hi nibble
-		if (speed == 0)
-			speed = 1; // Avoid division by zero or infinite loop
-
-		v.stuff_arp_counter++;
-		if (v.stuff_arp_counter >= speed) {
-			v.stuff_arp_counter = 0;
-			// Advance arpeggio note index (0BA0 / 0BBA)
-			v.stuff_arp_note_index = (v.stuff_arp_note_index + 1) % 3; // Cycle 0, 1, 2
-			debug(1, "Driller 1: Arp Step -> Note Index %d", v.stuff_arp_note_index);
+		// Assembly: single counter (stuff+6) cycles 0..speed-1, used directly as arp table index
+		// lda stuff+6; cmp stuff+5; bne L0BA5; lda #0; sta stuff+6
+		uint8_t speed = v.arpSpeedHiNibble; // stuff+5: set from instA0[5] hi nibble
+		if (v.stuff_arp_counter == speed) {
+			v.stuff_arp_counter = 0; // Reset when counter == speed (L0BA0)
 		}
 
-		// Calculate arpeggio note (0BA6)
-		uint8_t baseNote = v.currentNote; // Note from pattern
-		if (baseNote > 0 && baseNote < 96) {
-			uint8_t arpOffset = arpTable[v.stuff_arp_note_index]; // Offset from table (0BAA)
+		// tay; lda stuff+3; clc; adc arpeggio_0,y (L0BA5-L0BAD)
+		uint8_t baseNote = v.currentNote;
+		if (baseNote > 0 && baseNote < 96 && v.stuff_arp_counter < 3) {
+			uint8_t arpOffset = arpeggio_data[v.stuff_arp_counter]; // Counter IS the table index
 			uint8_t arpNote = baseNote + arpOffset;
 			if (arpNote >= 96)
-				arpNote = 95; // Clamp
+				arpNote = 95;
 
-			// Set frequency based on arpeggio note
 			freq = frq_lo[arpNote] | (frq_hi[arpNote] << 8);
-			freqDirty = true;
-			// Arpeggio overrides other frequency effects for this frame
-			goto WriteFrequency;
-		} else {
-			// If base note is invalid (e.g., 0), maybe use baseFreq? Or just skip arp?
-			// Fall through to allow other effects if arp base note is invalid
+			SID_Write(sidOffset + 0, frq_lo[arpNote]); // sta $D400 (L0BB1)
+			SID_Write(sidOffset + 1, frq_hi[arpNote]); // sta $D401 (L0BB7)
+			v.currentFreq = freq;
 		}
+
+		v.stuff_arp_counter++; // inc stuff+6 (L0BBA)
+		// jmp voice_done - arpeggio skips vibrato/porta
+		return;
 	}
 
 	// Vibrato (L0BC0 / L0BC8) - Check 'whatever0' flag
+	// Assembly applies frequency modification EVERY frame.
+	// The timer (things+3) only controls when the direction state advances.
 	if (v.whatever0) {
-		if (v.things_vib_delay_reload > 0) { // Only run if delay is set
+		int state = v.things_vib_state;
+		uint8_t freqLo = v.stuff_freq_porta_vib & 0xFF;
+		uint8_t freqHi = (v.stuff_freq_porta_vib >> 8) & 0xFF;
 
-			// --- Fix 3a: Simplify Counter Logic ---
-			v.things_vib_delay_ctr--;          // Decrement first
-			if (v.things_vib_delay_ctr == 0) { // Check if zero AFTER decrementing
-											   // --- End Fix 3a ---
+		// Apply depth based on state (L0C06, L0C2F, L0BD1)
+		// States 0, 3, 4: subtract (down). States 1, 2: add (up).
+		// State 0: L0C06 (beq). States 1,2: L0C2F (cmp #3; bcc). States 3,4: fall through.
+		if (state == 1 || state == 2) {
+			// Add (L0C2F): clc; lda stuff,x; adc things+1,x
+			uint16_t sum = (uint16_t)freqLo + (v.things_vib_depth & 0xFF);
+			freqLo = sum & 0xFF;
+			freqHi = freqHi + (sum >> 8);
+		} else {
+			// Subtract (L0C06/L0BD1): sec; lda stuff,x; sbc things+1,x
+			uint16_t diff = (uint16_t)freqLo + 0x100 - (v.things_vib_depth & 0xFF);
+			freqLo = diff & 0xFF;
+			if (diff < 0x100) // borrow occurred
+				freqHi--;
+		}
 
-				v.things_vib_delay_ctr = v.things_vib_delay_reload; // Reload counter
+		v.stuff_freq_porta_vib = (uint16_t)freqLo | ((uint16_t)freqHi << 8);
+		freq = v.stuff_freq_porta_vib;
+		freqDirty = true;
 
-				int state = v.things_vib_state;
-				int32_t current_freq_signed = v.stuff_freq_porta_vib; // Apply vibrato based on current freq (inc. porta)
-
-				// Use level 1 for this crucial debug message
-				debug(1, "Driller V1: Vib Step - State %d, Depth %d", state, (int16_t)v.things_vib_depth);
-
-				// Apply depth based on state (L0C06, L0C2F, L0BD1)
-				// ... (rest of vibrato logic is likely okay) ...
-				// States 0, 2, 3 are down; State 1, 4 are up
-				if (state == 1 || state == 4) { // Up sweep
-					current_freq_signed += v.things_vib_depth;
-				} else { // Down sweep (0, 2, 3)
-					current_freq_signed -= v.things_vib_depth;
-				}
-
-				// Clamp frequency after modification
-				if (current_freq_signed < 0)
-					current_freq_signed = 0;
-				if (current_freq_signed > 0xFFFF)
-					current_freq_signed = 0xFFFF;
-				v.stuff_freq_porta_vib = (uint16_t)current_freq_signed; // Store result for next frame's base
-				freq = v.stuff_freq_porta_vib;                          // Use vibrato-modified frequency for this frame
-				freqDirty = true;
-
-				// Advance state (0BF4 / 0C29 / 0C52)
-				v.things_vib_state++;
-				if (v.things_vib_state >= 5) { // Cycle states 0..4 (0BFA)
-					v.things_vib_state = 1;    // Loop back to state 1 (upward sweep) (0BFE) - Correct based on diss.
-				}
-				// Use level 1 for this crucial debug message
-				debug(1, "Driller V1: Vib Freq Updated = %d, Next State %d", freq, v.things_vib_state);
+		// Decrement timer, advance state only when expired (dec things+3; bne done)
+		v.things_vib_delay_ctr--;
+		if (v.things_vib_delay_ctr == 0) {
+			v.things_vib_delay_ctr = v.things_vib_delay_reload;
+			v.things_vib_state++;
+			if (v.things_vib_state >= 5) { // cmp #$05; bcc
+				v.things_vib_state = 1;    // Reset to state 1 (0BFE)
 			}
 		}
 	} // end if(v.whatever0)
 
 	// Portamento (L0C5A) - Check 'whatever2' flag
-	if (v.whatever2) { // Note: 'else if' removed, allow porta+vib? Keep 'else if'.
-		// Calculate porta speed if not already done (or if param changed?)
-		if (v.portaSpeed == 0) {            // Calculate only once per porta command
-			int16_t speed = v.portaStepRaw; // Raw value from FB/FC command (e.g., 0x01 or 0x80)
-			// Disassembly L0C7B (type 1) / L0CA6 (type 2) / L0C96 (type 3) / L0C6B (type 4)
-			// Types 1 & 3 are down, 2 & 4 are up. Speed seems absolute value?
-			// Let's assume portaStepRaw is the step magnitude.
-			if (v.whatever2 == 1 || v.whatever2 == 3) { // Down
-				v.portaSpeed = -speed;                  // Ensure negative for down
-			} else {                                    // Up (2 or 4)
-				v.portaSpeed = speed;                   // Ensure positive for up
-			}
-			debug(1, "Driller 1: Porta Recalc Speed = %d (Raw=%d, Type=%d)", v.portaSpeed, v.portaStepRaw, v.whatever2);
+	// 4 distinct types matching assembly:
+	// Type 1 (L0C7B): CLC+SBC on lo byte (slide down, borrow to hi)
+	// Type 2 (L0CA6): CLC+ADC on lo byte (slide up, carry to hi)
+	// Type 3 (L0C96): SEC+SBC on hi byte only (fast slide down)
+	// Type >= 4 (L0C6B): CLC+ADC on hi byte only (fast slide up)
+	if (v.whatever2) {
+		uint8_t freqLo = v.stuff_freq_porta_vib & 0xFF;       // stuff[0]
+		uint8_t freqHi = (v.stuff_freq_porta_vib >> 8) & 0xFF; // stuff[4]
+		uint8_t speed = v.portaStepRaw & 0xFF;                 // voice1_something
+
+		if (v.whatever2 == 1) {
+			// Type 1 (L0C7B): clc; sbc = subtract (speed+1) from lo, borrow to hi
+			uint16_t diff = (uint16_t)freqLo - speed; // CLC means borrow, so effectively -(speed+1)
+			freqLo = (diff - 1) & 0xFF; // CLC+SBC = subtract with extra borrow
+			if ((diff - 1) > 0xFF) freqHi--; // Propagate borrow
+			SID_Write(sidOffset + 0, freqLo);
+			SID_Write(sidOffset + 1, freqHi);
+		} else if (v.whatever2 == 2) {
+			// Type 2 (L0CA6): clc; adc on lo, carry to hi
+			uint16_t sum = (uint16_t)freqLo + speed;
+			freqLo = sum & 0xFF;
+			freqHi = freqHi + (sum >> 8);
+			SID_Write(sidOffset + 0, freqLo);
+			SID_Write(sidOffset + 1, freqHi);
+		} else if (v.whatever2 == 3) {
+			// Type 3 (L0C96): sec; sbc on hi byte only (fast slide down)
+			freqHi = freqHi - speed;
+			SID_Write(sidOffset + 1, freqHi);
+		} else {
+			// Type >= 4 (L0C6B): clc; adc on hi byte only (fast slide up)
+			freqHi = freqHi + speed;
+			SID_Write(sidOffset + 1, freqHi);
 		}
 
-		// Apply portamento step
-		int32_t tempFreqSigned = v.stuff_freq_porta_vib; // Apply to current frequency
-		tempFreqSigned += v.portaSpeed;                  // Add signed speed
-
-		// Clamp frequency
-		if (tempFreqSigned > 0xFFFF)
-			tempFreqSigned = 0xFFFF;
-		if (tempFreqSigned < 0)
-			tempFreqSigned = 0;
-
-		v.stuff_freq_porta_vib = (uint16_t)tempFreqSigned; // Store result for next frame
-		freq = v.stuff_freq_porta_vib;                     // Use the porta-modified frequency for this frame
-		freqDirty = true;
-		debug(DEBUG_LEVEL >= 3, "Driller: Porta Step -> Freq = %d", freq);
+		v.stuff_freq_porta_vib = (uint16_t)freqLo | ((uint16_t)freqHi << 8);
+		v.currentFreq = v.stuff_freq_porta_vib;
 	}
 
-WriteFrequency:
-	// Write final frequency to SID if it was changed by effects
+	// After porta, check for hard restart (L0CBE)
+	// lda instA0[7]; and #$01; beq voice_done; jmp L1005
+	if (instA0[7] & 0x01) {
+		applyHardRestart(v, sidOffset, instA0, instA1);
+	}
+
+	// Write final frequency if modified by vibrato (arp and porta write directly)
 	if (freqDirty && v.currentFreq != freq) {
 		v.currentFreq = freq;
 		SID_Write(sidOffset + 0, freq & 0xFF);

@@ -207,16 +207,13 @@ class DrillerSIDPlayer {
 	uint8_t _targetTuneIndex; // Tune index requested via startMusic
 
 	// Global Timing
-	uint8_t _globalTempo;      // Tempo value for current tune (0xD10)
+	uint8_t _globalTempo;       // Tempo value for current tune (0xD10)
 	int8_t _globalTempoCounter; // Frame counter for tempo (0xD12), signed to handle < 0 check
-	uint8_t _framePhase;       // Tracks which voice is being processed (0, 7, 14)
 
 	// Voice States
 	VoiceState _voiceState[3];
 
-	// Internal helpers
-	uint8_t _tempControl3; // Temporary storage for gate mask (0xD13)
-	// uint8_t _tempControl1; // Temp storage from instrument data (0xD11)
+	// Gate mask is now per-voice (v.gateMask) matching assembly's control3
 
 public:
 	DrillerSIDPlayer();
@@ -232,6 +229,7 @@ private:
 	void handleResetVoices();
 	void playVoice(int voiceIndex);
 	void applyNote(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1, int voiceIndex);
+	void postNoteEffectSetup(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1);
 	void applyContinuousEffects(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1);
 	void applyHardRestart(VoiceState &v, int sidOffset, const uint8_t *instA0, const uint8_t *instA1);
 };
