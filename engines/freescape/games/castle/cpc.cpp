@@ -231,6 +231,125 @@ void CastleEngine::loadAssetsCPCFullGame() {
 	// Flag Animation: CPC offset 0x2654 (16x9 px, 4 frames)
 	_flagFrames = loadFramesWithHeaderCPC(&file, 0x2654, 4, cpcPalette);
 
+	// Gate image (portcullis) for game start/end animation.
+	// The CPC gate is NOT a pre-rendered bitmap; it is procedurally generated
+	// from small pixel pattern tables stored at file offset 0x75EF-0x764C.
+	// Structure: 10 columns × 6 bytes (=240 px wide), repeating bands of
+	// 4-row horizontal bars and 20-row inter-bar vertical bars, with a
+	// single last-row at the bottom. Total height = 119 px (CPC viewport).
+	{
+		// Horizontal bar pattern: 4 rows × 6 bytes (file offset 0x760B)
+		static const byte kGateHorizBar[4][6] = {
+			{0xD2, 0xF0, 0xF0, 0xF0, 0xF0, 0xB4},
+			{0xD2, 0xFA, 0xF8, 0xFB, 0xFB, 0xB5},
+			{0xDA, 0xFB, 0xFF, 0xF0, 0xFE, 0xB5},
+			{0x5A, 0xF0, 0xF0, 0xF0, 0xF0, 0xA5},
+		};
+		// Inter-bar pattern: 20 rows × 2 bytes (file offset 0x7623)
+		// Byte 0 = left-edge pixels (ink in 0xCC bit positions = pixels 0,1)
+		// Byte 1 = right-edge pixels (ink in 0x33 bit positions = pixels 2,3)
+		static const byte kGateInterBar[20][2] = {
+			{0xC0, 0x30}, {0xC0, 0x30}, {0xC8, 0x31}, {0xC8, 0x31},
+			{0xC0, 0x31}, {0xC8, 0x31}, {0xC0, 0x31}, {0xC0, 0x31},
+			{0xC0, 0x30}, {0xC0, 0x31}, {0xC0, 0x31}, {0xC8, 0x30},
+			{0xC8, 0x30}, {0xC0, 0x30}, {0xC8, 0x30}, {0xC8, 0x30},
+			{0xC8, 0x30}, {0xC8, 0x31}, {0xC8, 0x31}, {0xC8, 0x31},
+		};
+		// Last row pattern: 1 row × 2 bytes (file offset 0x764B)
+		static const byte kGateLastRow[2] = {0x80, 0x10};
+
+		static const int kGateWidth = 240;   // 10 columns × 6 bytes × 4 px/byte
+		static const int kGateHeight = 119;  // CPC max gate y-coordinate (0x77)
+		static const int kColumns = 10;
+		static const int kBytesPerCol = 6;
+
+		uint32 keyColor = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x24, 0xA5);
+
+		_gameOverBackgroundFrame = new Graphics::ManagedSurface();
+		_gameOverBackgroundFrame->create(kGateWidth, kGateHeight, _gfx->_texturePixelFormat);
+		_gameOverBackgroundFrame->fillRect(Common::Rect(0, 0, kGateWidth, kGateHeight), keyColor);
+
+		for (int y = 0; y < kGateHeight; y++) {
+			int fromBottom = kGateHeight - 1 - y;
+
+			if (fromBottom == 0) {
+				// Last row: edge pixels only (same masking as inter-bar)
+				for (int col = 0; col < kColumns; col++) {
+					int bx = col * kBytesPerCol * 4;
+					// Left edge byte: pixels 0,1 from pattern
+					for (int p = 0; p < 2; p++) {
+						int ink = getCPCPixel(kGateLastRow[0], p, true);
+						if (ink)
+							_gameOverBackgroundFrame->setPixel(bx + p, y, cpcPalette[ink]);
+					}
+					// Right edge byte: pixels 2,3 from pattern
+					for (int p = 2; p < 4; p++) {
+						int ink = getCPCPixel(kGateLastRow[1], p, true);
+						if (ink)
+							_gameOverBackgroundFrame->setPixel(bx + (kBytesPerCol - 1) * 4 + p, y, cpcPalette[ink]);
+					}
+				}
+			} else {
+				// Determine row type from bottom-up gate structure:
+				// fromBottom 1-14: bottom inter-bar (14 rows, pattern indices 0-13)
+				// fromBottom 15-18: bottom horizontal bar (4 rows)
+				// fromBottom >= 19: repeating 24-row sections (20 inter-bar + 4 horiz-bar)
+				bool isHorizBar = false;
+				int patIdx = 0;
+
+				if (fromBottom <= 14) {
+					// Bottom inter-bar section
+					patIdx = 14 - fromBottom; // 0-13
+				} else if (fromBottom <= 18) {
+					// Bottom horizontal bar section
+					isHorizBar = true;
+					patIdx = 18 - fromBottom; // 0-3
+				} else {
+					// Repeating zone: 24-row cycle (20 inter-bar + 4 horizontal bar)
+					int inSection = (fromBottom - 19) % 24;
+					if (inSection < 20) {
+						patIdx = 19 - inSection; // 0-19
+					} else {
+						isHorizBar = true;
+						patIdx = 23 - inSection; // 0-3
+					}
+				}
+
+				if (isHorizBar) {
+					// Horizontal bar: all 6 bytes per column are gate pixels
+					for (int col = 0; col < kColumns; col++) {
+						int bx = col * kBytesPerCol * 4;
+						for (int bi = 0; bi < kBytesPerCol; bi++) {
+							byte cpcByte = kGateHorizBar[patIdx][bi];
+							for (int p = 0; p < 4; p++) {
+								int ink = getCPCPixel(cpcByte, p, true);
+								if (ink)
+									_gameOverBackgroundFrame->setPixel(bx + bi * 4 + p, y, cpcPalette[ink]);
+							}
+						}
+					}
+				} else {
+					// Inter-bar: only edge pixels per column, middle is transparent
+					for (int col = 0; col < kColumns; col++) {
+						int bx = col * kBytesPerCol * 4;
+						// Left edge (byte 0): pixels 0,1 from pattern byte 0
+						for (int p = 0; p < 2; p++) {
+							int ink = getCPCPixel(kGateInterBar[patIdx][0], p, true);
+							if (ink)
+								_gameOverBackgroundFrame->setPixel(bx + p, y, cpcPalette[ink]);
+						}
+						// Right edge (byte 5): pixels 2,3 from pattern byte 1
+						for (int p = 2; p < 4; p++) {
+							int ink = getCPCPixel(kGateInterBar[patIdx][1], p, true);
+							if (ink)
+								_gameOverBackgroundFrame->setPixel(bx + (kBytesPerCol - 1) * 4 + p, y, cpcPalette[ink]);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// Note: Riddle frames are not loaded from external files for CPC.
 	// The _riddleTopFrame, _riddleBackgroundFrame, and _riddleBottomFrame
 	// will remain nullptr (initialized in constructor).
@@ -261,6 +380,9 @@ void CastleEngine::loadAssetsCPCFullGame() {
 }
 
 void CastleEngine::drawCPCUI(Graphics::Surface *surface) {
+	drawLiftingGate(surface);
+	drawDroppingGate(surface);
+
 	uint32 color = _gfx->_paperColor;
 	uint8 r, g, b;
 

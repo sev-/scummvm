@@ -419,7 +419,7 @@ void CastleEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *inf
 void CastleEngine::beforeStarting() {
 	if (isDOS())
 		waitInLoop(250);
-	else if (isSpectrum())
+	else if (isSpectrum() || isCPC())
 		waitInLoop(100);
 	else if (isAmiga() || isAtariST())
 		waitInLoop(250);
@@ -1700,6 +1700,8 @@ void CastleEngine::drawLiftingGate(Graphics::Surface *surface) {
 		duration = 100;
 	else if (isAmiga() || isAtariST())
 		duration = 250;
+	else if (isCPC())
+		duration = 100;
 
 	if ((_gameStateControl == kFreescapeGameStateStart || _gameStateControl == kFreescapeGameStateRestart) && _ticks <= duration) { // Draw the _gameOverBackgroundFrame gate lifting up slowly
 		int gate_w = _gameOverBackgroundFrame->w;
