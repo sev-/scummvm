@@ -16,6 +16,12 @@ void Common::install_null_g_system() {
 #endif
 
 	g_system = OSystem_NULL_create(silenceLogs);
+	g_system->initBackend();
+}
+
+void Common::uninstall_null_g_system() {
+	g_system->destroy();
+	g_system = nullptr;
 }
 
 void OSystem_NULL::quit() {

@@ -154,9 +154,9 @@ void OSystem_NULL::initBackend() {
 	_mixerManager = new NullMixerManager();
 	// Setup and start mixer
 	_mixerManager->init();
-#endif
 
 	BaseBackend::initBackend();
+#endif
 }
 
 bool OSystem_NULL::pollEvent(Common::Event &event) {

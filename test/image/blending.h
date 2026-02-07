@@ -796,10 +796,20 @@ static bool areSurfacesEqual(const Graphics::ManagedSurface *a, const Graphics::
 
 class BlendBlitUnfilteredTestSuite : public CxxTest::TestSuite {
 public:
-	void test_blend_speed() {
+	void setUp() {
 #if BENCHMARK_TIME
 		Common::install_null_g_system();
+#endif
+	}
 
+	void tearDown() {
+#if BENCHMARK_TIME
+		Common::uninstall_null_g_system();
+#endif
+	}
+
+	void test_blend_speed() {
+#if BENCHMARK_TIME
 		Graphics::BlendBlit::blitFunc = Graphics::BlendBlit::blitGeneric;
 #ifdef SCUMMVM_NEON
 		Graphics::BlendBlit::blitFunc = Graphics::BlendBlit::blitNEON;
