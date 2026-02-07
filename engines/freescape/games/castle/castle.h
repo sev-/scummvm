@@ -103,6 +103,13 @@ public:
 	Common::Array<Graphics::ManagedSurface *> loadFramesWithHeader(Common::SeekableReadStream *file, int pos, int numFrames, uint32 front, uint32 back);
 	Graphics::ManagedSurface *loadFrameWithHeader(Common::SeekableReadStream *file, int pos, uint32 front, uint32 back);
 	Graphics::ManagedSurface *loadFrame(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, uint32 back);
+
+	// CPC-specific frame loading (Mode 1: 4 pixels per byte)
+	// cpcPalette is a 4-entry array mapping CPC ink numbers (0-3) to ARGB colors
+	Common::Array<Graphics::ManagedSurface *> loadFramesWithHeaderCPC(Common::SeekableReadStream *file, int pos, int numFrames, const uint32 *cpcPalette);
+	Graphics::ManagedSurface *loadFrameWithHeaderCPC(Common::SeekableReadStream *file, int pos, const uint32 *cpcPalette);
+	Graphics::ManagedSurface *loadFrameCPC(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, const uint32 *cpcPalette);
+
 	Graphics::ManagedSurface *loadFrameFromPlanes(Common::SeekableReadStream *file, int widthInBytes, int height);
 	Graphics::ManagedSurface *loadFrameFromPlanesInternal(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height);
 

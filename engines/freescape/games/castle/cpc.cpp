@@ -96,7 +96,7 @@ byte mountainsData[288] {
 	0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 };
 
-extern Graphics::ManagedSurface *readCPCImage(Common::SeekableReadStream *file, bool mode0);
+
 
 void CastleEngine::loadAssetsCPCFullGame() {
 	Common::File file;
@@ -178,74 +178,43 @@ void CastleEngine::loadAssetsCPCFullGame() {
 	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 
 	_background = loadFrame(&mountainsStream, background, backgroundWidth, backgroundHeight, front);
-	/*_gfx->readFromPalette(2, r, g, b);
-	uint32 red = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 
-	_gfx->readFromPalette(7, r, g, b);
-	uint32 white = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	// CPC UI Sprites - located at different offsets than ZX Spectrum!
+	// CPC uses Mode 1 format (4 pixels per byte, 2 bits per pixel).
+	// Sprite pixel values 0-3 are CPC ink numbers that map to the border palette.
+	uint32 cpcPalette[4];
+	for (int i = 0; i < 4; i++) {
+		cpcPalette[i] = _gfx->_texturePixelFormat.ARGBToColor(0xFF,
+			kCPCPaletteCastleBorderData[i][0],
+			kCPCPaletteCastleBorderData[i][1],
+			kCPCPaletteCastleBorderData[i][2]);
+	}
 
-	_keysBorderFrames.push_back(loadFrameWithHeader(&file, _language == Common::ES_ESP ? 0xe06 : 0xdf7, red, white));
+	// Keys Border: CPC offset 0x2362 (8x14 px, 1 frame - matches ZX key_sprite)
+	_keysBorderFrames.push_back(loadFrameWithHeaderCPC(&file, 0x2362, cpcPalette));
 
-	uint32 green = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0xff, 0);
-	_spiritsMeterIndicatorFrame = loadFrameWithHeader(&file, _language == Common::ES_ESP ? 0xe5e : 0xe4f, green, white);
+	// Spirit Meter Background: CPC offset 0x2383 (64x8 px - matches ZX spirit_meter_bg)
+	_spiritsMeterIndicatorBackgroundFrame = loadFrameWithHeaderCPC(&file, 0x2383, cpcPalette);
 
-	_gfx->readFromPalette(4, r, g, b);
-	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	// Spirit Meter Indicator: CPC offset 0x2408 (16x8 px - matches ZX spirit_meter_indicator)
+	_spiritsMeterIndicatorFrame = loadFrameWithHeaderCPC(&file, 0x2408, cpcPalette);
 
-	int backgroundWidth = 16;
-	int backgroundHeight = 18;
-	Graphics::ManagedSurface *background = new Graphics::ManagedSurface();
-	background->create(backgroundWidth * 8, backgroundHeight, _gfx->_texturePixelFormat);
-	background->fillRect(Common::Rect(0, 0, backgroundWidth * 8, backgroundHeight), 0);
+	// Strength Background: CPC offset 0x242D (68x15 px - matches ZX strength_bg)
+	_strenghtBackgroundFrame = loadFrameWithHeaderCPC(&file, 0x242D, cpcPalette);
 
-	file.seek(_language == Common::ES_ESP ? 0xfd3 : 0xfc4);
-	_background = loadFrame(&file, background, backgroundWidth, backgroundHeight, front);
+	// Strength Bar: CPC offset 0x2531 (68x3 px - matches ZX strength_bar)
+	_strenghtBarFrame = loadFrameWithHeaderCPC(&file, 0x2531, cpcPalette);
 
-	_gfx->readFromPalette(6, r, g, b);
-	uint32 yellow = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
-	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
-	_strenghtBackgroundFrame = loadFrameWithHeader(&file, _language == Common::ES_ESP ? 0xee6 : 0xed7, yellow, black);
-	_strenghtBarFrame = loadFrameWithHeader(&file, _language == Common::ES_ESP ? 0xf72 : 0xf63, yellow, black);
+	// Strength Weights: CPC offset 0x2569 (4x15 px, 4 frames - matches ZX weight_sprite w=1,h=15)
+	_strenghtWeightsFrames = loadFramesWithHeaderCPC(&file, 0x2569, 4, cpcPalette);
 
-	Graphics::ManagedSurface *bar = new Graphics::ManagedSurface();
-	bar->create(_strenghtBarFrame->w - 4, _strenghtBarFrame->h, _gfx->_texturePixelFormat);
-	_strenghtBarFrame->copyRectToSurface(*bar, 4, 0, Common::Rect(4, 0, _strenghtBarFrame->w - 4, _strenghtBarFrame->h));
-	_strenghtBarFrame->free();
-	delete _strenghtBarFrame;
-	_strenghtBarFrame = bar;
+	// Flag Animation: CPC offset 0x2654 (16x9 px, 4 frames)
+	_flagFrames = loadFramesWithHeaderCPC(&file, 0x2654, 4, cpcPalette);
 
-	_strenghtWeightsFrames = loadFramesWithHeader(&file, _language == Common::ES_ESP ? 0xf92 : 0xf83, 4, yellow, black);
-
-	_flagFrames = loadFramesWithHeader(&file, (_language == Common::ES_ESP ? 0x10e4 + 15 : 0x10e4), 4, green, black);
-
-	int thunderWidth = 4;
-	int thunderHeight = 43;
-	_thunderFrame = new Graphics::ManagedSurface();
-	_thunderFrame->create(thunderWidth * 8, thunderHeight, _gfx->_texturePixelFormat);
-	_thunderFrame->fillRect(Common::Rect(0, 0, thunderWidth * 8, thunderHeight), 0);
-	_thunderFrame = loadFrame(&file, _thunderFrame, thunderWidth, thunderHeight, front);
-
-	Graphics::Surface *tmp;
-	tmp = loadBundledImage("castle_riddle_top_frame");
-	_riddleTopFrame = new Graphics::ManagedSurface;
-	_riddleTopFrame->copyFrom(*tmp);
-	tmp->free();
-	delete tmp;
-	_riddleTopFrame->convertToInPlace(_gfx->_texturePixelFormat);
-
-	tmp = loadBundledImage("castle_riddle_background_frame");
-	_riddleBackgroundFrame = new Graphics::ManagedSurface();
-	_riddleBackgroundFrame->copyFrom(*tmp);
-	tmp->free();
-	delete tmp;
-	_riddleBackgroundFrame->convertToInPlace(_gfx->_texturePixelFormat);
-
-	tmp = loadBundledImage("castle_riddle_bottom_frame");
-	_riddleBottomFrame = new Graphics::ManagedSurface();
-	_riddleBottomFrame->copyFrom(*tmp);
-	tmp->free();
-	delete tmp;
-	_riddleBottomFrame->convertToInPlace(_gfx->_texturePixelFormat);*/
+	// Note: Riddle frames are not loaded from external files for CPC.
+	// The _riddleTopFrame, _riddleBackgroundFrame, and _riddleBottomFrame
+	// will remain nullptr (initialized in constructor).
+	// The drawRiddle function handles nullptr gracefully.
 
 	for (auto &it : _areaMap) {
 		it._value->addStructure(_areaMap[255]);
@@ -273,7 +242,6 @@ void CastleEngine::loadAssetsCPCFullGame() {
 
 void CastleEngine::drawCPCUI(Graphics::Surface *surface) {
 	uint32 color = _gfx->_paperColor;
-	//uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 	uint8 r, g, b;
 
 	_gfx->readFromPalette(color, r, g, b);
@@ -296,50 +264,42 @@ void CastleEngine::drawCPCUI(Graphics::Surface *surface) {
 		_temporaryMessageDeadlines.push_back(deadline);
 	} else {
 		if (_gameStateControl == kFreescapeGameStatePlaying) {
-				drawStringInSurface(_currentArea->_name, 97, 182, front, back, surface);
+			drawStringInSurface(_currentArea->_name, 97, 182, front, back, surface);
 		}
 	}
 
-	/*uint32 color = 5;
-	uint8 r, g, b;
+	// Draw collected keys
+	if (!_keysBorderFrames.empty()) {
+		for (int k = 0; k < int(_keysCollected.size()); k++) {
+			surface->copyRectToSurface((const Graphics::Surface)*_keysBorderFrames[0], 76 - k * 4, 179, Common::Rect(0, 0, _keysBorderFrames[0]->w, _keysBorderFrames[0]->h));
+		}
+	}
 
-	_gfx->readFromPalette(color, r, g, b);
-	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	// Draw energy meter (strength)
+	drawEnergyMeter(surface, Common::Point(38, 158));
 
-	color = 0;
-	_gfx->readFromPalette(color, r, g, b);
-	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
-
-	Common::Rect backRect(123, 179, 242 + 5, 188);
-	surface->fillRect(backRect, black);
-
-	Common::String message;
-	int deadline = -1;
-	getLatestMessages(message, deadline);
-	if (deadline > 0 && deadline <= _countdown) {
-		//debug("deadline: %d countdown: %d", deadline, _countdown);
-		drawStringInSurface(message, 120, 179, front, black, surface);
-		_temporaryMessages.push_back(message);
-		_temporaryMessageDeadlines.push_back(deadline);
+	// Draw spirit meter
+	uint32 blackColor = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+	if (_spiritsMeterIndicatorBackgroundFrame) {
+		surface->copyRectToSurface((const Graphics::Surface)*_spiritsMeterIndicatorBackgroundFrame, 136, 162, Common::Rect(0, 0, _spiritsMeterIndicatorBackgroundFrame->w, _spiritsMeterIndicatorBackgroundFrame->h));
+		if (_spiritsMeterIndicatorFrame) {
+			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_spiritsMeterIndicatorFrame, 131 + _spiritsMeterPosition, 161, Common::Rect(0, 0, _spiritsMeterIndicatorFrame->w, _spiritsMeterIndicatorFrame->h), blackColor);
+		}
 	} else {
-		if (_gameStateControl == kFreescapeGameStatePlaying) {
-			drawStringInSurface(_currentArea->_name, 120, 179, front, black, surface);
+		uint32 green = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0xff, 0x00);
+		surface->fillRect(Common::Rect(152, 162, 216, 170), green);
+		if (_spiritsMeterIndicatorFrame) {
+			surface->copyRectToSurface((const Graphics::Surface)*_spiritsMeterIndicatorFrame, 131 + _spiritsMeterPosition, 161, Common::Rect(0, 0, _spiritsMeterIndicatorFrame->w, _spiritsMeterIndicatorFrame->h));
 		}
 	}
 
-	for (int k = 0; k < int(_keysCollected.size()); k++) {
-		surface->copyRectToSurface((const Graphics::Surface)*_keysBorderFrames[0], 99 - k * 4, 177, Common::Rect(0, 0, 6, 11));
+	// Draw animated flag
+	if (!_flagFrames.empty()) {
+		int ticks = g_system->getMillis() / 20;
+		int flagFrameIndex = (ticks / 10) % 4;
+		surface->copyRectToSurface(*_flagFrames[flagFrameIndex], 285, 5, Common::Rect(0, 0, _flagFrames[flagFrameIndex]->w, _flagFrames[flagFrameIndex]->h));
 	}
 
-	uint32 green = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0xff, 0);
-
-	surface->fillRect(Common::Rect(152, 156, 216, 164), green);
-	surface->copyRectToSurface((const Graphics::Surface)*_spiritsMeterIndicatorFrame, 140 + _spiritsMeterPosition, 156, Common::Rect(0, 0, 15, 8));
-	drawEnergyMeter(surface, Common::Point(63, 154));
-
-	int ticks = g_system->getMillis() / 20;
-	int flagFrameIndex = (ticks / 10) % 4;
-	surface->copyRectToSurface(*_flagFrames[flagFrameIndex], 264, 9, Common::Rect(0, 0, _flagFrames[flagFrameIndex]->w, _flagFrames[flagFrameIndex]->h));*/
 }
 
 } // End of namespace Freescape

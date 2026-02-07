@@ -33,6 +33,7 @@
 #include "audio/mods/protracker.h"
 
 #include "freescape/freescape.h"
+#include "freescape/gfx.h"
 #include "freescape/games/castle/castle.h"
 #include "freescape/language/8bitDetokeniser.h"
 
@@ -243,6 +244,101 @@ CastleEngine::~CastleEngine() {
 		_menuFxOffIndicator->free();
 		delete _menuFxOffIndicator;
 	}
+}
+
+Graphics::ManagedSurface *CastleEngine::loadFrameWithHeader(Common::SeekableReadStream *file, int pos, uint32 front, uint32 back) {
+	Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+	file->seek(pos);
+	int16 width = file->readByte();
+	int16 height = file->readByte();
+	debugC(kFreescapeDebugParser, "Frame size: %d x %d", width, height);
+	surface->create(width * 8, height, _gfx->_texturePixelFormat);
+
+	/*byte mask =*/ file->readByte();
+
+	surface->fillRect(Common::Rect(0, 0, width * 8, height), back);
+	/*int frameSize =*/ file->readUint16LE();
+	return loadFrame(file, surface, width, height, front);
+}
+
+Common::Array<Graphics::ManagedSurface *> CastleEngine::loadFramesWithHeader(Common::SeekableReadStream *file, int pos, int numFrames, uint32 front, uint32 back) {
+	Graphics::ManagedSurface *surface = nullptr;
+	file->seek(pos);
+	int16 width = file->readByte();
+	int16 height = file->readByte();
+	/*byte mask =*/ file->readByte();
+
+	/*int frameSize =*/ file->readUint16LE();
+	Common::Array<Graphics::ManagedSurface *> frames;
+	for (int i = 0; i < numFrames; i++) {
+		surface = new Graphics::ManagedSurface();
+		surface->create(width * 8, height, _gfx->_texturePixelFormat);
+		surface->fillRect(Common::Rect(0, 0, width * 8, height), back);
+		frames.push_back(loadFrame(file, surface, width, height, front));
+	}
+
+	return frames;
+}
+
+Graphics::ManagedSurface *CastleEngine::loadFrame(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, uint32 front) {
+	for (int i = 0; i < width * height; i++) {
+		byte color = file->readByte();
+		for (int n = 0; n < 8; n++) {
+			int y = i / width;
+			int x = (i % width) * 8 + (7 - n);
+			if ((color & (1 << n)))
+				surface->setPixel(x, y, front);
+		}
+	}
+	return surface;
+}
+
+Graphics::ManagedSurface *CastleEngine::loadFrameWithHeaderCPC(Common::SeekableReadStream *file, int pos, const uint32 *cpcPalette) {
+	Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+	file->seek(pos);
+	int16 width = file->readByte();
+	int16 height = file->readByte();
+	debugC(kFreescapeDebugParser, "CPC Frame size: %d x %d", width, height);
+	surface->create(width * 4, height, _gfx->_texturePixelFormat);
+
+	/*byte mask =*/ file->readByte();
+
+	surface->fillRect(Common::Rect(0, 0, width * 4, height), cpcPalette[0]);
+	/*int frameSize =*/ file->readUint16LE();
+	return loadFrameCPC(file, surface, width, height, cpcPalette);
+}
+
+Common::Array<Graphics::ManagedSurface *> CastleEngine::loadFramesWithHeaderCPC(Common::SeekableReadStream *file, int pos, int numFrames, const uint32 *cpcPalette) {
+	Graphics::ManagedSurface *surface = nullptr;
+	file->seek(pos);
+	int16 width = file->readByte();
+	int16 height = file->readByte();
+	/*byte mask =*/ file->readByte();
+
+	/*int frameSize =*/ file->readUint16LE();
+	Common::Array<Graphics::ManagedSurface *> frames;
+	for (int i = 0; i < numFrames; i++) {
+		surface = new Graphics::ManagedSurface();
+		surface->create(width * 4, height, _gfx->_texturePixelFormat);
+		surface->fillRect(Common::Rect(0, 0, width * 4, height), cpcPalette[0]);
+		frames.push_back(loadFrameCPC(file, surface, width, height, cpcPalette));
+	}
+
+	return frames;
+}
+
+Graphics::ManagedSurface *CastleEngine::loadFrameCPC(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, const uint32 *cpcPalette) {
+	for (int y = 0; y < height; y++) {
+		for (int col = 0; col < width; col++) {
+			byte cpc_byte = file->readByte();
+			for (int i = 0; i < 4; i++) {
+				int pixel = getCPCPixel(cpc_byte, i, true);
+				if (pixel != 0)
+					surface->setPixel(col * 4 + i, y, cpcPalette[pixel]);
+			}
+		}
+	}
+	return surface;
 }
 
 void CastleEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *infoScreenKeyMap, const char *target) {
@@ -1224,12 +1320,20 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 		y = 33;
 		maxWidth = 139;
 	}
-	surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, x, y, Common::Rect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h));
-	for (y += _riddleTopFrame->h; y < maxWidth;) {
-		surface->copyRectToSurface((const Graphics::Surface)*_riddleBackgroundFrame, x, y, Common::Rect(0, 0, _riddleBackgroundFrame->w, _riddleBackgroundFrame->h));
-		y += _riddleBackgroundFrame->h;
+	// Draw riddle frame borders (if available)
+	if (_riddleTopFrame) {
+		surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, x, y, Common::Rect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h));
+		y += _riddleTopFrame->h;
 	}
-	surface->copyRectToSurface((const Graphics::Surface)*_riddleBottomFrame, x, maxWidth, Common::Rect(0, 0, _riddleBottomFrame->w, _riddleBottomFrame->h - 1));
+	if (_riddleBackgroundFrame) {
+		for (; y < maxWidth;) {
+			surface->copyRectToSurface((const Graphics::Surface)*_riddleBackgroundFrame, x, y, Common::Rect(0, 0, _riddleBackgroundFrame->w, _riddleBackgroundFrame->h));
+			y += _riddleBackgroundFrame->h;
+		}
+	}
+	if (_riddleBottomFrame) {
+		surface->copyRectToSurface((const Graphics::Surface)*_riddleBottomFrame, x, maxWidth, Common::Rect(0, 0, _riddleBottomFrame->w, _riddleBottomFrame->h - 1));
+	}
 
 	Common::Array<RiddleText> riddleMessages = _riddleList[riddle]._lines;
 	x = _riddleList[riddle]._origin.x;
@@ -1286,41 +1390,48 @@ void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point ori
 		barFrameOrigin += Common::Point(5, 6);
 	else if (isSpectrum())
 		barFrameOrigin += Common::Point(0, 6);
+	else if (isCPC())
+		barFrameOrigin += Common::Point(0, 6);
 
 	surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtBarFrame, barFrameOrigin.x, barFrameOrigin.y, Common::Rect(0, 0, _strenghtBarFrame->w, _strenghtBarFrame->h), black);
 
 	Common::Point weightPoint;
 	int frameIdx = -1;
 
-	weightPoint = Common::Point(origin.x + 10, origin.y);
-	frameIdx = _gameStateVars[k8bitVariableShield] % 4;
-
 	if (_strenghtWeightsFrames.empty())
 		return;
 
-	if (frameIdx != 0) {
-		frameIdx = 4 - frameIdx;
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, 3, _strenghtWeightsFrames[frameIdx]->h), back);
-		weightPoint += Common::Point(3, 0);
-	}
+	// Use actual weight sprite width for positioning
+	int weightWidth = _strenghtWeightsFrames[0]->w;
+	int weightOffset = isCPC() ? 9 : 10;
+	int rightWeightPos = isCPC() ? 59 : 62;
 
-	for (int i = 0; i < _gameStateVars[k8bitVariableShield] / 4; i++) {
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, 3, _strenghtWeightsFrames[0]->h), back);
-		weightPoint += Common::Point(3, 0);
-	}
-
-	weightPoint = Common::Point(origin.x + 62, origin.y);
+	weightPoint = Common::Point(origin.x + weightOffset, origin.y);
 	frameIdx = _gameStateVars[k8bitVariableShield] % 4;
 
 	if (frameIdx != 0) {
 		frameIdx = 4 - frameIdx;
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, 3, _strenghtWeightsFrames[frameIdx]->h), back);
-		weightPoint += Common::Point(-3, 0);
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
+		weightPoint += Common::Point(weightWidth, 0);
 	}
 
 	for (int i = 0; i < _gameStateVars[k8bitVariableShield] / 4; i++) {
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, 3, _strenghtWeightsFrames[0]->h), back);
-		weightPoint += Common::Point(-3, 0);
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
+		weightPoint += Common::Point(weightWidth, 0);
+	}
+
+	weightPoint = Common::Point(origin.x + rightWeightPos, origin.y);
+	frameIdx = _gameStateVars[k8bitVariableShield] % 4;
+
+	if (frameIdx != 0) {
+		frameIdx = 4 - frameIdx;
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
+		weightPoint += Common::Point(-weightWidth, 0);
+	}
+
+	for (int i = 0; i < _gameStateVars[k8bitVariableShield] / 4; i++) {
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
+		weightPoint += Common::Point(-weightWidth, 0);
 	}
 }
 

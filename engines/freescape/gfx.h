@@ -43,6 +43,9 @@ typedef Common::HashMap<int, int> ColorReMap;
 class Renderer;
 
 const Graphics::PixelFormat getRGBAPixelFormat();
+byte getCPCPixelMode1(byte cpc_byte, int index);
+byte getCPCPixelMode0(byte cpc_byte, int index);
+byte getCPCPixel(byte cpc_byte, int index, bool mode1);
 
 class Texture {
 public:

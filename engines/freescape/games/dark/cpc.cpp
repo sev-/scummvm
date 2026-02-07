@@ -60,7 +60,6 @@ byte kCPCPaletteDarkTitle[16][3] = {
 	{0x00, 0x80, 0x00}, // 15: X
 };
 
-extern Graphics::ManagedSurface *readCPCImage(Common::SeekableReadStream *file, bool mode0);
 
 void DarkEngine::loadAssetsCPCFullGame() {
 	Common::File file;

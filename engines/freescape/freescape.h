@@ -143,6 +143,7 @@ struct CGAPaletteEntry {
 
 extern Common::String shiftStr(const Common::String &str, int shift);
 extern Common::String centerAndPadString(const Common::String &str, int size);
+extern Graphics::ManagedSurface *readCPCImage(Common::SeekableReadStream *file, bool mode1);
 
 class EventManagerWrapper {
 public:

@@ -69,8 +69,6 @@ Renderer::Renderer(int screenW, int screenH, Common::RenderMode renderMode, bool
 
 Renderer::~Renderer() {}
 
-extern byte getCPCPixel(byte cpc_byte, int index, bool mode0);
-
 byte getCPCStipple(byte cpc_byte, int back, int fore) {
 	int c0 = getCPCPixel(cpc_byte, 0, true);
 	assert(c0 == back || c0 == fore);

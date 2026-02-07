@@ -64,45 +64,7 @@ byte kCPCPaletteBorderData[4][3] = {
 	{0x00, 0x80, 0x00},
 };
 
-byte getCPCPixelMode1(byte cpc_byte, int index) {
-	if (index == 0)
-		return ((cpc_byte & 0x08) >> 2) | ((cpc_byte & 0x80) >> 7);
-	else if (index == 1)
-		return ((cpc_byte & 0x04) >> 1) | ((cpc_byte & 0x40) >> 6);
-	else if (index == 2)
-		return (cpc_byte & 0x02)        | ((cpc_byte & 0x20) >> 5);
-	else if (index == 3)
-		return ((cpc_byte & 0x01) << 1) | ((cpc_byte & 0x10) >> 4);
-	else
-		error("Invalid index %d requested", index);
-}
-
-byte getCPCPixelMode0(byte cpc_byte, int index) {
-    if (index == 0) {
-        // Extract Pixel 0 from the byte
-        return ((cpc_byte & 0x02) << 2) |  // Bit 1 -> Bit 3 (MSB)
-               ((cpc_byte & 0x20) >> 3) |  // Bit 5 -> Bit 2
-               ((cpc_byte & 0x08) >> 2) |  // Bit 3 -> Bit 1
-               ((cpc_byte & 0x80) >> 7);   // Bit 7 -> Bit 0 (LSB)
-    }
-    else if (index == 2) {
-        // Extract Pixel 1 from the byte
-        return ((cpc_byte & 0x01) << 3) |  // Bit 0 -> Bit 3 (MSB)
-               ((cpc_byte & 0x10) >> 2) |  // Bit 4 -> Bit 2
-               ((cpc_byte & 0x04) >> 1) |  // Bit 2 -> Bit 1
-               ((cpc_byte & 0x40) >> 6);   // Bit 6 -> Bit 0 (LSB)
-    }
-    else {
-        error("Invalid index %d requested", index);
-    }
-}
-
-byte getCPCPixel(byte cpc_byte, int index, bool mode1) {
-	if (mode1)
-		return getCPCPixelMode1(cpc_byte, index);
-	else
-		return getCPCPixelMode0(cpc_byte, index);
-}
+// getCPCPixelMode1, getCPCPixelMode0, and getCPCPixel moved to freescape.cpp
 
 Graphics::ManagedSurface *readCPCImage(Common::SeekableReadStream *file, bool mode1) {
 	Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();

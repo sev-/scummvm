@@ -41,54 +41,6 @@ void CastleEngine::initZX() {
 	_soundIndexAreaChange = 7;
 }
 
-Graphics::ManagedSurface *CastleEngine::loadFrameWithHeader(Common::SeekableReadStream *file, int pos, uint32 front, uint32 back) {
-	Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
-	file->seek(pos);
-	int16 width = file->readByte();
-	int16 height = file->readByte();
-	debugC(kFreescapeDebugParser, "Frame size: %d x %d", width, height);
-	surface->create(width * 8, height, _gfx->_texturePixelFormat);
-
-	/*byte mask =*/ file->readByte();
-
-	surface->fillRect(Common::Rect(0, 0, width * 8, height), back);
-	/*int frameSize =*/ file->readUint16LE();
-	return loadFrame(file, surface, width, height, front);
-}
-
-Common::Array<Graphics::ManagedSurface *> CastleEngine::loadFramesWithHeader(Common::SeekableReadStream *file, int pos, int numFrames, uint32 front, uint32 back) {
-	Graphics::ManagedSurface *surface = nullptr;
-	file->seek(pos);
-	int16 width = file->readByte();
-	int16 height = file->readByte();
-	/*byte mask =*/ file->readByte();
-
-	/*int frameSize =*/ file->readUint16LE();
-	Common::Array<Graphics::ManagedSurface *> frames;
-	for (int i = 0; i < numFrames; i++) {
-		surface = new Graphics::ManagedSurface();
-		surface->create(width * 8, height, _gfx->_texturePixelFormat);
-		surface->fillRect(Common::Rect(0, 0, width * 8, height), back);
-		frames.push_back(loadFrame(file, surface, width, height, front));
-	}
-
-	return frames;
-}
-
-
-Graphics::ManagedSurface *CastleEngine::loadFrame(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, uint32 front) {
-	for (int i = 0; i < width * height; i++) {
-		byte color = file->readByte();
-		for (int n = 0; n < 8; n++) {
-			int y = i / width;
-			int x = (i % width) * 8 + (7 - n);
-			if ((color & (1 << n)))
-				surface->setPixel(x, y, front);
-		}
-	}
-	return surface;
-}
-
 void CastleEngine::loadAssetsZXFullGame() {
 	Common::File file;
 	uint8 r, g, b;

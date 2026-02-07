@@ -62,7 +62,6 @@ byte kCPCPaletteEclipseBorderData[4][3] = {
 };
 
 
-extern Graphics::ManagedSurface *readCPCImage(Common::SeekableReadStream *file, bool mode0);
 
 void EclipseEngine::loadAssetsCPCFullGame() {
 	Common::File file;
