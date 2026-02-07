@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-07 14:53+0000\n"
-"PO-Revision-Date: 2026-02-06 23:04+0000\n"
+"PO-Revision-Date: 2026-02-07 22:19+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -587,7 +587,7 @@ msgstr "Перекрыть глобальные настройки график�
 
 #: gui/editgamedialog.cpp:185 gui/options.cpp:2288 engines/dialogs.cpp:346
 msgid "Keymaps"
-msgstr "Раскладка клавиш"
+msgstr "Раскладки клавиш"
 
 #: gui/editgamedialog.cpp:197 gui/options.cpp:2300 engines/dialogs.cpp:358
 msgid "Backend"
@@ -3868,7 +3868,7 @@ msgstr "Игра не реализована"
 
 #: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
 msgid "Default game keymap"
-msgstr "Раскладка клавиш по умолчанию"
+msgstr "Раскладка клавиш игры по умолчанию"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
 #: engines/agos/metaengine.cpp:158 engines/asylum/metaengine.cpp:159
@@ -4899,16 +4899,12 @@ msgid "D-pad Right"
 msgstr "Крестовина вправо"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Круг"
+msgstr "Круг-пад X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Круг"
+msgstr "Круг-пад Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -6321,7 +6317,7 @@ msgstr "Проверить обновления..."
 #: engines/trecision/metaengine.cpp:120 engines/tsage/metaengine.cpp:169
 #: engines/tucker/metaengine.cpp:167 engines/voyeur/metaengine.cpp:184
 msgid "Default keymappings"
-msgstr "Раскладки клавиш по умолчанию"
+msgstr "Раскладка клавиш по умолчанию"
 
 #: engines/access/metaengine.cpp:202
 msgid "Move / Interact / Skip"
@@ -6895,7 +6891,7 @@ msgstr "Главная AGOS"
 #: engines/trecision/metaengine.cpp:121 engines/tsage/metaengine.cpp:170
 #: engines/tucker/metaengine.cpp:168
 msgid "Game keymappings"
-msgstr "Раскладки клавиш игры"
+msgstr "Раскладка клавиш игры"
 
 #: engines/agos/metaengine.cpp:155
 msgid "Yes/No keymapping"
@@ -7617,8 +7613,6 @@ msgstr "Открыть базу KIA"
 #. I18N: This keymap works within the KIA Save Game screen
 #. and allows submitting a selected existing save game for deletion.
 #: engines/bladerunner/metaengine.cpp:282
-#, fuzzy
-#| msgid "Delete Selected Saved Game"
 msgid "Delete selected saved game"
 msgstr "Удалить выбранное сохранение игры"
 
@@ -7665,10 +7659,8 @@ msgstr "Прокрутить вниз"
 #. I18N: This keymap allows (in KIA only) for a clue to be set as private or public
 #. (only when the KIA is upgraded).
 #: engines/bladerunner/metaengine.cpp:311
-#, fuzzy
-#| msgid "Toggle Clue Privacy"
 msgid "Toggle clue privacy"
-msgstr "Вкл/выкл приватность для улик"
+msgstr "Переключить приватность для улик"
 
 #. I18N: This keymap opens KIA's SAVE GAME tab.
 #. In Blade Runner's official localizations, there is a description of this keymap
@@ -7730,8 +7722,6 @@ msgstr "Загрузить игру"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. CRIME SCENE DATABASE
 #: engines/bladerunner/metaengine.cpp:348
-#, fuzzy
-#| msgid "Crime Scene Database"
 msgid "Crime scene database"
 msgstr "База сцен преступлений"
 
@@ -7740,8 +7730,6 @@ msgstr "База сцен преступлений"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. SUSPECT DATABASE
 #: engines/bladerunner/metaengine.cpp:357
-#, fuzzy
-#| msgid "Suspect Database"
 msgid "Suspect database"
 msgstr "База подозреваемых"
 
@@ -7750,8 +7738,6 @@ msgstr "База подозреваемых"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. CLUE DATABASE
 #: engines/bladerunner/metaengine.cpp:366
-#, fuzzy
-#| msgid "Clue Database"
 msgid "Clue database"
 msgstr "База улик"
 
@@ -7794,23 +7780,17 @@ msgstr "Включает возможность пропускать заста�
 
 #: engines/buried/metaengine.cpp:134 engines/hypno/metaengine.cpp:130
 #: engines/supernova/metaengine.cpp:219 engines/voyeur/metaengine.cpp:185
-#, fuzzy
-#| msgid "Exit screen keymappings"
 msgid "Cutscene keymappings"
-msgstr "Раскладки клавиш экрана выхода"
+msgstr "Раскладка клавиш заставок"
 
 #: engines/buried/metaengine.cpp:135
-#, fuzzy
-#| msgid "Game keymappings"
 msgid "Main menu keymappings"
-msgstr "Раскладки клавиш игры"
+msgstr "Раскладка клавиш главного меню"
 
 #: engines/buried/metaengine.cpp:137 engines/lab/metaengine.cpp:153
 #: engines/sherlock/metaengine.cpp:336 engines/sherlock/metaengine.cpp:787
-#, fuzzy
-#| msgid "Index keymappings"
 msgid "Inventory keymappings"
-msgstr "Раскладки клавиш указателя"
+msgstr "Раскладка клавиш инвентаря"
 
 #: engines/buried/metaengine.cpp:141 engines/chamber/metaengine.cpp:65
 #: engines/chamber/metaengine.cpp:71 engines/chamber/metaengine.cpp:77
