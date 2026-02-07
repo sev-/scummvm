@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-07 14:53+0000\n"
-"PO-Revision-Date: 2026-02-05 17:26+0000\n"
+"PO-Revision-Date: 2026-02-07 22:19+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/es/>\n"
@@ -4920,31 +4920,27 @@ msgstr "R"
 
 #: backends/platform/3ds/osystem-events.cpp:55
 msgid "D-pad Up"
-msgstr "Cruceta arriba"
+msgstr "Cruz de control arriba"
 
 #: backends/platform/3ds/osystem-events.cpp:56
 msgid "D-pad Down"
-msgstr "Cruceta abajo"
+msgstr "Cruz de control abajo"
 
 #: backends/platform/3ds/osystem-events.cpp:57
 msgid "D-pad Left"
-msgstr "Cruceta izda."
+msgstr "Cruz de control izda."
 
 #: backends/platform/3ds/osystem-events.cpp:58
 msgid "D-pad Right"
-msgstr "Cruceta dcha."
+msgstr "Cruz de control dcha."
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Circulo"
+msgstr "Botón deslizante X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Circulo"
+msgstr "Botón deslizante Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
