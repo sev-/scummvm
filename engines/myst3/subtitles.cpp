@@ -268,14 +268,37 @@ static Common::CodePage getEncodingFromCharsetCode(uint32 gdiCharset) {
 
 void FontSubtitles::drawToTexture(const Phrase *phrase) {
 	const Graphics::Font *font;
-	if (_font)
+
+	bool needsRescaling = false;
+	Common::Rect screen = _vm->_gfx->viewport();
+	float newScale = MIN(
+		screen.width()  / (float) Renderer::kOriginalWidth,
+		screen.height() / (float) Renderer::kOriginalHeight
+	);
+	needsRescaling = _scale != newScale;
+
+	if (_font) {
+		if (needsRescaling) {
+			warning("The font scale: %f does not match the expected value: %f. The subtitles might have been rendered incorrectly", _scale,  newScale);
+			delete _font;
+			loadResources();
+		}
 		font = _font;
-	else
+	} else {
 		font = FontMan.getFontByUsage(Graphics::FontManager::kLocalizedFont);
+	}
 
 	if (!font)
 		error("No available font");
 
+	if (needsRescaling) {
+		freeTexture();
+		if (_surface) {
+			_surface->free();
+			delete _surface;
+			_surface = nullptr;
+		}
+	}
 	if (!_texture || !_surface) {
 		createTexture();
 	}
