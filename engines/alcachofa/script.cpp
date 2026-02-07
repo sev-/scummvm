@@ -932,7 +932,7 @@ private:
 
 		// Camera tasks
 		case ScriptKernelTask::WaitCamStopping:
-			return TaskReturn::waitFor(g_engine->camera().waitToStop(process()));
+			return TaskReturn::waitFor(g_engine->cameraV3().waitToStop(process()));
 		case ScriptKernelTask::CamFollow: {
 			WalkingCharacter *target = nullptr;
 			auto kind = getMainCharacterKindArg(0);
@@ -942,28 +942,28 @@ private:
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::CamShake:
-			return TaskReturn::waitFor(g_engine->camera().shake(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().shake(process(),
 				Vector2d(getNumberArg(1), getNumberArg(2)),
 				Vector2d(getNumberArg(3), getNumberArg(4)),
 				getNumberArg(0)));
 		case ScriptKernelTask::LerpCamXY:
-			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				Vector2d(getNumberArg(0), getNumberArg(1)),
 				getNumberArg(2), (EasingType)getNumberArg(3)));
 		case ScriptKernelTask::LerpCamXYZ:
-			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				Vector3d(getNumberArg(0), getNumberArg(1), getNumberArg(2)),
 				getNumberArg(3), (EasingType)getNumberArg(4)));
 		case ScriptKernelTask::LerpCamZ:
-			return TaskReturn::waitFor(g_engine->camera().lerpPosZ(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPosZ(process(),
 				getNumberArg(0),
 				getNumberArg(1), (EasingType)getNumberArg(2)));
 		case ScriptKernelTask::LerpCamScale:
-			return TaskReturn::waitFor(g_engine->camera().lerpScale(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpScale(process(),
 				getNumberArg(0) * 0.01f,
 				getNumberArg(1), (EasingType)getNumberArg(2)));
 		case ScriptKernelTask::LerpCamRotation:
-			return TaskReturn::waitFor(g_engine->camera().lerpRotation(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpRotation(process(),
 				getNumberArg(0),
 				getNumberArg(1), (EasingType)getNumberArg(2)));
 		case ScriptKernelTask::LerpCamToObjectKeepingZ: {
@@ -974,7 +974,7 @@ private:
 				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectKeepingZ", getStringArg(0));
 			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				as2D(pointObject->position()),
 				getNumberArg(1), EasingType::Linear));
 		}
@@ -986,7 +986,7 @@ private:
 				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectResettingZ", getStringArg(0));
 			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			return TaskReturn::waitFor(g_engine->camera().lerpPos(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				as3D(pointObject->position()),
 				getNumberArg(1), (EasingType)getNumberArg(2)));
 		}
@@ -994,13 +994,13 @@ private:
 			float targetScale = getNumberArg(1) * 0.01f;
 			if (!process().isActiveForPlayer())
 				// the scale will wait then snap the scale
-				return TaskReturn::waitFor(g_engine->camera().lerpScale(process(), targetScale, getNumberArg(2), EasingType::Linear));
+				return TaskReturn::waitFor(g_engine->cameraV3().lerpScale(process(), targetScale, getNumberArg(2), EasingType::Linear));
 			auto pointObject = getObjectArg<PointObject>(0);
 			if (pointObject == nullptr)
 				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectWithScale", getStringArg(0));
 			if (pointObject == nullptr)
 				return TaskReturn::finish(1);
-			return TaskReturn::waitFor(g_engine->camera().lerpPosScale(process(),
+			return TaskReturn::waitFor(g_engine->cameraV3().lerpPosScale(process(),
 				as3D(pointObject->position()), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));
 		}
@@ -1010,7 +1010,7 @@ private:
 			const auto duration = getNumberArg(0);
 			return TaskReturn::waitFor(duration == 0
 				? g_engine->input().waitForInput(process())
-				: g_engine->camera().disguise(process(), duration));
+				: g_engine->cameraV3().disguise(process(), duration));
 		}
 
 		// Fades

@@ -84,6 +84,7 @@ Common::Error AlcachofaEngine::run() {
 	_world.load();
 	_renderer.reset(IRenderer::createOpenGLRenderer(game().getResolution()));
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
+	_camera.reset(new CameraV3());
 	_script.reset(new Script());
 	_player.reset(new Player());
 	_globalUI.reset(isV1() ? static_cast<GlobalUI *>(new GlobalUIV1()) : new GlobalUIV3());
@@ -113,7 +114,7 @@ Common::Error AlcachofaEngine::run() {
 		_sounds.update();
 		_renderer->begin();
 		_drawQueue->clear();
-		_camera.preUpdate();
+		_camera->preUpdate();
 		_player->preUpdate();
 		if (_player->currentRoom() != nullptr)
 			_player->currentRoom()->update();

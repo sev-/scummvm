@@ -31,109 +31,10 @@ using namespace Math;
 
 namespace Alcachofa {
 
-void Camera::preUpdate() {
-	_shake = {};
-}
-
-void Camera::setRoomBounds(Graphic &background) {
-	auto bgSize = background.animation().imageSize(0);
-	if (g_engine->isV1()) {
-		Point screenSize(g_system->getWidth(), g_system->getHeight());
-		_roomMin = as2D(background.topLeft() + screenSize / 2);
-		_roomMax = _roomMin + as2D(bgSize - screenSize);
-		_roomScale = 0;
-	} else {
-		/* The fallback fixes a bug where if the background image is invalid the original engine
-		 * would not update the background size. This would be around 1024,768 due to
-		 * previous rooms in the bug instances I found.
-		 */
-		if (bgSize == Point(0, 0))
-			bgSize = Point(1024, 768);
-
-		const auto bgScale = background.scale();
-		float scaleFactor = 1 - bgScale * kInvBaseScale;
-		_roomMin = Vector2d(
-			g_system->getWidth() / 2 * scaleFactor,
-			g_system->getHeight() / 2 * scaleFactor);
-		_roomMax = _roomMin + Vector2d(
-			bgSize.x * bgScale * kInvBaseScale,
-			bgSize.y * bgScale * kInvBaseScale);
-		_roomScale = bgScale;
-	}
-}
-
-void Camera::setFollow(WalkingCharacter *target, bool catchUp) {
-	_cur._isFollowingTarget = target != nullptr;
-	_followTarget = target;
-	_lastUpdateTime = g_engine->getMillis();
-	_catchUp = catchUp;
-	if (target == nullptr)
-		_isChanging = false;
-}
-
-void Camera::onChangedRoom(bool resetCamera) {
-	if (resetCamera)
-		resetRotationAndScale();
-	if (_followTarget != nullptr)
-		setFollow(_followTarget, true);
-}
-
-void Camera::onTriggeredDoor(WalkingCharacter *target) {
-	setFollow(target, true);
-}
-
-void Camera::onTriggeredDoor(Point fixedPosition) {
-	setPosition(as2D(fixedPosition));
-}
-
-void Camera::onScriptChangedCharacter(MainCharacterKind kind) {
-	resetRotationAndScale();
-	if (kind != MainCharacterKind::None)
-		setFollow(g_engine->player().activeCharacter());
-	backup(0);
-}
-
-void Camera::onUserChangedCharacter() {
-	setFollow(g_engine->player().activeCharacter());
-	restore(0);
-}
-
-void Camera::onOpenMenu() {
-	backup(1);
-	setPosition(Math::Vector3d(
-		g_system->getWidth() / 2.0f, g_system->getHeight() / 2.0f, 0.0f));
-}
-
-void Camera::onCloseMenu() {
-	restore(1);
-}
-
-void Camera::resetRotationAndScale() {
-	_cur._scale = 1;
-	_cur._rotation = 0;
-	_cur._usedCenter.z() = 0;
-}
-
-void Camera::setPosition(Vector2d v) {
-	setPosition({ v.getX(), v.getY(), _cur._usedCenter.z() });
-}
-
-void Camera::setPosition(Vector3d v) {
-	_cur._usedCenter = v;
-	setFollow(nullptr);
-}
-
-void Camera::backup(uint slot) {
-	assert(slot < kStateBackupCount);
-	_backups[slot] = _cur;
-}
-
-void Camera::restore(uint slot) {
-	assert(slot < kStateBackupCount);
-	auto backupState = _backups[slot];
-	_backups[slot] = _cur;
-	_cur = backupState;
-}
+//
+// Base camera
+//
+Camera::~Camera() {}
 
 static Matrix4 scale2DMatrix(float scale) {
 	Matrix4 m;
@@ -144,16 +45,16 @@ static Matrix4 scale2DMatrix(float scale) {
 
 void Camera::setupMatricesAround(Vector3d center) {
 	Matrix4 matTemp;
-	matTemp.buildAroundZ(_cur._rotation);
+	matTemp.buildAroundZ(rotation());
 	_mat3Dto2D.setToIdentity();
 	_mat3Dto2D.translate(-center);
 	_mat3Dto2D = matTemp * _mat3Dto2D;
-	_mat3Dto2D = scale2DMatrix(_cur._scale) * _mat3Dto2D;
+	_mat3Dto2D = scale2DMatrix(scale()) * _mat3Dto2D;
 
 	_mat2Dto3D.setToIdentity();
 	_mat2Dto3D.translate(center);
-	matTemp.buildAroundZ(-_cur._rotation);
-	matTemp = matTemp * scale2DMatrix(1 / _cur._scale);
+	matTemp.buildAroundZ(-rotation());
+	matTemp = matTemp * scale2DMatrix(1 / scale());
 	_mat2Dto3D = _mat2Dto3D * matTemp;
 }
 
@@ -190,7 +91,7 @@ Vector3d Camera::transform2Dto3D(Vector3d v2d) const {
 	// if this looks like normal 3D math to *someone* please contact.
 	Vector4d vh;
 	vh.w() = 1.0f;
-	vh.z() = v2d.z() - _cur._usedCenter.z();
+	vh.z() = v2d.z() - _appliedCenter.z();
 	vh.y() = (v2d.y() - g_system->getHeight() * 0.5f) * vh.z() * kInvBaseScale;
 	vh.x() = (v2d.x() - g_system->getWidth() * 0.5f) * vh.z() * kInvBaseScale;
 	vh = _mat2Dto3D * vh;
@@ -209,7 +110,7 @@ Vector3d Camera::transform3Dto2D(Vector3d v3d) const {
 	return Vector3d(
 		g_system->getWidth() * 0.5f + vh.x() * kBaseScale / vh.z(),
 		g_system->getHeight() * 0.5f + vh.y() * kBaseScale / vh.z(),
-		_cur._scale * kBaseScale / vh.z());
+		scale() * kBaseScale / vh.z());
 }
 
 Point Camera::transform3Dto2D(Point p3d) const {
@@ -217,7 +118,123 @@ Point Camera::transform3Dto2D(Point p3d) const {
 	return { (int16)v2d.x(), (int16)v2d.y() };
 }
 
-void Camera::update() {
+//
+// CameraV3
+//
+
+Angle CameraV3::rotation() const {
+	return _cur._rotation;
+}
+
+float CameraV3::scale() const {
+	return _cur._scale;
+}
+
+void CameraV3::preUpdate() {
+	_shake = {};
+}
+
+void CameraV3::setRoomBounds(Graphic &background) {
+	auto bgSize = background.animation().imageSize(0);
+	if (g_engine->isV1()) {
+		Point screenSize(g_system->getWidth(), g_system->getHeight());
+		_roomMin = as2D(background.topLeft() + screenSize / 2);
+		_roomMax = _roomMin + as2D(bgSize - screenSize);
+		_roomScale = 0;
+	} else {
+		/* The fallback fixes a bug where if the background image is invalid the original engine
+		 * would not update the background size. This would be around 1024,768 due to
+		 * previous rooms in the bug instances I found.
+		 */
+		if (bgSize == Point(0, 0))
+			bgSize = Point(1024, 768);
+
+		const auto bgScale = background.scale();
+		float scaleFactor = 1 - bgScale * kInvBaseScale;
+		_roomMin = Vector2d(
+			g_system->getWidth() / 2 * scaleFactor,
+			g_system->getHeight() / 2 * scaleFactor);
+		_roomMax = _roomMin + Vector2d(
+			bgSize.x * bgScale * kInvBaseScale,
+			bgSize.y * bgScale * kInvBaseScale);
+		_roomScale = bgScale;
+	}
+}
+
+void CameraV3::setFollow(WalkingCharacter *target, bool catchUp) {
+	_cur._isFollowingTarget = target != nullptr;
+	_followTarget = target;
+	_lastUpdateTime = g_engine->getMillis();
+	_catchUp = catchUp;
+	if (target == nullptr)
+		_isChanging = false;
+}
+
+void CameraV3::onChangedRoom(bool resetCamera) {
+	if (resetCamera)
+		resetRotationAndScale();
+	if (_followTarget != nullptr)
+		setFollow(_followTarget, true);
+}
+
+void CameraV3::onTriggeredDoor(WalkingCharacter *target) {
+	setFollow(target, true);
+}
+
+void CameraV3::onTriggeredDoor(Point fixedPosition) {
+	setPosition(as2D(fixedPosition));
+}
+
+void CameraV3::onScriptChangedCharacter(MainCharacterKind kind) {
+	resetRotationAndScale();
+	if (kind != MainCharacterKind::None)
+		setFollow(g_engine->player().activeCharacter());
+	backup(0);
+}
+
+void CameraV3::onUserChangedCharacter() {
+	setFollow(g_engine->player().activeCharacter());
+	restore(0);
+}
+
+void CameraV3::onOpenMenu() {
+	backup(1);
+	setPosition(Math::Vector3d(
+		g_system->getWidth() / 2.0f, g_system->getHeight() / 2.0f, 0.0f));
+}
+
+void CameraV3::onCloseMenu() {
+	restore(1);
+}
+
+void CameraV3::resetRotationAndScale() {
+	_cur._scale = 1;
+	_cur._rotation = 0;
+	_cur._usedCenter.z() = 0;
+}
+
+void CameraV3::setPosition(Vector2d v) {
+	setPosition({ v.getX(), v.getY(), _cur._usedCenter.z() });
+}
+
+void CameraV3::setPosition(Vector3d v) {
+	_cur._usedCenter = v;
+	setFollow(nullptr);
+}
+
+void CameraV3::backup(uint slot) {
+	assert(slot < kStateBackupCount);
+	_backups[slot] = _cur;
+}
+
+void CameraV3::restore(uint slot) {
+	assert(slot < kStateBackupCount);
+	auto backupState = _backups[slot];
+	_backups[slot] = _cur;
+	_cur = backupState;
+}
+
+void CameraV3::update() {
 	// original would be some smoothing of delta times, let's not.
 	uint32 now = g_engine->getMillis();
 	float deltaTime = (now - _lastUpdateTime) / 1000.0f;
@@ -233,7 +250,7 @@ void Camera::update() {
 	setAppliedCenter(_cur._usedCenter + Vector3d(_shake.getX(), _shake.getY(), 0.0f));
 }
 
-void Camera::updateFollowing(float deltaTime) {
+void CameraV3::updateFollowing(float deltaTime) {
 	if (!_cur._isFollowingTarget || _followTarget == nullptr)
 		return;
 	const float resolutionFactor = g_system->getWidth() * 0.00125f;
@@ -299,7 +316,7 @@ static void syncVector(Serializer &s, Vector3d &v) {
 	s.syncAsFloatLE(v.z());
 }
 
-void Camera::State::syncGame(Serializer &s) {
+void CameraV3::State::syncGame(Serializer &s) {
 	syncVector(s, _usedCenter);
 	s.syncAsFloatLE(_scale);
 	s.syncAsFloatLE(_speed);
@@ -311,7 +328,7 @@ void Camera::State::syncGame(Serializer &s) {
 	s.syncAsByte(_isFollowingTarget);
 }
 
-void Camera::syncGame(Serializer &s) {
+void CameraV3::syncGame(Serializer &s) {
 	syncMatrix(s, _mat3Dto2D);
 	syncMatrix(s, _mat2Dto3D);
 	syncVector(s, _appliedCenter);
@@ -344,7 +361,7 @@ void Camera::syncGame(Serializer &s) {
 struct CamLerpTask : public Task {
 	CamLerpTask(Process &process, uint32 duration = 0, EasingType easingType = EasingType::Linear)
 		: Task(process)
-		, _camera(g_engine->camera())
+		, _camera(g_engine->cameraV3())
 		, _duration(duration)
 		, _easingType(easingType) {}
 
@@ -377,7 +394,7 @@ struct CamLerpTask : public Task {
 protected:
 	virtual void update(float t) = 0;
 
-	Camera &_camera;
+	CameraV3 &_camera;
 	uint32 _startTime = 0, _duration;
 	EasingType _easingType;
 };
@@ -550,11 +567,11 @@ DECLARE_TASK(CamShakeTask)
 struct CamWaitToStopTask final : public Task {
 	CamWaitToStopTask(Process &process)
 		: Task(process)
-		, _camera(g_engine->camera()) {}
+		, _camera(g_engine->cameraV3()) {}
 
 	CamWaitToStopTask(Process &process, Serializer &s)
 		: Task(process)
-		, _camera(g_engine->camera()) {
+		, _camera(g_engine->cameraV3()) {
 		syncGame(s);
 	}
 
@@ -571,7 +588,7 @@ struct CamWaitToStopTask final : public Task {
 	const char *taskName() const override;
 
 private:
-	Camera &_camera;
+	CameraV3 &_camera;
 };
 DECLARE_TASK(CamWaitToStopTask)
 
@@ -584,14 +601,14 @@ struct CamSetInactiveAttributeTask final : public Task {
 
 	CamSetInactiveAttributeTask(Process &process, Attribute attribute, float value, int32 delay)
 		: Task(process)
-		, _camera(g_engine->camera())
+		, _camera(g_engine->cameraV3())
 		, _attribute(attribute)
 		, _value(value)
 		, _delay(delay) {}
 
 	CamSetInactiveAttributeTask(Process &process, Serializer &s)
 		: Task(process)
-		, _camera(g_engine->camera()) {
+		, _camera(g_engine->cameraV3()) {
 		syncGame(s);
 	}
 
@@ -649,14 +666,14 @@ struct CamSetInactiveAttributeTask final : public Task {
 	const char *taskName() const override;
 
 private:
-	Camera &_camera;
+	CameraV3 &_camera;
 	Attribute _attribute = {};
 	float _value = 0;
 	int32 _delay = 0;
 };
 DECLARE_TASK(CamSetInactiveAttributeTask)
 
-Task *Camera::lerpPos(Process &process,
+Task *CameraV3::lerpPos(Process &process,
 					  Vector2d targetPos,
 					  int32 duration, EasingType easingType) {
 	if (!process.isActiveForPlayer()) {
@@ -666,7 +683,7 @@ Task *Camera::lerpPos(Process &process,
 	return new CamLerpPosTask(process, targetPos3d, duration, easingType);
 }
 
-Task *Camera::lerpPos(Process &process,
+Task *CameraV3::lerpPos(Process &process,
 					  Vector3d targetPos,
 					  int32 duration, EasingType easingType) {
 	if (!process.isActiveForPlayer()) {
@@ -676,7 +693,7 @@ Task *Camera::lerpPos(Process &process,
 	return new CamLerpPosTask(process, targetPos, duration, easingType);
 }
 
-Task *Camera::lerpPosZ(Process &process,
+Task *CameraV3::lerpPosZ(Process &process,
 					   float targetPosZ,
 					   int32 duration, EasingType easingType) {
 	if (!process.isActiveForPlayer()) {
@@ -686,7 +703,7 @@ Task *Camera::lerpPosZ(Process &process,
 	return new CamLerpPosTask(process, targetPos, duration, easingType);
 }
 
-Task *Camera::lerpScale(Process &process,
+Task *CameraV3::lerpScale(Process &process,
 						float targetScale,
 						int32 duration, EasingType easingType) {
 	if (!process.isActiveForPlayer()) {
@@ -695,7 +712,7 @@ Task *Camera::lerpScale(Process &process,
 	return new CamLerpScaleTask(process, targetScale, duration, easingType);
 }
 
-Task *Camera::lerpRotation(Process &process,
+Task *CameraV3::lerpRotation(Process &process,
 						   float targetRotation,
 						   int32 duration, EasingType easingType) {
 	if (!process.isActiveForPlayer()) {
@@ -704,7 +721,7 @@ Task *Camera::lerpRotation(Process &process,
 	return new CamLerpRotationTask(process, targetRotation, duration, easingType);
 }
 
-Task *Camera::lerpPosScale(Process &process,
+Task *CameraV3::lerpPosScale(Process &process,
 						   Vector3d targetPos, float targetScale,
 						   int32 duration,
 						   EasingType moveEasingType, EasingType scaleEasingType) {
@@ -714,11 +731,11 @@ Task *Camera::lerpPosScale(Process &process,
 	return new CamLerpPosScaleTask(process, targetPos, targetScale, duration, moveEasingType, scaleEasingType);
 }
 
-Task *Camera::waitToStop(Process &process) {
+Task *CameraV3::waitToStop(Process &process) {
 	return new CamWaitToStopTask(process);
 }
 
-Task *Camera::shake(Process &process, Math::Vector2d amplitude, Math::Vector2d frequency, int32 duration) {
+Task *CameraV3::shake(Process &process, Math::Vector2d amplitude, Math::Vector2d frequency, int32 duration) {
 	if (!process.isActiveForPlayer()) {
 		return new DelayTask(process, (uint32)duration);
 	}
@@ -731,12 +748,12 @@ Task *Camera::shake(Process &process, Math::Vector2d amplitude, Math::Vector2d f
 struct CamDisguiseTask final : public Task {
 	CamDisguiseTask(Process &process, int32 durationMs)
 		: Task(process)
-		, _camera(g_engine->camera())
+		, _camera(g_engine->cameraV3())
 		, _durationMs(durationMs) {}
 
 	CamDisguiseTask(Process &process, Serializer &s)
 		: Task(process)
-		, _camera(g_engine->camera()) {
+		, _camera(g_engine->cameraV3()) {
 		CamDisguiseTask::syncGame(s);
 	}
 
@@ -776,14 +793,14 @@ struct CamDisguiseTask final : public Task {
 	const char *taskName() const override;
 
 private:
-	Camera &_camera;
+	CameraV3 &_camera;
 	int32 _durationMs = 0;
 	uint32 _startTime = 0;
 	Vector2d _startPosition;
 };
 DECLARE_TASK(CamDisguiseTask)
 
-Task *Camera::disguise(Process &process, int32 duration) {
+Task *CameraV3::disguise(Process &process, int32 duration) {
 	return new CamDisguiseTask(process, duration);
 }
 

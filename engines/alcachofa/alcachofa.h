@@ -119,7 +119,7 @@ public:
 	inline const AlcachofaGameDescription &gameDescription() const { return *_gameDescription; }
 	inline IRenderer &renderer() { return *_renderer; }
 	inline DrawQueue &drawQueue() { return *_drawQueue; }
-	inline Camera &camera() { return _camera; }
+	inline Camera &camera() { return *_camera; }
 	inline Input &input() { return _input; }
 	inline Sounds &sounds() { return _sounds; }
 	inline Player &player() { return *_player; }
@@ -132,6 +132,12 @@ public:
 	inline Game &game() { return *_game; }
 	inline Config &config() { return _config; }
 	inline bool isDebugModeActive() const { return _debugHandler != nullptr; }
+
+	inline CameraV3 &cameraV3() {
+		auto result = dynamic_cast<CameraV3 *>(_camera.get());
+		scumm_assert(result != nullptr);
+		return *result;
+	}
 
 	uint32 getMillis() const;
 	void setMillis(uint32 newMillis);
@@ -183,8 +189,8 @@ private:
 	Common::ScopedPtr<GlobalUI> _globalUI;
 	Common::ScopedPtr<Menu> _menu;
 	Common::ScopedPtr<Game> _game;
+	Common::ScopedPtr<Camera> _camera;
 	World _world;
-	Camera _camera;
 	Input _input;
 	Sounds _sounds;
 	Scheduler _scheduler;
