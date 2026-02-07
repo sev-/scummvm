@@ -296,9 +296,16 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 		effectiveStartFrame = effectiveEndFrame;
 	}
 
-	if (getId() == 13011) {
-		// Special case for the looping movie 13011 of the looping swiming jellyfish at node LIFO 11
-		effectiveStartFrame = 0;
+	switch (getId()) {
+	case 13011:
+		// Special case for the looping movie 13011 (room: 603 age: 6) of the looping swiming jellyfish at node LIFO 11
+		if (_vm->_state->getLocationRoom() == 603 && _vm->_state->getLocationAge() == 6) {
+			effectiveStartFrame = 0;
+		}
+		break;
+
+	default:
+		break;
 	}
 
 	if (_posUVar) {
@@ -372,8 +379,11 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 				if (currFrame != nextFrame - 1) {
 					// Don't seek if we just want to display the next frame
 					if (currFrame + 1 != nextFrame - 1) {
-						if (getId() == 12001 && nextFrame >= 200 && nextFrame < 250) {
-							// fix glitchy transition for rotation of the left turntable track (movie id 12001),
+						if (getId() == 12001
+						    && _vm->_state->getLocationRoom() == 1005 && _vm->_state->getLocationAge() == 10
+						    && nextFrame >= 200 && nextFrame < 250) {
+							debug("effectiveStartframe for getId(): %d (room: %d, age: %d) is: %d", getId(), _vm->_state->getLocationRoom(), _vm->_state->getLocationAge(), effectiveStartFrame);
+							// fix glitchy transition for rotation of the left turntable track (movie id 12001, room: 1005, age: 10),
 							// eg. when the left dial panel has no wood pegs
 							if (nextFrame >= 247) {
 								// values 247 and 248 should stay at the same frame
