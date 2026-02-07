@@ -561,7 +561,7 @@ Common::Rect Subtitles::getPosition() const {
 			screen.width()  / (float) Renderer::kOriginalWidth,
 			screen.height() / (float) Renderer::kOriginalHeight
 		);
-		frame = Common::Rect(screen.width(), Renderer::kBottomBorderHeight * scale);
+		frame = Common::Rect(screen.width(), Renderer::kBottomBorderHeightForSubsInWideScreen * scale);
 
 		Common::Rect scenePosition = _vm->_scene->getPosition();
 		int16 top = CLIP<int16>(screen.height() - frame.height(), 0, scenePosition.bottom);
