@@ -64,6 +64,8 @@ public:
 	uint16 hoveredItem();
 	void useItem(uint16 var);
 
+	bool isEmpty() const { return _inventory.empty(); }
+
 	void draw() override;
 
 private:

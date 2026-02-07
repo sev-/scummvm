@@ -824,8 +824,12 @@ bool Myst3Engine::isInventoryVisible() {
 		return false;
 	}
 
-	// Only draw the inventory when the mouse is inside its area
-	if (isWideScreenModEnabled() && !_inventory->isMouseInside()) {
+	// For widescreen mod:
+	// Only draw the inventory when:
+	// - the mouse is inside its area
+	// - and the cursor is visible
+	// - and the inventory is not empty
+	if (isWideScreenModEnabled() && (!_cursor->isVisible() || !_inventory->isMouseInside() || _inventory->isEmpty())) {
 		return false;
 	}
 
