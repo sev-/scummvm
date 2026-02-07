@@ -421,6 +421,8 @@ void CastleEngine::beforeStarting() {
 		waitInLoop(250);
 	else if (isSpectrum())
 		waitInLoop(100);
+	else if (isAmiga() || isAtariST())
+		waitInLoop(250);
 }
 
 void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
@@ -1696,6 +1698,8 @@ void CastleEngine::drawLiftingGate(Graphics::Surface *surface) {
 		duration = 250;
 	else if (isSpectrum())
 		duration = 100;
+	else if (isAmiga() || isAtariST())
+		duration = 250;
 
 	if ((_gameStateControl == kFreescapeGameStateStart || _gameStateControl == kFreescapeGameStateRestart) && _ticks <= duration) { // Draw the _gameOverBackgroundFrame gate lifting up slowly
 		int gate_w = _gameOverBackgroundFrame->w;

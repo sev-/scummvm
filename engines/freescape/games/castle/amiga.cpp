@@ -217,6 +217,99 @@ void CastleEngine::loadAssetsAmigaDemo() {
 	_riddleBottomFrame = loadFrameFromPlanesInterleaved(&file, 16, 8);
 	_riddleBottomFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
 
+	// Castle gate (game over background frame)
+	// Pixel data: 43 rows × 96 bytes (16 columns × 3 words) at file 0x39AE2
+	// Mask data: 43 rows × 32 bytes (16 words) at file 0x3AB02
+	// FUN_2CCA tiles 24 top rows + 19 bottom rows into a 256×120 gate image
+	{
+		static const int kTopRows = 24;
+		static const int kBottomRows = 19;
+		static const int kTotalSrcRows = kTopRows + kBottomRows;
+		static const int kColumnsPerRow = 16;
+		static const int kPixelBytesPerRow = kColumnsPerRow * 6; // 3 words × 2 bytes
+		static const int kMaskBytesPerRow = kColumnsPerRow * 2;  // 1 word × 2 bytes
+		static const int kGateWidth = 256;
+		static const int kGateHeight = 120;
+
+		byte pixelData[kTotalSrcRows * kPixelBytesPerRow];
+		byte maskData[kTotalSrcRows * kMaskBytesPerRow];
+
+		file.seek(0x39AE2);
+		file.read(pixelData, sizeof(pixelData));
+		file.seek(0x3AB02);
+		file.read(maskData, sizeof(maskData));
+
+		uint32 keyColor = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x24, 0xA5);
+		uint32 paletteColors[8];
+		for (int i = 0; i < 8; i++)
+			paletteColors[i] = _gfx->_texturePixelFormat.ARGBToColor(0xFF,
+				kAmigaCastlePalette[i][0], kAmigaCastlePalette[i][1], kAmigaCastlePalette[i][2]);
+
+		_gameOverBackgroundFrame = new Graphics::ManagedSurface();
+		_gameOverBackgroundFrame->create(kGateWidth, kGateHeight, _gfx->_texturePixelFormat);
+		_gameOverBackgroundFrame->fillRect(Common::Rect(0, 0, kGateWidth, kGateHeight), keyColor);
+
+		// Build row mapping: FUN_2CCA tiling for N=120
+		// 5 tail rows from top portion (rows 19-23), then 4×24 full top blocks, then 19 bottom rows
+		int destRow = 0;
+		// Tail of top portion
+		for (int r = kTopRows - 5; r < kTopRows; r++) {
+			int srcRow = r;
+			for (int col = 0; col < kColumnsPerRow; col++) {
+				uint16 mask = READ_BE_UINT16(&maskData[srcRow * kMaskBytesPerRow + col * 2]);
+				int pOff = srcRow * kPixelBytesPerRow + col * 6;
+				uint16 p0 = READ_BE_UINT16(&pixelData[pOff]);
+				uint16 p1 = READ_BE_UINT16(&pixelData[pOff + 2]);
+				uint16 p2 = READ_BE_UINT16(&pixelData[pOff + 4]);
+				for (int bit = 15; bit >= 0; bit--) {
+					if (!(mask & (1 << bit))) {
+						int color = ((p0 >> bit) & 1) | (((p1 >> bit) & 1) << 1) | (((p2 >> bit) & 1) << 2);
+						_gameOverBackgroundFrame->setPixel(col * 16 + (15 - bit), destRow, paletteColors[color]);
+					}
+				}
+			}
+			destRow++;
+		}
+		// 4 full repetitions of top portion (24 rows each)
+		for (int block = 0; block < 4; block++) {
+			for (int r = 0; r < kTopRows; r++) {
+				int srcRow = r;
+				for (int col = 0; col < kColumnsPerRow; col++) {
+					uint16 mask = READ_BE_UINT16(&maskData[srcRow * kMaskBytesPerRow + col * 2]);
+					int pOff = srcRow * kPixelBytesPerRow + col * 6;
+					uint16 p0 = READ_BE_UINT16(&pixelData[pOff]);
+					uint16 p1 = READ_BE_UINT16(&pixelData[pOff + 2]);
+					uint16 p2 = READ_BE_UINT16(&pixelData[pOff + 4]);
+					for (int bit = 15; bit >= 0; bit--) {
+						if (!(mask & (1 << bit))) {
+							int color = ((p0 >> bit) & 1) | (((p1 >> bit) & 1) << 1) | (((p2 >> bit) & 1) << 2);
+							_gameOverBackgroundFrame->setPixel(col * 16 + (15 - bit), destRow, paletteColors[color]);
+						}
+					}
+				}
+				destRow++;
+			}
+		}
+		// Bottom portion (19 rows)
+		for (int r = 0; r < kBottomRows; r++) {
+			int srcRow = kTopRows + r;
+			for (int col = 0; col < kColumnsPerRow; col++) {
+				uint16 mask = READ_BE_UINT16(&maskData[srcRow * kMaskBytesPerRow + col * 2]);
+				int pOff = srcRow * kPixelBytesPerRow + col * 6;
+				uint16 p0 = READ_BE_UINT16(&pixelData[pOff]);
+				uint16 p1 = READ_BE_UINT16(&pixelData[pOff + 2]);
+				uint16 p2 = READ_BE_UINT16(&pixelData[pOff + 4]);
+				for (int bit = 15; bit >= 0; bit--) {
+					if (!(mask & (1 << bit))) {
+						int color = ((p0 >> bit) & 1) | (((p1 >> bit) & 1) << 1) | (((p2 >> bit) & 1) << 2);
+						_gameOverBackgroundFrame->setPixel(col * 16 + (15 - bit), destRow, paletteColors[color]);
+					}
+				}
+			}
+			destRow++;
+		}
+	}
+
 	// Load embedded ProTracker module for background music
 	// Module is at file offset 0x3D5A6 (memory 0x3D58A), ~86260 bytes
 	static const int kModOffset = 0x3D5A6;
@@ -237,6 +330,9 @@ void CastleEngine::loadAssetsAmigaDemo() {
 }
 
 void CastleEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
+	drawLiftingGate(surface);
+	drawDroppingGate(surface);
+
 	drawStringInSurface(_currentArea->_name, 97, 182, 0, 0, surface);
 	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 
