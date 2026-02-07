@@ -18,7 +18,7 @@ class U8TreasureLoaderTestSuite : public CxxTest::TestSuite {
 
 	/* Parse nothing -> should return nothing */
 	void test_parse_empty() {
-		Ultima::Std::vector<Ultima::Ultima8::TreasureInfo> t;
+		Common::Array<Ultima::Ultima8::TreasureInfo> t;
 		bool result = loader.parse("", t);
 		TS_ASSERT(result);
 		TS_ASSERT(t.empty());
@@ -26,7 +26,7 @@ class U8TreasureLoaderTestSuite : public CxxTest::TestSuite {
 
 	/* Parse a single treasure type */
 	void test_parse_basic() {
-		Ultima::Std::vector<Ultima::Ultima8::TreasureInfo> t;
+		Common::Array<Ultima::Ultima8::TreasureInfo> t;
 
 		bool result = loader.parse("shape=123,456 frame=2,3 count=4-20 map=23 chance=0.234", t);
 		TS_ASSERT(result);
@@ -48,7 +48,7 @@ class U8TreasureLoaderTestSuite : public CxxTest::TestSuite {
 
 	/* Parse multiple treasure types */
 	void test_parse_multi() {
-		Ultima::Std::vector<Ultima::Ultima8::TreasureInfo> t;
+		Common::Array<Ultima::Ultima8::TreasureInfo> t;
 
 		bool result = loader.parse("shape=123;shape=456 frame=2-5;shape=888 map=-12", t);
 		TS_ASSERT(result);
@@ -79,7 +79,7 @@ class U8TreasureLoaderTestSuite : public CxxTest::TestSuite {
 
 	/* Check that various invalid strings don't parse */
 	void test_parse_invalid() {
-		Ultima::Std::vector<Ultima::Ultima8::TreasureInfo> t;
+		Common::Array<Ultima::Ultima8::TreasureInfo> t;
 
 		bool result;
 
