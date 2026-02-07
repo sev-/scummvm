@@ -50,7 +50,7 @@ void FrameBuffer::putPixelNoTexture(int fbOffset, uint *pz, byte *ps, int _a,
                                     int x, int y, uint &z, uint &r, uint &g, uint &b, uint &a,
                                     int &dzdx, int &drdx, int &dgdx, int &dbdx, uint dadx,
                                     uint &fog, int fog_r, int fog_g, int fog_b, int &dfdx,
-									bool stippleEnabled) {
+                                    bool stippleEnabled) {
 	bool useStippleColor = false;
 	if (kEnableScissor && scissorPixel(x + _a, y)) {
 		goto end;
@@ -107,7 +107,7 @@ end:
 
 template <bool kDepthWrite, bool kSmoothMode, bool kFogMode, bool kEnableAlphaTest, bool kEnableScissor, bool kEnableBlending, bool kStencilEnabled, bool kDepthTestEnabled>
 void FrameBuffer::putPixelTexture(int fbOffset, const TexelBuffer *texture,
-								  FrameBuffer::ColorMode colorMode,
+                                  FrameBuffer::ColorMode colorMode,
                                   uint wrap_s, uint wrap_t, uint *pz, byte *ps, int _a,
                                   int x, int y, uint &z, int &t, int &s,
                                   uint &r, uint &g, uint &b, uint &a,
@@ -206,8 +206,8 @@ end:
 template <bool kSmoothMode, bool kDepthWrite, bool kFogMode, bool kAlphaTestEnabled, bool kEnableScissor,
           bool kBlendingEnabled, bool kStencilEnabled, bool kDepthTestEnabled>
 void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint *p2,
-							   FrameBuffer::ColorMode colorMode, bool kInterpZ,
-							   bool kInterpST, bool kInterpSTZ, bool stippleEnabled) {
+                               FrameBuffer::ColorMode colorMode, bool kInterpZ,
+                               bool kInterpST, bool kInterpSTZ, bool stippleEnabled) {
 	const TexelBuffer *texture;
 	float fdzdx = 0, fndzdx = 0, ndszdx = 0, ndtzdx = 0;
 
