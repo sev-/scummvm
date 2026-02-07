@@ -4,6 +4,7 @@
 #define NULL_DRIVER_USE_FOR_TEST 1
 #include "null_osystem.h"
 #include "../backends/platform/null/null.cpp"
+#include "../backends/saves/savefile.cpp"
 
 //#define DISPLAY_ERROR_MESSAGES
 
