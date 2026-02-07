@@ -115,6 +115,8 @@ void TinyGLRenderer::drawSkybox(Texture *texture, Math::Vector3d camera) {
 	tglNormalPointer(TGL_FLOAT, 0, _skyNormals);
 	if (texture->_width == 1008)
 		tglTexCoordPointer(2, TGL_FLOAT, 0, _skyUvs1008);
+	else if (texture->_width == 672)
+		tglTexCoordPointer(2, TGL_FLOAT, 0, _skyUvs672);
 	else if (texture->_width == 128)
 		tglTexCoordPointer(2, TGL_FLOAT, 0, _skyUvs128);
 	else

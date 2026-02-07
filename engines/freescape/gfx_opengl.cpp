@@ -171,6 +171,8 @@ void OpenGLRenderer::drawSkybox(Texture *texture, Math::Vector3d camera) {
 	glNormalPointer(GL_FLOAT, 0, _skyNormals);
 	if (texture->_width == 1008)
 		glTexCoordPointer(2, GL_FLOAT, 0, _skyUvs1008);
+	else if (texture->_width == 672)
+		glTexCoordPointer(2, GL_FLOAT, 0, _skyUvs672);
 	else if (texture->_width == 128)
 		glTexCoordPointer(2, GL_FLOAT, 0, _skyUvs128);
 	else

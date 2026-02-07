@@ -598,6 +598,33 @@ void CastleEngine::drawInfoMenu() {
 				keyRects.push_back(Common::Rect(80, y, 80 + _keysBorderFrames[i]->w / 2, y + _keysBorderFrames[i]->h));
 			}
 		}
+	} else if (isAmiga() || isAtariST()) {
+		if (_menu)
+			surface->copyRectToSurface(*_menu, 47, 35, Common::Rect(0, 0, MIN<int>(_menu->w, surface->w - 47), MIN<int>(_menu->h, surface->h - 35)));
+
+		_gfx->readFromPalette(15, r, g, b);
+		front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+		drawStringInSurface(Common::String::format("%07d", score), 166, 71, front, black, surface);
+		drawStringInSurface(centerAndPadString(Common::String::format("%s", _messagesList[135 + shield / 6].c_str()), 10), 151, 102, front, black, surface);
+
+		Common::String keysCollected = _messagesList[141];
+		Common::replace(keysCollected, "X", Common::String::format("%d", _keysCollected.size()));
+		drawStringInSurface(keysCollected, 103, 41, front, black, surface);
+
+		Common::String spiritsDestroyedString = _messagesList[133];
+		Common::replace(spiritsDestroyedString, "X", Common::String::format("%d", spiritsDestroyed));
+		drawStringInSurface(spiritsDestroyedString, 145, 132, front, black, surface);
+
+		for (int i = 0; i < int(_keysCollected.size()); i++) {
+			int y = 58 + (i / 2) * 18;
+			if (i % 2 == 0) {
+				surface->copyRectToSurfaceWithKey(*_keysBorderFrames[i], 58, y, Common::Rect(0, 0, _keysBorderFrames[i]->w, _keysBorderFrames[i]->h), black);
+				keyRects.push_back(Common::Rect(58, y, 58 + _keysBorderFrames[i]->w / 2, y + _keysBorderFrames[i]->h));
+			} else {
+				surface->copyRectToSurfaceWithKey(*_keysBorderFrames[i], 80, y, Common::Rect(0, 0, _keysBorderFrames[i]->w, _keysBorderFrames[i]->h), black);
+				keyRects.push_back(Common::Rect(80, y, 80 + _keysBorderFrames[i]->w / 2, y + _keysBorderFrames[i]->h));
+			}
+		}
 	} else if (isSpectrum()) {
 		Common::Array<Common::String> lines;
 		lines.push_back(centerAndPadString("********************", 21));
@@ -1122,6 +1149,8 @@ void CastleEngine::drawFullscreenRiddleAndWait(uint16 riddle) {
 	uint8 r, g, b;
 	_gfx->readFromPalette(frontColor, r, g, b);
 	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	if (isAmiga())
+		front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0xEE, 0xAA, 0x00);
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0x00, 0x00, 0x00);
 
 	Graphics::Surface *surface = new Graphics::Surface();
@@ -1180,6 +1209,10 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 	} else if (isSpectrum() || isCPC()) {
 		x = 64;
 		y = 37;
+	} else if (isAmiga()) {
+		x = 32;
+		y = 33;
+		maxWidth = 139;
 	}
 	surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, x, y, Common::Rect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h));
 	for (y += _riddleTopFrame->h; y < maxWidth;) {
@@ -1198,6 +1231,9 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 	} else if (isSpectrum() || isCPC()) {
 		x = 64;
 		y = 36;
+	} else if (isAmiga()) {
+		x = 40;
+		y = 32;
 	}
 
 	for (int i = 0; i < int(riddleMessages.size()); i++) {
@@ -1678,7 +1714,7 @@ void CastleEngine::drawBackground() {
 }
 
 void CastleEngine::updateThunder() {
-	if (!_thunderFrames[0])
+	if (_thunderFrames.empty() || !_thunderFrames[0])
 		return;
 
 	if (_thunderFrameDuration > 0) {

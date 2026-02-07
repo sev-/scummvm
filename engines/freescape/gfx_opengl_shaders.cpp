@@ -182,6 +182,8 @@ void OpenGLShaderRenderer::drawSkybox(Texture *texture, Math::Vector3d camera) {
 	glBindBuffer(GL_ARRAY_BUFFER, _cubemapTexCoordVBO);
 	if (texture->_width == 1008)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(_skyUvs1008), _skyUvs1008, GL_DYNAMIC_DRAW);
+	else if (texture->_width == 672)
+		glBufferData(GL_ARRAY_BUFFER, sizeof(_skyUvs672), _skyUvs672, GL_DYNAMIC_DRAW);
 	else if (texture->_width == 128)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(_skyUvs128), _skyUvs128, GL_DYNAMIC_DRAW);
 	else
