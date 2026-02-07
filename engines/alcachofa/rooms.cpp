@@ -272,20 +272,8 @@ void Room::updateInteraction() {
 
 void Room::updateRoomBounds() {
 	auto graphic = _backgroundObject == nullptr ? nullptr : _backgroundObject->graphic();
-	if (graphic != nullptr) {
-		auto bgSize = graphic->animation().imageSize(0);
-		if (g_engine->isV1()) {
-			g_engine->camera().setRoomBounds(graphic->topLeft(), bgSize);
-		} else {
-			/* The fallback fixes a bug where if the background image is invalid the original engine
-			 * would not update the background size. This would be around 1024,768 due to
-			 * previous rooms in the bug instances I found.
-			 */
-			if (bgSize == Point(0, 0))
-				bgSize = Point(1024, 768);
-			g_engine->camera().setRoomBounds(bgSize, graphic->scale());
-		}
-	}
+	if (graphic != nullptr)
+		g_engine->camera().setRoomBounds(*graphic);
 }
 
 void Room::updateObjects() {
@@ -533,13 +521,13 @@ void Inventory::drawAsOverlay(int32 scrollY) {
 }
 
 void Inventory::open() {
-	g_engine->camera().backup(1);
+	g_engine->camera().onOpenMenu();
 	g_engine->player().changeRoom(name(), true);
 	updateItemsByActiveCharacter();
 }
 
 void Inventory::close() {
-	g_engine->camera().restore(1);
+	g_engine->camera().onCloseMenu();
 	g_engine->globalUI().startClosingInventory();
 }
 

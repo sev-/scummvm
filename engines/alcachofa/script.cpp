@@ -702,16 +702,12 @@ private:
 		// player/world state changes
 		case ScriptKernelTask::ChangeCharacter: {
 			MainCharacterKind kind = getMainCharacterKindArg(0);
-			auto &camera = g_engine->camera();
 			auto &player = g_engine->player();
-			camera.resetRotationAndScale();
-			camera.backup(0);
 			if (kind != MainCharacterKind::None) {
 				player.setActiveCharacter(kind);
 				player.heldItem() = nullptr;
-				camera.setFollow(player.activeCharacter());
-				camera.backup(0);
 			}
+			g_engine->camera().onScriptChangedCharacter(kind);
 
 			if (g_engine->game().shouldChangeCharacterUseGameLock()) {
 				killProcessesFor(MainCharacterKind::None); // yes, kill for all characters

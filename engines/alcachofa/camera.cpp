@@ -21,7 +21,7 @@
 
 #include "alcachofa/camera.h"
 #include "alcachofa/alcachofa.h"
-#include "alcachofa/script.h"
+#include "alcachofa/graphics.h"
 
 #include "common/system.h"
 #include "math/vector4d.h"
@@ -31,28 +31,35 @@ using namespace Math;
 
 namespace Alcachofa {
 
-void Camera::resetRotationAndScale() {
-	_cur._scale = 1;
-	_cur._rotation = 0;
-	_cur._usedCenter.z() = 0;
+void Camera::preUpdate() {
+	_shake = {};
 }
 
-void Camera::setRoomBounds(Point min, Point size) {
-	Point screenSize(g_system->getWidth(), g_system->getHeight());
-	_roomMin = as2D(min + screenSize / 2);
-	_roomMax = _roomMin + as2D(size - screenSize);
-	_roomScale = 0;
-}
+void Camera::setRoomBounds(Graphic &background) {
+	auto bgSize = background.animation().imageSize(0);
+	if (g_engine->isV1()) {
+		Point screenSize(g_system->getWidth(), g_system->getHeight());
+		_roomMin = as2D(background.topLeft() + screenSize / 2);
+		_roomMax = _roomMin + as2D(bgSize - screenSize);
+		_roomScale = 0;
+	} else {
+		/* The fallback fixes a bug where if the background image is invalid the original engine
+		 * would not update the background size. This would be around 1024,768 due to
+		 * previous rooms in the bug instances I found.
+		 */
+		if (bgSize == Point(0, 0))
+			bgSize = Point(1024, 768);
 
-void Camera::setRoomBounds(Point bgSize, int16 bgScale) {
-	float scaleFactor = 1 - bgScale * kInvBaseScale;
-	_roomMin = Vector2d(
-		g_system->getWidth() / 2 * scaleFactor,
-		g_system->getHeight() / 2 * scaleFactor);
-	_roomMax = _roomMin + Vector2d(
-		bgSize.x * bgScale * kInvBaseScale,
-		bgSize.y * bgScale * kInvBaseScale);
-	_roomScale = bgScale;
+		const auto bgScale = background.scale();
+		float scaleFactor = 1 - bgScale * kInvBaseScale;
+		_roomMin = Vector2d(
+			g_system->getWidth() / 2 * scaleFactor,
+			g_system->getHeight() / 2 * scaleFactor);
+		_roomMax = _roomMin + Vector2d(
+			bgSize.x * bgScale * kInvBaseScale,
+			bgSize.y * bgScale * kInvBaseScale);
+		_roomScale = bgScale;
+	}
 }
 
 void Camera::setFollow(WalkingCharacter *target, bool catchUp) {
@@ -62,6 +69,49 @@ void Camera::setFollow(WalkingCharacter *target, bool catchUp) {
 	_catchUp = catchUp;
 	if (target == nullptr)
 		_isChanging = false;
+}
+
+void Camera::onChangedRoom(bool resetCamera) {
+	if (resetCamera)
+		resetRotationAndScale();
+	if (_followTarget != nullptr)
+		setFollow(_followTarget, true);
+}
+
+void Camera::onTriggeredDoor(WalkingCharacter *target) {
+	setFollow(target, true);
+}
+
+void Camera::onTriggeredDoor(Point fixedPosition) {
+	setPosition(as2D(fixedPosition));
+}
+
+void Camera::onScriptChangedCharacter(MainCharacterKind kind) {
+	resetRotationAndScale();
+	if (kind != MainCharacterKind::None)
+		setFollow(g_engine->player().activeCharacter());
+	backup(0);
+}
+
+void Camera::onUserChangedCharacter() {
+	setFollow(g_engine->player().activeCharacter());
+	restore(0);
+}
+
+void Camera::onOpenMenu() {
+	backup(1);
+	setPosition(Math::Vector3d(
+		g_system->getWidth() / 2.0f, g_system->getHeight() / 2.0f, 0.0f));
+}
+
+void Camera::onCloseMenu() {
+	restore(1);
+}
+
+void Camera::resetRotationAndScale() {
+	_cur._scale = 1;
+	_cur._rotation = 0;
+	_cur._usedCenter.z() = 0;
 }
 
 void Camera::setPosition(Vector2d v) {
@@ -487,7 +537,7 @@ protected:
 	void update(float t) override {
 		const Vector2d phase = _frequency * t * (float)M_PI * 2.0f;
 		const float amplTimeFactor = 1.0f / expf(t * 5.0f); // a curve starting at 1, depreciating towards 0 
-		_camera.shake() = {
+		_camera._shake = {
 			sinf(phase.getX()) * _amplitude.getX() * amplTimeFactor,
 			sinf(phase.getY()) * _amplitude.getY() * amplTimeFactor
 		};
@@ -692,7 +742,7 @@ struct CamDisguiseTask final : public Task {
 
 	TaskReturn run() override {
 		if (_startTime == 0) {
-			_startPosition = { _camera.usedCenter().x(), _camera.usedCenter().y() };
+			_startPosition = { _camera._cur._usedCenter.x(), _camera._cur._usedCenter.y() };
 			_startTime = g_engine->getMillis();
 		}
 		if (_durationMs <= 0 || g_engine->getMillis() - _startTime >= (uint32)_durationMs)

@@ -113,7 +113,7 @@ Common::Error AlcachofaEngine::run() {
 		_sounds.update();
 		_renderer->begin();
 		_drawQueue->clear();
-		_camera.shake() = Vector2d();
+		_camera.preUpdate();
 		_player->preUpdate();
 		if (_player->currentRoom() != nullptr)
 			_player->currentRoom()->update();

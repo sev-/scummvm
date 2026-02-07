@@ -143,8 +143,7 @@ bool GlobalUI::updateChangingCharacter() {
 
 	player.setActiveCharacter(player.inactiveCharacter()->kind());
 	player.heldItem() = nullptr;
-	g_engine->camera().setFollow(player.activeCharacter());
-	g_engine->camera().restore(0);
+	g_engine->camera().onUserChangedCharacter();
 	player.changeRoom(player.activeCharacter()->room()->name(), false);
 	g_engine->game().onUserChangedCharacter();
 

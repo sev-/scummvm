@@ -162,11 +162,7 @@ void Player::changeRoom(const Common::String &targetRoomName, bool resetCamera, 
 	}
 	_currentRoom->loadResources(); // if we kept resources we loop over a couple noops, that is fine.
 
-	if (resetCamera)
-		g_engine->camera().resetRotationAndScale();
-	WalkingCharacter *followTarget = g_engine->camera().followTarget();
-	if (followTarget != nullptr)
-		g_engine->camera().setFollow(followTarget, true);
+	g_engine->camera().onChangedRoom(resetCamera);
 	_pressedObject = _selectedObject = nullptr;
 }
 
@@ -257,12 +253,12 @@ struct DoorTask final : public Task {
 		_player.changeRoom(_targetRoom->name(), true); //-V779
 
 		if (_targetRoom->fixedCameraOnEntering())
-			g_engine->camera().setPosition(as2D(_targetObject->interactionPoint()));
+			g_engine->camera().onTriggeredDoor(_targetObject->interactionPoint());
 		else {
 			_character->room() = _targetRoom;
 			_character->setPosition(_targetObject->interactionPoint());
 			_character->stopWalking(_targetDirection);
-			g_engine->camera().setFollow(_character, true);
+			g_engine->camera().onTriggeredDoor(_character);
 		}
 
 		g_engine->sounds().setMusicToRoom(_targetRoom->musicID());

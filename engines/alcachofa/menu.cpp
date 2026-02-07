@@ -100,9 +100,7 @@ void Menu::updateOpeningMenu() {
 
 	g_engine->player().heldItem() = nullptr;
 	g_engine->scheduler().backupContext();
-	g_engine->camera().backup(1);
-	g_engine->camera().setPosition(Math::Vector3d(
-		g_system->getWidth() / 2.0f, g_system->getHeight() / 2.0f, 0.0f));
+	g_engine->camera().onOpenMenu();
 }
 
 void MenuV1::updateOpeningMenu() {
@@ -193,7 +191,7 @@ void Menu::continueGame() {
 	g_engine->input().nextFrame(); // presumably to clear all was* flags
 	g_engine->player().changeRoom(_previousRoom->name(), true);
 	g_engine->sounds().pauseAll(false);
-	g_engine->camera().restore(1);
+	g_engine->camera().onCloseMenu();
 	g_engine->scheduler().restoreContext();
 	g_engine->setMillis(_millisBeforeMenu);
 }

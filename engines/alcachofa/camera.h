@@ -27,6 +27,7 @@
 
 namespace Alcachofa {
 
+class Graphic;
 class WalkingCharacter;
 class Process;
 struct Task;
@@ -36,24 +37,24 @@ static constexpr const float kInvBaseScale = 1.0f / kBaseScale;
 
 class Camera {
 public:
-	inline Math::Vector3d usedCenter() const { return _cur._usedCenter; }
 	inline Math::Angle rotation() const { return _cur._rotation; }
-	inline Math::Vector2d &shake() { return _shake; }
-	inline WalkingCharacter *followTarget() { return _followTarget; }
 
+	void preUpdate();
 	void update();
+	void setRoomBounds(Graphic &background);
+	void setFollow(WalkingCharacter *target, bool catchUp = false);
+	void onChangedRoom(bool resetCamera);
+	void onTriggeredDoor(WalkingCharacter *target);
+	void onTriggeredDoor(Common::Point fixedPosition);
+	void onScriptChangedCharacter(MainCharacterKind kind);
+	void onUserChangedCharacter();
+	void onOpenMenu();
+	void onCloseMenu();
+	void syncGame(Common::Serializer &s);
+
 	Math::Vector3d transform2Dto3D(Math::Vector3d v) const;
 	Math::Vector3d transform3Dto2D(Math::Vector3d v) const;
 	Common::Point transform3Dto2D(Common::Point p) const;
-	void resetRotationAndScale();
-	void setRoomBounds(Common::Point min, Common::Point size); ///< Used in V1
-	void setRoomBounds(Common::Point bgSize, int16 bgScale); ///< Used in V3
-	void setFollow(WalkingCharacter *target, bool catchUp = false);
-	void setPosition(Math::Vector2d v);
-	void setPosition(Math::Vector3d v);
-	void backup(uint slot);
-	void restore(uint slot);
-	void syncGame(Common::Serializer &s);
 
 	Task *lerpPos(Process &process,
 		Math::Vector2d targetPos,
@@ -78,6 +79,12 @@ public:
 	Task *disguise(Process &process, int32 duration);
 
 private:
+	void resetRotationAndScale();
+	void setPosition(Math::Vector2d v);
+	void setPosition(Math::Vector3d v);
+	void backup(uint slot);
+	void restore(uint slot);
+
 	friend struct CamLerpTask;
 	friend struct CamLerpPosTask;
 	friend struct CamLerpScaleTask;
@@ -86,6 +93,7 @@ private:
 	friend struct CamShakeTask;
 	friend struct CamWaitToStopTask;
 	friend struct CamSetInactiveAttributeTask;
+	friend struct CamDisguiseTask;
 	Math::Vector3d setAppliedCenter(Math::Vector3d center);
 	void setupMatricesAround(Math::Vector3d center);
 	void updateFollowing(float deltaTime);
