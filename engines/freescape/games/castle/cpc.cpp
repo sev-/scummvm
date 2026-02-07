@@ -30,14 +30,33 @@ namespace Freescape {
 
 void CastleEngine::initCPC() {
 	_viewArea = Common::Rect(40, 33 - 2, 280, 152);
-	_soundIndexShoot = 5;
-	_soundIndexCollide = -1;
-	_soundIndexFallen = -1;
-	_soundIndexStepUp = -1;
-	_soundIndexStepDown = -1;
-	_soundIndexMenu = -1;
-	_soundIndexStart = 6;
-	_soundIndexAreaChange = 7;
+
+	// Sound indices verified from Z80 disassembly of CM.BIN.
+	// The CPC version uses the same sound IDs as the ZX Spectrum version
+	// (see castlemaster2-annotated-zx-spectrum.asm for SFX constant names).
+	//
+	// Direct calls in the binary:
+	//   ld a,5 / call 0x786F  at 0x6E5D  -> shoot/throw rock (SFX_THROW_ROCK_OR_LAND)
+	//   ld a,3 / call 0x786F  at 0x25E5+  -> menu select / collision (SFX_MENU_SELECT)
+	//   ld a,9 / call z,0x786F at 0x88F1  -> gate close (SFX_GATE_CLOSE)
+	//   ld a,15 / call 0x786F at 0x8921  -> end game sequence
+	//
+	// Deferred via _requested_SFX variable (0xCFD9):
+	//   ld a,12 / ld (0xCFD9),a at 0x62A5, 0x634A -> step up/down (SFX_CLIMB_DROP)
+	//   ld a,7  / ld (0xCFD9),a at 0x7554          -> area change/teleport (SFX_GAME_START)
+	//   ld a,6  / ld (0xCFD9),a at 0x8625          -> falling (SFX_FALLING)
+	//   ld a,8  / ld (0xCFD9),a at 0x864E          -> lightning/landing (SFX_LIGHTNING)
+	//   ld a,13 / ld (0xCFD9),a at 0x7597          -> escaped (SFX_OPEN_ESCAPED)
+	_soundIndexShoot = 5;            // SFX_THROW_ROCK_OR_LAND
+	_soundIndexCollide = 3;          // SFX_MENU_SELECT (also used for collisions)
+	_soundIndexFall = 6;             // SFX_FALLING (during fall)
+	_soundIndexFallen = 5;           // SFX_THROW_ROCK_OR_LAND (landing after fall)
+	_soundIndexStartFalling = -1;    // Not used separately in Castle CPC
+	_soundIndexStepUp = 12;          // SFX_CLIMB_DROP
+	_soundIndexStepDown = 12;        // SFX_CLIMB_DROP
+	_soundIndexMenu = 3;             // SFX_MENU_SELECT
+	_soundIndexStart = 7;            // SFX_GAME_START
+	_soundIndexAreaChange = 7;       // SFX_GAME_START (same as ZX)
 }
 
 
@@ -148,6 +167,7 @@ void CastleEngine::loadAssetsCPCFullGame() {
 		case Common::EN_ANY:
 			loadRiddles(&file, 0x1b75 - 2 - 9 * 2, 9);
 			load8bitBinary(&file, 0x791a, 16);
+			loadSoundsCPC(&file, 0x21E2, 48, 0x2212, 204, 0x2179, 105);
 
 			file.seek(0x2724);
 			for (int i = 0; i < 90; i++) {

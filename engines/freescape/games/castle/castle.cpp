@@ -1002,7 +1002,7 @@ void CastleEngine::drawFullscreenGameOverAndWait() {
 
 	if (isDOS()) {
 		// TODO: playSound(X, false, _soundFxHandle);
-	} else if (isSpectrum()) {
+	} else if (isSpectrum() || isCPC()) {
 		playSound(9, false, _soundFxHandle);
 	}
 
@@ -1849,7 +1849,7 @@ void CastleEngine::updateThunder() {
 		_gfx->drawThunder(_thunderTextures[0], _position + _thunderOffset, 100);
 		_thunderFrameDuration--;
 		if (_thunderFrameDuration == 0)
-			if (isSpectrum())
+			if (isSpectrum() || isCPC())
 				playSound(8, false, _soundFxHandle);
 		return;
 	}
