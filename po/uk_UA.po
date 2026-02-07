@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-07 14:53+0000\n"
-"PO-Revision-Date: 2026-02-06 07:22+0000\n"
+"PO-Revision-Date: 2026-02-07 22:19+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -4893,16 +4893,12 @@ msgid "D-pad Right"
 msgstr "Хрестовина вправо"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Коло"
+msgstr "Коло-пад X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Коло"
+msgstr "Коло-пад Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
