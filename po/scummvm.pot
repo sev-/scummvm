@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2026.1.1git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:53+0000\n"
+"POT-Creation-Date: 2026-02-07 22:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3559,7 +3559,7 @@ msgstr ""
 msgid "Game not implemented"
 msgstr ""
 
-#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#: engines/metaengine.cpp:75
 msgid "Default game keymap"
 msgstr ""
 
@@ -6188,12 +6188,12 @@ msgstr ""
 #: engines/illusions/metaengine.cpp:90 engines/lab/metaengine.cpp:152
 #: engines/lure/metaengine.cpp:169 engines/made/metaengine.cpp:133
 #: engines/mads/metaengine.cpp:275 engines/neverhood/metaengine.cpp:186
-#: engines/queen/metaengine.cpp:147 engines/sludge/keymapper_tables.h:33
-#: engines/stark/metaengine.cpp:185 engines/sword1/metaengine.cpp:267
-#: engines/tinsel/metaengine.cpp:241 engines/toon/metaengine.cpp:82
-#: engines/tot/metaengine.cpp:103 engines/touche/metaengine.cpp:119
-#: engines/trecision/metaengine.cpp:121 engines/tsage/metaengine.cpp:170
-#: engines/tucker/metaengine.cpp:168
+#: engines/queen/metaengine.cpp:147 engines/saga/metaengine.cpp:268
+#: engines/sludge/keymapper_tables.h:33 engines/stark/metaengine.cpp:185
+#: engines/sword1/metaengine.cpp:267 engines/tinsel/metaengine.cpp:241
+#: engines/toon/metaengine.cpp:82 engines/tot/metaengine.cpp:103
+#: engines/touche/metaengine.cpp:119 engines/trecision/metaengine.cpp:121
+#: engines/tsage/metaengine.cpp:170 engines/tucker/metaengine.cpp:168
 msgid "Game keymappings"
 msgstr ""
 
@@ -10547,28 +10547,28 @@ msgstr ""
 msgid "I Have No Mouth support not compiled in"
 msgstr ""
 
-#: engines/saga/metaengine.cpp:268
-msgid "Game keymapping"
+#: engines/saga/metaengine.cpp:267
+msgid "Default game keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:269
-msgid "Option panel keymapping"
+msgid "Option panel keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:270
-msgid "Save panel keymapping"
+msgid "Save panel keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:271
-msgid "Load panel keymapping"
+msgid "Load panel keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:272
-msgid "Quit panel keymapping"
+msgid "Quit panel keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:273
-msgid "Converse panel keymapping"
+msgid "Converse panel keymappings"
 msgstr ""
 
 #. I18N: the boss key is a feature,
