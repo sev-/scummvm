@@ -10,6 +10,8 @@ public:
 		const uint16 step2[8] = { 0, 1, 2, 2, 2, 2, 1, 0 };
 		const uint16 step3[8] = { 0, 1, 2, 3, 3, 2, 1, 0 };
 
+		//memset(expected, 0, sizeof(expected));
+
 		Common::memset16(expected + 1, 1, 6);
 
 		TS_ASSERT_EQUALS(memcmp(expected, step1, sizeof(expected)), 0);
