@@ -485,7 +485,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 			int x = x1;
 			if (colorMode == ColorMode::NoInterpolation) {
 				int n;
-				uint *pz;
+				uint *pz = nullptr;
 				byte *ps = nullptr;
 				uint z;
 				n = (x2 >> 16) - x1;
@@ -522,7 +522,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 					x += 1;
 				}
 			} else if (!(kInterpST || kInterpSTZ)) {
-				uint *pz;
+				uint *pz = nullptr;
 				byte *ps = nullptr;
 				int pp;
 				uint z, r, g, b, a, fog;
@@ -575,7 +575,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 					x += 1;
 				}
 			} else if (kInterpST || kInterpSTZ) {
-				uint *pz;
+				uint *pz = nullptr;
 				byte *ps = nullptr;
 				int s, t;
 				uint z, r, g, b, a, fog;
