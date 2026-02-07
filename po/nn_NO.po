@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:53+0000\n"
+"POT-Creation-Date: 2026-02-07 22:20+0000\n"
 "PO-Revision-Date: 2023-12-14 14:28+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Norwegian Nynorsk <https://translations.scummvm.org/projects/"
@@ -3780,7 +3780,7 @@ msgstr ""
 msgid "Game not implemented"
 msgstr "Spel ID ikkje støtta"
 
-#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#: engines/metaengine.cpp:75
 msgid "Default game keymap"
 msgstr ""
 
@@ -6594,12 +6594,12 @@ msgstr ""
 #: engines/illusions/metaengine.cpp:90 engines/lab/metaengine.cpp:152
 #: engines/lure/metaengine.cpp:169 engines/made/metaengine.cpp:133
 #: engines/mads/metaengine.cpp:275 engines/neverhood/metaengine.cpp:186
-#: engines/queen/metaengine.cpp:147 engines/sludge/keymapper_tables.h:33
-#: engines/stark/metaengine.cpp:185 engines/sword1/metaengine.cpp:267
-#: engines/tinsel/metaengine.cpp:241 engines/toon/metaengine.cpp:82
-#: engines/tot/metaengine.cpp:103 engines/touche/metaengine.cpp:119
-#: engines/trecision/metaengine.cpp:121 engines/tsage/metaengine.cpp:170
-#: engines/tucker/metaengine.cpp:168
+#: engines/queen/metaengine.cpp:147 engines/saga/metaengine.cpp:268
+#: engines/sludge/keymapper_tables.h:33 engines/stark/metaengine.cpp:185
+#: engines/sword1/metaengine.cpp:267 engines/tinsel/metaengine.cpp:241
+#: engines/toon/metaengine.cpp:82 engines/tot/metaengine.cpp:103
+#: engines/touche/metaengine.cpp:119 engines/trecision/metaengine.cpp:121
+#: engines/tsage/metaengine.cpp:170 engines/tucker/metaengine.cpp:168
 #, fuzzy
 #| msgid "Game Options"
 msgid "Game keymappings"
@@ -11626,39 +11626,41 @@ msgstr "Spel ID ikkje støtta"
 msgid "I Have No Mouth support not compiled in"
 msgstr "Funksjonar innkompilert:"
 
-#: engines/saga/metaengine.cpp:268
+#: engines/saga/metaengine.cpp:267
 #, fuzzy
 #| msgid "Game Options"
-msgid "Game keymapping"
+msgid "Default game keymappings"
 msgstr "Spelval"
 
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Game Options"
-msgid "Option panel keymapping"
+msgid "Option panel keymappings"
 msgstr "Spelval"
 
 #: engines/saga/metaengine.cpp:270
 #, fuzzy
 #| msgid "Game Options"
-msgid "Save panel keymapping"
+msgid "Save panel keymappings"
 msgstr "Spelval"
 
 #: engines/saga/metaengine.cpp:271
 #, fuzzy
 #| msgid "Game Options"
-msgid "Load panel keymapping"
+msgid "Load panel keymappings"
 msgstr "Spelval"
 
 #: engines/saga/metaengine.cpp:272
 #, fuzzy
 #| msgid "Game Options"
-msgid "Quit panel keymapping"
+msgid "Quit panel keymappings"
 msgstr "Spelval"
 
 #: engines/saga/metaengine.cpp:273
-msgid "Converse panel keymapping"
-msgstr ""
+#, fuzzy
+#| msgid "Game Options"
+msgid "Converse panel keymappings"
+msgstr "Spelval"
 
 #. I18N: the boss key is a feature,
 #. that allows players to quickly switch to a fake screen that looks like a business application,
@@ -17016,6 +17018,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Game Options"
+#~ msgid "Game keymapping"
+#~ msgstr "Spelval"
 
 #, fuzzy
 #~ msgid "C-pad X"

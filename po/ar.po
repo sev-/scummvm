@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:53+0000\n"
+"POT-Creation-Date: 2026-02-07 22:20+0000\n"
 "PO-Revision-Date: 2023-03-26 11:16+0000\n"
 "Last-Translator: Malek Bellasfar <bellasfarmalek450@gmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -3866,7 +3866,7 @@ msgstr "معرّفات اللعبة المتطابقة لمحرك%s:"
 msgid "Game not implemented"
 msgstr "معرّف اللعبة غير مدعوم"
 
-#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#: engines/metaengine.cpp:75
 msgid "Default game keymap"
 msgstr "خريطة مفاتيح اللعبة الافتراضية"
 
@@ -6712,12 +6712,12 @@ msgstr ""
 #: engines/illusions/metaengine.cpp:90 engines/lab/metaengine.cpp:152
 #: engines/lure/metaengine.cpp:169 engines/made/metaengine.cpp:133
 #: engines/mads/metaengine.cpp:275 engines/neverhood/metaengine.cpp:186
-#: engines/queen/metaengine.cpp:147 engines/sludge/keymapper_tables.h:33
-#: engines/stark/metaengine.cpp:185 engines/sword1/metaengine.cpp:267
-#: engines/tinsel/metaengine.cpp:241 engines/toon/metaengine.cpp:82
-#: engines/tot/metaengine.cpp:103 engines/touche/metaengine.cpp:119
-#: engines/trecision/metaengine.cpp:121 engines/tsage/metaengine.cpp:170
-#: engines/tucker/metaengine.cpp:168
+#: engines/queen/metaengine.cpp:147 engines/saga/metaengine.cpp:268
+#: engines/sludge/keymapper_tables.h:33 engines/stark/metaengine.cpp:185
+#: engines/sword1/metaengine.cpp:267 engines/tinsel/metaengine.cpp:241
+#: engines/toon/metaengine.cpp:82 engines/tot/metaengine.cpp:103
+#: engines/touche/metaengine.cpp:119 engines/trecision/metaengine.cpp:121
+#: engines/tsage/metaengine.cpp:170 engines/tucker/metaengine.cpp:168
 #, fuzzy
 #| msgid "Game Options"
 msgid "Game keymappings"
@@ -12030,39 +12030,41 @@ msgstr "الإصدار التجريبي لجهاز كمبيوتر الجيب غ�
 msgid "I Have No Mouth support not compiled in"
 msgstr "ليس لدي دعم الفم لم يتم تجميعه في"
 
-#: engines/saga/metaengine.cpp:268
+#: engines/saga/metaengine.cpp:267
 #, fuzzy
-#| msgid "Game Options"
-msgid "Game keymapping"
-msgstr "خيارات اللعبة"
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
+msgstr "خريطة مفاتيح اللعبة الافتراضية"
 
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Game Options"
-msgid "Option panel keymapping"
+msgid "Option panel keymappings"
 msgstr "خيارات اللعبة"
 
 #: engines/saga/metaengine.cpp:270
 #, fuzzy
 #| msgid "Game Options"
-msgid "Save panel keymapping"
+msgid "Save panel keymappings"
 msgstr "خيارات اللعبة"
 
 #: engines/saga/metaengine.cpp:271
 #, fuzzy
 #| msgid "Game Options"
-msgid "Load panel keymapping"
+msgid "Load panel keymappings"
 msgstr "خيارات اللعبة"
 
 #: engines/saga/metaengine.cpp:272
 #, fuzzy
 #| msgid "Game Options"
-msgid "Quit panel keymapping"
+msgid "Quit panel keymappings"
 msgstr "خيارات اللعبة"
 
 #: engines/saga/metaengine.cpp:273
-msgid "Converse panel keymapping"
-msgstr ""
+#, fuzzy
+#| msgid "Game Options"
+msgid "Converse panel keymappings"
+msgstr "خيارات اللعبة"
 
 #. I18N: the boss key is a feature,
 #. that allows players to quickly switch to a fake screen that looks like a business application,
@@ -17672,6 +17674,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Game Options"
+#~ msgid "Game keymapping"
+#~ msgstr "خيارات اللعبة"
 
 #, fuzzy
 #~| msgid "C-Pad X"
