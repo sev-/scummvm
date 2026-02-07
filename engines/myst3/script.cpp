@@ -816,19 +816,19 @@ void Script::varSetZero(Context &c, const Opcode &cmd) {
 }
 
 void Script::varSetOne(Context &c, const Opcode &cmd) {
-	debugC(kDebugScript, "Opcode %d: Set var value %d := 1", cmd.op, cmd.args[0]);
+	debugC(kDebugScript, "Opcode %d: Set var value(1) %d := 1", cmd.op, cmd.args[0]);
 
 	_vm->_state->setVar(cmd.args[0], 1);
 }
 
 void Script::varSetTwo(Context &c, const Opcode &cmd) {
-	debugC(kDebugScript, "Opcode %d: Set var value %d := 2", cmd.op, cmd.args[0]);
+	debugC(kDebugScript, "Opcode %d: Set var value(2) %d := 2", cmd.op, cmd.args[0]);
 
 	_vm->_state->setVar(cmd.args[0], 2);
 }
 
 void Script::varSetOneHundred(Context &c, const Opcode &cmd) {
-	debugC(kDebugScript, "Opcode %d: Set var value %d := 100", cmd.op, cmd.args[0]);
+	debugC(kDebugScript, "Opcode %d: Set var value(100) %d := 100", cmd.op, cmd.args[0]);
 
 	_vm->_state->setVar(cmd.args[0], 100);
 }
@@ -2519,6 +2519,9 @@ void Script::soundPlayBlocking(Context &c, const Opcode &cmd) {
 	debugC(kDebugScript, "Opcode %d: Play skippable sound %d", cmd.op, cmd.args[0]);
 
 	int16 soundId = cmd.args[0];
+	if (soundId < 0) {
+		warning("soundPlayBlocking: negative sound id %d", soundId);
+	}
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 heading = _vm->_state->valueOrVarValue(cmd.args[2]);
 	int32 att = _vm->_state->valueOrVarValue(cmd.args[3]);
@@ -2686,6 +2689,9 @@ void Script::ambientAddSound2(Context &c, const Opcode &cmd) {
 	int32 id = _vm->_state->valueOrVarValue(cmd.args[0]);
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 fadeOutDelay = cmd.args[2];
+	if (fadeOutDelay < 0) {
+		warning("Negative fadeOutDelay %d in ambientAddSound2 opcode", fadeOutDelay);
+	}
 
 	_vm->_ambient->addSound(id, volume, 0, 0, 0, fadeOutDelay);
 }
@@ -2696,6 +2702,9 @@ void Script::ambientAddSound3(Context &c, const Opcode &cmd) {
 	int32 id = _vm->_state->valueOrVarValue(cmd.args[0]);
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 heading = cmd.args[2];
+	if (heading < 0) {
+		warning("Negative heading %d in ambientAddSound3 opcode", heading);
+	}
 
 	_vm->_ambient->addSound(id, volume, heading, 85, 0, 0);
 }
@@ -2706,7 +2715,13 @@ void Script::ambientAddSound4(Context &c, const Opcode &cmd) {
 	int32 id = _vm->_state->valueOrVarValue(cmd.args[0]);
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 heading = cmd.args[2];
+	if (heading < 0) {
+		warning("Negative heading %d in ambientAddSound4 opcode", heading);
+	}
 	int32 angle = cmd.args[3];
+	if (angle < 0) {
+		warning("Negative angle %d in ambientAddSound4 opcode", angle);
+	}
 
 	_vm->_ambient->addSound(id, volume, heading, angle, 0, 0);
 }
@@ -2725,6 +2740,9 @@ void Script::ambientSetCue1(Context &c, const Opcode &cmd) {
 	debugC(kDebugScript, "Opcode %d: Set ambient cue1 %d, volume: %d", cmd.op, cmd.args[0], cmd.args[1]);
 
 	int32 id = cmd.args[0];
+	if (id < 0) {
+		warning("Negative sound id %d in ambientSetCue1 opcode", id);
+	}
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 
 	_vm->_ambient->setCueSheet(id, volume, 0, 0);
@@ -2734,8 +2752,14 @@ void Script::ambientSetCue2(Context &c, const Opcode &cmd) {
 	debugC(kDebugScript, "Opcode %d: Set ambient cue2 %d, volume: %d, heading: %d", cmd.op, cmd.args[0], cmd.args[1], cmd.args[2]);
 
 	int32 id = cmd.args[0];
+	if (id < 0) {
+		warning("Negative sound id %d in ambientSetCue2 opcode", id);
+	}
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 heading = cmd.args[2];
+	if (heading < 0) {
+		warning("Negative heading %d in ambientSetCue2 opcode", heading);
+	}
 
 	_vm->_ambient->setCueSheet(id, volume, heading, 85);
 }
@@ -2744,9 +2768,18 @@ void Script::ambientSetCue3(Context &c, const Opcode &cmd) {
 	debugC(kDebugScript, "Opcode %d: Set ambient cue3 %d, volume: %d, heading: %d, angle: %d", cmd.op, cmd.args[0], cmd.args[1], cmd.args[2], cmd.args[3]);
 
 	int32 id = cmd.args[0];
+	if (id < 0) {
+		warning("Negative sound id %d in ambientSetCue3 opcode", id);
+	}
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 	int32 heading = cmd.args[2];
+	if (heading < 0) {
+		warning("Negative heading %d in ambientSetCue3 opcode", heading);
+	}
 	int32 angle = cmd.args[3];
+	if (angle < 0) {
+		warning("Negative angle %d in ambientSetCue3 opcode", angle);
+	}
 
 	_vm->_ambient->setCueSheet(id, volume, heading, angle);
 }
@@ -2755,6 +2788,9 @@ void Script::ambientSetCue4(Context &c, const Opcode &cmd) {
 	debugC(kDebugScript, "Opcode %d: Set ambient cue4 %d, volume: %d", cmd.op, cmd.args[0], cmd.args[1]);
 
 	int32 id = cmd.args[0];
+	if (id < 0) {
+		warning("Negative sound id %d in ambientSetCue4 opcode", id);
+	}
 	int32 volume = _vm->_state->valueOrVarValue(cmd.args[1]);
 
 	_vm->_ambient->setCueSheet(id, volume, 32766, 85);
