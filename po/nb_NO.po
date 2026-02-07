@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-07 14:53+0000\n"
-"PO-Revision-Date: 2024-12-05 21:24+0000\n"
-"Last-Translator: Stian Schultz <Stian.schultz@gmail.com>\n"
+"PO-Revision-Date: 2026-02-07 15:22+0000\n"
+"Last-Translator: Einar Johan Trøan Sømåen <einarjohants@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.scummvm.org/projects/"
 "scummvm/scummvm/nb_NO/>\n"
 "Language: nb_NO\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.15.1\n"
 "X-Poedit-SourceCharset: iso-8859-1\n"
 "X-Language-name: Norsk (bokmål)\n"
 
@@ -1684,7 +1684,7 @@ msgstr "Spill~i~nnst..."
 
 #: gui/launcher.cpp:1217
 msgid "Add-on"
-msgstr ""
+msgstr "Tillegg"
 
 #. I18N: List grouping when no engine is specified
 #: gui/launcher.cpp:1268 gui/launcher.cpp:1513
@@ -1728,12 +1728,13 @@ msgid "Icons per row:"
 msgstr "Ikoner per rad:"
 
 #: gui/launcher.cpp:1817
-#, fuzzy, c-format
-#| msgid "Do you really want to remove this game configuration?"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
-msgstr "Vil du virkelig fjerne denne spillkonfigurasjonen?"
+msgstr ""
+"Vil du virkelig fjerne de følgende %d spillkonfigurasjon(ene)?\n"
+"\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
 msgid "... progress ..."
@@ -5446,7 +5447,7 @@ msgstr "Vis kontroll på skjermen"
 
 #: backends/platform/android/options.cpp:138
 msgid "Ignore safe areas in-game"
-msgstr ""
+msgstr "Ignorer trygge områder i spillet"
 
 #: backends/platform/android/options.cpp:139
 #: backends/platform/ios7/ios7_options.mm:112
@@ -5529,7 +5530,7 @@ msgstr "I spill"
 
 #: backends/platform/android/options.cpp:195
 msgid "Export backup"
-msgstr ""
+msgstr "Eksporter sikkerhetskopi"
 
 #: backends/platform/android/options.cpp:195
 msgid "Export a backup of the configuration and save files"
@@ -5537,11 +5538,11 @@ msgstr ""
 
 #: backends/platform/android/options.cpp:196
 msgid "Import backup"
-msgstr ""
+msgstr "Importer sikkerhetskopi"
 
 #: backends/platform/android/options.cpp:196
 msgid "Import a previously exported backup file"
-msgstr ""
+msgstr "Importer en tidligere eksportert sikkerhetskopifil"
 
 #. I18N: This button opens a list of all folders added for Android Storage Attached Framework
 #: backends/platform/android/options.cpp:199
@@ -5549,18 +5550,16 @@ msgid "Remove folder authorizations..."
 msgstr "Fjern mappegodkjenninger ..."
 
 #: backends/platform/android/options.cpp:272
-#, fuzzy
-#| msgid "Select the orientation:"
 msgid "Select backup destination"
-msgstr "Velg orientering:"
+msgstr "Velg mål for sikkerhetskopi"
 
 #: backends/platform/android/options.cpp:280
 msgid "The backup has been saved successfully."
-msgstr ""
+msgstr "Sikkerhetskopien er lagret."
 
 #: backends/platform/android/options.cpp:282
 msgid "The backup has been saved successfully to the Downloads folder."
-msgstr ""
+msgstr "Sikkerhetskopien er lagret i Nedlastinger-mappen."
 
 #: backends/platform/android/options.cpp:284
 #: backends/platform/android/options.cpp:317
@@ -5589,7 +5588,7 @@ msgstr "Velg et tema"
 
 #: backends/platform/android/options.cpp:315
 msgid "The backup has been restored successfully."
-msgstr ""
+msgstr "Sikkerhetskopien er gjenopprettet."
 
 #: backends/platform/android/options.cpp:319
 #, fuzzy
@@ -6731,7 +6730,7 @@ msgstr "Bruk"
 
 #: engines/access/metaengine.cpp:296
 msgid "Goto"
-msgstr ""
+msgstr "Gå til"
 
 #: engines/access/metaengine.cpp:301 engines/access/metaengine.cpp:332
 #: engines/bbvs/metaengine.cpp:130 engines/drascula/metaengine.cpp:250
@@ -6777,7 +6776,7 @@ msgstr "Utstyrsliste"
 
 #: engines/access/metaengine.cpp:327 engines/ultima/ultima4/metaengine.cpp:51
 msgid "Climb"
-msgstr ""
+msgstr "Klatre"
 
 #: engines/access/metaengine.cpp:337 engines/bbvs/metaengine.cpp:142
 #: engines/freescape/games/castle/castle.cpp:298
@@ -7498,13 +7497,11 @@ msgstr ""
 
 #: engines/alcachofa/graphics-opengl.cpp:108
 msgid "Old OpenGL detected, some graphical errors will occur."
-msgstr ""
+msgstr "Gammel OpenGL oppdaget, enkelte grafikkfeil vil forekomme."
 
 #: engines/alcachofa/metaengine.cpp:40
-#, fuzzy
-#| msgid "Music Quality:"
 msgid "High Quality"
-msgstr "Musikkvalitet:"
+msgstr "Musikkvalitet"
 
 #: engines/alcachofa/metaengine.cpp:41
 #, fuzzy
@@ -7514,11 +7511,11 @@ msgstr "Skru musikk på/av"
 
 #: engines/alcachofa/metaengine.cpp:51
 msgid "32 Bits"
-msgstr ""
+msgstr "32 bits"
 
 #: engines/alcachofa/metaengine.cpp:52
 msgid "Whether to render the game in 16-bit color"
-msgstr ""
+msgstr "Hvorvidt spillet skal rendres i 16-bits farger"
 
 #: engines/alcachofa/metaengine.cpp:62
 #, fuzzy
@@ -7528,7 +7525,7 @@ msgstr "Filtrer grafikk"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "Hvorvidt teksturer skal filtreres linjært"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
@@ -7550,13 +7547,15 @@ msgstr "Skru undertekster av/på"
 
 #: engines/alg/metaengine.cpp:34
 msgid "Use lower quality single speed CD-ROM video"
-msgstr ""
+msgstr "Bruk 1x hastighets CD-ROM-video med lavere kvalitet"
 
 #: engines/alg/metaengine.cpp:35
 msgid ""
 "These videos are of lower quality, the default version uses double speed CD-"
 "ROM videos which are of better quality"
 msgstr ""
+"Disse videoene er av lavere kvalitet. Standardversjonen bruker 2x-hastighets "
+"CD-ROM-videoer, som er av bedre kvalitet"
 
 #: engines/asylum/metaengine.cpp:115
 msgid "Show version"
@@ -7659,7 +7658,7 @@ msgstr "Bruk kopisperrer som til vanlig ville vært forbigått."
 
 #: engines/awe/metaengine.cpp:61
 msgid "Select/Kick/Run"
-msgstr ""
+msgstr "Velg/Spark/Løp"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
@@ -7667,7 +7666,7 @@ msgstr "Hopp"
 
 #: engines/awe/metaengine.cpp:63
 msgid "Enter Level Code"
-msgstr ""
+msgstr "Angi nivåkode"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87
 #: engines/got/metaengine.cpp:105
@@ -8855,7 +8854,7 @@ msgstr "Gå sidelengs mot høyre"
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
 msgid "Wake up champion"
-msgstr ""
+msgstr "Vekk champion"
 
 #: engines/draci/metaengine.cpp:68 engines/prince/metaengine.cpp:64
 #, fuzzy
@@ -9245,7 +9244,7 @@ msgstr "Dropp"
 
 #: engines/efh/metaengine.cpp:437
 msgid "Equip"
-msgstr ""
+msgstr "Utrust"
 
 #: engines/efh/metaengine.cpp:442 engines/queen/metaengine.cpp:274
 #: engines/saga/metaengine.cpp:384 engines/scumm/help.cpp:124
@@ -9265,11 +9264,11 @@ msgstr "Info Meny"
 
 #: engines/efh/metaengine.cpp:452
 msgid "Passive skills"
-msgstr ""
+msgstr "Passive ferdigheter"
 
 #: engines/efh/metaengine.cpp:457
 msgid "Trade"
-msgstr ""
+msgstr "Handle"
 
 #: engines/efh/metaengine.cpp:467
 #, fuzzy
@@ -9285,17 +9284,15 @@ msgstr "Avslutt spill"
 
 #: engines/efh/metaengine.cpp:493
 msgid "Leave"
-msgstr ""
+msgstr "Forlat"
 
 #: engines/efh/metaengine.cpp:500 engines/efh/metaengine.cpp:536
-#, fuzzy
-#| msgid "Status:"
 msgid "Status"
-msgstr "Status:"
+msgstr "Status"
 
 #: engines/efh/metaengine.cpp:518
 msgid "Defend"
-msgstr ""
+msgstr "Forsvar"
 
 #. I18N: Run is a movement type
 #. I18N: Action in In Cold Blood
@@ -9413,7 +9410,7 @@ msgstr "Spill note 1: A"
 
 #: engines/efh/metaengine.cpp:657
 msgid "Play sound type 9"
-msgstr ""
+msgstr "Spill av lydtype 9"
 
 #: engines/efh/metaengine.cpp:662
 #, fuzzy
@@ -9783,11 +9780,11 @@ msgstr "Ild"
 
 #: engines/got/metaengine.cpp:75
 msgid "Magic"
-msgstr ""
+msgstr "Magi"
 
 #: engines/got/metaengine.cpp:79
 msgid "Thor dies"
-msgstr ""
+msgstr "Thor dør"
 
 #: engines/got/got.cpp:196 engines/got/got.cpp:206
 #, fuzzy
@@ -10335,7 +10332,7 @@ msgstr "Tale"
 #: engines/hypno/metaengine.cpp:180 engines/hypno/metaengine.cpp:278
 #: engines/hypno/metaengine.cpp:329
 msgid "Kill player"
-msgstr ""
+msgstr "Drep spiller"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Chump is the easy mode.
 #: engines/hypno/metaengine.cpp:205
@@ -10350,7 +10347,7 @@ msgstr ""
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Badass is the hard mode.
 #: engines/hypno/metaengine.cpp:219
 msgid "Badass"
-msgstr ""
+msgstr "Tøffing"
 
 #. I18N: (Game name: Soldier Boyz) This makes the player restart from the last checkpoint.
 #: engines/hypno/metaengine.cpp:232
@@ -10368,7 +10365,7 @@ msgstr "Start animasjon på nytt"
 
 #: engines/hypno/metaengine.cpp:245
 msgid "Begin new mission"
-msgstr ""
+msgstr "Begynn nytt oppdrag"
 
 #: engines/hypno/metaengine.cpp:313
 #, fuzzy
@@ -10849,7 +10846,7 @@ msgstr "Aktiver lyden i spillet"
 
 #: engines/lab/metaengine.cpp:185
 msgid "Lower the sound volume"
-msgstr ""
+msgstr "Senk lydvolumet"
 
 #: engines/lab/metaengine.cpp:216
 msgid "Interact with object with chosen action"
@@ -10875,7 +10872,7 @@ msgstr "Åpne holokart"
 
 #: engines/lab/metaengine.cpp:239
 msgid "Close door or object"
-msgstr ""
+msgstr "Steng dør eller objekt"
 
 #: engines/lab/metaengine.cpp:245
 msgid "Look at object close-up"
@@ -10895,15 +10892,15 @@ msgstr "Gå til konfigurasjonsmeny"
 
 #: engines/lab/metaengine.cpp:292 engines/lab/metaengine.cpp:352
 msgid "Start dropping virtual bread crumbs"
-msgstr ""
+msgstr "Begynn å slippe virtuelle brødsmuler"
 
 #: engines/lab/metaengine.cpp:298 engines/lab/metaengine.cpp:359
 msgid "Follow virtual bread crumbs"
-msgstr ""
+msgstr "Følg virtuelle brødsmuler"
 
 #: engines/lab/metaengine.cpp:304 engines/lab/metaengine.cpp:366
 msgid "Run while following virtual bread crumbs"
-msgstr ""
+msgstr "Løp mens du følger virtuelle brødsmuler"
 
 #: engines/lab/metaengine.cpp:311
 #, fuzzy
@@ -10937,19 +10934,15 @@ msgstr "Animerte elementer i utstyrslisten"
 
 #: engines/lab/metaengine.cpp:373
 msgid "Exit map display"
-msgstr ""
+msgstr "Avslutt kartvisning"
 
 #: engines/lab/metaengine.cpp:379
-#, fuzzy
-#| msgid "Debug level:"
 msgid "Up one level"
-msgstr "Debug-nivå:"
+msgstr "Opp ett nivå"
 
 #: engines/lab/metaengine.cpp:385
-#, fuzzy
-#| msgid "Debug level:"
 msgid "Down one level"
-msgstr "Debug-nivå:"
+msgstr "Ned ett nivå"
 
 #: engines/lab/metaengine.cpp:391
 #, fuzzy
@@ -13949,17 +13942,17 @@ msgstr "Spillinnstillinger"
 #. I18N: Map generator algorithms
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:59
 msgid "Algorithm"
-msgstr ""
+msgstr "Algoritme"
 
 #. I18N: Spiff algorithm
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:63
 msgid "Spiff"
-msgstr ""
+msgstr "Spiff"
 
 #. I18N: Katton algorithm
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:65
 msgid "Katton"
-msgstr ""
+msgstr "Katton"
 
 #. I18N: Random algorithm
 #. I18N: Random map size
@@ -13978,12 +13971,12 @@ msgstr "Tilfeldig"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:67
 msgid "Picks the map algorithm randomly."
-msgstr ""
+msgstr "Velger kartalgoritmen tilfeldig."
 
 #. I18N: Map sizes
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:70
 msgid "Size"
-msgstr ""
+msgstr "Størrelse"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:74
 #, fuzzy
@@ -13997,15 +13990,15 @@ msgstr "Stor"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:77
 msgid "Huge"
-msgstr ""
+msgstr "Enorm"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:78
 msgid "SAI"
-msgstr ""
+msgstr "SAI"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:79
 msgid "Ridiculous"
-msgstr ""
+msgstr "Tåpelig"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:80
 #, fuzzy
@@ -14015,7 +14008,7 @@ msgstr "Koble"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:82
 msgid "Picks the map size randomly."
-msgstr ""
+msgstr "Velger kartstørrelsen tilfeldig."
 
 #. I18N: Map tile sets
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:85
@@ -14031,7 +14024,7 @@ msgstr ""
 #. I18N: Percentage of energy pools
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:102
 msgid "Energy"
-msgstr ""
+msgstr "Energi"
 
 #. I18N: Energy slider label
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:107
@@ -14045,7 +14038,7 @@ msgstr ""
 #. I18N: Percentage of terrain
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:115
 msgid "Terrain"
-msgstr ""
+msgstr "Terreng"
 
 #. I18N: Terrain slider label
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:120
@@ -14059,16 +14052,16 @@ msgstr ""
 #. I18N: Percentage of water
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:127
 msgid "Water"
-msgstr ""
+msgstr "Vann"
 
 #. I18N: Water slider label
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:132
 msgid "Driest - Wettest"
-msgstr ""
+msgstr "Tørrest - Våtest"
 
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:136
 msgid "Picks the random amount of water."
-msgstr ""
+msgstr "Velger den tilfeldige mengden vann."
 
 #. I18N: Generate new map
 #: engines/scumm/he/moonbase/dialog-mapgenerator.cpp:140
@@ -14214,7 +14207,7 @@ msgstr "Nullstill"
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a journal, this action is used to go back 10 pages in the journal
 #: engines/sherlock/metaengine.cpp:501 engines/sherlock/metaengine.cpp:910
 msgid "Go back 10 pages"
-msgstr ""
+msgstr "Gå tilbake 10 sider"
 
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to go forward 10 pages in the journal
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a journal, this action is used to go forward 10 pages in the journal
@@ -14582,11 +14575,11 @@ msgstr "Hopp over mellomsekvens"
 
 #: engines/sludge/keymapper_tables.h:328
 msgid "Smell"
-msgstr ""
+msgstr "Lukte"
 
 #: engines/sludge/keymapper_tables.h:338
 msgid "Consume"
-msgstr ""
+msgstr "Konsumere"
 
 #: engines/sludge/keymapper_tables.h:361
 #, fuzzy
@@ -14671,7 +14664,7 @@ msgstr "Neste sted"
 #. I18N: Opens in-game Diary. April is the female protagonist name
 #: engines/stark/metaengine.cpp:225
 msgid "April's diary (initially disabled)"
-msgstr ""
+msgstr "Aprils dagbok (opprinnelig deaktivert)"
 
 #: engines/stark/metaengine.cpp:230
 #, fuzzy
@@ -14748,7 +14741,7 @@ msgstr "Hopp over dialog"
 
 #: engines/stark/metaengine.cpp:335
 msgid "Skip video sequence or dialog"
-msgstr ""
+msgstr "Hopp over videosekvens eller dialog"
 
 #: engines/stark/stark.cpp:106
 msgid "Software renderer does not support modded assets"
@@ -14856,10 +14849,8 @@ msgid "Perform default action"
 msgstr "Se på"
 
 #: engines/supernova/metaengine.cpp:244
-#, fuzzy
-#| msgid "Interpolation:"
 msgid "Instructions"
-msgstr "Interpolering:"
+msgstr "Instruksjoner"
 
 #: engines/supernova/metaengine.cpp:250
 #, fuzzy
@@ -14887,11 +14878,11 @@ msgstr "Åpne filadministrering"
 
 #: engines/supernova/metaengine.cpp:385
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #: engines/supernova/metaengine.cpp:391
 msgid "ProText"
-msgstr ""
+msgstr "ProText"
 
 #: engines/supernova/metaengine.cpp:397
 msgid "Calculata"
@@ -14962,15 +14953,15 @@ msgstr "Stemmer: Engelsk"
 
 #: engines/sword1/metaengine.cpp:63
 msgid "German"
-msgstr ""
+msgstr "Tysk"
 
 #: engines/sword1/metaengine.cpp:63
 msgid "French"
-msgstr ""
+msgstr "Fransk"
 
 #: engines/sword1/metaengine.cpp:63
 msgid "Italian"
-msgstr ""
+msgstr "Italiensk"
 
 #: engines/sword1/metaengine.cpp:63
 #, fuzzy
@@ -14980,11 +14971,11 @@ msgstr "Fullfør"
 
 #: engines/sword1/metaengine.cpp:63
 msgid "Brazilian Portuguese"
-msgstr ""
+msgstr "Brasiliansk Portugisisk"
 
 #: engines/sword1/metaengine.cpp:63
 msgid "Czech"
-msgstr ""
+msgstr "Tsjekkisk"
 
 #: engines/sword1/metaengine.cpp:86
 #, fuzzy
@@ -15136,7 +15127,7 @@ msgstr "Gå til meny for lagring/lasting"
 
 #: engines/tinsel/tinsel.cpp:1040
 msgid "Discworld Noir needs ScummVM with TinyGL enabled"
-msgstr ""
+msgstr "Discworld Noir krever ScummVM med TinyGL aktivert"
 
 #: engines/titanic/metaengine.cpp:173
 #, fuzzy
@@ -15205,10 +15196,8 @@ msgid "Remote"
 msgstr "Fjern"
 
 #: engines/titanic/metaengine.cpp:254
-#, fuzzy
-#| msgid "Room:"
 msgid "Rooms"
-msgstr "Rom:"
+msgstr "Rom"
 
 #: engines/titanic/metaengine.cpp:259
 msgid "Real life"
@@ -15227,10 +15216,8 @@ msgid "Scroll to bottom"
 msgstr "Flytt til bunnen"
 
 #: engines/titanic/metaengine.cpp:291
-#, fuzzy
-#| msgid "Transitions:"
 msgid "Translation"
-msgstr "Overganger:"
+msgstr "Oversettelse"
 
 #: engines/titanic/metaengine.cpp:307
 msgid "Toggle between Star Map and photo of your home"
@@ -15242,11 +15229,11 @@ msgstr ""
 
 #: engines/titanic/metaengine.cpp:356
 msgid "Lock coordinate"
-msgstr ""
+msgstr "Lås koordinat"
 
 #: engines/titanic/metaengine.cpp:362
 msgid "Unlock coordinate"
-msgstr ""
+msgstr "Lås opp koordinat"
 
 #: engines/titanic/metaengine.cpp:368
 #, fuzzy
@@ -15256,7 +15243,7 @@ msgstr "Avslutt samtale"
 
 #: engines/titanic/metaengine.cpp:373
 msgid "View boundaries"
-msgstr ""
+msgstr "Vis grenser"
 
 #: engines/toltecs/metaengine.cpp:216
 #, fuzzy
@@ -15405,7 +15392,7 @@ msgstr "Bytt mellom musepeker og forrige spillelement"
 
 #: engines/touche/metaengine.cpp:182
 msgid "Press \"Yes\" Key"
-msgstr ""
+msgstr "Trykk på \"Ja\"-tasten"
 
 #. I18N: Toggles walking speed of actor
 #: engines/trecision/metaengine.cpp:144
@@ -15691,7 +15678,7 @@ msgstr "Spesialhandling"
 
 #: engines/twine/metaengine.cpp:384
 msgid "Scenery zoom"
-msgstr ""
+msgstr "Landskapszoom"
 
 #: engines/twine/metaengine.cpp:527
 msgid "Previous location"
@@ -15708,7 +15695,7 @@ msgstr "Video:"
 #. I18N: Setting to switch toiled paper to be shown as "over".
 #: engines/twp/dialogs.cpp:37
 msgid "Toilet paper over"
-msgstr ""
+msgstr "Toalettpapir over"
 
 #: engines/twp/dialogs.cpp:38
 msgid ""
@@ -15719,7 +15706,7 @@ msgstr ""
 #. I18N: Setting to enable or disable additional jokes in the game.
 #: engines/twp/dialogs.cpp:41
 msgid "Annoying in-jokes"
-msgstr ""
+msgstr "Irriterende internspøker"
 
 #: engines/twp/dialogs.cpp:42
 msgid ""
@@ -15736,22 +15723,22 @@ msgstr "Kontroll:"
 #. I18N: Setting to invert verb colors or keep the original verb colors.
 #: engines/twp/dialogs.cpp:48
 msgid "Invert verb colors"
-msgstr ""
+msgstr "Inverter verbfarger"
 
 #. I18N: Setting to use retro or modern fonts.
 #: engines/twp/dialogs.cpp:50
 msgid "Retro Fonts"
-msgstr ""
+msgstr "Retroskrifttyper"
 
 #. I18N: Setting to use retro or modern verbs.
 #: engines/twp/dialogs.cpp:52
 msgid "Retro Verbs"
-msgstr ""
+msgstr "Retroverb"
 
 #. I18N: Setting to use classic sentence or modern sentence.
 #: engines/twp/dialogs.cpp:54
 msgid "Classic Sentence"
-msgstr ""
+msgstr "Klassisk setning"
 
 #. I18N: Settings to enable or disable Ransome unbeeped DLC.
 #: engines/twp/dialogs.cpp:57
@@ -15901,6 +15888,8 @@ msgid ""
 "This game requires OpenGL Framebuffer Objects, which are not supported on "
 "your system"
 msgstr ""
+"Dette spillet krever OpenGL Framebuffer Objects, som systemet ditt ikke "
+"støtter"
 
 #: engines/ultima/metaengine.cpp:67
 msgid "Enable frame skipping"
@@ -15982,7 +15971,7 @@ msgstr "Kan ikke finne riktig ultima.dat-datafil"
 
 #: engines/ultima/ultima0/metaengine.cpp:49
 msgid "Swing"
-msgstr ""
+msgstr "Sving"
 
 #: engines/ultima/ultima0/metaengine.cpp:50
 msgid "Throw"
@@ -15990,7 +15979,7 @@ msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:51
 msgid "Food"
-msgstr ""
+msgstr "Mat"
 
 #: engines/ultima/ultima0/metaengine.cpp:52
 msgid "Rapier"
@@ -15998,19 +15987,19 @@ msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:53
 msgid "Axe"
-msgstr ""
+msgstr "Øks"
 
 #: engines/ultima/ultima0/metaengine.cpp:54
 msgid "Shield"
-msgstr ""
+msgstr "Skjold"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
 msgid "Bow & Arrow"
-msgstr ""
+msgstr "Pil og Bue"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
 msgid "Magic Amulet"
-msgstr ""
+msgstr "Magisk Amulett"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
 #, fuzzy
@@ -16187,10 +16176,8 @@ msgstr "Åpne holokart"
 
 #. I18N: Going over something carefully
 #: engines/ultima/ultima4/metaengine.cpp:66
-#, fuzzy
-#| msgid "Password:"
 msgid "Pass"
-msgstr "Passord:"
+msgstr "Passer"
 
 #. I18N: Peer is used to look through keyholes or other small openings
 #: engines/ultima/ultima4/metaengine.cpp:68
@@ -16210,10 +16197,8 @@ msgid "Ready weapon"
 msgstr "Neste handling"
 
 #: engines/ultima/ultima4/metaengine.cpp:72
-#, fuzzy
-#| msgid "Status:"
 msgid "Stats"
-msgstr "Status:"
+msgstr "Statistikk"
 
 #: engines/ultima/ultima4/metaengine.cpp:75
 msgid "Wear armor"
@@ -16224,10 +16209,8 @@ msgid "Yell"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:82
-#, fuzzy
-#| msgid "Speed:"
 msgid "Speed up"
-msgstr "Hastighet:"
+msgstr "Øk hastighet"
 
 #: engines/ultima/ultima4/metaengine.cpp:83
 #, fuzzy
@@ -17020,7 +17003,7 @@ msgstr "Utstyrsliste"
 
 #: engines/ultima/ultima8/metaengine.cpp:84
 msgid "Detonate bomb"
-msgstr ""
+msgstr "Detoner bombe"
 
 #: engines/ultima/ultima8/metaengine.cpp:86
 #, fuzzy
@@ -17329,11 +17312,11 @@ msgstr "Hopp over mellomsekvens"
 
 #: engines/voyeur/metaengine.cpp:211
 msgid "View evidence"
-msgstr ""
+msgstr "Vis bevis"
 
 #: engines/voyeur/metaengine.cpp:217
 msgid "Exit / Put away evidence"
-msgstr ""
+msgstr "Avslutt / Legg bort bevis"
 
 #: engines/voyeur/metaengine.cpp:223
 #, fuzzy
@@ -17377,15 +17360,15 @@ msgstr "Bruk engelsk tale"
 
 #: engines/wintermute/metaengine.cpp:95
 msgid "Use Italian dubbing instead of the default English one"
-msgstr ""
+msgstr "Bruk italiensk dubbing istedenfor engelsk"
 
 #: engines/wintermute/metaengine.cpp:106
 msgid "Run SD version (1280x800)"
-msgstr ""
+msgstr "Kjør SD-versjon (1280x800)"
 
 #: engines/wintermute/metaengine.cpp:107
 msgid "Run the legacy SD version, which is better for small screens"
-msgstr ""
+msgstr "Kjør foreldet SD-versjon, som er bedre for små skjermer"
 
 #: engines/wintermute/metaengine.cpp:148
 msgid "FoxTail support is not compiled in"
