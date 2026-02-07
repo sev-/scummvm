@@ -304,6 +304,17 @@ void ScriptedMovie::update(bool pauseAtFirstFrame) {
 		}
 		break;
 
+	case 20003:
+		// Special case for movie 20003 (room: 501 age: 5) of Saavedro running away at node LEIS 3, when the player first arrives at J'nanin
+		// Prevents Saavedro appearing as though he's "blinking in" (he's already there when the player arrives, and running away).
+		// (Original Bug)
+		// NOTE this movie id also exists in the Main Menu -> Options (room: 901 age: 9) (Archive::kStillMovie)
+		// and the startFrame should not be changed there (from 0)
+		if (_vm->_state->getLocationRoom() == 501 && _vm->_state->getLocationAge() == 5) {
+			effectiveStartFrame = 1;
+		}
+		break;
+
 	default:
 		break;
 	}
