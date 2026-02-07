@@ -90,6 +90,7 @@ private:
 
 	Texture *_texture;
 	ItemList _inventory;
+	bool _hidden;
 
 	void initializeTexture();
 
