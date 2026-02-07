@@ -4,6 +4,9 @@
 #define NULL_DRIVER_USE_FOR_TEST 1
 #include "null_osystem.h"
 #include "../backends/platform/null/null.cpp"
+#ifdef USE_CLOUD
+#undef USE_CLOUD
+#endif
 #include "../backends/saves/savefile.cpp"
 
 //#define DISPLAY_ERROR_MESSAGES
