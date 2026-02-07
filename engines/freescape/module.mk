@@ -50,7 +50,8 @@ MODULE_OBJS := \
 	sweepAABB.o \
 	sound.o \
 	ui.o \
-	unpack.o
+	unpack.o \
+	wb.o
 
 ifdef USE_TINYGL
 MODULE_OBJS += \

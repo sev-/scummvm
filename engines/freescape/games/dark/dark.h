@@ -20,6 +20,7 @@
  */
 
 #include "audio/mixer.h"
+#include "common/array.h"
 
 namespace Freescape {
 
@@ -103,6 +104,8 @@ public:
 	int _soundIndexRestoreECD;
 	int _soundIndexDestroyECD;
 	Audio::SoundHandle _soundFxHandleJetpack;
+
+	Common::Array<byte> _musicData; // HDSMUSIC.AM TEXT segment (Amiga)
 
 	void drawString(const DarkFontSize size, const Common::String &str, int x, int y, uint32 primaryColor, uint32 secondaryColor, uint32 backColor, Graphics::Surface *surface);
 	void drawInfoMenu() override;

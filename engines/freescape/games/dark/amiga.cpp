@@ -42,6 +42,16 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 	loadMessagesVariableSize(stream, 0x3d37, 66);
 	loadSoundsFx(stream, 0x34738 + 2, 11);
 
+	// Load HDSMUSIC.AM music data (Wally Beben custom engine)
+	// HDSMUSIC.AM is an embedded GEMDOS executable at stream offset $BA64
+	static const uint32 kHdsMusicOffset = 0xBA64;
+	static const uint32 kGemdosHeaderSize = 0x1C;
+	static const uint32 kHdsMusicTextSize = 0xF4BC;
+
+	stream->seek(kHdsMusicOffset + kGemdosHeaderSize);
+	_musicData.resize(kHdsMusicTextSize);
+	stream->read(_musicData.data(), kHdsMusicTextSize);
+
 	Common::Array<Graphics::ManagedSurface *> chars;
 	chars = getCharsAmigaAtariInternal(8, 8, - 7 - 8, 16, 16, stream, 0x1b0bc, 85);
 	_fontBig = Font(chars);

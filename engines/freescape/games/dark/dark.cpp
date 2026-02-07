@@ -28,6 +28,7 @@
 #include "freescape/games/dark/dark.h"
 #include "freescape/language/8bitDetokeniser.h"
 #include "freescape/objects/global.h"
+#include "freescape/wb.h"
 #include "freescape/objects/connections.h"
 
 namespace Freescape {
@@ -293,8 +294,16 @@ void DarkEngine::initGameState() {
 	_angleRotationIndex = 0;
 	_playerStepIndex = 6;
 
-	// Start playing music, if any, in any supported format
-	playMusic("Dark Side Theme");
+	// Start background music
+	if (isAmiga() && !_musicData.empty()) {
+		Audio::AudioStream *musicStream = makeWallyBebenStream(
+			_musicData.data(), _musicData.size(), 1);
+		if (musicStream) {
+			_mixer->stopHandle(_musicHandle);
+			_mixer->playStream(Audio::Mixer::kMusicSoundType,
+				&_musicHandle, musicStream);
+		}
+	}
 }
 
 void DarkEngine::loadAssets() {
