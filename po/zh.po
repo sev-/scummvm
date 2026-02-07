@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2024-05-14 12:42+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese <https://translations.scummvm.org/projects/scummvm/"
@@ -4204,7 +4204,6 @@ msgid "Right shoulder"
 msgstr ""
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4217,7 +4216,6 @@ msgid "D-pad up"
 msgstr "速度："
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4229,7 +4227,6 @@ msgid "D-pad down"
 msgstr "向下"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4241,7 +4238,6 @@ msgid "D-pad left"
 msgstr "向下"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4630,17 +4626,34 @@ msgstr ""
 msgid "R"
 msgstr ""
 
-#: backends/platform/3ds/osystem-events.cpp:63
+#: backends/platform/3ds/osystem-events.cpp:55
 #, fuzzy
 #| msgid "Speed:"
-msgid "C-pad X"
+msgid "D-pad Up"
 msgstr "速度："
 
-#: backends/platform/3ds/osystem-events.cpp:64
+#: backends/platform/3ds/osystem-events.cpp:56
 #, fuzzy
-#| msgid "Speed:"
-msgid "C-pad Y"
-msgstr "速度："
+msgid "D-pad Down"
+msgstr "向下"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+#, fuzzy
+msgid "D-pad Left"
+msgstr "向下"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+#, fuzzy
+msgid "D-pad Right"
+msgstr "向右"
+
+#: backends/platform/3ds/osystem-events.cpp:63
+msgid "Circle Pad X"
+msgstr ""
+
+#: backends/platform/3ds/osystem-events.cpp:64
+msgid "Circle Pad Y"
+msgstr ""
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -16315,6 +16328,16 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Speed:"
+#~ msgid "C-pad X"
+#~ msgstr "速度："
+
+#, fuzzy
+#~| msgid "Speed:"
+#~ msgid "C-pad Y"
+#~ msgstr "速度："
 
 #, fuzzy
 #~| msgid "Special sound effects volume"

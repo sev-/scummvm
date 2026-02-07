@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-04 22:18+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
@@ -4452,7 +4452,6 @@ msgid "Right shoulder"
 msgstr "Höger axelknapp"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4463,7 +4462,6 @@ msgid "D-pad up"
 msgstr "Riktningsknapp upp"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4474,7 +4472,6 @@ msgid "D-pad down"
 msgstr "Riktningsknapp ner"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4485,7 +4482,6 @@ msgid "D-pad left"
 msgstr "Riktningsknapp vänster"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4870,17 +4866,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "Riktningsknapp upp"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "Riktningsknapp ner"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "Riktningsknapp vänster"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "Riktningsknapp höger"
+
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
-#| msgid "C-Pad X"
-msgid "C-pad X"
-msgstr "C-pad X"
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "Cirkel"
 
 #: backends/platform/3ds/osystem-events.cpp:64
 #, fuzzy
-#| msgid "C-Pad Y"
-msgid "C-pad Y"
-msgstr "C-pad Y"
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "Cirkel"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -16519,17 +16531,15 @@ msgstr ""
 "lösas. Dessa pussel kan alternativt lösas med hjälp av undertexter, om detta "
 "stöds. Vill du fortsätta spela?"
 
-#~ msgid "D-pad Up"
-#~ msgstr "Riktningsknapp upp"
+#, fuzzy
+#~| msgid "C-Pad X"
+#~ msgid "C-pad X"
+#~ msgstr "C-pad X"
 
-#~ msgid "D-pad Down"
-#~ msgstr "Riktningsknapp ner"
-
-#~ msgid "D-pad Left"
-#~ msgstr "Riktningsknapp vänster"
-
-#~ msgid "D-pad Right"
-#~ msgstr "Riktningsknapp höger"
+#, fuzzy
+#~| msgid "C-Pad Y"
+#~ msgid "C-pad Y"
+#~ msgstr "C-pad Y"
 
 #~ msgid "Left Stick X"
 #~ msgstr "Vänsterspak X"

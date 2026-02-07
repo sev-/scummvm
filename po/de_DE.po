@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2025-05-06 12:03+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
@@ -4567,7 +4567,6 @@ msgid "Right shoulder"
 msgstr "Rechte Schultertaste"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4580,7 +4579,6 @@ msgid "D-pad up"
 msgstr "Steuerkreuz hoch"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4593,7 +4591,6 @@ msgid "D-pad down"
 msgstr "Steuerkreuz runter"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4606,7 +4603,6 @@ msgid "D-pad left"
 msgstr "Steuerkreuz links"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -5007,17 +5003,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "Steuerkreuz hoch"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "Steuerkreuz runter"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "Steuerkreuz links"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "Steuerkreuz rechts"
+
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
-#| msgid "C-Pad X"
-msgid "C-pad X"
-msgstr "C-Pad X"
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "Kreis"
 
 #: backends/platform/3ds/osystem-events.cpp:64
 #, fuzzy
-#| msgid "C-Pad Y"
-msgid "C-pad Y"
-msgstr "C-Pad Y"
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "Kreis"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -17967,17 +17979,15 @@ msgid ""
 "supported. Continue launching game?"
 msgstr ""
 
-#~ msgid "D-pad Up"
-#~ msgstr "Steuerkreuz hoch"
+#, fuzzy
+#~| msgid "C-Pad X"
+#~ msgid "C-pad X"
+#~ msgstr "C-Pad X"
 
-#~ msgid "D-pad Down"
-#~ msgstr "Steuerkreuz runter"
-
-#~ msgid "D-pad Left"
-#~ msgstr "Steuerkreuz links"
-
-#~ msgid "D-pad Right"
-#~ msgstr "Steuerkreuz rechts"
+#, fuzzy
+#~| msgid "C-Pad Y"
+#~ msgid "C-pad Y"
+#~ msgstr "C-Pad Y"
 
 #~ msgid "Left Stick X"
 #~ msgstr "Linker Stick X"

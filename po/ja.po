@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
@@ -4378,7 +4378,6 @@ msgid "Right shoulder"
 msgstr "RBボタン"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4391,7 +4390,6 @@ msgid "D-pad up"
 msgstr "十字キー(上)"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4404,7 +4402,6 @@ msgid "D-pad down"
 msgstr "十字キー(下)"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4417,7 +4414,6 @@ msgid "D-pad left"
 msgstr "十字キー(左)"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4818,17 +4814,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "十字キー(上)"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "十字キー(下)"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "十字キー(左)"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "十字キー(右)"
+
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
-#| msgid "C-Pad X"
-msgid "C-pad X"
-msgstr "スライドパッド(X軸)"
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "○"
 
 #: backends/platform/3ds/osystem-events.cpp:64
 #, fuzzy
-#| msgid "C-Pad Y"
-msgid "C-pad Y"
-msgstr "スライドパッド(Y軸)"
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "○"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -17597,17 +17609,15 @@ msgid ""
 "supported. Continue launching game?"
 msgstr ""
 
-#~ msgid "D-pad Up"
-#~ msgstr "十字キー(上)"
+#, fuzzy
+#~| msgid "C-Pad X"
+#~ msgid "C-pad X"
+#~ msgstr "スライドパッド(X軸)"
 
-#~ msgid "D-pad Down"
-#~ msgstr "十字キー(下)"
-
-#~ msgid "D-pad Left"
-#~ msgstr "十字キー(左)"
-
-#~ msgid "D-pad Right"
-#~ msgstr "十字キー(右)"
+#, fuzzy
+#~| msgid "C-Pad Y"
+#~ msgid "C-pad Y"
+#~ msgstr "スライドパッド(Y軸)"
 
 #~ msgid "Left Stick X"
 #~ msgstr "左スティック横"

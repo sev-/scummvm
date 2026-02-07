@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-05 17:26+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
@@ -4504,7 +4504,6 @@ msgid "Right shoulder"
 msgstr "Botón sup. dcho."
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4515,7 +4514,6 @@ msgid "D-pad up"
 msgstr "Cruceta arriba"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4526,7 +4524,6 @@ msgid "D-pad down"
 msgstr "Cruceta abajo"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4537,7 +4534,6 @@ msgid "D-pad left"
 msgstr "Cruceta izda."
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4922,13 +4918,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "Cruceta arriba"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "Cruceta abajo"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "Cruceta izda."
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "Cruceta dcha."
+
 #: backends/platform/3ds/osystem-events.cpp:63
-msgid "C-pad X"
-msgstr "Eje X de palanca C"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "Circulo"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-msgid "C-pad Y"
-msgstr "Eje Y de palanca C"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "Circulo"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -16738,17 +16754,11 @@ msgstr ""
 "se podrían resolver estos acertijos con subtítulos, si están disponibles. "
 "¿Quieres seguir ejecutando el juego?"
 
-#~ msgid "D-pad Up"
-#~ msgstr "Cruceta arriba"
+#~ msgid "C-pad X"
+#~ msgstr "Eje X de palanca C"
 
-#~ msgid "D-pad Down"
-#~ msgstr "Cruceta abajo"
-
-#~ msgid "D-pad Left"
-#~ msgstr "Cruceta izda."
-
-#~ msgid "D-pad Right"
-#~ msgstr "Cruceta dcha."
+#~ msgid "C-pad Y"
+#~ msgstr "Eje Y de palanca C"
 
 #~ msgid "Left Stick X"
 #~ msgstr "Stick izdo. X"

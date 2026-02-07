@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-06 23:04+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
@@ -4468,7 +4468,6 @@ msgid "Right shoulder"
 msgstr "Правый курок"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4479,7 +4478,6 @@ msgid "D-pad up"
 msgstr "Крестовина вверх"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4490,7 +4488,6 @@ msgid "D-pad down"
 msgstr "Крестовина вниз"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4501,7 +4498,6 @@ msgid "D-pad left"
 msgstr "Крестовина влево"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4886,15 +4882,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "Крестовина вверх"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "Крестовина вниз"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "Крестовина влево"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "Крестовина вправо"
+
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
-#| msgid "C-Pad X"
-msgid "C-pad X"
-msgstr "C-пад X"
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "Круг"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-msgid "C-pad Y"
-msgstr "C-пад Y"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "Круг"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -17524,17 +17538,13 @@ msgid ""
 "supported. Continue launching game?"
 msgstr ""
 
-#~ msgid "D-pad Up"
-#~ msgstr "Крестовина вверх"
+#, fuzzy
+#~| msgid "C-Pad X"
+#~ msgid "C-pad X"
+#~ msgstr "C-пад X"
 
-#~ msgid "D-pad Down"
-#~ msgstr "Крестовина вниз"
-
-#~ msgid "D-pad Left"
-#~ msgstr "Крестовина влево"
-
-#~ msgid "D-pad Right"
-#~ msgstr "Крестовина вправо"
+#~ msgid "C-pad Y"
+#~ msgstr "C-пад Y"
 
 #~ msgid "Left Stick X"
 #~ msgstr "Левый стик ось X"

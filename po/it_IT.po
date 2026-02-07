@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-06 10:30+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -4493,7 +4493,6 @@ msgid "Right shoulder"
 msgstr "Grilletto inferiore destro"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4504,7 +4503,6 @@ msgid "D-pad up"
 msgstr "D-pad su"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4515,7 +4513,6 @@ msgid "D-pad down"
 msgstr "D-pad giù"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4526,7 +4523,6 @@ msgid "D-pad left"
 msgstr "D-pad sinistra"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4912,13 +4908,33 @@ msgstr "L"
 msgid "R"
 msgstr "R"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "D-pad Su"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "D-pad Giù"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "D-pad Sinistra"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "D-pad Destra"
+
 #: backends/platform/3ds/osystem-events.cpp:63
-msgid "C-pad X"
-msgstr "Pad scorr. X"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "Cerchio"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-msgid "C-pad Y"
-msgstr "Pad scorr. Y"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "Cerchio"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -16719,17 +16735,11 @@ msgstr ""
 "poterli risolvere. In alternativa, i puzzle possono essere risolti usando i "
 "sottotitoli, se supportati. Desideri continuare ad avviare il gioco?"
 
-#~ msgid "D-pad Up"
-#~ msgstr "D-pad Su"
+#~ msgid "C-pad X"
+#~ msgstr "Pad scorr. X"
 
-#~ msgid "D-pad Down"
-#~ msgstr "D-pad Giù"
-
-#~ msgid "D-pad Left"
-#~ msgstr "D-pad Sinistra"
-
-#~ msgid "D-pad Right"
-#~ msgstr "D-pad Destra"
+#~ msgid "C-pad Y"
+#~ msgstr "Pad scorr. Y"
 
 #~ msgid "Left Stick X"
 #~ msgstr "Levetta Sinistra X"

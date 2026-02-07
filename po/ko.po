@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 14:48+0000\n"
+"POT-Creation-Date: 2026-02-07 14:53+0000\n"
 "PO-Revision-Date: 2026-02-05 15:06+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -4407,7 +4407,6 @@ msgid "Right shoulder"
 msgstr "오른쪽 숄더 버튼"
 
 #: backends/keymapper/hardware-input.cpp:266
-#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4418,7 +4417,6 @@ msgid "D-pad up"
 msgstr "십자 패드 위쪽"
 
 #: backends/keymapper/hardware-input.cpp:267
-#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4429,7 +4427,6 @@ msgid "D-pad down"
 msgstr "십자 패드 아래쪽"
 
 #: backends/keymapper/hardware-input.cpp:268
-#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4440,7 +4437,6 @@ msgid "D-pad left"
 msgstr "십자 패드 왼쪽"
 
 #: backends/keymapper/hardware-input.cpp:269
-#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4824,13 +4820,33 @@ msgstr "L 버튼"
 msgid "R"
 msgstr "R 버튼"
 
+#: backends/platform/3ds/osystem-events.cpp:55
+msgid "D-pad Up"
+msgstr "십자 패드 위쪽"
+
+#: backends/platform/3ds/osystem-events.cpp:56
+msgid "D-pad Down"
+msgstr "십자 패드 아래쪽"
+
+#: backends/platform/3ds/osystem-events.cpp:57
+msgid "D-pad Left"
+msgstr "십자 패드 왼쪽"
+
+#: backends/platform/3ds/osystem-events.cpp:58
+msgid "D-pad Right"
+msgstr "십자 패드 오른쪽"
+
 #: backends/platform/3ds/osystem-events.cpp:63
-msgid "C-pad X"
-msgstr "C-패드 X"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad X"
+msgstr "원 버튼"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-msgid "C-pad Y"
-msgstr "C-패드 Y"
+#, fuzzy
+#| msgid "Circle"
+msgid "Circle Pad Y"
+msgstr "원 버튼"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -16337,17 +16353,11 @@ msgstr ""
 "MIDI 오디오가 필요한 여러 음악 퍼즐이 포함되어 있습니다.  이러한 퍼즐은 지원"
 "되는 경우 자막을 사용하여 해결할 수 있습니다. 게임을 계속 실행할까요?"
 
-#~ msgid "D-pad Up"
-#~ msgstr "십자 패드 위쪽"
+#~ msgid "C-pad X"
+#~ msgstr "C-패드 X"
 
-#~ msgid "D-pad Down"
-#~ msgstr "십자 패드 아래쪽"
-
-#~ msgid "D-pad Left"
-#~ msgstr "십자 패드 왼쪽"
-
-#~ msgid "D-pad Right"
-#~ msgstr "십자 패드 오른쪽"
+#~ msgid "C-pad Y"
+#~ msgstr "C-패드 Y"
 
 #~ msgid "Left Stick X"
 #~ msgstr "왼쪽 스틱 X"
