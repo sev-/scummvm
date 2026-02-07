@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-07 14:53+0000\n"
-"PO-Revision-Date: 2026-02-02 17:22+0000\n"
-"Last-Translator: Linus Väinämö Virtanen <linus.virtanen@protonmail.com>\n"
+"PO-Revision-Date: 2026-02-07 15:22+0000\n"
+"Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fi/>\n"
 "Language: fi_FI\n"
@@ -1724,12 +1724,13 @@ msgid "Icons per row:"
 msgstr "Ikoneita per rivi:"
 
 #: gui/launcher.cpp:1817
-#, fuzzy, c-format
-#| msgid "Do you really want to remove this game configuration?"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
-msgstr "Haluatko varmasti poistaa pelin asetuksineen listalta?"
+msgstr ""
+"Haluatko varmasti poistaa seuraavat %d peliasetusta?\n"
+"\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
 msgid "... progress ..."
@@ -3817,19 +3818,16 @@ msgid "Start anyway"
 msgstr "Pelaa silti"
 
 #: engines/engine.cpp:827
-#, fuzzy, c-format
-#| msgid ""
-#| "WARNING: The game you are about to start is not yet fully supported by "
-#| "ScummVM. As such, it is likely to be unstable, and any saved game you "
-#| "make might not work in future versions of ScummVM."
+#, c-format
 msgid ""
 "WARNING: the game you are about to start contains the add-on \"%s\" which is "
 "not yet fully supported by ScummVM. As such, it is likely to be unstable, "
 "and any saved game you make might not work in future versions of ScummVM."
 msgstr ""
-"VAROITUS: ScummVM ei vielä tue täysin valitsemaasi peliä. Peli saattaa olla "
-"epävakaa, eivätkä pelitallennukset välttämättä toimi tulevissa ScummVM:n "
-"versioissa."
+"VAROITUS: peli jota olet käynnistämässä sisältää lisäosan \"%s\" jota "
+"ScummVM ei vielä täysin tue. Täten peli on suurella todennäköisyydellä "
+"epävakaa ja siitä tehdyt pelitallennukset eivät välttämättä toimi "
+"myöhemmillä ScummVM-versioilla."
 
 #: engines/engine.cpp:852
 #, c-format
@@ -6635,10 +6633,8 @@ msgid "Walk"
 msgstr "Kävele"
 
 #: engines/access/metaengine.cpp:348
-#, fuzzy
-#| msgid "Page up in save / load menu"
 msgid "Open save/load menu"
-msgstr "Page up tallennus / lataus valikossa"
+msgstr "Avaa tallennus / lataus valikko"
 
 #: engines/access/resources.cpp:43 engines/drascula/drascula.cpp:993
 #: engines/hugo/hugo.cpp:461 engines/lure/lure.cpp:57
@@ -7054,10 +7050,8 @@ msgstr "Musiikki päälle / pois"
 
 #: engines/agos/metaengine.cpp:199 engines/sherlock/metaengine.cpp:702
 #: engines/vcruise/metaengine.cpp:206
-#, fuzzy
-#| msgid "Toggle sound effect on/off"
 msgid "Toggle sound effects"
-msgstr "Kytke äänitehoste päälle/pois"
+msgstr "Äänitehosteet päälle/pois"
 
 #. I18N: Speeds up the game to twice its normal speed
 #: engines/agos/metaengine.cpp:204 engines/queen/metaengine.cpp:192
@@ -7121,10 +7115,8 @@ msgid "Show objects to interact"
 msgstr "Näytä käytettävät esineet"
 
 #: engines/agos/metaengine.cpp:272
-#, fuzzy
-#| msgid "Toggle background sounds on / off"
 msgid "Toggle background sounds"
-msgstr "Kytke taustaäänet päälle / pois"
+msgstr "Taustaäänet päälle / pois"
 
 #. I18N: Characters are game actors
 #: engines/agos/metaengine.cpp:281
@@ -7132,8 +7124,6 @@ msgid "Switch characters"
 msgstr "Vaihda hahmoa"
 
 #: engines/agos/metaengine.cpp:287
-#, fuzzy
-#| msgid "Toggle hitbox names on / off"
 msgid "Toggle hitbox names"
 msgstr "Osumalaatikoiden nimet päälle / pois"
 
@@ -7345,10 +7335,8 @@ msgid "High Quality"
 msgstr "Korkea laatu"
 
 #: engines/alcachofa/metaengine.cpp:41
-#, fuzzy
-#| msgid "Toggle sound effect on/off"
 msgid "Toggles some optional graphical effects"
-msgstr "Kytke äänitehoste päälle/pois"
+msgstr "Kytkee valinnaisia visuaalisia efektejä päälle/pois"
 
 #: engines/alcachofa/metaengine.cpp:51
 msgid "32 Bits"
@@ -7359,14 +7347,12 @@ msgid "Whether to render the game in 16-bit color"
 msgstr "Hahmonnetaanko peli 16-bittisissä väreissä"
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Filter graphics"
 msgid "Filter textures"
-msgstr "Suodata grafiikka"
+msgstr "Suodata tekstuurit"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
-msgstr ""
+msgstr "Käytetäänkö tekstuureille lineaarista suodatusta"
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
 #: engines/freescape/games/castle/castle.cpp:315
@@ -7442,8 +7428,6 @@ msgid "Open character inventory"
 msgstr "Avaa hahmon inventaario"
 
 #: engines/asylum/metaengine.cpp:226
-#, fuzzy
-#| msgid "Toggle animation on / off"
 msgid "Toggle animation"
 msgstr "Animaatio päälle / pois"
 
@@ -7537,22 +7521,16 @@ msgid "Escape"
 msgstr "Esc"
 
 #: engines/bagel/metaengine.cpp:70
-#, fuzzy
-#| msgid "Rotate up"
 msgid "Page Up"
-msgstr "Käännä ylös"
+msgstr "Page Up"
 
 #: engines/bagel/metaengine.cpp:71
-#, fuzzy
-#| msgid "Rotate down"
 msgid "Page Down"
-msgstr "Käännä alas"
+msgstr "Page Down"
 
 #: engines/bagel/metaengine.cpp:72
-#, fuzzy
-#| msgid "Boss key"
 msgid "Home"
-msgstr "Hätänappi (työpaikalle, tms.)"
+msgstr "Home"
 
 #: engines/bagel/metaengine.cpp:73
 msgid "End"
@@ -7947,17 +7925,13 @@ msgid "Cutscene keymappings"
 msgstr "Lopetusnäkymän näppäinkartta"
 
 #: engines/buried/metaengine.cpp:135
-#, fuzzy
-#| msgid "Menu keymappings"
 msgid "Main menu keymappings"
-msgstr "Valikon näppäinkartoitukset"
+msgstr "Päävalikon näppäinkartoitukset"
 
 #: engines/buried/metaengine.cpp:137 engines/lab/metaengine.cpp:153
 #: engines/sherlock/metaengine.cpp:336 engines/sherlock/metaengine.cpp:787
-#, fuzzy
-#| msgid "Intro keymappings"
 msgid "Inventory keymappings"
-msgstr "Intron näppäinkartoitukset"
+msgstr "Inventaarion näppäinkartoitukset"
 
 #: engines/buried/metaengine.cpp:141 engines/chamber/metaengine.cpp:65
 #: engines/chamber/metaengine.cpp:71 engines/chamber/metaengine.cpp:77
@@ -7968,16 +7942,12 @@ msgstr "Valitse / Käytä"
 
 #. I18N: This action refers to the control key on the keyboard.
 #: engines/buried/metaengine.cpp:148
-#, fuzzy
-#| msgid "Control"
 msgid "Control key"
-msgstr "Kontrollit"
+msgstr "Control-näppäin"
 
 #: engines/buried/metaengine.cpp:173 engines/buried/metaengine.cpp:224
-#, fuzzy
-#| msgid "Quit to menu"
 msgid "Quit to main menu"
-msgstr "Lopeta peli"
+msgstr "Poistu päävalikkoon"
 
 #: engines/buried/metaengine.cpp:190 engines/mohawk/riven.cpp:913
 #: engines/zvision/metaengine.cpp:217
@@ -8036,10 +8006,8 @@ msgstr "Todiste-biosiru"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the files biochip.
 #: engines/buried/metaengine.cpp:261
-#, fuzzy
-#| msgid "Show hidden files"
 msgid "Biochip files"
-msgstr "Näytä piilotetut tiedostot"
+msgstr "Tiedostot-biosiru"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the interface biochip.
 #: engines/buried/metaengine.cpp:267
@@ -8213,10 +8181,8 @@ msgstr "Sulje dialogilaatikko"
 #: engines/chamber/metaengine.cpp:61 engines/drascula/metaengine.cpp:208
 #: engines/lab/metaengine.cpp:151 engines/sherlock/metaengine.cpp:338
 #: engines/sherlock/metaengine.cpp:790 engines/tot/metaengine.cpp:104
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Quit dialog keymappings"
-msgstr "Lopetuspaneelin näppäinkartta"
+msgstr "Lopetusdialogin näppäinkartta"
 
 #: engines/cine/metaengine.cpp:57
 msgid "Use transparent dialog boxes in 16 color scenes"
@@ -8449,10 +8415,8 @@ msgstr ""
 "SOUND-hakemistosta."
 
 #: engines/darkseed/dialogs.cpp:121
-#, fuzzy
-#| msgid "SFX volume:"
 msgid "SFX mode:"
-msgstr "Ääniefektit:"
+msgstr "Ääniefektitila:"
 
 #: engines/darkseed/dialogs.cpp:122
 msgid ""
@@ -8463,15 +8427,15 @@ msgstr ""
 
 #: engines/darkseed/dialogs.cpp:127
 msgid "CD version SFX only"
-msgstr ""
+msgstr "Vain CD-version äänitehosteet"
 
 #: engines/darkseed/dialogs.cpp:131
 msgid "CD + extra floppy SFX"
-msgstr ""
+msgstr "CD + extra levykeversion äänitehosteet"
 
 #: engines/darkseed/dialogs.cpp:135
 msgid "Floppy version SFX only"
-msgstr ""
+msgstr "Vain levykeversion äänitehosteet"
 
 #. I18N: Perform action on object where cursor points
 #: engines/darkseed/metaengine.cpp:42 engines/dragons/metaengine.cpp:135
@@ -8566,31 +8530,23 @@ msgstr ""
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 1.
 #: engines/dm/metaengine.cpp:151
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 1 inventory"
-msgstr "Inventaario/ÄO Pistenäyttö päälle/pois"
+msgstr "Sankarin 1 inventaario"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 2.
 #: engines/dm/metaengine.cpp:157
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 2 inventory"
-msgstr "Inventaario/ÄO Pistenäyttö päälle/pois"
+msgstr "Sankarin 2 inventaario"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 3.
 #: engines/dm/metaengine.cpp:163
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 3 inventory"
-msgstr "Inventaario/ÄO Pistenäyttö päälle/pois"
+msgstr "Sankarin 3 inventaario"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 4.
 #: engines/dm/metaengine.cpp:169
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 4 inventory"
-msgstr "Inventaario/ÄO Pistenäyttö päälle/pois"
+msgstr "Sankarin 4 inventaario"
 
 #: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:49
 #: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
@@ -8610,7 +8566,7 @@ msgstr "Oikealle"
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
 msgid "Wake up champion"
-msgstr ""
+msgstr "Herätä sankari"
 
 #: engines/draci/metaengine.cpp:68 engines/prince/metaengine.cpp:64
 #, fuzzy
@@ -8693,10 +8649,8 @@ msgid "Debug graphics"
 msgstr "Grafiikan debuggaus"
 
 #: engines/drascula/metaengine.cpp:207 engines/sherlock/metaengine.cpp:330
-#, fuzzy
-#| msgid "Intro keymappings"
 msgid "Animation keymappings"
-msgstr "Intron näppäinkartoitukset"
+msgstr "Animaation näppäinkartoitukset"
 
 #: engines/drascula/metaengine.cpp:212 engines/sherlock/metaengine.cpp:343
 #: engines/tetraedge/metaengine.cpp:92
@@ -8722,28 +8676,20 @@ msgid "Save / load game"
 msgstr "Tallenna / lataa peli"
 
 #: engines/drascula/metaengine.cpp:292
-#, fuzzy
-#| msgid "Toggle subtitles"
 msgid "Enable subtitles"
-msgstr "Tekstitys päälle / pois"
+msgstr "Tekstitys päälle"
 
 #: engines/drascula/metaengine.cpp:298
-#, fuzzy
-#| msgid "Toggle subtitles"
 msgid "Disable subtitles"
-msgstr "Tekstitys päälle / pois"
+msgstr "Tekstitys pois"
 
 #: engines/drascula/metaengine.cpp:315
-#, fuzzy
-#| msgid "Mute speech"
 msgid "Pause speech"
-msgstr "Ei puhetta"
+msgstr "Pysäytä puhe"
 
 #: engines/drascula/metaengine.cpp:322 engines/tot/metaengine.cpp:169
-#, fuzzy
-#| msgid "Confirm"
 msgid "Confirm quit"
-msgstr "Vahvista"
+msgstr "Vahvista lopetus"
 
 #: engines/drascula/saveload.cpp:49
 msgid ""
@@ -8838,10 +8784,8 @@ msgid "Menu keymappings"
 msgstr "Valikon näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:258 engines/sherlock/metaengine.cpp:329
-#, fuzzy
-#| msgid "PET keymappings"
 msgid "Quit keymappings"
-msgstr "PET-näppäinkartoitukset"
+msgstr "Poistu näppäinkartoituksista"
 
 #: engines/efh/metaengine.cpp:259
 #, fuzzy
@@ -8874,34 +8818,24 @@ msgid "Status menu submenu keymappings"
 msgstr "Käynnistysvalikon näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:264
-#, fuzzy
-#| msgid "Intro keymappings"
 msgid "Interaction keymappings"
-msgstr "Intron näppäinkartoitukset"
+msgstr "Interaktion näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:265
-#, fuzzy
-#| msgid "PET keymappings"
 msgid "Fight keymappings"
-msgstr "PET-näppäinkartoitukset"
+msgstr "Tappelun näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:266
-#, fuzzy
-#| msgid "Start menu keymappings"
 msgid "Character selection keymappings"
-msgstr "Käynnistysvalikon näppäinkartoitukset"
+msgstr "Hahmonvalinnan näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:267
-#, fuzzy
-#| msgid "Intro keymappings"
 msgid "Enemy selection keymappings"
-msgstr "Intron näppäinkartoitukset"
+msgstr "Vihollisvalinnan näppäinkartoitukset"
 
 #: engines/efh/metaengine.cpp:268
-#, fuzzy
-#| msgid "Start menu keymappings"
 msgid "Death menu keymappings"
-msgstr "Käynnistysvalikon näppäinkartoitukset"
+msgstr "Kuolinvalikon näppäinkartoitukset"
 
 #. I18N: (Game name: Escape from hell) Character is a hero in-game
 #: engines/efh/metaengine.cpp:339
@@ -8919,22 +8853,16 @@ msgid "Character 3 status"
 msgstr "Hahmon 3 tila"
 
 #: engines/efh/metaengine.cpp:385
-#, fuzzy
-#| msgid "Skip cutscene"
 msgid "Skip song"
-msgstr "Ohita video"
+msgstr "Ohita laulu"
 
 #: engines/efh/metaengine.cpp:391
-#, fuzzy
-#| msgid "Skip intro"
 msgid "Skip song and intro"
-msgstr "Ohita intro"
+msgstr "Ohita laulu ja intro"
 
 #: engines/efh/metaengine.cpp:427
-#, fuzzy
-#| msgid "Active"
 msgid "Active skills"
-msgstr "Aktiivinen"
+msgstr "Aktiiviset taidot"
 
 #. I18N: It's a Tetris game clone, this action drops current tetris item
 #: engines/efh/metaengine.cpp:432 engines/ultima/nuvie/metaengine.cpp:72
@@ -8944,7 +8872,7 @@ msgstr "Pudota"
 
 #: engines/efh/metaengine.cpp:437
 msgid "Equip"
-msgstr ""
+msgstr "Varusta"
 
 #: engines/efh/metaengine.cpp:442 engines/queen/metaengine.cpp:274
 #: engines/saga/metaengine.cpp:384 engines/scumm/help.cpp:124
@@ -8957,18 +8885,16 @@ msgstr "Anna"
 
 #: engines/efh/metaengine.cpp:447 engines/ultima/ultima0/metaengine.cpp:70
 #: engines/ultima/ultima0/metaengine.cpp:84
-#, fuzzy
-#| msgid "Info Menu"
 msgid "Info"
-msgstr "Infovalikko"
+msgstr "Info"
 
 #: engines/efh/metaengine.cpp:452
 msgid "Passive skills"
-msgstr ""
+msgstr "Passiiviset taidot"
 
 #: engines/efh/metaengine.cpp:457
 msgid "Trade"
-msgstr ""
+msgstr "Vaihtokauppa"
 
 #: engines/efh/metaengine.cpp:467
 #, fuzzy
@@ -8977,24 +8903,20 @@ msgid "Exit status menu"
 msgstr "Lopeta peli"
 
 #: engines/efh/metaengine.cpp:481
-#, fuzzy
-#| msgid "Exit game"
 msgid "Exit submenu"
-msgstr "Lopeta peli"
+msgstr "Poistu alavalikosta"
 
 #: engines/efh/metaengine.cpp:493
 msgid "Leave"
 msgstr "Poistu"
 
 #: engines/efh/metaengine.cpp:500 engines/efh/metaengine.cpp:536
-#, fuzzy
-#| msgid "Status:"
 msgid "Status"
-msgstr "Tila:"
+msgstr "Tila"
 
 #: engines/efh/metaengine.cpp:518
 msgid "Defend"
-msgstr ""
+msgstr "Puolusta"
 
 #. I18N: Run is a movement type
 #. I18N: Action in In Cold Blood
@@ -9007,10 +8929,8 @@ msgstr "Juokse"
 
 #. I18N: (Game name: Escape from hell) This action is used to view the terrain during a fight so that the player can see where they can move if they decide to run.
 #: engines/efh/metaengine.cpp:543
-#, fuzzy
-#| msgid "View constellations"
 msgid "View terrain"
-msgstr "Katso tähtikuvioita"
+msgstr "Katso maastoa"
 
 #. I18N: (Game name: Escape from hell) Character is a hero in-game
 #: engines/efh/metaengine.cpp:550
@@ -9028,10 +8948,8 @@ msgid "Select character 3"
 msgstr "Valitse hahmo 3"
 
 #: engines/efh/metaengine.cpp:570
-#, fuzzy
-#| msgid "Cancel action"
 msgid "Cancel character selection"
-msgstr "Peruuta toiminto"
+msgstr "Peruuta hahmonvalinta"
 
 #: engines/efh/metaengine.cpp:577
 msgid "Select enemy 1"
@@ -9054,10 +8972,8 @@ msgid "Select enemy 5"
 msgstr "Valitse vihollinen 5"
 
 #: engines/efh/metaengine.cpp:607
-#, fuzzy
-#| msgid "Cancel action"
 msgid "Cancel enemy selection"
-msgstr "Peruuta toiminto"
+msgstr "Peruuta vihollisvalinta"
 
 #: engines/efh/metaengine.cpp:625 engines/lure/metaengine.cpp:203
 #: engines/tsage/metaengine.cpp:237
@@ -9065,44 +8981,32 @@ msgid "Restart game"
 msgstr "Uudelleenkäynnistä peli"
 
 #: engines/efh/metaengine.cpp:632
-#, fuzzy
-#| msgid "Play note 1: A"
 msgid "Play sound type 13"
-msgstr "Soita sävel 1:A"
+msgstr "Soita äänityyppi 13"
 
 #: engines/efh/metaengine.cpp:637
-#, fuzzy
-#| msgid "Play note 1: A"
 msgid "Play sound type 14"
-msgstr "Soita sävel 1:A"
+msgstr "Soita äänityyppi 14"
 
 #: engines/efh/metaengine.cpp:642
-#, fuzzy
-#| msgid "Play note 1: A"
 msgid "Play sound type 15"
-msgstr "Soita sävel 1:A"
+msgstr "Soita äänityyppi 15"
 
 #: engines/efh/metaengine.cpp:647
-#, fuzzy
-#| msgid "Play note 5: E"
 msgid "Play sound type 5"
-msgstr "Soita sävel 5: E"
+msgstr "Soita äänityyppi 5"
 
 #: engines/efh/metaengine.cpp:652
-#, fuzzy
-#| msgid "Play note 1: A"
 msgid "Play sound type 10"
-msgstr "Soita sävel 1:A"
+msgstr "Soita äänityyppi 10"
 
 #: engines/efh/metaengine.cpp:657
 msgid "Play sound type 9"
-msgstr ""
+msgstr "Soita äänityyppi 9"
 
 #: engines/efh/metaengine.cpp:662
-#, fuzzy
-#| msgid "Play note 1: A"
 msgid "Play sound type 16"
-msgstr "Soita sävel 1:A"
+msgstr "Soita äänityyppi 16"
 
 #: engines/freescape/metaengine.cpp:42
 msgid "Prerecorded sounds"
@@ -9179,11 +9083,11 @@ msgstr "Aktivoi matkustaminen kiveä heittämällä alusta asti"
 
 #: engines/freescape/metaengine.cpp:141
 msgid "Smoother movement"
-msgstr ""
+msgstr "Pehmeämpi liike"
 
 #: engines/freescape/metaengine.cpp:142
 msgid "Use smoother movements instead of discrete steps"
-msgstr ""
+msgstr "Käytä pehmeämpiä liikkeitä diskreetien askeleiden sijaan"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:63 engines/mm/mm1/metaengine.cpp:79
@@ -9572,12 +9476,12 @@ msgstr ""
 "tukea tällaisten päivitysten käyttöön."
 
 #: engines/grim/metaengine.cpp:87
-#, fuzzy
-#| msgid "Escape from Monkey Island support is not compiled in"
 msgid ""
 "Escape from Monkey Island PS2 support required MPEG2 support, which is not "
 "compiled in"
-msgstr "Escape from Monkey Island-tukea ei ole käännetty mukaan"
+msgstr ""
+"Escape from Monkey Island PS2-versio tarvitsee MPEG2-tuen, jota ei ole "
+"käännetty mukaan"
 
 #: engines/grim/metaengine.cpp:92
 msgid "Escape from Monkey Island support is not compiled in"
@@ -9790,14 +9694,12 @@ msgid "Glowstick"
 msgstr "Valotikku"
 
 #: engines/hugo/metaengine.cpp:45
-#, fuzzy
-#| msgid "Easy mouse interface"
 msgid "Use Windows interface"
-msgstr "Helppo hiirikäyttöliittymä"
+msgstr "Käytä Windows-käyttöliittymää"
 
 #: engines/hugo/metaengine.cpp:46
 msgid "Use mouse and toolbar from Windows version"
-msgstr ""
+msgstr "Käytä hiirtä ja työkalupalkkia Windows-versiosta"
 
 #: engines/hugo/metaengine.cpp:148
 msgid "User help"
@@ -9960,10 +9862,8 @@ msgstr "Käynnistysvalikon näppäinkartoitukset"
 
 #: engines/hypno/metaengine.cpp:172 engines/hypno/metaengine.cpp:270
 #: engines/hypno/metaengine.cpp:322
-#, fuzzy
-#| msgid "Skip speech"
 msgid "Skip level (cheat)"
-msgstr "Ohita puhe"
+msgstr "Ohita taso (huijaa)"
 
 #. I18N: (Game name: Soldier Boyz) player refers to the users own character.
 #. I18N: (Game name: Marvel Comics Spider-Man: The Sinister Six) player refers to the users own character.
@@ -9976,17 +9876,17 @@ msgstr ""
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Chump is the easy mode.
 #: engines/hypno/metaengine.cpp:205
 msgid "Chump"
-msgstr ""
+msgstr "Pölvästi"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Punk is the medium mode.
 #: engines/hypno/metaengine.cpp:212
 msgid "Punk"
-msgstr ""
+msgstr "Punkkari"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Badass is the hard mode.
 #: engines/hypno/metaengine.cpp:219
 msgid "Badass"
-msgstr ""
+msgstr "Kovis"
 
 #. I18N: (Game name: Soldier Boyz) This makes the player restart from the last checkpoint.
 #: engines/hypno/metaengine.cpp:232
@@ -10183,11 +10083,11 @@ msgstr ""
 
 #: engines/kyra/metaengine.cpp:175
 msgid "Fix Ileria and Beohram NPCs"
-msgstr ""
+msgstr "Korjaa Ileria ja Beohram NPC:t"
 
 #: engines/kyra/metaengine.cpp:176
 msgid "Make Ileria a female and Beohram a paladin"
-msgstr ""
+msgstr "Tee Ileria:sta nainen and Beohram:ista paladiini"
 
 #: engines/kyra/metaengine.cpp:187
 msgid "Enhanced thrown weapon reload"
@@ -10421,17 +10321,13 @@ msgstr "PET-näppäinkartoitukset"
 
 #: engines/lab/metaengine.cpp:155 engines/ngi/metaengine.cpp:116
 #: engines/sherlock/metaengine.cpp:339 engines/sherlock/metaengine.cpp:782
-#, fuzzy
-#| msgid "Star Map keymappings"
 msgid "Map keymappings"
-msgstr "Tähtikartan näppäinkartoitukset"
+msgstr "Kartan näppäinkartoitukset"
 
 #: engines/lab/metaengine.cpp:156 engines/queen/metaengine.cpp:148
 #: engines/sherlock/metaengine.cpp:334 engines/sherlock/metaengine.cpp:779
-#, fuzzy
-#| msgid "Computer keymappings"
 msgid "Journal keymappings"
-msgstr "Tietokoneen näppäinkartoitukset"
+msgstr "Päiväkirjan näppäinkartoitukset"
 
 #. I18N: Exits the game
 #: engines/lab/metaengine.cpp:166 engines/lab/metaengine.cpp:191
@@ -10446,80 +10342,64 @@ msgid "Exit"
 msgstr "Poistu"
 
 #: engines/lab/metaengine.cpp:179
-#, fuzzy
-#| msgid "Enable the sound for the game"
 msgid "Raise the sound volume"
-msgstr "Laita pelin äänet päälle"
+msgstr "Kasvata äänenvoimakkuutta"
 
 #: engines/lab/metaengine.cpp:185
 msgid "Lower the sound volume"
-msgstr ""
+msgstr "Madalla äänenvoimakkuutta"
 
 #: engines/lab/metaengine.cpp:216
 msgid "Interact with object with chosen action"
 msgstr ""
 
 #: engines/lab/metaengine.cpp:221
-#, fuzzy
-#| msgid "Next object"
 msgid "Take object"
-msgstr "Seuraava objekti"
+msgstr "Ota objekti"
 
 #: engines/lab/metaengine.cpp:227
-#, fuzzy
-#| msgid "Go to next object"
 msgid "Move or manipulate object"
-msgstr "Mene seuraavaan objektiin"
+msgstr "Siirrä tai manipuloi objektia"
 
 #: engines/lab/metaengine.cpp:233
-#, fuzzy
-#| msgid "Open door"
 msgid "Open door or object"
-msgstr "Avaa ovi"
+msgstr "Avaa ovi tai objekti"
 
 #: engines/lab/metaengine.cpp:239
 msgid "Close door or object"
-msgstr ""
+msgstr "Sulje ovi tai esine"
 
 #: engines/lab/metaengine.cpp:245
 msgid "Look at object close-up"
-msgstr ""
+msgstr "Katso esinettä läheltä"
 
 #: engines/lab/metaengine.cpp:251
-#, fuzzy
-#| msgid "Scroll up in inventory"
 msgid "Switch to inventory display"
-msgstr "Vieritä inventaariota ylös"
+msgstr "Vaihda inventaarionäkymään"
 
 #: engines/lab/metaengine.cpp:284
-#, fuzzy
-#| msgid "Go to next object"
 msgid "Move focus to interactive object"
-msgstr "Mene seuraavaan objektiin"
+msgstr "Siirrä fokus interaktiiviseen objektiin"
 
 #: engines/lab/metaengine.cpp:292 engines/lab/metaengine.cpp:352
 msgid "Start dropping virtual bread crumbs"
-msgstr ""
+msgstr "Ala pudottamaan virtuaalisia leivänmuruja"
 
 #: engines/lab/metaengine.cpp:298 engines/lab/metaengine.cpp:359
 msgid "Follow virtual bread crumbs"
-msgstr ""
+msgstr "Seuraa virtuaalisia leivänmuruja"
 
 #: engines/lab/metaengine.cpp:304 engines/lab/metaengine.cpp:366
 msgid "Run while following virtual bread crumbs"
-msgstr ""
+msgstr "Juokse seuraten virtuaalisia leivänmuruja"
 
 #: engines/lab/metaengine.cpp:311
-#, fuzzy
-#| msgid "Switch to 2xSai scaling"
 msgid "Switch to main display"
-msgstr "Vaihda 2xSai-skaalaukseen"
+msgstr "Vaihda päänäkymään"
 
 #: engines/lab/metaengine.cpp:317
-#, fuzzy
-#| msgid "Save / Load dialog"
 msgid "Open save / load dialog"
-msgstr "Tallenna / Lataa dialogi"
+msgstr "Avaa tallennus / lataus dialogi"
 
 #: engines/lab/metaengine.cpp:329
 #, fuzzy
@@ -10528,32 +10408,24 @@ msgid "Look at scene"
 msgstr "Katso"
 
 #: engines/lab/metaengine.cpp:335
-#, fuzzy
-#| msgid "Inventory"
 msgid "Previous inventory item"
-msgstr "Tavarat"
+msgstr "Edellinen inventaarioesine"
 
 #: engines/lab/metaengine.cpp:342
-#, fuzzy
-#| msgid "Animated inventory items"
 msgid "Next inventory item"
-msgstr "Animoidut invenaarioesineet"
+msgstr "Seuraava inventaarioesine"
 
 #: engines/lab/metaengine.cpp:373
 msgid "Exit map display"
-msgstr ""
+msgstr "Poistu karttanäkymästä"
 
 #: engines/lab/metaengine.cpp:379
-#, fuzzy
-#| msgid "Debug level:"
 msgid "Up one level"
-msgstr "Debug-taso:"
+msgstr "Taso ylemmäs"
 
 #: engines/lab/metaengine.cpp:385
-#, fuzzy
-#| msgid "Debug level:"
 msgid "Down one level"
-msgstr "Debug-taso:"
+msgstr "Taso alemmas"
 
 #: engines/lab/metaengine.cpp:391
 #, fuzzy
@@ -10562,10 +10434,8 @@ msgid "Go back in journal"
 msgstr "Näytä päiväkirja"
 
 #: engines/lab/metaengine.cpp:397
-#, fuzzy
-#| msgid "Show journal"
 msgid "Exit journal"
-msgstr "Näytä päiväkirja"
+msgstr "Poistu päiväkirjasta"
 
 #: engines/lab/metaengine.cpp:402
 #, fuzzy
@@ -11043,7 +10913,7 @@ msgstr "Paras"
 
 #: engines/mohawk/dialogs.cpp:456
 msgid "Fix audio pops/clicks"
-msgstr ""
+msgstr "Korjaa äänen poksaukset/napsahdukset"
 
 #: engines/mohawk/dialogs.cpp:457
 msgid ""
@@ -11490,17 +11360,13 @@ msgid "Confirm the selected save / new save name"
 msgstr "Luo uusi pelitallennus"
 
 #: engines/ngi/metaengine.cpp:118
-#, fuzzy
-#| msgid "PET keymappings"
 msgid "Credits keymappings"
-msgstr "PET-näppäinkartoitukset"
+msgstr "Lopputekstien näppäinkartoitukset"
 
 #. I18N: Keymap for various dialogs such as save game dialog.
 #: engines/ngi/metaengine.cpp:120
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Dialog keymappings"
-msgstr "Lopetuspaneelin näppäinkartta"
+msgstr "Dialogin näppäinkartta"
 
 #: engines/ngi/metaengine.cpp:130
 #, fuzzy
@@ -11510,10 +11376,8 @@ msgstr "Valitse teema"
 
 #. I18N: Stops all currently playing sounds.
 #: engines/ngi/metaengine.cpp:143
-#, fuzzy
-#| msgid "Preload sounds"
 msgid "Stop sounds"
-msgstr "Esilataa äänet"
+msgstr "Pysäytä äänet"
 
 #: engines/ngi/metaengine.cpp:155 engines/teenagent/metaengine.cpp:226
 #, fuzzy
@@ -11522,23 +11386,17 @@ msgid "Toggle inventory"
 msgstr "Inventaario/ÄO Pistenäyttö päälle/pois"
 
 #: engines/ngi/metaengine.cpp:176
-#, fuzzy
-#| msgid "Show credits"
 msgid "Skip credits"
-msgstr "Näytä lopputekstit"
+msgstr "Ohita lopputekstit"
 
 #. I18N: Closes any open dialogs, such as save game dialog.
 #: engines/ngi/metaengine.cpp:183
-#, fuzzy
-#| msgid "Close the dialog box"
 msgid "Close dialog"
-msgstr "Sulje dialogilaatikko"
+msgstr "Sulje dialogi"
 
 #: engines/ngi/metaengine.cpp:197
-#, fuzzy
-#| msgid "Close gumps"
 msgid "Close map"
-msgstr "Sulje ponnahdusikkuna"
+msgstr "Sulje kartta"
 
 #: engines/parallaction/saveload.cpp:129
 #, c-format
@@ -11693,10 +11551,8 @@ msgstr "Peruuta toiminto"
 
 #. I18N: (Game Name: Pink Panther) The player normally clicks on a target (character/object) to move toward it and interact (talk,use etc.) with it. This action skips the walking animation and immediately start interacting.
 #: engines/pink/metaengine.cpp:144
-#, fuzzy
-#| msgid "Skip dialog"
 msgid "Skip walk"
-msgstr "Ohita dialogi"
+msgstr "Ohita kävely"
 
 #. I18N: (Game Name: Pink Panther) The player normally clicks on a target (character/object) to move toward it and interact (talk,use etc.) with it. This action skips the walking animation and also prevents the interaction, instead instantly placing the player next to the target.
 #: engines/pink/metaengine.cpp:151
@@ -11742,24 +11598,18 @@ msgid "3DO Plumbers requires RGB support."
 msgstr "3DO Plumbers vaatii RGB-tuen."
 
 #: engines/prince/metaengine.cpp:237
-#, fuzzy
-#| msgid "Open main menu"
 msgid "Open interaction menu"
-msgstr "Avaa päävalikko"
+msgstr "Avaa interaktiovalikko"
 
 #. I18N: This refers to the Z key on a keyboard.
 #: engines/prince/metaengine.cpp:256
-#, fuzzy
-#| msgid "Boss key"
 msgid "Z key"
-msgstr "Hätänappi (työpaikalle, tms.)"
+msgstr "Z-näppäin"
 
 #. I18N: This refers to the X key on a keyboard.
 #: engines/prince/metaengine.cpp:263
-#, fuzzy
-#| msgid "Boss key"
 msgid "X key"
-msgstr "Hätänappi (työpaikalle, tms.)"
+msgstr "X-näppäin"
 
 #: engines/private/metaengine.cpp:39
 #, fuzzy
@@ -11781,7 +11631,7 @@ msgstr "Korosta esineitä"
 
 #: engines/private/metaengine.cpp:51
 msgid "Highlight clickable areas in decision scenes."
-msgstr ""
+msgstr "Korosta klikattavia alueita päätöksentekonäkymissä."
 
 #: engines/private/metaengine.cpp:136 engines/trecision/metaengine.cpp:137
 msgid "Skip video"
@@ -11822,40 +11672,28 @@ msgid "Skip text"
 msgstr "Ohita teksti"
 
 #: engines/queen/metaengine.cpp:203
-#, fuzzy
-#| msgid "Scroll up in inventory"
 msgid "Scroll inventory up"
 msgstr "Vieritä inventaariota ylös"
 
 #: engines/queen/metaengine.cpp:209
-#, fuzzy
-#| msgid "Scroll list down"
 msgid "Scroll inventory down"
-msgstr "Vieritä listaa alas"
+msgstr "Vieritä inventaariota alas"
 
 #: engines/queen/metaengine.cpp:215
-#, fuzzy
-#| msgid "Inventory"
 msgid "Inventory item 1"
-msgstr "Tavarat"
+msgstr "Inventaarioesine 1"
 
 #: engines/queen/metaengine.cpp:220
-#, fuzzy
-#| msgid "Inventory"
 msgid "Inventory item 2"
-msgstr "Tavarat"
+msgstr "Inventaarioesine 2"
 
 #: engines/queen/metaengine.cpp:225
-#, fuzzy
-#| msgid "Inventory"
 msgid "Inventory item 3"
-msgstr "Tavarat"
+msgstr "Inventaarioesine 3"
 
 #: engines/queen/metaengine.cpp:230
-#, fuzzy
-#| msgid "Inventory"
 msgid "Inventory item 4"
-msgstr "Tavarat"
+msgstr "Inventaarioesine 4"
 
 #: engines/queen/metaengine.cpp:235
 #, fuzzy
@@ -11864,10 +11702,8 @@ msgid "Skip cutaway / dialog"
 msgstr "Ohita dialogi"
 
 #: engines/queen/metaengine.cpp:240
-#, fuzzy
-#| msgid "Show journal"
 msgid "Use journal"
-msgstr "Näytä päiväkirja"
+msgstr "Käytä päiväkirjaa"
 
 #: engines/queen/metaengine.cpp:284 engines/saga/metaengine.cpp:359
 #: engines/scumm/help.cpp:144 engines/scumm/help.cpp:169
@@ -11888,10 +11724,8 @@ msgid "Talk to"
 msgstr "Puhu"
 
 #: engines/queen/metaengine.cpp:299
-#, fuzzy
-#| msgid "Show journal"
 msgid "Close journal"
-msgstr "Näytä päiväkirja"
+msgstr "Sulje päiväkirja"
 
 #. I18N: Inherit the Earth had a "trial" version which is a full game with a simple check
 #: engines/saga/detection_tables.h:875
@@ -11971,10 +11805,8 @@ msgid "Abort speech"
 msgstr "Lopeta puhe"
 
 #: engines/saga/metaengine.cpp:344
-#, fuzzy
-#| msgid "Show dialogue"
 msgid "Show dialog"
-msgstr "Näytä ilmoitteet"
+msgstr "Näytä dialogi"
 
 #. I18N: Walk to where cursor points
 #: engines/saga/metaengine.cpp:349 engines/scumm/help.cpp:143
@@ -13689,28 +13521,20 @@ msgid "Main user interface keymappings"
 msgstr "Valikon näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:333 engines/sherlock/metaengine.cpp:781
-#, fuzzy
-#| msgid "Minigame keymappings"
 msgid "Darts minigame keymappings"
-msgstr "Minipelin näppäinkartoitukset"
+msgstr "Tikkaminipelin näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:335
-#, fuzzy
-#| msgid "Star Map keymappings"
 msgid "Talk keymappings"
-msgstr "Tähtikartan näppäinkartoitukset"
+msgstr "Puheen näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:337
-#, fuzzy
-#| msgid "PET keymappings"
 msgid "Files keymappings"
-msgstr "PET-näppäinkartoitukset"
+msgstr "Tiedostojen näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:340
-#, fuzzy
-#| msgid "Minigame keymappings"
 msgid "Settings keymappings"
-msgstr "Minipelin näppäinkartoitukset"
+msgstr "Asetusten näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:341 engines/sherlock/metaengine.cpp:778
 #, fuzzy
@@ -13732,24 +13556,20 @@ msgid "Settings"
 msgstr "Asetukset"
 
 #: engines/sherlock/metaengine.cpp:472
-#, fuzzy
-#| msgid "Tileset"
 msgid "Files"
-msgstr "Tiilisetti"
+msgstr "Tiedostot"
 
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to go back 10 pages in the journal
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a journal, this action is used to go back 10 pages in the journal
 #: engines/sherlock/metaengine.cpp:501 engines/sherlock/metaengine.cpp:910
 msgid "Go back 10 pages"
-msgstr ""
+msgstr "Siirry 10 sivua taaksepäin"
 
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to go forward 10 pages in the journal
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a journal, this action is used to go forward 10 pages in the journal
 #: engines/sherlock/metaengine.cpp:507 engines/sherlock/metaengine.cpp:895
-#, fuzzy
-#| msgid "Show journal"
 msgid "Go forward 10 pages"
-msgstr "Näytä päiväkirja"
+msgstr "Siirry 10 sivua eteenpäin"
 
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to go to the first page of the journal
 #: engines/sherlock/metaengine.cpp:521 engines/sherlock/metaengine.cpp:924
@@ -13764,16 +13584,12 @@ msgid "Last page"
 msgstr "Viimeinen sivu"
 
 #: engines/sherlock/metaengine.cpp:578
-#, fuzzy
-#| msgid "Roll left"
 msgid "Scroll left"
-msgstr "Kallista vasemmalle"
+msgstr "Vieritä vasemmalle"
 
 #: engines/sherlock/metaengine.cpp:584
-#, fuzzy
-#| msgid "Roll right"
 msgid "Scroll right"
-msgstr "Kallista oikealle"
+msgstr "Vieritä oikealle"
 
 #: engines/sherlock/metaengine.cpp:649 engines/sherlock/metaengine.cpp:938
 #, fuzzy
@@ -13788,10 +13604,8 @@ msgid "Toggle portraits"
 msgstr "Taistelumoodi päälle / pois"
 
 #: engines/sherlock/metaengine.cpp:697
-#, fuzzy
-#| msgid "Change font size"
 msgid "Change font style"
-msgstr "Muuta fontin kokoa"
+msgstr "Muuta fontin tyyliä"
 
 #: engines/sherlock/metaengine.cpp:707
 #, fuzzy
@@ -13801,10 +13615,8 @@ msgstr "Jumaltila päälle / pois"
 
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has an auto-help feature, this action is used to change the auto-help location between left and right
 #: engines/sherlock/metaengine.cpp:713
-#, fuzzy
-#| msgid "Change action"
 msgid "Change auto-help location"
-msgstr "Vaihda toiminto"
+msgstr "Muuta automaattiavun sijaintia"
 
 #: engines/sherlock/metaengine.cpp:718
 #, fuzzy
@@ -13832,10 +13644,8 @@ msgid "Change fade mode"
 msgstr "Vaihda tilaa"
 
 #: engines/sherlock/metaengine.cpp:780
-#, fuzzy
-#| msgid "Computer keymappings"
 msgid "Journal search keymappings"
-msgstr "Tietokoneen näppäinkartoitukset"
+msgstr "Päiväkirjahaun näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:783
 #, fuzzy
@@ -13862,10 +13672,8 @@ msgid "Foolscap puzzle keymappings"
 msgstr "Escape-näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:788
-#, fuzzy
-#| msgid "Menu keymappings"
 msgid "Options menu keymappings"
-msgstr "Valikon näppäinkartoitukset"
+msgstr "Asetusvalikon näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:789
 #, fuzzy
@@ -13880,23 +13688,17 @@ msgid "Talk options keymappings"
 msgstr "Intron näppäinkartoitukset"
 
 #: engines/sherlock/metaengine.cpp:793
-#, fuzzy
-#| msgid "Move / Interact"
 msgid "Move / Examine / Select"
-msgstr "Liiku / Käytä"
+msgstr "Liiku / Tutki / Valitse"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) This action changes the speed of the game (walking, animations, etc.)
 #: engines/sherlock/metaengine.cpp:810
-#, fuzzy
-#| msgid "Change sound"
 msgid "Change speed"
-msgstr "Muuta ääntä"
+msgstr "Muuta nopeutta"
 
 #: engines/sherlock/metaengine.cpp:833
-#, fuzzy
-#| msgid "Show journal"
 msgid "Open journal"
-msgstr "Näytä päiväkirja"
+msgstr "Avaa päiväkirja"
 
 #: engines/sherlock/metaengine.cpp:846 engines/touche/metaengine.cpp:147
 msgid "Open options menu"
@@ -13917,36 +13719,26 @@ msgid "Change selected option to the right"
 msgstr ""
 
 #: engines/sherlock/metaengine.cpp:972
-#, fuzzy
-#| msgid "Skip minigame"
 msgid "Skip darts minigame"
-msgstr "Ohita minipeli"
+msgstr "Ohita tikkaminipeli"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a map, this action is used to scroll to the top left of the map
 #: engines/sherlock/metaengine.cpp:983
-#, fuzzy
-#| msgid "Scroll to top"
 msgid "Scroll to top left"
-msgstr "Vieritä alkuun"
+msgstr "Vieritä ylävasempaan"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a map, this action is used to scroll to the bottom right of the map
 #: engines/sherlock/metaengine.cpp:991
-#, fuzzy
-#| msgid "Scroll to bottom"
 msgid "Scroll to bottom right"
-msgstr "Siirry loppuun"
+msgstr "Vieritä alaoikeaan"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has multiple widgets for various purposes (eg. inventory, save files, etc.), this action is used to scroll to the end of the widget
 #: engines/sherlock/metaengine.cpp:1055
-#, fuzzy
-#| msgid "Scroll to top"
 msgid "Scroll to end"
-msgstr "Vieritä alkuun"
+msgstr "Vieritä loppuun"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has multiple widgets for various purposes (eg. inventory, save files, etc.), this action is used to scroll to the start of the widget
 #: engines/sherlock/metaengine.cpp:1062
-#, fuzzy
-#| msgid "Scroll to top"
 msgid "Scroll to start"
 msgstr "Vieritä alkuun"
 
@@ -13963,10 +13755,8 @@ msgid "Go to next page of save files"
 msgstr "Mene tallennus / lataus valikon alkuun"
 
 #: engines/sherlock/metaengine.cpp:1083
-#, fuzzy
-#| msgid "Select backup file"
 msgid "Select save file"
-msgstr "Valitse varmuuskopiotiedosto"
+msgstr "Valitse tallennustiedosto"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) save file name input field has 2 modes, insert and overwrite, this action toggles between them
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) save password input field has 2 modes, insert and overwrite, this action toggles between them
@@ -13978,10 +13768,8 @@ msgstr "Nopea tila päälle / pois"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a foolscap puzzle, where the player has to decode a hidden message on a piece of paper called a foolscap. this action is used to exit the puzzle
 #: engines/sherlock/metaengine.cpp:1135
-#, fuzzy
-#| msgid "Close popup"
 msgid "Close puzzle"
-msgstr "Sulje ponnahdusikkuna"
+msgstr "Sulje pulma"
 
 #: engines/sherlock/metaengine.cpp:1177
 msgid "Exit inventory / Close verb menu / Cancel item use action"
@@ -14022,8 +13810,6 @@ msgid "Open control panel"
 msgstr "Avaa hallintapaneeli"
 
 #: engines/sky/metaengine.cpp:136
-#, fuzzy
-#| msgid "Toggle really fast mode on / off"
 msgid "Toggle really fast mode"
 msgstr "Erittäin nopea tila päälle / pois"
 
@@ -14068,12 +13854,12 @@ msgstr "Lataa automaattinen tallennus"
 #: engines/sludge/keymapper_tables.h:200 engines/sludge/keymapper_tables.h:435
 #: engines/sludge/keymapper_tables.h:552
 msgid "DEBUG: Show floor"
-msgstr ""
+msgstr "DEBUG: Näytä lattia"
 
 #: engines/sludge/keymapper_tables.h:205 engines/sludge/keymapper_tables.h:440
 #: engines/sludge/keymapper_tables.h:547
 msgid "DEBUG: Show boxes"
-msgstr ""
+msgstr "DEBUG: Näytä laatikot"
 
 #: engines/sludge/keymapper_tables.h:237
 msgid "Inventory / Examine"
@@ -14090,11 +13876,11 @@ msgstr "Pysäytä / Ohita video"
 
 #: engines/sludge/keymapper_tables.h:328
 msgid "Smell"
-msgstr ""
+msgstr "Haista"
 
 #: engines/sludge/keymapper_tables.h:338
 msgid "Consume"
-msgstr ""
+msgstr "Syö"
 
 #: engines/sludge/keymapper_tables.h:361
 msgid "Cast earth spell"
@@ -14347,15 +14133,15 @@ msgstr "Avaa lataustenhallintadialogi"
 
 #: engines/supernova/metaengine.cpp:385
 msgid "Phone"
-msgstr ""
+msgstr "Puhelin"
 
 #: engines/supernova/metaengine.cpp:391
 msgid "ProText"
-msgstr ""
+msgstr "ProText"
 
 #: engines/supernova/metaengine.cpp:397
 msgid "Calculata"
-msgstr ""
+msgstr "Calculata"
 
 #: engines/sword1/animation.cpp:566 engines/sword2/animation.cpp:459
 msgid ""
@@ -14495,16 +14281,12 @@ msgid "Reveal all interactive hotspots (hold the key)"
 msgstr ""
 
 #: engines/teenagent/metaengine.cpp:201
-#, fuzzy
-#| msgid "Inventory / Examine"
 msgid "Move / Examine"
-msgstr "Inventaario / Tutki"
+msgstr "Liiku / Tutki"
 
 #: engines/teenagent/metaengine.cpp:221
-#, fuzzy
-#| msgid "Open / Close inventory"
 msgid "Close inventory"
-msgstr "Avaa / Sulje Inventaario"
+msgstr "Sulje Inventaario"
 
 #. I18N: Runs tests in interactive mode
 #: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
@@ -14617,10 +14399,8 @@ msgid "Conversation"
 msgstr "Keskustelu"
 
 #: engines/titanic/metaengine.cpp:249
-#, fuzzy
-#| msgid "Remove"
 msgid "Remote"
-msgstr "Poista"
+msgstr "Kauko-ohjain"
 
 #: engines/titanic/metaengine.cpp:254
 msgid "Rooms"
@@ -14628,7 +14408,7 @@ msgstr "Huoneet"
 
 #: engines/titanic/metaengine.cpp:259
 msgid "Real life"
-msgstr ""
+msgstr "Tosielämä"
 
 #: engines/titanic/metaengine.cpp:278
 msgid "Scroll to top"
@@ -14648,15 +14428,15 @@ msgstr ""
 
 #: engines/titanic/metaengine.cpp:350
 msgid "Stop moving"
-msgstr ""
+msgstr "Lakkaa liikkumasta"
 
 #: engines/titanic/metaengine.cpp:356
 msgid "Lock coordinate"
-msgstr ""
+msgstr "Lukita koordinaatti"
 
 #: engines/titanic/metaengine.cpp:362
 msgid "Unlock coordinate"
-msgstr ""
+msgstr "Poista koordinaatin lukitus"
 
 #: engines/titanic/metaengine.cpp:368
 msgid "View constellations"
@@ -14730,37 +14510,28 @@ msgid "Unable to locate the '%s' data file."
 msgstr "Datatiedostoa \"%s\" ei löydetty."
 
 #: engines/tot/metaengine.cpp:36
-#, fuzzy
-#| msgid "Enable copy protection"
 msgid "Copy protection"
-msgstr "Kopiosuojaus päälle"
+msgstr "Kopiosuojaus"
 
 #: engines/tot/metaengine.cpp:47
-#, fuzzy
-#| msgid "Pixellated scene transitions"
 msgid "Disable scene transitions"
-msgstr "Pikselöidyt kohtauksenvaihdot"
+msgstr "Poista kohtauksenvaihdot"
 
 #: engines/tot/metaengine.cpp:48
 msgid "Disable original transition effects between scenes"
-msgstr ""
+msgstr "Poista alkuperäiset vaihtoefektit kohtausten väliltä"
 
 #: engines/tot/metaengine.cpp:58
-#, fuzzy
-#| msgid "Save / Load dialog"
 msgid "Original save/load dialog"
-msgstr "Tallenna / Lataa dialogi"
+msgstr "Alkuperäinen tallenna / lataa dialogi"
 
 #: engines/tot/metaengine.cpp:59
-#, fuzzy
 msgid "Use original save and load dialogs"
-msgstr "Käytä alkuperäisiä tallenna/lataa valikkoja"
+msgstr "Käytä alkuperäisiä tallennus-  ja latausvalikkoja"
 
 #: engines/tot/metaengine.cpp:118
-#, fuzzy
-#| msgid "Perform default action"
 msgid "Default action"
-msgstr "Suorita vakiotoiminne"
+msgstr "Vakiotoiminne"
 
 #: engines/tot/metaengine.cpp:154
 #, fuzzy
@@ -14769,10 +14540,8 @@ msgid "Save and load game"
 msgstr "Tallennetut pelit"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu"
 msgid "Main menu/Exit"
-msgstr "Päävalikko"
+msgstr "Päävalikko/poistu"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -15181,19 +14950,19 @@ msgid ""
 msgstr "Valitsit Ransome *unbeeped* (DLC) mutta DLC:tä ei löydetty!"
 
 #: engines/twp/twp.cpp:1019
-#, fuzzy
-#| msgid "This game requires the FoxTail subengine, which is not compiled in."
 msgid ""
 "This game requires OpenGL with shaders, which is not supported on your system"
 msgstr ""
-"Tämä peli vaatii toimiakseen FoxTail-pelimoottorin, jota ei ole käännetty "
-"tähän ScummVM:ään."
+"Tämä peli vaatii toimiakseen OpenGL:n sävyttimillä, jota järjestelmäsi ei "
+"tue."
 
 #: engines/twp/twp.cpp:1025
 msgid ""
 "This game requires OpenGL Framebuffer Objects, which are not supported on "
 "your system"
 msgstr ""
+"Tämä peli vaatii toimiakseen OpenGL Framebuffer Objects:eja, joita "
+"järjestelmäsi ei tue"
 
 #: engines/ultima/metaengine.cpp:67
 msgid "Enable frame skipping"
@@ -15274,31 +15043,31 @@ msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:50
 msgid "Throw"
-msgstr ""
+msgstr "Heitä"
 
 #: engines/ultima/ultima0/metaengine.cpp:51
 msgid "Food"
-msgstr ""
+msgstr "Ruoka"
 
 #: engines/ultima/ultima0/metaengine.cpp:52
 msgid "Rapier"
-msgstr ""
+msgstr "Pistomiekka"
 
 #: engines/ultima/ultima0/metaengine.cpp:53
 msgid "Axe"
-msgstr ""
+msgstr "Kirves"
 
 #: engines/ultima/ultima0/metaengine.cpp:54
 msgid "Shield"
-msgstr ""
+msgstr "Kilpi"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
 msgid "Bow & Arrow"
-msgstr ""
+msgstr "Jousi & Nuoli"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
 msgid "Magic Amulet"
-msgstr ""
+msgstr "Taika-amuletti"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
 #, fuzzy
@@ -15325,16 +15094,12 @@ msgid "Amulet Option 4"
 msgstr "Valitse näyttelijä 4"
 
 #: engines/ultima/ultima0/metaengine.cpp:65
-#, fuzzy
-#| msgid "Crawl North"
 msgid "North"
-msgstr "Ryömi pohjoiseen"
+msgstr "Pohjoiseen"
 
 #: engines/ultima/ultima0/metaengine.cpp:66
-#, fuzzy
-#| msgid "Crawl South"
 msgid "South"
-msgstr "Ryömi etelään"
+msgstr "Etelään"
 
 #: engines/ultima/ultima0/metaengine.cpp:67
 msgid "West"
@@ -15360,20 +15125,16 @@ msgstr "Odota"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
-#, fuzzy
-#| msgid "Minimize"
 msgid "Minimap"
-msgstr "Minimoi"
+msgstr "Minikartta"
 
 #: engines/ultima/ultima0/metaengine.cpp:78
 msgid "Move Forward"
 msgstr "Liiku eteenpäin"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn on"
 msgid "Turn Around"
-msgstr "Käynnistä"
+msgstr "Käänny ympäri"
 
 #: engines/ultima/ultima0/metaengine.cpp:80
 msgid "Turn Left"
@@ -15388,17 +15149,13 @@ msgstr "Käänny oikealle"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Bind Keys"
 msgid "Basic Keys"
-msgstr "Määritä näppäimet"
+msgstr "Perusnäppäimet"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Game Keys"
 msgid "Menu Keys"
-msgstr "Pelin näppäinkartta"
+msgstr "Valikkonäppäimet"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
@@ -15428,7 +15185,7 @@ msgstr "Näppäimistö"
 #: engines/ultima/ultima4/metaengine.cpp:52
 #: engines/ultima/ultima8/metaengine.cpp:108
 msgid "Descend"
-msgstr ""
+msgstr "Laskeudu"
 
 #: engines/ultima/ultima4/metaengine.cpp:56
 msgid "Get chest"
@@ -15445,7 +15202,7 @@ msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:60
 msgid "Ignite"
-msgstr ""
+msgstr "Sytytä"
 
 #: engines/ultima/ultima4/metaengine.cpp:61
 #, fuzzy
@@ -15455,7 +15212,7 @@ msgstr "Katso"
 
 #: engines/ultima/ultima4/metaengine.cpp:62
 msgid "Mix reagents"
-msgstr ""
+msgstr "Sekoita reagenssit"
 
 #: engines/ultima/ultima4/metaengine.cpp:63
 msgid "New order"
@@ -15493,11 +15250,11 @@ msgstr "Tilastot"
 
 #: engines/ultima/ultima4/metaengine.cpp:75
 msgid "Wear armor"
-msgstr ""
+msgstr "Pue panssari"
 
 #: engines/ultima/ultima4/metaengine.cpp:76
 msgid "Yell"
-msgstr ""
+msgstr "Huuda"
 
 #: engines/ultima/ultima4/metaengine.cpp:82
 #, fuzzy
@@ -15582,10 +15339,8 @@ msgid "Full equipment"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:111
-#, fuzzy
-#| msgid "Toggle Combat"
 msgid "Flee combat"
-msgstr "Taistelumoodi päälle / pois"
+msgstr "Pakene taistelusta"
 
 #: engines/ultima/ultima4/metaengine.cpp:113
 msgid "Help - Teleport to Lord British"
@@ -15593,7 +15348,7 @@ msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:114
 msgid "Give items"
-msgstr ""
+msgstr "Anna esineet"
 
 #: engines/ultima/ultima4/metaengine.cpp:115
 msgid "List karma"
@@ -15605,7 +15360,7 @@ msgstr "Poistu lokaatiosta"
 
 #: engines/ultima/ultima4/metaengine.cpp:117
 msgid "Give mixtures"
-msgstr ""
+msgstr "Anna mikstuurat"
 
 #: engines/ultima/ultima4/metaengine.cpp:118
 msgid "Combat encounters"
@@ -15623,7 +15378,7 @@ msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:121
 msgid "Give reagents"
-msgstr ""
+msgstr "Anna reagenssit"
 
 #: engines/ultima/ultima4/metaengine.cpp:122
 msgid "Full stats"
@@ -15689,19 +15444,19 @@ msgstr "Kävele etelään"
 
 #: engines/ultima/nuvie/metaengine.cpp:63
 msgid "Walk north-east"
-msgstr ""
+msgstr "Kävele koilliseen"
 
 #: engines/ultima/nuvie/metaengine.cpp:64
 msgid "Walk south-east"
-msgstr ""
+msgstr "Kävele kaakkoon"
 
 #: engines/ultima/nuvie/metaengine.cpp:65
 msgid "Walk north-west"
-msgstr ""
+msgstr "Kävele luoteeseen"
 
 #: engines/ultima/nuvie/metaengine.cpp:66
 msgid "Walk south-west"
-msgstr ""
+msgstr "Kävele lounaaseen"
 
 #: engines/ultima/nuvie/metaengine.cpp:75
 msgid "Multi-use"
@@ -15737,14 +15492,12 @@ msgid "Next party member"
 msgstr "Seuraava ryhmänjäsen"
 
 #: engines/ultima/nuvie/metaengine.cpp:84
-#, fuzzy
-#| msgid "Boss key"
 msgid "Home key"
-msgstr "Hätänappi (työpaikalle, tms.)"
+msgstr "Home-näppäin"
 
 #: engines/ultima/nuvie/metaengine.cpp:85
 msgid "End key"
-msgstr ""
+msgstr "End-näppäin"
 
 #: engines/ultima/nuvie/metaengine.cpp:86
 #, fuzzy
@@ -15856,43 +15609,43 @@ msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:116
 msgid "ALT code 0"
-msgstr ""
+msgstr "Alt-koodi 0"
 
 #: engines/ultima/nuvie/metaengine.cpp:117
 msgid "ALT code 1"
-msgstr ""
+msgstr "Alt-koodi 1"
 
 #: engines/ultima/nuvie/metaengine.cpp:118
 msgid "ALT code 2"
-msgstr ""
+msgstr "Alt-koodi 2"
 
 #: engines/ultima/nuvie/metaengine.cpp:119
 msgid "ALT code 3"
-msgstr ""
+msgstr "Alt-koodi 3"
 
 #: engines/ultima/nuvie/metaengine.cpp:120
 msgid "ALT code 4"
-msgstr ""
+msgstr "Alt-koodi 4"
 
 #: engines/ultima/nuvie/metaengine.cpp:121
 msgid "ALT code 5"
-msgstr ""
+msgstr "Alt-koodi 5"
 
 #: engines/ultima/nuvie/metaengine.cpp:122
 msgid "ALT code 6"
-msgstr ""
+msgstr "Alt-koodi 6"
 
 #: engines/ultima/nuvie/metaengine.cpp:123
 msgid "ALT code 7"
-msgstr ""
+msgstr "Alt-koodi 7"
 
 #: engines/ultima/nuvie/metaengine.cpp:124
 msgid "ALT code 8"
-msgstr ""
+msgstr "Alt-koodi 8"
 
 #: engines/ultima/nuvie/metaengine.cpp:125
 msgid "ALT code 9"
-msgstr ""
+msgstr "Alt-koodi 9"
 
 #: engines/ultima/nuvie/metaengine.cpp:129
 msgid "Open the asset viewer"
@@ -15956,7 +15709,7 @@ msgstr "Salli huijaus"
 
 #: engines/ultima/nuvie/metaengine.cpp:146
 msgid "Solo mode as Avatar"
-msgstr ""
+msgstr "Soolotila Avatar:ina"
 
 #: engines/ultima/nuvie/metaengine.cpp:147
 msgid "Solo mode as party member 2"
@@ -15980,132 +15733,132 @@ msgstr "Soolotila ryhmänjäsenenä 6"
 
 #: engines/ultima/nuvie/metaengine.cpp:152
 msgid "Solo mode as party member 7"
-msgstr ""
+msgstr "Soolotila ryhmänjäsenenä 7"
 
 #: engines/ultima/nuvie/metaengine.cpp:153
 msgid "Solo mode as party member 8"
-msgstr ""
+msgstr "Soolotila ryhmänjäsenenä 8"
 
 #: engines/ultima/nuvie/metaengine.cpp:154
 msgid "Solo mode as party member 9"
-msgstr ""
+msgstr "Soolotila ryhmänjäsenenä 9"
 
 #: engines/ultima/nuvie/metaengine.cpp:155
 msgid "Show stats for Avatar"
-msgstr ""
+msgstr "Näytä Avatar:in tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:156
 msgid "Show stats for party member 2"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 2:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:157
 msgid "Show stats for party member 3"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 3:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:158
 msgid "Show stats for party member 4"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 4:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:159
 msgid "Show stats for party member 5"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 5:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:160
 msgid "Show stats for party member 6"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 6:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:161
 msgid "Show stats for party member 7"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 7:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:162
 msgid "Show stats for party member 8"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 8:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:163
 msgid "Show stats for party member 9"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 9:n tilastot"
 
 #: engines/ultima/nuvie/metaengine.cpp:164
 msgid "Show inventory for Avatar"
-msgstr "Näytä Avatarin inventaario"
+msgstr "Näytä Avatar:in inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:165
 msgid "Show inventory for party member 2"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 2:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:166
 msgid "Show inventory for party member 3"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 3:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:167
 msgid "Show inventory for party member 4"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 4:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:168
 msgid "Show inventory for party member 5"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 5:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:169
 msgid "Show inventory for party member 6"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 6:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:170
 msgid "Show inventory for party member 7"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 7:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:171
 msgid "Show inventory for party member 8"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 8:n inventaario"
 
 #: engines/ultima/nuvie/metaengine.cpp:172
 msgid "Show inventory for party member 9"
-msgstr ""
+msgstr "Näytä ryhmänjäsen 9:n inventaario"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:174
 msgid "Show doll gump for Avatar"
-msgstr ""
+msgstr "Näytä doll gump Avatar:ille"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:176
 msgid "Show doll gump for party member 2"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 2:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:178
 msgid "Show doll gump for party member 3"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 3:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:180
 msgid "Show doll gump for party member 4"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 4:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:182
 msgid "Show doll gump for party member 5"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 5:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:184
 msgid "Show doll gump for party member 6"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 6:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:186
 msgid "Show doll gump for party member 7"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 7:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:188
 msgid "Show doll gump for party member 8"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 8:lle"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:190
 msgid "Show doll gump for party member 9"
-msgstr ""
+msgstr "Näytä doll gump ryhmänjäsen 9:lle"
 
 #: engines/ultima/nuvie/metaengine.cpp:196
 #: engines/ultima/nuvie/metaengine.cpp:201
@@ -16173,11 +15926,11 @@ msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:72
 msgid "Jump (fake both-button-click)"
-msgstr ""
+msgstr "Hyppää (feikki molempien-nappien-painallus)"
 
 #: engines/ultima/ultima8/metaengine.cpp:73
 msgid "Careful step"
-msgstr ""
+msgstr "Astu varoen"
 
 #: engines/ultima/ultima8/metaengine.cpp:79
 #, fuzzy
@@ -16209,7 +15962,7 @@ msgstr "Tavarat"
 
 #: engines/ultima/ultima8/metaengine.cpp:84
 msgid "Detonate bomb"
-msgstr ""
+msgstr "Laukaise pommi"
 
 #: engines/ultima/ultima8/metaengine.cpp:86
 msgid "Drop weapon"
@@ -16275,7 +16028,7 @@ msgstr "Kello päälle / pois"
 
 #: engines/ultima/ultima8/metaengine.cpp:107
 msgid "Ascend"
-msgstr ""
+msgstr "Nouse"
 
 #: engines/ultima/ultima8/metaengine.cpp:115
 #, fuzzy
@@ -16500,11 +16253,11 @@ msgstr "Ohita video"
 
 #: engines/voyeur/metaengine.cpp:211
 msgid "View evidence"
-msgstr ""
+msgstr "Katso todisteita"
 
 #: engines/voyeur/metaengine.cpp:217
 msgid "Exit / Put away evidence"
-msgstr ""
+msgstr "Poistu todisteista"
 
 #: engines/voyeur/metaengine.cpp:223
 msgid "Enter room"
@@ -16542,7 +16295,7 @@ msgstr "Käytä englanninkielistä puhetta"
 
 #: engines/wintermute/metaengine.cpp:95
 msgid "Use Italian dubbing instead of the default English one"
-msgstr ""
+msgstr "Käytä italialaista dubbausta englannin sijaan"
 
 #: engines/wintermute/metaengine.cpp:106
 msgid "Run SD version (1280x800)"
