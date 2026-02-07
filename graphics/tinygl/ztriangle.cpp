@@ -487,7 +487,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 				int n;
 				uint *pz = nullptr;
 				byte *ps = nullptr;
-				uint z;
+				uint z = 0;
 				n = (x2 >> 16) - x1;
 				if (kInterpZ) {
 					pz = pz1 + x1;
@@ -525,7 +525,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 				uint *pz = nullptr;
 				byte *ps = nullptr;
 				int pp;
-				uint z, r, g, b, a, fog;
+				uint z = 0, r, g, b, a, fog;
 				int n = (x2 >> 16) - x1;
 				pp = pp1 + x1;
 				r = r1;
@@ -578,7 +578,7 @@ void FrameBuffer::fillTriangle(ZBufferPoint *p0, ZBufferPoint *p1, ZBufferPoint 
 				uint *pz = nullptr;
 				byte *ps = nullptr;
 				int s, t;
-				uint z, r, g, b, a, fog;
+				uint z = 0, r, g, b, a, fog;
 				int n, pp;
 				float sz, tz, fz, zinv;
 				int dsdx, dtdx;
