@@ -39,7 +39,8 @@ ImageArchive::~ImageArchive() {
 void ImageArchive::reset() {
 #ifdef USE_PNG
 	for (auto &i : _imageCache) {
-		i._value->free();
+		if (i._value)
+			i._value->free();
 		delete i._value;
 	}
 	_imageCache.clear();
@@ -115,4 +116,3 @@ const Surface *ImageArchive::getImageSurface(const Common::Path &fname, int w, i
 }
 
 } // End of namespace Graphics
-
