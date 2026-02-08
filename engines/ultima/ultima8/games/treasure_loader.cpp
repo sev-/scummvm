@@ -130,8 +130,7 @@ bool TreasureLoader::internalParse(const Common::String &desc, TreasureInfo &ti,
 		} else if (key == "type" && !loadingDefault) {
 			if (loadedDefault)
 				return false;
-			TreasureMap::const_iterator iter;
-			iter = _defaultTreasure.find(val);
+			auto iter = _defaultTreasure.find(val);
 			if (iter != _defaultTreasure.end())
 				ti = iter->_value;
 			else

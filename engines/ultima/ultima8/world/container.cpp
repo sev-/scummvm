@@ -144,9 +144,7 @@ bool Container::addItem(Item *item, bool checkwghtvol) {
 
 
 bool Container::removeItem(Item *item) {
-	Common::List<Item *>::iterator iter;
-
-	for (iter = _contents.begin(); iter != _contents.end(); ++iter) {
+	for (auto iter = _contents.begin(); iter != _contents.end(); ++iter) {
 		if (*iter == item) {
 			_contents.erase(iter);
 			return true;
@@ -156,9 +154,7 @@ bool Container::removeItem(Item *item) {
 }
 
 bool Container::moveItemToEnd(Item *item) {
-	Common::List<Item *>::iterator iter;
-
-	for (iter = _contents.begin(); iter != _contents.end(); ++iter) {
+	for (auto iter = _contents.begin(); iter != _contents.end(); ++iter) {
 		if (*iter == item) {
 			// found; move to end
 			_contents.erase(iter);
@@ -168,7 +164,6 @@ bool Container::moveItemToEnd(Item *item) {
 	}
 
 	// not found
-
 	return false;
 }
 

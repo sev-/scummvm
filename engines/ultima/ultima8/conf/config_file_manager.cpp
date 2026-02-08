@@ -70,7 +70,7 @@ void ConfigFileManager::clear() {
 }
 
 void ConfigFileManager::clearRoot(const Common::String &category) {
-	Common::Array<ConfigFile *>::iterator i = _configFiles.begin();
+	auto i = _configFiles.begin();
 
 	while (i != _configFiles.end()) {
 		if (category.equalsIgnoreCase((*i)->_category)) {

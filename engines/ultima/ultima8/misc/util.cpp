@@ -30,11 +30,10 @@ template<class T> void StringToArgv(const T &args, Common::Array<T> &argv) {
 	argv.clear();
 
 	bool quoted = false;
-	typename T::const_iterator it;
 	int ch;
 	T arg;
 
-	for (it = args.begin(); it != args.end(); ++it) {
+	for (auto it = args.begin(); it != args.end(); ++it) {
 		ch = *it;
 
 		// Toggle quoted string handling

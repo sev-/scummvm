@@ -97,8 +97,6 @@ void JPRenderedText::drawBlended(RenderSurface *surface, int x, int y,
 	const Palette *savepal = _font->getPalette();
 	_font->setPalette(pal);
 
-	Common::List<PositionedText>::const_iterator iter;
-
 	for (const auto &line : _lines) {
 		int line_x = x + line._dims.left;
 		int line_y = y + line._dims.top;

@@ -323,8 +323,8 @@ void Mouse::setMouseCoords(int mx, int my) {
 			newGump = newGump->GetParent();
 		}
 
-		Common::List<Gump *>::iterator olditer = oldgumplist.begin();
-		Common::List<Gump *>::iterator newiter = newgumplist.begin();
+		auto olditer = oldgumplist.begin();
+		auto newiter = newgumplist.begin();
 
 		// strip common prefix from lists
 		while (olditer != oldgumplist.end() &&

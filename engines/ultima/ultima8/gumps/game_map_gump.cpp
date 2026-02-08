@@ -122,10 +122,7 @@ void GameMapGump::PaintThis(RenderSurface *surf, int32 lerp_factor, bool scaled)
 
 			if (!items) continue;
 
-			Common::List<Item *>::const_iterator it = items->begin();
-			Common::List<Item *>::const_iterator end = items->end();
-			for (; it != end; ++it) {
-				Item *item = *it;
+			for (auto item : *items) {
 				if (!item) continue;
 
 				item->setupLerp(gametick);

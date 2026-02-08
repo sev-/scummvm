@@ -757,8 +757,8 @@ void Ultima8Engine::changeVideoMode(int width, int height) {
 	// Set Screen Resolution
 	debug(1, "Setting Video Mode %dx%d...", width, height);
 
-	Common::List<Graphics::PixelFormat> tryModes = g_system->getSupportedFormats();
-	for (Common::List<Graphics::PixelFormat>::iterator g = tryModes.begin(); g != tryModes.end(); ++g) {
+	auto tryModes = g_system->getSupportedFormats();
+	for (auto g = tryModes.begin(); g != tryModes.end(); ++g) {
 		if (g->bytesPerPixel != 2 && g->bytesPerPixel != 4) {
 			g = tryModes.reverse_erase(g);
 		}

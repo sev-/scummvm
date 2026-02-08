@@ -1074,11 +1074,10 @@ bool Debugger::cmdRecall(int argc, const char **argv) {
 
 bool Debugger::cmdListMarks(int argc, const char **argv) {
 	const Common::ConfigManager::Domain *domain = ConfMan.getActiveDomain();
-	Common::ConfigManager::Domain::const_iterator dit;
 	Common::StringArray marks;
-	for (dit = domain->begin(); dit != domain->end(); ++dit) {
-		if (dit->_key.hasPrefix("mark_")) {
-			marks.push_back(dit->_key.substr(5));
+	for (const auto & dit : *domain) {
+		if (dit._key.hasPrefix("mark_")) {
+			marks.push_back(dit._key.substr(5));
 		}
 	}
 

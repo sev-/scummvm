@@ -207,10 +207,9 @@ uint16 ContainerGump::TraceObjId(int32 mx, int32 my) {
 	bool showEditorItems = Ultima8Engine::get_instance()->isShowEditorItems();
 
 	Common::List<Item *> &contents = c->_contents;
-	Common::List<Item *>::iterator iter;
 
 	// iterate backwards, since we're painting from begin() to end()
-	for (iter = contents.reverse_begin(); iter != contents.end(); --iter) {
+	for (auto iter = contents.reverse_begin(); iter != contents.end(); --iter) {
 		Item *item = *iter;
 		if (!showEditorItems && item->getShapeInfo()->is_editor())
 			continue;
@@ -291,7 +290,7 @@ void ContainerGump::Close(bool no_del) {
 	if (!c) return; // Container gone!?
 
 	Common::List<Item *> &contents = c->_contents;
-	Common::List<Item *>::iterator iter = contents.begin();
+	auto iter = contents.begin();
 	while (iter != contents.end()) {
 		Item *item = *iter;
 		++iter;

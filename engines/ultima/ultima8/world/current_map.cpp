@@ -513,7 +513,7 @@ void CurrentMap::setChunkFast(int32 cx, int32 cy) {
 void CurrentMap::unsetChunkFast(int32 cx, int32 cy) {
 	_fast[cy][cx / 32] &= ~(1 << (cx & 31));
 
-	item_list::iterator iter = _items[cx][cy].begin();
+	auto iter = _items[cx][cy].begin();
 	while (iter != _items[cx][cy].end()) {
 		Item *item = *iter;
 		++iter;
@@ -1001,7 +1001,8 @@ bool CurrentMap::sweepTest(const Point3 &start, const Point3 &end,
 		   vel[0] + ext[0], vel[1] + ext[1], vel[2] + ext[2]);
 
 	Common::List<SweepItem>::iterator sw_it;
-	if (hit) sw_it = hit->end();
+	if (hit)
+		sw_it = hit->end();
 
 	for (int cx = minx; cx <= maxx; cx++) {
 		for (int cy = miny; cy <= maxy; cy++) {

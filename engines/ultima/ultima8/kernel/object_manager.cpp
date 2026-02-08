@@ -305,8 +305,7 @@ bool ObjectManager::load(Common::ReadStream *rs, uint32 version) {
 void ObjectManager::saveObject(Common::WriteStream *ws, Object *obj) const {
 	const Common::String & classname = obj->GetClassType()._className; // note: virtual
 
-	Common::HashMap<Common::String, ObjectLoadFunc>::iterator iter;
-	iter = _objectLoaders.find(classname);
+	const auto iter = _objectLoaders.find(classname);
 	if (iter == _objectLoaders.end()) {
 		error("Object class cannot save without registered loader: %s", classname.c_str());
 	}
@@ -330,8 +329,7 @@ Object *ObjectManager::loadObject(Common::ReadStream *rs, uint32 version) {
 
 Object *ObjectManager::loadObject(Common::ReadStream *rs, Common::String classname,
 								  uint32 version) {
-	Common::HashMap<Common::String, ObjectLoadFunc>::iterator iter;
-	iter = _objectLoaders.find(classname);
+	const auto iter = _objectLoaders.find(classname);
 
 	if (iter == _objectLoaders.end()) {
 		warning("Unknown Object class: %s", classname.c_str());

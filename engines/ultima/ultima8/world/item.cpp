@@ -1136,7 +1136,7 @@ int32 Item::collideMove(int32 dx, int32 dy, int32 dz, bool teleport, bool force,
 		// We don't care about items hitting us at the start
 		if (!force) {
 			Common::List<CurrentMap::SweepItem>::iterator it;
-			for (it = collisions.begin(); it != collisions.end(); it++) {
+			for (it = collisions.begin(); it != collisions.end(); ++it) {
 				if (it->_blocking && !it->_touching) {
 					if (hititem)
 						*hititem = it->_item;
@@ -2482,7 +2482,6 @@ bool Item::canReach(const Item *other, int range,
 		start.z = end.z; // bottom of other between bottom and top of this
 
 	Common::List<CurrentMap::SweepItem> collisions;
-	Common::List<CurrentMap::SweepItem>::iterator it;
 	World *world = World::get_instance();
 	CurrentMap *map = world->getCurrentMap();
 	map->sweepTest(start, end, dims, ShapeInfo::SI_SOLID,

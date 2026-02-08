@@ -390,8 +390,7 @@ void Kernel::save(Common::WriteStream *ws) {
 		const Common::String & classname = p->GetClassType()._className; // virtual
 		assert(classname.size());
 
-		Common::HashMap<Common::String, ProcessLoadFunc>::iterator iter;
-		iter = _processLoaders.find(classname);
+		auto iter = _processLoaders.find(classname);
 
 		if (iter == _processLoaders.end()) {
 			error("Process class cannot save without registered loader: %s", classname.c_str());
@@ -454,8 +453,7 @@ Process *Kernel::loadProcess(Common::ReadStream *rs, uint32 version) {
 	Common::String classname = buf;
 	delete[] buf;
 
-	Common::HashMap<Common::String, ProcessLoadFunc>::iterator iter;
-	iter = _processLoaders.find(classname);
+	const auto iter = _processLoaders.find(classname);
 
 	if (iter == _processLoaders.end()) {
 		warning("Unknown Process class: %s", classname.c_str());

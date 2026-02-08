@@ -91,13 +91,7 @@ public:
 	//! \param fail if true, fail the processes instead of terminating them
 	void killAllProcessesNotOfTypeExcludeCurrent(uint16 processtype, bool fail);
 
-	//! get an iterator of the process list.
-	ProcessIter getProcessBeginIterator() {
-		return _processes.begin();
-	}
-	ProcessIter getProcessEndIterator() {
-		return _processes.end();
-	}
+	const Common::List<Process *> &getProcesses() const { return  _processes; }
 
 	void kernelStats();
 	void processTypes();

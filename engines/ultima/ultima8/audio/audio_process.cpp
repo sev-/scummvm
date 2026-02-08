@@ -87,8 +87,7 @@ void AudioProcess::run() {
 	AudioMixer *mixer = AudioMixer::get_instance();
 
 	// Update the channels
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		bool finished = false;
 		if (!mixer->isPlaying(it->_channel)) {
 			if (it->_sfxNum == -1)
@@ -213,8 +212,7 @@ int AudioProcess::playSample(AudioSample *sample, int priority, int loops, bool 
 	if (channel == -1) return channel;
 
 	// Erase old sample using channel (if any)
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if (it->_channel == channel) {
 			it = _sampleInfo.erase(it);
 		} else {
@@ -234,8 +232,7 @@ void AudioProcess::playSFX(int sfxNum, int priority, ObjId objId, int loops,
 	AudioMixer *mixer = AudioMixer::get_instance();
 
 	if (no_duplicates) {
-		Common::List<SampleInfo>::iterator it;
-		for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+		for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 			if (it->_sfxNum == sfxNum && it->_objId == objId &&
 			        it->_loops == loops) {
 
@@ -271,8 +268,7 @@ void AudioProcess::playSFX(int sfxNum, int priority, ObjId objId, int loops,
 void AudioProcess::stopSFX(int sfxNum, ObjId objId) {
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if ((sfxNum == -1 || it->_sfxNum == sfxNum)
 			 && it->_objId == objId) {
 			if (mixer->isPlaying(it->_channel)) mixer->stopSample(it->_channel);
@@ -339,8 +335,7 @@ bool AudioProcess::playSpeech(const Common::String &barked, int shapeNum, ObjId 
 
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 
 		if (it->_sfxNum == -1 && it->_barked == barked &&
 		        it->_priority == shapeNum && it->_objId == objId) {
@@ -387,8 +382,7 @@ uint32 AudioProcess::getSpeechLength(const Common::String &barked, int shapenum)
 void AudioProcess::stopSpeech(const Common::String &barked, int shapenum, ObjId objId) {
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if (it->_sfxNum == -1 && it->_priority == shapenum &&
 		        it->_objId == objId && it->_barked == barked) {
 			if (mixer->isPlaying(it->_channel)) mixer->stopSample(it->_channel);
@@ -400,7 +394,6 @@ void AudioProcess::stopSpeech(const Common::String &barked, int shapenum, ObjId 
 }
 
 bool AudioProcess::isSpeechPlaying(const Common::String &barked, int shapeNum) {
-	Common::List<SampleInfo>::iterator it;
 	for (auto &si : _sampleInfo) {
 		if (si._sfxNum == -1 && si._priority == shapeNum &&
 		        si._barked == barked) {
@@ -417,8 +410,7 @@ void AudioProcess::pauseAllSamples() {
 
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if (mixer->isPlaying(it->_channel)) {
 			mixer->setPaused(it->_channel, true);
 			++it;
@@ -436,8 +428,7 @@ void AudioProcess::unpauseAllSamples() {
 
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if (mixer->isPlaying(it->_channel)) {
 			mixer->setPaused(it->_channel, false);
 			++it;
@@ -452,8 +443,7 @@ void AudioProcess::unpauseAllSamples() {
 void AudioProcess::stopAllExceptSpeech() {
 	AudioMixer *mixer = AudioMixer::get_instance();
 
-	Common::List<SampleInfo>::iterator it;
-	for (it = _sampleInfo.begin(); it != _sampleInfo.end();) {
+	for (auto it = _sampleInfo.begin(); it != _sampleInfo.end();) {
 		if (it->_barked.empty()) {
 			if (mixer->isPlaying(it->_channel)) mixer->stopSample(it->_channel);
 			it = _sampleInfo.erase(it);
