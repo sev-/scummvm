@@ -120,6 +120,7 @@ bool BaseSurfaceOSystem::loadImage() {
 		return false;
 	}
 	Common::String filename = _filename;
+	filename.toLowercase();
 
 	BaseImage *image = new BaseImage();
 	if (!image->loadFile(filename)) {

@@ -171,6 +171,7 @@ bool BaseSurfaceOpenGL3D::loadImage() {
 		return false;
 	}
 	Common::String filename = _filename;
+	filename.toLowercase();
 
 	BaseImage img = BaseImage();
 	if (!img.loadFile(filename)) {
