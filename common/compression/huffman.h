@@ -115,6 +115,7 @@ Huffman<BITSTREAM>::Huffman(uint8 maxLength, uint32 codeCount, const uint32 *cod
 
 	for (uint i = 0; i < codeCount; i++) {
 		uint8 length = lengths[i];
+		assert(length != 0);
 
 		// The symbol. If none was specified, assume it is identical to the code index.
 		uint32 symbol = symbols ? symbols[i] : i;
