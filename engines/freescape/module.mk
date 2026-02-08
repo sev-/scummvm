@@ -3,10 +3,11 @@ MODULE := engines/freescape
 MODULE_OBJS := \
 	area.o \
 	assets.o \
-	font.o \
-	events.o \
+	debugger.o \
 	demo.o \
 	doodle.o \
+	events.o \
+	font.o \
 	freescape.o \
 	games/castle/castle.o \
 	games/castle/amiga.o \
