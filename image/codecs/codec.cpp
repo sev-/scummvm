@@ -133,7 +133,7 @@ Codec *createBitmapCodec(uint32 tag, uint32 streamTag, int width, int height, in
 #endif
 	case MKTAG('M','J','P','G'):
 	case MKTAG('m','j','p','g'):
-#ifdef USE_MJPEG
+#ifdef USE_JPEG
 		return new MJPEGDecoder();
 #else
 		missingCodec = "MJPEG";
