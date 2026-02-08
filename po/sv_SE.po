@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-08 20:33+0000\n"
-"PO-Revision-Date: 2026-02-04 22:18+0000\n"
+"PO-Revision-Date: 2026-02-08 22:22+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/sv/>\n"
@@ -1483,10 +1483,8 @@ msgid "About ScummVM"
 msgstr "Om ScummVM"
 
 #: gui/launcher.cpp:275 gui/launcher.cpp:953
-#, fuzzy
-#| msgid "General Keys"
 msgid "General help"
-msgstr "Allmänna tangenter"
+msgstr "Allmän hjälp"
 
 #. I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 #: gui/launcher.cpp:278
@@ -3544,10 +3542,8 @@ msgid "~O~ptions"
 msgstr "A~I~termativ"
 
 #: engines/dialogs.cpp:79
-#, fuzzy
-#| msgid "~H~elp"
 msgid "Game ~H~elp"
-msgstr "~H~jälp"
+msgstr "Spel~h~jälp"
 
 #: engines/dialogs.cpp:83
 msgid "~H~elp"
@@ -4896,16 +4892,12 @@ msgid "R"
 msgstr "R"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Cirkel"
+msgstr "Circle Pad X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Cirkel"
+msgstr "Circle Pad Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -11529,10 +11521,8 @@ msgid "I Have No Mouth support not compiled in"
 msgstr "Stöd för I Have No Mouth har inte kompilerats in"
 
 #: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
 msgid "Default game keymappings"
-msgstr "Förvald knappuppsättning"
+msgstr "Standardinställningar för tangentbordskommandon i spelet"
 
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
