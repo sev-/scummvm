@@ -72,11 +72,11 @@ strmRequest *f_stream_Open(SysFile *srcFile, int32 fileOffset, int32 strmMinBuff
 
 	// Parameter verification        
 	if (!srcFile) {
-		error_show(FL, 'FSF!');
+		error_show(FL);
 	}
 
 	if (strmMinBuffSize < 0) {
-		error_show(FL, 'FSF1', "neg min buffsize: %d", strmMinBuffSize);
+		error_show(FL, "neg min buffsize: %d", strmMinBuffSize);
 	}
 
 	// Allocate a new stream request struct
@@ -229,10 +229,10 @@ int32 f_stream_Read(strmRequest *myStream, uint8 **dest, int32 numBytes) {
 
 	// Parameter verification
 	if (!myStream)
-		error_show(FL, 'FSIS', "f_stream_Read() failed - invalid stream request");
+		error_show(FL, "f_stream_Read() failed - invalid stream request");
 
 	if ((numBytes <= 0) || (numBytes >= myStream->strmSize))
-		error_show(FL, 'FSR!', "%d stream size %d", numBytes, myStream->strmSize);
+		error_show(FL, "%d stream size %d", numBytes, myStream->strmSize);
 
 	// If the stream tail is > the stream head, and the number of bytes at the end of the buffer is < numBytes
 	// we must unwrap the stream, moving the data at the end of the buffer to the beginning, and slide the beginning down

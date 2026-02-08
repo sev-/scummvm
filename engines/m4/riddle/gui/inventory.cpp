@@ -49,7 +49,7 @@ Inventory::Inventory(const RectClass &r, int32 sprite, int16 cells_h, int16 cell
 
 	// If requested cell configuration doesn't fit, blow up.
 	if ((cells_h * cell_w > (_x2 - _x1)) || (cells_v * cell_h > (_y2 - _y1))) {
-		error_show(FL, 'CGIC');
+		error_show(FL);
 	}
 
 	_highlight = -1;
@@ -83,7 +83,7 @@ bool Inventory::add(const Common::String &name, const Common::String &verb, int3
 	}
 
 	if (_num_cells >= INVENTORY_CELLS_COUNT) {
-		error_show(FL, 'CGIA');
+		error_show(FL);
 		return false;
 	}
 

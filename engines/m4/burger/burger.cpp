@@ -361,7 +361,7 @@ void BurgerEngine::global_daemon() {
 			_G(wilbur_should) = 10017;
 			kernel_trigger_dispatch_now(kCHANGE_WILBUR_ANIMATION);
 		} else {
-			error_show(FL, 'Burg', "Time to abduct Wilbur in space?");
+			error_show(FL, "Time to abduct Wilbur in space?");
 		}
 		break;
 

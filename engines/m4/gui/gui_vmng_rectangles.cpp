@@ -35,7 +35,7 @@ namespace M4 {
 RectList *vmng_CreateNewRect(int32 x1, int32 y1, int32 x2, int32 y2) {
 	RectList *newRect;
 	if ((newRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectList")) == nullptr) {
-		error_show(FL, 'OOS!', "vmng_CreateNewRect");
+		error_show(FL, "vmng_CreateNewRect");
 	}
 
 	newRect->x1 = x1;
@@ -222,7 +222,7 @@ RectList *vmng_DuplicateRectList(RectList *myRectList) {
 		// Duplicate myRect and stick it on the newRectList
 		RectList *tempRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectList");
 		if (tempRect == nullptr) {
-			error_show(FL, 'OOS!', "vmng_DuplicateRectList()");
+			error_show(FL, "vmng_DuplicateRectList()");
 		}
 		tempRect->x1 = myRect->x1;
 		tempRect->y1 = myRect->y1;
@@ -368,7 +368,7 @@ void vmng_RemoveRectFromRectList(RectList **scrnRectList, int32 x1, int32 y1, in
 				// Create a new rect of just the part that extends beyond the top of myRect
 				tempRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectangle");
 				if (tempRect == nullptr) {
-					error_show(FL, 'OOS!', "vmng_AddRectToRectList");
+					error_show(FL, "vmng_AddRectToRectList");
 				}
 				tempRect->x1 = myRect->x1;
 				tempRect->y1 = myRect->y1;
@@ -388,7 +388,7 @@ void vmng_RemoveRectFromRectList(RectList **scrnRectList, int32 x1, int32 y1, in
 				// Create a new rect of just the part that extends beyond the top of myRect
 				tempRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectangle");
 				if (tempRect == nullptr) {
-					error_show(FL, 'OOS!', "vmng_AddRectToRectList");
+					error_show(FL, "vmng_AddRectToRectList");
 				}
 				tempRect->x1 = myRect->x1;
 				tempRect->y1 = y2 + 1;
@@ -408,7 +408,7 @@ void vmng_RemoveRectFromRectList(RectList **scrnRectList, int32 x1, int32 y1, in
 				// Create a new rect of just the part that extends beyond the top of myRect
 				tempRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectangle");
 				if (tempRect == nullptr) {
-					error_show(FL, 'OOS!', "vmng_AddRectToRectList");
+					error_show(FL, "vmng_AddRectToRectList");
 				}
 				tempRect->x1 = myRect->x1;
 				tempRect->y1 = myRect->y1;
@@ -425,7 +425,7 @@ void vmng_RemoveRectFromRectList(RectList **scrnRectList, int32 x1, int32 y1, in
 				// Create a new rect of just the part that extends beyond the top of myRect
 				tempRect = (RectList *)mem_get_from_stash(_G(memtypeRECT), "+guiRectangle");
 				if (tempRect == nullptr) {
-					error_show(FL, 'OOS!', "vmng_AddRectToRectList");
+					error_show(FL, "vmng_AddRectToRectList");
 				}
 
 				tempRect->x1 = x2 + 1;

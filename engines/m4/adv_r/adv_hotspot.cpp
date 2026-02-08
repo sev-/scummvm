@@ -314,7 +314,7 @@ static HotSpotRec *saved_hotspots = nullptr;
 
 void hotspot_hide_all() {
 	if (saved_hotspots)
-		error_show(FL, 'HNST');
+		error_show(FL);
 
 	saved_hotspots = _G(currentSceneDef).hotspots;
 	_G(currentSceneDef).hotspots = nullptr;
@@ -322,7 +322,7 @@ void hotspot_hide_all() {
 
 void hotspot_restore_all() {
 	if (!saved_hotspots) {
-		error_show(FL, 'HNON');
+		error_show(FL);
 	}
 
 	if (_G(currentSceneDef).hotspots)

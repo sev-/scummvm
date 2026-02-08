@@ -36,10 +36,10 @@ namespace M4 {
  */
 static uint8 scale_sprite(Buffer *S, Buffer *D, uint32 ScaleX, uint32 ScaleY) {
 	if (!D)
-		error_show(FL, 'BUF!', "scale sprite NULL D");
+		error_show(FL, "scale sprite NULL D");
 
 	if (!S)
-		error_show(FL, 'BUF!', "scale sprite h:%d w:%d sx:%uld sy:%uld", D->h, D->w, ScaleX, ScaleY);
+		error_show(FL, "scale sprite h:%d w:%d sx:%uld sy:%uld", D->h, D->w, ScaleX, ScaleY);
 
 	uint8 *pData = S->data;
 
@@ -113,7 +113,7 @@ uint8 gr_sprite_draw(DrawRequest *drawReq) {
 	// if it's RLE encoded, ensure the sprite will decode to match the expected size
 	if (source.encoding & RLE8) {
 		if (RLE8Decode_Size(source.data, source.stride) != (size_t)(source.stride * source.h))
-			error_show(FL, 'RLE8', "RLE8 sprite suspected BAD!");
+			error_show(FL, "RLE8 sprite suspected BAD!");
 	}
 
 	// Check for RLE encoding in case of shadows
@@ -145,7 +145,7 @@ uint8 gr_sprite_draw(DrawRequest *drawReq) {
 			if (scaledBuff)
 				mem_free(scaledBuff);
 
-			error_show(FL, 'SPSF', "gr_sprite_draw");
+			error_show(FL, "gr_sprite_draw");
 		}
 
 		// Preserve encoding

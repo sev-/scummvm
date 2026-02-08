@@ -172,12 +172,12 @@ void guiMenu::shutdown(bool fadeToColor) {
 	// Restore the background and codes if necessary
 	if (_GM(dumpedBackground)) {
 		if (!adv_restoreBackground()) {
-			error_show(FL, 0, "unable to restore background");
+			error_show(FL, "unable to restore background");
 		}
 	}
 	if (_GM(dumpedCodes)) {
 		if (!adv_restoreCodes()) {
-			error_show(FL, 0, "unable to restore screen codes");
+			error_show(FL, "unable to restore screen codes");
 		}
 	}
 

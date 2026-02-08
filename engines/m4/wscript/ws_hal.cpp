@@ -116,7 +116,7 @@ void ws_Error(machine *m, int32 errorType, trigraph errorCode, const char *errMs
 		f_io_close(logFile);
 
 	// Now we fatal abort
-	error_show(FL, errorCode, errMsg);
+	error_show(FL, errMsg);
 }
 
 void ws_LogErrorMsg(const char *filename, uint32 line, const char *fmt, ...) {
@@ -531,7 +531,7 @@ void ShowCCB(CCB *myCCB) {
 
 void MoveCCB(CCB *myCCB, frac16 deltaX, frac16 deltaY) {
 	if (!myCCB || !myCCB->source) {
-		error_show(FL, 'WSIC');
+		error_show(FL);
 	}
 
 	myCCB->newLocation->x1 = myCCB->currLocation->x1 + (deltaX >> 16);
@@ -562,7 +562,7 @@ void MoveCCB(CCB *myCCB, frac16 deltaX, frac16 deltaY) {
 
 void KillCCB(CCB *myCCB, bool restoreFlag) {
 	if (!myCCB) {
-		error_show(FL, 'WSIC');
+		error_show(FL);
 	}
 	if (restoreFlag && (!(myCCB->flags & CCB_SKIP)) && (!(myCCB->flags & CCB_HIDE))) {
 		if ((myCCB->flags & CCB_STREAM) && myCCB->maxArea) {
@@ -594,12 +594,12 @@ void KillCCB(CCB *myCCB, bool restoreFlag) {
 
 void Cel_msr(Anim8 *myAnim8) {
 	if (!myAnim8) {
-		error_show(FL, 'WSAI');
+		error_show(FL);
 	}
 
 	CCB *myCCB = myAnim8->myCCB;
 	if ((!myCCB) || (!myCCB->source)) {
-		error_show(FL, 'WSIC');
+		error_show(FL);
 	}
 
 	if ((myCCB->source->w == 0) || (myCCB->source->h == 0)) {
@@ -608,7 +608,7 @@ void Cel_msr(Anim8 *myAnim8) {
 
 	frac16 *myRegs = myAnim8->myRegs;
 	if (!myRegs) {
-		error_show(FL, 'WSAI');
+		error_show(FL);
 	}
 
 	const int32 scaler = FixedMul(myRegs[IDX_S], 100 << 16) >> 16;

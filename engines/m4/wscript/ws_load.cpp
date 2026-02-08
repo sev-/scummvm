@@ -91,7 +91,7 @@ bool InitWSAssets() {
 
 	// Make sure this is only called once.
 	if (_GWS(wsloaderInitialized)) {
-		error_show(FL, 'WSSN');
+		error_show(FL);
 	}
 
 	// Allocate space for the tables used by the loader and the resource io MACHine tables
@@ -264,13 +264,13 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 	// Check that the loader has been initialized
 	if (!_GWS(wsloaderInitialized)) {
-		error_show(FL, 'WSLI');
+		error_show(FL);
 	}
 
 	// Use the resource io manager to read in the entire block
 	const MemHandle workHandle = rget(wsAssetName, &assetSize);
 	if (workHandle == nullptr) {
-		error_show(FL, 'FNF!', "Asset Name: %s", wsAssetName);
+		error_show(FL, "Asset Name: %s", wsAssetName);
 	}
 
 	// Lock the handle so we can step through the chunk
@@ -293,10 +293,10 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 	while (!finished) {
 		// Read in the chunk size and hash number
 		if (!GetNextint32(&parseAssetPtr, endOfAssetBlock, chunkSize)) {
-			error_show(FL, 'WSLE', "Asset Name: %s", wsAssetName);
+			error_show(FL, "Asset Name: %s", wsAssetName);
 		}
 		if (!GetNextint32(&parseAssetPtr, endOfAssetBlock, chunkHash)) {
-			error_show(FL, 'WSLE', "Asset Name: %s", wsAssetName);
+			error_show(FL, "Asset Name: %s", wsAssetName);
 		}
 
 		// Process the chunk according to type
@@ -314,7 +314,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 		case CHUNK_MACH:
 			// Check the validity of the machine hash number, and clear it
 			if (*chunkHash > MAX_ASSET_HASH) {
-				error_show(FL, 'WSLA', "Asset Name: %s, MACH hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, MACH hash was: %d", wsAssetName, *chunkHash);
 			}
 			ClearWSAssets(_WS_ASSET_MACH, *chunkHash, *chunkHash);
 
@@ -325,7 +325,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 			// Check that the assetblocksize is big enough that the chunk body was read in...
 			if ((endOfAssetBlock - parseAssetPtr) < (int)(*chunkSize - 12)) {
-				error_show(FL, 'WSLE', "Asset Name: %s, MACH hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, MACH hash was: %d", wsAssetName, *chunkHash);
 			}
 
 			// Byteswap the entire machine if necessary
@@ -353,7 +353,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 		case CHUNK_SEQU:
 			// Check the validity of the sequence hash number, and clear it
 			if (*chunkHash > MAX_ASSET_HASH) {
-				error_show(FL, 'WSLA', "Asset Name: %s, SEQU hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, SEQU hash was: %d", wsAssetName, *chunkHash);
 			}
 			ClearWSAssets(_WS_ASSET_SEQU, *chunkHash, *chunkHash);
 
@@ -364,7 +364,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 			// Check that the assetblocksize is big enough that the chunk body was read in...
 			if ((endOfAssetBlock - parseAssetPtr) < (int)(*chunkSize - 12)) {
-				error_show(FL, 'WSLE', "Asset Name: %s, SEQU hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, SEQU hash was: %d", wsAssetName, *chunkHash);
 			}
 
 			// Byteswap the entire sequence if necessary
@@ -392,7 +392,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 		case CHUNK_DATA:
 			// Check the validity of the data block hash number, and clear it
 			if (*chunkHash > MAX_ASSET_HASH) {
-				error_show(FL, 'WSLA', "Asset Name: %s, DATA hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, DATA hash was: %d", wsAssetName, *chunkHash);
 			}
 			ClearWSAssets(_WS_ASSET_DATA, *chunkHash, *chunkHash);
 
@@ -403,7 +403,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 			// Check that the assetblocksize is big enough that the chunk body was read in...
 			if ((endOfAssetBlock - parseAssetPtr) < (int)(*chunkSize - 12)) {
-				error_show(FL, 'WSLE', "Asset Name: %s, DATA hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, DATA hash was: %d", wsAssetName, *chunkHash);
 			}
 
 			// Byteswap the entire data block if necessary
@@ -430,7 +430,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 		case CHUNK_CELS: {
 			// Check the validity of the cels hash number, and clear it
 			if (*chunkHash > MAX_ASSET_HASH) {
-				error_show(FL, 'WSLA', "Asset Name: %s, CELS hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, CELS hash was: %d", wsAssetName, *chunkHash);
 			}
 
 			ClearWSAssets(_WS_ASSET_CELS, *chunkHash, *chunkHash);
@@ -440,7 +440,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 			// Process the SS from the stream file
 			if (ProcessCELS(wsAssetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette) < 0) {
-				error_show(FL, 'WSLP', "Asset Name: %s, CELS hash was: %d", wsAssetName, *chunkHash);
+				error_show(FL, "Asset Name: %s, CELS hash was: %d", wsAssetName, *chunkHash);
 			}
 
 			// At this point, celsPtr points to the beginning of the cels data, palPtr to the pal data
@@ -460,7 +460,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 		}
 
 		default:
-			error_show(FL, 'WSLT', "Asset Name: %s, %d bytes into the file.", wsAssetName,
+			error_show(FL, "Asset Name: %s, %d bytes into the file.", wsAssetName,
 				(intptr)parseAssetPtr - 12 - (intptr)mainAssetPtr);
 			break;
 		}
@@ -549,7 +549,7 @@ int32 LoadSpriteSeries(const char *assetName, MemHandle *seriesHandle, int32 *ce
 
 	// Load in the sprite series
 	if ((workHandle = rget(assetName, &assetSize)) == nullptr)
-		error_show(FL, 'FNF!', "Sprite series: %s", assetName);
+		error_show(FL, "Sprite series: %s", assetName);
 
 	HLock(workHandle);
 
@@ -560,7 +560,7 @@ int32 LoadSpriteSeries(const char *assetName, MemHandle *seriesHandle, int32 *ce
 	// Process the SS from the stream file
 	const int32 celsSize = ProcessCELS(assetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette);
 	if (celsSize < 0) {
-		error_show(FL, 'WSLP', "series: %s", assetName);
+		error_show(FL, "series: %s", assetName);
 	}
 
 	// Store the handle and offsets
@@ -609,7 +609,7 @@ int32 LoadSpriteSeriesDirect(const char *assetName, MemHandle *seriesHandle, int
 	// Process the SS from the stream file
 	const int32 celsSize = ProcessCELS(assetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette);
 	if (celsSize < 0) {
-		error_show(FL, 'WSLP', "series: %s", assetName);
+		error_show(FL, "series: %s", assetName);
 	}
 
 	// Store the handle and offsets
@@ -654,7 +654,7 @@ int32 AddWSAssetCELS(const char *wsAssetName, int32 hash, RGB8 *myPalette) {
 
 	// Check that the loader has been initialized
 	if (!_GWS(wsloaderInitialized)) {
-		error_show(FL, 'WSLI', "Asset Name: %s", wsAssetName);
+		error_show(FL, "Asset Name: %s", wsAssetName);
 	}
 
 	int32 emptySlot = -1;
@@ -677,7 +677,7 @@ int32 AddWSAssetCELS(const char *wsAssetName, int32 hash, RGB8 *myPalette) {
 		// Else the SS must be stored in the given hash, replacing any previous contents.
 		// Index checking
 		if (hash > MAX_ASSET_HASH) {
-			error_show(FL, 'WSLA', "Asset Name: %s, hash given was %d", wsAssetName, hash);
+			error_show(FL, "Asset Name: %s, hash given was %d", wsAssetName, hash);
 		}
 
 		// Check to see if the SS is already loaded in the given hash slot
@@ -706,7 +706,7 @@ int32 AddWSAssetCELS(const char *wsAssetName, int32 hash, RGB8 *myPalette) {
 	if ((i > MAX_ASSET_HASH) && (emptySlot >= 0)) {
 		workHandle = rget(wsAssetName, &assetSize);
 		if (workHandle == nullptr) {
-			error_show(FL, 'FNF!', wsAssetName);
+			error_show(FL, wsAssetName);
 		}
 
 		// Lock the handle so we can step through the chunk
@@ -723,7 +723,7 @@ int32 AddWSAssetCELS(const char *wsAssetName, int32 hash, RGB8 *myPalette) {
 
 		// Process the SS from the stream file
 		if (ProcessCELS(wsAssetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette) < 0) {
-			error_show(FL, 'WSLP', "Asset Name: %s", wsAssetName);
+			error_show(FL, "Asset Name: %s", wsAssetName);
 		}
 
 		// At this point, celsPtr points to the beginning of the cels data, palPtr to the pal data
@@ -763,7 +763,7 @@ int32 AddWSAssetCELS(const char *wsAssetName, int32 hash, RGB8 *myPalette) {
 		return i;
 	} else {
 		// Else we searched the entire table, it was not already loaded, and there are no empty slots
-		error_show(FL, 'WSLF', "Asset Name: %s", wsAssetName);
+		error_show(FL, "Asset Name: %s", wsAssetName);
 	}
 
 	return -1;
@@ -1033,7 +1033,7 @@ int32 LoadSpriteSeries(const char *assetName, Handle *seriesHandle, int32 *celsO
 	// Load in the sprite series
 	const MemHandle workHandle = rget(assetName, &assetSize);
 	if (workHandle == nullptr)
-		error_show(FL, 'FNF!', "Sprite series: %s", assetName);
+		error_show(FL, "Sprite series: %s", assetName);
 
 	HLock(workHandle);
 
@@ -1044,7 +1044,7 @@ int32 LoadSpriteSeries(const char *assetName, Handle *seriesHandle, int32 *celsO
 	// Process the SS from the stream file
 	const int32 celsSize = ProcessCELS(assetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette);
 	if (celsSize < 0) {
-		error_show(FL, 'WSLP', "series: %s", assetName);
+		error_show(FL, "series: %s", assetName);
 	}
 
 	// Store the handle and offsets
@@ -1094,7 +1094,7 @@ int32 LoadSpriteSeriesDirect(const char *assetName, Handle *seriesHandle, int32 
 	// Process the SS from the stream file
 	const int32 celsSize = ProcessCELS(assetName, &parseAssetPtr, mainAssetPtr, endOfAssetBlock, &celsPtr, &palPtr, myPalette);
 	if (celsSize < 0) {
-		error_show(FL, 'WSLP', "series: %s", assetName);
+		error_show(FL, "series: %s", assetName);
 	}
 
 	// Store the handle and offsets

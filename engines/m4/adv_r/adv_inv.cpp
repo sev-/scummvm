@@ -77,12 +77,12 @@ bool inv_init(int32 num_objects) {
 	_G(inventory)->_objects.resize(num_objects);
 
 	if (!mem_register_stash_type(&_G(inv_obj_mem_type), sizeof(InvObj), num_objects, "obj"))
-		error_show(FL, 'OOM!', "fail to mem_register_stash_type for inv_obj");
+		error_show(FL, "fail to mem_register_stash_type for inv_obj");
 
 	for (int i = 0; i < num_objects; i++) {
 		_G(inventory)->_objects[i] = (InvObj *)mem_get_from_stash(_G(inv_obj_mem_type), "obj");
 		if (!_G(inventory)->_objects[i])
-			error_show(FL, 'OOM!', "%d bytes", (int32)sizeof(InvObj));
+			error_show(FL, "%d bytes", (int32)sizeof(InvObj));
 	}
 
 	_G(inventory)->_tail = 0;

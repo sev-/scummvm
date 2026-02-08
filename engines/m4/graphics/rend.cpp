@@ -77,7 +77,7 @@ static RenderResult r_0() {
 				++to;
 			}
 		} else {
-			uint8 data = *from++;
+			const uint8 data = *from++;
 
 			if (!data)
 				to += runLength;
@@ -132,7 +132,7 @@ static RenderResult r_0_5() {
 				--to;
 			}
 		} else {
-			uint8 data = *from++;
+			const uint8 data = *from++;
 
 			if (!data)
 				to -= runLength;
@@ -169,8 +169,8 @@ static RenderResult r_1() {
 	uint8 *from = _GR(sourceAddress);
 	uint8 *to = _GR(destinationAddress);
 	uint8 *depth = _GR(depthAddress);
-	uint8 sdepth = _GR(spriteDepth);
-	long Inc = _GR(Increment);
+	const uint8 sdepth = _GR(spriteDepth);
+	const long Inc = _GR(Increment);
 
 	int32 myWidth = 0;
 
@@ -210,7 +210,7 @@ static RenderResult r_1() {
 				}
 			} else {
 				while (runLength--) {
-					uint8 ddepth = (uint8)(*depth & DEPTH_MASK);
+					const uint8 ddepth = (uint8)(*depth & DEPTH_MASK);
 
 					if (!ddepth || sdepth < ddepth)
 						*to = data;
@@ -221,7 +221,7 @@ static RenderResult r_1() {
 		}
 
 		if (myWidth > 666) {
-			error_show(FL, 0);
+			error_show(FL);
 		}
 	}
 }
@@ -230,8 +230,8 @@ static RenderResult r_2() {
 	uint8 *from = _GR(sourceAddress);
 	uint8 *to = _GR(destinationAddress);
 	int32 Error = _GR(X_error);
-	uint32 scaleX = _GR(X_scale);
-	long Inc = _GR(Increment);
+	const uint32 scaleX = _GR(X_scale);
+	const long Inc = _GR(Increment);
 
 	for (;;) {
 		// Assume that the first byte is a run-length counter followed by pix data

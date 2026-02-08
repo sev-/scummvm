@@ -60,7 +60,7 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 
 		if (str_len) {
 			if (!fpdef->read((byte *)s, str_len))
-				error_show(FL, 0, "Could not read vocab");
+				error_show(FL, "Could not read vocab");
 			hotspot_newVocab(h, s);
 		}
 
@@ -68,7 +68,7 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 
 		if (str_len) {
 			if (!fpdef->read((byte *)s, str_len))
-				error_show(FL, 0, "Could not read verb");
+				error_show(FL, "Could not read verb");
 			hotspot_newVerb(h, s);
 		}
 
@@ -76,7 +76,7 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 
 		if (str_len) {
 			if (!fpdef->read((byte *)s, str_len))
-				error_show(FL, 0, "Could not read prep");
+				error_show(FL, "Could not read prep");
 			hotspot_newPrep(h, s);
 		}
 
@@ -84,7 +84,7 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 
 		if (str_len) {
 			if (!fpdef->read((byte *)s, str_len))
-				error_show(FL, 0, "Could not read sprite");
+				error_show(FL, "Could not read sprite");
 			hotspot_new_sprite(h, s);
 		}
 
@@ -123,7 +123,7 @@ static void load_def(SysFile *fpdef) {
 		y = fpdef->readSint32LE();
 
 		if (AddRailNode(x, y, nullptr, true) < 0)
-			error_show(FL, 0, "more than %d (defn. in intrrail.h) nodes", MAXRAILNODES);
+			error_show(FL, "more than %d (defn. in intrrail.h) nodes", MAXRAILNODES);
 	}
 
 	_G(myDef)->hotspots = read_hotspots(fpdef, nullptr, _G(myDef)->num_hotspots);

@@ -79,23 +79,23 @@ bool Vars::init() {
 
 	if (!_kernel.hag_mode) {
 		if (!read_catalog())
-			error_show(FL, 'PARS', "game_main");
+			error_show(FL, "game_main");
 	}
 
 	term_message("Load walker engines");
 	if (!LoadWSAssets("walker script", &_master_palette[0]))
-		error_show(FL, 'FNF!', "walker script");
+		error_show(FL, "walker script");
 	if (!LoadWSAssets("show script", &_master_palette[0]))
-		error_show(FL, 'FNF!', "show script");
+		error_show(FL, "show script");
 	if (!LoadWSAssets("stream script", &_master_palette[0]))
-		error_show(FL, 'FNF!', "stream script");
+		error_show(FL, "stream script");
 
 	grab_fonts();
 	gr_font_set(_font_inter);
 
 	if (_cheating_enabled) {
 		if (!dbg_ws_init(_kernel.start_up_with_dbg_ws, _font_tiny_prop, _globals))
-			error_show(FL, 'DWIF', "cheat system");
+			error_show(FL, "cheat system");
 	}
 
 	main_cold_data_init();
@@ -110,7 +110,7 @@ bool Vars::init() {
 void Vars::game_systems_initialize(byte flags) {
 	_G(term).init(_G(kernel).use_debug_monitor, _G(kernel).use_log_file);
 
-	int totalMem = _G(kernel).mem_avail();
+	const int totalMem = _G(kernel).mem_avail();
 	if (_G(kernel).suppress_cache == CACHE_NOT_OVERRIDE_BY_FLAG_PARSE)
 		_G(kernel).suppress_cache = totalMem < 8000000;
 
@@ -127,7 +127,7 @@ void Vars::game_systems_initialize(byte flags) {
 
 	if (flags & INSTALL_PLAYER_BEEN_INIT) {
 		if (!player_been_init(MAX_SCENES))
-			error_show(FL, 'PBIF');
+			error_show(FL);
 	}
 
 	term_message("Firing up GUI");
@@ -142,7 +142,7 @@ void Vars::game_systems_initialize(byte flags) {
 	}
 
 	if (!woodscript_init())
-		error_show(FL, 'WSIF');
+		error_show(FL);
 
 	gr_pal_clear(_master_palette);
 
@@ -151,7 +151,7 @@ void Vars::game_systems_initialize(byte flags) {
 		InitRails();
 
 	if (!f_stream_Init())
-		error_show(FL, 'FSIF');
+		error_show(FL);
 
 	mouse_set_sprite(kArrowCursor);
 
@@ -219,19 +219,19 @@ void Vars::game_systems_shutdown() {
 
 void Vars::fire_up_gui() {
 	if (!gui_system_init())
-		error_show(FL, 'GUI0');
+		error_show(FL);
 	if (!vmng_init())
-		error_show(FL, 'GUI1');
+		error_show(FL);
 	if (!gui_mouse_init())
-		error_show(FL, 'GUI2');
+		error_show(FL);
 	if (!gui_dialog_init())
-		error_show(FL, 'GUI3');
+		error_show(FL);
 #ifdef TODO
 	if (!InitItems())
-		error_show(FL, 'GUI4');
+		error_show(FL);
 #endif
 	if (!gui_buffer_system_init())
-		error_show(FL, 'GUI5');
+		error_show(FL);
 }
 
 bool Vars::woodscript_init() {

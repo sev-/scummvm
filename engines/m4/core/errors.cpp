@@ -29,19 +29,19 @@ inline static bool quadchar_equals_string(uint32 code, const Common::String &str
 	return READ_BE_UINT32(str.c_str()) == code;
 }
 
-void error_show(const char *filename, uint32 line, quadchar errorCode, const char *fmt, ...) {
+void error_show(const char *filename, uint32 line, const char *fmt, ...) {
 	assert(fmt);
 
 	va_list va;
 	va_start(va, fmt);
-	Common::String msg = Common::String::vformat(fmt, va);
+	const Common::String msg = Common::String::vformat(fmt, va);
 	va_end(va);
 
 	error("%s", msg.c_str());
 }
 
-void error_show(const char *filename, uint32 line, quadchar errorCode) {
-	error_show(filename, line, errorCode, "No extra description");
+void error_show(const char *filename, uint32 line) {
+	error_show(filename, line, "No extra description");
 }
 
 void error_look_up(quadchar errorCode, char *result_string) {

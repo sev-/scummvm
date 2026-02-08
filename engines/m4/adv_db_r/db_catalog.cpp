@@ -50,7 +50,7 @@ bool read_catalog() {
 	_G(catalog)._data = (char *)mem_alloc(size + 4, "catalog");
 
 	if (f.read(_G(catalog)._data, size) != size)
-		error_show(FL, 'FRDF', "Could not read in the catalog.");
+		error_show(FL, "Could not read in the catalog.");
 
 	f.close();
 
@@ -163,7 +163,7 @@ static void sort_catalog() {
 			++index;
 
 		if (index > _G(catalog)._size)
-			error_show(FL, 'OOM!');
+			error_show(FL);
 	}
 
 	qsort(_G(catalog)._catalog, _G(catalog)._size, sizeof(char *), compare_catalog_entries_for_sort);
@@ -221,7 +221,7 @@ static char *db_get_catalog_entry(char *c, short *tag, short *room, char *name, 
 		s[i++] = c[x];
 
 		if (i == MAX_FILENAME_SIZE)
-			error_show(FL, 'OOM!');
+			error_show(FL);
 	}
 	s[i] = '\0';
 

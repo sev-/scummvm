@@ -29,7 +29,7 @@ namespace M4 {
 
 void mem_stash_init(int16 num_types) {
 	if (num_types > _MEMTYPE_LIMIT)
-		error_show(FL, 'MSIF', "num_types (%d) _MEMTYPE_LIMIT (%d)", num_types, _MEMTYPE_LIMIT);
+		error_show(FL, "num_types (%d) _MEMTYPE_LIMIT (%d)", num_types, _MEMTYPE_LIMIT);
 
 	for (int i = 0; i < _MEMTYPE_LIMIT; i++) {
 		_G(memBlock)[i] = nullptr;
@@ -54,7 +54,7 @@ bool mem_register_stash_type(int32 *memType, int32 blockSize, int32 maxNumReques
 		i++;
 	}
 	if (i == _MEMTYPE_LIMIT)
-		error_show(FL, 'MSIF', "stash: %s", name.c_str());
+		error_show(FL, "stash: %s", name.c_str());
 
 	// Found a slot
 	if (i < _MEMTYPE_LIMIT) {
@@ -70,8 +70,7 @@ bool mem_register_stash_type(int32 *memType, int32 blockSize, int32 maxNumReques
 		return true;
 	}
 
-	error_show(FL, 'MSIF', "stash: %s", name.c_str());
-	return false;
+	error_show(FL, "stash: %s", name.c_str());
 }
 
 void mem_free_to_stash(void *mem, int32 memType) {
@@ -80,7 +79,7 @@ void mem_free_to_stash(void *mem, int32 memType) {
 	const int32 index = ((intptr)mem - (intptr)_G(memBlock)[memType]) / (_G(sizeMem)[memType] + sizeof(uintptr));
 
 	if (index < 0 || index > _G(requests)[memType])
-		error_show(FL, 'MSGF');
+		error_show(FL);
 
 	b_ptr += index * (_G(sizeMem)[memType] + sizeof(uintptr));
 	*(uintptr *)b_ptr = 0;
@@ -101,8 +100,7 @@ void *mem_get_from_stash(int32 memType, const Common::String &name) {
 		}
 	}
 
-	error_show(FL, 'OOS!', "stash full %s", name.c_str());
-	return nullptr;
+	error_show(FL, "stash full %s", name.c_str());
 }
 
 char *mem_strdup(const char *str) {

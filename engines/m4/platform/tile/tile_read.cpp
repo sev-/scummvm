@@ -39,7 +39,7 @@ void tt_read_header(SysFile *ifp, int32 *file_x, int32 *file_y,
 
 	// Open file
 	if (!ifp->exists())
-		error_show(FL, 'FNF!', ".TT file");
+		error_show(FL, ".TT file");
 
 	ifp->readUint32LE();	// skip chunk ID
 	ifp->readUint32LE();	// skip chunk size
@@ -71,14 +71,14 @@ Buffer *tt_read(SysFile *ifp, int index, int32 tile_x, int32 tile_y) {
 
 	// Check parameters
 	if (index < 0)
-		error_show(FL, 'TILI');
+		error_show(FL);
 
 	const int32 tile_size = tile_x * tile_y;
 
 	if (index == 0) {
 		// First tile data
 		if (!ifp->exists())
-			error_show(FL, 'FNF!', ".TT file");
+			error_show(FL, ".TT file");
 
 		// Read data of tiles to file
 		const int offset = index * tile_size + 256 * 4 + 32; // Get rid of color table and header stuff
@@ -90,8 +90,7 @@ Buffer *tt_read(SysFile *ifp, int index, int32 tile_x, int32 tile_y) {
 		out->w = 0;
 		out->stride = 0;
 		out->h = 0;
-		error_show(FL, 'OOM!', "fail to allocate mem for .TT buffer");
-		return out;
+		error_show(FL, "fail to allocate mem for .TT buffer");
 	}
 
 	out->w = out->stride = tile_x;

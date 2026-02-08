@@ -171,7 +171,7 @@ void gr_restore_palette() {
 
 void pal_mirror_colours(int first_color, int last_color, RGB8 *pal) {
 	if (first_color < 0 || last_color > 255 || first_color > last_color)
-		error_show(FL, 'Burg', "pal_mirror_colours index error");
+		error_show(FL, "pal_mirror_colours index error");
 
 	const int num_colors = last_color - first_color + 1;
 	for (int index = 0; index < num_colors; ++index) {

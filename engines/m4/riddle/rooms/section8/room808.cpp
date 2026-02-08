@@ -1711,7 +1711,7 @@ void Room808::daemon() {
 
 bool Room808::getWalkPath(machine *machine, int32 walk_x, int32 walk_y) {
 	if (machine == nullptr || machine->myAnim8 == nullptr) {
-		error_show(FL, 514, "ws_walk");
+		error_show(FL, "ws_walk");
 	}
 
 	const int32 currPos_x = machine->myAnim8->myRegs[IDX_X] >> 16;
@@ -1721,19 +1721,19 @@ bool Room808::getWalkPath(machine *machine, int32 walk_x, int32 walk_y) {
 	const int32 currNode = AddRailNode(currPos_x, currPos_y, currBuffer, true);
 
 	if (currNode < 0) {
-		error_show(FL, 520, "Walker's curr posn: %ld %ld", currPos_x, currPos_y);
+		error_show(FL, "Walker's curr posn: %ld %ld", currPos_x, currPos_y);
 	}
 
 	const int32 destNode = AddRailNode(walk_x, walk_y, currBuffer, true);
 
 	if (destNode < 0) {
-		error_show(FL, 520, "Trying to walk to: %ld %ld", walk_x, walk_y);
+		error_show(FL, "Trying to walk to: %ld %ld", walk_x, walk_y);
 	}
 
 	if (machine->walkPath)
 		DisposePath(machine->walkPath);
 
-	bool retVal = GetShortestPath(currNode, destNode, &machine->walkPath);
+	const bool retVal = GetShortestPath(currNode, destNode, &machine->walkPath);
 
 	RemoveRailNode(currNode, currBuffer, true);
 	RemoveRailNode(destNode, currBuffer, true);

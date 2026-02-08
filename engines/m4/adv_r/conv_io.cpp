@@ -490,7 +490,7 @@ static void conv_save_state(Conv *c) {
 	}
 
 	if (amt_to_write != size)
-		error_show(FL, 'CNVS', "save_state: error! size written != size (%d %d)", amt_to_write, size);
+		error_show(FL, "save_state: error! size written != size (%d %d)", amt_to_write, size);
 
 	// Finally, write out the conversation data
 	if (overwrite_file == true) {
@@ -699,7 +699,7 @@ Conv *conv_load(const char *filename, int x1, int y1, int32 myTrigger, bool want
 	SysFile fp(fullPathname);
 	if (!fp.exists()) {
 		// Force the file open
-		error_show(FL, 'CNVL', "couldn't conv_load %s", fullPathname);
+		error_show(FL, "couldn't conv_load %s", fullPathname);
 	}
 
 	const int32 cSize = fp.size();

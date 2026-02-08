@@ -44,7 +44,7 @@ bool Interface::init(int arrow, int wait, int look, int grab, int use) {
 
 	_sprite = series_load("999intr", 22, nullptr);
 	if (_sprite != 22)
-		error_show(FL, 'SLF!');
+		error_show(FL);
 
 	mouse_set_sprite(arrow);
 

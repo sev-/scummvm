@@ -42,13 +42,8 @@ void set_walker_scaling(SceneDef *rdef) {
 
 static void ws_walkto_node(machine *myWalker, railNode *destNode, bool firstTime) {
 	// Parameter verification
-	if (!myWalker) {
-		error_show(FL, 'W:-(');
-		return;
-	}
-	if (!destNode) {
-		error_show(FL, 'WNDN');
-		return;
+	if (!myWalker || !destNode) {
+		error_show(FL);
 	}
 
 	// Calculate the destination values x, y, s
@@ -77,8 +72,7 @@ static void ws_walkto_node(machine *myWalker, railNode *destNode, bool firstTime
 bool walker_has_walk_finished(machine *sender) {
 	// Parameter verification
 	if ((!sender) || (!sender->myAnim8)) {
-		error_show(FL, 'W:-(');
-		return false;
+		error_show(FL);
 	}
 
 	// Remove the node we just arrived at from the sender's walkPath
@@ -107,7 +101,7 @@ void ws_walk(machine *myWalker, int32 x, int32 y, GrBuff **, int16 trigger, int3
 	int32 currNodeID, destNodeID;
 
 	if (!myWalker || !myWalker->myAnim8)
-		error_show(FL, 'W:-(');
+		error_show(FL);
 
 	// Get walker's current location
 	const int32 currX = myWalker->myAnim8->myRegs[IDX_X] >> 16;
@@ -118,10 +112,10 @@ void ws_walk(machine *myWalker, int32 x, int32 y, GrBuff **, int16 trigger, int3
 	if (_G(screenCodeBuff))
 		walkerCodes = _G(screenCodeBuff)->get_buffer();
 	if ((currNodeID = AddRailNode(currX, currY, walkerCodes, true)) < 0) {
-		error_show(FL, 'WCAN', "Walker's curr posn: %d %d", currX, currY);
+		error_show(FL, "Walker's curr posn: %d %d", currX, currY);
 	}
 	if ((destNodeID = AddRailNode(x, y, walkerCodes, true)) < 0) {
-		error_show(FL, 'WCAN', "Trying to walk to: %d %d", x, y);
+		error_show(FL, "Trying to walk to: %d %d", x, y);
 	}
 
 	// Dispose of the current path myWalker is following
@@ -176,8 +170,7 @@ bool adv_walker_path_exists(machine *myWalker, int32 x, int32 y) {
 	int32 currNodeID, destNodeID;
 
 	if (!myWalker || !myWalker->myAnim8) {
-		error_show(FL, 'W:-(');
-		return false;
+		error_show(FL);
 	}
 
 	// Get walker's current location
@@ -190,10 +183,10 @@ bool adv_walker_path_exists(machine *myWalker, int32 x, int32 y) {
 		walkerCodes = _G(screenCodeBuff)->get_buffer();
 	}
 	if ((currNodeID = AddRailNode(currX, currY, walkerCodes, true)) < 0) {
-		error_show(FL, 'WCAN', "Walker's curr posn: %d %d", currX, currY);
+		error_show(FL, "Walker's curr posn: %d %d", currX, currY);
 	}
 	if ((destNodeID = AddRailNode(x, y, walkerCodes, true)) < 0) {
-		error_show(FL, 'WCAN', "Trying to walk to: %d %d", x, y);
+		error_show(FL, "Trying to walk to: %d %d", x, y);
 	}
 
 	// Dispose of the current path myWalker is following
@@ -295,8 +288,7 @@ void ws_turn_to_face(machine *myWalker, int32 facing, int32 trigger) {
 	int8 directions[13] = { 0, 0, 1, 2, 3, 4, 4, 5, 6, 7, 8, 9, 9 };
 
 	if (!myWalker || !myWalker->myAnim8) {
-		error_show(FL, 'W:-(', "demand facing: %d", facing);
-		return;
+		error_show(FL, "demand facing: %d", facing);
 	}
 
 	// Verify that facing is valid or set -1
@@ -321,8 +313,7 @@ void ws_demand_location(int32 x, int32 y, int facing) {
 
 void ws_hide_walker(machine *myWalker) {
 	if (!myWalker) {
-		error_show(FL, 'W:-(');
-		return;
+		error_show(FL);
 	}
 
 	_G(player).walker_visible = false;
@@ -331,8 +322,7 @@ void ws_hide_walker(machine *myWalker) {
 
 void ws_unhide_walker(machine *myWalker) {
 	if (!myWalker) {
-		error_show(FL, 'W:-(');
-		return;
+		error_show(FL);
 	}
 
 	_G(player).walker_visible = true;
@@ -363,8 +353,7 @@ void ws_get_walker_info(machine *myWalker, int32 *x, int32 *y, int32 *s, int32 *
 	const int8 facings[10] = { 1, 2, 3, 4, 5, 7, 8, 9, 10, 11 };
 
 	if (!myWalker || !myWalker->myAnim8) {
-		error_show(FL, 'W:-(');
-		return;
+		error_show(FL);
 	}
 
 	Anim8 *myAnim8 = myWalker->myAnim8;
@@ -412,8 +401,7 @@ bool ws_walk_init_system() {
 	_G(my_walker) = _GW().walk_initialize_walker();
 
 	if (!_G(my_walker)) {
-		error_show(FL, 'W:-(');
-		return false;
+		error_show(FL);
 	}
 	return true;
 }
@@ -425,7 +413,7 @@ bool ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool 
 		const int32 result = AddWSAssetCELS(name_array[i], dir_array[i],
 		                                    (load_palette && !shadow_flag) ? _G(master_palette) : nullptr);
 		if (result < 0)
-			error_show(FL, 'W:-(');
+			error_show(FL);
 
 		i++;
 	}

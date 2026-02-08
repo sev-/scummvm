@@ -165,7 +165,7 @@ void Resources::rtoss(const Common::String &resourceName) {
 	}
 
 	if (!resEntry)
-		error_show(FL, 'RIOU', "rtoss: %s", resourceName.c_str());
+		error_show(FL, "rtoss: %s", resourceName.c_str());
 
 	if (!(resEntry->Flags & FULLY_BUFFERED))
 		return;

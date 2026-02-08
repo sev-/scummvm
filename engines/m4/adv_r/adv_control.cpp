@@ -161,7 +161,7 @@ void update_mouse_pos_dialog() {
 
 	if (_G(my_walker) != nullptr) {
 		if (!_G(my_walker)->myAnim8)
-			error_show(FL, 'W:-(');
+			error_show(FL);
 		player_get_info();
 	}
 

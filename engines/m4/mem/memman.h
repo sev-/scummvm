@@ -33,7 +33,7 @@ namespace M4 {
 inline Handle mem_alloc(size_t size, const char *detail) {
 	byte *ptr = (byte *)malloc(size);
 	if (!ptr)
-		error_show(FL, 'OOM!', "mem_alloc() - couldn't allocate %ld bytes - %s", size, detail);
+		error_show(FL, "mem_alloc() - couldn't allocate %ld bytes - %s", size, detail);
 	
 	Common::fill(ptr, ptr + size, 0);
 	return (Handle)ptr;

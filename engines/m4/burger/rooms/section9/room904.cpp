@@ -736,7 +736,7 @@ size_t Room904::getCreditsSectionsCount() const {
 
 int Room904::getCreditsSectionLine(int sectionNum) const {
 	if (sectionNum < 1 || sectionNum > _numSections)
-		error_show(FL, 'Burg', "Bad index to credits");
+		error_show(FL, "Bad index to credits");
 
 	int lineNum;
 	for (lineNum = 0; sectionNum > 1; --sectionNum, ++lineNum) {
@@ -783,7 +783,7 @@ size_t Room904::getCreditsSectionWidth(int sectionNum) const {
 
 const char *Room904::getLineInCreditsSection(int sectionNum, int lineNum) const {
 	if (lineNum < 1 || lineNum > getCreditsSectionLines(sectionNum))
-		error_show(FL, 'Burg', "Bad index to names");
+		error_show(FL, "Bad index to names");
 
 	return CREDITS[getCreditsSectionLine(sectionNum) + lineNum];
 }

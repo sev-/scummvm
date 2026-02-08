@@ -330,12 +330,12 @@ static void gizmo_restore_interface(bool fade) {
 
 		if (_GIZMO(lowMemory2)) {
 			if (!adv_restoreBackground())
-				error_show(FL, 0, "unable to restore background");
+				error_show(FL, "unable to restore background");
 		}
 
 		if (_GIZMO(lowMemory1)) {
 			if (!adv_restoreCodes())
-				error_show(FL, 0, "unable to restore screen codes");
+				error_show(FL, "unable to restore screen codes");
 		}
 
 		krn_fade_from_grey(_GIZMO(palette), 5, 1, fade ? 1 : 2);

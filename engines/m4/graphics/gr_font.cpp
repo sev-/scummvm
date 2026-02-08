@@ -359,7 +359,7 @@ Font *gr_font_load(const char *fontName) {
 
 	uint32 tag = fontFile.readUint32LE();
 	if (tag != 'FONT')
-		error_show(FL, 'FNTL', "font: %s chkpnt: %d", (const char *)fontName, 0);
+		error_show(FL, "font: %s chkpnt: %d", (const char *)fontName, 0);
 
 	Font *newFont = (Font *)mem_alloc(sizeof(Font), STR_FONTSTRUCT);
 
@@ -370,7 +370,7 @@ Font *gr_font_load(const char *fontName) {
 	// read 'WIDT' into tag
 	tag = fontFile.readUint32LE();
 	if (tag != 'WIDT')
-		error_show(FL, 'FNTL', "font: %s chkpnt: %d", fontName, 1);
+		error_show(FL, "font: %s chkpnt: %d", fontName, 1);
 
 	// width table
 	newFont->width = (byte *)mem_alloc(256, STR_FONTWIDTH);
@@ -380,7 +380,7 @@ Font *gr_font_load(const char *fontName) {
 	// read 'OFFS' into tag
 	tag = fontFile.readUint32LE();
 	if (tag != 'OFFS')
-		error_show(FL, 'FNTL', "font: %s chkpnt: %d", fontName, 2);
+		error_show(FL, "font: %s chkpnt: %d", fontName, 2);
 
 	// offset table
 	newFont->offset = (short *)mem_alloc(256 * sizeof(int16), STR_FONTOFF);
@@ -391,7 +391,7 @@ Font *gr_font_load(const char *fontName) {
 	// read 'PIXS' into tag
 	tag = fontFile.readUint32LE();
 	if (tag != 'PIXS')
-		error_show(FL, 'FNTL', "font: %s chkpnt: %d", fontName, 3);
+		error_show(FL, "font: %s chkpnt: %d", fontName, 3);
 
 	// pixData
 	newFont->pixData = (byte *)mem_alloc(newFont->dataSize, STR_FONTDATA);
