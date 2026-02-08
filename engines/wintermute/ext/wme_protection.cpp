@@ -55,11 +55,12 @@ bool SXProtection::scCallMethod(ScScript *script, ScStack *stack, ScStack *thisS
 	//////////////////////////////////////////////////////////////////////////
 	// CheckExeProtection
 	// Reference in game scripts in "Susan Rose: Mysterious Child"
+	// Return value can be 0 or 1
 	//////////////////////////////////////////////////////////////////////////
 	if (strcmp(name, "CheckExeProtection") == 0) {
 		stack->correctParams(0);
 
-		stack->pushInt(1);
+		stack->pushInt(0);
 		return STATUS_OK;
 	}
 
