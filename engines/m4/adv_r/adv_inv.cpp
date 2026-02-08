@@ -68,16 +68,14 @@ void InventoryBase::syncGame(Common::Serializer &s) {
 			s.syncBytes((byte *)invName, MAX_NAME_LENGTH);
 			s.syncAsUint32LE(scene);
 		}
-
 	}
 }
 
-bool inv_init(int32 num_objects) {
+void inv_init(int32 num_objects) {
 	term_message("Fluffing up the backpack", nullptr);
 	_G(inventory)->_objects.resize(num_objects);
 
-	if (!mem_register_stash_type(&_G(inv_obj_mem_type), sizeof(InvObj), num_objects, "obj"))
-		error_show(FL, "fail to mem_register_stash_type for inv_obj");
+	mem_register_stash_type(&_G(inv_obj_mem_type), sizeof(InvObj), num_objects, "obj");
 
 	for (int i = 0; i < num_objects; i++) {
 		_G(inventory)->_objects[i] = (InvObj *)mem_get_from_stash(_G(inv_obj_mem_type), "obj");
@@ -86,10 +84,9 @@ bool inv_init(int32 num_objects) {
 	}
 
 	_G(inventory)->_tail = 0;
-	return true;
 }
 
-bool inv_register_thing(const Common::String &itemName, const Common::String &itemVerbs,
+void inv_register_thing(const Common::String &itemName, const Common::String &itemVerbs,
 		int32 scene, int32 cel, int32 cursor) {
 	char *s_name = mem_strdup(itemName.c_str());
 	char *s_verbs = mem_strdup(itemVerbs.c_str());
@@ -116,8 +113,6 @@ bool inv_register_thing(const Common::String &itemName, const Common::String &it
 	if (scene == BACKPACK) {
 		_G(inventory)->add(s_name, s_verbs, cel, cursor);
 	}
-
-	return true;
 }
 
 //-------------------------------------------------------------------

@@ -51,7 +51,7 @@ struct InventoryBase {
 /**
  * Init the system, preferably in game_systems_initialize
  */
-bool inv_init(int32 num_objects);
+void inv_init(int32 num_objects);
 
 /**
  * Register things during init of the game
@@ -62,7 +62,7 @@ bool inv_init(int32 num_objects);
  * @param cel		Index into the inventory sprite series for use when displaying inventory
  * @param cursor	Cel index into the cursor sprite series when the player is "holding" a thing
  */
-bool inv_register_thing(const Common::String &itemName, const Common::String &itemVerbs, int32 scene, int32 cel, int32 cursor);
+void inv_register_thing(const Common::String &itemName, const Common::String &itemVerbs, int32 scene, int32 cel, int32 cursor);
 
 int32 inv_where_is(const Common::String &itemName);
 bool inv_player_has(const Common::String &itemName);

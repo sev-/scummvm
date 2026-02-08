@@ -251,7 +251,7 @@ void ws_demand_location(machine *myWalker, int32 x, int32 y, int facing) {
 		return;
 	}
 
-	frac16 s = _G(globals)[GLB_MIN_SCALE] + FixedMul((y << 16) - _G(globals)[GLB_MIN_Y], _G(globals)[GLB_SCALER]);
+	const frac16 s = _G(globals)[GLB_MIN_SCALE] + FixedMul((y << 16) - _G(globals)[GLB_MIN_Y], _G(globals)[GLB_SCALER]);
 
 	_G(globals)[GLB_TEMP_1] = x << 16;
 	_G(globals)[GLB_TEMP_2] = y << 16;
@@ -269,7 +269,7 @@ static void ws_demand_location_and_facing(machine *myWalker, int32 x, int32 y, i
 		return;
 	}
 
-	frac16 s = _G(globals)[GLB_MIN_SCALE] + FixedMul((y << 16) - _G(globals)[GLB_MIN_Y], _G(globals)[GLB_SCALER]);
+	const frac16 s = _G(globals)[GLB_MIN_SCALE] + FixedMul((y << 16) - _G(globals)[GLB_MIN_Y], _G(globals)[GLB_SCALER]);
 
 	_G(globals)[GLB_TEMP_1] = x << 16;
 	_G(globals)[GLB_TEMP_2] = y << 16;

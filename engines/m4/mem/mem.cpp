@@ -47,30 +47,24 @@ void mem_stash_shutdown() {
 	}
 }
 
-bool mem_register_stash_type(int32 *memType, int32 blockSize, int32 maxNumRequests, const Common::String &name) {
+void mem_register_stash_type(int32 *memType, int32 blockSize, int32 maxNumRequests, const Common::String &name) {
 	int32 i = 0;
 
 	while (i < _MEMTYPE_LIMIT && _G(sizeMem)[i] > 0) {
 		i++;
 	}
-	if (i == _MEMTYPE_LIMIT)
+	if (i >= _MEMTYPE_LIMIT)
 		error_show(FL, "stash: %s", name.c_str());
 
 	// Found a slot
-	if (i < _MEMTYPE_LIMIT) {
-		_G(sizeMem)[i] = blockSize;
-		*memType = i;
+	_G(sizeMem)[i] = blockSize;
+	*memType = i;
 
-		if (maxNumRequests > MAX_REQUESTS)
-			maxNumRequests = MAX_REQUESTS;
+	if (maxNumRequests > MAX_REQUESTS)
+		maxNumRequests = MAX_REQUESTS;
 
-		_G(requests)[i] = maxNumRequests;
-		_G(memBlock)[i] = mem_alloc((blockSize + sizeof(uintptr)) * maxNumRequests, name.c_str());
-
-		return true;
-	}
-
-	error_show(FL, "stash: %s", name.c_str());
+	_G(requests)[i] = maxNumRequests;
+	_G(memBlock)[i] = mem_alloc((blockSize + sizeof(uintptr)) * maxNumRequests, name.c_str());
 }
 
 void mem_free_to_stash(void *mem, int32 memType) {
@@ -95,9 +89,9 @@ void *mem_get_from_stash(int32 memType, const Common::String &name) {
 			Common::fill((byte *)result, (byte *)result + _G(sizeMem)[memType], 0);
 			return result;
 
-		} else {
-			b_ptr += _G(sizeMem)[memType] + sizeof(uintptr);
 		}
+
+		b_ptr += _G(sizeMem)[memType] + sizeof(uintptr);
 	}
 
 	error_show(FL, "stash full %s", name.c_str());

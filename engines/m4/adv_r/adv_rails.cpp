@@ -32,13 +32,9 @@ namespace M4 {
 #define BOTTOM_EDGE 0x04
 #define RIGHT_EDGE  0x08
 
-bool InitRails() {
-	int32 i;
-
+void InitRails() {
 	// Register with the stash the frequently used structs
-	if (!mem_register_stash_type(&_G(rails).memtypePATHN, sizeof(pathNode), 32, "+PATHNODE")) {
-		return false;
-	}
+	mem_register_stash_type(&_G(rails).memtypePATHN, sizeof(pathNode), 32, "+PATHNODE");
 
 	// Create the stack. Since any path through a series of nodes can have at most MAXRAILNODES...
 	_G(rails).stackBottom = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE);
@@ -46,7 +42,7 @@ bool InitRails() {
 	// Allocate the array of railNode pointers and initialize...
 	_G(rails).myNodes = (railNode **)mem_alloc(sizeof(railNode *) * MAXRAILNODES, STR_RAILNODE);
 
-	for (i = 0; i < MAXRAILNODES; i++) {
+	for (int32 i = 0; i < MAXRAILNODES; i++) {
 		_G(rails).myNodes[i] = nullptr;
 	}
 
@@ -57,8 +53,6 @@ bool InitRails() {
 
 	// Set the parameters and return
 	_G(rails).noWalkRectList = nullptr;
-
-	return true;
 }
 
 
