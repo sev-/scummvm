@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 23:12+0000\n"
+"POT-Creation-Date: 2026-02-08 09:59+0000\n"
 "PO-Revision-Date: 2026-02-07 22:19+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
@@ -4504,6 +4504,7 @@ msgid "Right shoulder"
 msgstr "Botón sup. dcho."
 
 #: backends/keymapper/hardware-input.cpp:266
+#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4514,6 +4515,7 @@ msgid "D-pad up"
 msgstr "Cruceta arriba"
 
 #: backends/keymapper/hardware-input.cpp:267
+#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4524,6 +4526,7 @@ msgid "D-pad down"
 msgstr "Cruceta abajo"
 
 #: backends/keymapper/hardware-input.cpp:268
+#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4534,6 +4537,7 @@ msgid "D-pad left"
 msgstr "Cruceta izda."
 
 #: backends/keymapper/hardware-input.cpp:269
+#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4917,22 +4921,6 @@ msgstr "L"
 #: backends/platform/sdl/switch/switch.cpp:47
 msgid "R"
 msgstr "R"
-
-#: backends/platform/3ds/osystem-events.cpp:55
-msgid "D-pad Up"
-msgstr "Cruz de control arriba"
-
-#: backends/platform/3ds/osystem-events.cpp:56
-msgid "D-pad Down"
-msgstr "Cruz de control abajo"
-
-#: backends/platform/3ds/osystem-events.cpp:57
-msgid "D-pad Left"
-msgstr "Cruz de control izda."
-
-#: backends/platform/3ds/osystem-events.cpp:58
-msgid "D-pad Right"
-msgstr "Cruz de control dcha."
 
 #: backends/platform/3ds/osystem-events.cpp:63
 msgid "Circle Pad X"
@@ -16761,6 +16749,18 @@ msgstr ""
 "que es imprescindible tener audio en MIDI para poder resolverlos.  También "
 "se podrían resolver estos acertijos con subtítulos, si están disponibles. "
 "¿Quieres seguir ejecutando el juego?"
+
+#~ msgid "D-pad Up"
+#~ msgstr "Cruz de control arriba"
+
+#~ msgid "D-pad Down"
+#~ msgstr "Cruz de control abajo"
+
+#~ msgid "D-pad Left"
+#~ msgstr "Cruz de control izda."
+
+#~ msgid "D-pad Right"
+#~ msgstr "Cruz de control dcha."
 
 #~ msgid "Game keymapping"
 #~ msgstr "Asignaciones del juego"

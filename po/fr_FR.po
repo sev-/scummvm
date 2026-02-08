@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 23:12+0000\n"
+"POT-Creation-Date: 2026-02-08 09:59+0000\n"
 "PO-Revision-Date: 2026-02-05 12:22+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -4526,6 +4526,7 @@ msgid "Right shoulder"
 msgstr "Gâchette droite"
 
 #: backends/keymapper/hardware-input.cpp:266
+#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4536,6 +4537,7 @@ msgid "D-pad up"
 msgstr "Croix Haut"
 
 #: backends/keymapper/hardware-input.cpp:267
+#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4546,6 +4548,7 @@ msgid "D-pad down"
 msgstr "Croix Bas"
 
 #: backends/keymapper/hardware-input.cpp:268
+#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4556,6 +4559,7 @@ msgid "D-pad left"
 msgstr "Croix Gauche"
 
 #: backends/keymapper/hardware-input.cpp:269
+#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4941,22 +4945,6 @@ msgstr "L"
 #: backends/platform/sdl/switch/switch.cpp:47
 msgid "R"
 msgstr "R"
-
-#: backends/platform/3ds/osystem-events.cpp:55
-msgid "D-pad Up"
-msgstr "Croix Haut"
-
-#: backends/platform/3ds/osystem-events.cpp:56
-msgid "D-pad Down"
-msgstr "Croix Bas"
-
-#: backends/platform/3ds/osystem-events.cpp:57
-msgid "D-pad Left"
-msgstr "Croix Gauche"
-
-#: backends/platform/3ds/osystem-events.cpp:58
-msgid "D-pad Right"
-msgstr "Croix Droite"
 
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
@@ -16816,6 +16804,18 @@ msgstr ""
 "contient plusieurs énigmes musicales qui nécessitent l'audio MIDI pour être "
 "résolues.  Ces puzzles peuvent également être résolus à l'aide de sous-"
 "titres, s'ils sont pris en charge. Continuer à lancer le jeu ?"
+
+#~ msgid "D-pad Up"
+#~ msgstr "Croix Haut"
+
+#~ msgid "D-pad Down"
+#~ msgstr "Croix Bas"
+
+#~ msgid "D-pad Left"
+#~ msgstr "Croix Gauche"
+
+#~ msgid "D-pad Right"
+#~ msgstr "Croix Droite"
 
 #~ msgid "Game keymapping"
 #~ msgstr "Conf. des touches du jeu"

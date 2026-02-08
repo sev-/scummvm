@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 23:12+0000\n"
+"POT-Creation-Date: 2026-02-08 09:59+0000\n"
 "PO-Revision-Date: 2023-03-26 11:16+0000\n"
 "Last-Translator: Malek Bellasfar <bellasfarmalek450@gmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -4500,6 +4500,7 @@ msgid "Right shoulder"
 msgstr "الكتف الأيمن"
 
 #: backends/keymapper/hardware-input.cpp:266
+#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4512,6 +4513,7 @@ msgid "D-pad up"
 msgstr "D-pad لأعلى"
 
 #: backends/keymapper/hardware-input.cpp:267
+#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4524,6 +4526,7 @@ msgid "D-pad down"
 msgstr "D-pad لأسفل"
 
 #: backends/keymapper/hardware-input.cpp:268
+#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4536,6 +4539,7 @@ msgid "D-pad left"
 msgstr "D-pad اليسار"
 
 #: backends/keymapper/hardware-input.cpp:269
+#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4934,22 +4938,6 @@ msgstr "L"
 #: backends/platform/sdl/switch/switch.cpp:47
 msgid "R"
 msgstr "R"
-
-#: backends/platform/3ds/osystem-events.cpp:55
-msgid "D-pad Up"
-msgstr "D-pad لأعلى"
-
-#: backends/platform/3ds/osystem-events.cpp:56
-msgid "D-pad Down"
-msgstr "D-pad لأسفل"
-
-#: backends/platform/3ds/osystem-events.cpp:57
-msgid "D-pad Left"
-msgstr "D-pad اليسار"
-
-#: backends/platform/3ds/osystem-events.cpp:58
-msgid "D-pad Right"
-msgstr "D-pad الأيمن"
 
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
@@ -17674,6 +17662,18 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "D-pad Up"
+#~ msgstr "D-pad لأعلى"
+
+#~ msgid "D-pad Down"
+#~ msgstr "D-pad لأسفل"
+
+#~ msgid "D-pad Left"
+#~ msgstr "D-pad اليسار"
+
+#~ msgid "D-pad Right"
+#~ msgstr "D-pad الأيمن"
 
 #, fuzzy
 #~| msgid "Game Options"

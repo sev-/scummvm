@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 23:12+0000\n"
+"POT-Creation-Date: 2026-02-08 09:59+0000\n"
 "PO-Revision-Date: 2024-10-10 12:33+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Turkish <https://translations.scummvm.org/projects/scummvm/"
@@ -4407,6 +4407,7 @@ msgid "Right shoulder"
 msgstr ""
 
 #: backends/keymapper/hardware-input.cpp:266
+#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4418,6 +4419,7 @@ msgid "D-pad up"
 msgstr "Sağ"
 
 #: backends/keymapper/hardware-input.cpp:267
+#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4429,6 +4431,7 @@ msgid "D-pad down"
 msgstr "Sol"
 
 #: backends/keymapper/hardware-input.cpp:268
+#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4440,6 +4443,7 @@ msgid "D-pad left"
 msgstr "Sağ"
 
 #: backends/keymapper/hardware-input.cpp:269
+#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4831,26 +4835,6 @@ msgstr ""
 #: backends/platform/sdl/switch/switch.cpp:47
 msgid "R"
 msgstr ""
-
-#: backends/platform/3ds/osystem-events.cpp:55
-#, fuzzy
-msgid "D-pad Up"
-msgstr "Sağ"
-
-#: backends/platform/3ds/osystem-events.cpp:56
-#, fuzzy
-msgid "D-pad Down"
-msgstr "Sol"
-
-#: backends/platform/3ds/osystem-events.cpp:57
-#, fuzzy
-msgid "D-pad Left"
-msgstr "Sağ"
-
-#: backends/platform/3ds/osystem-events.cpp:58
-#, fuzzy
-msgid "D-pad Right"
-msgstr "Sağ"
 
 #: backends/platform/3ds/osystem-events.cpp:63
 msgid "Circle Pad X"
@@ -16457,6 +16441,22 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~ msgid "D-pad Up"
+#~ msgstr "Sağ"
+
+#, fuzzy
+#~ msgid "D-pad Down"
+#~ msgstr "Sol"
+
+#, fuzzy
+#~ msgid "D-pad Left"
+#~ msgstr "Sağ"
+
+#, fuzzy
+#~ msgid "D-pad Right"
+#~ msgstr "Sağ"
 
 #, fuzzy
 #~ msgid "Game keymapping"

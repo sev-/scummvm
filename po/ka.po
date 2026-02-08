@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-07 23:12+0000\n"
+"POT-Creation-Date: 2026-02-08 09:59+0000\n"
 "PO-Revision-Date: 2026-02-04 10:22+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translations.scummvm.org/projects/scummvm/"
@@ -4168,6 +4168,7 @@ msgid "Right shoulder"
 msgstr "მარჯვენა მხარი"
 
 #: backends/keymapper/hardware-input.cpp:266
+#: backends/platform/3ds/osystem-events.cpp:55
 #: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
@@ -4178,6 +4179,7 @@ msgid "D-pad up"
 msgstr "ჯვარი მაღლა"
 
 #: backends/keymapper/hardware-input.cpp:267
+#: backends/platform/3ds/osystem-events.cpp:56
 #: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
@@ -4188,6 +4190,7 @@ msgid "D-pad down"
 msgstr "ჯვარი დაბლა"
 
 #: backends/keymapper/hardware-input.cpp:268
+#: backends/platform/3ds/osystem-events.cpp:57
 #: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
@@ -4198,6 +4201,7 @@ msgid "D-pad left"
 msgstr "ჯვარი მარცხნივ"
 
 #: backends/keymapper/hardware-input.cpp:269
+#: backends/platform/3ds/osystem-events.cpp:58
 #: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
@@ -4579,22 +4583,6 @@ msgstr "მარცხ"
 #: backends/platform/sdl/switch/switch.cpp:47
 msgid "R"
 msgstr "წითელი"
-
-#: backends/platform/3ds/osystem-events.cpp:55
-msgid "D-pad Up"
-msgstr "ჯვარი მაღლა"
-
-#: backends/platform/3ds/osystem-events.cpp:56
-msgid "D-pad Down"
-msgstr "ჯვარი დაბლა"
-
-#: backends/platform/3ds/osystem-events.cpp:57
-msgid "D-pad Left"
-msgstr "ჯვარი მარცხნივ"
-
-#: backends/platform/3ds/osystem-events.cpp:58
-msgid "D-pad Right"
-msgstr "ჯვარი მარჯვნივ"
 
 #: backends/platform/3ds/osystem-events.cpp:63
 #, fuzzy
@@ -15354,6 +15342,18 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "D-pad Up"
+#~ msgstr "ჯვარი მაღლა"
+
+#~ msgid "D-pad Down"
+#~ msgstr "ჯვარი დაბლა"
+
+#~ msgid "D-pad Left"
+#~ msgstr "ჯვარი მარცხნივ"
+
+#~ msgid "D-pad Right"
+#~ msgstr "ჯვარი მარჯვნივ"
 
 #~ msgid "Game keymapping"
 #~ msgstr "თამაშის კლავიატურის მალსახმობები"
