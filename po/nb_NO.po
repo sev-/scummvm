@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-08 14:56+0000\n"
+"POT-Creation-Date: 2026-02-08 18:00+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Einar Johan Trøan Sømåen <einarjohants@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.scummvm.org/projects/"
@@ -3958,7 +3958,7 @@ msgstr "Spillets standard knappoppsett"
 #: engines/tucker/metaengine.cpp:172 engines/ultima/ultima0/metaengine.cpp:180
 #: engines/ultima/ultima4/metaengine.cpp:227
 #: engines/ultima/nuvie/metaengine.cpp:238
-#: engines/ultima/ultima8/metaengine.cpp:139 engines/vcruise/metaengine.cpp:158
+#: engines/ultima/ultima8/metaengine.cpp:138 engines/vcruise/metaengine.cpp:158
 #: engines/wintermute/keymapper_tables.h:42 engines/zvision/metaengine.cpp:203
 #, fuzzy
 #| msgid "Left Click"
@@ -3995,7 +3995,7 @@ msgstr "Midtklikk"
 #: engines/ultima/ultima0/metaengine.cpp:186
 #: engines/ultima/ultima4/metaengine.cpp:233
 #: engines/ultima/nuvie/metaengine.cpp:244
-#: engines/ultima/ultima8/metaengine.cpp:145
+#: engines/ultima/ultima8/metaengine.cpp:144
 #: engines/wintermute/keymapper_tables.h:48 engines/zvision/metaengine.cpp:209
 msgid "Right click"
 msgstr "Høyreklikk"
@@ -4019,7 +4019,7 @@ msgid "Pause"
 msgstr "Pause"
 
 #: engines/metaengine.cpp:105 engines/parallaction/metaengine.cpp:163
-#: engines/ultima/ultima8/metaengine.cpp:48
+#: engines/ultima/ultima8/metaengine.cpp:47
 msgid "Game menu"
 msgstr "Spillmeny"
 
@@ -6617,7 +6617,7 @@ msgstr "Hopp over linje"
 #: engines/efh/metaengine.cpp:286 engines/hdb/metaengine.cpp:213
 #: engines/hypno/metaengine.cpp:302 engines/hypno/metaengine.cpp:356
 #: engines/nancy/input.cpp:195 engines/tinsel/metaengine.cpp:263
-#: engines/titanic/metaengine.cpp:324 engines/ultima/ultima8/metaengine.cpp:53
+#: engines/titanic/metaengine.cpp:324 engines/ultima/ultima8/metaengine.cpp:52
 msgid "Move up"
 msgstr "Gå oppover"
 
@@ -6627,7 +6627,7 @@ msgstr "Gå oppover"
 #: engines/efh/metaengine.cpp:293 engines/hdb/metaengine.cpp:219
 #: engines/hypno/metaengine.cpp:290 engines/hypno/metaengine.cpp:342
 #: engines/nancy/input.cpp:201 engines/tinsel/metaengine.cpp:269
-#: engines/titanic/metaengine.cpp:330 engines/ultima/ultima8/metaengine.cpp:54
+#: engines/titanic/metaengine.cpp:330 engines/ultima/ultima8/metaengine.cpp:53
 msgid "Move down"
 msgstr "Gå nedover"
 
@@ -6640,7 +6640,7 @@ msgstr "Gå nedover"
 #: engines/kyra/engine/eobcommon.cpp:373 engines/lure/metaengine.cpp:218
 #: engines/nancy/input.cpp:207 engines/tinsel/metaengine.cpp:275
 #: engines/titanic/metaengine.cpp:312 engines/titanic/metaengine.cpp:390
-#: engines/ultima/ultima8/metaengine.cpp:55
+#: engines/ultima/ultima8/metaengine.cpp:54
 msgid "Move left"
 msgstr "Gå til venstre"
 
@@ -6653,7 +6653,7 @@ msgstr "Gå til venstre"
 #: engines/kyra/engine/eobcommon.cpp:374 engines/lure/metaengine.cpp:226
 #: engines/nancy/input.cpp:213 engines/tinsel/metaengine.cpp:281
 #: engines/titanic/metaengine.cpp:318 engines/titanic/metaengine.cpp:396
-#: engines/ultima/ultima8/metaengine.cpp:56
+#: engines/ultima/ultima8/metaengine.cpp:55
 msgid "Move right"
 msgstr "Gå til høyre"
 
@@ -6797,7 +6797,7 @@ msgstr "Gå til meny for lagring/lasting"
 #: engines/mortevielle/mortevielle.cpp:300 engines/sky/compact.cpp:129
 #: engines/supernova/supernova.cpp:467 engines/teenagent/resources.cpp:312
 #: engines/tony/tony.cpp:187 engines/toon/toon.cpp:5425
-#: engines/ultima/ultima8/ultima8.cpp:191
+#: engines/ultima/ultima8/ultima8.cpp:179
 #, c-format
 msgid "Unable to locate the '%s' engine data file."
 msgstr "Kunne ikke finne spillmotordatafilen '%s'."
@@ -7230,7 +7230,7 @@ msgstr "Snu rundt"
 #: engines/kyra/engine/eobcommon.cpp:375 engines/kyra/engine/lol.cpp:514
 #: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:97
 #: engines/mohawk/riven.cpp:901 engines/pegasus/pegasus.cpp:2740
-#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:49
+#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:48
 #: engines/wintermute/keymapper_tables.h:161
 #: engines/wintermute/keymapper_tables.h:741
 #: engines/wintermute/keymapper_tables.h:2122
@@ -7243,7 +7243,7 @@ msgstr "Snu mot venstre"
 #: engines/kyra/engine/eobcommon.cpp:376 engines/kyra/engine/lol.cpp:515
 #: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:98
 #: engines/mohawk/riven.cpp:907 engines/pegasus/pegasus.cpp:2747
-#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:50
+#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:49
 #: engines/wintermute/keymapper_tables.h:167
 #: engines/wintermute/keymapper_tables.h:746
 #: engines/wintermute/keymapper_tables.h:2128
@@ -7575,7 +7575,7 @@ msgstr "Hurtiglasting"
 #: engines/sludge/keymapper_tables.h:303 engines/sludge/keymapper_tables.h:410
 #: engines/sludge/keymapper_tables.h:465 engines/sludge/keymapper_tables.h:496
 #: engines/ultima/nuvie/metaengine.cpp:91
-#: engines/ultima/ultima8/metaengine.cpp:44
+#: engines/ultima/ultima8/metaengine.cpp:43
 #: engines/wintermute/keymapper_tables.h:930
 msgid "Quick save"
 msgstr "Hurtiglagring"
@@ -8020,7 +8020,7 @@ msgstr "Ledetråder privat/offentlig"
 #: engines/stark/metaengine.cpp:208 engines/tetraedge/metaengine.cpp:110
 #: engines/titanic/metaengine.cpp:199 engines/toltecs/metaengine.cpp:234
 #: engines/toon/metaengine.cpp:112 engines/trecision/metaengine.cpp:169
-#: engines/tsage/metaengine.cpp:242 engines/ultima/ultima8/metaengine.cpp:45
+#: engines/tsage/metaengine.cpp:242 engines/ultima/ultima8/metaengine.cpp:44
 #: engines/vcruise/metaengine.cpp:175 engines/wintermute/keymapper_tables.h:920
 msgid "Save game"
 msgstr "Lagre spill"
@@ -8046,7 +8046,7 @@ msgstr "Lagre spill"
 #: engines/stark/metaengine.cpp:213 engines/tetraedge/metaengine.cpp:104
 #: engines/titanic/metaengine.cpp:205 engines/toltecs/metaengine.cpp:240
 #: engines/toon/metaengine.cpp:118 engines/trecision/metaengine.cpp:175
-#: engines/ultima/ultima8/metaengine.cpp:46 engines/vcruise/metaengine.cpp:180
+#: engines/ultima/ultima8/metaengine.cpp:45 engines/vcruise/metaengine.cpp:180
 #: engines/wintermute/keymapper_tables.h:925
 #: engines/wintermute/keymapper_tables.h:1265
 msgid "Load game"
@@ -8187,7 +8187,7 @@ msgstr "Se på"
 #: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
 #: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
 #: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima8/metaengine.cpp:51
+#: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
 #: engines/wintermute/keymapper_tables.h:2116
@@ -9300,7 +9300,7 @@ msgstr "Forsvar"
 #: engines/efh/metaengine.cpp:530 engines/freescape/games/castle/castle.cpp:293
 #: engines/grim/grim.cpp:501 engines/grim/grim.cpp:596
 #: engines/hpl1/metaengine.cpp:82 engines/icb/icb.cpp:131
-#: engines/icb/icb.cpp:197 engines/ultima/ultima8/metaengine.cpp:57
+#: engines/icb/icb.cpp:197 engines/ultima/ultima8/metaengine.cpp:56
 msgid "Run"
 msgstr "Kjør"
 
@@ -9571,7 +9571,7 @@ msgstr "Se fremover"
 
 #: engines/freescape/games/dark/dark.cpp:223
 #: engines/freescape/games/driller/driller.cpp:183
-#: engines/ultima/ultima8/metaengine.cpp:98
+#: engines/ultima/ultima8/metaengine.cpp:97
 #, fuzzy
 #| msgid "Move left"
 msgid "Roll left"
@@ -9579,7 +9579,7 @@ msgstr "Gå til venstre"
 
 #: engines/freescape/games/dark/dark.cpp:228
 #: engines/freescape/games/driller/driller.cpp:188
-#: engines/ultima/ultima8/metaengine.cpp:99
+#: engines/ultima/ultima8/metaengine.cpp:98
 #, fuzzy
 #| msgid "Move right"
 msgid "Roll right"
@@ -13513,7 +13513,7 @@ msgid "Fighting controls (numpad):"
 msgstr "Kampkontroller (talltastatur):"
 
 #: engines/scumm/help.cpp:309 engines/scumm/help.cpp:310
-#: engines/scumm/help.cpp:311 engines/ultima/ultima8/metaengine.cpp:97
+#: engines/scumm/help.cpp:311 engines/ultima/ultima8/metaengine.cpp:96
 msgid "Step back"
 msgstr "Bakoversteg"
 
@@ -16142,7 +16142,7 @@ msgid "Board"
 msgstr "Tastatur"
 
 #: engines/ultima/ultima4/metaengine.cpp:52
-#: engines/ultima/ultima8/metaengine.cpp:108
+#: engines/ultima/ultima8/metaengine.cpp:107
 msgid "Descend"
 msgstr ""
 
@@ -16925,234 +16925,234 @@ msgstr ""
 msgid "Transfer Character"
 msgstr "Overfør karakter"
 
-#: engines/ultima/ultima8/metaengine.cpp:47
+#: engines/ultima/ultima8/metaengine.cpp:46
 msgid "Draw weapon / Combat"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:52
+#: engines/ultima/ultima8/metaengine.cpp:51
 #, fuzzy
 #| msgid "Move Back"
 msgid "Move back"
 msgstr "Beveg Bakover"
 
-#: engines/ultima/ultima8/metaengine.cpp:58
+#: engines/ultima/ultima8/metaengine.cpp:57
 #, fuzzy
 #| msgid "Highlight next dialogue"
 msgid "Highlight items"
 msgstr "Merk neste dialog"
 
-#: engines/ultima/ultima8/metaengine.cpp:64
+#: engines/ultima/ultima8/metaengine.cpp:63
 msgid "Use bedroll"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:65
+#: engines/ultima/ultima8/metaengine.cpp:64
 #, fuzzy
 #| msgid "Backspace"
 msgid "Open backpack"
 msgstr "Rettetast"
 
-#: engines/ultima/ultima8/metaengine.cpp:66
+#: engines/ultima/ultima8/metaengine.cpp:65
 #, fuzzy
 #| msgid "Use RGB rendering"
 msgid "Use keyring"
 msgstr "Bruk RGB-grafikkgjengivelse"
 
-#: engines/ultima/ultima8/metaengine.cpp:67
+#: engines/ultima/ultima8/metaengine.cpp:66
 #, fuzzy
 #| msgid "Open map"
 msgid "Open minimap"
 msgstr "Åpne kart"
 
-#: engines/ultima/ultima8/metaengine.cpp:68
+#: engines/ultima/ultima8/metaengine.cpp:67
 msgid "Use recall"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:69
+#: engines/ultima/ultima8/metaengine.cpp:68
 #, fuzzy
 #| msgid "Open inventory"
 msgid "Open inventory & statistics"
 msgstr "Åpne utstyrsliste"
 
 #. I18N: gump is Graphical User Menu Pop-up
-#: engines/ultima/ultima8/metaengine.cpp:71
+#: engines/ultima/ultima8/metaengine.cpp:70
 msgid "Close all displays"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:72
+#: engines/ultima/ultima8/metaengine.cpp:71
 msgid "Jump (fake both-button-click)"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:73
+#: engines/ultima/ultima8/metaengine.cpp:72
 msgid "Careful step"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:79
+#: engines/ultima/ultima8/metaengine.cpp:78
 #, fuzzy
 #| msgid "Cycle through stretch modes"
 msgid "Cycle through weapon inventory"
 msgstr "Bla gjennom strekkmoduser"
 
-#: engines/ultima/ultima8/metaengine.cpp:80
+#: engines/ultima/ultima8/metaengine.cpp:79
 #, fuzzy
 #| msgid "Cycle through stretch modes"
 msgid "Cycle through item inventory"
 msgstr "Bla gjennom strekkmoduser"
 
-#: engines/ultima/ultima8/metaengine.cpp:81
+#: engines/ultima/ultima8/metaengine.cpp:80
 #, fuzzy
 #| msgid "Inventory"
 msgid "Use inventory item"
 msgstr "Utstyrsliste"
 
-#: engines/ultima/ultima8/metaengine.cpp:82
+#: engines/ultima/ultima8/metaengine.cpp:81
 msgid "Use medikit"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:83
+#: engines/ultima/ultima8/metaengine.cpp:82
 #, fuzzy
 #| msgid "Inventory"
 msgid "Use energy cube"
 msgstr "Utstyrsliste"
 
-#: engines/ultima/ultima8/metaengine.cpp:84
+#: engines/ultima/ultima8/metaengine.cpp:83
 msgid "Detonate bomb"
 msgstr "Detoner bombe"
 
-#: engines/ultima/ultima8/metaengine.cpp:86
+#: engines/ultima/ultima8/metaengine.cpp:85
 #, fuzzy
 #| msgid "Drop page"
 msgid "Drop weapon"
 msgstr "Dropp side"
 
-#: engines/ultima/ultima8/metaengine.cpp:87
+#: engines/ultima/ultima8/metaengine.cpp:86
 #, fuzzy
 #| msgid "Select a Theme"
 msgid "Search / Select item"
 msgstr "Velg et tema"
 
-#: engines/ultima/ultima8/metaengine.cpp:88
+#: engines/ultima/ultima8/metaengine.cpp:87
 #, fuzzy
 #| msgid "Next action"
 msgid "Use selection"
 msgstr "Neste handling"
 
-#: engines/ultima/ultima8/metaengine.cpp:89
+#: engines/ultima/ultima8/metaengine.cpp:88
 msgid "Grab items"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:90
+#: engines/ultima/ultima8/metaengine.cpp:89
 #, fuzzy
 #| msgid "Next action"
 msgid "Fire weapon"
 msgstr "Neste handling"
 
-#: engines/ultima/ultima8/metaengine.cpp:91
+#: engines/ultima/ultima8/metaengine.cpp:90
 #, fuzzy
 #| msgid "Camera moves with Silencer"
 msgid "Center screen on Silencer"
 msgstr "Kamera følger hovedpersonen"
 
-#: engines/ultima/ultima8/metaengine.cpp:92
+#: engines/ultima/ultima8/metaengine.cpp:91
 msgid "Jump / Roll / Crouch"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:93
+#: engines/ultima/ultima8/metaengine.cpp:92
 #, fuzzy
 #| msgid "Shorty mode"
 msgid "Short jump"
 msgstr "Minimodus"
 
-#: engines/ultima/ultima8/metaengine.cpp:94
+#: engines/ultima/ultima8/metaengine.cpp:93
 #, fuzzy
 #| msgid "Slide Left"
 msgid "Sidestep left"
 msgstr "Skli mot Venstre"
 
-#: engines/ultima/ultima8/metaengine.cpp:95
+#: engines/ultima/ultima8/metaengine.cpp:94
 #, fuzzy
 #| msgid "Slide Right"
 msgid "Sidestep right"
 msgstr "Skli mot Høyre"
 
-#: engines/ultima/ultima8/metaengine.cpp:96
+#: engines/ultima/ultima8/metaengine.cpp:95
 #, fuzzy
 #| msgid "Face Forward"
 msgid "Step forward"
 msgstr "Se fremover"
 
-#: engines/ultima/ultima8/metaengine.cpp:100
+#: engines/ultima/ultima8/metaengine.cpp:99
 #, fuzzy
 #| msgid "Toggle Clock"
 msgid "Toggle crouch"
 msgstr "Klokke av/på"
 
-#: engines/ultima/ultima8/metaengine.cpp:101
+#: engines/ultima/ultima8/metaengine.cpp:100
 msgid "Side step / Advance / Retreat"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:106
+#: engines/ultima/ultima8/metaengine.cpp:105
 #, fuzzy
 #| msgid "Toggle Clock"
 msgid "Toggle clipping"
 msgstr "Klokke av/på"
 
-#: engines/ultima/ultima8/metaengine.cpp:107
+#: engines/ultima/ultima8/metaengine.cpp:106
 msgid "Ascend"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:115
+#: engines/ultima/ultima8/metaengine.cpp:114
 #, fuzzy
 #| msgid "Show hints"
 msgid "Show touching items"
 msgstr "Vis hint"
 
-#: engines/ultima/ultima8/metaengine.cpp:116
+#: engines/ultima/ultima8/metaengine.cpp:115
 #, fuzzy
 #| msgid "Show quotes"
 msgid "Show editor items"
 msgstr "Vis sitater"
 
-#: engines/ultima/ultima8/metaengine.cpp:117
+#: engines/ultima/ultima8/metaengine.cpp:116
 msgid "Decrement map sort order"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:118
+#: engines/ultima/ultima8/metaengine.cpp:117
 msgid "Increment map sort order"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:119
+#: engines/ultima/ultima8/metaengine.cpp:118
 #, fuzzy
 #| msgid "Toggle fast mode"
 msgid "Toggle frame by frame"
 msgstr "Skru Rask modus av/på"
 
-#: engines/ultima/ultima8/metaengine.cpp:120
+#: engines/ultima/ultima8/metaengine.cpp:119
 msgid "Advance frame"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:121
+#: engines/ultima/ultima8/metaengine.cpp:120
 msgid "Toggle Avatar in stasis"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:122
+#: engines/ultima/ultima8/metaengine.cpp:121
 #, fuzzy
 #| msgid "Image Viewer"
 msgid "Show shape viewer"
 msgstr "Billedviser"
 
-#: engines/ultima/ultima8/metaengine.cpp:132
+#: engines/ultima/ultima8/metaengine.cpp:131
 msgid "Ultima VIII"
 msgstr "Ultima VIII"
 
-#: engines/ultima/ultima8/metaengine.cpp:132
+#: engines/ultima/ultima8/metaengine.cpp:131
 msgid "Crusader"
 msgstr "Crusader"
 
-#: engines/ultima/ultima8/metaengine.cpp:175
+#: engines/ultima/ultima8/metaengine.cpp:174
 msgid "Ultima VIII Cheats"
 msgstr "Ultima VIII - Juksefunksjoner"
 
-#: engines/ultima/ultima8/metaengine.cpp:190
+#: engines/ultima/ultima8/metaengine.cpp:189
 msgid "Ultima VIII Debug"
 msgstr "Ultima VIII Debug-funksjoner"
 
@@ -17166,7 +17166,7 @@ msgstr ""
 "blitt kopiert fra CD-en. Flere instrukser finner du på wikien: https://"
 "wiki.scummvm.org/index.php?title=Crusader:_No_Remorse."
 
-#: engines/ultima/ultima8/games/u8_game.cpp:108
+#: engines/ultima/ultima8/games/u8_game.cpp:104
 msgid ""
 "Missing Required File\n"
 "\n"

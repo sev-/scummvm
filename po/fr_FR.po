@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-08 14:56+0000\n"
+"POT-Creation-Date: 2026-02-08 18:00+0000\n"
 "PO-Revision-Date: 2026-02-05 12:22+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -3971,7 +3971,7 @@ msgstr "Conf. de touches par défaut"
 #: engines/tucker/metaengine.cpp:172 engines/ultima/ultima0/metaengine.cpp:180
 #: engines/ultima/ultima4/metaengine.cpp:227
 #: engines/ultima/nuvie/metaengine.cpp:238
-#: engines/ultima/ultima8/metaengine.cpp:139 engines/vcruise/metaengine.cpp:158
+#: engines/ultima/ultima8/metaengine.cpp:138 engines/vcruise/metaengine.cpp:158
 #: engines/wintermute/keymapper_tables.h:42 engines/zvision/metaengine.cpp:203
 msgid "Left click"
 msgstr "Clic gauche"
@@ -4004,7 +4004,7 @@ msgstr "Clic Milieu"
 #: engines/ultima/ultima0/metaengine.cpp:186
 #: engines/ultima/ultima4/metaengine.cpp:233
 #: engines/ultima/nuvie/metaengine.cpp:244
-#: engines/ultima/ultima8/metaengine.cpp:145
+#: engines/ultima/ultima8/metaengine.cpp:144
 #: engines/wintermute/keymapper_tables.h:48 engines/zvision/metaengine.cpp:209
 msgid "Right click"
 msgstr "Clic droit"
@@ -4028,7 +4028,7 @@ msgid "Pause"
 msgstr "Pause"
 
 #: engines/metaengine.cpp:105 engines/parallaction/metaengine.cpp:163
-#: engines/ultima/ultima8/metaengine.cpp:48
+#: engines/ultima/ultima8/metaengine.cpp:47
 msgid "Game menu"
 msgstr "Menu du jeu"
 
@@ -6409,7 +6409,7 @@ msgstr "Passer le film"
 #: engines/efh/metaengine.cpp:286 engines/hdb/metaengine.cpp:213
 #: engines/hypno/metaengine.cpp:302 engines/hypno/metaengine.cpp:356
 #: engines/nancy/input.cpp:195 engines/tinsel/metaengine.cpp:263
-#: engines/titanic/metaengine.cpp:324 engines/ultima/ultima8/metaengine.cpp:53
+#: engines/titanic/metaengine.cpp:324 engines/ultima/ultima8/metaengine.cpp:52
 msgid "Move up"
 msgstr "Se déplacer vers le haut"
 
@@ -6419,7 +6419,7 @@ msgstr "Se déplacer vers le haut"
 #: engines/efh/metaengine.cpp:293 engines/hdb/metaengine.cpp:219
 #: engines/hypno/metaengine.cpp:290 engines/hypno/metaengine.cpp:342
 #: engines/nancy/input.cpp:201 engines/tinsel/metaengine.cpp:269
-#: engines/titanic/metaengine.cpp:330 engines/ultima/ultima8/metaengine.cpp:54
+#: engines/titanic/metaengine.cpp:330 engines/ultima/ultima8/metaengine.cpp:53
 msgid "Move down"
 msgstr "Se déplacer vers le bas"
 
@@ -6432,7 +6432,7 @@ msgstr "Se déplacer vers le bas"
 #: engines/kyra/engine/eobcommon.cpp:373 engines/lure/metaengine.cpp:218
 #: engines/nancy/input.cpp:207 engines/tinsel/metaengine.cpp:275
 #: engines/titanic/metaengine.cpp:312 engines/titanic/metaengine.cpp:390
-#: engines/ultima/ultima8/metaengine.cpp:55
+#: engines/ultima/ultima8/metaengine.cpp:54
 msgid "Move left"
 msgstr "Se déplacer vers la gauche"
 
@@ -6445,7 +6445,7 @@ msgstr "Se déplacer vers la gauche"
 #: engines/kyra/engine/eobcommon.cpp:374 engines/lure/metaengine.cpp:226
 #: engines/nancy/input.cpp:213 engines/tinsel/metaengine.cpp:281
 #: engines/titanic/metaengine.cpp:318 engines/titanic/metaengine.cpp:396
-#: engines/ultima/ultima8/metaengine.cpp:56
+#: engines/ultima/ultima8/metaengine.cpp:55
 msgid "Move right"
 msgstr "Se déplacer vers la droite"
 
@@ -6587,7 +6587,7 @@ msgstr "Ouvrir le menu sauvegarder/charger"
 #: engines/mortevielle/mortevielle.cpp:300 engines/sky/compact.cpp:129
 #: engines/supernova/supernova.cpp:467 engines/teenagent/resources.cpp:312
 #: engines/tony/tony.cpp:187 engines/toon/toon.cpp:5425
-#: engines/ultima/ultima8/ultima8.cpp:191
+#: engines/ultima/ultima8/ultima8.cpp:179
 #, c-format
 msgid "Unable to locate the '%s' engine data file."
 msgstr "Le fichier de données '%s' n'a pu être trouvé."
@@ -7025,7 +7025,7 @@ msgstr "Se retourner"
 #: engines/kyra/engine/eobcommon.cpp:375 engines/kyra/engine/lol.cpp:514
 #: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:97
 #: engines/mohawk/riven.cpp:901 engines/pegasus/pegasus.cpp:2740
-#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:49
+#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:48
 #: engines/wintermute/keymapper_tables.h:161
 #: engines/wintermute/keymapper_tables.h:741
 #: engines/wintermute/keymapper_tables.h:2122
@@ -7038,7 +7038,7 @@ msgstr "Tourner vers la Gauche"
 #: engines/kyra/engine/eobcommon.cpp:376 engines/kyra/engine/lol.cpp:515
 #: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:98
 #: engines/mohawk/riven.cpp:907 engines/pegasus/pegasus.cpp:2747
-#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:50
+#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:49
 #: engines/wintermute/keymapper_tables.h:167
 #: engines/wintermute/keymapper_tables.h:746
 #: engines/wintermute/keymapper_tables.h:2128
@@ -7356,7 +7356,7 @@ msgstr "Chargement rapide"
 #: engines/sludge/keymapper_tables.h:303 engines/sludge/keymapper_tables.h:410
 #: engines/sludge/keymapper_tables.h:465 engines/sludge/keymapper_tables.h:496
 #: engines/ultima/nuvie/metaengine.cpp:91
-#: engines/ultima/ultima8/metaengine.cpp:44
+#: engines/ultima/ultima8/metaengine.cpp:43
 #: engines/wintermute/keymapper_tables.h:930
 msgid "Quick save"
 msgstr "Sauvegarde rapide"
@@ -7780,7 +7780,7 @@ msgstr "Act. / Désact. indice privé"
 #: engines/stark/metaengine.cpp:208 engines/tetraedge/metaengine.cpp:110
 #: engines/titanic/metaengine.cpp:199 engines/toltecs/metaengine.cpp:234
 #: engines/toon/metaengine.cpp:112 engines/trecision/metaengine.cpp:169
-#: engines/tsage/metaengine.cpp:242 engines/ultima/ultima8/metaengine.cpp:45
+#: engines/tsage/metaengine.cpp:242 engines/ultima/ultima8/metaengine.cpp:44
 #: engines/vcruise/metaengine.cpp:175 engines/wintermute/keymapper_tables.h:920
 msgid "Save game"
 msgstr "Sauvegarder"
@@ -7806,7 +7806,7 @@ msgstr "Sauvegarder"
 #: engines/stark/metaengine.cpp:213 engines/tetraedge/metaengine.cpp:104
 #: engines/titanic/metaengine.cpp:205 engines/toltecs/metaengine.cpp:240
 #: engines/toon/metaengine.cpp:118 engines/trecision/metaengine.cpp:175
-#: engines/ultima/ultima8/metaengine.cpp:46 engines/vcruise/metaengine.cpp:180
+#: engines/ultima/ultima8/metaengine.cpp:45 engines/vcruise/metaengine.cpp:180
 #: engines/wintermute/keymapper_tables.h:925
 #: engines/wintermute/keymapper_tables.h:1265
 msgid "Load game"
@@ -7925,7 +7925,7 @@ msgstr "Regarder à droite"
 #: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
 #: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
 #: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima8/metaengine.cpp:51
+#: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
 #: engines/wintermute/keymapper_tables.h:2116
@@ -8869,7 +8869,7 @@ msgstr "Défendre"
 #: engines/efh/metaengine.cpp:530 engines/freescape/games/castle/castle.cpp:293
 #: engines/grim/grim.cpp:501 engines/grim/grim.cpp:596
 #: engines/hpl1/metaengine.cpp:82 engines/icb/icb.cpp:131
-#: engines/icb/icb.cpp:197 engines/ultima/ultima8/metaengine.cpp:57
+#: engines/icb/icb.cpp:197 engines/ultima/ultima8/metaengine.cpp:56
 msgid "Run"
 msgstr "Courir"
 
@@ -9103,13 +9103,13 @@ msgstr "Marcher vers l'avant"
 
 #: engines/freescape/games/dark/dark.cpp:223
 #: engines/freescape/games/driller/driller.cpp:183
-#: engines/ultima/ultima8/metaengine.cpp:98
+#: engines/ultima/ultima8/metaengine.cpp:97
 msgid "Roll left"
 msgstr "Rouler à gauche"
 
 #: engines/freescape/games/dark/dark.cpp:228
 #: engines/freescape/games/driller/driller.cpp:188
-#: engines/ultima/ultima8/metaengine.cpp:99
+#: engines/ultima/ultima8/metaengine.cpp:98
 msgid "Roll right"
 msgstr "Rouler à droite"
 
@@ -12870,7 +12870,7 @@ msgid "Fighting controls (numpad):"
 msgstr "Contrôles de combat (pavé numérique) :"
 
 #: engines/scumm/help.cpp:309 engines/scumm/help.cpp:310
-#: engines/scumm/help.cpp:311 engines/ultima/ultima8/metaengine.cpp:97
+#: engines/scumm/help.cpp:311 engines/ultima/ultima8/metaengine.cpp:96
 msgid "Step back"
 msgstr "Pas en arrière"
 
@@ -15147,7 +15147,7 @@ msgid "Board"
 msgstr "Monter à bord"
 
 #: engines/ultima/ultima4/metaengine.cpp:52
-#: engines/ultima/ultima8/metaengine.cpp:108
+#: engines/ultima/ultima8/metaengine.cpp:107
 msgid "Descend"
 msgstr "Descendre"
 
@@ -15785,184 +15785,184 @@ msgstr "The Savage Empire"
 msgid "Transfer Character"
 msgstr "Transfert de personnage"
 
-#: engines/ultima/ultima8/metaengine.cpp:47
+#: engines/ultima/ultima8/metaengine.cpp:46
 msgid "Draw weapon / Combat"
 msgstr "Dégainer arme / Combattre"
 
-#: engines/ultima/ultima8/metaengine.cpp:52
+#: engines/ultima/ultima8/metaengine.cpp:51
 msgid "Move back"
 msgstr "Reculer"
 
-#: engines/ultima/ultima8/metaengine.cpp:58
+#: engines/ultima/ultima8/metaengine.cpp:57
 msgid "Highlight items"
 msgstr "Surligner les items"
 
-#: engines/ultima/ultima8/metaengine.cpp:64
+#: engines/ultima/ultima8/metaengine.cpp:63
 msgid "Use bedroll"
 msgstr "Utiliser le sac de couchage"
 
-#: engines/ultima/ultima8/metaengine.cpp:65
+#: engines/ultima/ultima8/metaengine.cpp:64
 msgid "Open backpack"
 msgstr "Ouvrir la besace"
 
-#: engines/ultima/ultima8/metaengine.cpp:66
+#: engines/ultima/ultima8/metaengine.cpp:65
 msgid "Use keyring"
 msgstr "Utiliser le trousseau de clés"
 
-#: engines/ultima/ultima8/metaengine.cpp:67
+#: engines/ultima/ultima8/metaengine.cpp:66
 msgid "Open minimap"
 msgstr "Ouvrir la mini-carte"
 
-#: engines/ultima/ultima8/metaengine.cpp:68
+#: engines/ultima/ultima8/metaengine.cpp:67
 msgid "Use recall"
 msgstr "Utiliser le rappel"
 
-#: engines/ultima/ultima8/metaengine.cpp:69
+#: engines/ultima/ultima8/metaengine.cpp:68
 msgid "Open inventory & statistics"
 msgstr "Ouvrir l'inventaire et les statistiques"
 
 #. I18N: gump is Graphical User Menu Pop-up
-#: engines/ultima/ultima8/metaengine.cpp:71
+#: engines/ultima/ultima8/metaengine.cpp:70
 msgid "Close all displays"
 msgstr "Fermer toutes les fenêtres"
 
-#: engines/ultima/ultima8/metaengine.cpp:72
+#: engines/ultima/ultima8/metaengine.cpp:71
 msgid "Jump (fake both-button-click)"
 msgstr "Sauter (simule \"clic gauche+clic droit\")"
 
-#: engines/ultima/ultima8/metaengine.cpp:73
+#: engines/ultima/ultima8/metaengine.cpp:72
 msgid "Careful step"
 msgstr "Pas prudent"
 
-#: engines/ultima/ultima8/metaengine.cpp:79
+#: engines/ultima/ultima8/metaengine.cpp:78
 msgid "Cycle through weapon inventory"
 msgstr "Faire défiler l'inventaire des armes"
 
-#: engines/ultima/ultima8/metaengine.cpp:80
+#: engines/ultima/ultima8/metaengine.cpp:79
 msgid "Cycle through item inventory"
 msgstr "Faire défiler l'inventaire des items"
 
-#: engines/ultima/ultima8/metaengine.cpp:81
+#: engines/ultima/ultima8/metaengine.cpp:80
 msgid "Use inventory item"
 msgstr "Utiliser l'item d'inventaire"
 
-#: engines/ultima/ultima8/metaengine.cpp:82
+#: engines/ultima/ultima8/metaengine.cpp:81
 msgid "Use medikit"
 msgstr "Utiliser le médikit"
 
-#: engines/ultima/ultima8/metaengine.cpp:83
+#: engines/ultima/ultima8/metaengine.cpp:82
 msgid "Use energy cube"
 msgstr "Utiliser le cube d'énergie"
 
-#: engines/ultima/ultima8/metaengine.cpp:84
+#: engines/ultima/ultima8/metaengine.cpp:83
 msgid "Detonate bomb"
 msgstr "Faire exploser la bombe"
 
-#: engines/ultima/ultima8/metaengine.cpp:86
+#: engines/ultima/ultima8/metaengine.cpp:85
 msgid "Drop weapon"
 msgstr "Déposer l'arme"
 
-#: engines/ultima/ultima8/metaengine.cpp:87
+#: engines/ultima/ultima8/metaengine.cpp:86
 msgid "Search / Select item"
 msgstr "Chercher / Sélectionner l'item"
 
-#: engines/ultima/ultima8/metaengine.cpp:88
+#: engines/ultima/ultima8/metaengine.cpp:87
 msgid "Use selection"
 msgstr "Utiliser la sélection"
 
-#: engines/ultima/ultima8/metaengine.cpp:89
+#: engines/ultima/ultima8/metaengine.cpp:88
 msgid "Grab items"
 msgstr "Ramasser les items"
 
-#: engines/ultima/ultima8/metaengine.cpp:90
+#: engines/ultima/ultima8/metaengine.cpp:89
 msgid "Fire weapon"
 msgstr "Tirer avec l'arme"
 
-#: engines/ultima/ultima8/metaengine.cpp:91
+#: engines/ultima/ultima8/metaengine.cpp:90
 msgid "Center screen on Silencer"
 msgstr "Centrer l'écran sur le Silencer"
 
-#: engines/ultima/ultima8/metaengine.cpp:92
+#: engines/ultima/ultima8/metaengine.cpp:91
 msgid "Jump / Roll / Crouch"
 msgstr "Sauter / Rouler / S'accroupir"
 
-#: engines/ultima/ultima8/metaengine.cpp:93
+#: engines/ultima/ultima8/metaengine.cpp:92
 msgid "Short jump"
 msgstr "Saut court"
 
-#: engines/ultima/ultima8/metaengine.cpp:94
+#: engines/ultima/ultima8/metaengine.cpp:93
 msgid "Sidestep left"
 msgstr "Pas de côté à gauche"
 
-#: engines/ultima/ultima8/metaengine.cpp:95
+#: engines/ultima/ultima8/metaengine.cpp:94
 msgid "Sidestep right"
 msgstr "Pas de côté à droite"
 
-#: engines/ultima/ultima8/metaengine.cpp:96
+#: engines/ultima/ultima8/metaengine.cpp:95
 msgid "Step forward"
 msgstr "Pas vers l'avant"
 
-#: engines/ultima/ultima8/metaengine.cpp:100
+#: engines/ultima/ultima8/metaengine.cpp:99
 msgid "Toggle crouch"
 msgstr "S'accroupir / Se relever"
 
-#: engines/ultima/ultima8/metaengine.cpp:101
+#: engines/ultima/ultima8/metaengine.cpp:100
 msgid "Side step / Advance / Retreat"
 msgstr "Pas de côté / Avancer / Reculer"
 
-#: engines/ultima/ultima8/metaengine.cpp:106
+#: engines/ultima/ultima8/metaengine.cpp:105
 msgid "Toggle clipping"
 msgstr "Act. / Désact. le clipping"
 
-#: engines/ultima/ultima8/metaengine.cpp:107
+#: engines/ultima/ultima8/metaengine.cpp:106
 msgid "Ascend"
 msgstr "Monter"
 
-#: engines/ultima/ultima8/metaengine.cpp:115
+#: engines/ultima/ultima8/metaengine.cpp:114
 msgid "Show touching items"
 msgstr "Afficher les items manipulables"
 
-#: engines/ultima/ultima8/metaengine.cpp:116
+#: engines/ultima/ultima8/metaengine.cpp:115
 msgid "Show editor items"
 msgstr "Afficher les editor items"
 
-#: engines/ultima/ultima8/metaengine.cpp:117
+#: engines/ultima/ultima8/metaengine.cpp:116
 msgid "Decrement map sort order"
 msgstr "Ordre de tri de carte décroissant"
 
-#: engines/ultima/ultima8/metaengine.cpp:118
+#: engines/ultima/ultima8/metaengine.cpp:117
 msgid "Increment map sort order"
 msgstr "Ordre de tri de carte croissant"
 
-#: engines/ultima/ultima8/metaengine.cpp:119
+#: engines/ultima/ultima8/metaengine.cpp:118
 msgid "Toggle frame by frame"
 msgstr "Act. / Désact. image par image"
 
-#: engines/ultima/ultima8/metaengine.cpp:120
+#: engines/ultima/ultima8/metaengine.cpp:119
 msgid "Advance frame"
 msgstr "Image suivante"
 
-#: engines/ultima/ultima8/metaengine.cpp:121
+#: engines/ultima/ultima8/metaengine.cpp:120
 msgid "Toggle Avatar in stasis"
 msgstr "Act. / Désact. l'Avatar en stase"
 
-#: engines/ultima/ultima8/metaengine.cpp:122
+#: engines/ultima/ultima8/metaengine.cpp:121
 msgid "Show shape viewer"
 msgstr "Afficher la visionneuse de forme"
 
-#: engines/ultima/ultima8/metaengine.cpp:132
+#: engines/ultima/ultima8/metaengine.cpp:131
 msgid "Ultima VIII"
 msgstr "Ultima VIII"
 
-#: engines/ultima/ultima8/metaengine.cpp:132
+#: engines/ultima/ultima8/metaengine.cpp:131
 msgid "Crusader"
 msgstr "Crusader"
 
-#: engines/ultima/ultima8/metaengine.cpp:175
+#: engines/ultima/ultima8/metaengine.cpp:174
 msgid "Ultima VIII Cheats"
 msgstr "Triches pour Ultima VIII"
 
-#: engines/ultima/ultima8/metaengine.cpp:190
+#: engines/ultima/ultima8/metaengine.cpp:189
 msgid "Ultima VIII Debug"
 msgstr "Débogage pour Ultima VIII"
 
@@ -15977,7 +15977,7 @@ msgstr ""
 "Des instructions supplémentaires sont disponibles sur le wiki : https://"
 "wiki.scummvm.org/index.php?title=Crusader:_No_Remorse."
 
-#: engines/ultima/ultima8/games/u8_game.cpp:108
+#: engines/ultima/ultima8/games/u8_game.cpp:104
 msgid ""
 "Missing Required File\n"
 "\n"
