@@ -22,7 +22,7 @@
 #ifndef ULTIMA8_GAMES_GAMEDATA_H
 #define ULTIMA8_GAMES_GAMEDATA_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 #include "common/str.h"
 #include "ultima/ultima8/gfx/frame_id.h"
 

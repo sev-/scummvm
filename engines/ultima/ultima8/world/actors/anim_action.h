@@ -22,7 +22,7 @@
 #ifndef WORLD_ACTORS_ANIMACTION_H
 #define WORLD_ACTORS_ANIMACTION_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 #include "ultima/ultima8/misc/direction.h"
 
 namespace Ultima {

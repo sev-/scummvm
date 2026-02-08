@@ -22,7 +22,7 @@
 #ifndef WORLD_ACTORS_TREASUREINFO_H
 #define WORLD_ACTORS_TREASUREINFO_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 #include "common/str.h"
 
 namespace Ultima {

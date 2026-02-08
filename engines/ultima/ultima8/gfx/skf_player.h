@@ -22,10 +22,13 @@
 #ifndef ULTIMA8_GFX_SKFPLAYER_H
 #define ULTIMA8_GFX_SKFPLAYER_H
 
-#include "ultima/shared/std/containers.h"
 #include "ultima/ultima8/gfx/movie_player.h"
-#include "ultima/ultima8/gfx/render_surface.h"
 #include "ultima/ultima8/gfx/palette.h"
+#include "ultima/ultima8/gfx/render_surface.h"
+
+namespace Common {
+class SeekableReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

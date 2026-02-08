@@ -22,7 +22,6 @@
 #ifndef ULTIMA8_GUMPS_PAPERDOLLGUMP_H
 #define ULTIMA8_GUMPS_PAPERDOLLGUMP_H
 
-#include "common/str.h"
 #include "ultima/ultima8/gumps/container_gump.h"
 #include "ultima/ultima8/misc/classtype.h"
 

@@ -22,8 +22,8 @@
 #ifndef ULTIMA8_FILESYS_ARCHIVE_H
 #define ULTIMA8_FILESYS_ARCHIVE_H
 
+#include "common/array.h"
 #include "common/scummsys.h"
-#include "ultima/shared/std/containers.h"
 
 namespace Common {
 	class SeekableReadStream;

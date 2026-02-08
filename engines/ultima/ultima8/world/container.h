@@ -22,9 +22,8 @@
 #ifndef ULTIMA8_WORLD_CONTAINER_H
 #define ULTIMA8_WORLD_CONTAINER_H
 
+#include "common/list.h"
 #include "ultima/ultima8/world/item.h"
-#include "ultima/shared/std/containers.h"
-
 #include "ultima/ultima8/usecode/intrinsics.h"
 #include "ultima/ultima8/misc/classtype.h"
 

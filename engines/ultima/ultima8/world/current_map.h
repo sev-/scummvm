@@ -22,11 +22,12 @@
 #ifndef ULTIMA8_WORLD_CURRENTMAP_H
 #define ULTIMA8_WORLD_CURRENTMAP_H
 
-#include "ultima/shared/std/containers.h"
-#include "ultima/ultima8/usecode/intrinsics.h"
-#include "ultima/ultima8/world/position_info.h"
+#include "common/list.h"
+#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/misc/direction.h"
 #include "ultima/ultima8/misc/point3.h"
+#include "ultima/ultima8/usecode/intrinsics.h"
+#include "ultima/ultima8/world/position_info.h"
 
 namespace Ultima {
 namespace Ultima8 {

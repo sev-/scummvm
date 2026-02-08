@@ -19,11 +19,11 @@
  *
  */
 
-#include "ultima/ultima8/misc/common_types.h"
-#include "ultima/ultima8/ultima8.h"
 #include "ultima/ultima8/gfx/fonts/shape_font.h"
-#include "ultima/ultima8/gfx/shape_frame.h"
+
 #include "ultima/ultima8/gfx/fonts/shape_rendered_text.h"
+#include "ultima/ultima8/gfx/shape_frame.h"
+#include "ultima/ultima8/ultima8.h"
 
 namespace Ultima {
 namespace Ultima8 {

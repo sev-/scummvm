@@ -22,8 +22,8 @@
 #ifndef ULTIMA8_WORLD_EGGHATCHERPROCESS_H
 #define ULTIMA8_WORLD_EGGHATCHERPROCESS_H
 
+#include "common/array.h"
 #include "ultima/ultima8/kernel/process.h"
-#include "ultima/shared/std/containers.h"
 
 namespace Ultima {
 namespace Ultima8 {

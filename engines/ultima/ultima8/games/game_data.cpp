@@ -19,30 +19,29 @@
  *
  */
 
+#include "ultima/ultima8/games/game_data.h"
+
 #include "common/config-manager.h"
 #include "common/file.h"
-
-#include "ultima/ultima8/misc/common_types.h"
-#include "ultima/ultima8/misc/util.h"
-#include "ultima/ultima8/games/game_data.h"
-#include "ultima/ultima8/usecode/usecode_flex.h"
-#include "ultima/ultima8/gfx/main_shape_archive.h"
+#include "ultima/ultima8/audio/music_flex.h"
+#include "ultima/ultima8/audio/speech_flex.h"
+#include "ultima/ultima8/conf/config_file_manager.h"
+#include "ultima/ultima8/convert/crusader/convert_shape_crusader.h"
+#include "ultima/ultima8/games/game_info.h"
+#include "ultima/ultima8/gfx/fonts/font_manager.h"
 #include "ultima/ultima8/gfx/fonts/font_shape_archive.h"
 #include "ultima/ultima8/gfx/gump_shape_archive.h"
-#include "ultima/ultima8/world/map_glob.h"
-#include "ultima/ultima8/world/fire_type_table.h"
-#include "ultima/ultima8/world/actors/npc_dat.h"
-#include "ultima/ultima8/world/actors/combat_dat.h"
+#include "ultima/ultima8/gfx/main_shape_archive.h"
 #include "ultima/ultima8/gfx/palette_manager.h"
 #include "ultima/ultima8/gfx/shape.h"
 #include "ultima/ultima8/gfx/wpn_ovlay_dat.h"
-#include "ultima/ultima8/gfx/fonts/font_manager.h"
-#include "ultima/ultima8/games/game_info.h"
 #include "ultima/ultima8/gumps/weasel_dat.h"
-#include "ultima/ultima8/conf/config_file_manager.h"
-#include "ultima/ultima8/convert/crusader/convert_shape_crusader.h"
-#include "ultima/ultima8/audio/music_flex.h"
-#include "ultima/ultima8/audio/speech_flex.h"
+#include "ultima/ultima8/misc/util.h"
+#include "ultima/ultima8/usecode/usecode_flex.h"
+#include "ultima/ultima8/world/actors/combat_dat.h"
+#include "ultima/ultima8/world/actors/npc_dat.h"
+#include "ultima/ultima8/world/fire_type_table.h"
+#include "ultima/ultima8/world/map_glob.h"
 
 namespace Ultima {
 namespace Ultima8 {

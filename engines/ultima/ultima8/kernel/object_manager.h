@@ -22,9 +22,13 @@
 #ifndef ULTIMA8_KERNEL_OBJECTMANAGER_H
 #define ULTIMA8_KERNEL_OBJECTMANAGER_H
 
-#include "common/str.h"
-#include "ultima/shared/std/containers.h"
+#include "common/hash-str.h"
+#include "common/hashmap.h"
 #include "ultima/ultima8/misc/common_types.h"
+
+namespace Common {
+class ReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

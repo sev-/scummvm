@@ -22,13 +22,11 @@
 #ifndef ULTIMA8_GUMPS_MESSAGEBOXGUMP_H
 #define ULTIMA8_GUMPS_MESSAGEBOXGUMP_H
 
-#include "ultima/ultima8/gumps/modal_gump.h"
-#include "ultima/ultima8/usecode/intrinsics.h"
-
 #include "common/str.h"
-#include "ultima/shared/std/containers.h"
-#include "ultima/ultima8/misc/classtype.h"
 #include "ultima/ultima8/gfx/texture.h"
+#include "ultima/ultima8/gumps/modal_gump.h"
+#include "ultima/ultima8/misc/classtype.h"
+#include "ultima/ultima8/usecode/intrinsics.h"
 
 namespace Ultima {
 namespace Ultima8 {

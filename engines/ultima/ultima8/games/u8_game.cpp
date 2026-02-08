@@ -19,33 +19,29 @@
  *
  */
 
-#include "common/config-manager.h"
-#include "common/file.h"
-#include "common/translation.h"
-
-#include "gui/error.h"
-
-#include "ultima/ultima8/misc/debugger.h"
-
 #include "ultima/ultima8/games/u8_game.h"
 
-#include "ultima/ultima8/gfx/palette_manager.h"
-#include "ultima/ultima8/gfx/fade_to_modal_process.h"
-#include "ultima/ultima8/games/game_data.h"
-#include "ultima/ultima8/gfx/xform_blend.h"
-#include "ultima/ultima8/filesys/u8_save_file.h"
-#include "ultima/ultima8/world/world.h"
-#include "ultima/ultima8/world/actors/main_actor.h"
-#include "ultima/ultima8/world/item_factory.h"
-#include "ultima/ultima8/kernel/object_manager.h"
-#include "ultima/ultima8/ultima8.h"
-#include "ultima/ultima8/gumps/movie_gump.h"
-#include "ultima/ultima8/gumps/credits_gump.h"
-#include "ultima/ultima8/kernel/kernel.h"
-#include "ultima/ultima8/audio/music_process.h"
-#include "ultima/ultima8/games/start_u8_process.h"
-#include "ultima/ultima8/world/get_object.h"
+#include "common/config-manager.h"
+#include "common/file.h"
 #include "common/memstream.h"
+#include "common/translation.h"
+#include "gui/error.h"
+#include "ultima/ultima8/ultima8.h"
+#include "ultima/ultima8/audio/music_process.h"
+#include "ultima/ultima8/filesys/u8_save_file.h"
+#include "ultima/ultima8/games/game_data.h"
+#include "ultima/ultima8/games/start_u8_process.h"
+#include "ultima/ultima8/gfx/fade_to_modal_process.h"
+#include "ultima/ultima8/gfx/palette_manager.h"
+#include "ultima/ultima8/gfx/xform_blend.h"
+#include "ultima/ultima8/gumps/credits_gump.h"
+#include "ultima/ultima8/gumps/movie_gump.h"
+#include "ultima/ultima8/kernel/kernel.h"
+#include "ultima/ultima8/kernel/object_manager.h"
+#include "ultima/ultima8/world/actors/main_actor.h"
+#include "ultima/ultima8/world/get_object.h"
+#include "ultima/ultima8/world/item_factory.h"
+#include "ultima/ultima8/world/world.h"
 
 namespace Ultima {
 namespace Ultima8 {

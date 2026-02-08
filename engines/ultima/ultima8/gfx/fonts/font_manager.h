@@ -22,8 +22,7 @@
 #ifndef ULTIMA8_GFX_FONTS_FONTMANAGER_H
 #define ULTIMA8_GFX_FONTS_FONTMANAGER_H
 
-#include "ultima/shared/std/containers.h"
-#include "common/str.h"
+#include "common/hashmap.h"
 #include "common/path.h"
 #include "graphics/font.h"
 

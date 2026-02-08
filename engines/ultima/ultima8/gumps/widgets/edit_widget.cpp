@@ -20,11 +20,11 @@
  */
 
 #include "ultima/ultima8/gumps/widgets/edit_widget.h"
-#include "ultima/ultima8/gfx/fonts/rendered_text.h"
-#include "ultima/ultima8/gfx/render_surface.h"
-#include "ultima/ultima8/gfx/fonts/font_manager.h"
-#include "common/system.h"
+
 #include "common/events.h"
+#include "common/system.h"
+#include "ultima/ultima8/gfx/fonts/font_manager.h"
+#include "ultima/ultima8/gfx/fonts/rendered_text.h"
 
 namespace Ultima {
 namespace Ultima8 {

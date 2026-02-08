@@ -22,9 +22,14 @@
 #ifndef ULTIMA8_GFX_PALETTEMANAGER_H
 #define ULTIMA8_GFX_PALETTEMANAGER_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 #include "graphics/pixelformat.h"
 #include "ultima/ultima8/gfx/pal_transforms.h"
+
+namespace Common {
+class WriteStream;
+class ReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

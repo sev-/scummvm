@@ -22,7 +22,6 @@
 #ifndef ULTIMA8_GUMPS_REMORSEMENUGUMP_H
 #define ULTIMA8_GUMPS_REMORSEMENUGUMP_H
 
-#include "common/str.h"
 #include "ultima/ultima8/gumps/modal_gump.h"
 #include "ultima/ultima8/misc/classtype.h"
 

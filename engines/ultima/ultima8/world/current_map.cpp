@@ -19,9 +19,10 @@
  *
  */
 
-#include "ultima/ultima.h"
-#include "ultima/ultima8/misc/debugger.h"
 #include "ultima/ultima8/world/current_map.h"
+
+#include "common/stream.h"
+#include "ultima/ultima.h"
 #include "ultima/ultima8/world/map.h"
 #include "ultima/ultima8/world/actors/actor.h"
 #include "ultima/ultima8/world/world.h"

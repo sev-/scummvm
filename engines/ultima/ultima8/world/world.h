@@ -57,7 +57,10 @@
 
 #include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/usecode/intrinsics.h"
-#include "ultima/shared/std/containers.h"
+
+namespace Common {
+class ReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

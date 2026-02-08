@@ -19,10 +19,10 @@
  *
  */
 
+#include "ultima/ultima8/gfx/fonts/font.h"
+
 #include "ultima/ultima.h"
 #include "ultima/ultima8/misc/debugger.h"
-#include "ultima/ultima8/misc/common_types.h"
-#include "ultima/ultima8/gfx/fonts/font.h"
 
 namespace Ultima {
 namespace Ultima8 {

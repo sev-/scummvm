@@ -22,9 +22,8 @@
 #ifndef ULTIMA8_GFX_FONTS_FONT_H
 #define ULTIMA8_GFX_FONTS_FONT_H
 
+#include "common/list.h"
 #include "common/rect.h"
-
-#include "ultima/shared/std/containers.h"
 #include "common/str.h"
 #include "ultima/ultima8/misc/encoding.h"
 

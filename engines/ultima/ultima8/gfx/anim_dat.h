@@ -22,7 +22,6 @@
 #ifndef ULTIMA8_GFX_ANIMDAT_H
 #define ULTIMA8_GFX_ANIMDAT_H
 
-#include "ultima/shared/std/containers.h"
 #include "ultima/ultima8/world/actors/animation.h"
 
 namespace Ultima {

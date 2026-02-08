@@ -19,10 +19,11 @@
  *
  */
 
-#include "ultima/ultima8/misc/debugger.h"
-#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/audio/speech_flex.h"
+
+#include "common/debug.h"
 #include "ultima/ultima8/audio/audio_sample.h"
+#include "ultima/ultima8/misc/debugger.h"
 
 namespace Ultima {
 namespace Ultima8 {

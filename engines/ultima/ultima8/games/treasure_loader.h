@@ -22,8 +22,9 @@
 #ifndef ULTIMA8_GAMES_TREASURELOADER_H
 #define ULTIMA8_GAMES_TREASURELOADER_H
 
+#include "common/hash-str.h"
+#include "common/hashmap.h"
 #include "ultima/ultima8/world/actors/treasure_info.h"
-#include "ultima/shared/std/containers.h"
 
 namespace Ultima {
 namespace Ultima8 {

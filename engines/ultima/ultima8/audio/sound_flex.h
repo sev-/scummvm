@@ -22,6 +22,7 @@
 #ifndef ULTIMA8_AUDIO_SOUNDFLEX_H
 #define ULTIMA8_AUDIO_SOUNDFLEX_H
 
+#include "common/array.h"
 #include "common/str.h"
 #include "ultima/ultima8/filesys/archive.h"
 

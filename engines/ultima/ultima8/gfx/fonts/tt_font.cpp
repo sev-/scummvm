@@ -19,13 +19,12 @@
  *
  */
 
-#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/gfx/fonts/tt_font.h"
+
+#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/gfx/fonts/ttf_rendered_text.h"
-#include "ultima/ultima8/gfx/texture.h"
 
-
-//include iomanip
+// include iomanip
 
 namespace Ultima {
 namespace Ultima8 {

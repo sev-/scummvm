@@ -19,15 +19,14 @@
  *
  */
 
-#include "ultima/ultima.h"
-#include "ultima/ultima8/misc/debugger.h"
-
 #include "ultima/ultima8/world/missile_tracker.h"
 
+#include "common/debug.h"
+#include "ultima/ultima.h"
 #include "ultima/ultima8/world/current_map.h"
+#include "ultima/ultima8/world/get_object.h"
 #include "ultima/ultima8/world/item.h"
 #include "ultima/ultima8/world/world.h"
-#include "ultima/ultima8/world/get_object.h"
 
 namespace Ultima {
 namespace Ultima8 {

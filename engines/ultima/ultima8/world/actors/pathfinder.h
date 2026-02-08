@@ -22,7 +22,7 @@
 #ifndef ULTIMA8_WORLD_ACTORS_PATHFINDER_H
 #define ULTIMA8_WORLD_ACTORS_PATHFINDER_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 #include "ultima/ultima8/misc/direction.h"
 #include "ultima/ultima8/misc/point3.h"
 #include "ultima/ultima8/misc/priority_queue.h"

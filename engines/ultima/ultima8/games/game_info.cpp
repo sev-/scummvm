@@ -19,9 +19,10 @@
  *
  */
 
-#include "ultima/ultima8/misc/debugger.h"
-
 #include "ultima/ultima8/games/game_info.h"
+
+#include "common/stream.h"
+#include "ultima/ultima8/misc/debugger.h"
 #include "ultima/ultima8/misc/util.h"
 
 namespace Ultima {

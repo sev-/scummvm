@@ -19,6 +19,8 @@
  *
  */
 
+#include "ultima/ultima8/world/actors/pathfinder.h"
+
 #include "common/system.h"
 #include "ultima/ultima.h"
 #include "ultima/ultima8/misc/direction_util.h"

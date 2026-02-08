@@ -22,10 +22,9 @@
 #ifndef ULTIMA8_FILESYS_SAVEGAME_H
 #define ULTIMA8_FILESYS_SAVEGAME_H
 
-#include "common/str.h"
-#include "common/hashmap.h"
-#include "common/stream.h"
 #include "common/memstream.h"
+#include "common/str.h"
+#include "common/stream.h"
 #include "engines/metaengine.h"
 
 namespace Ultima {

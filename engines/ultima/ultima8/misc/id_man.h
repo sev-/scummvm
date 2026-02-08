@@ -22,7 +22,12 @@
 #ifndef ULTIMA8_MISC_IDMAN_H
 #define ULTIMA8_MISC_IDMAN_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
+
+namespace Common {
+class ReadStream;
+class WriteStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

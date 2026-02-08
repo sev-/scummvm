@@ -23,9 +23,8 @@
 #define ULTIMA8_GUMPS_GUMP_H
 
 #include "common/rect.h"
-#include "ultima/ultima8/kernel/object.h"
 #include "ultima/ultima8/gfx/frame_id.h"
-#include "ultima/shared/std/containers.h"
+#include "ultima/ultima8/kernel/object.h"
 #include "ultima/ultima8/misc/classtype.h"
 
 namespace Ultima {

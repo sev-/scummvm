@@ -19,13 +19,12 @@
  *
  */
 
-#include "ultima/ultima8/misc/debugger.h"
-
 #include "ultima/ultima8/audio/sound_flex.h"
+
+#include "common/debug.h"
+#include "common/memstream.h"
 #include "ultima/ultima8/audio/sonarc_audio_sample.h"
 #include "ultima/ultima8/audio/raw_audio_sample.h"
-
-#include "common/memstream.h"
 
 namespace Ultima {
 namespace Ultima8 {

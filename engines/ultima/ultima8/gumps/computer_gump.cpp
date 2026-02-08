@@ -19,19 +19,18 @@
  *
  */
 
-#include "common/keyboard.h"
-
-#include "common/str.h"
 #include "ultima/ultima8/gumps/computer_gump.h"
-#include "ultima/ultima8/games/game_data.h"
+
+#include "common/keyboard.h"
+#include "common/str.h"
 #include "ultima/ultima8/audio/audio_process.h"
-#include "ultima/ultima8/gfx/shape.h"
-#include "ultima/ultima8/gfx/gump_shape_archive.h"
-#include "ultima/ultima8/gfx/shape_frame.h"
-#include "ultima/ultima8/gfx/fonts/rendered_text.h"
+#include "ultima/ultima8/games/game_data.h"
 #include "ultima/ultima8/gfx/fonts/font.h"
 #include "ultima/ultima8/gfx/fonts/font_manager.h"
-#include "ultima/ultima8/gfx/fonts/shape_font.h"
+#include "ultima/ultima8/gfx/fonts/rendered_text.h"
+#include "ultima/ultima8/gfx/gump_shape_archive.h"
+#include "ultima/ultima8/gfx/shape.h"
+#include "ultima/ultima8/gfx/shape_frame.h"
 #include "ultima/ultima8/usecode/uc_machine.h"
 
 namespace Ultima {

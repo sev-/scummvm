@@ -22,9 +22,8 @@
 #ifndef ULTIMA8_WORLD_SORTITEM_H
 #define ULTIMA8_WORLD_SORTITEM_H
 
-#include "common/str.h"
 #include "common/rect.h"
-#include "ultima/ultima8/misc/common_types.h"
+#include "common/str.h"
 #include "ultima/ultima8/misc/box.h"
 
 //#define SORTITEM_OCCLUSION_EXPERIMENTAL 1

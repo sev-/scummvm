@@ -20,6 +20,8 @@
  */
 
 #include "ultima/ultima8/audio/audio_process.h"
+
+#include "common/debug.h"
 #include "ultima/ultima8/usecode/uc_machine.h"
 #include "ultima/ultima8/games/game_data.h"
 #include "ultima/ultima8/audio/speech_flex.h"

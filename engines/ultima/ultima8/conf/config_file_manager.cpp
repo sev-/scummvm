@@ -19,10 +19,10 @@
  *
  */
 
-#include "common/file.h"
-
-#include "ultima/ultima8/misc/debugger.h"
 #include "ultima/ultima8/conf/config_file_manager.h"
+
+#include "common/debug.h"
+#include "common/file.h"
 
 namespace Ultima {
 namespace Ultima8 {

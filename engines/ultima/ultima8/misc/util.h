@@ -22,7 +22,7 @@
 #ifndef ULTIMA8_MISC_UTIL_H
 #define ULTIMA8_MISC_UTIL_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/array.h"
 
 namespace Ultima {
 namespace Ultima8 {

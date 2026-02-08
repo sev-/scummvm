@@ -19,22 +19,22 @@
  *
  */
 
-#include "ultima/ultima.h"
-#include "ultima/ultima8/ultima8.h"
-#include "ultima/ultima8/misc/debugger.h"
 #include "ultima/ultima8/gfx/skf_player.h"
+
+#include "common/config-manager.h"
+#include "common/system.h"
+#include "ultima/ultima.h"
+#include "ultima/ultima8/audio/audio_process.h"
+#include "ultima/ultima8/audio/music_process.h"
+#include "ultima/ultima8/audio/raw_audio_sample.h"
 #include "ultima/ultima8/convert/u8/convert_shape_u8.h"
 #include "ultima/ultima8/filesys/raw_archive.h"
-#include "ultima/ultima8/gfx/shape.h"
-#include "ultima/ultima8/gfx/texture.h"
-#include "ultima/ultima8/audio/music_process.h"
-#include "ultima/ultima8/audio/audio_process.h"
-#include "ultima/ultima8/audio/raw_audio_sample.h"
 #include "ultima/ultima8/gfx/fonts/font.h"
 #include "ultima/ultima8/gfx/fonts/font_manager.h"
 #include "ultima/ultima8/gfx/fonts/rendered_text.h"
-#include "common/config-manager.h"
-#include "common/system.h"
+#include "ultima/ultima8/gfx/shape.h"
+#include "ultima/ultima8/gfx/texture.h"
+#include "ultima/ultima8/ultima8.h"
 
 namespace Ultima {
 namespace Ultima8 {

@@ -22,7 +22,6 @@
 #ifndef ULTIMA8_GFX_TYPEFLAGS_H
 #define ULTIMA8_GFX_TYPEFLAGS_H
 
-#include "ultima/shared/std/containers.h"
 #include "ultima/ultima8/gfx/shape_info.h"
 
 namespace Ultima {

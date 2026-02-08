@@ -24,7 +24,6 @@
 
 #include "common/formats/ini-file.h"
 #include "common/str.h"
-#include "ultima/shared/std/containers.h"
 
 namespace Ultima {
 namespace Ultima8 {

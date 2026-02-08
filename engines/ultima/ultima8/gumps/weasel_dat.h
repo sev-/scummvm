@@ -22,8 +22,8 @@
 #ifndef ULTIMA8_GUMPS_WEASELDAT_H
 #define ULTIMA8_GUMPS_WEASELDAT_H
 
+#include "common/array.h"
 #include "common/stream.h"
-#include "ultima/shared/std/containers.h"
 
 namespace Ultima {
 namespace Ultima8 {

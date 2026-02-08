@@ -22,7 +22,13 @@
 #ifndef ULTIMA8_WORLD_MAP_H
 #define ULTIMA8_WORLD_MAP_H
 
-#include "ultima/shared/std/containers.h"
+#include "common/list.h"
+
+namespace Common {
+class ReadStream;
+class WriteStream;
+class SeekableReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

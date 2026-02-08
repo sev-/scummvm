@@ -22,9 +22,8 @@
 #ifndef ULTIMA8_GUMPS_WIDGETS_BUTTONWIDGET_H
 #define ULTIMA8_GUMPS_WIDGETS_BUTTONWIDGET_H
 
-#include "common/str.h"
-#include "ultima/ultima8/gumps/gump.h"
 #include "ultima/ultima8/gfx/frame_id.h"
+#include "ultima/ultima8/gumps/gump.h"
 #include "ultima/ultima8/misc/classtype.h"
 
 namespace Ultima {

@@ -22,9 +22,13 @@
 #ifndef ULTIMA8_KERNEL_KERNEL_H
 #define ULTIMA8_KERNEL_KERNEL_H
 
-#include "ultima/shared/std/containers.h"
 #include "common/str.h"
+#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/usecode/intrinsics.h"
+
+namespace Common {
+class ReadStream;
+}
 
 namespace Ultima {
 namespace Ultima8 {

@@ -24,6 +24,11 @@
 
 #include "common/str.h"
 
+namespace Common {
+class SeekableReadStream;
+class WriteStream;
+}
+
 namespace Ultima {
 namespace Ultima8 {
 

@@ -19,12 +19,11 @@
  *
  */
 
-#include "ultima/ultima8/misc/debugger.h"
-#include "ultima/ultima8/misc/common_types.h"
 #include "ultima/ultima8/gfx/fonts/jp_font.h"
+
+#include "ultima/ultima8/gfx/fonts/jp_rendered_text.h"
 #include "ultima/ultima8/gfx/fonts/shape_font.h"
 #include "ultima/ultima8/gfx/shape_frame.h"
-#include "ultima/ultima8/gfx/fonts/jp_rendered_text.h"
 
 namespace Ultima {
 namespace Ultima8 {
