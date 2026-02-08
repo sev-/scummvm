@@ -160,8 +160,8 @@ BITDDecoder::BITDDecoder(int w, int h, uint16 bitsPerPixel, uint16 pitch, const 
 	_surface->create(w, h, format);
 
 	// TODO: Bring this in from the main surface?
-	_palette.resize(255, false);
-	_palette.set(palette, 0, 255);
+	_palette.resize(256, false);
+	_palette.set(palette, 0, 256);
 
 	_bitsPerPixel = bitsPerPixel;
 }
