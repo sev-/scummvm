@@ -88,7 +88,7 @@ static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
 	ScriptKernelTask::Animate,
 	ScriptKernelTask::HadNoMousePressFor,
 	ScriptKernelTask::ChangeCharacter,
-	ScriptKernelTask::LerpCamToObjectKeepingZ,
+	ScriptKernelTask::LerpOrSetCam,
 	ScriptKernelTask::Drop,
 	ScriptKernelTask::ChangeDoor,
 	ScriptKernelTask::Disguise,
@@ -327,12 +327,17 @@ public:
 			return nullptr;
 		}
 
-		// an original bug, Pos_Final_Morta/File is defined in room ENTRADA_PUEBLO
+		// an original bug, Pos_Final_Morta/File is defined in room ENTRADA_PUEBLO or PANTANO_EXT
 		// but the current room is ENTRADA_PUEBLO_INTRO
-		if (!scumm_stricmp(name, "Pos_Final_Morta"))
-			return getPointFromRoom("ENTRADA_PUEBLO", "Pos_Final_Morta", action);
-		if (!scumm_stricmp(name, "Pos_Final_File"))
-			return getPointFromRoom("ENTRADA_PUEBLO", "Pos_Final_File", action);
+		if (!scumm_stricmp(name, "Pos_Final_Morta") || !scumm_stricmp(name, "Pos_Final_File")) {
+			// for terror there is no ENTRADA_PUEBLO either, nor Pos_Final_*
+			if (g_engine->world().getRoomByName("ENTRADA_PUEBLO") == nullptr) {
+				return !scumm_stricmp(name, "Pos_Final_Morta")
+					? getPointFromRoom("PANTANO_EXT", "PANTANO_MORTA", action)
+					: getPointFromRoom("PANTANO_EXT", "PANTANO_FILE", action);
+			} else
+				return getPointFromRoom("ENTRADA_PUEBLO", name, action);
+		}
 
 		return Game::unknownGoPutTarget(process, action, name);
 	}
@@ -346,7 +351,11 @@ public:
 	}
 
 	void missingSound(const Common::String &fileName) override {
-		if (fileName == "CHAS" || fileName == "0563" || fileName == "M2137")
+		if (fileName == "CHAS" ||
+			fileName == "0563" ||
+			fileName == "M2137" ||
+			fileName == "1413" || // are stored in OESTE.EMC but played during terror outro
+			fileName == "M1414")
 			return;
 		return Game::missingSound(fileName);
 	}
