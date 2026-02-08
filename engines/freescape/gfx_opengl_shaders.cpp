@@ -575,12 +575,12 @@ void OpenGLShaderRenderer::renderFace(const Common::Array<Math::Vector3d> &verti
 	_triangleShader->use();
 	_triangleShader->setUniform("mvpMatrix", _mvpMatrix);
 
-	#if !defined(EMSCRIPTEN)
+#if !USE_FORCED_GLES2
 	if (_debugRenderWireframe) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		useColor(0, 255, 0);
 	}
-	#endif
+#endif
 
 	if (vertices.size() == 2) {
 		const Math::Vector3d &v1 = vertices[1];
@@ -598,10 +598,10 @@ void OpenGLShaderRenderer::renderFace(const Common::Array<Math::Vector3d> &verti
 		glDrawArrays(GL_LINES, 0, 2);
 
 		glLineWidth(1);
-		#if !defined(EMSCRIPTEN)
+#if !USE_FORCED_GLES2
 		if (_debugRenderWireframe)
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		#endif
+#endif
 		return;
 	}
 
@@ -643,10 +643,10 @@ void OpenGLShaderRenderer::renderFace(const Common::Array<Math::Vector3d> &verti
 		glDrawArrays(GL_LINES, 0, 2);
 	}
 
-	#if !defined(EMSCRIPTEN)
+#if !USE_FORCED_GLES2
 	if (_debugRenderWireframe)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	#endif
+#endif
 }
 
 void OpenGLShaderRenderer::depthTesting(bool enabled) {
