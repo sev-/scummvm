@@ -119,6 +119,7 @@ enum class ScriptKernelTask {
 	LerpCamToObjectWithScale,
 	LerpCamToObjectResettingZ,
 	LerpCamRotation,
+	LerpOrSetCam, // only V1
 	FadeIn,
 	FadeOut,
 	FadeIn2,

@@ -261,7 +261,6 @@ void Room::updateInteraction() {
 			player.activeCharacter()->room() == this &&
 			player.pressedObject() == nullptr) {
 			player.activeCharacter()->walkToMouse();
-			g_engine->camera().setFollow(player.activeCharacter());
 		}
 	} else {
 		player.selectedObject()->markSelected();

@@ -84,7 +84,7 @@ Common::Error AlcachofaEngine::run() {
 	_world.load();
 	_renderer.reset(IRenderer::createOpenGLRenderer(game().getResolution()));
 	_drawQueue.reset(new DrawQueue(_renderer.get()));
-	_camera.reset(new CameraV3());
+	_camera.reset(isV1() ? static_cast<Camera *>(new CameraV1()) : new CameraV3());
 	_script.reset(new Script());
 	_player.reset(new Player());
 	_globalUI.reset(isV1() ? static_cast<GlobalUI *>(new GlobalUIV1()) : new GlobalUIV3());

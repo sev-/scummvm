@@ -133,11 +133,13 @@ public:
 	inline Config &config() { return _config; }
 	inline bool isDebugModeActive() const { return _debugHandler != nullptr; }
 
-	inline CameraV3 &cameraV3() {
-		auto result = dynamic_cast<CameraV3 *>(_camera.get());
+	template<class T> inline T &cameraAs() {
+		auto result = dynamic_cast<T *>(_camera.get());
 		scumm_assert(result != nullptr);
 		return *result;
 	}
+	inline CameraV1 &cameraV1() { return cameraAs<CameraV1>(); }
+	inline CameraV3 &cameraV3() { return cameraAs<CameraV3>(); }
 
 	uint32 getMillis() const;
 	void setMillis(uint32 newMillis);

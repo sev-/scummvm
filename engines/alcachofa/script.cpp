@@ -938,7 +938,7 @@ private:
 			auto kind = getMainCharacterKindArg(0);
 			if (kind != MainCharacterKind::None)
 				target = &g_engine->world().getMainCharacterByKind(kind);
-			g_engine->camera().setFollow(target, getNumberArg(1) != 0);
+			g_engine->cameraV3().setFollow(target, getNumberArg(1) != 0);
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::CamShake:
@@ -1004,13 +1004,24 @@ private:
 				as3D(pointObject->position()), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));
 		}
+		case ScriptKernelTask::LerpOrSetCam: {
+			if (process().isActiveForPlayer()) {
+				auto pointObject = getObjectArg<PointObject>(0);
+				if (pointObject == nullptr)
+					pointObject = g_engine->game().unknownCamLerpTarget("LerpOrSetCam", getStringArg(0));
+				if (pointObject == nullptr)
+					return TaskReturn::finish(1);
+				g_engine->cameraV1().lerpOrSet(pointObject->position(), getNumberArg(1));
+			}
+			return TaskReturn::finish(0);
+		}
 		case ScriptKernelTask::Disguise: {
 			// a somewhat bouncy vertical camera movement used in V1
 			// or waiting for user to click
 			const auto duration = getNumberArg(0);
 			return TaskReturn::waitFor(duration == 0
 				? g_engine->input().waitForInput(process())
-				: g_engine->cameraV3().disguise(process(), duration));
+				: g_engine->cameraV1().disguise(process(), duration));
 		}
 
 		// Fades

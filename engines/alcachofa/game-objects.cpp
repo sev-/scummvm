@@ -924,7 +924,7 @@ void MainCharacter::walkTo(
 	}
 
 	WalkingCharacter::walkTo(target, endDirection, activateObject, activateAction);
-	if (this == g_engine->player().activeCharacter())
+	if (this == g_engine->player().activeCharacter() && g_engine->isV3())
 		g_engine->camera().setFollow(this);
 }
 

@@ -143,8 +143,8 @@ bool GlobalUI::updateChangingCharacter() {
 
 	player.setActiveCharacter(player.inactiveCharacter()->kind());
 	player.heldItem() = nullptr;
-	g_engine->camera().onUserChangedCharacter();
 	player.changeRoom(player.activeCharacter()->room()->name(), false);
+	g_engine->camera().onUserChangedCharacter();
 	g_engine->game().onUserChangedCharacter();
 
 	g_engine->sounds().startMusic(g_engine->game().getCharacterJingle(player.activeCharacterKind()));

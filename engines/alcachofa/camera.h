@@ -44,7 +44,7 @@ public:
 	virtual void preUpdate() = 0;
 	virtual void update() = 0;
 	virtual void setRoomBounds(Graphic &background) = 0;
-	virtual void setFollow(WalkingCharacter *target, bool catchUp = false) = 0;
+	virtual void setFollow(WalkingCharacter *target) = 0;
 	virtual void onChangedRoom(bool resetCamera) = 0;
 	virtual void onTriggeredDoor(WalkingCharacter *target) = 0;
 	virtual void onTriggeredDoor(Common::Point fixedPosition) = 0;
@@ -72,6 +72,37 @@ protected:
 		_mat2Dto3D;
 };
 
+class CameraV1 : public Camera {
+public:
+	Math::Angle rotation() const override;
+	float scale() const override;
+
+	void preUpdate() override;
+	void update() override;
+	void setRoomBounds(Graphic &background) override;
+	void setFollow(WalkingCharacter *target) override;
+	void onChangedRoom(bool resetCamera) override;
+	void onTriggeredDoor(WalkingCharacter *target) override;
+	void onTriggeredDoor(Common::Point fixedPosition) override;
+	void onScriptChangedCharacter(MainCharacterKind kind) override;
+	void onUserChangedCharacter() override;
+	void onOpenMenu() override;
+	void onCloseMenu() override;
+	void syncGame(Common::Serializer &s) override;
+	void lerpOrSet(Common::Point target, int32 mode);
+
+	Task *disguise(Process &process, int32 duration);
+
+private:
+	friend struct CamV1DisguiseTask;
+
+	WalkingCharacter *_followTarget = nullptr;
+	Math::Vector3d _target;
+	bool _isLerping = false;
+	float _lerpSpeed = 0.0f;
+	uint32 _lastUpdateTime = 0;
+};
+
 class CameraV3 : public Camera {
 public:
 	Math::Angle rotation() const override;
@@ -80,7 +111,8 @@ public:
 	void preUpdate() override;
 	void update() override;
 	void setRoomBounds(Graphic &background) override;
-	void setFollow(WalkingCharacter *target, bool catchUp = false) override;
+	void setFollow(WalkingCharacter *target) override;
+	void setFollow(WalkingCharacter *target, bool catchup);
 	void onChangedRoom(bool resetCamera) override;
 	void onTriggeredDoor(WalkingCharacter *target) override;
 	void onTriggeredDoor(Common::Point fixedPosition) override;
@@ -110,15 +142,8 @@ public:
 		int32 duration, EasingType moveEasingType, EasingType scaleEasingType);
 	Task *waitToStop(Process &process);
 	Task *shake(Process &process, Math::Vector2d amplitude, Math::Vector2d frequency, int32 duration);
-	Task *disguise(Process &process, int32 duration);
 
 private:
-	void resetRotationAndScale();
-	void setPosition(Math::Vector2d v);
-	void setPosition(Math::Vector3d v);
-	void backup(uint slot);
-	void restore(uint slot);
-
 	friend struct CamLerpTask;
 	friend struct CamLerpPosTask;
 	friend struct CamLerpScaleTask;
@@ -127,7 +152,12 @@ private:
 	friend struct CamShakeTask;
 	friend struct CamWaitToStopTask;
 	friend struct CamSetInactiveAttributeTask;
-	friend struct CamDisguiseTask;
+
+	void resetRotationAndScale();
+	void setPosition(Math::Vector2d v);
+	void setPosition(Math::Vector3d v);
+	void backup(uint slot);
+	void restore(uint slot);
 	void updateFollowing(float deltaTime);
 
 	struct State {
