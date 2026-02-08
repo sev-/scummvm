@@ -20,6 +20,8 @@
  */
 #include "common/file.h"
 
+#include "graphics/palette.h"
+
 #include "freescape/freescape.h"
 #include "freescape/games/dark/dark.h"
 #include "freescape/language/8bitDetokeniser.h"
@@ -29,7 +31,39 @@ namespace Freescape {
 void DarkEngine::loadAssetsAmigaFullGame() {
 	Common::File file;
 	file.open("0.drk");
-	_title = loadAndConvertNeoImage(&file, 0x9930);
+	// Load title image: Amiga non-interleaved bitplanes with Atari ST palette
+	// Palette: 16 words at file offset 0x9934, Atari ST 3-bit $0RGB format
+	file.seek(0x9934);
+	Graphics::Palette pal(16);
+	for (int i = 0; i < 16; i++) {
+		byte v1 = file.readByte();
+		byte v2 = file.readByte();
+		byte r = floor((v1 & 0x07) * 255.0 / 7.0);
+		byte g = floor((v2 & 0x70) * 255.0 / 7.0 / 16.0);
+		byte b = floor((v2 & 0x07) * 255.0 / 7.0);
+		pal.set(i, r, g, b);
+	}
+
+	// Bitplanes: 4 planes x 8000 bytes at file offset 0x99B0, non-interleaved
+	file.seek(0x99B0);
+	Graphics::ManagedSurface *titleSurface = new Graphics::ManagedSurface();
+	titleSurface->create(320, 200, Graphics::PixelFormat::createFormatCLUT8());
+	titleSurface->fillRect(Common::Rect(0, 0, 320, 200), 0);
+	for (int plane = 0; plane < 4; plane++) {
+		for (int y = 0; y < 200; y++) {
+			for (int x = 0; x < 40; x++) {
+				byte b = file.readByte();
+				for (int n = 0; n < 8; n++) {
+					int px = x * 8 + (7 - n);
+					int bit = ((b >> n) & 0x01) << plane;
+					int sample = titleSurface->getPixel(px, y) | bit;
+					titleSurface->setPixel(px, y, sample);
+				}
+			}
+		}
+	}
+	titleSurface->convertToInPlace(_gfx->_texturePixelFormat, pal.data(), pal.size());
+	_title = titleSurface;
 	file.close();
 
 	Common::SeekableReadStream *stream = decryptFileAmigaAtari("1.drk", "0.drk", 798);
