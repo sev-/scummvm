@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-08 20:33+0000\n"
+"POT-Creation-Date: 2026-02-09 22:33+0000\n"
 "PO-Revision-Date: 2024-11-14 01:18+0000\n"
 "Last-Translator: Ben Castricum <github@bencastricum.nl>\n"
 "Language-Team: Dutch <https://translations.scummvm.org/projects/scummvm/"
@@ -5864,7 +5864,8 @@ msgstr "R2"
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
 #: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
 #: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/toltecs/metaengine.cpp:252
+#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
+#: engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "Menu"
 
@@ -6255,15 +6256,15 @@ msgstr "Doe af"
 #: engines/grim/grim.cpp:621 engines/hdb/metaengine.cpp:251
 #: engines/hpl1/metaengine.cpp:94 engines/icb/icb.cpp:101
 #: engines/icb/icb.cpp:179 engines/petka/metaengine.cpp:173
-#: engines/scumm/help.cpp:228 engines/scumm/help.cpp:237
-#: engines/scumm/help.cpp:244 engines/scumm/help.cpp:252
-#: engines/sherlock/metaengine.cpp:435 engines/sludge/keymapper_tables.h:58
-#: engines/sludge/keymapper_tables.h:119 engines/sludge/keymapper_tables.h:168
-#: engines/sludge/keymapper_tables.h:181 engines/sludge/keymapper_tables.h:217
-#: engines/sludge/keymapper_tables.h:256 engines/stark/metaengine.cpp:267
-#: engines/tinsel/metaengine.cpp:313 engines/titanic/metaengine.cpp:244
-#: engines/titanic/metaengine.cpp:297 engines/twine/metaengine.cpp:370
-#: engines/zvision/metaengine.cpp:252
+#: engines/phoenixvr/metaengine.cpp:73 engines/scumm/help.cpp:228
+#: engines/scumm/help.cpp:237 engines/scumm/help.cpp:244
+#: engines/scumm/help.cpp:252 engines/sherlock/metaengine.cpp:435
+#: engines/sludge/keymapper_tables.h:58 engines/sludge/keymapper_tables.h:119
+#: engines/sludge/keymapper_tables.h:168 engines/sludge/keymapper_tables.h:181
+#: engines/sludge/keymapper_tables.h:217 engines/sludge/keymapper_tables.h:256
+#: engines/stark/metaengine.cpp:267 engines/tinsel/metaengine.cpp:313
+#: engines/titanic/metaengine.cpp:244 engines/titanic/metaengine.cpp:297
+#: engines/twine/metaengine.cpp:370 engines/zvision/metaengine.cpp:252
 msgid "Inventory"
 msgstr "Inventaris"
 
@@ -6405,10 +6406,10 @@ msgstr ""
 #: engines/drascula/metaengine.cpp:42 engines/dreamweb/metaengine.cpp:48
 #: engines/got/metaengine.cpp:35 engines/groovie/metaengine.cpp:53
 #: engines/m4/metaengine.cpp:37 engines/nancy/metaengine.cpp:104
-#: engines/neverhood/dialogs.cpp:47 engines/sci/detection_options.h:107
-#: engines/sherlock/metaengine.cpp:47 engines/toltecs/metaengine.cpp:44
-#: engines/trecision/metaengine.cpp:41 engines/ultima/metaengine.cpp:56
-#: engines/zvision/metaengine.cpp:42
+#: engines/neverhood/dialogs.cpp:47 engines/phoenixvr/metaengine.cpp:38
+#: engines/sci/detection_options.h:107 engines/sherlock/metaengine.cpp:47
+#: engines/toltecs/metaengine.cpp:44 engines/trecision/metaengine.cpp:41
+#: engines/ultima/metaengine.cpp:56 engines/zvision/metaengine.cpp:42
 msgid "Use original save/load screens"
 msgstr "Gebruik originele opslaan/laad schermen"
 
@@ -6418,10 +6419,10 @@ msgstr "Gebruik originele opslaan/laad schermen"
 #: engines/drascula/metaengine.cpp:43 engines/dreamweb/metaengine.cpp:49
 #: engines/got/metaengine.cpp:36 engines/groovie/metaengine.cpp:54
 #: engines/m4/metaengine.cpp:38 engines/nancy/metaengine.cpp:105
-#: engines/neverhood/dialogs.cpp:48 engines/sci/detection_options.h:108
-#: engines/sherlock/metaengine.cpp:48 engines/toltecs/metaengine.cpp:45
-#: engines/trecision/metaengine.cpp:42 engines/ultima/metaengine.cpp:57
-#: engines/zvision/metaengine.cpp:43
+#: engines/neverhood/dialogs.cpp:48 engines/phoenixvr/metaengine.cpp:39
+#: engines/sci/detection_options.h:108 engines/sherlock/metaengine.cpp:48
+#: engines/toltecs/metaengine.cpp:45 engines/trecision/metaengine.cpp:42
+#: engines/ultima/metaengine.cpp:57 engines/zvision/metaengine.cpp:43
 msgid "Use the original save/load screens instead of the ScummVM ones"
 msgstr ""
 "Gebruik de originele opslaan/laden schermen in plaats van die van ScummVM"
@@ -7054,18 +7055,19 @@ msgid "Show version"
 msgstr "Toon versie"
 
 #: engines/asylum/metaengine.cpp:120 engines/crab/input/input.cpp:271
-#: engines/queen/metaengine.cpp:253 engines/sludge/keymapper_tables.h:308
-#: engines/sludge/keymapper_tables.h:404 engines/sludge/keymapper_tables.h:471
-#: engines/sludge/keymapper_tables.h:502 engines/ultima/nuvie/metaengine.cpp:92
+#: engines/phoenixvr/metaengine.cpp:96 engines/queen/metaengine.cpp:253
+#: engines/sludge/keymapper_tables.h:308 engines/sludge/keymapper_tables.h:404
+#: engines/sludge/keymapper_tables.h:471 engines/sludge/keymapper_tables.h:502
+#: engines/ultima/nuvie/metaengine.cpp:92
 #: engines/wintermute/keymapper_tables.h:950
 msgid "Quick load"
 msgstr "Snel laden"
 
 #: engines/asylum/metaengine.cpp:125 engines/crab/input/input.cpp:266
-#: engines/queen/metaengine.cpp:247 engines/sludge/keymapper_tables.h:64
-#: engines/sludge/keymapper_tables.h:303 engines/sludge/keymapper_tables.h:410
-#: engines/sludge/keymapper_tables.h:465 engines/sludge/keymapper_tables.h:496
-#: engines/ultima/nuvie/metaengine.cpp:91
+#: engines/phoenixvr/metaengine.cpp:91 engines/queen/metaengine.cpp:247
+#: engines/sludge/keymapper_tables.h:64 engines/sludge/keymapper_tables.h:303
+#: engines/sludge/keymapper_tables.h:410 engines/sludge/keymapper_tables.h:465
+#: engines/sludge/keymapper_tables.h:496 engines/ultima/nuvie/metaengine.cpp:91
 #: engines/ultima/ultima8/metaengine.cpp:43
 #: engines/wintermute/keymapper_tables.h:930
 msgid "Quick save"
@@ -7389,9 +7391,10 @@ msgstr "Schakel Vechtmodus in/uit"
 #. I18N: This keymap allows skipping video cutscenes
 #: engines/bladerunner/metaengine.cpp:229 engines/buried/metaengine.cpp:160
 #: engines/darkseed/metaengine.cpp:65 engines/hypno/metaengine.cpp:152
-#: engines/scumm/help.cpp:79 engines/scumm/metaengine.cpp:1046
-#: engines/supernova/metaengine.cpp:309 engines/toltecs/metaengine.cpp:246
-#: engines/twp/metaengine.cpp:162 engines/zvision/metaengine.cpp:304
+#: engines/phoenixvr/metaengine.cpp:85 engines/scumm/help.cpp:79
+#: engines/scumm/metaengine.cpp:1046 engines/supernova/metaengine.cpp:309
+#: engines/toltecs/metaengine.cpp:246 engines/twp/metaengine.cpp:162
+#: engines/zvision/metaengine.cpp:304
 msgid "Skip cutscene"
 msgstr "Cutscene overslaan"
 
@@ -7584,11 +7587,12 @@ msgstr "Idee Data"
 #: engines/freescape/games/dark/dark.cpp:198
 #: engines/freescape/games/driller/driller.cpp:130
 #: engines/freescape/games/eclipse/eclipse.cpp:237
-#: engines/mads/metaengine.cpp:361 engines/saga/metaengine.cpp:437
-#: engines/sherlock/metaengine.cpp:359 engines/sherlock/metaengine.cpp:618
-#: engines/sherlock/metaengine.cpp:852 engines/stark/metaengine.cpp:280
-#: engines/sword1/metaengine.cpp:295 engines/trecision/metaengine.cpp:156
-#: engines/tsage/metaengine.cpp:231 engines/vcruise/metaengine.cpp:190
+#: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
+#: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
+#: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
+#: engines/stark/metaengine.cpp:280 engines/sword1/metaengine.cpp:295
+#: engines/trecision/metaengine.cpp:156 engines/tsage/metaengine.cpp:231
+#: engines/vcruise/metaengine.cpp:190
 msgid "Quit game"
 msgstr "Spel verlaten"
 
@@ -8221,7 +8225,8 @@ msgstr ""
 
 #. I18N: Perform action on object where cursor points
 #: engines/darkseed/metaengine.cpp:42 engines/dragons/metaengine.cpp:135
-#: engines/tinsel/metaengine.cpp:294 engines/twp/metaengine.cpp:150
+#: engines/phoenixvr/metaengine.cpp:66 engines/tinsel/metaengine.cpp:294
+#: engines/twp/metaengine.cpp:150
 msgid "Action"
 msgstr "Actie"
 
@@ -11733,6 +11738,35 @@ msgstr "Toon / Verberg console"
 #| msgid "Easy mouse interface"
 msgid "Close current interface"
 msgstr "Makkelijke muis interface"
+
+#: engines/phoenixvr/metaengine.cpp:107
+#: engines/wintermute/keymapper_tables.h:239
+#: engines/wintermute/keymapper_tables.h:262
+#: engines/wintermute/keymapper_tables.h:313
+#: engines/wintermute/keymapper_tables.h:352
+#: engines/wintermute/keymapper_tables.h:389
+#: engines/wintermute/keymapper_tables.h:499
+#: engines/wintermute/keymapper_tables.h:526
+#: engines/wintermute/keymapper_tables.h:651
+#: engines/wintermute/keymapper_tables.h:785
+#: engines/wintermute/keymapper_tables.h:812
+#: engines/wintermute/keymapper_tables.h:833
+#: engines/wintermute/keymapper_tables.h:858
+#: engines/wintermute/keymapper_tables.h:885
+#: engines/wintermute/keymapper_tables.h:1045
+#: engines/wintermute/keymapper_tables.h:1248
+#: engines/wintermute/keymapper_tables.h:1319
+#: engines/wintermute/keymapper_tables.h:1415
+#: engines/wintermute/keymapper_tables.h:1472
+#: engines/wintermute/keymapper_tables.h:1498
+#: engines/wintermute/keymapper_tables.h:1660
+#: engines/wintermute/keymapper_tables.h:1709
+#: engines/wintermute/keymapper_tables.h:1757
+#: engines/wintermute/keymapper_tables.h:1790
+#: engines/wintermute/keymapper_tables.h:1983
+#: engines/wintermute/keymapper_tables.h:2103
+msgid "Show hints"
+msgstr "Toon hints"
 
 #: engines/pink/gui.cpp:291
 msgid "This menu item is not yet implemented"
@@ -17003,34 +17037,6 @@ msgstr ""
 #: engines/wintermute/keymapper_tables.h:1855
 msgid "Show scene geometry"
 msgstr "Toon scene geometrie"
-
-#: engines/wintermute/keymapper_tables.h:239
-#: engines/wintermute/keymapper_tables.h:262
-#: engines/wintermute/keymapper_tables.h:313
-#: engines/wintermute/keymapper_tables.h:352
-#: engines/wintermute/keymapper_tables.h:389
-#: engines/wintermute/keymapper_tables.h:499
-#: engines/wintermute/keymapper_tables.h:526
-#: engines/wintermute/keymapper_tables.h:651
-#: engines/wintermute/keymapper_tables.h:785
-#: engines/wintermute/keymapper_tables.h:812
-#: engines/wintermute/keymapper_tables.h:833
-#: engines/wintermute/keymapper_tables.h:858
-#: engines/wintermute/keymapper_tables.h:885
-#: engines/wintermute/keymapper_tables.h:1045
-#: engines/wintermute/keymapper_tables.h:1248
-#: engines/wintermute/keymapper_tables.h:1319
-#: engines/wintermute/keymapper_tables.h:1415
-#: engines/wintermute/keymapper_tables.h:1472
-#: engines/wintermute/keymapper_tables.h:1498
-#: engines/wintermute/keymapper_tables.h:1660
-#: engines/wintermute/keymapper_tables.h:1709
-#: engines/wintermute/keymapper_tables.h:1757
-#: engines/wintermute/keymapper_tables.h:1790
-#: engines/wintermute/keymapper_tables.h:1983
-#: engines/wintermute/keymapper_tables.h:2103
-msgid "Show hints"
-msgstr "Toon hints"
 
 #: engines/wintermute/keymapper_tables.h:269
 #: engines/wintermute/keymapper_tables.h:332
