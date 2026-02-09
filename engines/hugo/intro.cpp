@@ -540,7 +540,9 @@ void intro_v3w::introInit() {
 	_vm->_file->readBackground(22); // display screen MAP_3w
 	_vm->_screen->displayBackground();
 	_introTicks = 0;
-	_vm->_screen->loadFont(0);
+	// WORKAROUND: The original used Windows GDI to draw "X" on the map
+	// using the "Small Fonts" font. We use the game's smallest font.
+	_vm->_screen->loadFont(U_FONT5);
 }
 
 /**
@@ -553,7 +555,11 @@ bool intro_v3w::introPlay() {
 
 	if (_introTicks < getIntroSize()) {
 		// Scale viewport x_intro,y_intro to screen (offsetting y)
-		_vm->_screen->writeStr(_introX[_introTicks], _introY[_introTicks] - kDibOffY, "x", _TBRIGHTWHITE);
+		// WORKAROUND: We apply our own additional offset to adjust
+		// for using a different font than the original. The original
+		// used Windows GDI to draw "X" with the "Small Font" font.
+		const int kMapFontOffset = 4;
+		_vm->_screen->writeStr(_introX[_introTicks], _introY[_introTicks] - kDibOffY - kMapFontOffset, "x", _TBRIGHTWHITE);
 		_vm->_screen->displayBackground();
 
 		// Text boxes at various times
