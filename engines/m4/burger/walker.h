@@ -70,7 +70,7 @@ private:
 public:
 	~Walker() override {}
 
-	bool walk_load_walker_and_shadow_series() override;
+	void walk_load_walker_and_shadow_series() override;
 	machine *walk_initialize_walker() override;
 
 	void reset_walker_sprites();

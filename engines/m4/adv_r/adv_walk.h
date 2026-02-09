@@ -33,7 +33,7 @@ class Walker {
 public:
 	virtual ~Walker() {}
 
-	virtual bool walk_load_walker_and_shadow_series() = 0;
+	virtual void walk_load_walker_and_shadow_series() = 0;
 	virtual machine *walk_initialize_walker() = 0;
 };
 
@@ -59,11 +59,11 @@ void ws_walk(int32 x, int32 y, GrBuff **buffer, int16 trigger, int32 finalFacing
 
 void ws_get_walker_info(machine *myWalker, int32 *x, int32 *y, int32 *s, int32 *layer, int32 *facing);
 
-bool ws_walk_init_system();
+void ws_walk_init_system();
 
-bool ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool shadow_flag, bool load_palette);
-bool ws_walk_load_walker_series(const int16 *dir_array, const char *name_array[], bool load_palette = false);
-bool ws_walk_load_shadow_series(const int16 *dir_array, const char *name_array[]);
+void ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool shadow_flag, bool load_palette);
+void ws_walk_load_walker_series(const int16 *dir_array, const char *name_array[], bool load_palette = false);
+void ws_walk_load_shadow_series(const int16 *dir_array, const char *name_array[]);
 
 void ws_walk_dump_series(int16 num_directions, int16 start_hash);
 #define ws_walk_dump_walker_series(xx, yy) (ws_walk_dump_series (xx, yy))

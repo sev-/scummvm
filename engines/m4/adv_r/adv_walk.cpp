@@ -386,7 +386,7 @@ void ws_get_walker_info(machine *myWalker, int32 *x, int32 *y, int32 *s, int32 *
 }
 
 
-bool ws_walk_init_system() {
+void ws_walk_init_system() {
 	// Initialize walker
 	_G(globals)[GLB_MIN_Y] = _G(currentSceneDef).back_y << 16;
 	_G(globals)[GLB_MAX_Y] = _G(currentSceneDef).front_y << 16;
@@ -403,10 +403,9 @@ bool ws_walk_init_system() {
 	if (!_G(my_walker)) {
 		error_show(FL);
 	}
-	return true;
 }
 
-bool ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool shadow_flag, bool load_palette) {
+void ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool shadow_flag, bool load_palette) {
 	int32 i = 0;
 
 	while (dir_array[i] >= 0) {
@@ -417,16 +416,14 @@ bool ws_walk_load_series(const int16 *dir_array, const char *name_array[], bool 
 
 		i++;
 	}
-
-	return true;
 }
 
-bool ws_walk_load_walker_series(const int16 *dir_array, const char *name_array[], bool load_palette) {
-	return (ws_walk_load_series(dir_array, name_array, false, load_palette));
+void ws_walk_load_walker_series(const int16 *dir_array, const char *name_array[], bool load_palette) {
+	ws_walk_load_series(dir_array, name_array, false, load_palette);
 }
 
-bool ws_walk_load_shadow_series(const int16 *dir_array, const char *name_array[]) {
-	return (ws_walk_load_series(dir_array, name_array, true, false));
+void ws_walk_load_shadow_series(const int16 *dir_array, const char *name_array[]) {
+	ws_walk_load_series(dir_array, name_array, true, false);
 }
 
 void ws_walk_dump_series(int16 num_directions, int16 start_hash) {

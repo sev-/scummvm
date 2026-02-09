@@ -24,7 +24,6 @@
 #define M4_ADV_R_ADV_BEEN_H
 
 #include "common/serializer.h"
-#include "common/stream.h"
 #include "m4/m4_types.h"
 
 namespace M4 {

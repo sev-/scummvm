@@ -38,7 +38,7 @@ static int compare_catalog_entries_for_search(const void *n1, const void *n2);
 bool read_catalog() {
 	Common::File f;
 	size_t size = 0;
-	Common::Path myFilename("roomsdb.chk");
+	const Common::Path myFilename("roomsdb.chk");
 
 	if (!f.open(myFilename))
 		return false;
@@ -66,7 +66,6 @@ char *db_rmlst_get_asset_room_path(const char *asset_name, char *result, int32 *
 	char name[MAX_FILENAME_SIZE] = { 0 }, path[MAX_FILENAME_SIZE] = { 0 };
 	short tag = 0, room = 0;
 	short c_size = 0;
-	long str_len;
 
 	result[0] = '\0';
 
@@ -83,7 +82,7 @@ char *db_rmlst_get_asset_room_path(const char *asset_name, char *result, int32 *
 		else
 			cstrncpy(result, path, MAX_FILENAME_SIZE);
 
-		str_len = strlen(result);
+		long str_len = strlen(result);
 
 		if (str_len) {
 			if (result[str_len - 1] == '\\')
@@ -196,7 +195,7 @@ static char *db_get_catalog_entry(char *c, short *tag, short *room, char *name, 
 	if (c_size)
 		*c_size = 0;
 
-	short size = convert_intel16(*(uint16 *)&c[0]);
+	const short size = convert_intel16(*(uint16 *)&c[0]);
 
 	if (!size)
 		return nullptr;
@@ -206,7 +205,7 @@ static char *db_get_catalog_entry(char *c, short *tag, short *room, char *name, 
 
 	int32 x = sizeof(uint16);
 
-	int16 theTag = convert_intel16(*(uint16 *)&c[x]);
+	const int16 theTag = convert_intel16(*(uint16 *)&c[x]);
 	if (tag)
 		*tag = theTag;
 

@@ -21,23 +21,20 @@
 
 #include "m4/adv_r/adv_chk.h"
 #include "m4/core/errors.h"
-#include "m4/core/imath.h"
 #include "m4/fileio/sys_file.h"
 #include "m4/vars.h"
 
 namespace M4 {
 
 static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
-	int32 str_len;
 	char s[MAX_FILENAME_SIZE];
-	int32 x1, x2, y1, y2;
 	HotSpotRec *head = nullptr;
 
 	for (int32 i = 0; i < num; i++) {
-		x1 = fpdef->readSint32LE();
-		y1 = fpdef->readSint32LE();
-		x2 = fpdef->readSint32LE();
-		y2 = fpdef->readSint32LE();
+		const int32 x1 = fpdef->readSint32LE();
+		const int32 y1 = fpdef->readSint32LE();
+		const int32 x2 = fpdef->readSint32LE();
+		const int32 y2 = fpdef->readSint32LE();
 
 		h = hotspot_new(x1, y1, x2, y2);
 		if (!head)
@@ -45,6 +42,9 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 		else
 			head = hotspot_add(head, h, false);
 
+		if (!h)
+			error_show(FL, "Null head");
+		
 		h->feet_x = fpdef->readSint32LE();
 		h->feet_y = fpdef->readSint32LE();
 		h->facing = fpdef->readSByte();
@@ -56,7 +56,7 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 
 		// -------
 
-		str_len = fpdef->readSint32LE();
+		int32 str_len = fpdef->readSint32LE();
 
 		if (str_len) {
 			if (!fpdef->read((byte *)s, str_len))
@@ -95,7 +95,6 @@ static HotSpotRec *read_hotspots(SysFile *fpdef, HotSpotRec *h, int32 num) {
 }
 
 static void load_def(SysFile *fpdef) {
-	int32 x, y;
 	char s[MAX_FILENAME_SIZE];
 
 	fpdef->read((byte *)s, MAX_FILENAME_SIZE);
@@ -119,8 +118,8 @@ static void load_def(SysFile *fpdef) {
 	_G(myDef)->numRailNodes = fpdef->readSint32LE();
 
 	for (int32 i = 0; i < _G(myDef)->numRailNodes; i++) {
-		x = fpdef->readSint32LE();
-		y = fpdef->readSint32LE();
+		int32 x = fpdef->readSint32LE();
+		int32 y = fpdef->readSint32LE();
 
 		if (AddRailNode(x, y, nullptr, true) < 0)
 			error_show(FL, "more than %d (defn. in intrrail.h) nodes", MAXRAILNODES);

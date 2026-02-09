@@ -259,8 +259,7 @@ void Sections::get_ipl() {
 
 void Sections::get_walker() {
 	term_message("Loading walker sprites");
-	if (!_GW().walk_load_walker_and_shadow_series())
-		error_show(FL);
+	_GW().walk_load_walker_and_shadow_series();
 	ws_walk_init_system();
 }
 
