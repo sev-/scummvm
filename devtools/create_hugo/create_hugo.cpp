@@ -361,6 +361,12 @@ int main(int argc, char *argv[]) {
 		writeByte(outFile, y_intro_v3[i]);
 	}
 
+	nbrElem = sizeof(logo_intro_v1d) / sizeof(byte);
+	writeUint16BE(outFile, nbrElem);
+	for (i = 0; i < nbrElem; i++) {
+		writeByte(outFile, logo_intro_v1d[i]);
+	}
+
 	// arrayReqs_1w
 	nbrElem = sizeof(arrayReqs_1w) / sizeof(uint16 *);
 	writeUint16Array(outFile, arrayReqs_1w, nbrElem);

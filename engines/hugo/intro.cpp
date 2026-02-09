@@ -57,7 +57,7 @@ byte IntroHandler::getIntroSize() const {
 }
 
 /**
- * Read _introX and _introY from hugo.dat
+ * Read _introX and _introY and _logo_v1d from hugo.dat
  */
 void IntroHandler::loadIntroData(Common::SeekableReadStream &in) {
 	for (int varnt = 0; varnt < _vm->_numVariant; varnt++) {
@@ -74,12 +74,20 @@ void IntroHandler::loadIntroData(Common::SeekableReadStream &in) {
 			in.skip(numRows * 2);
 		}
 	}
+
+	int logo_v1d_size = in.readUint16BE();
+	_logo_v1d = (byte *)malloc(sizeof(byte) * logo_v1d_size);
+	for (int i = 0; i < logo_v1d_size; i++) {
+		_logo_v1d[i] = in.readByte();
+	}
 }
 
 void IntroHandler::freeIntroData() {
 	free(_introX);
 	free(_introY);
 	_introX = _introY = nullptr;
+	free(_logo_v1d);
+	_logo_v1d = nullptr;
 }
 
 /**
@@ -203,15 +211,7 @@ bool intro_v1d::introPlay() {
 			}
 
 			// SCRIPT, size 24-16
-			Common::strcpy_s(buffer, "Hugo's");
-
-			if (_font.loadFromFON("SCRIPT.FON")) {
-				_font.drawString(&_surf, buffer, 0, 20, 320, _TMAGENTA, Graphics::kTextAlignCenter);
-			} else {
-				// Workaround: SCRIPT.FON doesn't load properly at the moment
-				_vm->_screen->loadFont(2);
-				_vm->_screen->writeStr(kCenter, 20, buffer, _TMAGENTA);
-			}
+			drawLogo(119, 22, _TMAGENTA); // "Hugo's"
 
 			// TROMAN, size 30-24
 			if (!_font.loadFromFON("TMSRB.FON", Graphics::WinFontDirEntry("Tms Rmn", 24)))
@@ -331,6 +331,23 @@ bool intro_v1d::introPlay() {
 	}
 
 	return (++_introTicks >= introSize);
+}
+
+void intro_v1d::drawLogo(int left, int top, int color) {
+	const int width = 11;
+	const int height = 22;
+
+	int logoIndex = 0;
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			byte b = _logo_v1d[logoIndex++];
+			for (int i = 0; i < 8; i++) {
+				if (b & (1 << (7 - i))) {
+					_surf.setPixel(left + (x * 8) + i, top + y, color);
+				}
+			}
+		}
+	}
 }
 
 intro_v2d::intro_v2d(HugoEngine *vm) : IntroHandler(vm) {
