@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -3579,8 +3579,8 @@ msgstr ""
 msgid "Game not implemented"
 msgstr ""
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+msgid "Default game keymappings"
 msgstr ""
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -10575,10 +10575,6 @@ msgstr ""
 
 #: engines/saga/metaengine.cpp:137
 msgid "I Have No Mouth support not compiled in"
-msgstr ""
-
-#: engines/saga/metaengine.cpp:267
-msgid "Default game keymappings"
 msgstr ""
 
 #: engines/saga/metaengine.cpp:269

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2020-09-26 21:13+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Galician <https://translations.scummvm.org/projects/scummvm/"
@@ -3842,9 +3842,10 @@ msgstr "ID de xogo emparellados:"
 msgid "Game not implemented"
 msgstr "ID de xogo non compatible"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
-msgstr ""
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+msgid "Default game keymappings"
+msgstr "~O~pcións..."
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
 #: engines/agos/metaengine.cpp:158 engines/asylum/metaengine.cpp:159
@@ -11731,11 +11732,6 @@ msgstr "ID de xogo non compatible"
 #, fuzzy
 msgid "I Have No Mouth support not compiled in"
 msgstr "Funcionalidades compiladas:"
-
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-msgid "Default game keymappings"
-msgstr "~O~pcións..."
 
 #: engines/saga/metaengine.cpp:269
 #, fuzzy

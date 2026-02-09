@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-09 09:55+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -3943,8 +3943,8 @@ msgstr "IDs de jeu trouvés pour le moteur %s :"
 msgid "Game not implemented"
 msgstr "Jeu non implémenté"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+msgid "Default game keymappings"
 msgstr "Conf. de touches par défaut"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -11720,10 +11720,6 @@ msgid "I Have No Mouth support not compiled in"
 msgstr ""
 "La prise en charge de I Have No Mouth n'a pas été activée dans cette version"
 
-#: engines/saga/metaengine.cpp:267
-msgid "Default game keymappings"
-msgstr "Conf. de touches par défaut"
-
 #: engines/saga/metaengine.cpp:269
 msgid "Option panel keymappings"
 msgstr "Conf. des touches du panneau Options"
@@ -16803,6 +16799,9 @@ msgstr ""
 "contient plusieurs énigmes musicales qui nécessitent l'audio MIDI pour être "
 "résolues.  Ces puzzles peuvent également être résolus à l'aide de sous-"
 "titres, s'ils sont pris en charge. Continuer à lancer le jeu ?"
+
+#~ msgid "Default game keymap"
+#~ msgstr "Conf. de touches par défaut"
 
 #~ msgid "D-pad Up"
 #~ msgstr "Croix Haut"

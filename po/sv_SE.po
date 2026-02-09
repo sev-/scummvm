@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-08 22:22+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
@@ -3869,9 +3869,9 @@ msgstr "Matchande spel-id:n för motorn %s:"
 msgid "Game not implemented"
 msgstr "Spelet är inte implementerat"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
-msgstr "Förvald knappuppsättning"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+msgid "Default game keymappings"
+msgstr "Standardinställningar för tangentbordskommandon i spelet"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
 #: engines/agos/metaengine.cpp:158 engines/asylum/metaengine.cpp:159
@@ -11554,10 +11554,6 @@ msgstr "Testversionen för Pocket PC stöds inte"
 msgid "I Have No Mouth support not compiled in"
 msgstr "Stöd för I Have No Mouth har inte kompilerats in"
 
-#: engines/saga/metaengine.cpp:267
-msgid "Default game keymappings"
-msgstr "Standardinställningar för tangentbordskommandon i spelet"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Option panel keymapping"
@@ -16539,6 +16535,9 @@ msgstr ""
 "Nemesis innehåller flera musikpussel som kräver MIDI-ljud för att kunna "
 "lösas. Dessa pussel kan alternativt lösas med hjälp av undertexter, om detta "
 "stöds. Vill du fortsätta spela?"
+
+#~ msgid "Default game keymap"
+#~ msgstr "Förvald knappuppsättning"
 
 #~ msgid "D-pad Up"
 #~ msgstr "Riktningsknapp upp"

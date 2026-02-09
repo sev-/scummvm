@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-07 22:19+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
@@ -3891,8 +3891,10 @@ msgstr "Возможные ID игры для движка %s:"
 msgid "Game not implemented"
 msgstr "Игра не реализована"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
 msgstr "Раскладка клавиш игры по умолчанию"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -12008,12 +12010,6 @@ msgstr "Пробная версия для Pocket PC не поддерживае
 msgid "I Have No Mouth support not compiled in"
 msgstr "Поддержка для I Have No Mouth не скомпилирована"
 
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
-msgid "Default game keymappings"
-msgstr "Раскладка клавиш игры по умолчанию"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Option panel keymapping"
@@ -17536,6 +17532,9 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Default game keymap"
+#~ msgstr "Раскладка клавиш игры по умолчанию"
 
 #~ msgid "D-pad Up"
 #~ msgstr "Крестовина вверх"

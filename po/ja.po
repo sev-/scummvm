@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
@@ -3775,8 +3775,10 @@ msgstr "エンジン%sにマッチしたゲームID："
 msgid "Game not implemented"
 msgstr "未実装のゲーム"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
 msgstr "キーマッピング(デフォルト)"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -12072,12 +12074,6 @@ msgstr "Pocket PC用の体験版はサポートされていません"
 msgid "I Have No Mouth support not compiled in"
 msgstr "I Have No Mouthのサポートはコンパイルされていません"
 
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
-msgid "Default game keymappings"
-msgstr "キーマッピング(デフォルト)"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Option panel keymapping"
@@ -17627,6 +17623,9 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Default game keymap"
+#~ msgstr "キーマッピング(デフォルト)"
 
 #~ msgid "D-pad Up"
 #~ msgstr "十字キー(上)"

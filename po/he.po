@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.1.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2025-04-09 20:18+0000\n"
 "Last-Translator: Niv Baehr <bloop93@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.scummvm.org/projects/scummvm/"
@@ -3781,8 +3781,10 @@ msgstr "מזהי משחק תואמים למנוע %s:"
 msgid "Game not implemented"
 msgstr "מזהה המשחק אינו נתמך"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
 msgstr "מיפוי מקלדת"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -11879,12 +11881,6 @@ msgstr "גרסת הניסיון עבור Pocket PC אינה נתמכת"
 msgid "I Have No Mouth support not compiled in"
 msgstr "תמיכה במשחק I Have No Mouth לא נבנתה"
 
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
-msgid "Default game keymappings"
-msgstr "מיפוי מקלדת"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Game Options"
@@ -17453,6 +17449,9 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Default game keymap"
+#~ msgstr "מיפוי מקלדת"
 
 #~ msgid "D-pad Up"
 #~ msgstr "D-pad למעלה"

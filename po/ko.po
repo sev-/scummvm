@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-05 15:06+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -3828,8 +3828,10 @@ msgstr "%s 엔진에 일치하는 게임 ID:"
 msgid "Game not implemented"
 msgstr "게임이 구현되지 않았음"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
 msgstr "기본 게임 키설정"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -11426,12 +11428,6 @@ msgstr "포켓 PC 체험판은 지원되지 않았음"
 msgid "I Have No Mouth support not compiled in"
 msgstr "I Have No Mouth 지원이 컴파일되지 않았음"
 
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
-msgid "Default game keymappings"
-msgstr "기본 게임 키설정"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Option panel keymapping"
@@ -16371,6 +16367,9 @@ msgstr ""
 "MIDI 재생을 사용할 수 없거나, 제대로 구성되지 않았습니다. 죠크 네미시스에는 "
 "MIDI 오디오가 필요한 여러 음악 퍼즐이 포함되어 있습니다.  이러한 퍼즐은 지원"
 "되는 경우 자막을 사용하여 해결할 수 있습니다. 게임을 계속 실행할까요?"
+
+#~ msgid "Default game keymap"
+#~ msgstr "기본 게임 키설정"
 
 #~ msgid "D-pad Up"
 #~ msgstr "십자 패드 위쪽"

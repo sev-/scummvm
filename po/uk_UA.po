@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-09 23:50+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
@@ -3881,8 +3881,8 @@ msgstr "Можливі ідентифікатори гри для движка %
 msgid "Game not implemented"
 msgstr "Гру не реалізовано"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+msgid "Default game keymappings"
 msgstr "Мапа клавіш гри за замовчунням"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -11551,10 +11551,6 @@ msgstr "Пробна версія для Pocket PC не підтримуєтьс
 msgid "I Have No Mouth support not compiled in"
 msgstr "Підтримку для I Have no Mouth не скомпільовано"
 
-#: engines/saga/metaengine.cpp:267
-msgid "Default game keymappings"
-msgstr "Мапа клавіш гри за замовчунням"
-
 #: engines/saga/metaengine.cpp:269
 msgid "Option panel keymappings"
 msgstr "Мапа клавіш панелі налаштувань"
@@ -16533,6 +16529,9 @@ msgstr ""
 "містить кілька музичних головоломок, для розв'язання яких потрібне MIDI-"
 "аудіо. Ці головоломки також можна розв'язати за допомогою субтитрів, якщо "
 "вони підтримуються. Продовжити запуск гри?"
+
+#~ msgid "Default game keymap"
+#~ msgstr "Мапа клавіш гри за замовчунням"
 
 #~ msgid "D-pad Up"
 #~ msgstr "Хрестовина уверх"

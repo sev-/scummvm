@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 22:33+0000\n"
+"POT-Creation-Date: 2026-02-09 23:51+0000\n"
 "PO-Revision-Date: 2026-02-06 10:30+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -3914,8 +3914,10 @@ msgstr "Identificatori di gioco corrispondenti per il motore %s:"
 msgid "Game not implemented"
 msgstr "Gioco non implementato"
 
-#: engines/metaengine.cpp:75
-msgid "Default game keymap"
+#: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
+#, fuzzy
+#| msgid "Default game keymap"
+msgid "Default game keymappings"
 msgstr "Mappa tasti predefinita"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
@@ -11685,12 +11687,6 @@ msgstr "La versione dimostrativa per Pocket PC non è supportata"
 msgid "I Have No Mouth support not compiled in"
 msgstr "Il supporto per I Have No Mouth non è stato incluso nella compilazione"
 
-#: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
-msgid "Default game keymappings"
-msgstr "Mappa tasti predefinita"
-
 #: engines/saga/metaengine.cpp:269
 #, fuzzy
 #| msgid "Option panel keymapping"
@@ -16753,6 +16749,9 @@ msgstr ""
 "Zork Nemesis contiene alcuni puzzle musicali the richiedono l'audio MIDI per "
 "poterli risolvere. In alternativa, i puzzle possono essere risolti usando i "
 "sottotitoli, se supportati. Desideri continuare ad avviare il gioco?"
+
+#~ msgid "Default game keymap"
+#~ msgstr "Mappa tasti predefinita"
 
 #~ msgid "D-pad Up"
 #~ msgstr "D-pad Su"
