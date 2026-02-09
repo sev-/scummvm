@@ -64,17 +64,17 @@ static void grey_fade(RGB8 *pal, int32 to_from_flag, int32 from, int32 to, int32
 	for (int i = 1; i < steps; i++) {
 		for (int j = from; j <= to; j++) {
 			if (to_from_flag == TO_GREY) {      	// fade to grey from full color
-				working[j].r = (Byte)((int)pal[j].r + ((((int)_GP(fadeToMe)[j].r - (int)pal[j].r) * i) / steps));
-				working[j].g = (Byte)((int)pal[j].g + ((((int)_GP(fadeToMe)[j].g - (int)pal[j].g) * i) / steps));
-				working[j].b = (Byte)((int)pal[j].b + ((((int)_GP(fadeToMe)[j].b - (int)pal[j].b) * i) / steps));
+				working[j].r = (byte)((int)pal[j].r + ((((int)_GP(fadeToMe)[j].r - (int)pal[j].r) * i) / steps));
+				working[j].g = (byte)((int)pal[j].g + ((((int)_GP(fadeToMe)[j].g - (int)pal[j].g) * i) / steps));
+				working[j].b = (byte)((int)pal[j].b + ((((int)_GP(fadeToMe)[j].b - (int)pal[j].b) * i) / steps));
 			} else if (to_from_flag == TO_COLOR) {  // fade from grey to full color
-				working[j].r = (Byte)((int)_GP(fadeToMe)[j].r + ((((int)pal[j].r - (int)_GP(fadeToMe)[j].r) * i) / steps));
-				working[j].g = (Byte)((int)_GP(fadeToMe)[j].g + ((((int)pal[j].g - (int)_GP(fadeToMe)[j].g) * i) / steps));
-				working[j].b = (Byte)((int)_GP(fadeToMe)[j].b + ((((int)pal[j].b - (int)_GP(fadeToMe)[j].b) * i) / steps));
+				working[j].r = (byte)((int)_GP(fadeToMe)[j].r + ((((int)pal[j].r - (int)_GP(fadeToMe)[j].r) * i) / steps));
+				working[j].g = (byte)((int)_GP(fadeToMe)[j].g + ((((int)pal[j].g - (int)_GP(fadeToMe)[j].g) * i) / steps));
+				working[j].b = (byte)((int)_GP(fadeToMe)[j].b + ((((int)pal[j].b - (int)_GP(fadeToMe)[j].b) * i) / steps));
 			} else {											//fade from grey to black
-				working[j].r = (Byte)((int)_GP(fadeToMe)[j].r - ((((int)_GP(fadeToMe)[j].r) * i) / steps));
-				working[j].g = (Byte)((int)_GP(fadeToMe)[j].g - ((((int)_GP(fadeToMe)[j].g) * i) / steps));
-				working[j].b = (Byte)((int)_GP(fadeToMe)[j].b - ((((int)_GP(fadeToMe)[j].b) * i) / steps));
+				working[j].r = (byte)((int)_GP(fadeToMe)[j].r - ((((int)_GP(fadeToMe)[j].r) * i) / steps));
+				working[j].g = (byte)((int)_GP(fadeToMe)[j].g - ((((int)_GP(fadeToMe)[j].g) * i) / steps));
+				working[j].b = (byte)((int)_GP(fadeToMe)[j].b - ((((int)_GP(fadeToMe)[j].b) * i) / steps));
 			}
 		}
 
@@ -107,7 +107,7 @@ static void grey_fade(RGB8 *pal, int32 to_from_flag, int32 from, int32 to, int32
 
 static void create_luminance_map(RGB8 *pal) {
 	for (int i = GREY_START; i <= FREE_END; i++) {
-		const Byte luminance = (Byte)((pal[i].r + pal[i].g + pal[i].b) / 3);
+		const byte luminance = (byte)((pal[i].r + pal[i].g + pal[i].b) / 3);
 		_GP(fadeToMe)[i].g = luminance;
 		// Orion Burger uses green shading, Riddle uses grey shading
 		_GP(fadeToMe)[i].r = _GP(fadeToMe)[i].b = IS_RIDDLE ? luminance : 0;
@@ -582,9 +582,9 @@ static void pal_fade_update(RGB8 *origPalette) {
 		_GP(myFadeCurrPercentFrac) = tempFrac2;
 
 		for (int32 i = _GP(myFadeStartIndex); i <= _GP(myFadeEndIndex); i++) {
-			_GP(myFXPalette)[i].r = (Byte)(MulSF16(origPalette[i].r << 16, tempFrac2) >> 16);
-			_GP(myFXPalette)[i].g = (Byte)(MulSF16(origPalette[i].g << 16, tempFrac2) >> 16);
-			_GP(myFXPalette)[i].b = (Byte)(MulSF16(origPalette[i].b << 16, tempFrac2) >> 16);
+			_GP(myFXPalette)[i].r = (byte)(MulSF16(origPalette[i].r << 16, tempFrac2) >> 16);
+			_GP(myFXPalette)[i].g = (byte)(MulSF16(origPalette[i].g << 16, tempFrac2) >> 16);
+			_GP(myFXPalette)[i].b = (byte)(MulSF16(origPalette[i].b << 16, tempFrac2) >> 16);
 		}
 
 		// Recalculate the end delay time again

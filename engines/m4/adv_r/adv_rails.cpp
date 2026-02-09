@@ -583,7 +583,7 @@ int32 AddRailNode(int32 x, int32 y, Buffer *walkCodes, bool restoreEdges) {
 	if (i < MAXRAILNODES) {
 		railNode *newNode = (railNode *)mem_alloc(sizeof(railNode), "railNode");
 
-		newNode->nodeID = (Byte)i;
+		newNode->nodeID = (byte)i;
 		newNode->x = (int16)x;
 		newNode->y = (int16)y;
 		_G(rails).myNodes[i] = newNode;

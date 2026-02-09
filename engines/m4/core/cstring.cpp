@@ -24,10 +24,6 @@
 
 namespace M4 {
 
-bool cstr_isdigit(char c) {
-	return (c >= '0' && c <= '9');
-}
-
 int32 cstrlen(const char *s) {
 	if (!s)
 		return 0;

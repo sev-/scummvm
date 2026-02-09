@@ -46,18 +46,6 @@ typedef void *Handle;
 typedef intptr frac16;
 
 typedef uint32 ulong;
-typedef uint32 quadchar;
-typedef uint32 trigraph;
-
-typedef byte Bit;
-typedef byte Bool;
-typedef byte boolean;
-typedef byte Boolean;
-typedef byte byte;
-typedef byte Byte;
-typedef uint16 word;
-typedef uint16 Word;
-typedef uint32 DWord;
 
 enum {
 	TRIG_INV_CLICK = 32000,

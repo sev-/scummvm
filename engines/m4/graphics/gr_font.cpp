@@ -290,8 +290,8 @@ int32 gr_font_write(Buffer *target, char *out_string, int32 x, int32 y, int32 w,
 	byte *prev_target_ptr = target_ptr;
 
 	int32 cursX = x;
-	Byte *widthArray = _G(font)->width;
-	Byte *fontPixData = _G(font)->pixData;
+	byte *widthArray = _G(font)->width;
+	byte *fontPixData = _G(font)->pixData;
 	short *offsetArray = _G(font)->offset;
 
 	while (*out_string) {
@@ -305,7 +305,7 @@ int32 gr_font_write(Buffer *target, char *out_string, int32 x, int32 y, int32 w,
 				return cursX;
 
 			const int32 offset = offsetArray[c];
-			Byte *charData = &fontPixData[offset];
+			byte *charData = &fontPixData[offset];
 
 			const int32 bytesInChar = (_G(font)->width[c] >> 2) + 1; // bytesPer[wdth];	// 2 bits per pixel
 			if (skipTop)
@@ -313,7 +313,7 @@ int32 gr_font_write(Buffer *target, char *out_string, int32 x, int32 y, int32 w,
 
 			for (int32 i = 0; i < height; i++) {
 				for (int32 j = 0; j < bytesInChar; j++) {
-					const Byte workByte = *charData++;
+					const byte workByte = *charData++;
 					if (workByte & 0xc0)
 						*target_ptr = font_colors[(workByte & 0xc0) >> 6];
 					target_ptr++;

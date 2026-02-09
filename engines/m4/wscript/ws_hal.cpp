@@ -96,17 +96,9 @@ void ws_DumpMachine(machine *m, Common::WriteStream *logFile) {
 	}
 }
 
-void ws_Error(machine *m, int32 errorType, trigraph errorCode, const char *errMsg) {
-	char  description[MAX_STRING_SIZE];
-
-	// Find the error description
-	error_look_up(errorCode, description);
-
+void ws_Error(machine *m, const char *errMsg) {
 	// Open the logFile
 	Common::OutSaveFile *logFile = g_system->getSavefileManager()->openForSaving("ws_mach.log");
-
-	// Give the WS debugger a chance to indicate the error to the apps programmer
-	dbg_WSError(logFile, m, errorType, description, errMsg, _GWS(pcOffsetOld));
 
 	// Dump out the machine to the logFile
 	ws_DumpMachine(m, logFile);
@@ -146,7 +138,7 @@ static void drawSprite(CCB *myCCB, Anim8 *myAnim8, Buffer *halScrnBuf, Buffer *s
 		// Make sure the sprite is still in memory
 		if (!source->sourceHandle || !*(source->sourceHandle)) {
 			ws_LogErrorMsg(FL, "Sprite series is no longer in memory.");
-			ws_Error(myAnim8->myMachine, ERR_INTERNAL, 0x02ff, "Error during ws_DoDisplay()");
+			ws_Error(myAnim8->myMachine, "Error during ws_DoDisplay()");
 		}
 
 		// Lock the sprite handle
@@ -387,8 +379,7 @@ void ws_hal_RefreshWoodscriptBuffer(cruncher *myCruncher, Buffer *background,
 				// Make sure the series is still in memory
 				if ((!myCCB->source->sourceHandle) || (!*(myCCB->source->sourceHandle))) {
 					ws_LogErrorMsg(FL, "Sprite series is no longer in memory.");
-					ws_Error(myAnim8->myMachine, ERR_INTERNAL, 0x02ff,
-						"Error discovered during ws_hal_RefreshWoodscriptBuffer()");
+					ws_Error(myAnim8->myMachine, "Error discovered during ws_hal_RefreshWoodscriptBuffer()");
 				}
 
 				// Lock the sprite handle
