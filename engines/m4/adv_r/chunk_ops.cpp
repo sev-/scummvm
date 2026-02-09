@@ -449,7 +449,11 @@ int conv_ops_cond_successful(int32 l_op, int32 op, int32 r_op) {
 
 	case OROR:
 		return l_op || r_op;
+
+	default:
+		break;
 	}
+	
 	return 0;
 }
 

@@ -49,7 +49,7 @@ void parse_all_flags() {
 		_G(mem_to_alloc) = ConfMan.getInt("M");
 
 	if (ConfMan.hasKey("R")) {
-		int val = ConfMan.getInt("R");
+		const int val = ConfMan.getInt("R");
 
 		if (!val) {
 			_G(kernel).last_save = -1;

@@ -25,7 +25,7 @@
 
 namespace M4 {
 
-void other_save_game_for_resurrection(void) {
+void other_save_game_for_resurrection() {
 	if (kernel_save_game(0, nullptr, 0, nullptr, 0)) {
 		error_show(FL, "couldn't other_save_game_for_res");
 	}

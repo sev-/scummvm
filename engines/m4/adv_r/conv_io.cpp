@@ -515,13 +515,13 @@ static Conv *conv_restore_state(Conv *c) {
 	short flag_index = 0;
 	int32 val;
 	int32 e_flags = 0;
-	int32 myCNode;
 
 	char fname[13];
 	int file_size;
 
-	int32 ent;
+	int32 ent = 0;
 	c->myCNode = 0;
+	int32 myCNode;
 
 	find_and_set_conv_name(c);
 	Common::strcpy_s(fname, _GC(conv_name));
@@ -558,7 +558,7 @@ static Conv *conv_restore_state(Conv *c) {
 	/*int num_entries = */READ_LE_UINT32(&conv_save_buff[offset]);
 	offset += sizeof(int32);
 
-	ent = 0; c->myCNode = 0;
+	c->myCNode = 0;
 
 	while (ent < c->chunkSize) {
 		conv_ops_get_entry(ent, &next, &tag, c);

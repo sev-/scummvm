@@ -103,9 +103,13 @@ void Walker::walk_load_walker_and_shadow_series() {
 	case 0:
 		ws_walk_load_walker_series(RIPLEY_SERIES_DIRS, RIPLEY_SERIES, false);
 		ws_walk_load_shadow_series(RIPLEY_SHADOWS_DIRS, RIPLEY_SHADOWS);
+		break;
+
 	case 1:
 		ws_walk_load_walker_series(SAFARI_SERIES_DIRS, SAFARI_SERIES, false);
 		ws_walk_load_shadow_series(SAFARI_SHADOWS_DIRS, SAFARI_SHADOWS);
+		break;
+		
 	default:
 		error_show(FL);
 	}

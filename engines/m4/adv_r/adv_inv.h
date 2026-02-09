@@ -56,7 +56,7 @@ void inv_init(int32 num_objects);
 /**
  * Register things during init of the game
  * @param itemName	Name of the object as it should appear as a sentence is built
- * @param itemVerbs	Verbs should have this format: verbs = "slit,peel,fricasee,examine"
+ * @param itemVerbs	Verbs should have this format: verbs = "slit,peel,fricassee,examine"
  *					There can be any number of verbs in the string.
  * @param scene		The place for the thing to appear initially (BACKPACK is one place)
  * @param cel		Index into the inventory sprite series for use when displaying inventory
