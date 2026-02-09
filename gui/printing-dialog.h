@@ -28,6 +28,7 @@ namespace GUI {
 class ButtonWidget;
 class CheckboxWidget;
 class PopUpWidget;
+class GraphicsWidget;
 
 class PrintingDialog : public Dialog {
 public:
@@ -44,6 +45,7 @@ public:
 private:
 	const Graphics::ManagedSurface &_surface;
 
+	GraphicsWidget *_preview;
 	ButtonWidget *_printButton;
 	CheckboxWidget *_saveAsImageCheckbox;
 	PopUpWidget *_printersListPopUp;

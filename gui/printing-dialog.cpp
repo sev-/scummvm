@@ -32,6 +32,9 @@ namespace GUI {
 
 PrintingDialog::PrintingDialog(const Graphics::ManagedSurface &surface)
 	: Dialog("PrintingDialog"), _surface(surface) {
+	_preview = new GraphicsWidget(this, "PrintingDialog.Preview");
+	_preview->setGfx(&surface, true);
+
 	_printButton = new ButtonWidget(this, "PrintingDialog.Print", _("Print"), Common::U32String(), kCmdPrint);
 	_saveAsImageCheckbox = new CheckboxWidget(this, "PrintingDialog.SaveAsImage", _("Save as image"));
 
