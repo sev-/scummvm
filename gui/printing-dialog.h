@@ -29,7 +29,7 @@ class ButtonWidget;
 class CheckboxWidget;
 class PopUpWidget;
 
-class PrintingDialog : public GUI::Dialog {
+class PrintingDialog : public Dialog {
 public:
 	enum {
 		kCmdPrint = 'PRNT',
@@ -39,16 +39,16 @@ public:
 
 	PrintingDialog(const Graphics::ManagedSurface &surface);
 
-	void handleCommand(GUI::CommandSender *sender, uint32 cmd, uint32 data) override;
+	void handleCommand(CommandSender *sender, uint32 cmd, uint32 data) override;
 
 private:
 	const Graphics::ManagedSurface &_surface;
 
-	GUI::ButtonWidget *_printButton;
-	GUI::CheckboxWidget *_saveAsImageCheckbox;
-	GUI::PopUpWidget *_printersListPopUp;
+	ButtonWidget *_printButton;
+	CheckboxWidget *_saveAsImageCheckbox;
+	PopUpWidget *_printersListPopUp;
 
-	GUI::PopUpWidget *_orientationPopUp;
+	PopUpWidget *_orientationPopUp;
 
 	Common::HashMap<uint32, Common::String> _tagToPrinterName;
 };
