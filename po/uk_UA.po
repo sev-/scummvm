@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-09 22:33+0000\n"
-"PO-Revision-Date: 2026-02-07 22:19+0000\n"
+"PO-Revision-Date: 2026-02-09 23:50+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -1485,10 +1485,8 @@ msgid "About ScummVM"
 msgstr "Про ScummVM"
 
 #: gui/launcher.cpp:275 gui/launcher.cpp:953
-#, fuzzy
-#| msgid "General Keys"
 msgid "General help"
-msgstr "Загальні клавіші"
+msgstr "Загальна допомога"
 
 #. I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 #: gui/launcher.cpp:278
@@ -3555,10 +3553,8 @@ msgid "~O~ptions"
 msgstr "~Н~алаштування"
 
 #: engines/dialogs.cpp:79
-#, fuzzy
-#| msgid "~H~elp"
 msgid "Game ~H~elp"
-msgstr "~Д~опомога"
+msgstr "~Д~опомога гри"
 
 #: engines/dialogs.cpp:83
 msgid "~H~elp"
@@ -11556,38 +11552,26 @@ msgid "I Have No Mouth support not compiled in"
 msgstr "Підтримку для I Have no Mouth не скомпільовано"
 
 #: engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
 msgid "Default game keymappings"
 msgstr "Мапа клавіш гри за замовчунням"
 
 #: engines/saga/metaengine.cpp:269
-#, fuzzy
-#| msgid "Option panel keymapping"
 msgid "Option panel keymappings"
 msgstr "Мапа клавіш панелі налаштувань"
 
 #: engines/saga/metaengine.cpp:270
-#, fuzzy
-#| msgid "Save panel keymapping"
 msgid "Save panel keymappings"
 msgstr "Мапа клавіш панелі збереження"
 
 #: engines/saga/metaengine.cpp:271
-#, fuzzy
-#| msgid "Load panel keymapping"
 msgid "Load panel keymappings"
 msgstr "Мапа клавіш панелі завантаження"
 
 #: engines/saga/metaengine.cpp:272
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Quit panel keymappings"
 msgstr "Мапа клавіш панелі виходу"
 
 #: engines/saga/metaengine.cpp:273
-#, fuzzy
-#| msgid "Converse panel keymapping"
 msgid "Converse panel keymappings"
 msgstr "Мапа клавіш панелі діалогів"
 
