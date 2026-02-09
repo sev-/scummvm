@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-08 20:33+0000\n"
-"PO-Revision-Date: 2026-02-08 11:41+0000\n"
+"PO-Revision-Date: 2026-02-09 09:55+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/es/>\n"
@@ -1487,10 +1487,8 @@ msgid "About ScummVM"
 msgstr "Acerca de ScummVM"
 
 #: gui/launcher.cpp:275 gui/launcher.cpp:953
-#, fuzzy
-#| msgid "General Keys"
 msgid "General help"
-msgstr "Teclas comunes"
+msgstr "Ayuda general"
 
 #. I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 #: gui/launcher.cpp:278
@@ -3593,10 +3591,8 @@ msgid "~O~ptions"
 msgstr "~O~pciones"
 
 #: engines/dialogs.cpp:79
-#, fuzzy
-#| msgid "~H~elp"
 msgid "Game ~H~elp"
-msgstr "~A~yuda"
+msgstr "~A~yuda para juegos"
 
 #: engines/dialogs.cpp:83
 msgid "~H~elp"
