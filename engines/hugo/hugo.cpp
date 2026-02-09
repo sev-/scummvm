@@ -489,7 +489,6 @@ bool HugoEngine::loadHugoDat() {
 	_numVariant = in.readUint16BE();
 
 	_screen->loadPalette(in);
-	_screen->loadFontArr(in);
 	_text->loadAllTexts(in);
 	_intro->loadIntroData(in);
 	_parser->loadArrayReqs(in);

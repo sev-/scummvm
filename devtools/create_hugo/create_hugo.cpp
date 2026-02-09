@@ -41,7 +41,6 @@
 #include "staticmouse.h"
 #include "staticparser.h"
 #include "staticutil.h"
-#include "staticfont.h"
 
 static void writeByte(FILE *fp, uint8 b) {
 	fwrite(&b, 1, 1, fp);
@@ -92,29 +91,6 @@ int main(int argc, char *argv[]) {
 	for (i = 0; i < SIZE_PAL_ARRAY; i++) {
 		writeByte(outFile, _palette[i]);
 	}
-
-	// The following fonts info have been added to avoid temporarly the .FON
-	// used in the DOS version
-	// font5
-	nbrElem = sizeof(font5) / sizeof(byte);
-	writeUint16BE(outFile, nbrElem);
-
-	for (int j = 0; j < nbrElem; j++)
-		writeByte(outFile, font5[j]);
-
-	// font6
-	nbrElem = sizeof(font6) / sizeof(byte);
-	writeUint16BE(outFile, nbrElem);
-
-	for (int j = 0; j < nbrElem; j++)
-		writeByte(outFile, font6[j]);
-
-	// font8
-	nbrElem = sizeof(font8) / sizeof(byte);
-	writeUint16BE(outFile, nbrElem);
-
-	for (int j = 0; j < nbrElem; j++)
-		writeByte(outFile, font8[j]);
 
 	// Write textData
 	// textData_1w
