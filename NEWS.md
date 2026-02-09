@@ -23,6 +23,15 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fixed M&M1 display issues/corruption getting items from treasure chests.
    - Fixed M&M1 showing incorrect name for attacking monsters in combat.
 
+ MYST3:
+   - Restored ambient sounds for harmonic frequencies puzzle in Amateria.
+   - Fixed resetting animations for turntable puzzle in Amateria.
+   - Fixed synchronization of videos that play consecutively.
+   - Fixed skipping frames in some looping videos.
+   - Fixed frame-triggered ambient sounds in scripted movies.
+   - Various tweaks for displaying subtitles and inventory in widescreen mod.
+   - Fixed scaling issues for subtitles, draggable items, inventory bar and main menu in widescreen mod.
+
  WAGE:
    - Implemented combat system.
    - Numerous visual fixes.
