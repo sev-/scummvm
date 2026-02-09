@@ -986,7 +986,7 @@ void GraphicsWidget::setGfx(const Graphics::ManagedSurface *gfx, bool scale) {
 	if (!gfx || !gfx->getPixels())
 		return;
 
-	if (!isVisible() || !_boss->isVisible())
+	if (!isVisible())
 		return;
 
 	float sf = g_gui.getScaleFactor();
@@ -1024,7 +1024,7 @@ void GraphicsWidget::setGfx(int w, int h, int r, int g, int b) {
 	delete _gfx;
 	_gfx = nullptr;
 
-	if (!isVisible() || !_boss->isVisible())
+	if (!isVisible())
 		return;
 
 	if (w == -1)
