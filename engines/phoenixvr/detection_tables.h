@@ -24,7 +24,7 @@ namespace PhoenixVR {
 
 const PlainGameDescriptor phoenixvrGames[] = {
 	{"necrono", "Necronomicon: The Dawning of Darkness"},
-	{"cameronlochness", "Cameron Files: The Secret at Loch Ness"},
+	{"lochness", "Cameron Files: The Secret at Loch Ness"},
 	{"messenger", "The Messenger/Louvre: The Final Curse"},
 	{0, 0}};
 
