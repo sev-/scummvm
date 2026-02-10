@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-09 23:51+0000\n"
+"POT-Creation-Date: 2026-02-10 12:45+0000\n"
 "PO-Revision-Date: 2026-01-23 13:01+0000\n"
 "Last-Translator: Antoniou Athanasios <a.antoniou79@gmail.com>\n"
 "Language-Team: Greek <https://translations.scummvm.org/projects/scummvm/"
@@ -338,7 +338,7 @@ msgstr ""
 #: engines/hypno/metaengine.cpp:192 engines/kyra/gui/saveload_eob.cpp:611
 #: engines/kyra/gui/saveload_eob.cpp:644 engines/lab/metaengine.cpp:197
 #: engines/parallaction/metaengine.cpp:169
-#: engines/sci/graphics/controls32.cpp:937 engines/scumm/scumm.cpp:4341
+#: engines/sci/graphics/controls32.cpp:937 engines/scumm/scumm.cpp:4344
 #: engines/sherlock/metaengine.cpp:638 engines/sherlock/metaengine.cpp:1244
 #: engines/sludge/event.cpp:144 engines/toon/toon.cpp:1550
 #: engines/zvision/zvision.cpp:321
@@ -356,7 +356,7 @@ msgstr "Ναι"
 #: engines/hypno/metaengine.cpp:198 engines/kyra/gui/saveload_eob.cpp:611
 #: engines/kyra/gui/saveload_eob.cpp:644 engines/lab/metaengine.cpp:204
 #: engines/parallaction/metaengine.cpp:175
-#: engines/sci/graphics/controls32.cpp:937 engines/scumm/scumm.cpp:4341
+#: engines/sci/graphics/controls32.cpp:937 engines/scumm/scumm.cpp:4344
 #: engines/sherlock/metaengine.cpp:643 engines/sherlock/metaengine.cpp:1250
 #: engines/sludge/event.cpp:144 engines/toon/toon.cpp:1550
 #: engines/zvision/zvision.cpp:322
@@ -383,7 +383,7 @@ msgstr "Τα περιεχόμενα του κώδικα JSON δεν έχουν �
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:123
 #: engines/drascula/saveload.cpp:51 engines/grim/inputdialog.cpp:83
 #: engines/parallaction/saveload.cpp:270 engines/sci/engine/kgraphics.cpp:76
-#: engines/sci/graphics/controls32.cpp:934 engines/scumm/scumm.cpp:4353
+#: engines/sci/graphics/controls32.cpp:934 engines/scumm/scumm.cpp:4356
 #: engines/sword1/control.cpp:2816
 msgid "OK"
 msgstr "OK"
@@ -3487,7 +3487,7 @@ msgstr "Μηχανή παιχνιδιών περιπέτειας"
 #: engines/mohawk/riven_stacks/aspit.cpp:454
 #: engines/neverhood/metaengine.cpp:200 engines/saga/metaengine.cpp:449
 #: engines/scumm/help.cpp:84 engines/scumm/help.cpp:86
-#: engines/scumm/scumm.cpp:4353 engines/sludge/keymapper_tables.h:95
+#: engines/scumm/scumm.cpp:4356 engines/sludge/keymapper_tables.h:95
 #: engines/sludge/keymapper_tables.h:144 engines/sludge/keymapper_tables.h:223
 #: engines/sludge/keymapper_tables.h:343 engines/sludge/keymapper_tables.h:355
 #: engines/sludge/keymapper_tables.h:416 engines/sludge/keymapper_tables.h:429
@@ -7417,7 +7417,7 @@ msgstr ""
 "Η γρήγορη φόρτωση ή αποθήκευση παιχνιδιού δεν υποστηρίζεται σε αυτή την "
 "περιοχή"
 
-#: engines/agos/saveload.cpp:160 engines/scumm/scumm.cpp:3295
+#: engines/agos/saveload.cpp:160 engines/scumm/scumm.cpp:3298
 #, c-format
 msgid ""
 "Failed to load saved game from file:\n"
@@ -7428,7 +7428,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: engines/agos/saveload.cpp:195 engines/scumm/scumm.cpp:3282
+#: engines/agos/saveload.cpp:195 engines/scumm/scumm.cpp:3285
 #, c-format
 msgid ""
 "Failed to save game to file:\n"
@@ -7439,7 +7439,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: engines/agos/saveload.cpp:203 engines/scumm/scumm.cpp:3315
+#: engines/agos/saveload.cpp:203 engines/scumm/scumm.cpp:3318
 #, c-format
 msgid ""
 "Successfully saved game in file:\n"
@@ -12927,7 +12927,7 @@ msgid "Your Name:"
 msgstr "Το Όνομά σας:"
 
 #. I18N: Button, start hosting online multiplayer game
-#: engines/scumm/dialog-createsession.cpp:49 engines/scumm/scumm.cpp:4359
+#: engines/scumm/dialog-createsession.cpp:49 engines/scumm/scumm.cpp:4362
 msgid "Host"
 msgstr "Φιλοξενία"
 
@@ -12937,7 +12937,7 @@ msgid "Querying games..."
 msgstr "Αναζήτηση παιχνιδιών..."
 
 #. I18N: Join online multiplayer game
-#: engines/scumm/dialog-sessionselector.cpp:64 engines/scumm/scumm.cpp:4359
+#: engines/scumm/dialog-sessionselector.cpp:64 engines/scumm/scumm.cpp:4362
 msgid "Join"
 msgstr "Συμμετοχή"
 
@@ -14048,7 +14048,7 @@ msgstr ""
 "απαραίτητα\n"
 "δεδομένα για την υποστήριξη του MT-32. Αντ' αυτού θα γίνει χρήση AdLib."
 
-#: engines/scumm/scumm.cpp:4235
+#: engines/scumm/scumm.cpp:4238
 msgid ""
 "Usually, Maniac Mansion would start now. But for that to work, the game "
 "files for Maniac Mansion have to be in the 'Maniac' directory inside the "
@@ -14059,7 +14059,7 @@ msgstr ""
 "φάκελο 'Maniac' μέσα στο φάκελο παιχνιδιού του Tentacle, και το παιχνίδι "
 "πρέπει να προστεθεί στο ScummVM."
 
-#: engines/scumm/scumm.cpp:4359
+#: engines/scumm/scumm.cpp:4362
 msgid "Would you like to host or join a network play session?"
 msgstr "Θέλετε να φιλοξενήσετε ή να συμμετέχετε σε online συνεδρία παιχνιδιού;"
 
