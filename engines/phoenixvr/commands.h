@@ -648,7 +648,7 @@ Script::CommandPtr createCommand(const Common::String &cmd, const Common::Array<
 }
 
 struct IfAnd : public Script::Conditional {
-	using Conditional::Conditional;
+	IfAnd(Common::Array<Common::String> args) : Script::Conditional(Common::move(args)) {}
 	void exec(Script::ExecutionContext &ctx) const override {
 		bool result = true;
 		for (auto &var : vars) {
@@ -667,7 +667,7 @@ struct IfAnd : public Script::Conditional {
 };
 
 struct IfOr : public Script::Conditional {
-	using Conditional::Conditional;
+	IfOr(Common::Array<Common::String> args) : Script::Conditional(Common::move(args)) {}
 	void exec(Script::ExecutionContext &ctx) const override {
 		bool result = false;
 		for (auto &var : vars) {
