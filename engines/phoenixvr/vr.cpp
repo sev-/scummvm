@@ -101,7 +101,7 @@ struct Quantisation {
 	}
 };
 
-void unpack(Graphics::Surface &pic, const byte *huff, uint huffSize, const byte *acPtr, uint acSize, const byte *dcPtr, uint dcSize, int quality, const Common::Array<uint> *prefix = nullptr) {
+void unpack(Graphics::Surface &pic, const byte *huff, uint huffSize, const byte *acPtr, uint acSize, const byte *dcPtr, uint dcSize, int quality, const Common::Array<uint32> *prefix = nullptr) {
 	Quantisation quant(quality);
 
 	uint huffOffset = 0;
