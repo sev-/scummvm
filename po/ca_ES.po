@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-10 12:45+0000\n"
-"PO-Revision-Date: 2026-02-10 22:22+0000\n"
+"PO-Revision-Date: 2026-02-11 05:22+0000\n"
 "Last-Translator: Xaviu <xaviu@xaviu.com>\n"
 "Language-Team: Catalan <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ca/>\n"
@@ -11152,22 +11152,16 @@ msgid "Save panel keymappings"
 msgstr "Assignació de tecles del panell de desar"
 
 #: engines/saga/metaengine.cpp:271
-#, fuzzy
-#| msgid "Load panel keymapping"
 msgid "Load panel keymappings"
 msgstr "Assignació de tecles del panell de càrrega"
 
 #: engines/saga/metaengine.cpp:272
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Quit panel keymappings"
 msgstr "Assignació de tecles del panell de sortida"
 
 #: engines/saga/metaengine.cpp:273
-#, fuzzy
-#| msgid "Save panel keymapping"
 msgid "Converse panel keymappings"
-msgstr "Assignació de tecles del panell de desar"
+msgstr "Assignació de tecles del panell de conversació"
 
 #. I18N: the boss key is a feature,
 #. that allows players to quickly switch to a fake screen that looks like a business application,
