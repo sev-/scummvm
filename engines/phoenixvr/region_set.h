@@ -28,7 +28,7 @@
 
 namespace Common {
 class String;
-};
+}
 
 namespace PhoenixVR {
 struct Region {
