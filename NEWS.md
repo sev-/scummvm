@@ -32,6 +32,9 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Various tweaks for displaying subtitles and inventory in widescreen mod.
    - Fixed scaling issues for subtitles, draggable items, inventory bar and main menu in widescreen mod.
 
+ SCUMM:
+   - Added the original splash screens to MM NES (works only with PRG files).
+
  WAGE:
    - Implemented combat system.
    - Numerous visual fixes.
