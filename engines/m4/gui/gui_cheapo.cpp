@@ -40,7 +40,7 @@ RectClass::RectClass() {
 
 RectClass::RectClass(const RectClass *r) {
 	if (!r) {
-		error_show(FL);
+		error_show(FL, "missing rect");
 	}
 
 	_x1 = r->_x1;
@@ -58,7 +58,7 @@ RectClass::~RectClass() {
 
 void RectClass::copyInto(RectClass *r) const {
 	if (!r) {
-		error_show(FL);
+		error_show(FL, "missing rect");
 	}
 
 	r->_x1 = _x1;
@@ -76,7 +76,7 @@ void RectClass::set(int16 x1, int16 y1, int16 x2, int16 y2) {
 
 void RectClass::set(const RectClass *r) {
 	if (!r) {
-		error_show(FL);
+		error_show(FL, "missing rect");
 	}
 
 	_x1 = r->_x1;
@@ -475,7 +475,7 @@ void InterfaceBox::set_selected(bool s) {
 
 void InterfaceBox::add(ButtonClass *b) {
 	if (!b || _index >= MAX_BUTTONS) {
-		error_show(FL);
+		error_show(FL, "Bad button or index");
 	}
 
 	// Convert to global coordinates

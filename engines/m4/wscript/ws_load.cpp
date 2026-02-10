@@ -91,7 +91,7 @@ bool InitWSAssets() {
 
 	// Make sure this is only called once.
 	if (_GWS(wsloaderInitialized)) {
-		error_show(FL);
+		error_show(FL, "WSLoader not initialized");
 	}
 
 	// Allocate space for the tables used by the loader and the resource io MACHine tables
@@ -264,7 +264,7 @@ bool LoadWSAssets(const char *wsAssetName, RGB8 *myPalette) {
 
 	// Check that the loader has been initialized
 	if (!_GWS(wsloaderInitialized)) {
-		error_show(FL);
+		error_show(FL, "Asset Name: %s", wsAssetName);
 	}
 
 	// Use the resource io manager to read in the entire block

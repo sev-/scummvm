@@ -72,7 +72,7 @@ strmRequest *f_stream_Open(SysFile *srcFile, int32 fileOffset, int32 strmMinBuff
 
 	// Parameter verification        
 	if (!srcFile) {
-		error_show(FL);
+		error_show(FL,"f_stream_Open() failed - invalid FILE* given");
 	}
 
 	if (strmMinBuffSize < 0) {

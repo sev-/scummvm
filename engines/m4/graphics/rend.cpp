@@ -221,7 +221,7 @@ static RenderResult r_1() {
 		}
 
 		if (myWidth > 666) {
-			error_show(FL);
+			error_show(FL, "myWidth too large");
 		}
 	}
 }

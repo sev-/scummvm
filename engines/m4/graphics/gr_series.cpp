@@ -106,11 +106,12 @@ bool series_draw_sprite(int32 spriteHash, int32 index, Buffer *destBuff, int32 x
 	M4Rect clipRect, updateRect;
 
 	if (!destBuff) {
-		error_show(FL);
+		error_show(FL, "series_draw_sprite");
 	}
 
 	M4sprite *srcSpritePtr = &srcSprite;
-	if ((srcSpritePtr = GetWSAssetSprite(nullptr, (uint32)spriteHash, (uint32)index, srcSpritePtr, nullptr)) == nullptr)
+	srcSpritePtr = GetWSAssetSprite(nullptr, (uint32)spriteHash, (uint32)index, srcSpritePtr, nullptr);
+	if (srcSpritePtr == nullptr)
 		error_show(FL, "hash: %d, index: %d", spriteHash, index);
 
 	HLock(srcSpritePtr->sourceHandle);
@@ -196,7 +197,7 @@ bool series_stream_break_on_frame(machine *m, int32 frameNum, int32 trigger) {
 void series_set_frame_rate(machine *m, int32 newFrameRate) {
 	if ((!m) || (!m->myAnim8) || !verifyMachineExists(m)) {
 		if (g_engine->getGameType() == GType_Burger)
-			error_show(FL);
+			error_show(FL, "CHECK_SERIES");
 		return;
 	}
 
