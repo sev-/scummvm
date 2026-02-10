@@ -8,15 +8,15 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Implemented multiselect in the GUI launcher games list.
 
  M4:
-   - Added music support in Ripley
-   - Fixed numerous bugs in Ripley
-   - Fixed some bugs in Orion Burger
+   - Added music support in Ripley.
+   - Fixed numerous bugs in Ripley.
+   - Fixed some bugs in Orion Burger.
 
  Bagel:
-   - Fix Enter/Escape keys in The Guessing Game guess dialog
-   - Fix using Enter key to close info dialogs
-   - Fix shell animations in Mankala minigame
-   - Fixed incorrect evolution logic in Game of Life
+   - Fix Enter/Escape keys in The Guessing Game guess dialog.
+   - Fix using Enter key to close info dialogs.
+   - Fix shell animations in Mankala minigame.
+   - Fixed incorrect evolution logic in Game of Life.
 
  MM:
    - Fixed M&M1 memory corruption on exit.
