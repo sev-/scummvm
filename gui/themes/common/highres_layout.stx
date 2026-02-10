@@ -423,6 +423,9 @@
 				<widget name = 'OptionsButton'
 						height = 'Globals.Button.Height'
 				/>
+				<widget name = 'MainHelpButton'
+						height = 'Globals.Button.Height'
+				/>
 				<widget name = 'AboutButton'
 						height = 'Globals.Button.Height'
 				/>
