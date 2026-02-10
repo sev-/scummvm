@@ -62,11 +62,6 @@ class VR {
 	Common::RandomSource _rnd = {"vr"};
 
 public:
-	~VR() noexcept;
-	VR() noexcept;
-	VR(VR &&) noexcept;
-	VR &operator=(VR &&) noexcept;
-
 	static VR loadStatic(const Graphics::PixelFormat &format, Common::SeekableReadStream &s);
 	void render(Graphics::Screen *screen, float ax, float ay, float fov, float dt, RegionSet *regSet);
 	bool isVR() const { return _vr; }

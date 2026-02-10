@@ -188,11 +188,6 @@ void unpack(Graphics::Surface &pic, const byte *huff, uint huffSize, const byte 
 }
 } // namespace
 
-VR::~VR() noexcept = default;
-VR::VR() noexcept = default;
-VR::VR(VR &&) noexcept = default;
-VR &VR::operator=(VR &&) noexcept = default;
-
 VR VR::loadStatic(const Graphics::PixelFormat &format, Common::SeekableReadStream &s) {
 	VR vr;
 	auto magic = s.readUint32LE();
