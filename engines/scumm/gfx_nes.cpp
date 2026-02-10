@@ -46,11 +46,12 @@ static bool nesTitleWaitOrSkip(OSystem *system, uint32 timeoutMs) {
 	}
 }
 
+#ifndef DISABLE_NES_APU
 static void nesTitle2TwinkleStep(
 		Scumm::Player_NES *player,
 		const byte (*twinkleGroups)[4][6],
 		byte group,
-		byte step ) {
+		byte step) {
 		if (!player)
 			return;
 
@@ -60,6 +61,7 @@ static void nesTitle2TwinkleStep(
 		if (step == 0)
 			player->startTitleTwinkleGroup(twinkleGroups[group]);
 	}
+#endif
 
 static bool nesTitle2WaitOrSkipWithSpriteAnim(
 	OSystem *system,
@@ -68,7 +70,7 @@ static bool nesTitle2WaitOrSkipWithSpriteAnim(
 	const byte *backgroundFrame,
 	uint32 waitMs,
 	Scumm::ScummNESFile *nesFile,
-	Scumm::Player_NES *player ) {
+	Scumm::Player_NES *player) {
 	const uint32 startMs = system->getMillis();
 
 	struct ActiveSparkle {
@@ -94,6 +96,7 @@ static bool nesTitle2WaitOrSkipWithSpriteAnim(
 	static Common::Array<ActiveSparkle> sTitle2ActiveSparkles;
 	static Common::Array<PendingChirp> sTitle2PendingChirps;
 
+#ifndef DISABLE_NES_APU
 	static const byte kTwinkleGroups[8][4][6] = {
 		{
 			{ 0x03, 0x05, 0x00, 0x0A, 0x40, 0x04 },
@@ -144,6 +147,7 @@ static bool nesTitle2WaitOrSkipWithSpriteAnim(
 			{ 0x03, 0x05, 0x00, 0x0C, 0x40, 0x04 }
 		}
 	};
+#endif
 
 	Common::Array<byte> sparkleChr;
 	if (!nesFile || !nesFile->readTitle2SparkleChr(sparkleChr))
@@ -240,7 +244,9 @@ static bool nesTitle2WaitOrSkipWithSpriteAnim(
 				pc.framesUntilNext--;
 
 				if (pc.framesUntilNext <= 0) {
+#ifndef DISABLE_NES_APU
 					nesTitle2TwinkleStep(player, kTwinkleGroups, pc.groupIndex, pc.stepIndex);
+#endif
 					sTitle2PendingChirps.remove_at(i);
 					break;
 				}
