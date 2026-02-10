@@ -1752,144 +1752,144 @@ static bool nesTitle2WaitOrSkipWithSpriteAnim(
 		}
 	};
 
-    Common::Array<byte> sparkleChr;
-    if (!nesFile || !nesFile->readTitle2SparkleChr(sparkleChr))
-        return nesTitleWaitOrSkip(system, waitMs);
+	Common::Array<byte> sparkleChr;
+	if (!nesFile || !nesFile->readTitle2SparkleChr(sparkleChr))
+		return nesTitleWaitOrSkip(system, waitMs);
 
-    Common::Array<byte> sparklePalette;
-    if (!nesFile->readTitle2SparklePalette(sparklePalette) || sparklePalette.size() < 16)
-        return nesTitleWaitOrSkip(system, waitMs);
+	Common::Array<byte> sparklePalette;
+	if (!nesFile->readTitle2SparklePalette(sparklePalette) || sparklePalette.size() < 16)
+		return nesTitleWaitOrSkip(system, waitMs);
 
-    const byte sparkleSubPaletteIndex = 0;
+	const byte sparkleSubPaletteIndex = 0;
 
-    const byte sparklePosX[8] = { 0x25, 0x3E, 0x5D, 0x6B, 0x92, 0xA4, 0xCC, 0xE5 };
-    const byte sparklePosY[8] = { 0x68, 0x48, 0x60, 0x3E, 0x6D, 0x5E, 0x50, 0x3D };
+	const byte sparklePosX[8] = { 0x25, 0x3E, 0x5D, 0x6B, 0x92, 0xA4, 0xCC, 0xE5 };
+	const byte sparklePosY[8] = { 0x68, 0x48, 0x60, 0x3E, 0x6D, 0x5E, 0x50, 0x3D };
 	const int16 animFramesPerStep = 10;
-    const int16 spawnFramesPerSparkle = 24;
-			
+	const int16 spawnFramesPerSparkle = 24;
+
 		if (!sTitle2SparklesInitialized) {
-		    sTitle2SparklesInitialized = true;
-		    sTitle2LastTickMs = system->getMillis();
-		    sTitle2AnimFramesUntilAdvance = animFramesPerStep;
-		    sTitle2SpawnFramesUntilNext = spawnFramesPerSparkle;
-		    sTitle2NextPositionIndex = 0;
-		    sTitle2SpawnedCount = 0;
-		    sTitle2AllSpawned = false;
-		    sTitle2ActiveSparkles.clear();
-		    sTitle2PendingChirps.clear();
+			sTitle2SparklesInitialized = true;
+			sTitle2LastTickMs = system->getMillis();
+			sTitle2AnimFramesUntilAdvance = animFramesPerStep;
+			sTitle2SpawnFramesUntilNext = spawnFramesPerSparkle;
+			sTitle2NextPositionIndex = 0;
+			sTitle2SpawnedCount = 0;
+			sTitle2AllSpawned = false;
+			sTitle2ActiveSparkles.clear();
+			sTitle2PendingChirps.clear();
 		}
 
 	Common::EventManager *evm = system->getEventManager();
-    Common::Array<byte> framePixels;
-    framePixels.resize(256u * 240u);
+	Common::Array<byte> framePixels;
+	framePixels.resize(256u * 240u);
 
-    while (true) {
-        Common::Event ev;
-        while (evm->pollEvent(ev)) {
-            if (ev.type == Common::EVENT_KEYDOWN && ev.kbd.keycode == Common::KEYCODE_ESCAPE)
-                return true;
+	while (true) {
+		Common::Event ev;
+		while (evm->pollEvent(ev)) {
+			if (ev.type == Common::EVENT_KEYDOWN && ev.kbd.keycode == Common::KEYCODE_ESCAPE)
+				return true;
 
-            if (ev.type == Common::EVENT_LBUTTONDOWN || ev.type == Common::EVENT_RBUTTONDOWN)
-                return true;
-        }
+			if (ev.type == Common::EVENT_LBUTTONDOWN || ev.type == Common::EVENT_RBUTTONDOWN)
+				return true;
+		}
 
-        if (waitMs && (system->getMillis() - startMs) >= waitMs)
-            return true;
+		if (waitMs && (system->getMillis() - startMs) >= waitMs)
+			return true;
 
-        const uint32 nowMs = system->getMillis();
-        const uint32 elapsedMs = nowMs - sTitle2LastTickMs;
-        uint32 tickCount = elapsedMs / 16;
-        if (tickCount == 0) {
-            system->delayMillis(1);
-            continue;
-        }
-        if (tickCount > 5)
-            tickCount = 5;
-        for (uint32 tickIndex = 0; tickIndex < tickCount; ++tickIndex) {
-    		sTitle2AnimFramesUntilAdvance--;
-            if (sTitle2AnimFramesUntilAdvance < 0) {
-                sTitle2AnimFramesUntilAdvance = animFramesPerStep;
+		const uint32 nowMs = system->getMillis();
+		const uint32 elapsedMs = nowMs - sTitle2LastTickMs;
+		uint32 tickCount = elapsedMs / 16;
+		if (tickCount == 0) {
+			system->delayMillis(1);
+			continue;
+		}
+		if (tickCount > 5)
+			tickCount = 5;
+		for (uint32 tickIndex = 0; tickIndex < tickCount; ++tickIndex) {
+			sTitle2AnimFramesUntilAdvance--;
+			if (sTitle2AnimFramesUntilAdvance < 0) {
+				sTitle2AnimFramesUntilAdvance = animFramesPerStep;
 
-                for (int i = (int)sTitle2ActiveSparkles.size() - 1; i >= 0; --i) {
-                    sTitle2ActiveSparkles[i].frameIndex++;
-                    if (sTitle2ActiveSparkles[i].frameIndex >= 6)
-                        sTitle2ActiveSparkles.remove_at(i);
-                }
-            }
-
-            if (!sTitle2AllSpawned) {
-                sTitle2SpawnFramesUntilNext--;
-                if (sTitle2SpawnFramesUntilNext < 0) {
-                    sTitle2SpawnFramesUntilNext = spawnFramesPerSparkle;
-
-                    ActiveSparkle sp;
-                    sp.x = sparklePosX[sTitle2NextPositionIndex];
-                    sp.y = sparklePosY[sTitle2NextPositionIndex];
-                    sp.frameIndex = 0;
-                    sp.positionIndex = (byte)sTitle2NextPositionIndex;
-                    sTitle2ActiveSparkles.push_back(sp);
-
-                    PendingChirp pc;
-                    pc.groupIndex = (byte)sTitle2NextPositionIndex;
-                    pc.stepIndex = 0;
-                    pc.framesUntilNext = 1;
-                    sTitle2PendingChirps.push_back(pc);
-
-                                    sTitle2NextPositionIndex = (sTitle2NextPositionIndex + 1) & 7;
-                sTitle2SpawnedCount++;
-                if (sTitle2SpawnedCount >= 8)
-                    sTitle2AllSpawned = true;
+				for (int i = (int)sTitle2ActiveSparkles.size() - 1; i >= 0; --i) {
+					sTitle2ActiveSparkles[i].frameIndex++;
+					if (sTitle2ActiveSparkles[i].frameIndex >= 6)
+						sTitle2ActiveSparkles.remove_at(i);
 				}
-            }
+			}
 
-            for (int i = (int)sTitle2PendingChirps.size() - 1; i >= 0; --i) {
-                PendingChirp &pc = sTitle2PendingChirps[i];
-                pc.framesUntilNext--;
+			if (!sTitle2AllSpawned) {
+				sTitle2SpawnFramesUntilNext--;
+				if (sTitle2SpawnFramesUntilNext < 0) {
+					sTitle2SpawnFramesUntilNext = spawnFramesPerSparkle;
 
-                if (pc.framesUntilNext <= 0) {
-                    nesTitle2TwinkleStep(player, kTwinkleGroups, pc.groupIndex, pc.stepIndex);
-                    sTitle2PendingChirps.remove_at(i);
-                    break;
-                }
-            }
+					ActiveSparkle sp;
+					sp.x = sparklePosX[sTitle2NextPositionIndex];
+					sp.y = sparklePosY[sTitle2NextPositionIndex];
+					sp.frameIndex = 0;
+					sp.positionIndex = (byte)sTitle2NextPositionIndex;
+					sTitle2ActiveSparkles.push_back(sp);
 
-}
-        sTitle2LastTickMs += tickCount * 16;
+					PendingChirp pc;
+					pc.groupIndex = (byte)sTitle2NextPositionIndex;
+					pc.stepIndex = 0;
+					pc.framesUntilNext = 1;
+					sTitle2PendingChirps.push_back(pc);
+
+									sTitle2NextPositionIndex = (sTitle2NextPositionIndex + 1) & 7;
+				sTitle2SpawnedCount++;
+				if (sTitle2SpawnedCount >= 8)
+					sTitle2AllSpawned = true;
+				}
+			}
+
+			for (int i = (int)sTitle2PendingChirps.size() - 1; i >= 0; --i) {
+				PendingChirp &pc = sTitle2PendingChirps[i];
+				pc.framesUntilNext--;
+
+				if (pc.framesUntilNext <= 0) {
+					nesTitle2TwinkleStep(player, kTwinkleGroups, pc.groupIndex, pc.stepIndex);
+					sTitle2PendingChirps.remove_at(i);
+					break;
+				}
+			}
+
+		}
+		sTitle2LastTickMs += tickCount * 16;
 
 		memcpy(framePixels.begin(), backgroundFrame, 256u * 240u);
 
-        for (uint sparkleIndex = 0; sparkleIndex < sTitle2ActiveSparkles.size(); ++sparkleIndex) {
-            const ActiveSparkle &sp = sTitle2ActiveSparkles[sparkleIndex];
-            const uint32 chrTileOffset = (uint32)sp.frameIndex * 16u;
-            if (chrTileOffset + 16u > sparkleChr.size())
-                continue;
+		for (uint sparkleIndex = 0; sparkleIndex < sTitle2ActiveSparkles.size(); ++sparkleIndex) {
+			const ActiveSparkle &sp = sTitle2ActiveSparkles[sparkleIndex];
+			const uint32 chrTileOffset = (uint32)sp.frameIndex * 16u;
+			if (chrTileOffset + 16u > sparkleChr.size())
+				continue;
 
-            for (uint pixelY = 0; pixelY < 8; ++pixelY) {
-                const byte p0 = sparkleChr[chrTileOffset + pixelY];
-                const byte p1 = sparkleChr[chrTileOffset + 8u + pixelY];
+			for (uint pixelY = 0; pixelY < 8; ++pixelY) {
+				const byte p0 = sparkleChr[chrTileOffset + pixelY];
+				const byte p1 = sparkleChr[chrTileOffset + 8u + pixelY];
 
-                for (uint pixelX = 0; pixelX < 8; ++pixelX) {
-                    const uint shift = 7u - pixelX;
-                    const byte ci = (byte)(((p0 >> shift) & 1u) | (((p1 >> shift) & 1u) << 1u));
-                    if (ci == 0)
-                        continue;
+				for (uint pixelX = 0; pixelX < 8; ++pixelX) {
+					const uint shift = 7u - pixelX;
+					const byte ci = (byte)(((p0 >> shift) & 1u) | (((p1 >> shift) & 1u) << 1u));
+					if (ci == 0)
+						continue;
 
-                    const int screenX = (int)sp.x + (int)pixelX;
-                    const int screenY = (int)sp.y + (int)pixelY;
-                    if (screenX < 0 || screenX >= 256 || screenY < 0 || screenY >= 240)
-                        continue;
+					const int screenX = (int)sp.x + (int)pixelX;
+					const int screenY = (int)sp.y + (int)pixelY;
+					if (screenX < 0 || screenX >= 256 || screenY < 0 || screenY >= 240)
+						continue;
 
-                    const uint32 dstIndex = (uint32)screenY * 256u + (uint32)screenX;
+					const uint32 dstIndex = (uint32)screenY * 256u + (uint32)screenX;
 
-                    const uint32 paletteBase = (uint32)sparkleSubPaletteIndex * 4u;
-                    framePixels[dstIndex] = (byte)(sparklePalette[paletteBase + (uint32)ci] & 0x3Fu);
-                }
-            }
-        }
+					const uint32 paletteBase = (uint32)sparkleSubPaletteIndex * 4u;
+					framePixels[dstIndex] = (byte)(sparklePalette[paletteBase + (uint32)ci] & 0x3Fu);
+				}
+			}
+		}
 
-        system->copyRectToScreen(framePixels.begin(), 256, 0, 0, 256, 240);
-        system->updateScreen();
-    }
+		system->copyRectToScreen(framePixels.begin(), 256, 0, 0, 256, 240);
+		system->updateScreen();
+	}
 }
 
 
