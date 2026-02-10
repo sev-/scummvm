@@ -17,9 +17,9 @@ MODULE_OBJS := \
 	file.o \
 	file_engine.o \
 	file_nes.o \
-	file_nes_titles.o \
 	gfx_gui.o \
 	gfx_mac.o \
+	gfx_nes.o \
 	gfx_towns.o \
 	gfx.o \
 	he/mixer_he.o \
