@@ -26,6 +26,7 @@
 #include "m4/riddle/triggers.h"
 #include "m4/riddle/console.h"
 #include "m4/riddle/vars.h"
+#include "m4/adv_r/adv_control.h"
 #include "m4/adv_r/other.h"
 #include "m4/console.h"
 

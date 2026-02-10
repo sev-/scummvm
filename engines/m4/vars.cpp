@@ -21,6 +21,8 @@
 
 #include "common/debug.h"
 #include "m4/vars.h"
+
+#include "core/imath.h"
 #include "m4/adv_r/adv.h"
 #include "m4/adv_r/adv_been.h"
 #include "m4/core/errors.h"
