@@ -123,10 +123,10 @@ public:
 	virtual void invalidVideo(int32 videoId, const char *context);
 
 	static Game *create();
-	static Game *createForMovieAdventureSpecial();
-	static Game *createForMovieAdventureOriginal();
-	static Game *createForTerror();
-	static Game *createForVaqueros();
+	static Game *createForMovieAdventureSpecial(); // V3
+	static Game *createForMovieAdventureOriginal(); // V1
+	static Game *createForTerror(); // V1
+	static Game *createForVaqueros(); // V1
 
 	const Message _message;
 };
