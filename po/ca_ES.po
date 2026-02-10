@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-10 12:45+0000\n"
-"PO-Revision-Date: 2026-01-28 18:29+0000\n"
+"PO-Revision-Date: 2026-02-10 22:22+0000\n"
 "Last-Translator: Xaviu <xaviu@xaviu.com>\n"
 "Language-Team: Catalan <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ca/>\n"
@@ -1397,10 +1397,8 @@ msgid "About ScummVM"
 msgstr "Quant a ScummVM"
 
 #: gui/launcher.cpp:275 gui/launcher.cpp:953
-#, fuzzy
-#| msgid "General Keys"
 msgid "General help"
-msgstr "Tecles generals"
+msgstr "Ajuda general"
 
 #. I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 #: gui/launcher.cpp:278
@@ -1616,15 +1614,12 @@ msgid "Icons per row:"
 msgstr "Icones per línia:"
 
 #: gui/launcher.cpp:1834
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following game configurations?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configuration(s)?\n"
 "\n"
 msgstr ""
-"Esteu segur que voleu eliminar les següents configuracions del joc?\n"
+"Esteu segur que voleu eliminar les següents %d configuracions de jocs?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -3464,10 +3459,8 @@ msgid "~O~ptions"
 msgstr "~O~pcions"
 
 #: engines/dialogs.cpp:79
-#, fuzzy
-#| msgid "~H~elp"
 msgid "Game ~H~elp"
-msgstr "~A~juda"
+msgstr "~A~juda del joc"
 
 #: engines/dialogs.cpp:83
 msgid "~H~elp"
@@ -3795,10 +3788,8 @@ msgid "Game not implemented"
 msgstr "Joc no implementat"
 
 #: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
 msgid "Default game keymappings"
-msgstr "Assignació de tecles per defecte"
+msgstr "Assignació de tecles per defecte del joc"
 
 #: engines/metaengine.cpp:82 backends/platform/maemo/maemo.cpp:161
 #: engines/agos/metaengine.cpp:158 engines/asylum/metaengine.cpp:159
@@ -4819,16 +4810,12 @@ msgid "R"
 msgstr "R"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Cercle"
+msgstr "Pad circular X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Cercle"
+msgstr "Pad circular Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -6810,10 +6797,8 @@ msgid "Whether to render the game in 16-bit color"
 msgstr "Indica si s'ha de renderitzar el joc en color de 16 bits"
 
 #: engines/alcachofa/metaengine.cpp:62
-#, fuzzy
-#| msgid "Filter graphics"
 msgid "Filter textures"
-msgstr "Filtres de gràfics"
+msgstr "Filtra les textures"
 
 #: engines/alcachofa/metaengine.cpp:63
 msgid "Whether textures should be linearly filtered"
@@ -11159,14 +11144,10 @@ msgid "I Have No Mouth support not compiled in"
 msgstr "No s'ha compilat el suport per a I Have No Mouth"
 
 #: engines/saga/metaengine.cpp:269
-#, fuzzy
-#| msgid "Option panel keymapping"
 msgid "Option panel keymappings"
 msgstr "Assignació de tecles del panell d'opcions"
 
 #: engines/saga/metaengine.cpp:270
-#, fuzzy
-#| msgid "Save panel keymapping"
 msgid "Save panel keymappings"
 msgstr "Assignació de tecles del panell de desar"
 
