@@ -53,7 +53,7 @@ public:
 		const Scope *scope = nullptr;
 	};
 	struct Command {
-		virtual ~Command() = default;
+		virtual ~Command() {}
 		virtual void exec(ExecutionContext &ctx) const = 0;
 	};
 	using CommandPtr = Common::SharedPtr<Command>;
