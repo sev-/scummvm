@@ -727,7 +727,7 @@ void Room102::daemon() {
 				terminateMachineAndNull(_series6);
 				_series3 = nullptr;
 				_harryShould = 54;
-				Series::series_play("102ha07", 0xf00, 2, 3, 6, 0, 100, 0, 0, 30, 30);
+				Series::series_play("102ha07", 0xf00, 2, kCHANGE_HARRY_ANIMATION, 6, 0, 100, 0, 0, 30, 30);
 			}
 			break;
 
