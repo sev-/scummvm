@@ -937,7 +937,8 @@ Common::Error PhoenixVREngine::loadGameStream(Common::SeekableReadStream *slot) 
 
 	setAngle(toAngle(angleX), toAngle(angleY));
 	setXMax(toAngle(angleXMax));
-	setYMax(toAngle(angleYMin), toAngle(angleYMax));
+	if (angleYMin != -1 && angleYMax != -1)
+		setYMax(toAngle(angleYMin), toAngle(angleYMax));
 
 	_nextWarp = currentWarpIdx;
 
