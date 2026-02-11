@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-11 21:16+0000\n"
-"PO-Revision-Date: 2026-02-10 00:00+0000\n"
+"PO-Revision-Date: 2026-02-11 23:18+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -8380,10 +8380,8 @@ msgstr "Раскладки клавиш стартового меню"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. One of them can be assigned the "leader". This action toggles the inventory screen of the leader champion.
 #: engines/dm/metaengine.cpp:137
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle leader inventory"
-msgstr "Переключить показ инвентаря/очков IQ"
+msgstr "Переключить показ инвентаря лидера"
 
 #. I18N: (Game name: Dungeon Master) The game has multi-choice dialogs. If there is only one choice, then this action can be used to select it.
 #: engines/dm/metaengine.cpp:144
@@ -8392,50 +8390,36 @@ msgstr ""
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 1.
 #: engines/dm/metaengine.cpp:151
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 1 inventory"
-msgstr "Переключить показ инвентаря/очков IQ"
+msgstr "Переключить показ инвентаря воина 1"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 2.
 #: engines/dm/metaengine.cpp:157
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 2 inventory"
-msgstr "Переключить показ инвентаря/очков IQ"
+msgstr "Переключить показ инвентаря воина 2"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 3.
 #: engines/dm/metaengine.cpp:163
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 3 inventory"
-msgstr "Переключить показ инвентаря/очков IQ"
+msgstr "Переключить показ инвентаря воина 3"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 4.
 #: engines/dm/metaengine.cpp:169
-#, fuzzy
-#| msgid "Toggle Inventory/IQ Points display"
 msgid "Toggle champion 4 inventory"
-msgstr "Переключить показ инвентаря/очков IQ"
+msgstr "Переключить показ инвентаря воина 4"
 
 #: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:49
 #: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-#, fuzzy
-#| msgid "Strafe Left"
 msgid "Strafe left"
 msgstr "Стрейф влево"
 
 #: engines/dm/metaengine.cpp:226 engines/titanic/metaengine.cpp:343
 #: engines/titanic/metaengine.cpp:384
-#, fuzzy
-#| msgid "Move backwards"
 msgid "Move backward"
 msgstr "Идти назад"
 
 #: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:56
 #: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-#, fuzzy
-#| msgid "Strafe Right"
 msgid "Strafe right"
 msgstr "Стрейф вправо"
 
@@ -8458,10 +8442,8 @@ msgid ""
 msgstr "Использовать TTS для чтения субтитров вслух (если TTS доступна)"
 
 #: engines/draci/metaengine.cpp:212
-#, fuzzy
-#| msgid "Skip intro/Exit map or inventory"
 msgid "Skip intro / Exit map or inventory"
-msgstr "Пропустить вступление/Выйти из карты или инвентаря"
+msgstr "Пропустить вступление / Выйти из карты или инвентаря"
 
 #: engines/draci/metaengine.cpp:218 engines/ngi/metaengine.cpp:191
 msgid "Open map"
@@ -8523,16 +8505,12 @@ msgstr ""
 "Смотрите %s"
 
 #: engines/dragons/metaengine.cpp:218
-#, fuzzy
-#| msgid "Debug Graphics"
 msgid "Debug graphics"
 msgstr "Отладка графики"
 
 #: engines/drascula/metaengine.cpp:207 engines/sherlock/metaengine.cpp:330
-#, fuzzy
-#| msgid "Index keymappings"
 msgid "Animation keymappings"
-msgstr "Раскладки клавиш указателя"
+msgstr "Раскладка клавиш указателя"
 
 #: engines/drascula/metaengine.cpp:212 engines/sherlock/metaengine.cpp:343
 #: engines/tetraedge/metaengine.cpp:92
@@ -8542,10 +8520,8 @@ msgid "Move / Interact / Select"
 msgstr "Идти влево"
 
 #: engines/drascula/metaengine.cpp:235 engines/tot/metaengine.cpp:129
-#, fuzzy
-#| msgid "Pick up"
 msgid "Pick"
-msgstr "Поднять"
+msgstr "Выбрать"
 
 #: engines/drascula/metaengine.cpp:266
 #, fuzzy
