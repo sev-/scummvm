@@ -5545,7 +5545,7 @@ void Room407::takeLeverKeyFromBench() {
 		terminateMachineAndNull(_lever);
 		inv_give_to_player("LEVER KEY");
 		hotspot_set_active("LEVER KEY ", false);
-		kernel_examine_inventory_object("PING LEVER KEY", 5, 1, 175, 200, 2, "407_s07a");
+		kernel_examine_inventory_object("PING LEVER KEY", _G(master_palette), 5, 1, 175, 200, 2, "407_s07a", -1);
 		break;
 
 	case 2:

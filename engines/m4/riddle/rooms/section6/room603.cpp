@@ -1926,7 +1926,7 @@ bool Room603::takeSleeve() {
 		case 2:
 			hotspot_set_active("SLEEVE", false);
 			inv_give_to_player("SLEEVE");
-			kernel_examine_inventory_object("ping sleeve", 5, 1, 280, 220, 3, nullptr, -1);
+			kernel_examine_inventory_object("ping sleeve", _G(master_palette), 5, 1, 280, 220, 3, nullptr, -1);
 			terminateMachineAndNull(_sleeve);
 			return true;
 
@@ -2014,8 +2014,8 @@ bool Room603::takeNote() {
 		hotspot_set_active("NOTE", false);
 		inv_move_object("TWELVETREES' NOTE", NOWHERE);
 		inv_move_object("TWELVETREES' MAP", NOWHERE);
-		kernel_examine_inventory_object("PING TWELVETREES' NOTE", 5, 1, 205, 190, 3,
-			_G(flags)[V046] ? nullptr : "603R28");
+		kernel_examine_inventory_object("PING TWELVETREES' NOTE", _G(master_palette), 5, 1, 205, 190, 3,
+			_G(flags)[V046] ? nullptr : "603R28", -1);
 		_G(flags)[V046] = 1;
 		terminateMachineAndNull(_note);
 		break;
@@ -2025,8 +2025,8 @@ bool Room603::takeNote() {
 		break;
 
 	case 4:
-		kernel_examine_inventory_object("PING OBJ136", 5, 1, 205, 160, 5,
-			player_been_here(623) ? "603R30" : "603R31");
+		kernel_examine_inventory_object("PING OBJ136", _G(master_palette), 5, 1, 205, 160, 5,
+			player_been_here(623) ? "603R30" : "603R31", -1);
 		break;
 
 	case 5:
@@ -2082,7 +2082,7 @@ bool Room603::takePole() {
 		case 2:
 			hotspot_set_active("pole", false);
 			inv_give_to_player("pole");
-			kernel_examine_inventory_object("ping pole", 5, 1, 280, 220, 3);
+			kernel_examine_inventory_object("ping pole", _G(master_palette), 5, 1, 280, 220, 3, nullptr, -1);
 			terminateMachineAndNull(_pole);
 
 			if (inv_object_is_here("SLEEVE"))
@@ -2106,7 +2106,7 @@ bool Room603::takePole() {
 			if (inv_object_is_here("SLEEVE")) {
 				hotspot_set_active("SLEEVE", false);
 				inv_give_to_player("SLEEVE");
-				kernel_examine_inventory_object("ping sleeve", 5, 1, 280, 220, 4);
+				kernel_examine_inventory_object("ping sleeve", _G(master_palette) , 5, 1, 280, 220, 4, nullptr, -1);
 			} else {
 				kernel_timing_trigger(1, 4);
 			}

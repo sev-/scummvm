@@ -774,7 +774,7 @@ bool Room605::sleeveDisk2() {
 		hotspot_set_active("PUPIL", false);
 		hotspot_set_active("OBSIDIAN DISK", false);
 		inv_give_to_player("OBSIDIAN DISK");
-		kernel_examine_inventory_object("PING OBSIDIAN DISK", 5, 1, 260, 190, 3);
+		kernel_examine_inventory_object("PING OBSIDIAN DISK", _G(master_palette), 5, 1, 260, 190, 3, nullptr, -1);
 		terminateMachineAndNull(_pupil);
 		return true;
 
