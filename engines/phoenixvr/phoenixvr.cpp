@@ -586,7 +586,6 @@ void PhoenixVREngine::tick(float dt) {
 			test->scope.exec(ctx);
 		else
 			warning("no default script!");
-		_loading = false;
 	}
 
 	if (_nextTest >= 0) {
@@ -904,22 +903,11 @@ void PhoenixVREngine::captureContext() {
 	debug("captured %u bytes of state", _capturedState.size());
 }
 
-Common::Error PhoenixVREngine::loadGameStream(Common::SeekableReadStream *slot) {
-	auto state = GameState::load(*slot);
+bool PhoenixVREngine::enterScript() {
+	if (_loadedState.empty())
+		return false;
 
-	killTimer();
-	setNextScript(state.script);
-	// keep it alive until loading finishes.
-	auto currentScript = Common::move(_script);
-	assert(!_nextScript.empty());
-	loadNextScript();
-	{
-		auto test = _script->getWarp(0)->getDefaultTest();
-		Script::ExecutionContext ctx;
-		test->scope.exec(ctx);
-	}
-
-	Common::MemoryReadStream ms(state.state.data(), state.state.size());
+	Common::MemoryReadStream ms(_loadedState.data(), _loadedState.size());
 
 	auto angleX = ms.readSint32LE();
 	auto angleY = ms.readSint32LE();
@@ -999,8 +987,27 @@ Common::Error PhoenixVREngine::loadGameStream(Common::SeekableReadStream *slot) 
 		if (!name.empty())
 			playSound(name, vol, -1, true, static_cast<float>(angle) * kPi);
 	}
+	_loadedState.clear();
+	return true;
+}
 
-	_loading = true;
+Common::Error PhoenixVREngine::loadGameStream(Common::SeekableReadStream *slot) {
+	auto state = GameState::load(*slot);
+
+	killTimer();
+	setNextScript(state.script);
+	// keep it alive until loading finishes.
+	auto currentScript = Common::move(_script);
+	assert(!_nextScript.empty());
+	loadNextScript();
+
+	_loadedState = state.state;
+	{
+		auto test = _script->getWarp(0)->getDefaultTest();
+		Script::ExecutionContext ctx;
+		test->scope.exec(ctx);
+	}
+
 	return Common::kNoError;
 }
 

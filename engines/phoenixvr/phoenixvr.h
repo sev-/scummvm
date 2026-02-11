@@ -164,10 +164,8 @@ public:
 	void setContextLabel(const Common::String &contextLabel) {
 		_contextLabel = contextLabel;
 	}
-
-	bool isLoading() const {
-		return _loading;
-	}
+	bool enterScript();
+	bool isLoading() const { return !_loadedState.empty(); }
 
 	void saveVariables();
 	void loadVariables();
@@ -232,7 +230,6 @@ private:
 	AngleX _angleX;
 	AngleY _angleY;
 	Audio::Mixer *_mixer;
-	bool _loading = false;
 	bool _showRegions = false;
 
 	static constexpr byte kPaused = 2;
@@ -243,6 +240,7 @@ private:
 	Common::String _contextScript;
 	Common::String _contextLabel;
 	Common::Array<byte> _capturedState;
+	Common::Array<byte> _loadedState;
 
 	Common::HashMap<int, Common::String> _textes;
 

@@ -56,7 +56,7 @@ struct LoadSave_Enter_Script : public Script::Command {
 	LoadSave_Enter_Script(const Common::Array<Common::String> &args) : reloading(args[0]), notReloading(args[1]) {}
 	void exec(Script::ExecutionContext &ctx) const override {
 		debug("LoadSave_Enter_Script %s, %s", reloading.c_str(), notReloading.c_str());
-		auto loading = g_engine->isLoading();
+		auto loading = g_engine->enterScript();
 		g_engine->setVariable(reloading, loading);
 		g_engine->setVariable(notReloading, !loading);
 	}
@@ -440,9 +440,10 @@ struct LoadSave_Context_Restored : public Script::Command {
 
 	LoadSave_Context_Restored(const Common::Array<Common::String> &args) : progress(args[0]), done(args[1]) {}
 	void exec(Script::ExecutionContext &ctx) const override {
-		debug("LoadSave_Context_Restored: semi-stub: can be used to report that loading is in a progress");
+		int value = g_engine->getVariable(progress);
+		debug("LoadSave_Context_Restored: %s -> %d -> %s", progress.c_str(), value, done.c_str());
 		g_engine->setVariable(progress, 0);
-		g_engine->setVariable(done, g_engine->isLoading());
+		g_engine->setVariable(done, value);
 	}
 };
 
