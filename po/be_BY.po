@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-02-10 12:45+0000\n"
+"POT-Creation-Date: 2026-02-11 19:10+0000\n"
 "PO-Revision-Date: 2021-03-21 08:24+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Belarusian <https://translations.scummvm.org/projects/scummvm/"
@@ -3243,7 +3243,7 @@ msgstr "<Хібнае значэнне>"
 #. I18N: Abbreviation for 'bytes' as data size
 #. I18N: Hardware key
 #: common/util.cpp:183 backends/platform/3ds/osystem-events.cpp:46
-#: backends/platform/ds/osystem_ds.cpp:175
+#: backends/platform/ds/osystem_ds.cpp:178
 #: backends/platform/sdl/miyoo/miyoo.cpp:61
 #: backends/platform/sdl/miyoo/miyoo.cpp:88
 #: backends/platform/sdl/opendingux/opendingux.cpp:51
@@ -4496,7 +4496,7 @@ msgstr "Правы курок"
 
 #: backends/keymapper/hardware-input.cpp:266
 #: backends/platform/3ds/osystem-events.cpp:55
-#: backends/platform/ds/osystem_ds.cpp:182
+#: backends/platform/ds/osystem_ds.cpp:185
 #: backends/platform/sdl/miyoo/miyoo.cpp:74
 #: backends/platform/sdl/miyoo/miyoo.cpp:101
 #: backends/platform/sdl/opendingux/opendingux.cpp:64
@@ -4509,7 +4509,7 @@ msgstr "Стрэлка ўгару"
 
 #: backends/keymapper/hardware-input.cpp:267
 #: backends/platform/3ds/osystem-events.cpp:56
-#: backends/platform/ds/osystem_ds.cpp:183
+#: backends/platform/ds/osystem_ds.cpp:186
 #: backends/platform/sdl/miyoo/miyoo.cpp:75
 #: backends/platform/sdl/miyoo/miyoo.cpp:102
 #: backends/platform/sdl/opendingux/opendingux.cpp:65
@@ -4522,7 +4522,7 @@ msgstr "Стрэлка ўніз"
 
 #: backends/keymapper/hardware-input.cpp:268
 #: backends/platform/3ds/osystem-events.cpp:57
-#: backends/platform/ds/osystem_ds.cpp:184
+#: backends/platform/ds/osystem_ds.cpp:187
 #: backends/platform/sdl/miyoo/miyoo.cpp:76
 #: backends/platform/sdl/miyoo/miyoo.cpp:103
 #: backends/platform/sdl/opendingux/opendingux.cpp:66
@@ -4535,7 +4535,7 @@ msgstr "Стрэлка налева"
 
 #: backends/keymapper/hardware-input.cpp:269
 #: backends/platform/3ds/osystem-events.cpp:58
-#: backends/platform/ds/osystem_ds.cpp:185
+#: backends/platform/ds/osystem_ds.cpp:188
 #: backends/platform/sdl/miyoo/miyoo.cpp:77
 #: backends/platform/sdl/miyoo/miyoo.cpp:104
 #: backends/platform/sdl/opendingux/opendingux.cpp:67
@@ -4844,7 +4844,7 @@ msgstr "Абодва"
 
 #. I18N: Hardware key
 #: backends/platform/3ds/osystem-events.cpp:45
-#: backends/platform/ds/osystem_ds.cpp:174
+#: backends/platform/ds/osystem_ds.cpp:177
 #: backends/platform/sdl/miyoo/miyoo.cpp:59
 #: backends/platform/sdl/miyoo/miyoo.cpp:86
 #: backends/platform/sdl/opendingux/opendingux.cpp:49
@@ -4854,7 +4854,7 @@ msgstr "A"
 
 #. I18N: Hardware key
 #: backends/platform/3ds/osystem-events.cpp:47
-#: backends/platform/ds/osystem_ds.cpp:176
+#: backends/platform/ds/osystem_ds.cpp:179
 #: backends/platform/sdl/miyoo/miyoo.cpp:63
 #: backends/platform/sdl/miyoo/miyoo.cpp:90
 #: backends/platform/sdl/opendingux/opendingux.cpp:53
@@ -4864,7 +4864,7 @@ msgstr "X"
 
 #. I18N: Hardware key
 #: backends/platform/3ds/osystem-events.cpp:48
-#: backends/platform/ds/osystem_ds.cpp:177
+#: backends/platform/ds/osystem_ds.cpp:180
 #: backends/platform/sdl/miyoo/miyoo.cpp:65
 #: backends/platform/sdl/miyoo/miyoo.cpp:92
 #: backends/platform/sdl/opendingux/opendingux.cpp:55
@@ -4877,7 +4877,7 @@ msgstr "Y"
 #. I18N: Return key
 #. I18N: Select party member command in Might & Magic 1
 #: backends/platform/3ds/osystem-events.cpp:49
-#: backends/platform/ds/osystem_ds.cpp:178
+#: backends/platform/ds/osystem_ds.cpp:181
 #: backends/platform/sdl/miyoo/miyoo.cpp:67
 #: backends/platform/sdl/miyoo/miyoo.cpp:94
 #: backends/platform/sdl/opendingux/opendingux.cpp:57
@@ -4894,7 +4894,7 @@ msgstr "Выбар"
 #. I18N: Hardware key
 #. I18N: Hardware key on controller
 #: backends/platform/3ds/osystem-events.cpp:50
-#: backends/platform/ds/osystem_ds.cpp:179
+#: backends/platform/ds/osystem_ds.cpp:182
 #: backends/platform/sdl/miyoo/miyoo.cpp:69
 #: backends/platform/sdl/miyoo/miyoo.cpp:96
 #: backends/platform/sdl/opendingux/opendingux.cpp:59
@@ -4915,7 +4915,7 @@ msgstr "ZR"
 
 #. I18N: Hardware key
 #: backends/platform/3ds/osystem-events.cpp:53
-#: backends/platform/ds/osystem_ds.cpp:180
+#: backends/platform/ds/osystem_ds.cpp:183
 #: backends/platform/sdl/miyoo/miyoo.cpp:71
 #: backends/platform/sdl/miyoo/miyoo.cpp:98
 #: backends/platform/sdl/opendingux/opendingux.cpp:61
@@ -4926,7 +4926,7 @@ msgstr "L"
 
 #. I18N: Hardware key
 #: backends/platform/3ds/osystem-events.cpp:54
-#: backends/platform/ds/osystem_ds.cpp:181
+#: backends/platform/ds/osystem_ds.cpp:184
 #: backends/platform/sdl/miyoo/miyoo.cpp:73
 #: backends/platform/sdl/miyoo/miyoo.cpp:100
 #: backends/platform/sdl/opendingux/opendingux.cpp:63
@@ -4948,7 +4948,7 @@ msgid "Circle Pad Y"
 msgstr "Кола"
 
 #: backends/platform/3ds/osystem-events.cpp:69
-#: backends/platform/ds/osystem_ds.cpp:194
+#: backends/platform/ds/osystem_ds.cpp:197
 msgid "Touch"
 msgstr "Дотык"
 
@@ -5674,11 +5674,11 @@ msgstr ""
 msgid "Click Mode"
 msgstr "Рэжым пстрычкі"
 
-#: backends/platform/sdl/sdl.cpp:1163
+#: backends/platform/sdl/sdl.cpp:1166
 msgid "Keyboard"
 msgstr "Клавіятура"
 
-#: backends/platform/sdl/sdl.cpp:1166
+#: backends/platform/sdl/sdl.cpp:1169
 msgid ""
 "## Keyboard shortcuts\n"
 "\n"
@@ -5696,23 +5696,23 @@ msgid ""
 "| `Ctrl+F5` | Displays the Global Main Menu\n"
 msgstr ""
 
-#: backends/platform/sdl/sdl.cpp:1178
+#: backends/platform/sdl/sdl.cpp:1181
 msgid "| `Cmd+q`    | Quit (macOS)\n"
 msgstr ""
 
-#: backends/platform/sdl/sdl.cpp:1180
+#: backends/platform/sdl/sdl.cpp:1183
 msgid "| `Alt+F4`  | Quit (Windows)\n"
 msgstr ""
 
-#: backends/platform/sdl/sdl.cpp:1182
+#: backends/platform/sdl/sdl.cpp:1185
 msgid "| `Ctrl+q`  | Quit (Linux/Unix)\n"
 msgstr ""
 
-#: backends/platform/sdl/sdl.cpp:1183
+#: backends/platform/sdl/sdl.cpp:1186
 msgid "| `Ctrl+z`  | Quit (other platforms)\n"
 msgstr ""
 
-#: backends/platform/sdl/sdl.cpp:1186
+#: backends/platform/sdl/sdl.cpp:1189
 msgid ""
 "| `Ctrl+u`  | Mutes all sounds\n"
 "| `Ctrl+m`  | Toggles mouse capture\n"
