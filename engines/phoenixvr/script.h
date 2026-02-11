@@ -40,6 +40,8 @@ inline float toAngle(int a) {
 }
 
 inline int fromAngle(float a) {
+	if (a == INFINITY || a == -INFINITY)
+		return -1;
 	static const float floatToAngle = 4096.0f / kPi;
 	return static_cast<int>(floatToAngle * a);
 }
