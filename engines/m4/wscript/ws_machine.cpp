@@ -26,7 +26,7 @@
 #include "m4/wscript/wscript.h"
 #include "m4/core/errors.h"
 #include "m4/core/imath.h"
-#include "m4/dbg/debug.h"
+#include "m4/dbg/dbg_wscript.h"
 #include "m4/mem/mem.h"
 #include "m4/platform/timer.h"
 #include "m4/vars.h"

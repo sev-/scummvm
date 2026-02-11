@@ -26,7 +26,7 @@
 #include "m4/adv_r/adv.h"
 #include "m4/adv_r/adv_been.h"
 #include "m4/core/errors.h"
-#include "m4/dbg/debug.h"
+#include "m4/dbg/dbg_wscript.h"
 #include "m4/graphics/gr_pal.h"
 #include "m4/gui/game_menu.h"
 #include "m4/gui/gui_buffer.h"
