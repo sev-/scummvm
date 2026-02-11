@@ -305,7 +305,7 @@ void kernel_examine_inventory_object(const char *picName, RGB8 *pal, int steps, 
 	// Play the sprite series as a loop
 	int32 status;
 	ScreenContext *game_buff_ptr = vmng_screen_find(_G(gameDrawBuff), &status);
-	_GP(seriesAnim8) = series_play_xy(picName, -1, FORWARD,
+	_GP(seriesAnim8) = series_play_xy(picName, -1, SERIES_FORWARD,
 		x - game_buff_ptr->x1, y - game_buff_ptr->y1, 100, 0, 7, -1);
 
 	if (digiName) {
