@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-02-10 12:45+0000\n"
-"PO-Revision-Date: 2026-02-06 10:30+0000\n"
+"PO-Revision-Date: 2026-02-11 17:18+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/it/>\n"
@@ -1487,10 +1487,8 @@ msgid "About ScummVM"
 msgstr "Informazioni su ScummVM"
 
 #: gui/launcher.cpp:275 gui/launcher.cpp:953
-#, fuzzy
-#| msgid "General Keys"
 msgid "General help"
-msgstr "Tasti Generali"
+msgstr "Aiuto generale"
 
 #. I18N: Button caption. O is the shortcut, Ctrl+O, put it in parens for non-latin (~O~)
 #: gui/launcher.cpp:278
@@ -3580,10 +3578,8 @@ msgid "~O~ptions"
 msgstr "~O~pzioni"
 
 #: engines/dialogs.cpp:79
-#, fuzzy
-#| msgid "~H~elp"
 msgid "Game ~H~elp"
-msgstr "~A~iuto"
+msgstr "~A~iuto gioco"
 
 #: engines/dialogs.cpp:83
 msgid "~H~elp"
@@ -3915,8 +3911,6 @@ msgid "Game not implemented"
 msgstr "Gioco non implementato"
 
 #: engines/metaengine.cpp:75 engines/saga/metaengine.cpp:267
-#, fuzzy
-#| msgid "Default game keymap"
 msgid "Default game keymappings"
 msgstr "Mappa tasti predefinita"
 
@@ -4940,16 +4934,12 @@ msgid "R"
 msgstr "R"
 
 #: backends/platform/3ds/osystem-events.cpp:63
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad X"
-msgstr "Cerchio"
+msgstr "Pad scorr. X"
 
 #: backends/platform/3ds/osystem-events.cpp:64
-#, fuzzy
-#| msgid "Circle"
 msgid "Circle Pad Y"
-msgstr "Cerchio"
+msgstr "Pad scorr. Y"
 
 #: backends/platform/3ds/osystem-events.cpp:69
 #: backends/platform/ds/osystem_ds.cpp:194
@@ -11688,32 +11678,22 @@ msgid "I Have No Mouth support not compiled in"
 msgstr "Il supporto per I Have No Mouth non è stato incluso nella compilazione"
 
 #: engines/saga/metaengine.cpp:269
-#, fuzzy
-#| msgid "Option panel keymapping"
 msgid "Option panel keymappings"
 msgstr "Mappa tasti finestra Opzioni"
 
 #: engines/saga/metaengine.cpp:270
-#, fuzzy
-#| msgid "Save panel keymapping"
 msgid "Save panel keymappings"
 msgstr "Mappa tasti finestra Salva"
 
 #: engines/saga/metaengine.cpp:271
-#, fuzzy
-#| msgid "Load panel keymapping"
 msgid "Load panel keymappings"
 msgstr "Mappa tasti finestra Carica"
 
 #: engines/saga/metaengine.cpp:272
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Quit panel keymappings"
 msgstr "Mappa tasti finestra Esci"
 
 #: engines/saga/metaengine.cpp:273
-#, fuzzy
-#| msgid "Converse panel keymapping"
 msgid "Converse panel keymappings"
 msgstr "Mappa tasti finestra Dialogo"
 
