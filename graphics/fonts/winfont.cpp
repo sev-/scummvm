@@ -53,27 +53,14 @@ void WinFont::close() {
 	_glyphs = nullptr;
 }
 
-// Reads a null-terminated string
-static Common::String readString(Common::SeekableReadStream &stream) {
-	Common::String string;
-
-	char c = stream.readByte();
-	while (c && stream.pos() < stream.size()) {
-		string += c;
-		c = stream.readByte();
-	}
-
-	return string;
-}
-
 static WinFontDirEntry readDirEntry(Common::SeekableReadStream &stream) {
 	WinFontDirEntry entry;
 
 	stream.skip(68); // Useless
 	entry.points = stream.readUint16LE();
 	stream.skip(43); // Useless (for now, maybe not in the future)
-	readString(stream); // Skip Device Name
-	entry.faceName = readString(stream);
+	stream.readString(); // Skip Device Name
+	entry.faceName = stream.readString();
 
 	return entry;
 }
