@@ -464,7 +464,7 @@ struct ScriptTask final : public Task {
 
 private:
 	void setCharacterVariables() {
-		if (g_engine->isV3()) {
+		if (g_engine->isV3() || g_engine->isV2()) {
 			_script.variable("m_o_f") = (int32)process().character();
 			_script.variable("m_o_f_real") = (int32)g_engine->player().activeCharacterKind();
 		} else

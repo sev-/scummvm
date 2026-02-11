@@ -7,6 +7,7 @@ MODULE_OBJS = \
 	console.o \
 	game.o \
 	game-v1.o \
+	game-v2.0 \
 	game-v3.o \
 	game-objects.o \
 	general-objects.o \

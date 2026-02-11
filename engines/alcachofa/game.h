@@ -127,6 +127,7 @@ public:
 	static Game *createForMovieAdventureOriginal(); // V1
 	static Game *createForTerror(); // V1
 	static Game *createForVaqueros(); // V1
+	static Game *createForSecta(); // V2
 
 	const Message _message;
 };
