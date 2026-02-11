@@ -290,6 +290,8 @@ void PhoenixVREngine::playSound(const Common::String &sound, uint8 volume, int l
 
 void PhoenixVREngine::stopSound(const Common::String &sound) {
 	debug("stop sound %s", sound.c_str());
+	if (sound == _currentMusic)
+		_currentMusic.clear();
 	auto it = _sounds.find(sound);
 	if (it != _sounds.end()) {
 		_mixer->stopHandle(it->_value.handle);
@@ -860,8 +862,8 @@ void PhoenixVREngine::captureContext() {
 	for (uint i = 0; i != 12; ++i) {
 		writeString(_lockKey[i]);
 	}
-	writeString({});     // music
-	ms.writeUint32LE(0); // musicVolume
+	writeString(_currentMusic);
+	ms.writeUint32LE(_currentMusicVolume);
 
 	struct SoundState {
 		Common::String name;
@@ -968,11 +970,15 @@ Common::Error PhoenixVREngine::loadGameStream(Common::SeekableReadStream *slot) 
 		debug("lockKey %d %s", i, lockKey.c_str());
 		_lockKey[i] = lockKey;
 	}
-	auto music = ms.readString(0, 257);
-	auto musicVolume = ms.readUint32LE();
-	debug("current music %s, volume: %u", music.c_str(), musicVolume);
 
 	_mixer->stopAll();
+
+	_currentMusic = ms.readString(0, 257);
+	_currentMusicVolume = ms.readUint32LE();
+	debug("current music %s, volume: %u", _currentMusic.c_str(), _currentMusicVolume);
+	if (!_currentMusic.empty() && _currentMusicVolume > 0)
+		playSound(_currentMusic, _currentMusicVolume, -1);
+
 	// sound samples
 	for (uint i = 0; i != 8; ++i) {
 		auto name = ms.readString(0, 257);

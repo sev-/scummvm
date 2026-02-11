@@ -112,6 +112,10 @@ public:
 	void playSound(const Common::String &sound, uint8 volume, int loops, bool spatial = false, float angle = 0);
 	void stopSound(const Common::String &sound);
 	void playMovie(const Common::String &movie);
+	void setCurrentMusic(const Common::String &name, int volume) {
+		_currentMusic = name;
+		_currentMusicVolume = volume;
+	}
 
 	void declareVariable(const Common::String &name);
 	void setVariable(const Common::String &name, int value);
@@ -220,6 +224,8 @@ private:
 
 	Common::Array<Common::Array<Common::String>> _cursors;
 	Common::String _defaultCursor[2];
+	Common::String _currentMusic;
+	int _currentMusicVolume = 0;
 
 	VR _vr;
 	float _fov;

@@ -848,6 +848,11 @@ struct PlaySound : public Script::Command {
 
 struct PlayMusique : public PlaySound {
 	PlayMusique(Common::String s, int v) : PlaySound(Common::move(s), v, -1) {}
+
+	void exec(Script::ExecutionContext &ctx) const override {
+		g_engine->setCurrentMusic(sound, volume);
+		PlaySound::exec(ctx);
+	}
 };
 
 struct StopSound : public Script::Command {
