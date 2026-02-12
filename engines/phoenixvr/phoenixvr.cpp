@@ -220,7 +220,6 @@ void PhoenixVREngine::goToWarp(const Common::String &warp, bool savePrev) {
 	else
 		_nextWarp = _script->getWarp("N3M09L03W51E1.vr");
 	_hoverIndex = -1;
-	_text.reset();
 	if (savePrev) {
 		assert(_warpIdx >= 0);
 		_prevWarp = _warpIdx;
@@ -613,6 +612,7 @@ void PhoenixVREngine::tick(float dt) {
 		goToWarp(_script->getInitScript()->vrFile);
 	}
 	if (_nextWarp >= 0) {
+		_text.reset();
 		_warpIdx = _nextWarp;
 		_warp = _script->getWarp(_nextWarp);
 		debug("warp %d -> %s %s", _nextWarp, _warp->vrFile.c_str(), _warp->testFile.c_str());
