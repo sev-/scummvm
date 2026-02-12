@@ -1767,6 +1767,8 @@ static int getCharOrder(Common::u32char_type_t ch) {
 	if (pl == Common::kPlatformWindows && lang != Common::JA_JPN && version >= 1100)
 		return num;
 
+	warning("BUILDBOT: No char order table for Director version: %d-%s", version, Common::getLanguageCode(lang));
+
 	return num;
 }
 
