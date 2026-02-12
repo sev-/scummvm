@@ -296,6 +296,10 @@ PushButton::PushButton(Room *room, SeekableReadStream &stream)
 
 const char *EditBox::typeName() const { return "EditBox"; }
 
+EditBox::EditBox(Room *room, SeekableReadStream &stream)
+	: PhysicalObject(room, stream) {
+}
+
 EditBoxV2::EditBoxV2(Room *room, SeekableReadStream &stream)
 	: EditBox(room, stream) {
 	p1 = Shape(stream).firstPoint();
@@ -395,6 +399,10 @@ CheckBoxAutoAdjustNoise::CheckBoxAutoAdjustNoise(Room *room, SeekableReadStream 
 }
 
 const char *SlideButton::typeName() const { return "SlideButton"; }
+
+SlideButton::SlideButton(Room *room, SeekableReadStream &stream)
+	: ObjectBase(room, stream) {
+}
 
 SlideButtonV2::SlideButtonV2(Room *room, SeekableReadStream &stream)
 	: SlideButton(room, stream) {

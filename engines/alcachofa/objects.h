@@ -260,6 +260,7 @@ private:
 class EditBox : public PhysicalObject {
 public:
 	static constexpr const char *kClassName = "CEditBox";
+	EditBox(Room *room, Common::SeekableReadStream &stream);
 
 	const char *typeName() const override;
 
@@ -317,6 +318,7 @@ private:
 class SlideButton : public ObjectBase {
 public:
 	static constexpr const char *kClassName = "CSlideButton";
+	SlideButton(Room *room, Common::SeekableReadStream &stream);
 
 	inline float &value() { return _value; }
 
