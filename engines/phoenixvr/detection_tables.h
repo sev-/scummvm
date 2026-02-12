@@ -24,7 +24,7 @@ namespace PhoenixVR {
 
 const PlainGameDescriptor phoenixvrGames[] = {
 	{"necrono", "Necronomicon: The Dawning of Darkness"},
-	{"lochness", "Cameron Files: The Secret at Loch Ness"},
+	{"lochness", "The Cameron Files: The Secret at Loch Ness"},
 	{"messenger", "The Messenger/Louvre: The Final Curse"},
 	{0, 0}};
 
@@ -94,7 +94,57 @@ const ADGameDescription gameDescriptions[] = {
 	 AD_ENTRY2s(
 		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
 		 "textes.txt", "294efb30581661615359ce234e2e85fb", 1596),
-	 Common::EN_ANY,
+	 Common::EN_USA,
+	 Common::kPlatformWindows,
+	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
+	 GUIO1(GUIO_NONE)},
+
+	{"lochness",
+	 nullptr,
+	 AD_ENTRY2s(
+		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
+		 "textes.txt", "f1d44e0b71736e5b0e2516dbfe9bf7e3", 1770),
+	 Common::FR_FRA,
+	 Common::kPlatformWindows,
+	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
+	 GUIO1(GUIO_NONE)},
+
+	{"lochness",
+	 nullptr,
+	 AD_ENTRY2s(
+		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
+		 "textes.txt", "b38570cda689d7994806635e0e34ed7f", 1825),
+	 Common::IT_ITA,
+	 Common::kPlatformWindows,
+	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
+	 GUIO1(GUIO_NONE)},
+
+	{"lochness",
+	 nullptr,
+	 AD_ENTRY2s(
+		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
+		 "textes.txt", "640d6d3f53986b73f97e1eaad700093a", 1732),
+	 Common::DE_DEU,
+	 Common::kPlatformWindows,
+	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
+	 GUIO1(GUIO_NONE)},
+
+	{"lochness",
+	 nullptr,
+	 AD_ENTRY2s(
+		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
+		 "textes.txt", "4474a0c84b6e7363e1d65cc67278b923", 1769),
+	 Common::ES_ESP,
+	 Common::kPlatformWindows,
+	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
+	 GUIO1(GUIO_NONE)},
+
+	{"lochness",
+	 nullptr,
+	 AD_ENTRY2s(
+		 "script.pak", "a7ee3aae653658f93bba7f237bcf06f3", 1904,
+		 "textes.txt", "5ea7264941b31b5961860c7016537641", 1776),
+	 Common::PT_PRT,
 	 Common::kPlatformWindows,
 	 ADGF_DROPPLATFORM | ADGF_UNSTABLE,
 	 GUIO1(GUIO_NONE)},
