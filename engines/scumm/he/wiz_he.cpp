@@ -463,18 +463,9 @@ WizPxShrdBuffer Wiz::drawAWizPrimEx(int globNum, int state, int x, int y, int z,
 		switch (srcComp) {
 		case kWCTNone:
 			{
-				Graphics::ManagedSurface surf;
-				surf.w = srcWidth;
-				surf.h = srcHeight;
-				surf.format=Graphics::PixelFormat::createFormatCLUT8();
-
-				uint8 *wizd = getWizStateDataPrim(globNum, state);
-				assert(wizd);
-				surf.setPixels(wizd);
-
-				uint8 *pal = getWizStatePaletteDataPrim(globNum, state);
-				assert(pal);
-				surf.setPalette(pal, 0, 256);
+				Graphics::ManagedSurface surf(destWidth, destHeight, Graphics::PixelFormat::createFormatCLUT8());
+				surf.copyRectToSurface(destPtr(), destWidth, 0, 0, destWidth, destHeight);
+				surf.setPalette(_vm->getHEPaletteSlot(1), 0,256);
 
 				Common::PrintingManager *pm = _vm->_system->getPrintingManager();
 				pm->printImage(surf);
