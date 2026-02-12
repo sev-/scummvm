@@ -526,30 +526,21 @@ struct Scroll : public Script::Command {
 };
 
 struct Rollover : public Script::Command {
-	int arg;
+	int textId;
+	RolloverType type;
 
-	Rollover(const Common::Array<Common::String> &args) : arg(atoi(args[0].c_str())) {}
+	Rollover(const Common::Array<Common::String> &args, RolloverType t = RolloverType::Default) : textId(atoi(args[0].c_str())), type(t) {}
 	void exec(Script::ExecutionContext &ctx) const override {
-		g_engine->rollover({57, 427, 409, 480}, arg, 14, 1, 0);
+		g_engine->rollover(textId, type);
 	}
 };
 
-struct RolloverMalette : public Script::Command {
-	int arg;
-
-	RolloverMalette(const Common::Array<Common::String> &args) : arg(atoi(args[0].c_str())) {}
-	void exec(Script::ExecutionContext &ctx) const override {
-		g_engine->rollover({251, 346, 522, 394}, arg, 18, 1, 0xD698);
-	}
+struct RolloverMalette : public Rollover {
+	RolloverMalette(const Common::Array<Common::String> &args) : Rollover(args, RolloverType::Malette) {}
 };
 
-struct RolloverSecretaire : public Script::Command {
-	int arg;
-
-	RolloverSecretaire(const Common::Array<Common::String> &args) : arg(atoi(args[0].c_str())) {}
-	void exec(Script::ExecutionContext &ctx) const override {
-		g_engine->rollover({216, 367, 536, 430}, arg, 12, 1, 0xFFFF);
-	}
+struct RolloverSecretaire : public Rollover {
+	RolloverSecretaire(const Common::Array<Common::String> &args) : Rollover(args, RolloverType::Secretaire) {}
 };
 
 struct PorteFRollover : public Script::Command {

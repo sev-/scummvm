@@ -483,7 +483,48 @@ void PhoenixVREngine::loadVariables() {
 	_variableSnapshot.clear();
 }
 
-void PhoenixVREngine::rollover(Common::Rect dstRect, int textId, int size, bool bold, uint16_t color) {
+void PhoenixVREngine::rollover(int textId, RolloverType type) {
+	Common::Rect dstRect;
+	int size = 12;
+	bool bold = false;
+	uint16 color = 0xFFFF;
+
+	if (getGameId() == "lochness") {
+		size = 12;
+		bold = false;
+		switch (type) {
+		case RolloverType::Default: // no default in loch ness
+		case RolloverType::Malette:
+			dstRect = Common::Rect{20, 178, 230, 198};
+			color = 0xD698;
+			break;
+		case RolloverType::Secretaire:
+			dstRect = Common::Rect{60, 448, 270, 468};
+			color = 0xFFFF;
+			break;
+		}
+	} else {
+		// using necrono
+		bold = true;
+		switch (type) {
+		case RolloverType::Default:
+			dstRect = Common::Rect{57, 427, 409, 480};
+			size = 14;
+			color = 0;
+			break;
+		case RolloverType::Malette:
+			dstRect = Common::Rect{251, 346, 522, 394};
+			size = 18;
+			color = 0xD698;
+			break;
+		case RolloverType::Secretaire:
+			dstRect = Common::Rect{216, 367, 536, 430};
+			size = 12;
+			color = 0xFFFF;
+			break;
+		}
+	}
+
 	const Graphics::Font *font = nullptr;
 #ifdef USE_FREETYPE2
 	if (size < 14)

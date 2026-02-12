@@ -52,6 +52,12 @@ namespace PhoenixVR {
 struct PhoenixVRGameDescription;
 struct GameState;
 
+enum struct RolloverType {
+	Default,
+	Malette,
+	Secretaire
+};
+
 class PhoenixVREngine : public Engine {
 private:
 	static constexpr uint kFPSLimit = 60;
@@ -170,7 +176,7 @@ public:
 	void saveVariables();
 	void loadVariables();
 
-	void rollover(Common::Rect dstRect, int textId, int size, bool bold, uint16_t color);
+	void rollover(int textId, RolloverType type);
 
 private:
 	static Common::String removeDrive(const Common::String &path);
