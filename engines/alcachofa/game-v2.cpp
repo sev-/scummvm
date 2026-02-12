@@ -199,6 +199,10 @@ public:
 	Point getMainCharacterSize() override {
 		return { 40, 220 };
 	}
+
+	bool doesRoomHaveBackground(const Room *room) override {
+		return !room->name().equalsIgnoreCase("Global");
+	}
 };
 
 static constexpr const char *kMapFilesSecta[] = {
