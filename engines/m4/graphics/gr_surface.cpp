@@ -25,16 +25,6 @@
 
 namespace M4 {
 
-M4Surface::M4Surface(int sw, int sh) : Buffer() {
-	this->w = sw;
-	this->h = sh;
-	this->stride = sw;
-	this->encoding = NO_COMPRESS;
-	this->data = new byte[sw * sh];
-	Common::fill(this->data, this->data + sw * sh, 0);
-	_disposeAfterUse = DisposeAfterUse::YES;
-}
-
 M4Surface::M4Surface(const byte *src, int sw, int sh) {
 	this->w = sw;
 	this->h = sh;
@@ -131,7 +121,8 @@ void M4Surface::drawInner(const Buffer &src, const byte *depthCodes, int x, int 
 		if (y >= h)
 			// Below bottom of screen
 			break;
-		else if (y < 0)
+
+		if (y < 0)
 			// Above top of screen
 			continue;
 
