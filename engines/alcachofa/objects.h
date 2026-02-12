@@ -265,7 +265,6 @@ public:
 	const char *typeName() const override;
 
 protected:
-	using PhysicalObject::PhysicalObject;
 	int32 i1 = 0;
 	Common::Point p1;
 	Common::String _labelId;
@@ -329,7 +328,6 @@ public:
 	const char *typeName() const override;
 
 protected:
-	using ObjectBase::ObjectBase;
 	bool isMouseOver() const;
 
 	float _value = 0;
