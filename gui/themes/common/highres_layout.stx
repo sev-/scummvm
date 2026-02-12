@@ -352,6 +352,10 @@
 						width = 'Globals.Button.Height'
 				/>
 				<space />
+				<space />
+				<widget name = 'MainHelpButton'
+						height = 'Globals.Button.Height'
+				/>
 			</layout>
 		</layout>
 	</dialog>
