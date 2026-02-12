@@ -93,11 +93,24 @@ Common::String PhoenixVREngine::removeDrive(const Common::String &path) {
 	else
 		return path.substr(2);
 }
-
-Common::Path PhoenixVREngine::resolve(const Common::String &name) {
-	auto p = _currentScriptPath.append(name, '\\').normalize();
-	debug("resolved %s to %s", name.c_str(), p.toString().c_str());
-	return p;
+Common::SeekableReadStream *PhoenixVREngine::open(const Common::String &name) {
+	debug("open %s", name.c_str());
+	auto packed = name.hasSuffixIgnoreCase(".lst");
+	auto filename = packed ? name.substr(0, name.size() - 4) + ".pak" : name;
+	auto p = _currentScriptPath.append(filename, '\\').normalize();
+	Common::ScopedPtr<Common::File> s(new Common::File());
+	debug("trying %s", p.toString().c_str());
+	if (s->open(p)) {
+		debug("opening %s: %s", name.c_str(), p.toString().c_str());
+		return packed ? unpack(*s) : s.release();
+	}
+	p = filename;
+	debug("trying %s", p.toString().c_str());
+	if (s->open(p)) {
+		debug("opening %s: %s", name.c_str(), p.toString().c_str());
+		return packed ? unpack(*s) : s.release();
+	}
+	return nullptr;
 }
 
 void PhoenixVREngine::setNextScript(const Common::String &nextScript) {
@@ -120,19 +133,11 @@ void PhoenixVREngine::loadNextScript() {
 	auto nextScript = Common::move(_nextScript);
 	_nextScript.clear();
 
-	Common::File file;
-	auto nextPath = resolve(nextScript);
-	if (file.open(nextPath)) {
-		_script.reset(new Script(file));
-	} else {
-		auto pakFile = nextPath;
-		pakFile = pakFile.removeExtension().append(".pak");
-		file.open(pakFile);
-		if (!file.isOpen())
-			error("can't open script file %s", nextScript.c_str());
-		Common::ScopedPtr<Common::SeekableReadStream> scriptStream(unpack(file));
-		_script.reset(new Script(*scriptStream));
-	}
+	Common::ScopedPtr<Common::SeekableReadStream> s(open(nextScript));
+	if (!s)
+		error("can't open script file %s", nextScript.c_str());
+
+	_script.reset(new Script(*s));
 	for (auto &var : _script->getVarNames())
 		declareVariable(var);
 
@@ -237,7 +242,7 @@ void PhoenixVREngine::returnToWarp() {
 
 const Region *PhoenixVREngine::getRegion(int idx) const {
 	if (!_regSet)
-		error("no region set");
+		return nullptr;
 	return (idx < static_cast<int>(_regSet->size())) ? &_regSet->getRegion(idx) : nullptr;
 }
 
@@ -276,13 +281,13 @@ int PhoenixVREngine::getVariable(const Common::String &name) const {
 void PhoenixVREngine::playSound(const Common::String &sound, uint8 volume, int loops, bool spatial, float angle) {
 	debug("play sound %s %d %d 3d: %d, angle: %g", sound.c_str(), volume, loops, spatial, angle);
 	Audio::SoundHandle h;
-	Common::ScopedPtr<Common::File> f(new Common::File());
-	if (!f->open(resolve(sound))) {
-		warning("sound %s couldn't be found", sound.c_str());
+	Common::ScopedPtr<Common::SeekableReadStream> stream(open(sound));
+	if (!stream) {
+		warning("can't load sound %s", sound.c_str());
 		return;
 	}
 
-	_mixer->playStream(Audio::Mixer::kPlainSoundType, &h, Audio::makeWAVStream(f.release(), DisposeAfterUse::YES), -1, volume);
+	_mixer->playStream(Audio::Mixer::kPlainSoundType, &h, Audio::makeWAVStream(stream.release(), DisposeAfterUse::YES), -1, volume);
 	if (loops < 0)
 		_mixer->loopChannel(h);
 	_sounds[sound] = Sound{h, spatial, angle, volume, loops};
@@ -303,7 +308,12 @@ void PhoenixVREngine::playMovie(const Common::String &movie) {
 	debug("playMovie %s", movie.c_str());
 	Video::FourXMDecoder dec;
 
-	if (dec.loadFile(resolve(movie))) {
+	auto *stream = open(movie);
+	if (!stream) {
+		warning("can't load movie %s", movie.c_str());
+		return;
+	}
+	if (dec.loadStream(stream)) {
 		dec.start();
 
 		bool playing = true;
@@ -353,14 +363,14 @@ void PhoenixVREngine::lockKey(int idx, const Common::String &warp) {
 }
 
 Graphics::Surface *PhoenixVREngine::loadSurface(const Common::String &path) {
-	Common::File file;
-	if (!file.open(resolve(path))) {
-		warning("can't find %s", path.c_str());
+	Common::ScopedPtr<Common::SeekableReadStream> stream(open(path));
+	if (!stream) {
+		warning("can't find image %s", path.c_str());
 		return nullptr;
 	}
 	if (path.hasSuffix(".pcx")) {
 		Image::PCXDecoder pcx;
-		if (pcx.loadStream(file)) {
+		if (pcx.loadStream(*stream)) {
 			auto *s = pcx.getSurface()->convertTo(Graphics::BlendBlit::getSupportedPixelFormat(), pcx.hasPalette() ? pcx.getPalette().data() : nullptr);
 			if (s) {
 				byte r = 0, g = 0, b = 0;
@@ -567,17 +577,26 @@ void PhoenixVREngine::tick(float dt) {
 		debug("warp %d -> %s %s", _nextWarp, _warp->vrFile.c_str(), _warp->testFile.c_str());
 		_nextWarp = -1;
 
-		Common::File vr;
-		if (vr.open(resolve(_warp->vrFile))) {
-			_vr = VR::loadStatic(_pixelFormat, vr);
-			if (_vr.isVR()) {
-				_mousePos = _screenCenter;
-				_mouseRel = {};
-			}
-			_system->lockMouse(_vr.isVR());
+		{
+			Common::ScopedPtr<Common::SeekableReadStream> stream(open(_warp->vrFile));
+			if (stream) {
+				_vr = VR::loadStatic(_pixelFormat, *stream);
+				if (_vr.isVR()) {
+					_mousePos = _screenCenter;
+					_mouseRel = {};
+				}
+				_system->lockMouse(_vr.isVR());
+			} else
+				debug("can't find vr file %s", _warp->vrFile.c_str());
 		}
 
-		_regSet.reset(new RegionSet(resolve(_warp->testFile)));
+		{
+			Common::ScopedPtr<Common::SeekableReadStream> stream(open(_warp->testFile));
+			if (stream)
+				_regSet.reset(new RegionSet(*stream));
+			else
+				debug("no region %s", _warp->testFile.c_str());
+		}
 
 		Script::ExecutionContext ctx;
 		debug("execute warp script %s", _warp->vrFile.c_str());

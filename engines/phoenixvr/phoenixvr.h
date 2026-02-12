@@ -174,7 +174,7 @@ public:
 
 private:
 	static Common::String removeDrive(const Common::String &path);
-	Common::Path resolve(const Common::String &name);
+	Common::SeekableReadStream *open(const Common::String &name);
 
 	Graphics::Surface *loadSurface(const Common::String &path);
 	Graphics::Surface *loadCursor(const Common::String &path);

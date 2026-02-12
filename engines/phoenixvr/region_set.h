@@ -23,12 +23,12 @@
 #define PHOENIXVR_REGIONS_H
 
 #include "common/array.h"
-#include "common/path.h"
 #include "phoenixvr/rectf.h"
 
 namespace Common {
 class String;
-}
+class SeekableReadStream;
+} // namespace Common
 
 namespace PhoenixVR {
 struct Region {
@@ -49,7 +49,7 @@ class RegionSet {
 	Common::Array<Region> _regions;
 
 public:
-	RegionSet(const Common::Path &fname);
+	RegionSet(Common::SeekableReadStream &s);
 	uint size() const { return _regions.size(); }
 	const Common::Array<Region> &getRegions() const { return _regions; }
 	const Region &getRegion(uint idx) const {

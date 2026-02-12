@@ -25,18 +25,13 @@
 #include "phoenixvr/math.h"
 
 namespace PhoenixVR {
-RegionSet::RegionSet(const Common::Path &fname) {
-	Common::File file;
-	if (!file.open(fname)) {
-		debug("can't find region %s", fname.toString().c_str());
-		return;
-	}
-	auto n = file.readUint32LE();
+RegionSet::RegionSet(Common::SeekableReadStream &s) {
+	auto n = s.readUint32LE();
 	while (n--) {
-		auto a = file.readFloatLE();
-		auto b = file.readFloatLE();
-		auto c = file.readFloatLE();
-		auto d = file.readFloatLE();
+		auto a = s.readFloatLE();
+		auto b = s.readFloatLE();
+		auto c = s.readFloatLE();
+		auto d = s.readFloatLE();
 		_regions.push_back(Region{MIN(a, b), MAX(a, b), MIN(c, d), MAX(c, d)});
 		debug("region %s", _regions.back().toString().c_str());
 	}
