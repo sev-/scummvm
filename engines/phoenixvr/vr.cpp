@@ -76,8 +76,19 @@ struct Quantisation {
 	int quantCbCr[64];
 
 	Quantisation(int quality) {
+		int q;
+		if (quality < 0) {
+			q = 5000;
+		} else if (quality > 100) {
+			quality = 100;
+			q = 2 * (100 - quality);
+		} else if (quality >= 50) {
+			q = 2 * (100 - quality);
+		} else {
+			q = 5000 / quality;
+		}
 		for (uint i = 0; i != 64; ++i) {
-			auto v = (QY[i] * quality + 50) / 100;
+			auto v = (QY[i] * q + 50) / 100;
 			if (v > 255)
 				v = 255;
 			else if (v < 8) {
@@ -88,7 +99,7 @@ struct Quantisation {
 			quantY[i] = v;
 		}
 		for (uint i = 0; i != 64; ++i) {
-			auto v = (QUV[i] * quality + 50) / 100;
+			auto v = (QUV[i] * q + 50) / 100;
 			if (v > 255)
 				v = 255;
 			else if (v < 8) {
@@ -142,7 +153,7 @@ void unpack(Graphics::Surface &pic, const byte *huff, uint huffSize, const byte 
 				}
 			}
 
-			Video::FourXM::idct(ac, 5);
+			Video::FourXM::idct(ac, 4);
 		}
 		int dstY;
 		int dstX;
