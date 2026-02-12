@@ -825,10 +825,14 @@ Common::Error PhoenixVREngine::run() {
 					goToWarp(rclick, true);
 			} break;
 			case Common::EVENT_MOUSEMOVE:
+				if (!_hasFocus)
+					break;
 				_mousePos = event.mouse;
 				_mouseRel += event.relMouse;
 				break;
 			case Common::EVENT_LBUTTONUP: {
+				if (!_hasFocus)
+					break;
 				auto vrPos = currentVRPos();
 				if (_vr.isVR()) {
 					debug("click ax: %g, ay: %g", vrPos.x, vrPos.y);
@@ -854,6 +858,12 @@ Common::Error PhoenixVREngine::run() {
 					}
 				}
 			} break;
+			case Common::EVENT_FOCUS_GAINED:
+				_hasFocus = true;
+				break;
+			case Common::EVENT_FOCUS_LOST:
+				_hasFocus = false;
+				break;
 			default:
 				break;
 			}

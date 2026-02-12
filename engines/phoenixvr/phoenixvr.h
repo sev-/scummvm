@@ -194,6 +194,7 @@ private:
 	void renderVR(float dt);
 
 private:
+	bool _hasFocus = true;
 	Common::Point _mousePos, _mouseRel;
 	Common::String _nextScript;
 	Common::Path _currentScriptPath;
