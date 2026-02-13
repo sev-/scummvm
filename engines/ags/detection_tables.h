@@ -328,7 +328,7 @@ const PlainGameDescriptor GAME_NAMES[] = {
 	{ "gobliiins5-2", "Gobliiins5 - L'Invasion des Morglotons Part2" },
 	{ "gobliiins5-3", "Gobliiins5 - L'Invasion des Morglotons Part3" },
 	{ "gobliiins5-4", "Gobliiins5 - L'Invasion des Morglotons Part4" },
-	{ "gobliins6", "GOBLiiNS6 - The Evil Clan" },
+	{ "gobliins6", "GOBLiiNS6 - The Prince Buffoon" },
 	{ "goldenwake", "A Golden Wake" },
 	{ "graceward", "Graceward" },
 	{ "grandmabadass", "GrandMa Badass" },
