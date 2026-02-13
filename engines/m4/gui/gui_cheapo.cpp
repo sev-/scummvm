@@ -25,7 +25,6 @@
 #include "m4/graphics/gr_font.h"
 #include "m4/graphics/gr_pal.h"
 #include "m4/graphics/gr_series.h"
-#include "m4/adv_r/adv_trigger.h"
 #include "m4/core/cstring.h"
 #include "m4/core/errors.h"
 #include "m4/m4.h"
@@ -114,7 +113,7 @@ void TextField::set_string(const char *string) {
 		return;
 	}
 
-	int16 string_len = (int16)(cstrlen(string) + 1);
+	const int16 string_len = (int16)(cstrlen(string) + 1);
 	if (_string == nullptr) {
 		_string = (char *)mem_alloc(string_len, "string");
 	} else if (_string_len < string_len) {
@@ -271,12 +270,12 @@ ControlStatus ButtonClass::track(int32 eventType, int16 x, int16 y) {
 	if (!INTERFACE_VISIBLE)
 		return NOTHING;
 
-	ButtonState old_state = _state;
+	const ButtonState old_state = _state;
 	ControlStatus result = NOTHING;
 
-	bool button_clicked = (eventType == _ME_L_click) || (eventType == _ME_L_hold) || (eventType == _ME_L_drag);
+	const bool button_clicked = (eventType == _ME_L_click) || (eventType == _ME_L_hold) || (eventType == _ME_L_drag);
 
-	int16 overTag = inside(x, y);
+	const int16 overTag = inside(x, y);
 
 	if (overTag == _tag) {
 		// if Button is pressed
@@ -374,12 +373,12 @@ ControlStatus Toggler::track(int32 eventType, int16 x, int16 y) {
 	if (!INTERFACE_VISIBLE)
 		return NOTHING;
 
-	ButtonState old_state = _state;
+	const ButtonState old_state = _state;
 	ControlStatus result = NOTHING;
 
-	bool button_clicked = (eventType == _ME_L_click) || (eventType == _ME_L_hold) || (eventType == _ME_L_drag);
+	const bool button_clicked = (eventType == _ME_L_click) || (eventType == _ME_L_hold) || (eventType == _ME_L_drag);
 
-	int16 overTag = inside(x, y);
+	const int16 overTag = inside(x, y);
 
 	if (overTag == _tag) {
 		// if Button is pressed
@@ -437,8 +436,7 @@ int16 InterfaceBox::inside(int16 x, int16 y) const {
 	if (!RectClass::inside(x, y))
 		return -1;
 
-	int16 iter;
-	for (iter = 0; iter < _index; iter++) {
+	for (int16 iter = 0; iter < _index; iter++) {
 		if (_button[iter]->inside(x, y))
 			return _button[iter]->get_tag();
 	}
