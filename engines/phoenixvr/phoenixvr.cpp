@@ -585,7 +585,6 @@ void PhoenixVREngine::tick(float dt) {
 		static const float kSpeedY = 0.2f;
 		_angleX.add(float(da.x) * kSpeedX * dt);
 		_angleY.add(float(da.y) * kSpeedY * dt);
-		debug("angle %g %g -> %s", _angleX.angle(), _angleY.angle(), currentVRPos().toString().c_str());
 	} else
 		_mouseRel = {};
 
