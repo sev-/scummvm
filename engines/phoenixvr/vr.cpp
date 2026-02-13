@@ -44,6 +44,7 @@ namespace PhoenixVR {
 #define CHUNK_STATIC_3D (0xa0b1c200)
 #define CHUNK_ANIMATION (0xa0b1c201)
 #define CHUNK_ANIMATION_BLOCK (0xa0b1c211)
+#define CHUNK_ANIMATION_RESTART (0xa0b1c221)
 
 namespace {
 
@@ -253,6 +254,16 @@ VR VR::loadStatic(const Graphics::PixelFormat &format, Common::SeekableReadStrea
 				if (animChunkId == CHUNK_ANIMATION_BLOCK) {
 					frame.blockData.resize(animChunkSize - 8);
 					s.read(frame.blockData.data(), frame.blockData.size());
+				} else if (animChunkId == CHUNK_ANIMATION_RESTART) {
+					assert(animChunkSize - 8 == 4);
+					byte buf[4] = {};
+					s.read(buf, sizeof(buf));
+					frame.restartAtFrame = READ_LE_INT32(buf);
+					debug("animation loop, frame: %d", frame.restartAtFrame);
+				} else {
+					Common::Array<byte> buf(animChunkSize - 8);
+					s.read(buf.data(), buf.size());
+					warning("unknown frame type");
 				}
 				animation.frames.push_back(Common::move(frame));
 				s.seek(animChunkPos + animChunkSize);
@@ -380,6 +391,10 @@ void VR::Animation::renderNextFrame(Graphics::Surface &pic) {
 	} else {
 		auto &frame = frames[frameIndex++];
 		frame.render(pic);
+		if (frame.restartAtFrame >= 0) {
+			frameIndex = frame.restartAtFrame;
+			t = 1;
+		}
 	}
 }
 
@@ -388,9 +403,9 @@ void VR::Animation::render(Graphics::Surface &pic, float dt) {
 		return;
 
 	t += speed * dt;
-	if (t > 1) {
-		renderNextFrame(pic);
+	if (t >= 1) {
 		t = fmodf(t, 1);
+		renderNextFrame(pic);
 	}
 }
 

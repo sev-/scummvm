@@ -41,6 +41,7 @@ class VR {
 	struct Animation {
 		struct Frame {
 			Common::Array<byte> blockData;
+			int restartAtFrame = -1;
 			void render(Graphics::Surface &pic) const;
 		};
 
