@@ -213,20 +213,6 @@ static void vmng_black_out_video(int32 x1, int32 y1, int32 x2, int32 y2) {
 	g_system->fillScreen(r, 0);
 }
 
-bool AddScreenHotkey(void *scrnContent, int32 myKey, HotkeyCB callback) {
-	ScreenContext *myScreen = vmng_screen_find(scrnContent, nullptr);
-	if (myScreen == nullptr)
-		return false;
-
-	Hotkey *myHotkey = (Hotkey *)mem_alloc(sizeof(Hotkey), "hotkey");
-
-	myHotkey->myKey = myKey;
-	myHotkey->callback = callback;
-	myHotkey->next = myScreen->scrnHotkeys;
-	myScreen->scrnHotkeys = myHotkey;
-	return true;
-}
-
 bool RemoveScreenHotkey(void *scrnContent, int32 myKey) {
 	ScreenContext *myScreen = vmng_screen_find(scrnContent, nullptr);
 	if (myScreen == nullptr)

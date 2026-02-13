@@ -47,15 +47,6 @@ bool GetScreenCoords(void *scrnContent, int32 *x1, int32 *y1, int32 *x2, int32 *
 bool vmng_SetScreenRefresh(void *scrnContent, RefreshFunc redraw);
 
 /**
- * Add a "hot key" to a window.
- * @paramscrnContent	The window identifier
- * @param myKey			The "key" which, when pressed, will cause the callback function
- * to be executed.
- * @param callback		The function to be executed when "myKey" is pressed
- */
-bool AddScreenHotkey(void *scrnContent, int32 myKey, HotkeyCB callback);
-
-/**
  * Remove a hot key
  * @param scrnContent	The window identifier
  * @param myKey			The "hot key" to be removed.
