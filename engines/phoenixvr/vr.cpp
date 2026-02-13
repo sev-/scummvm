@@ -77,6 +77,7 @@ struct Quantisation {
 
 	Quantisation(int quality) {
 		int q;
+		assert(quality != 0);
 		if (quality < 0) {
 			q = 5000;
 		} else if (quality > 100) {
