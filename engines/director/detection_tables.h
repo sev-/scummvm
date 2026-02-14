@@ -1522,6 +1522,7 @@ static const PlainGameDescriptor directorGames[] = {
 	// Russian titles
 	{ "engl",				"English for Beginners" },
 	{ "max1max2",			"Макс демонстрация" },                         // Max (Tivola) demos of the first two games
+	{ "peppi",				"Пеппи Длинныйчулок" },						   // Pippi Longstocking
 	{ "plcd",				"Подводная Лодка" },						   // Podvodnaya Lodka (Submarine) magazine
 	{ "pyatachok2",			"Пятачок в Волшебном Лесу" },				   // Pong-Pong's Learning Adventure: Insects and Plants
 	{ "pyatachok3",			"Пятачок в Затерянном мире" },				   // Pong-Pong's Learning Adventure: The Lost World
@@ -10311,8 +10312,12 @@ static const DirectorGameDescription gameDescriptions[] = {
 
 	WINDEMO1("phonicsquest", "Demo", "Phonics Quest Demo.exe", "0c81c84ca4966313ad27d47daba44537", 2202074, 851),
 
-	WINGAME2_l("pippiprzygody", "", "PIPPI.EXE",		 "t:1b09c0423bc71ace28a8519afa222ab6", 56206,
-									"AAA_MOOV/dlia.mov", "d:23c8cfcda5128d9fcd3f9dd617d008e6", 1156049, Common::PL_POL, 800),
+	// Most likely the same game with two different localizations
+	// Russian version from 1C / Snowball Interactive (bugreport #16506)
+	WINGAME2_l("pippiprzygody", "", "PIPPI.EXE",		 "t:1b09c0423bc71ace28a8519afa222ab6",   56206,
+									"AAA_MOOV/dlia.mov", "f:23c8cfcda5128d9fcd3f9dd617d008e6", 1156049, Common::PL_POL, 800),
+	WINGAME2_l("peppi", "",			"PIPPI.EXE",		 "t:acf172e5effe2f5c15e50f3c781aef40", 1274514,
+									"AAA_MOOV/dlia.mov", "f:e6f6ef6ba73332210aee3f9d9cf408fd",  480186, Common::RU_RUS, 800),
 
 	// Original name is "Syng, lær og leg"
 	MACGAME1_l("pixeline1", "", "xn--syng, lr og leg-3lb",		"a44511b8ff0e46b4f9c85dd1cb58d458", 157815, Common::DA_DNK, 851),
