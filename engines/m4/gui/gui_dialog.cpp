@@ -321,7 +321,7 @@ void Dialog_Refresh(Dialog *d) {
 	}
 }
 
-void Dialog_Refresh_All(void) {
+void Dialog_Refresh_All() {
 	ScreenContext *myScreen = _G(frontScreen);
 
 	while (myScreen) {
@@ -522,11 +522,7 @@ static void Dialog_GetPrevPageList(Dialog *d) {
 	}
 }
 
-static void SystemErrCallback(void *, void *) {
-	_GD(okButton) = true;
-}
-
-void Dialog_KeyMouseCollision(void) {
+void Dialog_KeyMouseCollision() {
 	_GD(movingScreen) = false;
 	_GD(clickItem) = nullptr;
 	_GD(doubleClickItem) = nullptr;
