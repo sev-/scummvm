@@ -221,7 +221,7 @@ bool ClearWSAssets(uint32 assetType, int32 minHash, int32 maxHash) {
 	return true;
 }
 
-void ShutdownWSAssets(void) {
+void ShutdownWSAssets() {
 	if (!_GWS(wsloaderInitialized))
 		return;
 

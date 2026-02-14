@@ -126,8 +126,8 @@ void kernel_unexamine_inventory_object(RGB8 *pal, int steps, int delay);
 
 void remap_buffer_with_luminance_map(Buffer *src, int32 x1, int32 y1, int32 x2, int32 y2);
 void krn_SetGreyVideoMode(int32 grey_x1, int32 grey_y1, int32 grey_x2, int32 grey_y2, int32 color_x1, int32 color_y1, int32 color_x2, int32 color_y2);
-void krn_UnsetGreyVideoMode(void);
-bool krn_GetGreyMode(void);
+void krn_UnsetGreyVideoMode();
+bool krn_GetGreyMode();
 void krn_UpdateGreyArea(Buffer *greyOutThisBuffer, int32 scrnX, int32 scrnY,
 	int32 greyX1, int32 greyY1, int32 greyX2, int32 greyY2);
 void krn_ChangeBufferLuminance(Buffer *target, int32 percent);

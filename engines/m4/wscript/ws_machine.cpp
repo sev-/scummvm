@@ -625,11 +625,11 @@ void (*condOpTable[])(machine *m, int32 *pcOffset) = {
 	&op_SWITCH_GT				//9
 };
 
-void pauseEngines(void) {
+void pauseEngines() {
 	_GWS(enginesPaused) = true;
 }
 
-void unpauseEngines(void) {
+void unpauseEngines() {
 	_GWS(enginesPaused) = false;
 }
 

@@ -124,7 +124,7 @@ int32 *ws_GetDataFormats() {
 	return &dataFormats[0];
 }
 
-bool ws_InitCruncher(void) {
+bool ws_InitCruncher() {
 	// Make sure the cruncher has not been initialized
 	if (_GWS(cruncherInitialized))
 		error_show(FL,"cruncher not initialized");
@@ -1515,7 +1515,7 @@ void ws_CrunchAnim8s(int16 *depth_table) {
 	_GWS(crunchNext) = nullptr;
 }
 
-void ws_CrunchEOSreqs(void) {
+void ws_CrunchEOSreqs() {
 	// Make sure the cruncher has been initialized
 	VERIFY_INTIALIZED("ws_CrunchEOSreqs()");
 

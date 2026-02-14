@@ -55,7 +55,7 @@ bool f_stream_Init() {
 	return true;
 }
 
-void f_stream_Shutdown(void) {
+void f_stream_Shutdown() {
 	// Loop through the list, closing all stream requests, which also deallocs the request
 	strmRequest *myStream = _G(firstStream);
 	while (myStream) {
