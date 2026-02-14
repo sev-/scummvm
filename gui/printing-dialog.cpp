@@ -38,7 +38,6 @@ PrintingDialog::PrintingDialog(const Graphics::ManagedSurface &surface)
 	_preview = new GraphicsWidget(this, "PrintingDialog.Preview");
 
 	int16 x, y, w, h;
-
 	if (!g_gui.xmlEval()->getWidgetData("PrintingDialog.Preview", x, y, w, h))
 		error("Failed to get widget data for PrintingDialog.Preview");
 
@@ -47,10 +46,13 @@ PrintingDialog::PrintingDialog(const Graphics::ManagedSurface &surface)
 	float scaleY = (float)h / surface.h;
 	float scale = MIN(scaleX, scaleY);
 
-	Graphics::ManagedSurface *scaled = surface.scale((int)(surface.w * scale), (int)(surface.h * scale));
-	_preview->setGfx(scaled, false);
+	// Draw page and center the image on it
+	Graphics::ManagedSurface render(w, h, g_gui.theme()->getPixelFormat());
+	render.fillRect(Common::Rect(0, 0, w, h), render.format.RGBToColor(255, 255, 255));
+	render.blitFrom(_surface, _surface.getBounds(), Common::Rect((w - _surface.w * scale) / 2, (h - _surface.h * scale) / 2,
+		(w + _surface.w * scale) / 2, (h + _surface.h * scale) / 2));
 
-	delete scaled;
+	_preview->setGfx(&render, false);
 
 	_printButton = new ButtonWidget(this, "PrintingDialog.Print", _("Print"), Common::U32String(), kCmdPrint);
 	_saveAsImageCheckbox = new CheckboxWidget(this, "PrintingDialog.SaveAsImage", _("Save as image"));
