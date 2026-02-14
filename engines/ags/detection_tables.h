@@ -4787,6 +4787,9 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	GAME_ENTRY_EN("danewguys2", "jackass.exe", "029aab0fef5e9fff7b95ddf5d79d7718", 23932842), // Humble Store
 	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859238181, 0),  // Eng-Esp
 	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859245201, 0),
+	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859245202, 0),
+	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859246069, 0),
+	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859246337, 0),
 	GAME_ENTRY_PLUGIN_STEAM_NOAUTOSAVE("darkrites", "The Dark Rites of Arkham.ags", "e2f886fce2f5c535532c5cc7613cd31a", 1859247348, 0),
 	GAME_ENTRY_PLUGIN_STEAM_EN_NOAUTOSAVE("detectivebhdino", "Detective Boiled-Hard  Case File - Death of the Space Dino Hunter.exe", "4d5d25446373d4df71c6bda77a15230a", 49618396, 0),
 	GAME_ENTRY_STEAM("detectivegallo", "dgbuild.exe", "2e0678b5642c64e057022a79742743fb", 90740554),  // Multilang
