@@ -574,18 +574,18 @@ private:
 
 	MainCharacterKind getMainCharacterKindArg(uint argI) {
 		int32 value = getNumberArg(argI);
-		if (g_engine->isV3()) {
-			if (value < 0 || value > 2)
-				error("Unexpected value for main character kind: %d", value);
-			else
-				return (MainCharacterKind)value;
-		}
-		else {
+		if (g_engine->isV1()) {
 			if (value < 0 || value > 1)
 				error("Unexpected value for main character kind: %d", value);
 			return value == 0
 				? MainCharacterKind::Mortadelo
 				: MainCharacterKind::Filemon;
+		}
+		else {
+			if (value < 0 || value > 2)
+				error("Unexpected value for main character kind: %d", value);
+			else
+				return (MainCharacterKind)value;
 		}
 	}
 
@@ -945,6 +945,9 @@ private:
 				Vector2d(getNumberArg(1), getNumberArg(2)),
 				Vector2d(getNumberArg(3), getNumberArg(4)),
 				getNumberArg(0)));
+		case ScriptKernelTask::CamShakeV2:
+			warning("STUB: CamShakeV2");
+			return TaskReturn::finish(0);
 		case ScriptKernelTask::LerpCamXY:
 			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				Vector2d(getNumberArg(0), getNumberArg(1)),

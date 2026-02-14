@@ -691,7 +691,7 @@ Font::Font(GameFileReference fileRef)
 	, _spaceImageI(g_engine->isV1() ? 94 : 0)
 	, _charSpacing(g_engine->isV1() ? 3 : 0) {}
 
-static void fixFontAtlasColors(ManagedSurface &surface) {
+static void fixFontAtlasColorsV1(ManagedSurface &surface) {
 	// In V1 the font contains green and black pixels where
 	//  - black pixels should stay black
 	//  - green pixels should be the text color
@@ -709,6 +709,20 @@ static void fixFontAtlasColors(ManagedSurface &surface) {
 			auto alpha = *pixel & alphaMask;
 			*pixel = !alpha ? *pixel
 				: (*pixel & ~alphaMask) ? white : black;
+		}
+	}
+}
+
+static void fixFontAtlasColorsV2(ManagedSurface &surface) {
+	// In V2 the font contains grayscale pixels and magenta as color key
+	// We just remove the color key to transparent
+	assert(surface.format.bytesPerPixel == 4);
+	const uint32 magenta = surface.format.ARGBToColor(255, 255, 0, 255);
+
+	for (int16 y = 0; y < surface.h; y++) {
+		uint32 *pixel = (uint32 *)surface.getBasePtr(0, y);
+		for (int16 x = 0; x < surface.w; x++, pixel++) {
+			*pixel = *pixel == magenta ? 0 : *pixel;
 		}
 	}
 }
@@ -752,7 +766,9 @@ void Font::load() {
 		_texMaxs[i].setY((offsetY + _images[i]->h) * invHeight);
 	}
 	if (g_engine->isV1())
-		fixFontAtlasColors(atlasSurface);
+		fixFontAtlasColorsV1(atlasSurface);
+	else if (g_engine->isV2())
+		fixFontAtlasColorsV2(atlasSurface);
 
 	_texture = g_engine->renderer().createTexture(atlasSurface.w, atlasSurface.h, false);
 	_texture->update(atlasSurface);

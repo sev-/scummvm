@@ -19,6 +19,8 @@
  *
  */
 
+#include "gui/message.h"
+
 #include "alcachofa/alcachofa.h"
 #include "alcachofa/game.h"
 #include "alcachofa/script.h"
@@ -92,7 +94,7 @@ static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
 	ScriptKernelTask::Drop,
 	ScriptKernelTask::CharacterDrop,
 	ScriptKernelTask::ChangeDoor,
-	ScriptKernelTask::CamShake,
+	ScriptKernelTask::CamShakeV2,
 	ScriptKernelTask::ToggleRoomFloor,
 	ScriptKernelTask::SetDialogLineReturn,
 	ScriptKernelTask::DialogMenu,
@@ -181,7 +183,7 @@ public:
 	}
 
 	bool isAllowedToInteract() override {
-		return true; // original would be checking an unused script variable "Ocupados"
+		return g_engine->player().semaphore().isReleased();
 	}
 
 	bool shouldScriptLockInteraction() override {
@@ -214,6 +216,20 @@ static constexpr const char *kMapFilesSecta[] = {
 
 class GameSecta : public GameWithVersion2 {
 public:
+	GameSecta() {
+		// only the Steam Release has only the Videos in an ISO...
+		if (!SearchMan.hasFile(getVideoPath(0)) && SearchMan.hasFile("VIDS.iso")) {
+			_videosAreExtracted = false;
+			GUI::MessageDialog dialog("Please extract VIDS.iso in order to play videos.");
+			dialog.runModal();
+		}
+	}
+
+	bool isKnownBadVideo(int32 videoId) override {
+		// all videos are known bad if they are not extracted
+		return !_videosAreExtracted;
+	}
+
 	const char *const *getMapFiles() override {
 		return kMapFilesSecta;
 	}
@@ -221,6 +237,9 @@ public:
 	char getTextFileKey() override {
 		return static_cast<char>(0xA3);
 	}
+
+private:
+	bool _videosAreExtracted = true;
 };
 
 Game *Game::createForSecta() {
