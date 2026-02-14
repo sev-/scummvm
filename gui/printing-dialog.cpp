@@ -28,12 +28,29 @@
 #include "gui/widget.h"
 #include "gui/widgets/popup.h"
 
+#include "gui/gui-manager.h"
+#include "gui/ThemeEval.h"
+
 namespace GUI {
 
 PrintingDialog::PrintingDialog(const Graphics::ManagedSurface &surface)
 	: Dialog("PrintingDialog"), _surface(surface) {
 	_preview = new GraphicsWidget(this, "PrintingDialog.Preview");
-	_preview->setGfx(&surface, true);
+
+	int16 x, y, w, h;
+
+	if (!g_gui.xmlEval()->getWidgetData("PrintingDialog.Preview", x, y, w, h))
+		error("Failed to get widget data for PrintingDialog.Preview");
+
+	// Scale the surface to fit the preview area, if needed
+	float scaleX = (float)w / surface.w;
+	float scaleY = (float)h / surface.h;
+	float scale = MIN(scaleX, scaleY);
+
+	Graphics::ManagedSurface *scaled = surface.scale((int)(surface.w * scale), (int)(surface.h * scale));
+	_preview->setGfx(scaled, false);
+
+	delete scaled;
 
 	_printButton = new ButtonWidget(this, "PrintingDialog.Print", _("Print"), Common::U32String(), kCmdPrint);
 	_saveAsImageCheckbox = new CheckboxWidget(this, "PrintingDialog.SaveAsImage", _("Save as image"));
