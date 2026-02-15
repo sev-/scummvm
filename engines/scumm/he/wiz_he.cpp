@@ -464,9 +464,23 @@ WizPxShrdBuffer Wiz::drawAWizPrimEx(int globNum, int state, int x, int y, int z,
 		Graphics::ManagedSurface surf(destWidth, destHeight, Graphics::PixelFormat::createFormatCLUT8());
 		surf.copyRectToSurface(destPtr(), destWidth, 0, 0, destWidth, destHeight);
 
-		byte palette[256 * 3];
-		g_system->getPaletteManager()->grabPalette(palette, 0, 256);
-		surf.setPalette(palette, 0, 256);
+		byte pal[256 * 3];
+
+		if (_vm->_game.features & GF_16BIT_COLOR) {
+			WizRawPixel *wpal = (WizRawPixel *)_vm->getHEPaletteSlot(1);
+			int r, g, b;
+			for (int i = 0; i < 256; i++) {
+				rawPixelExtractComponents(wpal[i], r, g, b);
+				pal[i * 3 + 0] = r;
+				pal[i * 3 + 1] = g;
+				pal[i * 3 + 2] = b;
+			}
+		} else {
+			// Taking the current global palette. FIXME: could be not the thing we want
+			g_system->getPaletteManager()->grabPalette(pal, 0, 256);
+		}
+
+		surf.setPalette(pal, 0, 256);
 
 		Common::PrintingManager *pm = _vm->_system->getPrintingManager();
 		pm->printImage(surf);
