@@ -996,7 +996,7 @@ void MainCharacter::clearInventory() {
 
 Item *MainCharacter::getItemByName(const String &name) const {
 	for (auto *item : _items) {
-		if (item->name() == name)
+		if (item->name().equalsIgnoreCase(name))
 			return item;
 	}
 	return nullptr;

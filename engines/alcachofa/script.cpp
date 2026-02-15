@@ -833,6 +833,12 @@ private:
 			}
 			character->resetTalking();
 			character->room() = targetRoom;
+			if (g_engine->isV2() && character == g_engine->player().activeCharacter()) {
+				// this mechanic also exists in V1 but does not seem to be used
+				// as the script also changes the room to the target when placing characters
+				g_engine->player().changeRoom(getStringArg(1), true);
+				g_engine->sounds().setMusicToRoom(targetRoom->musicID());
+			}
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::LerpCharacterLodBias: {
@@ -908,6 +914,11 @@ private:
 			return TaskReturn::finish(1);
 		}
 		case ScriptKernelTask::Drop:
+			if (process().character() == MainCharacterKind::None) {
+				// This happens in Secta, the original game just ignores this case
+				warning("Tried to drop from none-character-process: %s at %u", getStringArg(0), _pc);
+			}
+			else
 			relatedCharacter().drop(getStringArg(0));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterDrop: {

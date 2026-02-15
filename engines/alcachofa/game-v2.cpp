@@ -170,6 +170,11 @@ public:
 			kind == MainCharacterKind::Mortadelo ? "PistaMorta" : "PistaFile");
 	}
 
+	bool hasMortadeloVoice(const Character *character) override {
+		return Game::hasMortadeloVoice(character) ||
+			character->name().equalsIgnoreCase("MORTA_ATADO");
+	}
+
 	bool shouldFilterTexturesByDefault() override {
 		return true; // TODO: Check this!
 	}
