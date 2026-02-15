@@ -24,8 +24,6 @@
 #include "common/savefile.h"
 #include "common/system.h"
 
-#include "graphics/paletteman.h"
-
 #include "printman.h"
 
 #include "gui/printing-dialog.h"
@@ -82,7 +80,7 @@ void PrintingManager::saveAsImage(const Graphics::ManagedSurface &surf, const Co
 	}
 
 	byte palette[256 * 3];
-	g_system->getPaletteManager()->grabPalette(palette, 0, 256);
+	surf.grabPalette(palette, 0, 256);
 
 #ifdef USE_PNG
 	Image::writePNG(*saveFile, surf, palette);
