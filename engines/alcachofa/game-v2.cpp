@@ -212,6 +212,17 @@ public:
 	}
 };
 
+class GameWithVersion2_0 : public GameWithVersion2 {
+public:
+	void onLoadedGameFiles() override {
+		GameWithVersion2::onLoadedGameFiles();
+
+		auto &script = g_engine->script();
+		script.fixNestedMenuPop(5921); // Mortadelo talking to ARQUEOLOGOS in CARRETERA
+		script.fixNestedMenuPop(20898); // Filemon talking to MANOLO in FILE_PIRAMIDE
+	}
+};
+
 static constexpr const char *kMapFilesSecta[] = {
 	"Mapas/mapa1.emc",
 	"Mapas/mapa2.emc",
@@ -219,7 +230,7 @@ static constexpr const char *kMapFilesSecta[] = {
 	nullptr
 };
 
-class GameSecta : public GameWithVersion2 {
+class GameSecta : public GameWithVersion2_0 {
 public:
 	GameSecta() {
 		// only the Steam Release has only the Videos in an ISO...

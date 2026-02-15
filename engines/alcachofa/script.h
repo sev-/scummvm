@@ -177,6 +177,7 @@ public:
 	inline bool hasVariable(const char *name) const { return _variableNames.contains(name); }
 
 	void setScriptTimer(bool reset);
+	void fixNestedMenuPop(uint32 pc);
 private:
 	friend struct ScriptTask;
 	friend struct ScriptTimerTask;

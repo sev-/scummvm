@@ -270,29 +270,35 @@ struct ScriptTask final : public Task {
 				if (instruction._op >= 0 && (uint32)instruction._op < opMap.size())
 					opName = ScriptOpNames[(int)opMap[(uint32)instruction._op]];
 
-				debugN("%u: %5u %-12s %8d Stack: ",
-					process().pid(), _pc - 1, opName, instruction._arg);
+				debugN("%u: %5u %-12s %8d Stack(%u): ",
+					process().pid(), _pc - 1, opName, instruction._arg, _valueStack.size());
 				if (_valueStack.empty())
 					debug("empty");
 				else {
-					const auto &top = _valueStack.top();
-					switch (top._type) {
-					case StackEntryType::Number:
-						debug("Number %d", top._number);
-						break;
-					case StackEntryType::Variable:
-						debug("Var %u (%d)", top._index, _script._variables[top._index]);
-						break;
-					case StackEntryType::Instruction:
-						debug("Instr %u", top._index);
-						break;
-					case StackEntryType::String:
-						debug("String %u (\"%s\")", top._index, getStringArg(0));
-						break;
-					default:
-						debug("INVALID");
-						break;
+					uint count = MIN(uint(3), _valueStack.size());
+					for (uint i = 0; i < count; i++) {
+						if (i != 0)
+							debugN(", ");
+						const auto &top = _valueStack[_valueStack.size() - 1 - i];
+						switch (top._type) {
+						case StackEntryType::Number:
+							debugN("Number %d", top._number);
+							break;
+						case StackEntryType::Variable:
+							debugN("Var %u (%d)", top._index, _script._variables[top._index]);
+							break;
+						case StackEntryType::Instruction:
+							debugN("Instr %u", top._index);
+							break;
+						case StackEntryType::String:
+							debugN("String %u (\"%s\")", top._index, getStringArg(0));
+							break;
+						default:
+							debugN("INVALID");
+							break;
+						}
 					}
+					debug("");
 				}
 			}
 
@@ -919,7 +925,7 @@ private:
 				warning("Tried to drop from none-character-process: %s at %u", getStringArg(0), _pc);
 			}
 			else
-			relatedCharacter().drop(getStringArg(0));
+				relatedCharacter().drop(getStringArg(0));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterDrop: {
 			auto &character = g_engine->world().getMainCharacterByKind(getMainCharacterKindArg(1));
@@ -1142,6 +1148,25 @@ void Script::setScriptTimer(bool reset) {
 		_scriptTimer = 0;
 	else if (_scriptTimer == 0)
 		_scriptTimer = g_engine->getMillis();
+}
+
+void Script::fixNestedMenuPop(uint32 pc) {
+	/* There seems to have been a script compiler bug related to nested dialog menus,
+	 * where an additional PopN 1 is called underflowing the value stack.
+	 * I see no good way to fix in the script interpreter so instead we patch the script
+	 *
+	 * This happens in:
+	 *   aventuradecine-cd-remastered-win-es
+	 *   secta-win-es
+	 *   escarabajo-win-es
+	 *   moscu-win-es
+	 */
+	scumm_assert(pc < _instructions.size());
+	auto &instr = _instructions[pc];
+	scumm_assert(g_engine->game().getScriptOpMap()[instr._op] == ScriptOp::PopN && instr._arg == 1);
+
+	// the additional pop is a fallback for a switch that is never called, so just not popping is fine
+	instr._arg = 0;
 }
 
 }
