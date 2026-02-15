@@ -24,7 +24,7 @@
 #include "common/savefile.h"
 #include "common/system.h"
 
-#include "printman.h"
+#include "backends/printing/printman.h"
 
 #include "gui/printing-dialog.h"
 
