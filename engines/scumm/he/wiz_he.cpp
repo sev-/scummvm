@@ -460,21 +460,12 @@ WizPxShrdBuffer Wiz::drawAWizPrimEx(int globNum, int state, int x, int y, int z,
 
 	// Verify if it's a printing operation...
 	if (flags & kWRFPrint) {
-		switch (srcComp) {
-		case kWCTNone:
-			{
-				Graphics::ManagedSurface surf(destWidth, destHeight, Graphics::PixelFormat::createFormatCLUT8());
-				surf.copyRectToSurface(destPtr(), destWidth, 0, 0, destWidth, destHeight);
-				surf.setPalette(_vm->getHEPaletteSlot(1), 0,256);
+		Graphics::ManagedSurface surf(destWidth, destHeight, Graphics::PixelFormat::createFormatCLUT8());
+		surf.copyRectToSurface(destPtr(), destWidth, 0, 0, destWidth, destHeight);
+		surf.setPalette(_vm->getHEPaletteSlot(1), 0, 256);
 
-				Common::PrintingManager *pm = _vm->_system->getPrintingManager();
-				pm->printImage(surf);
-
-				break;
-			}
-		default:
-			error("Printing: Unsupported compression mode %d", srcComp);
-		}
+		Common::PrintingManager *pm = _vm->_system->getPrintingManager();
+		pm->printImage(surf);
 
 		if (_vm->_game.heversion <= 99 || (flags & kWRFAlloc) == 0)
 			destPtr = WizPxShrdBuffer();
