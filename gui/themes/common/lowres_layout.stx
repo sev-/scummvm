@@ -2709,12 +2709,12 @@
 	</dialog>
 
 	<dialog name = 'PrintingDialog' overlays = 'screen_center' shading = 'dim'>
-		<layout type = 'horizontal' padding = '16, 16, 16, 16' spacing = '8'>
+		<layout type = 'horizontal' padding = '8, 8, 8, 8' spacing = '8'>
 			<widget name = 'Preview'
 					width = '100'
 					height = '133'
 			/>
-			<layout type = 'vertical' padding = '16, 16, 16, 16' spacing = '8'>
+			<layout type = 'vertical' padding = '8, 8, 8, 8' spacing = '8'>
 				<layout type = 'horizontal' padding = '0, 0, 0, 0' spacing = '8'>
 					<widget name = 'PrintersListDesc'
 						type = 'OptionsLabel'
