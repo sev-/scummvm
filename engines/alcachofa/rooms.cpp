@@ -1056,7 +1056,7 @@ public:
 		// e.g. c:\myf2000\textos\dialogos.txt
 		// but the filenames alone do not clash so we flatten everything
 
-		skipVarString(*file);
+		skipVarString(*_file);
 		uint32 totalSize = _file->readUint32LE();
 		int64 endPosition = _file->pos() + totalSize;
 		_file->skip(2);
