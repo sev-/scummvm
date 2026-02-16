@@ -484,8 +484,7 @@ private:
 
 		if (g_engine->isV1()) {
 			popN(g_engine->game().getKernelTaskArgCount(_lastKernelTaskI));
-		}
-		else {
+		} else {
 			scumm_assert(
 				_pc < _script._instructions.size() &&
 				g_engine->game().getScriptOpMap()[_script._instructions[_pc]._op] == ScriptOp::PopN);
@@ -586,8 +585,7 @@ private:
 			return value == 0
 				? MainCharacterKind::Mortadelo
 				: MainCharacterKind::Filemon;
-		}
-		else {
+		} else {
 			if (value < 0 || value > 2)
 				error("Unexpected value for main character kind: %d", value);
 			else
@@ -923,8 +921,7 @@ private:
 			if (process().character() == MainCharacterKind::None) {
 				// This happens in Secta, the original game just ignores this case
 				warning("Tried to drop from none-character-process: %s at %u", getStringArg(0), _pc);
-			}
-			else
+			} else
 				relatedCharacter().drop(getStringArg(0));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterDrop: {

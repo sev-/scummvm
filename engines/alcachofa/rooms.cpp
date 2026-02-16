@@ -42,8 +42,7 @@ Room::Room(World *world, SeekableReadStream &stream)
 	if (g_engine->isV1()) {
 		readRoomV1(stream);
 		readObjects(stream);
-	}
-	else
+	} else
 		readRoomV2and3(stream, false);
 	initBackground();
 }
@@ -72,8 +71,7 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 			return new EditBoxV2(room, stream);
 		else
 			return new EditBoxV3(room, stream);
-	}
-	else if (type == PushButton::kClassName)
+	} else if (type == PushButton::kClassName)
 		return new PushButton(room, stream);
 	else if (type == CheckBox::kClassName)
 		return new CheckBox(room, stream);
@@ -84,8 +82,7 @@ static ObjectBase *readRoomObject(Room *room, const String &type, SeekableReadSt
 			return new SlideButtonV2(room, stream);
 		else
 			return new SlideButtonV3(room, stream);
-	}
-	else if (type == IRCWindow::kClassName)
+	} else if (type == IRCWindow::kClassName)
 		return new IRCWindow(room, stream);
 	else if (type == MessageBox::kClassName)
 		return new MessageBox(room, stream);
