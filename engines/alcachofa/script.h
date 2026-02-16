@@ -35,6 +35,7 @@ class Process;
 
 // the ScriptOp and ScriptKernelTask enums represent the *implemented* order
 // the specific Game instance maps the version-specific op codes to our order
+// keep the order in sync with ScriptOpNames/KernelCallNames in script-debug.h
 
 enum class ScriptOp {
 	Nop,
@@ -129,7 +130,7 @@ enum class ScriptKernelTask {
 	LerpCamXYZ,
 	LerpCamToObjectKeepingZ,
 
-	ChangeDoor, ///< some special-case V1 tasks, unknown yet
+	ChangeDoor, ///< NOOP 
 	Disguise
 };
 
