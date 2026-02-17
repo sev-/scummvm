@@ -128,7 +128,7 @@ public:
 	}
 	
 	Point getSubtitlePos() override {
-		return Point(g_system->getWidth() / 2, 150); // TODO: Check subtitle position
+		return Point(g_system->getWidth() / 2, g_system->getHeight() - 200);
 	}
 
 	const char *getMenuRoom() override {
