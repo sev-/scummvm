@@ -37,6 +37,7 @@ static constexpr const float kInvBaseScale = 1.0f / kBaseScale;
 
 class Camera {
 public:
+	static Camera *create();
 	virtual ~Camera();
 	virtual Math::Angle rotation() const = 0;
 	virtual float scale() const = 0;
@@ -93,8 +94,9 @@ public:
 
 	Task *disguise(Process &process, int32 duration);
 
-private:
+protected:
 	friend struct CamV1DisguiseTask;
+	void updateLerping(Math::Vector3d &newCenter, float deltaTime, float speed);
 
 	WalkingCharacter *_followTarget = nullptr;
 	Math::Vector3d _target;
@@ -103,7 +105,13 @@ private:
 	uint32 _lastUpdateTime = 0;
 };
 
-class CameraV3 : public Camera {
+// V2 is so similar that only the update needs to be changed
+class CameraV2 final : public CameraV1 {
+public:
+	void update() override;
+};
+
+class CameraV3 final : public Camera {
 public:
 	Math::Angle rotation() const override;
 	float scale() const override;

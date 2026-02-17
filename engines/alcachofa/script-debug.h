@@ -102,7 +102,6 @@ static const char *const KernelCallNames[] = {
 	"WaitCamStopping",
 	"CamFollow",
 	"CamShake",
-	"CamShakeV2",
 	"LerpCamXY",
 	"LerpCamZ",
 	"LerpCamScale",

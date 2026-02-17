@@ -94,7 +94,7 @@ static constexpr const ScriptKernelTask kScriptKernelTaskMap[] = {
 	ScriptKernelTask::Drop,
 	ScriptKernelTask::CharacterDrop,
 	ScriptKernelTask::ChangeDoor,
-	ScriptKernelTask::CamShakeV2,
+	ScriptKernelTask::Disguise,
 	ScriptKernelTask::ToggleRoomFloor,
 	ScriptKernelTask::SetDialogLineReturn,
 	ScriptKernelTask::DialogMenu,

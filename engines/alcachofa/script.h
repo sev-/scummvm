@@ -115,7 +115,6 @@ enum class ScriptKernelTask {
 	WaitCamStopping,
 	CamFollow,
 	CamShake,
-	CamShakeV2,
 	LerpCamXY,
 	LerpCamZ,
 	LerpCamScale,

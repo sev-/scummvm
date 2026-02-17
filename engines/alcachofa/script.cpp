@@ -959,9 +959,6 @@ private:
 				Vector2d(getNumberArg(1), getNumberArg(2)),
 				Vector2d(getNumberArg(3), getNumberArg(4)),
 				getNumberArg(0)));
-		case ScriptKernelTask::CamShakeV2:
-			warning("STUB: CamShakeV2");
-			return TaskReturn::finish(0);
 		case ScriptKernelTask::LerpCamXY:
 			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
 				Vector2d(getNumberArg(0), getNumberArg(1)),
@@ -1028,11 +1025,13 @@ private:
 				if (pointObject == nullptr)
 					return TaskReturn::finish(1);
 				g_engine->cameraV1().lerpOrSet(pointObject->position(), getNumberArg(1));
+				// cameraV1 could also be the inherited cameraV2 here
 			}
 			return TaskReturn::finish(0);
 		}
 		case ScriptKernelTask::Disguise: {
 			// a somewhat bouncy vertical camera movement used in V1
+			// in V2 this would be a linear vertical shake, but only the waitForInput part is used
 			// or waiting for user to click
 			const auto duration = getNumberArg(0);
 			return TaskReturn::waitFor(duration == 0

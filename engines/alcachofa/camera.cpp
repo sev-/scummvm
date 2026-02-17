@@ -34,6 +34,17 @@ namespace Alcachofa {
 //
 // Base camera
 //
+Camera *Camera::create() {
+	if (g_engine->isV1())
+		return new CameraV1();
+	else if (g_engine->isV2())
+		return new CameraV2();
+	else if (g_engine->isV3())
+		return new CameraV3();
+	else
+		error("Camera is not implemented for this engine version");
+}
+
 Camera::~Camera() {}
 
 static Matrix4 scale2DMatrix(float scale) {
@@ -187,17 +198,40 @@ void CameraV1::update() {
 			_isLerping = true;
 		}
 	} else if (_isLerping) {
-		auto distance = newCenter.getDistanceTo(_target);
-		auto move = deltaTime * _lerpSpeed;
-		_lastUpdateTime = g_engine->getMillis();
-
-		if (move < distance)
-			newCenter += (_target - newCenter) / distance * move;
-		else {
-			newCenter = _target;
-			_isLerping = false;
-		}
+		updateLerping(newCenter, deltaTime, _lerpSpeed);
 	}
+
+	setAppliedCenter(newCenter);
+}
+
+void CameraV1::updateLerping(Vector3d &newCenter, float deltaTime, float speed) {
+	auto distance = newCenter.getDistanceTo(_target);
+	auto move = deltaTime * speed;
+	_lastUpdateTime = g_engine->getMillis();
+
+	if (move < distance)
+		newCenter += (_target - newCenter) / distance * move;
+	else {
+		newCenter = _target;
+		_isLerping = false;
+	}
+}
+
+void CameraV2::update() {
+	auto deltaTime = (g_engine->getMillis() - _lastUpdateTime) / 1000.0f;
+	auto newCenter = _appliedCenter;
+
+	if (_followTarget != nullptr) {
+		_target = as3D(_followTarget->position());
+		auto delta = _target - _appliedCenter;
+		_isLerping |= MAX(fabsf(delta.x()), fabsf(delta.y())) > 35.0f;
+
+		if (_isLerping)
+			updateLerping(newCenter, deltaTime, _lerpSpeed * _followTarget->graphic()->depthScale());
+		else
+			_lastUpdateTime = g_engine->getMillis();
+	} else if (_isLerping)
+		updateLerping(newCenter, deltaTime, _lerpSpeed);
 
 	setAppliedCenter(newCenter);
 }
