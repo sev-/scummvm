@@ -320,8 +320,8 @@ void AnimationBase::createIndexMappingV1and2(const Array<byte> &spriteOrder) {
 void AnimationBase::readFramesV1and2(Common::SeekableReadStream &stream, uint frameCount, uint spriteCount) {
 	for (uint i = 0; i < frameCount; i++) {
 		for (uint j = 0; j < spriteCount; j++) {
-			int imageI = stream.readSByte();
-			if (imageI <= 0) // we make sure that spriteBases + imageI <= 0 if the local imageI <= 0
+			int imageI = stream.readByte();
+			if (imageI <= 0 || imageI > _images.size()) // we make sure that spriteBases + imageI <= 0 if the local imageI is invalid
 				imageI = -(int)_spriteOffsets.size();
 			_spriteOffsets.push_back(imageI);
 		}
