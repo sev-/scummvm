@@ -226,9 +226,14 @@ void CameraV2::update() {
 		auto delta = _target - _appliedCenter;
 		_isLerping |= MAX(fabsf(delta.x()), fabsf(delta.y())) > 35.0f;
 
-		if (_isLerping)
-			updateLerping(newCenter, deltaTime, _lerpSpeed * _followTarget->graphic()->depthScale());
-		else
+		if (_isLerping) {
+			// The original code contains this formula to attenuate camera speed
+			// However timing experiments show that this is somehow negated or overwritten
+			//float scaleFactor = _followTarget->graphic()->depthScale();
+			//if (scaleFactor < 19660 / 65535.0f)
+			//	scaleFactor = (13107 / 65535.0f) + scaleFactor / 3;
+			updateLerping(newCenter, deltaTime, _lerpSpeed);
+		} else
 			_lastUpdateTime = g_engine->getMillis();
 	} else if (_isLerping)
 		updateLerping(newCenter, deltaTime, _lerpSpeed);
@@ -244,12 +249,26 @@ void CameraV1::setRoomBounds(Graphic &background) {
 	_roomScale = 0;
 }
 
+void CameraV2::setRoomBounds(Graphic &background) {
+	Point bgSize = background.animation().imageSize(0);
+	float scaleFactor = background.scale() / (float)kBaseScale;
+	Point screenSize(g_system->getWidth(), g_system->getHeight());
+	_roomMin = as2D(background.topLeft() + screenSize / 2) * scaleFactor;
+	_roomMax = _roomMin + as2D(bgSize - screenSize) * scaleFactor;
+	_roomScale = 0;
+}
+
 void CameraV1::setFollow(WalkingCharacter *target) {
 	_lastUpdateTime = g_engine->getMillis();
 	_followTarget = target;
 	_isLerping = false;
 	if (target != nullptr)
 		setAppliedCenter(as3D(target->position()));
+}
+
+void CameraV2::setFollow(WalkingCharacter *target) {
+	CameraV1::setFollow(target);
+	_lerpSpeed = 230.0f;
 }
 
 void CameraV1::onChangedRoom(bool resetCamera) {

@@ -105,10 +105,12 @@ protected:
 	uint32 _lastUpdateTime = 0;
 };
 
-// V2 is so similar that only the update needs to be changed
+// V2 is so similar that most can be reused from V1
 class CameraV2 final : public CameraV1 {
 public:
 	void update() override;
+	void setRoomBounds(Graphic &background) override;
+	void setFollow(WalkingCharacter *target) override;
 };
 
 class CameraV3 final : public Camera {
