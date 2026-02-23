@@ -704,9 +704,9 @@ void FilmLoopCastMember::load() {
 	}
 
 	if (loop) {
-		debugC(2, kDebugLoading, "****** Loading '%s' id: %d, %d bytes", tag2str(tag), filmLoopId, (int)loop->size());
+		debugC(2, kDebugLoading, "****** FilmLoopCastMember::load(): Loading '%s' id: %d, %d bytes", tag2str(tag), filmLoopId, (int)loop->size());
 		_score = new Score(g_director->getCurrentMovie());
-		_score->loadFrames(*loop, _cast->_version);
+		_score->loadFrames(*loop, _cast->_version, true);
 		delete loop;
 	} else {
 		warning("FilmLoopCastMember::load(): Film loop not found");
