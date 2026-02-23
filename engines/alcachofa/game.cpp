@@ -227,6 +227,10 @@ Game *Game::create() {
 		switch (*desc.desc.gameId) {
 		case 's':
 			return createForSecta();
+		case 'm':
+			return createForMoscu();
+		case 'e':
+			return createForEscarabajo();
 		}
 		break;
 	case EngineVersion::V3_0:

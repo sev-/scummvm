@@ -398,7 +398,7 @@ public:
 	}
 
 	String getMusicPath(int32 trackId) override {
-		return String::format("track%02d", trackId);
+		return String::format("track%d", trackId);
 	}
 
 	// probably the original CDs have music, the Steam release has no music...

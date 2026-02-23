@@ -161,10 +161,6 @@ public:
 		return String("Sonidos/") + filename;
 	}
 
-	String getMusicPath(int32 trackId) override {
-		return String::format("Music/Track%02d", trackId);
-	}
-
 	int32 getCharacterJingle(MainCharacterKind kind) override {
 		return g_engine->script().variable(
 			kind == MainCharacterKind::Mortadelo ? "PistaMorta" : "PistaFile");
@@ -221,10 +217,26 @@ public:
 		script.fixNestedMenuPop(5921); // Mortadelo talking to ARQUEOLOGOS in CARRETERA
 		script.fixNestedMenuPop(20898); // Filemon talking to MANOLO in FILE_PIRAMIDE
 	}
+
+	char getTextFileKey() override {
+		return static_cast<char>(0xA3);
+	}
 };
 
 static constexpr const char *kMapFilesSecta[] = {
 	"Mapas/mapa1.emc",
+	"Mapas/mapa2.emc",
+	"Mapas/global.emc",
+	nullptr
+};
+
+static constexpr const char *kMapFilesMoscu[] = {
+	"Mapas/mapa1.emc",
+	"Mapas/global.emc",
+	nullptr
+};
+
+static constexpr const char *kMapFilesEscarabajo[] = {
 	"Mapas/mapa2.emc",
 	"Mapas/global.emc",
 	nullptr
@@ -246,20 +258,64 @@ public:
 		return !_videosAreExtracted;
 	}
 
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 0;
+	}
+
 	const char *const *getMapFiles() override {
 		return kMapFilesSecta;
 	}
 
-	char getTextFileKey() override {
-		return static_cast<char>(0xA3);
+	String getMusicPath(int32 trackId) override {
+		const Room *room = g_engine->player().currentRoom();
+		const char *dirName = room != nullptr && room->mapIndex() == 1 ? "Music_Cleopatra" : "Music";
+		return String::format("%s/Track%02d", dirName, trackId);
 	}
 
 private:
 	bool _videosAreExtracted = true;
 };
 
+class GameMoscu : public GameWithVersion2_0 {
+public:
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 1;
+	}
+
+	const char *const *getMapFiles() override {
+		return kMapFilesMoscu;
+	}
+
+	String getMusicPath(int32 trackId) override {
+		return String::format("track%d", trackId);
+	}
+};
+
+class GameEscarabajo : public GameWithVersion2_0 {
+public:
+	void onLoadedGameFiles() override {
+		g_engine->script().variable("EsJuegoCompleto") = 2;
+	}
+
+	const char *const *getMapFiles() override {
+		return kMapFilesEscarabajo;
+	}
+
+	String getMusicPath(int32 trackId) override {
+		return String::format("track%d", trackId);
+	}
+};
+
 Game *Game::createForSecta() {
 	return new GameSecta();
+}
+
+Game *Game::createForMoscu() {
+	return new GameMoscu();
+}
+
+Game *Game::createForEscarabajo() {
+	return new GameEscarabajo();
 }
 
 }

@@ -128,6 +128,8 @@ public:
 	static Game *createForTerror(); // V1
 	static Game *createForVaqueros(); // V1
 	static Game *createForSecta(); // V2
+	static Game *createForMoscu(); // V2
+	static Game *createForEscarabajo(); // V2
 
 	const Message _message;
 };
