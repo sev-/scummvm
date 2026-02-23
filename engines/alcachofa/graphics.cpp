@@ -321,7 +321,7 @@ void AnimationBase::readFramesV1and2(Common::SeekableReadStream &stream, uint fr
 	for (uint i = 0; i < frameCount; i++) {
 		for (uint j = 0; j < spriteCount; j++) {
 			int imageI = stream.readByte();
-			if (imageI <= 0 || imageI > _images.size()) // we make sure that spriteBases + imageI <= 0 if the local imageI is invalid
+			if (imageI <= 0 || (uint)imageI > _images.size()) // we make sure that spriteBases + imageI <= 0 if the local imageI is invalid
 				imageI = -(int)_spriteOffsets.size();
 			_spriteOffsets.push_back(imageI);
 		}
