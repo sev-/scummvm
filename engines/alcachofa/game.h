@@ -59,6 +59,7 @@ public:
 	virtual Common::Span<const ScriptKernelTask> getScriptKernelTaskMap() = 0;
 	virtual void updateScriptVariables() = 0;
 	virtual void drawScreenStates();
+	virtual Common::String reencodePath(const Common::String &path);
 	virtual const char *getDialogFileName() = 0;
 	virtual const char *getObjectFileName() = 0;
 	virtual char getTextFileKey() = 0;

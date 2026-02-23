@@ -289,10 +289,18 @@ public:
 	String getMusicPath(int32 trackId) override {
 		return String::format("track%d", trackId);
 	}
+
+	bool isKnownBadVideo(int32 videoId) override {
+		return videoId == 0; // MPEG-4 codec is unsupported
+	}
 };
 
 class GameEscarabajo : public GameWithVersion2_0 {
 public:
+	GameEscarabajo() {
+		_hasMessedUpEncoding = !SearchMan.hasFile(Path(reencode("Animaciones/M\xC1SCARA MUSEO_RECEPCI\xD3N.ANI")));
+	}
+
 	void onLoadedGameFiles() override {
 		g_engine->script().variable("EsJuegoCompleto") = 2;
 	}
@@ -304,6 +312,31 @@ public:
 	String getMusicPath(int32 trackId) override {
 		return String::format("track%d", trackId);
 	}
+
+	bool isKnownBadVideo(int32 videoId) override {
+		return videoId == 0; // MPEG-4 codec is unsupported
+	}
+
+	String reencodePath(const String &path) override {
+		if (!_hasMessedUpEncoding)
+			return Game::reencodePath(path);
+
+		// The Steam release has wrong characters due to some messed up UTF8 conversion
+		U32String u32String = path.decode(Common::CodePage::kISO8859_1);
+		for (uint i = 0; i < u32String.size(); i++) {
+			const auto ch = u32String[i];
+			if (ch == 0xC1) // Á -> ╡
+				u32String[i] = 0x2561;
+			else if (ch == 0xD3) // Ó -> α
+				u32String[i] = 0x03B1;
+			else if (ch == 0xCD) // Í -> ╓
+				u32String[i] = 0x2553;
+		}
+		return u32String.encode();
+	}
+
+private:
+	bool _hasMessedUpEncoding = false;
 };
 
 Game *Game::createForSecta() {

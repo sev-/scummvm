@@ -637,7 +637,9 @@ ObjectBase *World::getObjectByName(MainCharacterKind character, const char *name
 		return getObjectByName(name);
 	const auto &player = g_engine->player();
 	ObjectBase *result = nullptr;
-	if (player.activeCharacterKind() == character && player.currentRoom() != player.activeCharacter()->room())
+	if (player.activeCharacterKind() == character &&
+		player.currentRoom() != nullptr &&
+		player.currentRoom() != player.activeCharacter()->room())
 		result = player.currentRoom()->getObjectByName(name);
 	if (result == nullptr)
 		result = player.activeCharacter()->room()->getObjectByName(name);
@@ -1015,7 +1017,7 @@ GameFileReference World::readFileRef(SeekableReadStream &stream) const {
 		stream.skip(size);
 		return { name, (uint32)_files.size(), offset, size };
 	} else
-		return GameFileReference(reencode(name));
+		return GameFileReference(g_engine->game().reencodePath(name));
 }
 
 ScopedPtr<SeekableReadStream> World::openFileRef(const GameFileReference &ref) const {
