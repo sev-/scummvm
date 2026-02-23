@@ -1832,7 +1832,7 @@ void Score::playQueuedSound() {
 	sound->playFPlaySound();
 }
 
-void Score::loadFrames(Common::SeekableReadStreamEndian &stream, uint16 version) {
+void Score::loadFrames(Common::SeekableReadStreamEndian &stream, uint16 version, bool loadSprites) {
 	debugC(1, kDebugLoading, "****** Loading frames VWSC");
 
 	// Setup our streams for frames processing
@@ -1955,7 +1955,7 @@ void Score::loadFrames(Common::SeekableReadStreamEndian &stream, uint16 version)
 
 	// Calculate number of frames and their positions
 	// numOfFrames in the header is often incorrect
-	for (_numFrames = 1; loadFrame(_numFrames, false); _numFrames++) {
+	for (_numFrames = 1; loadFrame(_numFrames, loadSprites); _numFrames++) {
 		_scoreCache.push_back(new Frame(*_currentFrame));
 
 		for (int i = 0; i < (int)_currentFrame->_sprites.size(); i++) {
