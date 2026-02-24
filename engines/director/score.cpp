@@ -164,6 +164,9 @@ bool Score::processFrozenPlayScript() {
 
 
 bool Score::processFrozenScripts(bool recursion, int count) {
+	if (!_haveInteractivity)
+		return true;
+
 	if (!processFrozenPlayScript())
 		return false;
 
@@ -928,11 +931,11 @@ void Score::incrementFilmLoops() {
 			if (!fl->_score->_scoreCache.empty()) {
 				// increment the film loop counter
 				if (fl->_looping) {
-					it->_filmLoopFrame += 1;
-					it->_filmLoopFrame %= fl->_score->_scoreCache.size();
-				} else if (it->_filmLoopFrame < (fl->_score->_scoreCache.size() - 1)) {
-					it->_filmLoopFrame += 1;
+					if (_curFrameNumber + 1 > getFramesNum())
+						fl->_score->setCurrentFrame(1);
 				}
+
+				fl->_score->step();
 			} else {
 				warning("Score::updateFilmLoops(): invalid film loop in castId %s", it->_sprite->_castId.asString().c_str());
 			}

@@ -117,8 +117,8 @@ Common::Array<Channel> *FilmLoopCastMember::getSubChannels(Common::Rect &bbox, u
 
 	// get the list of sprite IDs for this frame
 	Common::Array<int> spriteIds;
-	for (uint i = 0; i < _score->_scoreCache[frame]->_sprites.size(); ++i) {
-		if (_score->_scoreCache[frame]->_sprites[i] && !_score->_scoreCache[frame]->_sprites[i]->_castId.isNull())
+	for (uint i = 0; i < _score->_channels.size(); ++i) {
+		if (_score->_channels[i]->_sprite && !_score->_channels[i]->_sprite->_castId.isNull())
 			spriteIds.push_back(i);
 	}
 
@@ -133,7 +133,7 @@ Common::Array<Channel> *FilmLoopCastMember::getSubChannels(Common::Rect &bbox, u
 
 	// copy the sprites in order to the list
 	for (auto &iter : spriteIds) {
-		Sprite *src = _score->_scoreCache[frame]->_sprites[iter];
+		Sprite *src = _score->_channels[iter]->_sprite;
 		if (src->_castId.isNull())
 			continue;
 		// translate sprite relative to the global bounding box
@@ -162,6 +162,7 @@ Common::Array<Channel> *FilmLoopCastMember::getSubChannels(Common::Rect &bbox, u
 		Channel chan(nullptr, src);
 		_subchannels.push_back(chan);
 	}
+
 	// Initialise the widgets on all of the subchannels.
 	// This has to be done once the list has been constructed, otherwise
 	// the list grow operation will erase the widgets as they aren't
