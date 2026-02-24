@@ -233,7 +233,7 @@ void FilmLoopCastMember::load() {
 
 	if (loop) {
 		debugC(2, kDebugLoading, "****** FilmLoopCastMember::load(): Loading '%s' id: %d, %d bytes", tag2str(tag), filmLoopId, (int)loop->size());
-		_score = new Score(g_director->getCurrentMovie());
+		_score = new Score(g_director->getCurrentMovie(), false);
 		_score->loadFrames(*loop, _cast->_version, true);
 		delete loop;
 	} else {

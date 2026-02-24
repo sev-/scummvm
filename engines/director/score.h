@@ -65,7 +65,7 @@ struct Label {
 
 class Score {
 public:
-	Score(Movie *movie);
+	Score(Movie *movie, bool haveInteractivity);
 	~Score();
 
 	Movie *getMovie() const { return _movie; }
@@ -235,6 +235,8 @@ public:
 	Common::Array<bool> _spriteDetailAccessed;
 
 	bool _disableGoPlayUpdateStage;
+
+	bool _haveInteractivity;
 
 private:
 	DirectorEngine *_vm;

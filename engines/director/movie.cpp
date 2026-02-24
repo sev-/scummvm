@@ -82,7 +82,7 @@ Movie::Movie(Window *window) {
 	_cast = new Cast(this, DEFAULT_CAST_LIB);
 	_casts.setVal(_cast->_castLibID, _cast);
 	_sharedCast = nullptr;
-	_score = new Score(this);
+	_score = new Score(this, true);
 
 	_selEnd = -1;
 	_selStart = -1;
