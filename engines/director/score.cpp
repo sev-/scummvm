@@ -55,11 +55,12 @@ namespace Director {
 
 #include "director/palette-fade.h"
 
-Score::Score(Movie *movie) {
+Score::Score(Movie *movie, bool haveInteractivity) {
 	_movie = movie;
 	_window = movie->getWindow();
 	_vm = _movie->getVM();
 	_lingo = _vm->getLingo();
+	_haveInteractivity = haveInteractivity;
 
 	_soundManager = _window->getSoundManager();
 
@@ -329,6 +330,9 @@ void Score::startPlay() {
 		return;
 	}
 
+	if (_haveInteractivity && _version >= kFileVer300)
+		_movie->processEvent(kEventStartMovie);
+
 	// load first frame (either 1 or _nextFrame)
 	updateCurrentFrame();
 
@@ -351,23 +355,25 @@ void Score::step() {
 	if (_playState == kPlayStopped)
 		return;
 
-	if (!_movie->_inputEventQueue.empty() && !_window->frozenLingoStateCount()) {
-		_lingo->processEvents(_movie->_inputEventQueue, true);
-	}
-	if (_version >= kFileVer300 && !_window->_newMovieStarted && _playState != kPlayStopped) {
-		_movie->processEvent(kEventIdle);
+	if (_haveInteractivity) {
+		if (!_movie->_inputEventQueue.empty() && !_window->frozenLingoStateCount()) {
+			_lingo->processEvents(_movie->_inputEventQueue, true);
+		}
+		if (_version >= kFileVer300 && !_window->_newMovieStarted && _playState != kPlayStopped) {
+			_movie->processEvent(kEventIdle);
 
-		if (_version >= kFileVer600) {
-			if (_movie->_currentHoveredSpriteId) {
-				_movie->processEvent(kEventMouseWithin, _movie->_currentHoveredSpriteId);
-			}
+			if (_version >= kFileVer600) {
+				if (_movie->_currentHoveredSpriteId) {
+					_movie->processEvent(kEventMouseWithin, _movie->_currentHoveredSpriteId);
+				}
 
-			_soundManager->processCuePoints();
-		} else 	if (_version >= kFileVer500) {
-			// In D5, these events are only generated if a mouse button is pressed
-			bool isButtonDown = !Director::DT::isMouseInputIgnored() && (g_system->getEventManager()->getButtonState() != 0);
-			if (_movie->_currentHoveredSpriteId && isButtonDown) {
-				_movie->processEvent(kEventMouseWithin, _movie->_currentHoveredSpriteId);
+				_soundManager->processCuePoints();
+			} else 	if (_version >= kFileVer500) {
+				// In D5, these events are only generated if a mouse button is pressed
+				bool isButtonDown = !Director::DT::isMouseInputIgnored() && (g_system->getEventManager()->getButtonState() != 0);
+				if (_movie->_currentHoveredSpriteId && isButtonDown) {
+					_movie->processEvent(kEventMouseWithin, _movie->_currentHoveredSpriteId);
+				}
 			}
 		}
 	}
@@ -393,9 +399,13 @@ void Score::stopPlay() {
 	if (_stopPlayCalled)
 		return;
 	_stopPlayCalled = true;
-	if (_version >= kFileVer300)
-		_movie->processEvent(kEventStopMovie);
-	_lingo->executePerFrameHook(-1, 0);
+
+	if (_haveInteractivity) {
+		if (_version >= kFileVer300)
+			_movie->processEvent(kEventStopMovie);
+
+		_lingo->executePerFrameHook(-1, 0);
+	}
 }
 
 void Score::setDelay(uint32 ticks) {
@@ -661,7 +671,7 @@ void Score::update() {
 		// When Lingo::func_goto* is called, _nextFrame is set
 		// and _skipFrameAdvance is set to true.
 		// exitFrame is not called in this case.
-		if (!_window->_skipFrameAdvance && !_exitFrameCalled) {
+		if (_haveInteractivity && !_window->_skipFrameAdvance && !_exitFrameCalled) {
 			// Exit the current frame. This can include scopeless ScoreScripts.
 			_movie->processEvent(kEventExitFrame);
 			_exitFrameCalled = true;
@@ -708,64 +718,68 @@ void Score::update() {
 	debugC(1, kDebugEvents, "##############################");
 	g_debugger->frameHook();
 
-	// movie could have been stopped by a window switch or a debug flag
-	if (_playState == kPlayStopped) {
-		processFrozenScripts();
-		return;
-	}
+	uint32 count = 0;
 
-	uint32 count = _window->frozenLingoStateCount();
-
-	// Director 4 and below will allow infinite recursion via the perFrameHook.
-	if (_version < kFileVer500) {
-		// new frame, first call the perFrameHook (if one exists)
-		if (!_window->_newMovieStarted && !_vm->_playbackPaused) {
-			// Call the perFrameHook as soon as a frame switch is done.
-			// If there is a transition, the perFrameHook is called
-			// after each transition subframe instead of here.
-			if (_currentFrame->_mainChannels.transType == 0 && _currentFrame->_mainChannels.trans.isNull()) {
-				_lingo->executePerFrameHook(_curFrameNumber, 0);
-			}
-		}
-		if (_window->frozenLingoStateCount() > count)
+	if (_haveInteractivity) {
+		// movie could have been stopped by a window switch or a debug flag
+		if (_playState == kPlayStopped) {
+			processFrozenScripts();
 			return;
-	}
-
-	// Check to see if we've hit the recursion limit
-	if (_version >= kFileVer400 && _window->frozenLingoRecursionCount() >= 2) {
-		debugC(1, kDebugEvents, "Score::update(): hitting D4 recursion depth limit, defrosting");
-		processFrozenScripts(true);
-		return;
-	} else if (_window->frozenLingoStateCount() >= 64) {
-		warning("Score::update(): Stopping runaway script recursion. By this point D3 will have run out of stack space");
-		processFrozenScripts();
-		return;
-	}
-
-	// Director 5 and above actually check for recursion for the perFrameHook.
-	if (_version >= kFileVer500) {
-		// new frame, first call the perFrameHook (if one exists)
-		if (!_window->_newMovieStarted && !_vm->_playbackPaused) {
-			// Call the perFrameHook as soon as a frame switch is done.
-			// If there is a transition, the perFrameHook is called
-			// after each transition subframe instead of here.
-			//
-			// This also sends stepFrame message to actorList
-			if (_currentFrame->_mainChannels.transType == 0 && _currentFrame->_mainChannels.trans.isNull()) {
-				_lingo->executePerFrameHook(_curFrameNumber, 0);
-			}
 		}
-		if (_window->frozenLingoStateCount() > count)
+
+		count = _window->frozenLingoStateCount();
+
+		// Director 4 and below will allow infinite recursion via the perFrameHook.
+		if (_version < kFileVer500) {
+			// new frame, first call the perFrameHook (if one exists)
+			if (!_window->_newMovieStarted && !_vm->_playbackPaused) {
+				// Call the perFrameHook as soon as a frame switch is done.
+				// If there is a transition, the perFrameHook is called
+				// after each transition subframe instead of here.
+				if (_currentFrame->_mainChannels.transType == 0 && _currentFrame->_mainChannels.trans.isNull()) {
+					_lingo->executePerFrameHook(_curFrameNumber, 0);
+				}
+			}
+			if (_window->frozenLingoStateCount() > count)
+				return;
+		}
+
+		// Check to see if we've hit the recursion limit
+		if (_version >= kFileVer400 && _window->frozenLingoRecursionCount() >= 2) {
+			debugC(1, kDebugEvents, "Score::update(): hitting D4 recursion depth limit, defrosting");
+			processFrozenScripts(true);
 			return;
-	}
+		} else if (_window->frozenLingoStateCount() >= 64) {
+			warning("Score::update(): Stopping runaway script recursion. By this point D3 will have run out of stack space");
+			processFrozenScripts();
+			return;
+		}
 
-	if (_version >= kFileVer600) {
-		bool prevDis = _disableGoPlayUpdateStage;
-		_disableGoPlayUpdateStage = true;
+		// Director 5 and above actually check for recursion for the perFrameHook.
+		if (_version >= kFileVer500) {
+			// new frame, first call the perFrameHook (if one exists)
+			if (!_window->_newMovieStarted && !_vm->_playbackPaused) {
+				// Call the perFrameHook as soon as a frame switch is done.
+				// If there is a transition, the perFrameHook is called
+				// after each transition subframe instead of here.
+				//
+				// This also sends stepFrame message to actorList
+				if (_currentFrame->_mainChannels.transType == 0 && _currentFrame->_mainChannels.trans.isNull()) {
+					_lingo->executePerFrameHook(_curFrameNumber, 0);
+				}
+			}
+			if (_window->frozenLingoStateCount() > count)
+				return;
+		}
 
-		_movie->broadcastEvent(kEventPrepareFrame);
+		if (_version >= kFileVer600) {
+			bool prevDis = _disableGoPlayUpdateStage;
+			_disableGoPlayUpdateStage = true;
 
-		_disableGoPlayUpdateStage = prevDis;
+			_movie->broadcastEvent(kEventPrepareFrame);
+
+			_disableGoPlayUpdateStage = prevDis;
+		}
 	}
 
 	bool sound1Changed = true;
@@ -786,6 +800,9 @@ void Score::update() {
 	// Window is drawn between the prepareFrame and enterFrame events (Lingo in a Nutshell, p.100)
 	renderFrame(_curFrameNumber, kRenderModeNormal, sound1Changed, sound2Changed);
 	_window->_newMovieStarted = false;
+
+	if (!_haveInteractivity)
+		return;
 
 	// then call the stepMovie hook (if one exists)
 	// D4 and above only call it if _allowOutdatedLingo is enabled.
