@@ -221,6 +221,13 @@ public:
 	char getTextFileKey() override {
 		return static_cast<char>(0xA3);
 	}
+
+	PointObject *unknownCamLerpTarget(const char *action, const char *name) override {
+		// Original bug: a main character being reinterpret_cast to a PointObject, undefined behavior ensues
+		if (scumm_stricmp(name, "FILEMON"))
+			return Game::unknownCamLerpTarget(action, name);
+		return nullptr;
+	}
 };
 
 static constexpr const char *kMapFilesSecta[] = {
