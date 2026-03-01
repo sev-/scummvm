@@ -131,35 +131,45 @@ Common::Array<Channel> *FilmLoopCastMember::getSubChannels(Common::Rect &bbox, u
 			bbox.top + bbox.height()/2,
 			bbox.width(), bbox.height());
 
+	bool needToScale = (bbox.width() != _initialRect.width() || bbox.height() != _initialRect.height());
+	float scaleX = 1.0f;
+	float scaleY = 1.0f;
+
+	if (needToScale) {
+		scaleX = (float)bbox.width() / _initialRect.width();
+		scaleY = (float)bbox.height() / _initialRect.height();
+	}
+
 	// copy the sprites in order to the list
 	for (auto &iter : spriteIds) {
-		Sprite *src = _score->_channels[iter]->_sprite;
-		if (src->_castId.isNull())
+		Sprite src = *_score->_channels[iter]->_sprite;
+		if (src._castId.isNull())
 			continue;
+
+		debugCN(5, kDebugImages, "FilmLoopCastMember::getSubChannels(): sprite: %d - cast: %s, orig: %d,%d %dx%d",
+				iter, src._castId.asString().c_str(),
+				src._startPoint.x, src._startPoint.y, src._width, src._height);
+
 		// translate sprite relative to the global bounding box
-		int16 relX = (src->_startPoint.x - _initialRect.left) * widgetRect.width() / _initialRect.width();
-		int16 relY = (src->_startPoint.y - _initialRect.top) * widgetRect.height() / _initialRect.height();
-		int16 absX = relX + bbox.left;
-		int16 absY = relY + bbox.top;
-		int16 width = src->_width * widgetRect.width() / _initialRect.width();
-		int16 height = src->_height * widgetRect.height() / _initialRect.height();
+		if (needToScale) {
+			src._startPoint.x = (src._startPoint.x - _initialRect.left) * scaleX + bbox.left;
+			src._startPoint.y = (src._startPoint.y - _initialRect.top) * scaleY + bbox.top;
+			src._width = widgetRect.width();
+			src._height = widgetRect.height();
+			src._stretch = true;
 
-		debugC(5, kDebugImages, "FilmLoopCastMember::getSubChannels(): sprite: %d - cast: %s, orig: %d,%d %dx%d, trans: %d,%d %dx%d",
-				iter, src->_castId.asString().c_str(),
-				src->_startPoint.x, src->_startPoint.y, src->_width, src->_height,
-				absX, absY, width, height);
+			debugCN(5, kDebugImages, ", scaled: %d,%d %dx%d", src._startPoint.x, src._startPoint.y, src._width, src._height);
+		} else {
+			src._startPoint.x += bbox.left;
+			src._startPoint.y += bbox.top;
 
-		// Re-inject the translated position into the Sprite.
-		// This saves the hassle of having to force the Channel to be in puppet mode.
-		src->_width = width;
-		src->_height = height;
-		src->_startPoint = Common::Point(absX, absY);
-		src->_stretch = true;
+			debugCN(5, kDebugImages, ", no scaling");
+		}
 
 		// Film loop frames are constructed as a series of Channels, much like how a normal frame
 		// is rendered by the Score. We don't include a pointer to the current Score here,
 		// that's only for querying the constraint channel which is not used.
-		Channel chan(nullptr, src);
+		Channel chan(nullptr, &src);
 		_subchannels.push_back(chan);
 	}
 
