@@ -799,13 +799,13 @@ void Score::update() {
 	}
 
 	_firstRun = false;
-
-	// Window is drawn between the prepareFrame and enterFrame events (Lingo in a Nutshell, p.100)
-	renderFrame(_curFrameNumber, kRenderModeNormal, sound1Changed, sound2Changed);
 	_window->_newMovieStarted = false;
 
 	if (!_haveInteractivity)
 		return;
+
+	// Window is drawn between the prepareFrame and enterFrame events (Lingo in a Nutshell, p.100)
+	renderFrame(_curFrameNumber, kRenderModeNormal, sound1Changed, sound2Changed);
 
 	// then call the stepMovie hook (if one exists)
 	// D4 and above only call it if _allowOutdatedLingo is enabled.
