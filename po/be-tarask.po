@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-09 22:38+0000\n"
+"POT-Creation-Date: 2026-03-15 19:21+0000\n"
 "PO-Revision-Date: 2023-02-26 15:01+0000\n"
 "Last-Translator: Kastuś K. <oakum2334@gmail.com>\n"
 "Language-Team: Belarusian (Taraškievica) <https://translations.scummvm.org/"
@@ -9389,12 +9389,12 @@ msgid "Save file created by different version."
 msgstr "Захаваная гульня зробленая іншай вэрсіяй."
 
 #: engines/gob/inter_geisha.cpp:237 engines/gob/inter_playtoons.cpp:285
-#: engines/gob/inter_v2.cpp:1512 engines/tinsel/saveload.cpp:590
+#: engines/gob/inter_v2.cpp:1512 engines/tinsel/saveload.cpp:591
 msgid "Failed to load saved game from file."
 msgstr "Ня выйшла заладаваць захаваную гульню з файлу."
 
 #: engines/gob/inter_geisha.cpp:268 engines/gob/inter_playtoons.cpp:426
-#: engines/gob/inter_v2.cpp:1591 engines/tinsel/saveload.cpp:603
+#: engines/gob/inter_v2.cpp:1591 engines/tinsel/saveload.cpp:604
 msgid "Failed to save game to file."
 msgstr "Ня выйшла захаваць гульню ў файл."
 
@@ -14795,7 +14795,7 @@ msgstr "Да мэню захаваньня/заладваньня"
 msgid "Go to end of save / load menu"
 msgstr "Да мэню захаваньня/заладваньня"
 
-#: engines/tinsel/tinsel.cpp:1051
+#: engines/tinsel/tinsel.cpp:1059
 msgid "Discworld Noir needs ScummVM with TinyGL enabled"
 msgstr ""
 

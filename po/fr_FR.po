@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-09 22:38+0000\n"
+"POT-Creation-Date: 2026-03-15 19:21+0000\n"
 "PO-Revision-Date: 2026-03-10 18:22+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -9317,12 +9317,12 @@ msgid "Save file created by different version."
 msgstr "Fichier de sauvegarde créé par une version différente."
 
 #: engines/gob/inter_geisha.cpp:237 engines/gob/inter_playtoons.cpp:285
-#: engines/gob/inter_v2.cpp:1512 engines/tinsel/saveload.cpp:590
+#: engines/gob/inter_v2.cpp:1512 engines/tinsel/saveload.cpp:591
 msgid "Failed to load saved game from file."
 msgstr "Échec du chargement de la sauvegarde depuis un fichier."
 
 #: engines/gob/inter_geisha.cpp:268 engines/gob/inter_playtoons.cpp:426
-#: engines/gob/inter_v2.cpp:1591 engines/tinsel/saveload.cpp:603
+#: engines/gob/inter_v2.cpp:1591 engines/tinsel/saveload.cpp:604
 msgid "Failed to save game to file."
 msgstr "Échec de l'enregistrement de la sauvegarde vers un fichier."
 
@@ -14359,7 +14359,7 @@ msgstr "Début dans le menu sauvegarder / charger"
 msgid "Go to end of save / load menu"
 msgstr "Fin dans le menu sauvegarder / charger"
 
-#: engines/tinsel/tinsel.cpp:1051
+#: engines/tinsel/tinsel.cpp:1059
 msgid "Discworld Noir needs ScummVM with TinyGL enabled"
 msgstr "Discworld Noir nécessite ScummVM avec TinyGL activé"
 
