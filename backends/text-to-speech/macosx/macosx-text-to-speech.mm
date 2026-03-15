@@ -27,6 +27,8 @@
 #if defined(USE_TTS) && defined(MACOSX)
 #include "common/translation.h"
 #include <AppKit/NSSpeechSynthesizer.h>
+#include <Foundation/NSArray.h>
+#include <Foundation/NSDictionary.h>
 #include <Foundation/NSString.h>
 #include <CoreFoundation/CFString.h>
 
@@ -266,8 +268,11 @@ void MacOSXTextToSpeechManager::updateVoices() {
 	Common::String lang = getLanguage();
 	NSArray *voices = [NSSpeechSynthesizer availableVoices];
 	NSString *defaultVoice = [NSSpeechSynthesizer defaultVoice];
+	NSEnumerator *voiceEnum = [voices objectEnumerator];
+	NSString *voiceId;
 	int voiceIndex = 0;
-	for (NSString *voiceId in voices) {
+
+	while ((voiceId = [voiceEnum nextObject])) {
 		NSDictionary *voiceAttr = [NSSpeechSynthesizer attributesForVoice:voiceId];
 		Common::String voiceLocale([[voiceAttr objectForKey:NSVoiceLocaleIdentifier] UTF8String]);
 		if (voiceLocale.hasPrefix(lang)) {
