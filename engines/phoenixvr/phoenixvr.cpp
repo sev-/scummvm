@@ -389,6 +389,7 @@ void PhoenixVREngine::wait(float seconds) {
 
 void PhoenixVREngine::restart() {
 	debug("restart");
+	resetState();
 	_restarted = true;
 	_currentLevel = 0;
 	setNextLevel();
