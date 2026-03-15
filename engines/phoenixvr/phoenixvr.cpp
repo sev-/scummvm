@@ -392,6 +392,7 @@ void PhoenixVREngine::restart() {
 	_restarted = true;
 	_currentLevel = 0;
 	setNextLevel();
+	_prevWarp = -1;
 	_loaded = false;
 }
 
