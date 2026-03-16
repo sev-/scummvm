@@ -8,7 +8,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Added ALG engine for DOS versions of American Laser Games:
      Crime Patrol, Crime Patrol 2: Drug Wars, The Last Bounty Hunter,
      Mad Dog McCree, Mad Dog II: The Lost Gold, Space Pirates
-     and Who Shot Johnny Rock?.
+     and Who Shot Johnny Rock?
 
  General:
    - Improved PC-Speaker emulation.
@@ -16,7 +16,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Updated ImGui library to 1.92.6-docker.
    - Fixed Smart Search in the Icons Grid view in the launcher.
    - Simulate MT-32 display for on-screen messages.
-   - Added possibility to load GUI strings from the local po/
+   - Added possibility to load GUI translations from the local po/
      directory. Useful for translators since it does not require
      regeneration of the translations.dat file.
    - Significantly reduced compilation time and memory usage when
