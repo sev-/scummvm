@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-16 14:27+0000\n"
-"PO-Revision-Date: 2026-03-16 13:55+0000\n"
+"PO-Revision-Date: 2026-03-16 14:39+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -13560,39 +13560,29 @@ msgstr "Выберите файл сохранения"
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) save file name input field has 2 modes, insert and overwrite, this action toggles between them
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) save password input field has 2 modes, insert and overwrite, this action toggles between them
 #: engines/sherlock/metaengine.cpp:1124 engines/sherlock/metaengine.cpp:1229
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle insert mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим вставки"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) The game has a foolscap puzzle, where the player has to decode a hidden message on a piece of paper called a foolscap. this action is used to exit the puzzle
 #: engines/sherlock/metaengine.cpp:1135
-#, fuzzy
-#| msgid "Close popup"
 msgid "Close puzzle"
-msgstr "Закрыть выпадающий список"
+msgstr "Закрыть головоломку"
 
 #: engines/sherlock/metaengine.cpp:1177
 msgid "Exit inventory / Close verb menu / Cancel item use action"
 msgstr ""
 
 #: engines/sherlock/metaengine.cpp:1239
-#, fuzzy
-#| msgid "Select Next Actor"
 msgid "Select next option"
-msgstr "Выбрать следующего актера"
+msgstr "Выбрать следующий вариант"
 
 #: engines/sherlock/metaengine.cpp:1261
-#, fuzzy
-#| msgid "Go to next dialogue"
 msgid "Go to next talk option"
-msgstr "Перейти к следующему диалогу"
+msgstr "Перейти к следующему варианту диалога"
 
 #: engines/sherlock/metaengine.cpp:1267
-#, fuzzy
-#| msgid "Go to previous dialogues"
 msgid "Go to previous talk option"
-msgstr "Перейти к предыдущему диалогу"
+msgstr "Перейти к предыдущему варианту диалога"
 
 #: engines/sky/compact.cpp:140
 msgid "The \"sky.cpt\" engine data file has an incorrect size."
@@ -13611,10 +13601,8 @@ msgid "Open control panel"
 msgstr "Открыть панель управления"
 
 #: engines/sky/metaengine.cpp:136
-#, fuzzy
-#| msgid "Toggle really fast mode on/off"
 msgid "Toggle really fast mode"
-msgstr "Переключить очень быстрый режим вкл/выкл"
+msgstr "Переключить очень быстрый режим"
 
 #: engines/sky/metaengine.cpp:156
 msgid "Floppy intro"
@@ -13638,28 +13626,20 @@ msgid "Minigame keymappings"
 msgstr "Раскладка клавиш мини-игры"
 
 #: engines/sludge/keymapper_tables.h:46
-#, fuzzy
-#| msgid "Change game options"
 msgid "Change action"
-msgstr "Изменить настройки игры"
+msgstr "Изменить действие"
 
 #: engines/sludge/keymapper_tables.h:70 engines/sludge/keymapper_tables.h:293
-#, fuzzy
-#| msgid "Select dialogue"
 msgid "Speed up dialog"
-msgstr "Выбрать диалог"
+msgstr "Ускорить диалог"
 
 #: engines/sludge/keymapper_tables.h:76 engines/sludge/keymapper_tables.h:298
-#, fuzzy
-#| msgid "Slow down virtual mouse"
 msgid "Slow down dialog"
-msgstr "Замедлить виртуальную мышь"
+msgstr "Замедлить диалог"
 
 #: engines/sludge/keymapper_tables.h:101 engines/sludge/keymapper_tables.h:150
-#, fuzzy
-#| msgid "Unnamed autosave"
 msgid "Load auto save"
-msgstr "Автосохранение без имени"
+msgstr "Загрузить автосохранение"
 
 #: engines/sludge/keymapper_tables.h:200 engines/sludge/keymapper_tables.h:435
 #: engines/sludge/keymapper_tables.h:552
@@ -13672,23 +13652,17 @@ msgid "DEBUG: Show boxes"
 msgstr ""
 
 #: engines/sludge/keymapper_tables.h:237
-#, fuzzy
-#| msgid "Inventory"
 msgid "Inventory / Examine"
-msgstr "Инвентарь"
+msgstr "Инвентарь / Проверить"
 
 #: engines/sludge/keymapper_tables.h:281 engines/sword25/metaengine.cpp:118
-#, fuzzy
-#| msgid "Skip dialogue"
 msgid "Examine / Skip dialog"
-msgstr "Пропустить диалог"
+msgstr "Проверить / Пропустить диалог"
 
 #: engines/sludge/keymapper_tables.h:287 engines/sludge/keymapper_tables.h:398
 #: engines/sludge/keymapper_tables.h:522
-#, fuzzy
-#| msgid "Skip cutscene"
 msgid "Pause / Skip cutscene"
-msgstr "Пропустить заставку"
+msgstr "Пауза / Пропустить заставку"
 
 #: engines/sludge/keymapper_tables.h:328
 msgid "Smell"
@@ -13699,41 +13673,29 @@ msgid "Consume"
 msgstr ""
 
 #: engines/sludge/keymapper_tables.h:361
-#, fuzzy
-#| msgid "Cast Spell"
 msgid "Cast earth spell"
-msgstr "Применить заклинание"
+msgstr "Применить заклинание земли"
 
 #: engines/sludge/keymapper_tables.h:367
-#, fuzzy
-#| msgid "Cast Spell"
 msgid "Cast air spell"
-msgstr "Применить заклинание"
+msgstr "Применить заклинание воздуха"
 
 #: engines/sludge/keymapper_tables.h:373
-#, fuzzy
-#| msgid "Cast Spell"
 msgid "Cast fire spell"
-msgstr "Применить заклинание"
+msgstr "Применить заклинание огня"
 
 #: engines/sludge/keymapper_tables.h:379
-#, fuzzy
-#| msgid "Cast Spell"
 msgid "Cast water spell"
-msgstr "Применить заклинание"
+msgstr "Применить заклинание воды"
 
 #: engines/sludge/keymapper_tables.h:423 engines/sludge/keymapper_tables.h:510
 #: engines/sword25/metaengine.cpp:112
-#, fuzzy
-#| msgid "Go to next dialogue"
 msgid "Move / Interact / Skip dialog"
-msgstr "Перейти к следующему диалогу"
+msgstr "Переместиться / Взаимодействовать / Пропустить диалог"
 
 #: engines/sludge/keymapper_tables.h:516
-#, fuzzy
-#| msgid "Skip dialogue"
 msgid "Inventory / Skip dialog"
-msgstr "Пропустить диалог"
+msgstr "Инвентарь / Пропустить диалог"
 
 #: engines/stark/metaengine.cpp:41
 msgid "Load modded assets"
@@ -13804,38 +13766,26 @@ msgid "Display all exits on current location"
 msgstr "Показать все выходы в текущей локации"
 
 #: engines/stark/metaengine.cpp:306
-#, fuzzy
-#| msgid "Scroll list up"
 msgid "Scroll dialogs up"
-msgstr "Прокрутить список вверх"
+msgstr "Прокрутить диалоги вверх"
 
 #: engines/stark/metaengine.cpp:312
-#, fuzzy
-#| msgid "Scroll list down"
 msgid "Scroll dialogs down"
-msgstr "Прокрутить список вниз"
+msgstr "Прокрутить диалоги вниз"
 
 #: engines/stark/metaengine.cpp:318
-#, fuzzy
-#| msgid "Go to next dialogue"
 msgid "Go to next dialog"
 msgstr "Перейти к следующему диалогу"
 
 #: engines/stark/metaengine.cpp:323
-#, fuzzy
-#| msgid "Go to previous dialogues"
 msgid "Go to previous dialogs"
 msgstr "Перейти к предыдущему диалогу"
 
 #: engines/stark/metaengine.cpp:328
-#, fuzzy
-#| msgid "Select dialogue"
 msgid "Select dialog"
 msgstr "Выбрать диалог"
 
 #: engines/stark/metaengine.cpp:335
-#, fuzzy
-#| msgid "Skip video sequence or dialogue"
 msgid "Skip video sequence or dialog"
 msgstr "Пропустить видеоряд или диалог"
 
@@ -13932,38 +13882,28 @@ msgid "Computer keymappings"
 msgstr "Раскладка клавиш компьютера"
 
 #: engines/supernova/metaengine.cpp:232
-#, fuzzy
-#| msgid "Look at"
 msgid "Perform default action"
-msgstr "Смотреть на"
+msgstr "Действие по умолчанию"
 
 #: engines/supernova/metaengine.cpp:244
 msgid "Instructions"
 msgstr "Инструкции"
 
 #: engines/supernova/metaengine.cpp:250
-#, fuzzy
-#| msgid "General Information"
 msgid "Information"
-msgstr "Общая информация"
+msgstr "Информация"
 
 #: engines/supernova/metaengine.cpp:256
-#, fuzzy
-#| msgid "Text speed - Fast"
 msgid "Text speed"
-msgstr "Скорость текста - быстрая"
+msgstr "Скорость текста"
 
 #: engines/supernova/metaengine.cpp:321
-#, fuzzy
-#| msgid "Good"
 msgid "Go"
-msgstr "Хорошее"
+msgstr "Идти"
 
 #: engines/supernova/metaengine.cpp:379
-#, fuzzy
-#| msgid "Open Files manager"
 msgid "Office manager"
-msgstr "Менеджер открытых файлов"
+msgstr "Менеджер офиса"
 
 #: engines/supernova/metaengine.cpp:385
 msgid "Phone"
@@ -14083,8 +14023,6 @@ msgid "Additional options:"
 msgstr "Дополнительные опции:"
 
 #: engines/sword1/metaengine.cpp:301
-#, fuzzy
-#| msgid "Main Menu"
 msgid "Main menu"
 msgstr "Главное меню"
 
@@ -14117,16 +14055,12 @@ msgid "Reveal all interactive hotspots (hold the key)"
 msgstr ""
 
 #: engines/teenagent/metaengine.cpp:201
-#, fuzzy
-#| msgid "Inventory"
 msgid "Move / Examine"
-msgstr "Инвентарь"
+msgstr "Двигаться / Проверить"
 
 #: engines/teenagent/metaengine.cpp:221
-#, fuzzy
-#| msgid "Open/Close Inventory"
 msgid "Close inventory"
-msgstr "Открыть/закрыть инвентарь"
+msgstr "Закрыть инвентарь"
 
 #. I18N: Runs tests in interactive mode
 #: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
