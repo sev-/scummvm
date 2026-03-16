@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-03-03 10:01+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -14232,11 +14232,6 @@ msgstr "Spostamento / Esamina"
 msgid "Close inventory"
 msgstr "Chiudi inventario"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Esegui in modalità interattiva"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Correggi rapporto d'aspetto dei filmati"
@@ -16754,6 +16749,9 @@ msgstr ""
 "Zork Nemesis contiene alcuni puzzle musicali the richiedono l'audio MIDI per "
 "poterli risolvere. In alternativa, i puzzle possono essere risolti usando i "
 "sottotitoli, se supportati. Desideri continuare ad avviare il gioco?"
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Esegui in modalità interattiva"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Scorri inventario verso l'alto"

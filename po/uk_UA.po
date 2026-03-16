@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-03-16 13:55+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
@@ -14065,11 +14065,6 @@ msgstr "Перемістити / Розглянути"
 msgid "Close inventory"
 msgstr "Закрити інвентар"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Виконувати у інтерактивному режимі"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Коригувати співвідношення сторін для відео"
@@ -16555,6 +16550,9 @@ msgstr ""
 "містить кілька музичних головоломок, для розв'язання яких потрібне MIDI-"
 "аудіо. Ці головоломки також можна розв'язати за допомогою субтитрів, якщо "
 "вони підтримуються. Продовжити запуск гри?"
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Виконувати у інтерактивному режимі"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Прокрутити інвентар догори"

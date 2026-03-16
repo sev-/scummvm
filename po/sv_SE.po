@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-03-12 13:22+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
@@ -14078,11 +14078,6 @@ msgstr "Flytta / Undersök"
 msgid "Close inventory"
 msgstr "Stäng inventarier"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Kör i interaktionsläge"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Korrigera bildförhållandet för film"
@@ -16564,6 +16559,9 @@ msgstr ""
 "Nemesis innehåller flera musikpussel som kräver MIDI-ljud för att kunna "
 "lösas. Dessa pussel kan alternativt lösas med hjälp av undertexter, om detta "
 "stöds. Vill du fortsätta spela?"
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Kör i interaktionsläge"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Rulla uppåt i översikten"

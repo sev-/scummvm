@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-02-17 04:22+0000\n"
 "Last-Translator: Xaviu <xaviu@xaviu.com>\n"
 "Language-Team: Catalan <https://translations.scummvm.org/projects/scummvm/"
@@ -13549,11 +13549,6 @@ msgstr "Mou / Examina"
 msgid "Close inventory"
 msgstr "Tanca l'inventari"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Executa en mode interactiu"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Corregeix la relació d'aspecte dels vídeos"
@@ -16025,6 +16020,9 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Executa en mode interactiu"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Desplaça't cap amunt a l'inventari"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-03-06 15:22+0000\n"
 "Last-Translator: Antoniou Athanasios <a.antoniou79@gmail.com>\n"
 "Language-Team: Greek <https://translations.scummvm.org/projects/scummvm/"
@@ -14590,13 +14590,6 @@ msgstr "Υπάρχοντα"
 msgid "Close inventory"
 msgstr "Άνοιγμα/Κλείσιμο Υπαρχόντων"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact Mode"
-msgid "Run in interactive mode"
-msgstr "Σε Αλληλεπίδραση"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Διόρθωση αναλογίας διαστάσεων ταινιών"
@@ -17481,6 +17474,11 @@ msgstr ""
 "απαιτούν ήχο MIDI για την επίλυσή τους.  Αυτοί οι γρίφοι εναλλακτικά μπορεί "
 "να επιλυθούν με χρήση υπότιτλων , αν υποστηρίζονται. Θα συνεχίσετε την "
 "εκκίνηση του παιχνιδιού;"
+
+#, fuzzy
+#~| msgid "Interact Mode"
+#~ msgid "Run in interactive mode"
+#~ msgstr "Σε Αλληλεπίδραση"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Κύλιση προς τα πάνω στα υπάρχοντα"

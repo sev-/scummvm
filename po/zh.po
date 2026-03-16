@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2024-05-14 12:42+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese <https://translations.scummvm.org/projects/scummvm/"
@@ -13677,13 +13677,6 @@ msgstr "向下"
 msgid "Close inventory"
 msgstr "特殊音效音量"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact"
-msgid "Run in interactive mode"
-msgstr "互动"
-
 #: engines/tetraedge/metaengine.cpp:32
 #, fuzzy
 #| msgid "Correct aspect ratio for games"
@@ -16365,6 +16358,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Interact"
+#~ msgid "Run in interactive mode"
+#~ msgstr "互动"
 
 #, fuzzy
 #~| msgid "Scroll Down"

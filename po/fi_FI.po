@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
@@ -14419,13 +14419,6 @@ msgstr "Liiku / Tutki"
 msgid "Close inventory"
 msgstr "Sulje Inventaario"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact mode"
-msgid "Run in interactive mode"
-msgstr "Käyttötila"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Korjaa videoiden kuvasuhde"
@@ -17022,6 +17015,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Interact mode"
+#~ msgid "Run in interactive mode"
+#~ msgstr "Käyttötila"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Vieritä inventaariota ylös"

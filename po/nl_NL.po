@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-02-11 14:23+0000\n"
 "Last-Translator: SecularSteve <fairfull.playing@gmail.com>\n"
 "Language-Team: Dutch <https://translations.scummvm.org/projects/scummvm/"
@@ -14175,11 +14175,6 @@ msgstr "Verplaatsen / Onderzoeken"
 msgid "Close inventory"
 msgstr "Inventaris sluiten"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Uitvoeren in interactieve modus"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Corrigeer film aspectratio"
@@ -16682,6 +16677,9 @@ msgstr ""
 "opgelost te kunnen worden. Deze puzzels kunnen ook worden opgelost met "
 "behulp van ondertitels, indien ondersteund. Doorgaan met het starten van het "
 "spel?"
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Uitvoeren in interactieve modus"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Scroll omhoog in inventaris"

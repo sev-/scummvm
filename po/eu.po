@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2024-02-05 18:42+0000\n"
 "Last-Translator: Josu Igoa <josuigoa@ni.eus>\n"
 "Language-Team: Basque <https://translations.scummvm.org/projects/scummvm/"
@@ -14364,13 +14364,6 @@ msgstr "Inbentarioa"
 msgid "Close inventory"
 msgstr "Inbentarioa"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact"
-msgid "Run in interactive mode"
-msgstr "Elkarreragin"
-
 #: engines/tetraedge/metaengine.cpp:32
 #, fuzzy
 msgid "Correct movie aspect ratio"
@@ -17217,6 +17210,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Interact"
+#~ msgid "Run in interactive mode"
+#~ msgstr "Elkarreragin"
 
 #, fuzzy
 #~ msgid "Scroll up in inventory"

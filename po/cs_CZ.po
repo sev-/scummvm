@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.7.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-02-09 20:22+0000\n"
 "Last-Translator: AsciiWolf <mail@asciiwolf.com>\n"
 "Language-Team: Czech <https://translations.scummvm.org/projects/scummvm/"
@@ -14295,13 +14295,6 @@ msgstr "Inventář"
 msgid "Close inventory"
 msgstr "Otevřít/Zavřít Inventář"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact"
-msgid "Run in interactive mode"
-msgstr "Interakce"
-
 #: engines/tetraedge/metaengine.cpp:32
 #, fuzzy
 msgid "Correct movie aspect ratio"
@@ -17114,6 +17107,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Interact"
+#~ msgid "Run in interactive mode"
+#~ msgstr "Interakce"
 
 #, fuzzy
 #~| msgid "Open/Close Inventory"

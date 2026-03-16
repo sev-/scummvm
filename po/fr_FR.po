@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-03-10 18:22+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -14299,11 +14299,6 @@ msgstr "Se déplacer / Examiner"
 msgid "Close inventory"
 msgstr "Fermer l'inventaire"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-msgid "Run in interactive mode"
-msgstr "Démarrer en mode interactif"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "Corriger le rapport d'aspect des cinématiques"
@@ -16826,6 +16821,9 @@ msgstr ""
 "contient plusieurs énigmes musicales qui nécessitent l'audio MIDI pour être "
 "résolues.  Ces puzzles peuvent également être résolus à l'aide de sous-"
 "titres, s'ils sont pris en charge. Continuer à lancer le jeu ?"
+
+#~ msgid "Run in interactive mode"
+#~ msgstr "Démarrer en mode interactif"
 
 #~ msgid "Scroll up in inventory"
 #~ msgstr "Faire défiler l'inventaire vers le haut"

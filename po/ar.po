@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:27+0000\n"
+"POT-Creation-Date: 2026-03-16 14:40+0000\n"
 "PO-Revision-Date: 2026-02-24 22:26+0000\n"
 "Last-Translator: Mohamed Shaaban <mohmedbashamedo@hotmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -14787,13 +14787,6 @@ msgstr "قائمة الجرد"
 msgid "Close inventory"
 msgstr "فتح / إغلاق الجرد"
 
-#. I18N: Runs tests in interactive mode
-#: engines/testbed/metaengine.cpp:39 engines/testbed/metaengine.cpp:40
-#, fuzzy
-#| msgid "Interact Mode"
-msgid "Run in interactive mode"
-msgstr "وضع التفاعل"
-
 #: engines/tetraedge/metaengine.cpp:32
 msgid "Correct movie aspect ratio"
 msgstr "تصحيح نسبة أبعاد الفيلم"
@@ -17699,6 +17692,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Interact Mode"
+#~ msgid "Run in interactive mode"
+#~ msgstr "وضع التفاعل"
 
 #, fuzzy
 #~| msgid "Open/Close Inventory"
