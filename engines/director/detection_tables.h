@@ -1057,6 +1057,7 @@ static const PlainGameDescriptor directorGames[] = {
 	{ "otelo",				"o.tel.o Online 01011" },
 	{ "physicus2",			"Physicus: Die Rückkehr" },
 	{ "ponkymath12",		"Durchstarten mit Ponky: Mathe 1. + 2. Klasse" },
+	{ "rainbowfishjr2",		"Der Regenbogenfisch Junior 2: Kraktors Geburtstag" },
 	{ "ravecard2001",		"Ravecard 2001" },
 	{ "ravensburger",		"Ravensburger Interactive Demo-Sampler" },
 	{ "raveshuttle",		"Rave Shuttle: The Cosmic Challenge" },
@@ -10720,6 +10721,10 @@ static const DirectorGameDescription gameDescriptions[] = {
 	MACGAME1_l("pixeline9", "", "Pixeline - I Det Vilde Westen", "bb6be483050bd1524c5440229b595f7a", 236019, Common::DA_DNK, 900),
 	MACGAME1_l("pixeline9", "OS X", "Pixeline - Mac OS X", 		 "4a522e1da5d5b8570e3ab625945b19cf", 234733, Common::DA_DNK, 900),
 	WINGAME1_l("pixeline9", "", "Pixeline 9 DK.exe",			 "c612aa43e7ef55aa4fd2e1085fb1ef7a", 2816536, Common::DA_DNK, 900),
+
+	// Published by EMME, only in Germany?
+	// TRAC report #16387
+	WINGAME1_l("rainbowfishjr2", "", "regenbogenfisch jr 2.exe", "t:d2a055700b5410886197c4c72d9edf1f", 2188712, Common::DE_DEU, 900),
 
 	WINGAME1("sajaklucky", "Deluxe", "LuckyLettersDeluxe.exe", "001d65a360a61861118f3cfa92c68ef3", 14018695, 900),
 
