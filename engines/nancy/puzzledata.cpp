@@ -201,6 +201,46 @@ void TableData::synchronize(Common::Serializer &ser) {
 	ser.syncArray(comboValues.data(), num, Common::Serializer::FloatLE);
 }
 
+void QuizPuzzleData::synchronize(Common::Serializer &ser) {
+	// Serialize as: numScenes, then for each scene: sceneID, numBoxes, box data
+	uint16 numScenes = (uint16)boxCorrect.size();
+	ser.syncAsUint16LE(numScenes);
+
+	if (ser.isLoading()) {
+		boxCorrect.clear();
+		typedText.clear();
+		for (uint16 s = 0; s < numScenes; ++s) {
+			uint16 sceneID = 0;
+			ser.syncAsUint16LE(sceneID);
+			byte num = 0;
+			ser.syncAsByte(num);
+			auto &bc = boxCorrect[sceneID];
+			auto &tt = typedText[sceneID];
+			bc.resize(num, false);
+			tt.resize(num);
+			for (uint i = 0; i < num; ++i) {
+				byte b = 0;
+				ser.syncAsByte(b);
+				bc[i] = (b != 0);
+				ser.syncString(tt[i]);
+			}
+		}
+	} else {
+		for (auto &entry : boxCorrect) {
+			uint16 sceneID = entry._key;
+			ser.syncAsUint16LE(sceneID);
+			byte num = (byte)entry._value.size();
+			ser.syncAsByte(num);
+			auto &tt = typedText[sceneID];
+			for (uint i = 0; i < num; ++i) {
+				byte b = entry._value[i] ? 1 : 0;
+				ser.syncAsByte(b);
+				ser.syncString(tt[i]);
+			}
+		}
+	}
+}
+
 void TableData::setSingleValue(uint16 index, int16 value) {
 	if (singleValues.size() <= index) {
 		singleValues.resize(index + 1, kNoTableValue);
@@ -239,6 +279,8 @@ PuzzleData *makePuzzleData(const uint32 tag) {
 		return new SoundEqualizerPuzzleData();
 	case AssemblyPuzzleData::getTag():
 		return new AssemblyPuzzleData();
+	case QuizPuzzleData::getTag():
+		return new QuizPuzzleData();
 	case JournalData::getTag():
 		return new JournalData();
 	case TableData::getTag():
