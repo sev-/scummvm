@@ -296,7 +296,8 @@ echo_n "Checking missing/extra POTFILES..."
 # Now get list of includes
 git grep -l "common/translation\.h" | grep -v devtools/create_engine | grep -v devtools/release-checks.sh | \
     grep -v devtools/generate-android-i18n-strings.py | grep -v engines/gob/detection/tables.h | \
-    grep -v avfaudio-text-to-speech.mm | grep -v engines/m4/subtitles.cpp | sort > $TMP
+    grep -v avfaudio-text-to-speech.mm | grep -v engines/m4/subtitles.cpp | \
+    grep -v testbed/metaengine.cpp | sort > $TMP
 
 res=`diff -  $TMP <<< "$list"`
 
