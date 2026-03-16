@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 14:40+0000\n"
+"POT-Creation-Date: 2026-03-16 21:09+0000\n"
 "PO-Revision-Date: 2021-03-21 08:24+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Belarusian <https://translations.scummvm.org/projects/scummvm/"
@@ -13129,19 +13129,19 @@ msgstr "Ляцець направа"
 msgid "Fly to lower right"
 msgstr "Ляцець направа-ўніз"
 
-#: engines/scumm/input.cpp:1405
+#: engines/scumm/input.cpp:1431
 msgid "Snap scroll on"
 msgstr "Прагортка скокамі ўключана"
 
-#: engines/scumm/input.cpp:1407
+#: engines/scumm/input.cpp:1433
 msgid "Snap scroll off"
 msgstr "Прагортка скокамі выключана"
 
-#: engines/scumm/input.cpp:1420
+#: engines/scumm/input.cpp:1446
 msgid "Music volume: "
 msgstr "Гучн. музыкі: "
 
-#: engines/scumm/input.cpp:1437
+#: engines/scumm/input.cpp:1463
 msgid "Subtitle speed: "
 msgstr "Хуткасць тытраў: "
 
