@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-15 19:21+0000\n"
-"PO-Revision-Date: 2026-03-04 23:56+0000\n"
+"PO-Revision-Date: 2026-03-16 13:55+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -12173,12 +12173,14 @@ msgstr ""
 
 #: engines/scumm/dialogs.cpp:1226
 msgid "Show wait cursor when paused"
-msgstr ""
+msgstr "Показувати курсор очікування під час паузи"
 
 #: engines/scumm/dialogs.cpp:1227
 msgid ""
 "When paused, show the animated wait cursor from the original Sega CD version."
 msgstr ""
+"Під час паузи показувати анімований курсор очікування з оригінальної версії "
+"Sega CD."
 
 #: engines/scumm/dialogs.cpp:1364
 msgid "Overture Timing:"
