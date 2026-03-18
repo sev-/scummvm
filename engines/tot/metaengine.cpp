@@ -175,7 +175,7 @@ Common::KeymapArray TotMetaEngine::initKeymaps(const char *target) const {
 	act = new Action("QUITCANCEL", _("Cancel quit"));
 	act->setCustomEngineActionEvent(kActionNo);
 	act->addDefaultInputMapping(defaultTotKeys[KEY_NO]);
-	act->addDefaultInputMapping("JOY_KEFT_TRIGGER");
+	act->addDefaultInputMapping("JOY_LEFT_TRIGGER");
 	quitDialogKeyMap->addAction(act);
 
 	KeymapArray keymaps(3);
