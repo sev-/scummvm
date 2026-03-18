@@ -147,7 +147,6 @@ protected:
 	int32 _scoreStepSize  = 1;    // score per brick tier (0x305)
 	int32 _timeBonusMax   = 100;  // max time bonus (0x309)
 	int32 _timeLimitSec   = 60;   // time limit in seconds (0x30d)
-	int32 _scoreParam4    = 0;    // extra score param (0x311)
 
 	// Sounds: 6 permanent + 3 dynamic
 	SoundDescription _sounds[6];         // 0x315..0x43a (bounce, launch, brick hit A/B/C, wall)
