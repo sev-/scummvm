@@ -21,6 +21,8 @@ For a more comprehensive changelog of the latest experimental code, see:
      regeneration of the translations.dat file.
    - Significantly reduced compilation time and memory usage when
      building the TinyGL component.
+   - Added Help button to the main interface and improved the dialog
+     speed.
 
  AGOS:
    - Improved support of the Acorn releases of Simon the Sorcerer.
