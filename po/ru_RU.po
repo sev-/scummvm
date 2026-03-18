@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-18 16:21+0000\n"
-"PO-Revision-Date: 2026-03-18 16:20+0000\n"
+"PO-Revision-Date: 2026-03-18 16:52+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -7303,7 +7303,7 @@ msgstr "Быстрая загрузка"
 #: engines/ultima/ultima8/metaengine.cpp:43
 #: engines/wintermute/keymapper_tables.h:930
 msgid "Quick save"
-msgstr "Быстрое сохнарение"
+msgstr "Быстрое сохранение"
 
 #: engines/asylum/metaengine.cpp:130
 msgid "Switch to Sarah"
@@ -14305,8 +14305,6 @@ msgid "Save and load game"
 msgstr "Сохранение и загрузка игры"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
 msgstr "Главное меню / Выход"
 
@@ -14837,26 +14835,18 @@ msgid "Magic amulet"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
 msgstr "Опция амулета 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
 msgstr "Опция амулета 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
 msgstr "Опция амулета 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
 msgstr "Опция амулета 4"
 
@@ -14878,54 +14868,40 @@ msgstr "Восток"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter Text"
 msgid "Enter / Exit"
-msgstr "Введите текст"
+msgstr "Войти / Выйти"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Wait"
 msgid "Pass / Wait"
-msgstr "Ждать"
+msgstr "Пропустить / Ждать"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
-#, fuzzy
-#| msgid "Minimize"
 msgid "Minimap"
-msgstr "Свернуть"
+msgstr "Мини-карта"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn on"
 msgid "Turn around"
-msgstr "Включить"
+msgstr "Обернуться"
 
 #: engines/ultima/ultima0/metaengine.cpp:98
 #: engines/ultima/ultima0/metaengine.cpp:106
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Bind Keys"
 msgid "Basic keys"
-msgstr "Назначить клавиши"
+msgstr "Основные клавиши"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Game Keys"
 msgid "Menu keys"
-msgstr "Клавиши игры"
+msgstr "Клавиши меню"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "General Keys"
 msgid "Overworld keys"
-msgstr "Общие клавиши"
+msgstr "Клавиши Мира"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
@@ -14936,16 +14912,12 @@ msgstr ""
 #: engines/ultima/ultima4/metaengine.cpp:133
 #: engines/ultima/ultima4/metaengine.cpp:138
 #: engines/ultima/ultima4/metaengine.cpp:148
-#, fuzzy
-#| msgid "Next action"
 msgid "Abort action"
-msgstr "Следующее действие"
+msgstr "Прервать действие"
 
 #: engines/ultima/ultima4/metaengine.cpp:49
-#, fuzzy
-#| msgid "Keyboard"
 msgid "Board"
-msgstr "Клавиатура"
+msgstr "Доска"
 
 #: engines/ultima/ultima4/metaengine.cpp:52
 #: engines/ultima/ultima8/metaengine.cpp:107
@@ -14953,10 +14925,8 @@ msgid "Descend"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:56
-#, fuzzy
-#| msgid "Fight cheat"
 msgid "Get chest"
-msgstr "Чит для драк"
+msgstr "Взять сундук"
 
 #: engines/ultima/ultima4/metaengine.cpp:57
 msgid "Hole up & camp"
@@ -14972,26 +14942,20 @@ msgid "Ignite"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:61
-#, fuzzy
-#| msgid "Look at"
 msgid "Locate position"
-msgstr "Смотреть на"
+msgstr "Найти позицию"
 
 #: engines/ultima/ultima4/metaengine.cpp:62
 msgid "Mix reagents"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:63
-#, fuzzy
-#| msgid "New kid"
 msgid "New order"
-msgstr "Новый перс"
+msgstr "Новый приказ"
 
 #: engines/ultima/ultima4/metaengine.cpp:64
-#, fuzzy
-#| msgid "Open Holomap"
 msgid "Open door"
-msgstr "Открыть голокарту"
+msgstr "Открыть дверь"
 
 #. I18N: Going over something carefully
 #: engines/ultima/ultima4/metaengine.cpp:66
@@ -15004,10 +14968,8 @@ msgid "Peer"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:69
-#, fuzzy
-#| msgid "Quick save"
 msgid "Quit and save"
-msgstr "Быстрое сохнарение"
+msgstr "Выйти и сохраниться"
 
 #: engines/ultima/ultima4/metaengine.cpp:70
 #, fuzzy
