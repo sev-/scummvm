@@ -19,6 +19,9 @@
  *
  */
 
+#include "common/system.h"
+#include "common/random.h"
+
 #include "engines/nancy/nancy.h"
 #include "engines/nancy/graphics.h"
 #include "engines/nancy/resource.h"
@@ -28,9 +31,6 @@
 
 #include "engines/nancy/state/scene.h"
 #include "engines/nancy/action/puzzle/arcadepuzzle.h"
-
-#include "common/system.h"
-#include "common/random.h"
 
 namespace Nancy {
 namespace Action {
