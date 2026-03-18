@@ -77,6 +77,9 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fixed crash when using keyboard keys while playing darts in Rose Tattoo.
    - Fixed score board layout and logic for dart games in Rose Tattoo.
 
+ SLUDGE:
+   - Fixed crash at start of Nathan's Second Chance game.
+
  Teenagent:
    - Fixed 'could not locate language block' error when starting the Polish and
      Russian versions.
