@@ -23,6 +23,7 @@ For a more comprehensive changelog of the latest experimental code, see:
      building the TinyGL component.
    - Added Help button to the main interface and improved the dialog
      speed.
+   - Added possibility to run unpacked GUI themes.
 
  AGOS:
    - Improved support of the Acorn releases of Simon the Sorcerer.
