@@ -930,7 +930,7 @@ void MainCharacter::walkTo(
 
 void MainCharacter::draw() {
 	if (this == &g_engine->world().mortadelo()) {
-		if (_currentPos.y <= g_engine->world().filemon()._currentPos.y) {
+		if (_currentPos.y > g_engine->world().filemon()._currentPos.y) {
 			g_engine->world().mortadelo().drawInner();
 			g_engine->world().filemon().drawInner();
 		} else {

@@ -1248,8 +1248,8 @@ void DrawQueue::draw() {
 	for (int8 order = kOrderCount - 1; order >= 0; order--) {
 		_renderer->setLodBias(_lodBiasPerOrder[order]);
 		for (uint8 requestI = 0; requestI < _requestsPerOrderCount[order]; requestI++) {
-			_requestsPerOrder[order][requestI]->draw();
-			_requestsPerOrder[order][requestI]->~IDrawRequest();
+			_requestsPerOrder[order][_requestsPerOrderCount[order] - 1 - requestI]->draw();
+			_requestsPerOrder[order][_requestsPerOrderCount[order] - 1 - requestI]->~IDrawRequest();
 		}
 	}
 	_allocator.deallocateAll();
