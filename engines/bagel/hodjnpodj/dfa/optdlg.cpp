@@ -29,11 +29,11 @@ namespace DFA {
 
 constexpr int GAMETIMEMAX         = 5;
 constexpr int GAMETIMEMIN         = 1;
-constexpr int GAMESTEP            = 1;
+//constexpr int GAMESTEP            = 1;
 
 constexpr int BEAVERTIMEMAX       = 4;
 constexpr int BEAVERTIMEMIN       = 1;
-constexpr int BEAVERSTEP = 1;
+//constexpr int BEAVERSTEP = 1;
 
 static CPalette     *pPackRatOptPalette;
 CText               *ptxtGTime;
