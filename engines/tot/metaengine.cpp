@@ -161,7 +161,7 @@ Common::KeymapArray TotMetaEngine::initKeymaps(const char *target) const {
 	act->addDefaultInputMapping("F1");
 	gameKeyMap->addAction(act);
 
-	act = new Action("MAINMENU", _("Main menu/Exit"));
+	act = new Action("MAINMENU", _("Main menu / Exit"));
 	act->setCustomEngineActionEvent(kActionEscape);
 	act->addDefaultInputMapping("ESCAPE");
 	gameKeyMap->addAction(act);
