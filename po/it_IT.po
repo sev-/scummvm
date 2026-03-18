@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-16 21:09+0000\n"
-"PO-Revision-Date: 2026-03-03 10:01+0000\n"
+"PO-Revision-Date: 2026-03-18 09:57+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/it/>\n"
@@ -12312,12 +12312,14 @@ msgstr ""
 
 #: engines/scumm/dialogs.cpp:1226
 msgid "Show wait cursor when paused"
-msgstr ""
+msgstr "Mostra cursore d'attesa (orologio) quando in pausa"
 
 #: engines/scumm/dialogs.cpp:1227
 msgid ""
 "When paused, show the animated wait cursor from the original Sega CD version."
 msgstr ""
+"Nella schermata di pausa, mostra il cursore animato di attesa presente nella "
+"versione originale per Sega CD."
 
 #: engines/scumm/dialogs.cpp:1364
 msgid "Overture Timing:"
