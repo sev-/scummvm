@@ -1737,7 +1737,7 @@ bool ThemeEngine::getDrawDataColor(DrawData ddId, uint8 &r, uint8 &g, uint8 &b) 
 
 	if (step.bgColor.set) {
 		r = step.bgColor.r;
-		g = step.bgColor.g; 
+		g = step.bgColor.g;
 		b = step.bgColor.b;
 	} else
 		return false;
@@ -2077,10 +2077,11 @@ Common::Archive *ThemeEngine::createUnpackedThemeArchive(const Common::FSNode &t
 			Common::Path themePath = themeDir.getPath();
 			Common::String rawThemePath = line.substr(7);
 			rawThemePath.trim();
+			rawThemePath.insertChar('/', 0);
 
-			themePath = themePath.append(rawThemePath);
+			themePath += rawThemePath;
 
-			Common::Path normalizedThemePath = Common::Path(themePath).normalize();
+			Common::Path normalizedThemePath = themePath.normalize();
 
 			Common::FSNode dir(normalizedThemePath);
 
