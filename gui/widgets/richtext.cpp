@@ -197,9 +197,9 @@ void RichTextWidget::recalc() {
 		_surface->create(_textWidth, _textHeight, g_gui.getWM()->_pixelformat);
 
 		int h = _txtWnd->getTextHeight();
-		if (h <= _limitH) 
+		if (h <= _limitH)
 			_scrolledY = 0;
-		if (_scrolledY > h - _limitH) 
+		if (_scrolledY > h - _limitH)
 			_scrolledY = MAX(0, h - _limitH);
 		_verticalScroll->_numEntries = h;
 		_verticalScroll->_currentPos = _scrolledY;
@@ -275,9 +275,9 @@ void RichTextWidget::createWidget() {
 	}
 
 	int h = _txtWnd->getTextHeight();
-	if (h <= _limitH) 
+	if (h <= _limitH)
 		_scrolledY = 0;
-	if (_scrolledY > h - _limitH) 
+	if (_scrolledY > h - _limitH)
 		_scrolledY = MAX(0, h - _limitH);
 	_verticalScroll->_numEntries = h;
 	_verticalScroll->_currentPos = _scrolledY;
@@ -322,11 +322,11 @@ void RichTextWidget::drawWidget() {
 		int cachedHeight = _cachedTextSurface->h;
 		int maxY = MAX(0, cachedHeight - _textHeight);
 		int srcY = CLIP((int)_scrolledY, 0, maxY);
-		
+
 		_surface->simpleBlitFrom(*_cachedTextSurface, Common::Rect(0, srcY, _textWidth, MIN(srcY + _textHeight, cachedHeight)), Common::Point(0, 0));
 	} else
 		_txtWnd->draw(_surface, 0, _scrolledY, _textWidth, _textHeight, 0, 0);
-	
+
 	g_gui.theme()->drawManagedSurface(Common::Point(_x + _innerMargin, _y + _innerMargin), *_surface, Graphics::ALPHA_OPAQUE);
 }
 
