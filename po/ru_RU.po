@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-16 21:09+0000\n"
-"PO-Revision-Date: 2026-03-16 14:39+0000\n"
+"PO-Revision-Date: 2026-03-18 16:20+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -13883,7 +13883,7 @@ msgstr "Раскладка клавиш компьютера"
 
 #: engines/supernova/metaengine.cpp:232
 msgid "Perform default action"
-msgstr "Действие по умолчанию"
+msgstr "Выполнить действие по умолчанию"
 
 #: engines/supernova/metaengine.cpp:244
 msgid "Instructions"
@@ -14103,28 +14103,20 @@ msgid "Save/Load keymappings"
 msgstr "Раскладка клавиш записи/сохранения"
 
 #: engines/tinsel/metaengine.cpp:341
-#, fuzzy
-#| msgid "Page Up in save/load menu"
 msgid "Page up in save / load menu"
 msgstr "Страница вверх в меню сохр/загр"
 
 #: engines/tinsel/metaengine.cpp:347
-#, fuzzy
-#| msgid "Page down in save/load menu"
 msgid "Page down in save / load menu"
 msgstr "Страница вниз в меню сохр/загр"
 
 #: engines/tinsel/metaengine.cpp:353
-#, fuzzy
-#| msgid "Go to start of save/load menu"
 msgid "Go to start of save / load menu"
-msgstr "Перейти в начало меню сохр/загр"
+msgstr "Перейти в начало меню сохр / загр"
 
 #: engines/tinsel/metaengine.cpp:359
-#, fuzzy
-#| msgid "Go to end of save/load menu"
 msgid "Go to end of save / load menu"
-msgstr "Перейти в конец меню сохр/загр"
+msgstr "Перейти в конец меню сохр / загр"
 
 #: engines/tinsel/tinsel.cpp:1059
 msgid "Discworld Noir needs ScummVM with TinyGL enabled"
@@ -14139,10 +14131,8 @@ msgid "Real Life keymappings"
 msgstr "Раскладка клавиш Real Life"
 
 #: engines/titanic/metaengine.cpp:175
-#, fuzzy
-#| msgid "KIA only shortcuts"
 msgid "Inventory shortcut"
-msgstr "Управление для KIA"
+msgstr "Горячая клавиша для инвентаря"
 
 #: engines/titanic/metaengine.cpp:176
 msgid "Continue game dialogue keymappings"
@@ -14157,34 +14147,24 @@ msgid "Movement keymappings"
 msgstr "Раскладка клавиш движения"
 
 #: engines/titanic/metaengine.cpp:182
-#, fuzzy
-#| msgid "Interact Mode"
 msgid "Select / Interact / Move"
-msgstr "Режим взаимодействия"
+msgstr "Выбрать / Взаимодействовать / Перемещаться"
 
 #: engines/titanic/metaengine.cpp:188
-#, fuzzy
-#| msgid "Go to next dialogue"
 msgid "Select / Interact / Quick move"
-msgstr "Перейти к следующему диалогу"
+msgstr "Выбрать / Взаимодействовать / Быстрое передвижение"
 
 #: engines/titanic/metaengine.cpp:194
-#, fuzzy
-#| msgid "Game menu"
 msgid "Cheat menu"
-msgstr "Меню игры"
+msgstr "Меню читов"
 
 #: engines/titanic/metaengine.cpp:239
-#, fuzzy
-#| msgid "Conversation log"
 msgid "Conversation"
-msgstr "Журнал разговоров"
+msgstr "Разговор"
 
 #: engines/titanic/metaengine.cpp:249
-#, fuzzy
-#| msgid "Remove"
 msgid "Remote"
-msgstr "Удалить"
+msgstr "Удалённый"
 
 #: engines/titanic/metaengine.cpp:254
 msgid "Rooms"
@@ -14195,16 +14175,12 @@ msgid "Real life"
 msgstr ""
 
 #: engines/titanic/metaengine.cpp:278
-#, fuzzy
-#| msgid "Scroll list up"
 msgid "Scroll to top"
-msgstr "Прокрутить список вверх"
+msgstr "Прокрутить до верха"
 
 #: engines/titanic/metaengine.cpp:284
-#, fuzzy
-#| msgid "Move to bottom"
 msgid "Scroll to bottom"
-msgstr "Переместиться вниз"
+msgstr "Прокрутить до низа"
 
 #: engines/titanic/metaengine.cpp:291
 msgid "Translation"
@@ -14227,30 +14203,24 @@ msgid "Unlock coordinate"
 msgstr ""
 
 #: engines/titanic/metaengine.cpp:368
-#, fuzzy
-#| msgid "Exit conversation"
 msgid "View constellations"
-msgstr "Выйти из диалога"
+msgstr "Смотреть созвездия"
 
 #: engines/titanic/metaengine.cpp:373
 msgid "View boundaries"
 msgstr ""
 
 #: engines/toltecs/metaengine.cpp:216
-#, fuzzy
-#| msgid "Move left"
 msgid "Move / Select"
-msgstr "Идти влево"
+msgstr "Идти / Выбрать"
 
 #: engines/toltecs/metaengine.cpp:222
 msgid "Move / Perform default action"
-msgstr ""
+msgstr "Двигаться / Действие по умолчанию"
 
 #: engines/toltecs/metaengine.cpp:258
-#, fuzzy
-#| msgid "Skip video"
 msgid "Skip ride"
-msgstr "Пропустить видео"
+msgstr "Пропустить поездку"
 
 #: engines/tony/tony.cpp:248
 #, c-format
@@ -14304,56 +14274,40 @@ msgid "Unable to locate the '%s' data file."
 msgstr "Не удалось найти файл движка '%s'."
 
 #: engines/tot/metaengine.cpp:36
-#, fuzzy
-#| msgid "Enable copy protection"
 msgid "Copy protection"
-msgstr "Включить защиту от копирования"
+msgstr "Защита от копирования"
 
 #: engines/tot/metaengine.cpp:47
-#, fuzzy
-#| msgid "Pixellated scene transitions"
 msgid "Disable scene transitions"
-msgstr "Переходы между сценами с пикселизацией"
+msgstr "Выключить переходы между сценами"
 
 #: engines/tot/metaengine.cpp:48
 msgid "Disable original transition effects between scenes"
 msgstr ""
 
 #: engines/tot/metaengine.cpp:58
-#, fuzzy
-#| msgid "Save / Load dialog"
 msgid "Original save/load dialog"
-msgstr "Диалог записи / чтения"
+msgstr "Оригинальный диалог записи / чтения"
 
 #: engines/tot/metaengine.cpp:59
-#, fuzzy
-#| msgid "Use original savegame dialog"
 msgid "Use original save and load dialogs"
-msgstr "Использовать оригинальные экраны записи/чтения игры"
+msgstr "Использовать оригинальные диалоги записи/чтения"
 
 #: engines/tot/metaengine.cpp:118
-#, fuzzy
-#| msgid "Look at"
 msgid "Default action"
-msgstr "Смотреть на"
+msgstr "Действие по умолчанию"
 
 #: engines/tot/metaengine.cpp:154
-#, fuzzy
-#| msgid "Saved games"
 msgid "Save and load game"
-msgstr "Сохраненные игры"
+msgstr "Сохранение и загрузка игры"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main Menu"
 msgid "Main menu/Exit"
-msgstr "Главное меню"
+msgstr "Главное меню / Выход"
 
 #: engines/touche/metaengine.cpp:135
-#, fuzzy
-#| msgid "Skip sequence/open quit dialogue"
 msgid "Skip sequence / open quit dialog"
-msgstr "Пропустить последовательность/открыть диалог выхода"
+msgstr "Пропустить заставку / Открыть диалог выхода"
 
 #. I18N: The actor walking pace is increased
 #: engines/touche/metaengine.cpp:154
@@ -14366,10 +14320,8 @@ msgid "Disable fast walk"
 msgstr "Выключить быструю ходьбу"
 
 #: engines/touche/metaengine.cpp:173
-#, fuzzy
-#| msgid "Toggle between voice/text/text and voice"
 msgid "Toggle between voice / text / text and voice"
-msgstr "Переключение между озвучкой/текстом/текстом и озвучкой"
+msgstr "Переключение между озвучкой / текстом / текстом и озвучкой"
 
 #: engines/touche/metaengine.cpp:182
 msgid "Press \"Yes\" Key"
@@ -14406,16 +14358,12 @@ msgid "Crawl South"
 msgstr "Ползти на юг"
 
 #: engines/tsage/metaengine.cpp:278
-#, fuzzy
-#| msgid "Turn Left/Crawl West"
 msgid "Turn left / Crawl West"
-msgstr "Повернуть налево/ползти на запад"
+msgstr "Повернуть налево / Ползти на запад"
 
 #: engines/tsage/metaengine.cpp:285
-#, fuzzy
-#| msgid "Turn Right/Crawl East"
 msgid "Turn right / Crawl East"
-msgstr "Повернуть направо/ползти на восток"
+msgstr "Повернуть направо / Ползти на восток"
 
 #: engines/tsage/metaengine.cpp:292
 msgid "Increase speed"
@@ -14539,74 +14487,50 @@ msgid "Enable a higher resolution for the game"
 msgstr "Включить отображение высокого разрешения в игре"
 
 #: engines/twine/metaengine.cpp:228
-#, fuzzy
-#| msgid "Debug Grid Camera Up"
 msgid "Debug grid camera up"
 msgstr "Отладка: Камеру сетки вверх"
 
 #: engines/twine/metaengine.cpp:233
-#, fuzzy
-#| msgid "Debug Grid Camera Down"
 msgid "Debug grid camera down"
 msgstr "Отладка: Камеру сетки вниз"
 
 #: engines/twine/metaengine.cpp:238
-#, fuzzy
-#| msgid "Debug Grid Camera Left"
 msgid "Debug grid camera left"
 msgstr "Отладка: Камеру сетки влево"
 
 #: engines/twine/metaengine.cpp:244
-#, fuzzy
-#| msgid "Debug Grid Camera Right"
 msgid "Debug grid camera right"
 msgstr "Отладка: Камеру сетки вправо"
 
 #: engines/twine/metaengine.cpp:249 engines/twine/metaengine.cpp:269
-#, fuzzy
-#| msgid "Normal Behaviour"
 msgid "Normal behavior"
 msgstr "Нормальное поведение"
 
 #: engines/twine/metaengine.cpp:254 engines/twine/metaengine.cpp:274
-#, fuzzy
-#| msgid "Athletic Behaviour"
 msgid "Athletic behavior"
 msgstr "Атлетичное поведение"
 
 #: engines/twine/metaengine.cpp:259 engines/twine/metaengine.cpp:279
-#, fuzzy
-#| msgid "Aggressive Behaviour"
 msgid "Aggressive behavior"
 msgstr "Агрессивное поведение"
 
 #: engines/twine/metaengine.cpp:264 engines/twine/metaengine.cpp:284
-#, fuzzy
-#| msgid "Discreet Behaviour"
 msgid "Discreet behavior"
 msgstr "Рассудительное поведение"
 
 #: engines/twine/metaengine.cpp:289
-#, fuzzy
-#| msgid "Behaviour Action"
 msgid "Behavior action"
 msgstr "Поведенческое действие"
 
 #: engines/twine/metaengine.cpp:295
-#, fuzzy
-#| msgid "Change Behaviour"
 msgid "Change behavior"
 msgstr "Изменить поведение"
 
 #: engines/twine/metaengine.cpp:319
-#, fuzzy
-#| msgid "Use Selected Object"
 msgid "Use selected object"
 msgstr "Использовать выбранный объект"
 
 #: engines/twine/metaengine.cpp:325
-#, fuzzy
-#| msgid "Throw Magic Ball"
 msgid "Throw magic ball"
 msgstr "Метнуть магический шар"
 
@@ -14619,14 +14543,10 @@ msgid "Open Holomap"
 msgstr "Открыть голокарту"
 
 #: engines/twine/metaengine.cpp:378
-#, fuzzy
-#| msgid "Special Action"
 msgid "Special action"
 msgstr "Специальное действие"
 
 #: engines/twine/metaengine.cpp:384
-#, fuzzy
-#| msgid "Scenery Zoom"
 msgid "Scenery zoom"
 msgstr "Увеличить сцену"
 
@@ -14714,104 +14634,70 @@ msgid "Go to next object"
 msgstr "Перейти на следующий объект"
 
 #: engines/twp/metaengine.cpp:158
-#, fuzzy
-#| msgid "Select verb/item Left"
 msgid "Select verb / item left"
-msgstr "Выбрать действие/предмет слева"
+msgstr "Выбрать действие / предмет слева"
 
 #: engines/twp/metaengine.cpp:159
-#, fuzzy
-#| msgid "Select verb/item Right"
 msgid "Select verb / item right"
-msgstr "Выбрать действие/предмет справа"
+msgstr "Выбрать действие / предмет справа"
 
 #: engines/twp/metaengine.cpp:160
-#, fuzzy
-#| msgid "Select verb/item Up"
 msgid "Select verb / item up"
-msgstr "Выбрать действие/предмет сверху"
+msgstr "Выбрать действие / предмет сверху"
 
 #: engines/twp/metaengine.cpp:161
-#, fuzzy
-#| msgid "Select verb/item Down"
 msgid "Select verb / item down"
-msgstr "Выбрать действие/предмет снизу"
+msgstr "Выбрать действие / предмет снизу"
 
 #: engines/twp/metaengine.cpp:163
-#, fuzzy
-#| msgid "Select Actor 1"
 msgid "Select actor 1"
 msgstr "Выбрать актера 1"
 
 #: engines/twp/metaengine.cpp:164
-#, fuzzy
-#| msgid "Select Actor 2"
 msgid "Select actor 2"
 msgstr "Выбрать актера 2"
 
 #: engines/twp/metaengine.cpp:165
-#, fuzzy
-#| msgid "Select Actor 3"
 msgid "Select actor 3"
 msgstr "Выбрать актера 3"
 
 #: engines/twp/metaengine.cpp:166
-#, fuzzy
-#| msgid "Select Actor 4"
 msgid "Select actor 4"
 msgstr "Выбрать актера 4"
 
 #: engines/twp/metaengine.cpp:167
-#, fuzzy
-#| msgid "Select Actor 5"
 msgid "Select actor 5"
 msgstr "Выбрать актера 5"
 
 #: engines/twp/metaengine.cpp:168
-#, fuzzy
-#| msgid "Select Choice 1"
 msgid "Select choice 1"
 msgstr "Выбрать опцию 1"
 
 #: engines/twp/metaengine.cpp:169
-#, fuzzy
-#| msgid "Select Choice 2"
 msgid "Select choice 2"
 msgstr "Выбрать опцию 2"
 
 #: engines/twp/metaengine.cpp:170
-#, fuzzy
-#| msgid "Select Choice 3"
 msgid "Select choice 3"
 msgstr "Выбрать опцию 3"
 
 #: engines/twp/metaengine.cpp:171
-#, fuzzy
-#| msgid "Select Choice 4"
 msgid "Select choice 4"
 msgstr "Выбрать опцию 4"
 
 #: engines/twp/metaengine.cpp:172
-#, fuzzy
-#| msgid "Select Choice 5"
 msgid "Select choice 5"
 msgstr "Выбрать опцию 5"
 
 #: engines/twp/metaengine.cpp:173
-#, fuzzy
-#| msgid "Select Choice 6"
 msgid "Select choice 6"
 msgstr "Выбрать опцию 6"
 
 #: engines/twp/metaengine.cpp:174
-#, fuzzy
-#| msgid "Select Next Actor"
 msgid "Select next Actor"
 msgstr "Выбрать следующего актера"
 
 #: engines/twp/metaengine.cpp:175
-#, fuzzy
-#| msgid "Select Previous Actor"
 msgid "Select previous actor"
 msgstr "Выбрать предыдущего актера"
 
@@ -14946,40 +14832,28 @@ msgid "Magic Amulet"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Select Actor 1"
 msgid "Amulet Option 1"
-msgstr "Выбрать актера 1"
+msgstr "Опция амулета 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Select Actor 2"
 msgid "Amulet Option 2"
-msgstr "Выбрать актера 2"
+msgstr "Опция амулета 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Select Actor 3"
 msgid "Amulet Option 3"
-msgstr "Выбрать актера 3"
+msgstr "Опция амулета 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Select Actor 4"
 msgid "Amulet Option 4"
-msgstr "Выбрать актера 4"
+msgstr "Опция амулета 4"
 
 #: engines/ultima/ultima0/metaengine.cpp:65
-#, fuzzy
-#| msgid "Crawl North"
 msgid "North"
-msgstr "Ползти на север"
+msgstr "Север"
 
 #: engines/ultima/ultima0/metaengine.cpp:66
-#, fuzzy
-#| msgid "Crawl South"
 msgid "South"
-msgstr "Ползти на юг"
+msgstr "Юг"
 
 #: engines/ultima/ultima0/metaengine.cpp:67
 msgid "West"
