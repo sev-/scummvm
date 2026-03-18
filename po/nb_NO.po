@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 21:09+0000\n"
+"POT-Creation-Date: 2026-03-18 16:21+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Einar Johan Trøan Sømåen <einarjohants@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.scummvm.org/projects/"
@@ -7276,7 +7276,8 @@ msgstr "Snu rundt"
 #: engines/kyra/engine/eobcommon.cpp:375 engines/kyra/engine/lol.cpp:514
 #: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:97
 #: engines/mohawk/riven.cpp:901 engines/pegasus/pegasus.cpp:2740
-#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:48
+#: engines/twine/metaengine.cpp:353 engines/ultima/ultima0/metaengine.cpp:80
+#: engines/ultima/ultima8/metaengine.cpp:48
 #: engines/wintermute/keymapper_tables.h:161
 #: engines/wintermute/keymapper_tables.h:741
 #: engines/wintermute/keymapper_tables.h:2122
@@ -7289,7 +7290,8 @@ msgstr "Snu mot venstre"
 #: engines/kyra/engine/eobcommon.cpp:376 engines/kyra/engine/lol.cpp:515
 #: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:98
 #: engines/mohawk/riven.cpp:907 engines/pegasus/pegasus.cpp:2747
-#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:49
+#: engines/twine/metaengine.cpp:346 engines/ultima/ultima0/metaengine.cpp:81
+#: engines/ultima/ultima8/metaengine.cpp:49
 #: engines/wintermute/keymapper_tables.h:167
 #: engines/wintermute/keymapper_tables.h:746
 #: engines/wintermute/keymapper_tables.h:2128
@@ -8237,6 +8239,7 @@ msgstr "Se på"
 #: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
 #: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
 #: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
+#: engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -15451,7 +15454,7 @@ msgstr "Lagrede spill"
 #: engines/tot/metaengine.cpp:164
 #, fuzzy
 #| msgid "Main Men~u~"
-msgid "Main menu/Exit"
+msgid "Main menu / Exit"
 msgstr "Hoved~m~eny"
 
 #: engines/touche/metaengine.cpp:135
@@ -16082,35 +16085,39 @@ msgid "Shield"
 msgstr "Skjold"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
-msgid "Bow & Arrow"
+#, fuzzy
+#| msgid "Bow & Arrow"
+msgid "Bow & arrow"
 msgstr "Pil og Bue"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
-msgid "Magic Amulet"
+#, fuzzy
+#| msgid "Magic Amulet"
+msgid "Magic amulet"
 msgstr "Magisk Amulett"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
 #, fuzzy
 #| msgid "Select Group by"
-msgid "Amulet Option 1"
+msgid "Amulet option 1"
 msgstr "Velg Gruppere etter"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
 #, fuzzy
 #| msgid "Select Group by"
-msgid "Amulet Option 2"
+msgid "Amulet option 2"
 msgstr "Velg Gruppere etter"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
 #, fuzzy
 #| msgid "Select Group by"
-msgid "Amulet Option 3"
+msgid "Amulet option 3"
 msgstr "Velg Gruppere etter"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
 #, fuzzy
 #| msgid "Select Group by"
-msgid "Amulet Option 4"
+msgid "Amulet option 4"
 msgstr "Velg Gruppere etter"
 
 #: engines/ultima/ultima0/metaengine.cpp:65
@@ -16137,14 +16144,14 @@ msgstr "Øst"
 #: engines/ultima/ultima0/metaengine.cpp:83
 #, fuzzy
 #| msgid "Enter Text"
-msgid "Enter/Exit"
+msgid "Enter / Exit"
 msgstr "Oppgi tekst"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
 #, fuzzy
 #| msgid "Wait"
-msgid "Pass/Wait"
+msgid "Pass / Wait"
 msgstr "Vent"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
@@ -16154,23 +16161,11 @@ msgstr "Vent"
 msgid "Minimap"
 msgstr "Minimer"
 
-#: engines/ultima/ultima0/metaengine.cpp:78
-msgid "Move Forward"
-msgstr "Beveg Fremover"
-
 #: engines/ultima/ultima0/metaengine.cpp:79
 #, fuzzy
 #| msgid "Turn on"
-msgid "Turn Around"
+msgid "Turn around"
 msgstr "Slå på"
-
-#: engines/ultima/ultima0/metaengine.cpp:80
-msgid "Turn Left"
-msgstr "Svin til Venstre"
-
-#: engines/ultima/ultima0/metaengine.cpp:81
-msgid "Turn Right"
-msgstr "Sving til Høyre"
 
 #: engines/ultima/ultima0/metaengine.cpp:98
 #: engines/ultima/ultima0/metaengine.cpp:106
@@ -16179,26 +16174,26 @@ msgstr "Sving til Høyre"
 #: engines/ultima/ultima0/metaengine.cpp:123
 #, fuzzy
 #| msgid "Bind Keys"
-msgid "Basic Keys"
+msgid "Basic keys"
 msgstr "Koble taster"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
 #, fuzzy
 #| msgid "Game Keys"
-msgid "Menu Keys"
+msgid "Menu keys"
 msgstr "Spilltaster"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
 #, fuzzy
 #| msgid "General Keys"
-msgid "Overworld Keys"
+msgid "Overworld keys"
 msgstr "Generelle taster"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
-msgid "Dungeon Keys"
+msgid "Dungeon keys"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:43
@@ -18064,6 +18059,15 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Move Forward"
+#~ msgstr "Beveg Fremover"
+
+#~ msgid "Turn Left"
+#~ msgstr "Svin til Venstre"
+
+#~ msgid "Turn Right"
+#~ msgstr "Sving til Høyre"
 
 #, fuzzy
 #~| msgid "Interact Mode"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-16 21:09+0000\n"
+"POT-Creation-Date: 2026-03-18 16:21+0000\n"
 "PO-Revision-Date: 2024-10-10 12:33+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Turkish <https://translations.scummvm.org/projects/scummvm/"
@@ -6628,7 +6628,8 @@ msgstr "Altyapı"
 #: engines/kyra/engine/eobcommon.cpp:375 engines/kyra/engine/lol.cpp:514
 #: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:97
 #: engines/mohawk/riven.cpp:901 engines/pegasus/pegasus.cpp:2740
-#: engines/twine/metaengine.cpp:353 engines/ultima/ultima8/metaengine.cpp:48
+#: engines/twine/metaengine.cpp:353 engines/ultima/ultima0/metaengine.cpp:80
+#: engines/ultima/ultima8/metaengine.cpp:48
 #: engines/wintermute/keymapper_tables.h:161
 #: engines/wintermute/keymapper_tables.h:741
 #: engines/wintermute/keymapper_tables.h:2122
@@ -6641,7 +6642,8 @@ msgstr ""
 #: engines/kyra/engine/eobcommon.cpp:376 engines/kyra/engine/lol.cpp:515
 #: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:98
 #: engines/mohawk/riven.cpp:907 engines/pegasus/pegasus.cpp:2747
-#: engines/twine/metaengine.cpp:346 engines/ultima/ultima8/metaengine.cpp:49
+#: engines/twine/metaengine.cpp:346 engines/ultima/ultima0/metaengine.cpp:81
+#: engines/ultima/ultima8/metaengine.cpp:49
 #: engines/wintermute/keymapper_tables.h:167
 #: engines/wintermute/keymapper_tables.h:746
 #: engines/wintermute/keymapper_tables.h:2128
@@ -7521,6 +7523,7 @@ msgstr "Aşağı"
 #: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
 #: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
 #: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
+#: engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -14093,7 +14096,7 @@ msgstr "Oyun yükle:"
 
 #: engines/tot/metaengine.cpp:164
 #, fuzzy
-msgid "Main menu/Exit"
+msgid "Main menu / Exit"
 msgstr "Müzik cihazı:"
 
 #: engines/touche/metaengine.cpp:135
@@ -14660,31 +14663,31 @@ msgid "Shield"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:55
-msgid "Bow & Arrow"
+msgid "Bow & arrow"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:56
-msgid "Magic Amulet"
+msgid "Magic amulet"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:57
 #, fuzzy
-msgid "Amulet Option 1"
+msgid "Amulet option 1"
 msgstr "Tema seç"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
 #, fuzzy
-msgid "Amulet Option 2"
+msgid "Amulet option 2"
 msgstr "Tema seç"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
 #, fuzzy
-msgid "Amulet Option 3"
+msgid "Amulet option 3"
 msgstr "Tema seç"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
 #, fuzzy
-msgid "Amulet Option 4"
+msgid "Amulet option 4"
 msgstr "Tema seç"
 
 #: engines/ultima/ultima0/metaengine.cpp:65
@@ -14706,12 +14709,12 @@ msgstr ""
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
 #, fuzzy
-msgid "Enter/Exit"
+msgid "Enter / Exit"
 msgstr "Etkileşim"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-msgid "Pass/Wait"
+msgid "Pass / Wait"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:73
@@ -14720,25 +14723,11 @@ msgstr ""
 msgid "Minimap"
 msgstr "Ses"
 
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/ultima/ultima0/metaengine.cpp:79
 #, fuzzy
 #| msgid "Backend"
-msgid "Move Forward"
+msgid "Turn around"
 msgstr "Altyapı"
-
-#: engines/ultima/ultima0/metaengine.cpp:79
-msgid "Turn Around"
-msgstr ""
-
-#: engines/ultima/ultima0/metaengine.cpp:80
-#, fuzzy
-msgid "Turn Left"
-msgstr "Sol"
-
-#: engines/ultima/ultima0/metaengine.cpp:81
-#, fuzzy
-msgid "Turn Right"
-msgstr "Sağ"
 
 #: engines/ultima/ultima0/metaengine.cpp:98
 #: engines/ultima/ultima0/metaengine.cpp:106
@@ -14746,23 +14735,23 @@ msgstr "Sağ"
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
 #, fuzzy
-msgid "Basic Keys"
+msgid "Basic keys"
 msgstr "A~y~arlar..."
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
 #, fuzzy
-msgid "Menu Keys"
+msgid "Menu keys"
 msgstr "A~y~arlar..."
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-msgid "Overworld Keys"
+msgid "Overworld keys"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
-msgid "Dungeon Keys"
+msgid "Dungeon keys"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:43
@@ -16479,6 +16468,19 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Backend"
+#~ msgid "Move Forward"
+#~ msgstr "Altyapı"
+
+#, fuzzy
+#~ msgid "Turn Left"
+#~ msgstr "Sol"
+
+#, fuzzy
+#~ msgid "Turn Right"
+#~ msgstr "Sağ"
 
 #, fuzzy
 #~| msgid "Interact"
