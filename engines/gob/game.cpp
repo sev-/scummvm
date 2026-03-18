@@ -1184,14 +1184,36 @@ Common::String Game::formatSubNameInCallStack(const Common::String &totFile, int
 		const char *space = strchr(name.c_str(), ' ');
 		if (space)
 			name = Common::String(space + 1);
-	}
-	if (!name.empty())
+
 		return Common::String::format("sub_%d_%s", offset, name.c_str());
+	}
+
 	return Common::String::format("sub_%d", offset);
 }
 
 Common::String Game::getGobStack() {
 	uint stackSize = _globalFuncCallStack.size();
+
+	Common::Array<Common::String> totsToLoad;
+	// Load function names
+	for (uint i = 0; i < stackSize; i++) {
+		const FuncCall &fc = _globalFuncCallStack[i];
+		if (!fc.callingTot.empty()
+				&& Common::find(totsToLoad.begin(), totsToLoad.end(), fc.callingTot) == totsToLoad.end()
+				&& _totFunctions.find(fc.callingTot) < 0)
+			totsToLoad.push_back(fc.callingTot);
+
+		if (fc.calledTot.empty() && fc.calledTot != fc.callingTot
+				&& Common::find(totsToLoad.begin(), totsToLoad.end(), fc.calledTot) == totsToLoad.end()
+				&& _totFunctions.find(fc.calledTot) < 0)
+			totsToLoad.push_back(fc.calledTot);
+	}
+
+	Common::Array<Common::String> loadedTots;
+	for (Common::String &tot : totsToLoad) {
+		if (_totFunctions.load(tot))
+			loadedTots.push_back(tot);
+	}
 
 	Common::Array<Common::String> positions;
 	Common::Array<Common::String> functions;
@@ -1244,6 +1266,10 @@ Common::String Game::getGobStack() {
 										 tags[i].c_str());
 	}
 	result += "------------------------\n";
+
+	for (Common::String &tot : loadedTots)
+		_totFunctions.unload(tot);
+
 	return result;
 }
 
