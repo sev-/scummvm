@@ -464,6 +464,9 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 		_quickSelectTime = time + 300;	// TODO: Turn this into a proper constant (kQuickSelectDelay ?)
 
 		if (_quickSelect) {
+			clearSelection();
+			markSelectedItem(_selectedItem, false);
+
 			// FIXME: This is bad slow code (it scans the list linearly each time a
 			// key is pressed); it could be much faster. Only of importance if we have
 			// quite big lists to deal with -- so for now we can live with this lazy
@@ -482,6 +485,7 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 				newSelectedItem++;
 			}
 
+			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 		} else {
 			sendCommand(_cmd, 0);
@@ -541,7 +545,10 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			}
 			// fall through
 		case Common::KEYCODE_END:
+			clearSelection();
+			markSelectedItem(_selectedItem, false);
 			_selectedItem = _list.size() - 1;
+			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
 
@@ -614,7 +621,10 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			}
 			// fall through
 		case Common::KEYCODE_HOME:
+			clearSelection();
+			markSelectedItem(_selectedItem, false);
 			_selectedItem = 0;
+			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
 
