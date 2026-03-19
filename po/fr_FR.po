@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-18 16:21+0000\n"
-"PO-Revision-Date: 2026-03-10 18:22+0000\n"
+"PO-Revision-Date: 2026-03-19 03:18+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fr/>\n"
@@ -14545,10 +14545,8 @@ msgid "Save and load game"
 msgstr "Sauvegarder et charger une partie"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
-msgstr "Menu principal/Sortir"
+msgstr "Menu principal / Sortir"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -15079,40 +15077,28 @@ msgid "Shield"
 msgstr "Bouclier"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
-#, fuzzy
-#| msgid "Bow & Arrow"
 msgid "Bow & arrow"
 msgstr "Arc et flèches"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
-#, fuzzy
-#| msgid "Magic Amulet"
 msgid "Magic amulet"
 msgstr "Amulette magique"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
-msgstr "Amulette Option 1"
+msgstr "Amulette option 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
-msgstr "Amulette Option 2"
+msgstr "Amulette option 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
-msgstr "Amulette Option 3"
+msgstr "Amulette option 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
-msgstr "Amulette Option 4"
+msgstr "Amulette option 4"
 
 #: engines/ultima/ultima0/metaengine.cpp:65
 msgid "North"
@@ -15132,17 +15118,13 @@ msgstr "Est"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter/Exit"
 msgid "Enter / Exit"
-msgstr "Entrer/Sortir"
+msgstr "Entrer / Sortir"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Pass/Wait"
 msgid "Pass / Wait"
-msgstr "Passer/Attendre"
+msgstr "Passer / Attendre"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
@@ -15150,8 +15132,6 @@ msgid "Minimap"
 msgstr "Mini carte"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn Around"
 msgid "Turn around"
 msgstr "Se retourner"
 
@@ -15160,29 +15140,21 @@ msgstr "Se retourner"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Basic Keys"
 msgid "Basic keys"
 msgstr "Touches de base"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Menu Keys"
 msgid "Menu keys"
 msgstr "Touches de menus"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "Overworld Keys"
 msgid "Overworld keys"
 msgstr "Touches du monde extérieur"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
-#, fuzzy
-#| msgid "Dungeon Keys"
 msgid "Dungeon keys"
 msgstr "Touches des donjons"
 
