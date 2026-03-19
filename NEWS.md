@@ -83,6 +83,9 @@ For a more comprehensive changelog of the latest experimental code, see:
  SLUDGE:
    - Fixed crash at start of Nathan's Second Chance game.
 
+ Sword2:
+   - Fixed crash with some DXA movies, particularly noticeable in intro.dxa.
+
  Teenagent:
    - Fixed 'could not locate language block' error when starting the Polish and
      Russian versions.
