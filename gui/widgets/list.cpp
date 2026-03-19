@@ -597,9 +597,13 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			}
 			// fall through
 		case Common::KEYCODE_PAGEDOWN:
+			clearSelection();
+			markSelectedItem(_selectedItem, false);
 			_selectedItem += _entriesPerPage - 1;
-			if (_selectedItem >= (int)_list.size() )
+			if (_selectedItem >= (int)_list.size())
 				_selectedItem = _list.size() - 1;
+
+			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
 
@@ -665,9 +669,12 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			}
 			// fall through
 		case Common::KEYCODE_PAGEUP:
+			clearSelection();
+			markSelectedItem(_selectedItem, false);
 			_selectedItem -= _entriesPerPage - 1;
 			if (_selectedItem < 0)
 				_selectedItem = 0;
+			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
 
