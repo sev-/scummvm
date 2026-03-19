@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-18 16:21+0000\n"
+"POT-Creation-Date: 2026-03-19 17:17+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
@@ -12138,11 +12138,11 @@ msgid "Game does not contain menu resources"
 msgstr "Peli ei sisällä valikkoresursseja"
 
 #. I18N: 'Robot' is a video format name (as in 'MP4 video')
-#: engines/sci/detection_tables.h:4824
+#: engines/sci/detection_tables.h:4834
 msgid "This demo uses an unimplemented version of Robot videos"
 msgstr "Tämä demo käyttää totetuttamatonta versiota Robot-videoista"
 
-#: engines/sci/detection_tables.h:4879
+#: engines/sci/detection_tables.h:4889
 msgid "Incomplete game detected. You have to copy data from all the CDs."
 msgstr ""
 "Vaillinainen peli havaittu. Sinun täytyy kopioida data kaikilta CD-levyiltä."
