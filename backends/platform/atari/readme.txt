@@ -97,8 +97,10 @@ features but also improves performance and reduces executable size.
 
 - Overlay doesn't support alternative themes => faster loading time.
 
-- "STMIDI" driver is automatically enabled (i.e. MIDI emulation is never used
-  but still allows playing speech/sfx samples and/or CD audio).
+- "null" music driver is automatically enabled (i.e. MIDI/OPL emulation is never
+  used but still allows playing speech/sfx samples and/or CD audio).
+
+- DOSBox OPL emulator is disabled => smaller executable size.
 
 FireBee package
 ~~~~~~~~~~~~~~~
