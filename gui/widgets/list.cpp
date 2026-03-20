@@ -556,12 +556,11 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			// fall through
 		case Common::KEYCODE_END:
 			clearSelection();
-			markSelectedItem(_selectedItem, false);
-			_selectedItem = _list.size() - 1;
+			scrollTo((int)_list.size() - 1);
+			_selectedItem = findSelectableItem((int)_list.size() - 1, -1);
 			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
-
 
 		case Common::KEYCODE_KP2:
 			if (state.flags & Common::KBD_NUM) {
@@ -639,8 +638,8 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			// fall through
 		case Common::KEYCODE_HOME:
 			clearSelection();
-			markSelectedItem(_selectedItem, false);
-			_selectedItem = 0;
+			scrollTo(0);
+			_selectedItem = findSelectableItem(0, 1);
 			markSelectedItem(_selectedItem, true);
 			scrollToCurrent();
 			break;
