@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-19 17:17+0000\n"
-"PO-Revision-Date: 2026-03-18 16:52+0000\n"
+"PO-Revision-Date: 2026-03-20 13:27+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -2955,11 +2955,11 @@ msgstr "Выбрать шейдер из файла на диске"
 
 #: gui/shaderbrowser-dialog.cpp:136
 msgid "Select shader"
-msgstr "Выберите шейдер"
+msgstr "Выбрать шейдер"
 
 #: gui/themebrowser.cpp:44
 msgid "Select a Theme"
-msgstr "Выберите тему"
+msgstr "Выбрать тему"
 
 #: gui/ThemeEngine.cpp:270
 msgid "Disabled GFX"
@@ -4300,12 +4300,12 @@ msgstr "Добавить новую папку"
 #. I18N: This may be displayed in the Android UI used to add a Storage Attach Framework authorization
 #: backends/fs/android/android-saf-fs.cpp:924
 msgid "Choose a new folder"
-msgstr "Выберите новую папку"
+msgstr "Выбрать новую папку"
 
 #: backends/graphics/atari/atari-graphics.cpp:1058
 #: backends/graphics/sdl/sdl-graphics.cpp:515 engines/scumm/help.cpp:103
 msgid "Toggle aspect ratio correction"
-msgstr "Переключение коррекции соотношения сторон"
+msgstr "Переключить коррекцию соотношения сторон"
 
 #: backends/graphics/opengl/opengl-graphics.cpp:316
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:128
@@ -4390,12 +4390,12 @@ msgstr "Оконный режим"
 
 #: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
-msgstr "Переключение на весь экран"
+msgstr "Переключить полноэкранный режим"
 
 #: backends/graphics/sdl/sdl-graphics.cpp:499 engines/scumm/help.cpp:100
 #: engines/wintermute/keymapper_tables.h:960
 msgid "Toggle mouse capture"
-msgstr "Переключение перехвата мыши"
+msgstr "Переключить перехват мыши"
 
 #: backends/graphics/sdl/sdl-graphics.cpp:504
 msgid "Toggle resizable window"
@@ -4420,7 +4420,7 @@ msgstr "Использовать линейное сглаживание при 
 
 #: backends/graphics/sdl/sdl-graphics.cpp:529
 msgid "Cycle through stretch modes"
-msgstr "Переключение режима растягивания"
+msgstr "Переключить режим растягивания"
 
 #: backends/graphics/sdl/sdl-graphics.cpp:535
 msgid "Increase the scale factor"
@@ -4994,7 +4994,7 @@ msgstr "Внутриигровое разрешение слишком мало 
 
 #: backends/platform/3ds/osystem-events.cpp:409
 msgid "Magnify Mode On. Switching to Hover Mode..."
-msgstr "Режим увеличения включен. Переключение в режим парения..."
+msgstr "Режим увеличения включен. Переключаюсь в режим парения..."
 
 #: backends/platform/3ds/osystem-events.cpp:411
 msgid "Magnify Mode On"
@@ -5002,7 +5002,7 @@ msgstr "Режим увеличения включен"
 
 #: backends/platform/3ds/osystem-events.cpp:418
 msgid "Magnify Mode Off. Reactivating Drag Mode..."
-msgstr "Режим Увеличения выключен. Переключение в режим протягивания..."
+msgstr "Режим Увеличения выключен. Переключаюсь в режим протягивания..."
 
 #: backends/platform/3ds/osystem-events.cpp:420
 msgid "Magnify Mode Off"
@@ -5418,7 +5418,7 @@ msgstr ""
 
 #: backends/platform/android/options.cpp:298
 msgid "Select backup file"
-msgstr "Выберите файл резервной копии"
+msgstr "Выбрать файл резервной копии"
 
 #: backends/platform/android/options.cpp:315
 msgid "The backup has been restored successfully."
@@ -5888,7 +5888,7 @@ msgstr "Не удалось создать файлы с хуками"
 
 #: backends/platform/libretro/src/libretro-options-widget.cpp:263
 msgid "Select Playlist directory"
-msgstr "Выберите каталог для плейлистов"
+msgstr "Выбрать каталог для плейлистов"
 
 #: backends/platform/libretro/src/libretro-os-utils.cpp:233
 msgid "Libretro playlist"
@@ -7028,12 +7028,12 @@ msgstr "Переключить названия хитбоксов"
 
 #: engines/agos/metaengine.cpp:294
 msgid "Switches between speech only and combined speech and subtitles"
-msgstr "Переключение между режимами «только речь» и «речь и субтитры»"
+msgstr "Переключает между режимами «только речь» и «речь и субтитры»"
 
 #: engines/agos/metaengine.cpp:300
 msgid "Switches between subtitles only and combined speech and subtitles"
 msgstr ""
-"Переключение между режимами «только субтитры» и «комбинированная речь и "
+"Переключает между режимами «только субтитры» и «комбинированная речь и "
 "субтитры»"
 
 #. I18N: Swampy Adventures is the name of the game
@@ -8497,7 +8497,7 @@ msgstr "Открыть главное меню"
 
 #: engines/draci/metaengine.cpp:249
 msgid "Toggle between mouse pointer and the last game item"
-msgstr "Переключение между указателем мыши и последним игровым предметом"
+msgstr "Переключает между указателем мыши и последним игровым предметом"
 
 #: engines/draci/metaengine.cpp:255
 msgid "Previous item in inventory"
@@ -11392,7 +11392,7 @@ msgstr "Взаимодействовать / Выбрать"
 #. I18N: (Game Name: Pink Panther) The player normally clicks on a target (character/object) to move toward it and interact (talk,use etc.) with it. This action makes the player still walk to the target but not start interacting when they arrive.
 #: engines/pink/metaengine.cpp:136
 msgid "Cancel interaction"
-msgstr "Отменить действие"
+msgstr "Отменить взаимодействие"
 
 #. I18N: (Game Name: Pink Panther) The player normally clicks on a target (character/object) to move toward it and interact (talk,use etc.) with it. This action skips the walking animation and immediately start interacting.
 #: engines/pink/metaengine.cpp:144
@@ -11402,7 +11402,7 @@ msgstr "Пропустить ходьбу"
 #. I18N: (Game Name: Pink Panther) The player normally clicks on a target (character/object) to move toward it and interact (talk,use etc.) with it. This action skips the walking animation and also prevents the interaction, instead instantly placing the player next to the target.
 #: engines/pink/metaengine.cpp:151
 msgid "Skip walk and cancel interaction"
-msgstr ""
+msgstr "Пропустить ходьбу и отменить взаимодействие"
 
 #. I18N: (Game Name: Pink Panther) This action fully skips the current running sequence (cutscene, dialog, interaction, etc).
 #: engines/pink/metaengine.cpp:158
@@ -12080,7 +12080,7 @@ msgstr "Озвучка и текст"
 
 #: engines/scumm/dialogs.cpp:1049
 msgid "Select a Proficiency Level."
-msgstr "Выберите уровень сложности."
+msgstr "Выбрать уровень сложности."
 
 #: engines/scumm/dialogs.cpp:1051
 msgid "Refer to your Loom(TM) manual for help."
@@ -12208,7 +12208,7 @@ msgstr "Качество музыки:"
 msgid ""
 "Select music quality. The original lets you choose this from the Game menu."
 msgstr ""
-"Выберите качество музыки. В оригинале вы можете выбрать его из меню игры."
+"Выбрать качество музыки. В оригинале вы можете выбрать его из меню игры."
 
 #: engines/scumm/dialogs.cpp:1474
 msgid ""
@@ -12451,7 +12451,7 @@ msgstr "Запустить очень быстрый режим (*)"
 
 #: engines/scumm/help.cpp:101
 msgid "Cycle between graphics filters"
-msgstr "Переключение между графическими фильтрами"
+msgstr "Переключить между графическими фильтрами"
 
 #: engines/scumm/help.cpp:102
 msgid "Increase / Decrease scale factor"
@@ -14324,7 +14324,7 @@ msgstr "Выключить быструю ходьбу"
 
 #: engines/touche/metaengine.cpp:173
 msgid "Toggle between voice / text / text and voice"
-msgstr "Переключение между озвучкой / текстом / текстом и озвучкой"
+msgstr "Переключить между озвучкой / текстом / текстом и озвучкой"
 
 #: engines/touche/metaengine.cpp:182
 msgid "Press \"Yes\" Key"
@@ -14972,10 +14972,8 @@ msgid "Quit and save"
 msgstr "Выйти и сохраниться"
 
 #: engines/ultima/ultima4/metaengine.cpp:70
-#, fuzzy
-#| msgid "Next action"
 msgid "Ready weapon"
-msgstr "Следующее действие"
+msgstr "Приготовить оружие"
 
 #: engines/ultima/ultima4/metaengine.cpp:72
 msgid "Stats"
@@ -14994,26 +14992,20 @@ msgid "Speed up"
 msgstr "Ускориться"
 
 #: engines/ultima/ultima4/metaengine.cpp:83
-#, fuzzy
-#| msgid "Move down"
 msgid "Speed down"
-msgstr "Идти вниз"
+msgstr "Замедлиться"
 
 #: engines/ultima/ultima4/metaengine.cpp:84
-#, fuzzy
-#| msgid "Speech Only"
 msgid "Speed normal"
-msgstr "Только озвучка"
+msgstr "Нормальная скорость"
 
 #: engines/ultima/ultima4/metaengine.cpp:85
 msgid "Combat speed up"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:86
-#, fuzzy
-#| msgid "Rotate down"
 msgid "Combat speed down"
-msgstr "Повернуть вниз"
+msgstr "Замедлить скорость боя"
 
 #: engines/ultima/ultima4/metaengine.cpp:87
 msgid "Combat speed normal"
@@ -15024,79 +15016,56 @@ msgid "Party - None"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:94
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #1"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №1"
 
 #: engines/ultima/ultima4/metaengine.cpp:95
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #2"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №2"
 
 #: engines/ultima/ultima4/metaengine.cpp:96
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #3"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №3"
 
 #: engines/ultima/ultima4/metaengine.cpp:97
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #4"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №4"
 
 #: engines/ultima/ultima4/metaengine.cpp:98
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #5"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №5"
 
 #: engines/ultima/ultima4/metaengine.cpp:99
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #6"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №6"
 
 #: engines/ultima/ultima4/metaengine.cpp:100
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #7"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №7"
 
 #: engines/ultima/ultima4/metaengine.cpp:101
-#, fuzzy
-#| msgid "Transfer Character"
 msgid "Party - Character #8"
-msgstr "Перенести героя"
+msgstr "Отряд - Герой №8"
 
 #: engines/ultima/ultima4/metaengine.cpp:107
 msgid "Destroy all creatures"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:108
-#, fuzzy
-#| msgctxt "Options menu"
-#| msgid "Wall collision on"
 msgid "Toggle collision handling"
-msgstr "Столкновение со стенами включено"
+msgstr "Переключить столкновение со стенами"
 
 #: engines/ultima/ultima4/metaengine.cpp:109
-#, fuzzy
-#| msgid "Next object"
 msgid "Destroy object"
-msgstr "Следующий объект"
+msgstr "Уничтожить объект"
 
 #: engines/ultima/ultima4/metaengine.cpp:110
 msgid "Full equipment"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:111
-#, fuzzy
-#| msgid "Toggle Combat"
 msgid "Flee combat"
-msgstr "Переключить режим боя"
+msgstr "Сбежать с поля боя"
 
 #: engines/ultima/ultima4/metaengine.cpp:113
 msgid "Help - Teleport to Lord British"
@@ -15111,10 +15080,8 @@ msgid "List karma"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:116
-#, fuzzy
-#| msgid "Next location"
 msgid "Leave location"
-msgstr "Следующая локация"
+msgstr "Уйти из локации"
 
 #: engines/ultima/ultima4/metaengine.cpp:117
 msgid "Give mixtures"
@@ -15125,10 +15092,8 @@ msgid "Combat encounters"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:119
-#, fuzzy
-#| msgid "Toggle Drag Mode"
 msgid "Toggle overhead view"
-msgstr "Вкл/выкл режим перетаскивания"
+msgstr "Переключить вид сверху"
 
 #: engines/ultima/ultima4/metaengine.cpp:120
 msgid "Full party"
@@ -15143,10 +15108,8 @@ msgid "Full stats"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:123
-#, fuzzy
-#| msgid "Create directory"
 msgid "Create transport"
-msgstr "Создать каталог"
+msgstr "Создать транспорт"
 
 #: engines/ultima/ultima4/metaengine.cpp:124
 msgid "Up level"
@@ -15161,10 +15124,8 @@ msgid "Grant virtue"
 msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:127
-#, fuzzy
-#| msgid "Change sound"
 msgid "Change wind"
-msgstr "Изменить звук"
+msgstr "Изменить ветер"
 
 #: engines/ultima/nuvie/nuvie.cpp:403
 #, c-format
@@ -15181,28 +15142,20 @@ msgid "Original Save"
 msgstr "Оригинальное сохранение"
 
 #: engines/ultima/nuvie/metaengine.cpp:59
-#, fuzzy
-#| msgid "Walk to"
 msgid "Walk west"
-msgstr "Идти к"
+msgstr "Идти на запад"
 
 #: engines/ultima/nuvie/metaengine.cpp:60
-#, fuzzy
-#| msgid "Walk to"
 msgid "Walk east"
-msgstr "Идти к"
+msgstr "Идти на восток"
 
 #: engines/ultima/nuvie/metaengine.cpp:61
-#, fuzzy
-#| msgid "Walk to"
 msgid "Walk north"
-msgstr "Идти к"
+msgstr "Идти на север"
 
 #: engines/ultima/nuvie/metaengine.cpp:62
-#, fuzzy
-#| msgid "Walk to"
 msgid "Walk south"
-msgstr "Идти к"
+msgstr "Идти на юг"
 
 #: engines/ultima/nuvie/metaengine.cpp:63
 msgid "Walk north-east"
@@ -15226,42 +15179,30 @@ msgstr ""
 
 #. I18N: command bar is the bar of commands at the bottom of the screen
 #: engines/ultima/nuvie/metaengine.cpp:77
-#, fuzzy
-#| msgid "Select shader"
 msgid "Select command bar"
-msgstr "Выберите шейдер"
+msgstr "Выбрать набор команд"
 
 #. I18N: command bar is the bar of commands at the bottom of the screen
 #: engines/ultima/nuvie/metaengine.cpp:79
-#, fuzzy
-#| msgid "Select Next Actor"
 msgid "Select new command bar"
-msgstr "Выбрать следующего актера"
+msgstr "Выбрать новый набор команд"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:81
-#, fuzzy
-#| msgid "Scroll up"
 msgid "Doll gump"
-msgstr "Прокрутить вверх"
+msgstr "Меню-кукла"
 
 #: engines/ultima/nuvie/metaengine.cpp:82
-#, fuzzy
-#| msgid "Previous page"
 msgid "Previous party member"
-msgstr "Предыдущая страница"
+msgstr "Предыдущий член отряда"
 
 #: engines/ultima/nuvie/metaengine.cpp:83
-#, fuzzy
-#| msgid "View Party Member 1"
 msgid "Next party member"
-msgstr "Смотреть члена команды №1"
+msgstr "Следующий член отряда"
 
 #: engines/ultima/nuvie/metaengine.cpp:84
-#, fuzzy
-#| msgid "Boss key"
 msgid "Home key"
-msgstr "Босс-кнопка"
+msgstr "Клавиша Домой"
 
 #: engines/ultima/nuvie/metaengine.cpp:85
 msgid "End key"
@@ -15269,65 +15210,47 @@ msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:86
 msgid "Toggle between inventory and actor view"
-msgstr "Переключение между инвентарём и видом на героя"
+msgstr "Переключить между инвентарём и видом на героя"
 
 #: engines/ultima/nuvie/metaengine.cpp:87
-#, fuzzy
-#| msgid "List view"
 msgid "Party view"
-msgstr "Вид списка"
+msgstr "Вид отряда"
 
 #: engines/ultima/nuvie/metaengine.cpp:88
-#, fuzzy
-#| msgid "Shorty mode"
 msgid "Party mode"
-msgstr "Коротышка"
+msgstr "Режим отряда"
 
 #: engines/ultima/nuvie/metaengine.cpp:89
-#, fuzzy
-#| msgid "Game menu"
 msgid "Save menu"
-msgstr "Меню игры"
+msgstr "Меню сохранения"
 
 #: engines/ultima/nuvie/metaengine.cpp:90
-#, fuzzy
-#| msgid "Unnamed autosave"
 msgid "Load latest save"
-msgstr "Автосохранение без имени"
+msgstr "Загрузить последнее сохранение"
 
 #: engines/ultima/nuvie/metaengine.cpp:95
 msgid "Show game menu; Cancel action if in middle of action"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Clock"
 msgid "Toggle Cursor"
-msgstr "Переключить часы"
+msgstr "Переключить курсор"
 
 #: engines/ultima/nuvie/metaengine.cpp:98
-#, fuzzy
-#| msgid "Toggle Combat"
 msgid "Toggle combat strategy"
-msgstr "Переключить режим боя"
+msgstr "Переключить стратегию боя"
 
 #: engines/ultima/nuvie/metaengine.cpp:99
-#, fuzzy
-#| msgid "Max frames per second limit"
 msgid "Toggle frames per second display"
-msgstr "Максимальный лимит кадров в секунду"
+msgstr "Переключить кадры в секунду"
 
 #: engines/ultima/nuvie/metaengine.cpp:100
-#, fuzzy
-#| msgid "Toggle Sound"
 msgid "Toggle audio"
-msgstr "Переключить звук"
+msgstr "Переключить аудио"
 
 #: engines/ultima/nuvie/metaengine.cpp:102
-#, fuzzy
-#| msgid "Toggle sound"
 msgid "Toggle sfx"
-msgstr "Переключить звук"
+msgstr "Переключить спец-эффекты"
 
 #. I18N: command bar is the bar of commands at the bottom of the screen
 #: engines/ultima/nuvie/metaengine.cpp:104
@@ -15335,51 +15258,37 @@ msgid "Toggle original style command bar"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:105
-#, fuzzy
-#| msgid "Droid's action"
 msgid "Do action"
-msgstr "Действие дроида"
+msgstr "Сделать действие"
 
 #: engines/ultima/nuvie/metaengine.cpp:106
-#, fuzzy
-#| msgid "Change game options"
 msgid "Cancel action"
-msgstr "Изменить настройки игры"
+msgstr "Отменить действие"
 
 #: engines/ultima/nuvie/metaengine.cpp:107
-#, fuzzy
-#| msgid "Scroll up"
 msgid "Msg scroll up"
-msgstr "Прокрутить вверх"
+msgstr "Прокрутить сообщения вверх"
 
 #: engines/ultima/nuvie/metaengine.cpp:108
-#, fuzzy
-#| msgid "Scroll down"
 msgid "Msg scroll down"
-msgstr "Прокрутить вниз"
+msgstr "Прокрутить сообщения вниз"
 
 #: engines/ultima/nuvie/metaengine.cpp:109
-#, fuzzy
-#| msgid "Show quotes"
 msgid "Show keys"
-msgstr "Показать цитаты"
+msgstr "Показать клавиши"
 
 #: engines/ultima/nuvie/metaengine.cpp:110
 msgid "Decrease debug"
 msgstr "Уменьшить уровень отладки"
 
 #: engines/ultima/nuvie/metaengine.cpp:111
-#, fuzzy
-#| msgid "Increase speed"
 msgid "Increase debug"
-msgstr "Увеличить скорость"
+msgstr "Увеличить уровень отладки"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:113
-#, fuzzy
-#| msgid "Close popup"
 msgid "Close gumps"
-msgstr "Закрыть выпадающий список"
+msgstr "Закрыть меню-куклу"
 
 #: engines/ultima/nuvie/metaengine.cpp:115
 msgid "Enter ALT code (hold)"
@@ -15431,29 +15340,21 @@ msgstr ""
 
 #. I18N: Eggs are in-game hatchable objects that are normally invisible
 #: engines/ultima/nuvie/metaengine.cpp:131
-#, fuzzy
-#| msgid "Show quotes"
 msgid "Show eggs"
-msgstr "Показать цитаты"
+msgstr "Показать яйца"
 
 #: engines/ultima/nuvie/metaengine.cpp:132
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle hack move"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим хакинга"
 
 #. I18N: Eggs are in-game hatchable objects that are normally invisible
 #: engines/ultima/nuvie/metaengine.cpp:134
-#, fuzzy
-#| msgid "Toggle Menu"
 msgid "Toggle egg spawn"
-msgstr "Переключить меню"
+msgstr "Переключить показывание яиц"
 
 #: engines/ultima/nuvie/metaengine.cpp:135
-#, fuzzy
-#| msgid "Toggle mouse capture"
 msgid "Toggle no darkness"
-msgstr "Переключение перехвата мыши"
+msgstr "Переключить режим темноты"
 
 #: engines/ultima/nuvie/metaengine.cpp:136
 #, fuzzy
@@ -15751,10 +15652,8 @@ msgid "Cycle through weapon inventory"
 msgstr "Прокрутить назад элементы курсора инвентаря"
 
 #: engines/ultima/ultima8/metaengine.cpp:79
-#, fuzzy
-#| msgid "Cycle through stretch modes"
 msgid "Cycle through item inventory"
-msgstr "Переключение режима растягивания"
+msgstr "Переключить между элементами инвентаря"
 
 #: engines/ultima/ultima8/metaengine.cpp:80
 #, fuzzy
@@ -15783,10 +15682,8 @@ msgid "Drop weapon"
 msgstr "Выбросить страницу"
 
 #: engines/ultima/ultima8/metaengine.cpp:86
-#, fuzzy
-#| msgid "Select a Theme"
 msgid "Search / Select item"
-msgstr "Выберите тему"
+msgstr "Искать / Выберать тему"
 
 #: engines/ultima/ultima8/metaengine.cpp:87
 #, fuzzy
