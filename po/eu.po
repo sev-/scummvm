@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-19 17:17+0000\n"
+"POT-Creation-Date: 2026-03-20 14:50+0000\n"
 "PO-Revision-Date: 2024-02-05 18:42+0000\n"
 "Last-Translator: Josu Igoa <josuigoa@ni.eus>\n"
 "Language-Team: Basque <https://translations.scummvm.org/projects/scummvm/"
@@ -15752,7 +15752,7 @@ msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:97
 #, fuzzy
-msgid "Toggle Cursor"
+msgid "Toggle cursor"
 msgstr "Mututu/Ez-mututu"
 
 #: engines/ultima/nuvie/metaengine.cpp:98

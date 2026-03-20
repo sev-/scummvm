@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-19 17:17+0000\n"
+"POT-Creation-Date: 2026-03-20 14:50+0000\n"
 "PO-Revision-Date: 2026-02-11 14:22+0000\n"
 "Last-Translator: DwarfDev <dwarflin@gmx.de>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
@@ -15519,7 +15519,9 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr "Spielmenü anzeigen; Aktion abbrechen, wenn sie gerade ausgeführt wird"
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-msgid "Toggle Cursor"
+#, fuzzy
+#| msgid "Toggle Cursor"
+msgid "Toggle cursor"
 msgstr "Cursor umschalten"
 
 #: engines/ultima/nuvie/metaengine.cpp:98

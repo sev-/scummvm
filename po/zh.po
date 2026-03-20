@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-19 17:17+0000\n"
+"POT-Creation-Date: 2026-03-20 14:50+0000\n"
 "PO-Revision-Date: 2024-05-14 12:42+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese <https://translations.scummvm.org/projects/scummvm/"
@@ -14980,7 +14980,7 @@ msgstr ""
 #: engines/ultima/nuvie/metaengine.cpp:97
 #, fuzzy
 #| msgid "Special sound effects volume"
-msgid "Toggle Cursor"
+msgid "Toggle cursor"
 msgstr "特殊音效音量"
 
 #: engines/ultima/nuvie/metaengine.cpp:98

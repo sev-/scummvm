@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-19 17:17+0000\n"
+"POT-Creation-Date: 2026-03-20 14:50+0000\n"
 "PO-Revision-Date: 2026-03-18 09:57+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -15444,7 +15444,9 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr "Mostra menù di gioco; Annulla azione in corso"
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-msgid "Toggle Cursor"
+#, fuzzy
+#| msgid "Toggle Cursor"
+msgid "Toggle cursor"
 msgstr "Mostra / nascondi cursore"
 
 #: engines/ultima/nuvie/metaengine.cpp:98

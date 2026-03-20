@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-19 17:17+0000\n"
+"POT-Creation-Date: 2026-03-20 14:50+0000\n"
 "PO-Revision-Date: 2025-03-07 00:18+0000\n"
 "Last-Translator: Hovánszki Tamás <gahex68379@lofiey.com>\n"
 "Language-Team: Hungarian <https://translations.scummvm.org/projects/scummvm/"
@@ -16455,7 +16455,7 @@ msgstr ""
 #: engines/ultima/nuvie/metaengine.cpp:97
 #, fuzzy
 #| msgid "Toggle Clock"
-msgid "Toggle Cursor"
+msgid "Toggle cursor"
 msgstr "Óra ki/be kapcsolása"
 
 #: engines/ultima/nuvie/metaengine.cpp:98
