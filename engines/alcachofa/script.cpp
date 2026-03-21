@@ -80,7 +80,7 @@ Script::Script() {
 		String name = readVarString(*file);
 		uint32 offset = file->readUint32LE();
 		file->skip(sizeof(uint32));
-		_procedures[name] = offset - 1; // originally one-based, but let's not.
+		_procedures[name] = offset; 
 	}
 
 	uint32 behaviorCount = file->readUint32LE();
@@ -93,7 +93,9 @@ Script::Script() {
 			String name = behaviorName + readVarString(*file);
 			uint32 offset = file->readUint32LE();
 			file->skip(sizeof(uint32));
-			_procedures[name] = offset - 1;
+			uint32 &storedOffset = _procedures.getOrCreateVal(name);
+			if (storedOffset == 0) // keep the offset one-based so we can detect previous procedures and not override them
+				storedOffset = offset;
 		}
 	}
 
@@ -1130,10 +1132,11 @@ Process *Script::createProcess(MainCharacterKind character, const String &proced
 		g_engine->game().unknownScriptProcedure(procedure);
 		return nullptr;
 	}
+	assert(offset > 0); // offsets are stored one-based to simplify loading
 	FakeLock lock;
 	if (!(flags & ScriptFlags::IsBackground))
 		lock = FakeLock("script", g_engine->player().semaphoreFor(character));
-	Process *process = g_engine->scheduler().createProcess<ScriptTask>(character, procedure, offset, Common::move(lock));
+	Process *process = g_engine->scheduler().createProcess<ScriptTask>(character, procedure, offset - 1, Common::move(lock));
 	process->name() = procedure;
 	return process;
 }
