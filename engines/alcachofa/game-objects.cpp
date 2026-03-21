@@ -715,8 +715,10 @@ void WalkingCharacter::walkTo(
 
 	_pathPoints.clear();
 	auto floor = room()->activeFloor();
-	if (floor != nullptr)
-		floor->findPath(_sourcePos, target, _pathPoints);
+	if (floor != nullptr && !floor->findPath(_sourcePos, target, _pathPoints)) {
+		// just walk directly, ignoring the floor shape altogether
+		_pathPoints.push(target);
+	}
 	if (_pathPoints.empty()) {
 		_isWalking = false;
 		onArrived();
