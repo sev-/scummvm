@@ -172,7 +172,7 @@ public:
 	}
 
 	bool shouldFilterTexturesByDefault() override {
-		return true; // TODO: Check this!
+		return false;
 	}
 
 	bool shouldClipCamera() override {
