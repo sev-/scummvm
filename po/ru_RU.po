@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-20 14:50+0000\n"
-"PO-Revision-Date: 2026-03-20 13:27+0000\n"
+"PO-Revision-Date: 2026-03-21 01:18+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -10493,27 +10493,27 @@ msgstr ""
 
 #: engines/mm/mm1/metaengine.cpp:54
 msgid "View party member 1"
-msgstr "Смотреть члена команды №1"
+msgstr "Смотреть члена отряда №1"
 
 #: engines/mm/mm1/metaengine.cpp:55
 msgid "View party member 2"
-msgstr "Смотреть члена команды №2"
+msgstr "Смотреть члена отряда №2"
 
 #: engines/mm/mm1/metaengine.cpp:56
 msgid "View party member 3"
-msgstr "Смотреть члена команды №3"
+msgstr "Смотреть члена отряда №3"
 
 #: engines/mm/mm1/metaengine.cpp:57
 msgid "View party member 4"
-msgstr "Смотреть члена команды №4"
+msgstr "Смотреть члена отряда №4"
 
 #: engines/mm/mm1/metaengine.cpp:58
 msgid "View party member 5"
-msgstr "Смотреть члена команды №5"
+msgstr "Смотреть члена отряда №5"
 
 #: engines/mm/mm1/metaengine.cpp:59
 msgid "View party member 6"
-msgstr "Смотреть члена команды №6"
+msgstr "Смотреть члена отряда №6"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/mm/mm1/metaengine.cpp:69 engines/ultima/ultima4/metaengine.cpp:50
@@ -10568,7 +10568,7 @@ msgstr "Переключить мини-карту"
 
 #: engines/mm/mm1/metaengine.cpp:105
 msgid "Reorder party"
-msgstr "Поменять порядок команды"
+msgstr "Поменять порядок отряда"
 
 #. I18N: Action of hero party in Might & Magic 1
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to search the journal
@@ -10602,7 +10602,7 @@ msgstr "Might and Magic 1 - Минимальные клавиши"
 #: engines/mm/mm1/metaengine.cpp:144 engines/mm/mm1/metaengine.cpp:150
 #: engines/mm/mm1/metaengine.cpp:156
 msgid "Might and Magic 1 - Party"
-msgstr "Might and Magic 1 - Команда"
+msgstr "Might and Magic 1 - Отряд"
 
 #: engines/mm/mm1/metaengine.cpp:149
 msgid "Might and Magic 1 - Combat"
@@ -15013,7 +15013,7 @@ msgstr ""
 
 #: engines/ultima/ultima4/metaengine.cpp:93
 msgid "Party - None"
-msgstr ""
+msgstr "Отряд - никого"
 
 #: engines/ultima/ultima4/metaengine.cpp:94
 msgid "Party - Character #1"
@@ -15097,7 +15097,7 @@ msgstr "Переключить вид сверху"
 
 #: engines/ultima/ultima4/metaengine.cpp:120
 msgid "Full party"
-msgstr ""
+msgstr "Отряд полон"
 
 #: engines/ultima/ultima4/metaengine.cpp:121
 msgid "Give reagents"
@@ -15233,8 +15233,6 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Cursor"
 msgid "Toggle cursor"
 msgstr "Переключить курсор"
 
@@ -15359,90 +15357,68 @@ msgid "Toggle no darkness"
 msgstr "Переключить режим темноты"
 
 #: engines/ultima/nuvie/metaengine.cpp:136
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle pickpocket mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим карманного вора"
 
 #: engines/ultima/nuvie/metaengine.cpp:137
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle god mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим бога"
 
 #: engines/ultima/nuvie/metaengine.cpp:138
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle ethereal mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим эфира"
 
 #: engines/ultima/nuvie/metaengine.cpp:139
-#, fuzzy
-#| msgid "Toggle fast mode"
 msgid "Toggle X-ray mode"
-msgstr "Переключить быстрый режим"
+msgstr "Переключить режим рентген"
 
 #: engines/ultima/nuvie/metaengine.cpp:140
 msgid "Heal party"
-msgstr ""
+msgstr "Лечить отряд"
 
 #: engines/ultima/nuvie/metaengine.cpp:141
-#, fuzzy
-#| msgid "Regular cursor"
 msgid "Teleport to cursor"
-msgstr "Обычный курсор"
+msgstr "Телепортироваться к курсору"
 
 #: engines/ultima/nuvie/metaengine.cpp:142
-#, fuzzy
-#| msgid "Enable cheats"
 msgid "Toggle cheats"
-msgstr "Включить чит-режим"
+msgstr "Переключить читы"
 
 #: engines/ultima/nuvie/metaengine.cpp:146
 msgid "Solo mode as Avatar"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:147
-#, fuzzy
-#| msgid "View Party Member 2"
 msgid "Solo mode as party member 2"
-msgstr "Смотреть члена команды №2"
+msgstr "Соло как член отряда №2"
 
 #: engines/ultima/nuvie/metaengine.cpp:148
-#, fuzzy
-#| msgid "View Party Member 3"
 msgid "Solo mode as party member 3"
-msgstr "Смотреть члена команды №3"
+msgstr "Соло как член отряда №3"
 
 #: engines/ultima/nuvie/metaengine.cpp:149
-#, fuzzy
-#| msgid "View Party Member 4"
 msgid "Solo mode as party member 4"
-msgstr "Смотреть члена команды №4"
+msgstr "Соло как член отряда №4"
 
 #: engines/ultima/nuvie/metaengine.cpp:150
-#, fuzzy
-#| msgid "View Party Member 5"
 msgid "Solo mode as party member 5"
-msgstr "Смотреть члена команды №5"
+msgstr "Соло как член отряда №5"
 
 #: engines/ultima/nuvie/metaengine.cpp:151
-#, fuzzy
-#| msgid "View Party Member 6"
 msgid "Solo mode as party member 6"
-msgstr "Смотреть члена команды №6"
+msgstr "Соло как член отряда №6"
 
 #: engines/ultima/nuvie/metaengine.cpp:152
 msgid "Solo mode as party member 7"
-msgstr ""
+msgstr "Соло как член отряда №7"
 
 #: engines/ultima/nuvie/metaengine.cpp:153
 msgid "Solo mode as party member 8"
-msgstr ""
+msgstr "Соло как член отряда №8"
 
 #: engines/ultima/nuvie/metaengine.cpp:154
 msgid "Solo mode as party member 9"
-msgstr ""
+msgstr "Соло как член отряда №9"
 
 #: engines/ultima/nuvie/metaengine.cpp:155
 msgid "Show stats for Avatar"
@@ -15450,35 +15426,35 @@ msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:156
 msgid "Show stats for party member 2"
-msgstr ""
+msgstr "Показать статы члена отряда №2"
 
 #: engines/ultima/nuvie/metaengine.cpp:157
 msgid "Show stats for party member 3"
-msgstr ""
+msgstr "Показать статы члена отряда №3"
 
 #: engines/ultima/nuvie/metaengine.cpp:158
 msgid "Show stats for party member 4"
-msgstr ""
+msgstr "Показать статы члена отряда №4"
 
 #: engines/ultima/nuvie/metaengine.cpp:159
 msgid "Show stats for party member 5"
-msgstr ""
+msgstr "Показать статы члена отряда №5"
 
 #: engines/ultima/nuvie/metaengine.cpp:160
 msgid "Show stats for party member 6"
-msgstr ""
+msgstr "Показать статы члена отряда №6"
 
 #: engines/ultima/nuvie/metaengine.cpp:161
 msgid "Show stats for party member 7"
-msgstr ""
+msgstr "Показать статы члена отряда №7"
 
 #: engines/ultima/nuvie/metaengine.cpp:162
 msgid "Show stats for party member 8"
-msgstr ""
+msgstr "Показать статы члена отряда №8"
 
 #: engines/ultima/nuvie/metaengine.cpp:163
 msgid "Show stats for party member 9"
-msgstr ""
+msgstr "Показать статы члена отряда №9"
 
 #: engines/ultima/nuvie/metaengine.cpp:164
 #, fuzzy
@@ -15488,35 +15464,35 @@ msgstr "Показать инвентарь"
 
 #: engines/ultima/nuvie/metaengine.cpp:165
 msgid "Show inventory for party member 2"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №2"
 
 #: engines/ultima/nuvie/metaengine.cpp:166
 msgid "Show inventory for party member 3"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №3"
 
 #: engines/ultima/nuvie/metaengine.cpp:167
 msgid "Show inventory for party member 4"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №4"
 
 #: engines/ultima/nuvie/metaengine.cpp:168
 msgid "Show inventory for party member 5"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №5"
 
 #: engines/ultima/nuvie/metaengine.cpp:169
 msgid "Show inventory for party member 6"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №6"
 
 #: engines/ultima/nuvie/metaengine.cpp:170
 msgid "Show inventory for party member 7"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №7"
 
 #: engines/ultima/nuvie/metaengine.cpp:171
 msgid "Show inventory for party member 8"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №8"
 
 #: engines/ultima/nuvie/metaengine.cpp:172
 msgid "Show inventory for party member 9"
-msgstr ""
+msgstr "Показать инвентарь члена отряда №9"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:174
@@ -15526,42 +15502,42 @@ msgstr ""
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:176
 msgid "Show doll gump for party member 2"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №2"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:178
 msgid "Show doll gump for party member 3"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №3"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:180
 msgid "Show doll gump for party member 4"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №4"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:182
 msgid "Show doll gump for party member 5"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №5"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:184
 msgid "Show doll gump for party member 6"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №6"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:186
 msgid "Show doll gump for party member 7"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №7"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:188
 msgid "Show doll gump for party member 8"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №8"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/nuvie/metaengine.cpp:190
 msgid "Show doll gump for party member 9"
-msgstr ""
+msgstr "Показать меню-куклу члена отряда №9"
 
 #: engines/ultima/nuvie/metaengine.cpp:196
 #: engines/ultima/nuvie/metaengine.cpp:201
