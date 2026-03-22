@@ -563,8 +563,16 @@ void Game::playTot(int32 function) {
 
 	if (function <= 0) {
 		while (!_vm->shouldQuit()) {
-			if (_vm->_inter->_variables)
+			if (_vm->_inter->_variables && _vm->getGameType() != kGameTypeAdi4) {
+				// Display a wait cursor when loading a TOT file in memory.
+				// The original had a cache system for TOT files (not implemented in ScummVM).
+				// If the TOT file was already in the cache, the wait cursor was not be displayed.
+				// We disable this in Adi4, as it cause cursor flickering when some small helper
+				// TOT files are repeatedly loaded. The flickering was not present in the original,
+				// maybe because those very ephemeral cursor changes were squashed by the Win32
+				// cursor API.
 				_vm->_draw->animateCursor(4);
+			}
 
 			if (function != -1) {
 				_vm->_inter->initControlVars(1);
