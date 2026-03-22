@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-20 14:50+0000\n"
-"PO-Revision-Date: 2026-03-21 01:18+0000\n"
+"PO-Revision-Date: 2026-03-22 00:21+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -2807,7 +2807,7 @@ msgstr "*  Abc"
 
 #: gui/printing-dialog.cpp:54
 msgid "Print"
-msgstr ""
+msgstr "Печатать"
 
 #: gui/printing-dialog.cpp:56
 msgid "Save as image"
@@ -5287,7 +5287,7 @@ msgstr "Показать экранное управление"
 
 #: backends/platform/android/options.cpp:138
 msgid "Ignore safe areas in-game"
-msgstr ""
+msgstr "Игнорируовать безопасные зоны в игре"
 
 #: backends/platform/android/options.cpp:139
 #: backends/platform/ios7/ios7_options.mm:112
@@ -5370,19 +5370,19 @@ msgstr "В играх"
 
 #: backends/platform/android/options.cpp:195
 msgid "Export backup"
-msgstr ""
+msgstr "Экспорт резервной копии"
 
 #: backends/platform/android/options.cpp:195
 msgid "Export a backup of the configuration and save files"
-msgstr ""
+msgstr "Экспортировать резервную копию конфигурации и файлы сохранений"
 
 #: backends/platform/android/options.cpp:196
 msgid "Import backup"
-msgstr ""
+msgstr "Загрузить резервную копию"
 
 #: backends/platform/android/options.cpp:196
 msgid "Import a previously exported backup file"
-msgstr ""
+msgstr "Импортировать ранее экспортированный файл резервной копии"
 
 #. I18N: This button opens a list of all folders added for Android Storage Attached Framework
 #: backends/platform/android/options.cpp:199
@@ -5395,11 +5395,11 @@ msgstr "Куда сохранять резервную копию"
 
 #: backends/platform/android/options.cpp:280
 msgid "The backup has been saved successfully."
-msgstr ""
+msgstr "Резервная копия сохранена успешно."
 
 #: backends/platform/android/options.cpp:282
 msgid "The backup has been saved successfully to the Downloads folder."
-msgstr ""
+msgstr "Резервная копия успешно сохранена в папку «Загрузки»."
 
 #: backends/platform/android/options.cpp:284
 #: backends/platform/android/options.cpp:317
@@ -5415,6 +5415,8 @@ msgid ""
 "Restoring a backup will erase the current configuration and overwrite "
 "existing saves. Do you want to proceed?"
 msgstr ""
+"Восстановление резервной копии приведет к удалению текущей конфигурации и "
+"перезаписи существующих сохранений. Вы хотите продолжить?"
 
 #: backends/platform/android/options.cpp:298
 msgid "Select backup file"
@@ -5422,7 +5424,7 @@ msgstr "Выбрать файл резервной копии"
 
 #: backends/platform/android/options.cpp:315
 msgid "The backup has been restored successfully."
-msgstr ""
+msgstr "Резервная копия восстановлена успешно."
 
 #: backends/platform/android/options.cpp:319
 msgid "An error occured while restoring the backup."
@@ -6467,7 +6469,7 @@ msgstr "Использовать"
 
 #: engines/access/metaengine.cpp:296
 msgid "Goto"
-msgstr ""
+msgstr "Перейти"
 
 #: engines/access/metaengine.cpp:301 engines/access/metaengine.cpp:332
 #: engines/bbvs/metaengine.cpp:130 engines/drascula/metaengine.cpp:250
@@ -6513,7 +6515,7 @@ msgstr "Инвентарь"
 
 #: engines/access/metaengine.cpp:327 engines/ultima/ultima4/metaengine.cpp:51
 msgid "Climb"
-msgstr ""
+msgstr "Карабкаться"
 
 #: engines/access/metaengine.cpp:337 engines/bbvs/metaengine.cpp:142
 #: engines/freescape/games/castle/castle.cpp:397
@@ -6749,7 +6751,7 @@ msgstr ""
 
 #: engines/agi/metaengine.cpp:207
 msgid "Use PCjr's sound chip in 16-bit shift mode"
-msgstr ""
+msgstr "Использовать звуковой чип PCjr в 16-битном режиме сдвига"
 
 #: engines/agi/metaengine.cpp:208
 msgid ""
@@ -6758,6 +6760,11 @@ msgid ""
 "especially in fanmade games, but original Sierra music designed strictly for "
 "PCjr may sound wrong."
 msgstr ""
+"В звуковом режиме PCjr эмулируется нестандартный звуковой чип SN76496, "
+"аналогичный чипам, используемым в консолях SEGA Master System. Это позволит "
+"услышать некоторые музыкальные эффекты, особенно в играх, созданных "
+"фанатами, но оригинальная музыка Sierra, разработанная специально для PCjr, "
+"может звучать неправильно."
 
 #: engines/agi/metaengine.cpp:447 engines/asylum/asylum.cpp:655
 #: engines/buried/saveload.cpp:53 engines/mohawk/riven.cpp:759
@@ -6868,7 +6875,7 @@ msgstr "Использовать оригинальный системный к�
 
 #: engines/agos/dialogs.cpp:94
 msgid "Toggle between the system cursor and the default cursor."
-msgstr ""
+msgstr "Переключить между системным курсором и курсором по умолчанию."
 
 #: engines/agos/dialogs.cpp:107 engines/sci/detection_options.h:263
 msgid "MIDI mode:"
@@ -8450,7 +8457,7 @@ msgstr "Стрейф влево"
 #: engines/wintermute/keymapper_tables.h:736
 #: engines/wintermute/keymapper_tables.h:2238
 msgid "Move backwards"
-msgstr "Идти назад"
+msgstr "Идти задом"
 
 #: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:56
 #: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
@@ -8551,7 +8558,7 @@ msgstr "Двигаться / Взаимодействовать / Выбрать
 
 #: engines/drascula/metaengine.cpp:235 engines/tot/metaengine.cpp:129
 msgid "Pick"
-msgstr "Выбрать"
+msgstr "Поднять"
 
 #: engines/drascula/metaengine.cpp:266
 msgid "Reset selected verb"
@@ -12519,7 +12526,7 @@ msgstr "Положить"
 
 #: engines/scumm/help.cpp:151
 msgid "Take off"
-msgstr "Поднять"
+msgstr "Снять"
 
 #: engines/scumm/help.cpp:157
 msgid "Fix"
@@ -15457,10 +15464,8 @@ msgid "Show stats for party member 9"
 msgstr "Показать статы члена отряда №9"
 
 #: engines/ultima/nuvie/metaengine.cpp:164
-#, fuzzy
-#| msgid "Show inventory"
 msgid "Show inventory for Avatar"
-msgstr "Показать инвентарь"
+msgstr "Показать инвентарь для Аватара"
 
 #: engines/ultima/nuvie/metaengine.cpp:165
 msgid "Show inventory for party member 2"
@@ -15541,10 +15546,8 @@ msgstr "Показать меню-куклу члена отряда №9"
 
 #: engines/ultima/nuvie/metaengine.cpp:196
 #: engines/ultima/nuvie/metaengine.cpp:201
-#, fuzzy
-#| msgid "Toggle linear filtered scaling"
 msgid "Toggle unlimited casting"
-msgstr "Использовать линейное сглаживание при масштабировании"
+msgstr "Переключить безлимитную магию"
 
 #: engines/ultima/nuvie/metaengine.cpp:227
 msgid "Ultima VI"
@@ -15567,48 +15570,36 @@ msgid "Draw weapon / Combat"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:51
-#, fuzzy
-#| msgid "Move Back"
 msgid "Move back"
 msgstr "Идти назад"
 
 #: engines/ultima/ultima8/metaengine.cpp:57
-#, fuzzy
-#| msgid "Highlight next dialogue"
 msgid "Highlight items"
-msgstr "Подсветить следующий диалог"
+msgstr "Подсветить элеиенты"
 
 #: engines/ultima/ultima8/metaengine.cpp:63
 msgid "Use bedroll"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:64
-#, fuzzy
-#| msgid "Backspace"
 msgid "Open backpack"
-msgstr "Backspace"
+msgstr "Открыть рюкзак"
 
 #: engines/ultima/ultima8/metaengine.cpp:65
-#, fuzzy
-#| msgid "Use RGB rendering"
 msgid "Use keyring"
-msgstr "Использовать RGB рендеринг"
+msgstr "Использовать брелок"
 
 #: engines/ultima/ultima8/metaengine.cpp:66
-#, fuzzy
-#| msgid "Open map"
 msgid "Open minimap"
-msgstr "Открыть карту"
+msgstr "Открыть мини-карту"
 
 #: engines/ultima/ultima8/metaengine.cpp:67
 msgid "Use recall"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:68
-#, fuzzy
-#| msgid "Open inventory"
 msgid "Open inventory & statistics"
-msgstr "Открыть инвентарь"
+msgstr "Открыть инвентарь и статистику"
 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/ultima8/metaengine.cpp:70
@@ -15624,126 +15615,96 @@ msgid "Careful step"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:78
-#, fuzzy
-#| msgid "Cycle back through inventory cursor items"
 msgid "Cycle through weapon inventory"
-msgstr "Прокрутить назад элементы курсора инвентаря"
+msgstr "Прокрутить инвентарь оружия"
 
 #: engines/ultima/ultima8/metaengine.cpp:79
 msgid "Cycle through item inventory"
 msgstr "Переключить между элементами инвентаря"
 
 #: engines/ultima/ultima8/metaengine.cpp:80
-#, fuzzy
-#| msgid "Inventory"
 msgid "Use inventory item"
-msgstr "Инвентарь"
+msgstr "Использовать элемент инвентаря"
 
 #: engines/ultima/ultima8/metaengine.cpp:81
 msgid "Use medikit"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:82
-#, fuzzy
-#| msgid "Inventory"
 msgid "Use energy cube"
-msgstr "Инвентарь"
+msgstr "Использовать энергетический куб"
 
 #: engines/ultima/ultima8/metaengine.cpp:83
 msgid "Detonate bomb"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:85
-#, fuzzy
-#| msgid "Drop page"
 msgid "Drop weapon"
-msgstr "Выбросить страницу"
+msgstr "Выбросить оружие"
 
 #: engines/ultima/ultima8/metaengine.cpp:86
 msgid "Search / Select item"
 msgstr "Искать / Выберать тему"
 
 #: engines/ultima/ultima8/metaengine.cpp:87
-#, fuzzy
-#| msgid "Next action"
 msgid "Use selection"
-msgstr "Следующее действие"
+msgstr "Использовать выбор"
 
 #: engines/ultima/ultima8/metaengine.cpp:88
 msgid "Grab items"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:89
-#, fuzzy
-#| msgid "Next action"
 msgid "Fire weapon"
-msgstr "Следующее действие"
+msgstr "Выстрелить из оружия"
 
 #: engines/ultima/ultima8/metaengine.cpp:90
-#, fuzzy
-#| msgid "Camera moves with Silencer"
 msgid "Center screen on Silencer"
-msgstr "Камера перемещается вместе с Сайленсером"
+msgstr "Центрировать камеру на Сайленсере"
 
 #: engines/ultima/ultima8/metaengine.cpp:91
 msgid "Jump / Roll / Crouch"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:92
-#, fuzzy
-#| msgid "Shorty mode"
 msgid "Short jump"
-msgstr "Коротышка"
+msgstr "Короткий прыжок"
 
 #: engines/ultima/ultima8/metaengine.cpp:93
-#, fuzzy
-#| msgid "Slide Left"
 msgid "Sidestep left"
-msgstr "Скользить влево"
+msgstr "Шаг влево"
 
 #: engines/ultima/ultima8/metaengine.cpp:94
-#, fuzzy
-#| msgid "Slide Right"
 msgid "Sidestep right"
-msgstr "Скользить вправо"
+msgstr "Шаг вправо"
 
 #: engines/ultima/ultima8/metaengine.cpp:95
-#, fuzzy
-#| msgid "Face Forward"
 msgid "Step forward"
-msgstr "Лицом вперёд"
+msgstr "Шаг вперёд"
 
 #: engines/ultima/ultima8/metaengine.cpp:99
-#, fuzzy
-#| msgid "Toggle Clock"
 msgid "Toggle crouch"
-msgstr "Переключить часы"
+msgstr "Переключить приседание"
 
 #: engines/ultima/ultima8/metaengine.cpp:100
 msgid "Side step / Advance / Retreat"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:105
-#, fuzzy
-#| msgid "Toggle Clock"
 msgid "Toggle clipping"
-msgstr "Переключить часы"
+msgstr "Переключить проход через стены"
 
 #: engines/ultima/ultima8/metaengine.cpp:106
 msgid "Ascend"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:114
-#, fuzzy
-#| msgid "Show hints"
 msgid "Show touching items"
-msgstr "Показать подсказки"
+msgstr "Показать вещи для касания"
 
 #: engines/ultima/ultima8/metaengine.cpp:115
-#, fuzzy
-#| msgid "Show quotes"
 msgid "Show editor items"
-msgstr "Показать цитаты"
+msgstr "Показать вещи для редактора"
 
 #: engines/ultima/ultima8/metaengine.cpp:116
 msgid "Decrement map sort order"
@@ -15754,10 +15715,8 @@ msgid "Increment map sort order"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:118
-#, fuzzy
-#| msgid "Toggle panel style"
 msgid "Toggle frame by frame"
-msgstr "Переключить стиль панели"
+msgstr "Переключить кадр за кадром"
 
 #: engines/ultima/ultima8/metaengine.cpp:119
 msgid "Advance frame"
@@ -15768,10 +15727,8 @@ msgid "Toggle Avatar in stasis"
 msgstr ""
 
 #: engines/ultima/ultima8/metaengine.cpp:121
-#, fuzzy
-#| msgid "Image Viewer"
 msgid "Show shape viewer"
-msgstr "Просмотрщик изображений"
+msgstr "Просмотрщик контуров"
 
 #: engines/ultima/ultima8/metaengine.cpp:131
 msgid "Ultima VIII"
@@ -15946,10 +15903,8 @@ msgid "Camera keymappings"
 msgstr "Раскладка клавиш камеры"
 
 #: engines/voyeur/metaengine.cpp:204
-#, fuzzy
-#| msgid "Skip cutscene"
 msgid "Skip scene"
-msgstr "Пропустить заставку"
+msgstr "Пропустить сцену"
 
 #: engines/voyeur/metaengine.cpp:211
 msgid "View evidence"
@@ -15960,10 +15915,8 @@ msgid "Exit / Put away evidence"
 msgstr ""
 
 #: engines/voyeur/metaengine.cpp:223
-#, fuzzy
-#| msgid "Enter"
 msgid "Enter room"
-msgstr "Ввод"
+msgstr "Войти в комнату"
 
 #: engines/wintermute/metaengine.cpp:42
 msgid "Show FPS-counter"
@@ -15991,10 +15944,8 @@ msgstr ""
 "Эта настройка принудительно включает 2D рендерер во время запуска 2D игр"
 
 #: engines/wintermute/metaengine.cpp:94
-#, fuzzy
-#| msgid "Use English speech"
 msgid "Use Italian speech pack"
-msgstr "Использовать английскую озвучку"
+msgstr "Использовать итальнянскую озвучку"
 
 #: engines/wintermute/metaengine.cpp:95
 msgid "Use Italian dubbing instead of the default English one"
@@ -16385,26 +16336,18 @@ msgid "Chapayev's action"
 msgstr "Действие Чапаева"
 
 #: engines/wintermute/keymapper_tables.h:1619
-#, fuzzy
-#| msgid "Dialogue answer 1"
 msgid "Dialog answer 1"
 msgstr "Ответ диалога 1"
 
 #: engines/wintermute/keymapper_tables.h:1624
-#, fuzzy
-#| msgid "Dialogue answer 2"
 msgid "Dialog answer 2"
 msgstr "Ответ диалога 2"
 
 #: engines/wintermute/keymapper_tables.h:1629
-#, fuzzy
-#| msgid "Dialogue answer 3"
 msgid "Dialog answer 3"
 msgstr "Ответ диалога 3"
 
 #: engines/wintermute/keymapper_tables.h:1634
-#, fuzzy
-#| msgid "Dialogue answer 4"
 msgid "Dialog answer 4"
 msgstr "Ответ диалога 4"
 
@@ -16536,10 +16479,8 @@ msgstr ""
 "формате AVI"
 
 #: engines/zvision/metaengine.cpp:102
-#, fuzzy
-#| msgid "Game id not supported"
 msgid "Enable widescreen support"
-msgstr "Game id не поддерживается"
+msgstr "Включить поддержку широкого экрана"
 
 #: engines/zvision/metaengine.cpp:103
 msgid ""
@@ -16548,16 +16489,12 @@ msgid ""
 msgstr ""
 
 #: engines/zvision/metaengine.cpp:114
-#, fuzzy
-#| msgid "Enable hit point bar graphs"
 msgid "Enable high quality panoramas"
-msgstr "Включить отображение полосок здоровья"
+msgstr "Включить панорамы высокого качества"
 
 #: engines/zvision/metaengine.cpp:115
-#, fuzzy
-#| msgid "Apply bilinear filtering to individual sprites"
 msgid "Apply bilinear filtering to panoramic backgrounds"
-msgstr "Применить билинейную фильтрацию для индивидуальных спрайтов"
+msgstr "Применить билинейную фильтрацию для фонов панорамы"
 
 #: engines/zvision/metaengine.cpp:258
 msgid "Spellbook"
