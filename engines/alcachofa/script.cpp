@@ -142,6 +142,30 @@ bool Script::hasProcedure(const Common::String &procedure) const {
 	return _procedures.contains(procedure);
 }
 
+String Script::procedureAt(uint32 pc) const {
+	// this method is very inefficient but it is only used for debugging
+	typedef Pair<String, uint32> Node;
+	Array<Node> sorted;
+	sorted.reserve(_procedures.size());
+	for (const auto &proc : _procedures)
+		sorted.emplace_back(proc._key, proc._value);
+	sort(sorted.begin(), sorted.end(),
+		[ ] (const Node &a, const Node &b) { return a.second < b.second; });
+
+	// next lowest procedure
+	uint min = 0, max = sorted.size() - 1;
+	while (min < max) {
+		uint center = (min + max + 1) / 2;
+		if (sorted[center].second == pc)
+			min = max = center;
+		else if (sorted[center].second > pc)
+			max = center - 1;
+		else
+			min = center;
+	}
+	return sorted[min].first;
+}
+
 struct ScriptTimerTask final : public Task {
 	ScriptTimerTask(Process &process, int32 durationSec)
 		: Task(process)
@@ -634,6 +658,21 @@ private:
 		return dynamic_cast<TObject *>(object);
 	}
 
+	const Point kInvalidPoint = { INT16_MIN, INT16_MIN };
+	Point getCamLerpTargetArg(const char *action, uint argI) {
+		auto *pointObject = getObjectArg<PointObject>(argI);
+		if (pointObject != nullptr)
+			return pointObject->position();
+
+		// in V2 a main character (we can reduce to walking character) can be used instead
+		auto *character = getObjectArg<WalkingCharacter>(argI);
+		if (character != nullptr)
+			return character->position();
+
+		pointObject = g_engine->game().unknownCamLerpTarget(action, getStringArg(argI));
+		return pointObject == nullptr ? kInvalidPoint : pointObject->position();
+	}
+
 	MainCharacter &relatedCharacter() {
 		if (g_engine->isV1()) {
 			auto character = g_engine->player().activeCharacter();
@@ -984,49 +1023,39 @@ private:
 		case ScriptKernelTask::LerpCamToObjectKeepingZ: {
 			if (!process().isActiveForPlayer())
 				return TaskReturn::finish(0); // contrary to ...ResettingZ this one does not delay if not active
-			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr)
-				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectKeepingZ", getStringArg(0));
-			if (pointObject == nullptr)
+			auto target = getCamLerpTargetArg("LerpCamToObjectKeepingZ", 0);
+			if (target == kInvalidPoint)
 				return TaskReturn::finish(1);
-			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
-				as2D(pointObject->position()),
-				getNumberArg(1), EasingType::Linear));
+			return TaskReturn::waitFor(
+				g_engine->cameraV3().lerpPos(process(), as2D(target), getNumberArg(1), EasingType::Linear));
 		}
 		case ScriptKernelTask::LerpCamToObjectResettingZ: {
 			if (!process().isActiveForPlayer())
 				return TaskReturn::waitFor(delay(getNumberArg(1)));
-			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr)
-				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectResettingZ", getStringArg(0));
-			if (pointObject == nullptr)
+			auto target = getCamLerpTargetArg("LerpCamToObjectResettingZ", 0);
+			if (target == kInvalidPoint)
 				return TaskReturn::finish(1);
-			return TaskReturn::waitFor(g_engine->cameraV3().lerpPos(process(),
-				as3D(pointObject->position()),
-				getNumberArg(1), (EasingType)getNumberArg(2)));
+			return TaskReturn::waitFor(
+				g_engine->cameraV3().lerpPos(process(), as3D(target), getNumberArg(1), (EasingType)getNumberArg(2)));
 		}
 		case ScriptKernelTask::LerpCamToObjectWithScale: {
 			float targetScale = getNumberArg(1) * 0.01f;
 			if (!process().isActiveForPlayer())
 				// the scale will wait then snap the scale
 				return TaskReturn::waitFor(g_engine->cameraV3().lerpScale(process(), targetScale, getNumberArg(2), EasingType::Linear));
-			auto pointObject = getObjectArg<PointObject>(0);
-			if (pointObject == nullptr)
-				pointObject = g_engine->game().unknownCamLerpTarget("LerpCamToObjectWithScale", getStringArg(0));
-			if (pointObject == nullptr)
+			auto target = getCamLerpTargetArg("LerpCamToObjectWithScale", 0);
+			if (target == kInvalidPoint)
 				return TaskReturn::finish(1);
 			return TaskReturn::waitFor(g_engine->cameraV3().lerpPosScale(process(),
-				as3D(pointObject->position()), targetScale,
+				as3D(target), targetScale,
 				getNumberArg(2), (EasingType)getNumberArg(3), (EasingType)getNumberArg(4)));
 		}
 		case ScriptKernelTask::LerpOrSetCam: {
 			if (process().isActiveForPlayer()) {
-				auto pointObject = getObjectArg<PointObject>(0);
-				if (pointObject == nullptr)
-					pointObject = g_engine->game().unknownCamLerpTarget("LerpOrSetCam", getStringArg(0));
-				if (pointObject == nullptr)
+				auto target = getCamLerpTargetArg("LerpOrSetCam", 0);
+				if (target == kInvalidPoint)
 					return TaskReturn::finish(1);
-				g_engine->cameraV1().lerpOrSet(pointObject->position(), getNumberArg(1));
+				g_engine->cameraV1().lerpOrSet(target, getNumberArg(1));
 				// cameraV1 could also be the inherited cameraV2 here
 			}
 			return TaskReturn::finish(0);

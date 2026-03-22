@@ -121,7 +121,7 @@ enum class ScriptKernelTask {
 	LerpCamToObjectWithScale,
 	LerpCamToObjectResettingZ,
 	LerpCamRotation,
-	LerpOrSetCam, // only V1
+	LerpOrSetCam, // only V1 and V2
 	FadeIn,
 	FadeOut,
 	FadeIn2,
@@ -170,6 +170,7 @@ public:
 		ScriptFlags flags = ScriptFlags::None);
 	bool hasProcedure(const Common::String &behavior, const Common::String &action) const;
 	bool hasProcedure(const Common::String &procedure) const;
+	Common::String procedureAt(uint32 pc) const;
 
 	using VariableNameIterator = Common::HashMap<Common::String, uint32>::const_iterator;
 	inline VariableNameIterator beginVariables() const { return _variableNames.begin(); }
