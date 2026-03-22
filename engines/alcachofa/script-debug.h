@@ -115,8 +115,6 @@ static const char *const KernelCallNames[] = {
 	"FadeOut2",
 	"LerpCamXYZ",
 	"LerpCamToObjectKeepingZ",
-
-	"ChangeDoor",
 	"Disguise"
 };
 

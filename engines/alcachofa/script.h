@@ -128,8 +128,6 @@ enum class ScriptKernelTask {
 	FadeOut2,
 	LerpCamXYZ,
 	LerpCamToObjectKeepingZ,
-
-	ChangeDoor, ///< NOOP 
 	Disguise
 };
 
