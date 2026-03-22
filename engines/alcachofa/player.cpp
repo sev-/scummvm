@@ -377,9 +377,10 @@ void Player::syncGame(Serializer &s) {
 
 	String roomName;
 	if (s.isSaving()) {
+		bool isInInventory = currentRoom() == &g_engine->world().inventory();
 		roomName =
 			g_engine->menu().isOpen() ? g_engine->menu().previousRoom()->name() // save from in-game menu
-			: _roomBeforeInventory != nullptr ? _roomBeforeInventory->name() // save from ScummVM while in inventory
+			: isInInventory && _roomBeforeInventory != nullptr ? _roomBeforeInventory->name() // save from ScummVM while in inventory
 			: currentRoom()->name(); // save from ScumnmVM global menu or autosave in normal gameplay
 	}
 	s.syncString(roomName);
