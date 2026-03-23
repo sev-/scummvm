@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-22 19:54+0000\n"
-"PO-Revision-Date: 2026-03-21 01:18+0000\n"
+"PO-Revision-Date: 2026-03-23 00:14+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -7384,7 +7384,7 @@ msgstr "Стрибок"
 
 #: engines/awe/metaengine.cpp:63
 msgid "Enter Level Code"
-msgstr "Введіть код рівня"
+msgstr "Ввести код рівня"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87
 #: engines/got/metaengine.cpp:105
