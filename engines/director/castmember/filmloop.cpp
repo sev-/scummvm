@@ -160,8 +160,8 @@ Common::Array<Channel> *FilmLoopCastMember::getSubChannels(Common::Rect &bbox, u
 
 			debugCN(5, kDebugImages, ", scaled: %d,%d %dx%d", src._startPoint.x, src._startPoint.y, src._width, src._height);
 		} else {
-			src._startPoint.x += bbox.left;
-			src._startPoint.y += bbox.top;
+			src._startPoint.x = (src._startPoint.x - _initialRect.left) + bbox.left;
+			src._startPoint.y = (src._startPoint.y - _initialRect.top) + bbox.top;
 
 			debugCN(5, kDebugImages, ", no scaling");
 		}
