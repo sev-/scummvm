@@ -1387,14 +1387,19 @@ void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point ori
 	if (isDOS())
 		back = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 
+	int strength = _gameStateVars[k8bitVariableShield];
+
+	// When strength < 4, the bar and weights shift down since smaller weights have smaller diameter
+	int extraYOffset = (strength < 4) ? (4 - strength) : 0;
+
 	Common::Point barFrameOrigin = origin;
 
 	if (isDOS())
-		barFrameOrigin += Common::Point(5, 6);
+		barFrameOrigin += Common::Point(5, 6 + extraYOffset);
 	else if (isSpectrum())
-		barFrameOrigin += Common::Point(0, 6);
+		barFrameOrigin += Common::Point(0, 6 + extraYOffset);
 	else if (isCPC())
-		barFrameOrigin += Common::Point(0, 6);
+		barFrameOrigin += Common::Point(0, 6 + extraYOffset);
 
 	surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtBarFrame, barFrameOrigin.x, barFrameOrigin.y, Common::Rect(0, 0, _strenghtBarFrame->w, _strenghtBarFrame->h), black);
 
@@ -1404,37 +1409,75 @@ void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point ori
 	if (_strenghtWeightsFrames.empty())
 		return;
 
-	// Use actual weight sprite width for positioning
 	int weightWidth = _strenghtWeightsFrames[0]->w;
-	int weightOffset = isCPC() ? 9 : 10;
-	int rightWeightPos = isCPC() ? 59 : 62;
 
-	weightPoint = Common::Point(origin.x + weightOffset, origin.y);
-	frameIdx = _gameStateVars[k8bitVariableShield] % 4;
+	// Weight discs overlap: step is smaller than sprite width (3 pixels in original ZX assembly).
+	// Each disc is drawn at pixel-level precision, converging from outside toward center.
+	int weightStep;
+	int weightOffset;
+	int rightWeightPos;
+
+	if (isCPC()) {
+		weightStep = 3;
+		weightOffset = 9;
+		rightWeightPos = 59;
+	} else if (isSpectrum()) {
+		weightStep = 3;
+		weightOffset = 5;
+		rightWeightPos = 63;
+	} else { // DOS
+		weightStep = 3;
+		weightOffset = 10;
+		rightWeightPos = 62;
+	}
+
+	// Weights are drawn 6 pixels above the bar (at the bar position minus 6)
+	int weightY = origin.y + extraYOffset;
+
+	// Left side
+	weightPoint = Common::Point(origin.x + weightOffset, weightY);
+	frameIdx = strength % 4;
 
 	if (frameIdx != 0) {
 		frameIdx = 4 - frameIdx;
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
-		weightPoint += Common::Point(weightWidth, 0);
+		if (isSpectrum())
+			surface->copyRectToSurface((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h));
+		else
+			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
+		weightPoint += Common::Point(weightStep, 0);
 	}
 
-	for (int i = 0; i < _gameStateVars[k8bitVariableShield] / 4; i++) {
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
-		weightPoint += Common::Point(weightWidth, 0);
+	for (int i = 0; i < strength / 4; i++) {
+		if (isSpectrum())
+			surface->copyRectToSurface((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h));
+		else
+			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
+		weightPoint += Common::Point(weightStep, 0);
 	}
 
-	weightPoint = Common::Point(origin.x + rightWeightPos, origin.y);
-	frameIdx = _gameStateVars[k8bitVariableShield] % 4;
+	// Right side: draw from innermost to outermost (left to right) so that each
+	// weight's background pixels don't overwrite the previous weight's disc
+	// (the disc is at local pixels 1-2, on the left side of the 8-pixel sprite).
+	int numFullRight = strength / 4;
+	int hasPartial = (strength % 4 != 0) ? 1 : 0;
+	int totalRight = numFullRight + hasPartial;
 
-	if (frameIdx != 0) {
-		frameIdx = 4 - frameIdx;
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
-		weightPoint += Common::Point(-weightWidth, 0);
+	weightPoint = Common::Point(origin.x + rightWeightPos - (totalRight - 1) * weightStep, weightY);
+
+	for (int i = 0; i < numFullRight; i++) {
+		if (isSpectrum())
+			surface->copyRectToSurface((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h));
+		else
+			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
+		weightPoint += Common::Point(weightStep, 0);
 	}
 
-	for (int i = 0; i < _gameStateVars[k8bitVariableShield] / 4; i++) {
-		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[0], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[0]->h), back);
-		weightPoint += Common::Point(-weightWidth, 0);
+	if (hasPartial) {
+		frameIdx = 4 - (strength % 4);
+		if (isSpectrum())
+			surface->copyRectToSurface((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h));
+		else
+			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtWeightsFrames[frameIdx], weightPoint.x, weightPoint.y, Common::Rect(0, 0, weightWidth, _strenghtWeightsFrames[frameIdx]->h), back);
 	}
 }
 
