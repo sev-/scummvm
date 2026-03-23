@@ -43,6 +43,7 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fix crash when hiding boardgame turn start spinner.
    - Fix Poker minigame bet icons rendering over game over dialog.
    - Stop in-progress speech when closing a minigame exit dialog.
+   - Fix using Enter key after typing savegame name to save it.
 
  M4:
    - Added music support in Ripley.
