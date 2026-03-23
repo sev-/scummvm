@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-23 00:14+0000\n"
-"PO-Revision-Date: 2026-03-20 21:29+0000\n"
+"PO-Revision-Date: 2026-03-23 07:22+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fr/>\n"
@@ -7468,18 +7468,14 @@ msgstr ""
 "passés par défaut."
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
-msgstr "Sélectionner/Frapper/Courir"
+msgstr "Sélectionner / Frapper / Courir"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr "Sauter"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "Entrer un code de niveau"
 
