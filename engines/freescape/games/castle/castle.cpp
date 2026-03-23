@@ -83,6 +83,11 @@ CastleEngine::CastleEngine(OSystem *syst, const ADGameDescription *gd) : Freesca
 	_spiritsMeterIndicatorSideFrame = nullptr;
 	_strenghtBackgroundFrame = nullptr;
 	_strenghtBarFrame = nullptr;
+	_strenghtBackgroundCLUT8 = nullptr;
+	_strenghtBarCLUT8 = nullptr;
+	_spiritsMeterBgCLUT8 = nullptr;
+	_spiritsMeterIndCLUT8 = nullptr;
+	_keysBorderCLUT8 = nullptr;
 	_menu = nullptr;
 	_menuButtons = nullptr;
 
@@ -328,6 +333,120 @@ Common::Array<Graphics::ManagedSurface *> CastleEngine::loadFramesWithHeaderCPC(
 	return frames;
 }
 
+void CastleEngine::convertCPCSprite(Graphics::ManagedSurface *clut8, Graphics::ManagedSurface *&argb, bool transparentInk0) {
+	if (argb) {
+		argb->free();
+		delete argb;
+	}
+	if (transparentInk0) {
+		// Ink 0 = value 0 (transparent for copyRectToSurfaceWithKey with back=0)
+		argb = new Graphics::ManagedSurface();
+		argb->create(clut8->w, clut8->h, _gfx->_texturePixelFormat);
+		argb->fillRect(Common::Rect(0, 0, clut8->w, clut8->h), 0);
+
+		byte palette[4 * 3];
+		clut8->grabPalette(palette, 0, 4);
+
+		for (int y = 0; y < clut8->h; y++) {
+			for (int x = 0; x < clut8->w; x++) {
+				byte idx = clut8->getPixel(x, y);
+				if (idx != 0) {
+					uint32 color = _gfx->_texturePixelFormat.ARGBToColor(0xFF,
+						palette[idx * 3], palette[idx * 3 + 1], palette[idx * 3 + 2]);
+					argb->setPixel(x, y, color);
+				}
+			}
+		}
+	} else {
+		// Opaque: ink 0 = solid black, fully covers what's beneath
+		Graphics::Surface *converted = _gfx->convertImageFormatIfNecessary(clut8);
+		argb = new Graphics::ManagedSurface();
+		argb->copyFrom(*converted);
+		converted->free();
+		delete converted;
+	}
+}
+
+Graphics::ManagedSurface *CastleEngine::loadFrameWithHeaderCPCIndexed(Common::SeekableReadStream *file, int pos) {
+	file->seek(pos);
+	int w = file->readByte();
+	int h = file->readByte();
+	file->readByte(); // mask
+	file->readUint16LE(); // frameSize
+	Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+	surface->create(w * 4, h, Graphics::PixelFormat::createFormatCLUT8());
+	surface->fillRect(Common::Rect(0, 0, w * 4, h), 0);
+	for (int y = 0; y < h; y++)
+		for (int col = 0; col < w; col++) {
+			byte cpc_byte = file->readByte();
+			for (int i = 0; i < 4; i++)
+				surface->setPixel(col * 4 + i, y, getCPCPixel(cpc_byte, i, true));
+		}
+	return surface;
+}
+
+Common::Array<Graphics::ManagedSurface *> CastleEngine::loadFramesWithHeaderCPCIndexed(Common::SeekableReadStream *file, int pos, int numFrames) {
+	file->seek(pos);
+	int w = file->readByte();
+	int h = file->readByte();
+	file->readByte(); // mask
+	file->readUint16LE(); // frameSize
+	Common::Array<Graphics::ManagedSurface *> frames;
+	for (int f = 0; f < numFrames; f++) {
+		Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+		surface->create(w * 4, h, Graphics::PixelFormat::createFormatCLUT8());
+		surface->fillRect(Common::Rect(0, 0, w * 4, h), 0);
+		for (int y = 0; y < h; y++)
+			for (int col = 0; col < w; col++) {
+				byte cpc_byte = file->readByte();
+				for (int i = 0; i < 4; i++)
+					surface->setPixel(col * 4 + i, y, getCPCPixel(cpc_byte, i, true));
+			}
+		frames.push_back(surface);
+	}
+	return frames;
+}
+
+void CastleEngine::updateCPCSpritesPalette() {
+	byte palette[4 * 3];
+	for (int c = 0; c < 4; c++) {
+		uint8 r, g, b;
+		_gfx->selectColorFromFourColorPalette(c, r, g, b);
+		palette[c * 3 + 0] = r;
+		palette[c * 3 + 1] = g;
+		palette[c * 3 + 2] = b;
+	}
+
+	if (_keysBorderCLUT8) {
+		_keysBorderCLUT8->setPalette(palette, 0, 4);
+		convertCPCSprite(_keysBorderCLUT8, _keysBorderFrames[0], true);
+	}
+	if (_spiritsMeterBgCLUT8) {
+		_spiritsMeterBgCLUT8->setPalette(palette, 0, 4);
+		convertCPCSprite(_spiritsMeterBgCLUT8, _spiritsMeterIndicatorBackgroundFrame);
+	}
+	if (_spiritsMeterIndCLUT8) {
+		_spiritsMeterIndCLUT8->setPalette(palette, 0, 4);
+		convertCPCSprite(_spiritsMeterIndCLUT8, _spiritsMeterIndicatorFrame, true);
+	}
+	if (_strenghtBackgroundCLUT8) {
+		_strenghtBackgroundCLUT8->setPalette(palette, 0, 4);
+		convertCPCSprite(_strenghtBackgroundCLUT8, _strenghtBackgroundFrame);
+	}
+	if (_strenghtBarCLUT8) {
+		_strenghtBarCLUT8->setPalette(palette, 0, 4);
+		convertCPCSprite(_strenghtBarCLUT8, _strenghtBarFrame);
+	}
+	for (int f = 0; f < (int)_strenghtWeightsCLUT8.size(); f++) {
+		_strenghtWeightsCLUT8[f]->setPalette(palette, 0, 4);
+		convertCPCSprite(_strenghtWeightsCLUT8[f], _strenghtWeightsFrames[f], true);
+	}
+	for (int f = 0; f < (int)_flagCLUT8.size(); f++) {
+		_flagCLUT8[f]->setPalette(palette, 0, 4);
+		convertCPCSprite(_flagCLUT8[f], _flagFrames[f]);
+	}
+}
+
 Graphics::ManagedSurface *CastleEngine::loadFrameCPC(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, const uint32 *cpcPalette) {
 	for (int y = 0; y < height; y++) {
 		for (int col = 0; col < width; col++) {
@@ -487,6 +606,10 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 	_gfx->clearColorPairArray();
 
 	swapPalette(areaID);
+
+	if (isCPC())
+		updateCPCSpritesPalette();
+
 	if (isDOS()) {
 		_gfx->_colorPair[_currentArea->_underFireBackgroundColor] = _currentArea->_extraColor[1];
 		_gfx->_colorPair[_currentArea->_usualBackgroundColor] = _currentArea->_extraColor[0];

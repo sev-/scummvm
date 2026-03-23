@@ -136,6 +136,21 @@ public:
 	Graphics::ManagedSurface *_endGameBackgroundFrame;
 	Graphics::ManagedSurface *_gameOverBackgroundFrame;
 
+	// CPC: CLUT8 versions of UI sprites (indexed by ink 0-3). On area change,
+	// we setPalette + convert to ARGB, like the border does in swapPalette.
+	Graphics::ManagedSurface *_strenghtBackgroundCLUT8;
+	Graphics::ManagedSurface *_strenghtBarCLUT8;
+	Common::Array<Graphics::ManagedSurface *> _strenghtWeightsCLUT8;
+	Graphics::ManagedSurface *_spiritsMeterBgCLUT8;
+	Graphics::ManagedSurface *_spiritsMeterIndCLUT8;
+	Graphics::ManagedSurface *_keysBorderCLUT8;
+	Common::Array<Graphics::ManagedSurface *> _flagCLUT8;
+	uint32 _cpcUIPalette[4]; // used by gate rendering
+	void convertCPCSprite(Graphics::ManagedSurface *clut8, Graphics::ManagedSurface *&argb, bool transparentInk0 = false);
+	Graphics::ManagedSurface *loadFrameWithHeaderCPCIndexed(Common::SeekableReadStream *file, int pos);
+	Common::Array<Graphics::ManagedSurface *> loadFramesWithHeaderCPCIndexed(Common::SeekableReadStream *file, int pos, int numFrames);
+	void updateCPCSpritesPalette();
+
 	Common::Array<byte> _modData; // Embedded ProTracker module (Amiga demo)
 	Common::Array<int> _keysCollected;
 	bool _useRockTravel;
