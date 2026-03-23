@@ -117,6 +117,31 @@ byte mountainsData[288] {
 
 
 
+// Expand a 5-byte CPC riddle frame row definition into a 240-pixel CLUT8 row.
+// Format: 2 left border bytes + 1 fill byte (repeated 54×) + 2 right border bytes,
+// padded with 1 black byte on each side.
+void expandRiddleRow(const byte *src, Graphics::ManagedSurface *surface, int y) {
+	int x = 0;
+	for (int p = 0; p < 4; p++)
+		surface->setPixel(x++, y, 0);
+	for (int b = 0; b < 2; b++) {
+		byte cpcByte = src[b];
+		for (int p = 0; p < 4; p++)
+			surface->setPixel(x++, y, getCPCPixel(cpcByte, p, true));
+	}
+	byte fillByte = src[2];
+	for (int b = 0; b < 54; b++)
+		for (int p = 0; p < 4; p++)
+			surface->setPixel(x++, y, getCPCPixel(fillByte, p, true));
+	for (int b = 0; b < 2; b++) {
+		byte cpcByte = src[3 + b];
+		for (int p = 0; p < 4; p++)
+			surface->setPixel(x++, y, getCPCPixel(cpcByte, p, true));
+	}
+	for (int p = 0; p < 4; p++)
+		surface->setPixel(x++, y, 0);
+}
+
 void CastleEngine::loadAssetsCPCFullGame() {
 	Common::File file;
 	uint8 r, g, b;
@@ -252,6 +277,65 @@ void CastleEngine::loadAssetsCPCFullGame() {
 			convertCPCSprite(_flagCLUT8[f], tmp);
 			_flagFrames.push_back(tmp);
 		}
+	}
+
+	// Riddle frame graphics at file offset 0x26E9 (CPC addr 0x31A9).
+	// The CPC draw function expands each 5-byte row to:
+	// 1 black + 2 left border + 54×fill + 2 right border + 1 black = 60 bytes = 240 pixels.
+	// Structure: 7 top rows + 1 body row (repeated) + 7 bottom rows (top reversed).
+	{
+		static const int kRiddleFrameOffset = 0x26E9;
+		static const int kTopRows = 7;
+		static const int kRowWidth = 240; // pixels
+
+		file.seek(kRiddleFrameOffset);
+		byte riddleData[40];
+		file.read(riddleData, 40);
+
+		// Top frame: 7 rows
+		Graphics::ManagedSurface *topCLUT8 = new Graphics::ManagedSurface();
+		topCLUT8->create(kRowWidth, kTopRows, Graphics::PixelFormat::createFormatCLUT8());
+		topCLUT8->fillRect(Common::Rect(0, 0, kRowWidth, kTopRows), 0);
+		for (int row = 0; row < kTopRows; row++)
+			expandRiddleRow(&riddleData[row * 5], topCLUT8, row);
+
+		// Background: 1 row (the body row after the 7 top rows)
+		Graphics::ManagedSurface *bgCLUT8 = new Graphics::ManagedSurface();
+		bgCLUT8->create(kRowWidth, 1, Graphics::PixelFormat::createFormatCLUT8());
+		bgCLUT8->fillRect(Common::Rect(0, 0, kRowWidth, 1), 0);
+		expandRiddleRow(&riddleData[kTopRows * 5], bgCLUT8, 0);
+
+		// Bottom frame: 7 rows (top data in reverse order)
+		Graphics::ManagedSurface *bottomCLUT8 = new Graphics::ManagedSurface();
+		bottomCLUT8->create(kRowWidth, kTopRows, Graphics::PixelFormat::createFormatCLUT8());
+		bottomCLUT8->fillRect(Common::Rect(0, 0, kRowWidth, kTopRows), 0);
+		for (int row = 0; row < kTopRows; row++)
+			expandRiddleRow(&riddleData[(kTopRows - 1 - row) * 5], bottomCLUT8, row);
+
+		// Set palette and convert
+		byte initPalette[4 * 3];
+		for (int c = 0; c < 4; c++) {
+			initPalette[c * 3 + 0] = kCPCPaletteCastleBorderData[c][0];
+			initPalette[c * 3 + 1] = kCPCPaletteCastleBorderData[c][1];
+			initPalette[c * 3 + 2] = kCPCPaletteCastleBorderData[c][2];
+		}
+		topCLUT8->setPalette(initPalette, 0, 4);
+		bgCLUT8->setPalette(initPalette, 0, 4);
+		bottomCLUT8->setPalette(initPalette, 0, 4);
+
+		convertCPCSprite(topCLUT8, _riddleTopFrame);
+		convertCPCSprite(bgCLUT8, _riddleBackgroundFrame);
+		convertCPCSprite(bottomCLUT8, _riddleBottomFrame);
+
+		// Nail sprite at file offset 0x2711 (8×7 pixels, drawn above the frame)
+		Graphics::ManagedSurface *nailCLUT8 = loadFrameWithHeaderCPCIndexed(&file, 0x2711);
+		nailCLUT8->setPalette(initPalette, 0, 4);
+		convertCPCSprite(nailCLUT8, _riddleNailFrame);
+
+		delete topCLUT8;
+		delete bgCLUT8;
+		delete bottomCLUT8;
+		delete nailCLUT8;
 	}
 
 	// Gate image (portcullis) for game start/end animation.

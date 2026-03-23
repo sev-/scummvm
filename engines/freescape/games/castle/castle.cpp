@@ -94,6 +94,7 @@ CastleEngine::CastleEngine(OSystem *syst, const ADGameDescription *gd) : Freesca
 	_riddleTopFrame = nullptr;
 	_riddleBottomFrame = nullptr;
 	_riddleBackgroundFrame = nullptr;
+	_riddleNailFrame = nullptr;
 
 	_endGameThroneFrame = nullptr;
 	_endGameBackgroundFrame = nullptr;
@@ -1375,6 +1376,9 @@ void CastleEngine::drawFullscreenRiddleAndWait(uint16 riddle) {
 		case Common::kRenderZX:
 			frontColor = 7;
 			break;
+		case Common::kRenderCPC:
+			frontColor = _gfx->_inkColor;
+			break;
 		default:
 			break;
 	}
@@ -1438,7 +1442,11 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 	if (isDOS()) {
 		x = 40;
 		y = 34;
-	} else if (isSpectrum() || isCPC()) {
+	} else if (isCPC()) {
+		x = 40;
+		y = 46;
+		maxWidth = 139;
+	} else if (isSpectrum()) {
 		x = 64;
 		y = 37;
 	} else if (isAmiga()) {
@@ -1446,6 +1454,18 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 		y = 33;
 		maxWidth = 139;
 	}
+	// Draw rope lines and nail above the riddle frame (CPC)
+	if (isCPC() && _riddleNailFrame) {
+		int nailX = x + (_viewArea.width() - _riddleNailFrame->w) / 2;
+		int nailY = _viewArea.top + 2;
+		int nailCenterX = nailX + _riddleNailFrame->w / 2;
+		int nailCenterY = nailY + _riddleNailFrame->h / 2;
+		// Rope lines first, then nail on top
+		surface->drawLine(nailCenterX, nailCenterY, x, y, front);
+		surface->drawLine(nailCenterX, nailCenterY, x + _viewArea.width() - 1, y, front);
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_riddleNailFrame, nailX, nailY, Common::Rect(0, 0, _riddleNailFrame->w, _riddleNailFrame->h), 0);
+	}
+
 	// Draw riddle frame borders (if available)
 	if (_riddleTopFrame) {
 		surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, x, y, Common::Rect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h));
@@ -1468,7 +1488,10 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 	if (isDOS()) {
 		x = 38;
 		y = 33;
-	} else if (isSpectrum() || isCPC()) {
+	} else if (isCPC()) {
+		x = 40;
+		y = 33;
+	} else if (isSpectrum()) {
 		x = 64;
 		y = 36;
 	} else if (isAmiga()) {

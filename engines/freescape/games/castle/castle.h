@@ -131,6 +131,7 @@ public:
 	Graphics::ManagedSurface *_riddleTopFrame;
 	Graphics::ManagedSurface *_riddleBackgroundFrame;
 	Graphics::ManagedSurface *_riddleBottomFrame;
+	Graphics::ManagedSurface *_riddleNailFrame;
 
 	Graphics::ManagedSurface *_endGameThroneFrame;
 	Graphics::ManagedSurface *_endGameBackgroundFrame;
