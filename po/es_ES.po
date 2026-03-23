@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-23 00:14+0000\n"
-"PO-Revision-Date: 2026-03-21 22:22+0000\n"
+"PO-Revision-Date: 2026-03-23 10:38+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/es/>\n"
@@ -7465,8 +7465,6 @@ msgstr ""
 "defecto."
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
 msgstr "Seleccionar/Patada/Correr"
 
@@ -7475,8 +7473,6 @@ msgid "Jump"
 msgstr "Saltar"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "Introducir código de nivel"
 
