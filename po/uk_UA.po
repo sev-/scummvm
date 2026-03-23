@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-22 19:54+0000\n"
+"POT-Creation-Date: 2026-03-23 00:14+0000\n"
 "PO-Revision-Date: 2026-03-23 00:14+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
@@ -7375,7 +7375,9 @@ msgstr ""
 "Показує екрани титулу та захисту від копіювання, які зазвичай не показуються."
 
 #: engines/awe/metaengine.cpp:61
-msgid "Select/Kick/Run"
+#, fuzzy
+#| msgid "Select/Kick/Run"
+msgid "Select / Kick / Run"
 msgstr "Вибрати/Ударити/Бігти"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
@@ -7383,7 +7385,9 @@ msgid "Jump"
 msgstr "Стрибок"
 
 #: engines/awe/metaengine.cpp:63
-msgid "Enter Level Code"
+#, fuzzy
+#| msgid "Enter Level Code"
+msgid "Enter level code"
 msgstr "Ввести код рівня"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-22 19:54+0000\n"
+"POT-Creation-Date: 2026-03-23 00:14+0000\n"
 "PO-Revision-Date: 2026-03-23 00:14+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
@@ -7394,7 +7394,9 @@ msgstr ""
 "случае были бы обойдены по умолчанию."
 
 #: engines/awe/metaengine.cpp:61
-msgid "Select/Kick/Run"
+#, fuzzy
+#| msgid "Select/Kick/Run"
+msgid "Select / Kick / Run"
 msgstr "Выбрать / Бить / Бежать"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
@@ -7402,7 +7404,9 @@ msgid "Jump"
 msgstr "Прыжок"
 
 #: engines/awe/metaengine.cpp:63
-msgid "Enter Level Code"
+#, fuzzy
+#| msgid "Enter Level Code"
+msgid "Enter level code"
 msgstr "Ввести код уровня"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87
@@ -8434,7 +8438,8 @@ msgstr "Переключить показ инвентаря лидера"
 #. I18N: (Game name: Dungeon Master) The game has multi-choice dialogs. If there is only one choice, then this action can be used to select it.
 #: engines/dm/metaengine.cpp:144
 msgid "Select dialog choice (only works if there is a single choice)"
-msgstr "Выбрать вариант ответа диалога (работает если есть только один вариант)"
+msgstr ""
+"Выбрать вариант ответа диалога (работает если есть только один вариант)"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. This action toggles the inventory screen of champion 1.
 #: engines/dm/metaengine.cpp:151

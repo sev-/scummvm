@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-22 19:54+0000\n"
+"POT-Creation-Date: 2026-03-23 00:14+0000\n"
 "PO-Revision-Date: 2021-03-21 08:24+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Belarusian <https://translations.scummvm.org/projects/scummvm/"
@@ -7197,15 +7197,17 @@ msgid ""
 msgstr ""
 
 #: engines/awe/metaengine.cpp:61
-msgid "Select/Kick/Run"
-msgstr ""
+#, fuzzy
+#| msgid "Interact"
+msgid "Select / Kick / Run"
+msgstr "Узаемадзеянне"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr ""
 
 #: engines/awe/metaengine.cpp:63
-msgid "Enter Level Code"
+msgid "Enter level code"
 msgstr ""
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87

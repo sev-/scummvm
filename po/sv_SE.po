@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-22 19:54+0000\n"
+"POT-Creation-Date: 2026-03-23 00:14+0000\n"
 "PO-Revision-Date: 2026-03-12 13:22+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
@@ -7359,7 +7359,9 @@ msgstr ""
 "över som standard."
 
 #: engines/awe/metaengine.cpp:61
-msgid "Select/Kick/Run"
+#, fuzzy
+#| msgid "Select/Kick/Run"
+msgid "Select / Kick / Run"
 msgstr "Välj/Sparka/Spring"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
@@ -7367,7 +7369,9 @@ msgid "Jump"
 msgstr "Hoppa"
 
 #: engines/awe/metaengine.cpp:63
-msgid "Enter Level Code"
+#, fuzzy
+#| msgid "Enter Level Code"
+msgid "Enter level code"
 msgstr "Ange nivåkod"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87

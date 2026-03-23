@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-22 19:54+0000\n"
+"POT-Creation-Date: 2026-03-23 00:14+0000\n"
 "PO-Revision-Date: 2026-03-21 11:31+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -7446,7 +7446,9 @@ msgstr ""
 "verrebbero saltate di default."
 
 #: engines/awe/metaengine.cpp:61
-msgid "Select/Kick/Run"
+#, fuzzy
+#| msgid "Select/Kick/Run"
+msgid "Select / Kick / Run"
 msgstr "Seleziona/Calcia/Corri"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
@@ -7454,7 +7456,9 @@ msgid "Jump"
 msgstr "Salta"
 
 #: engines/awe/metaengine.cpp:63
-msgid "Enter Level Code"
+#, fuzzy
+#| msgid "Enter Level Code"
+msgid "Enter level code"
 msgstr "Inserisci Codice Livello"
 
 #: engines/awe/metaengine.cpp:88 engines/dgds/metaengine.cpp:87
