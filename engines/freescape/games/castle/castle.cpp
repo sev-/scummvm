@@ -1466,19 +1466,34 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_riddleNailFrame, nailX, nailY, Common::Rect(0, 0, _riddleNailFrame->w, _riddleNailFrame->h), 0);
 	}
 
-	// Draw riddle frame borders (if available)
+	// Draw riddle frame borders (if available), clipped to viewport
 	if (_riddleTopFrame) {
-		surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, x, y, Common::Rect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h));
+		Common::Rect srcRect(0, 0, _riddleTopFrame->w, _riddleTopFrame->h);
+		Common::Rect destRect(x, y, x + _riddleTopFrame->w, y + _riddleTopFrame->h);
+		destRect.clip(_viewArea);
+		srcRect = Common::Rect(destRect.left - x, destRect.top - y, destRect.right - x, destRect.bottom - y);
+		if (srcRect.isValidRect() && !srcRect.isEmpty())
+			surface->copyRectToSurface((const Graphics::Surface)*_riddleTopFrame, destRect.left, destRect.top, srcRect);
 		y += _riddleTopFrame->h;
 	}
 	if (_riddleBackgroundFrame) {
 		for (; y < maxWidth;) {
-			surface->copyRectToSurface((const Graphics::Surface)*_riddleBackgroundFrame, x, y, Common::Rect(0, 0, _riddleBackgroundFrame->w, _riddleBackgroundFrame->h));
+			Common::Rect srcRect(0, 0, _riddleBackgroundFrame->w, _riddleBackgroundFrame->h);
+			Common::Rect destRect(x, y, x + _riddleBackgroundFrame->w, y + _riddleBackgroundFrame->h);
+			destRect.clip(_viewArea);
+			srcRect = Common::Rect(destRect.left - x, destRect.top - y, destRect.right - x, destRect.bottom - y);
+			if (srcRect.isValidRect() && !srcRect.isEmpty())
+				surface->copyRectToSurface((const Graphics::Surface)*_riddleBackgroundFrame, destRect.left, destRect.top, srcRect);
 			y += _riddleBackgroundFrame->h;
 		}
 	}
 	if (_riddleBottomFrame) {
-		surface->copyRectToSurface((const Graphics::Surface)*_riddleBottomFrame, x, maxWidth, Common::Rect(0, 0, _riddleBottomFrame->w, _riddleBottomFrame->h - 1));
+		Common::Rect srcRect(0, 0, _riddleBottomFrame->w, _riddleBottomFrame->h - 1);
+		Common::Rect destRect(x, maxWidth, x + _riddleBottomFrame->w, maxWidth + _riddleBottomFrame->h - 1);
+		destRect.clip(_viewArea);
+		srcRect = Common::Rect(destRect.left - x, destRect.top - maxWidth, destRect.right - x, destRect.bottom - maxWidth);
+		if (srcRect.isValidRect() && !srcRect.isEmpty())
+			surface->copyRectToSurface((const Graphics::Surface)*_riddleBottomFrame, destRect.left, destRect.top, srcRect);
 	}
 
 	Common::Array<RiddleText> riddleMessages = _riddleList[riddle]._lines;
@@ -1510,7 +1525,7 @@ void CastleEngine::drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics
 void CastleEngine::drawRiddleStringInSurface(const Common::String &str, int x, int y, uint32 fontColor, uint32 backColor, Graphics::Surface *surface) {
 	Common::String ustr = str;
 	ustr.toUppercase();
-	if (isDOS()) {
+	if (isDOS() || isAmiga() || isAtariST()) {
 		_fontRiddle.setBackground(backColor);
 		_fontRiddle.drawString(surface, ustr, x, y, _screenW, fontColor);
 	} else {

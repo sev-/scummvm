@@ -138,21 +138,24 @@ void CastleEngine::loadAssetsAmigaDemo() {
 
 	file.seek(0x11eec);
 	Common::Array<Graphics::ManagedSurface *> chars;
+	Common::Array<Graphics::ManagedSurface *> charsRiddle;
 	for (int i = 0; i < 90; i++) {
 		Graphics::ManagedSurface *img = loadFrameFromPlanes(&file, 8, 8);
-		//Graphics::ManagedSurface *imgRiddle = new Graphics::ManagedSurface();
-		//imgRiddle->copyFrom(*img);
+		Graphics::ManagedSurface *imgRiddle = new Graphics::ManagedSurface();
+		imgRiddle->copyFrom(*img);
 
 		chars.push_back(img);
 		chars[i]->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
 
-		//charsRiddle.push_back(imgRiddle);
-		//charsRiddle[i]->convertToInPlace(_gfx->_texturePixelFormat, (byte *)&kEGARiddleFontPalette, 16);
+		charsRiddle.push_back(imgRiddle);
+		charsRiddle[i]->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
 	}
-	// 0x1356c
 
 	_font = Font(chars);
 	_font.setCharWidth(9);
+
+	_fontRiddle = Font(charsRiddle);
+	_fontRiddle.setCharWidth(9);
 
 	load8bitBinary(&file, 0x162a6, 16);
 	for (int i = 0; i < 3; i++) {
@@ -220,15 +223,36 @@ void CastleEngine::loadAssetsAmigaDemo() {
 		_flagFrames.push_back(frame);
 	}
 
+	// Riddle mask (memory 0x3C6DA, file 0x3C6F6): 16 words, one per 16-pixel column.
+	// Applied per-pixel: frame_pixel = (mask_bit == 1) ? frame_pixel : 0.
+	// Same mask for every row. Trims the frame edges for proper compositing.
+	file.seek(0x3c6f6);
+	uint16 riddleMask[16];
+	for (int i = 0; i < 16; i++)
+		riddleMask[i] = file.readUint16BE();
+
 	// Riddle frames (memory 0x3C6FA: top 20 rows + bg 1 row + bottom 8 rows, 256px wide)
 	file.seek(0x3c716);
 	_riddleTopFrame = loadFrameFromPlanesInterleaved(&file, 16, 20);
-	_riddleTopFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
-
 	_riddleBackgroundFrame = loadFrameFromPlanesInterleaved(&file, 16, 1);
-	_riddleBackgroundFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
-
 	_riddleBottomFrame = loadFrameFromPlanesInterleaved(&file, 16, 8);
+
+	// Apply mask to CLUT8 frames before palette conversion
+	Graphics::ManagedSurface *riddleFrames[] = {_riddleTopFrame, _riddleBackgroundFrame, _riddleBottomFrame};
+	for (int f = 0; f < 3; f++) {
+		Graphics::ManagedSurface *frame = riddleFrames[f];
+		for (int y = 0; y < frame->h; y++) {
+			for (int x = 0; x < frame->w; x++) {
+				int col = x / 16;
+				int bit = 15 - (x % 16);
+				if (!(riddleMask[col] & (1 << bit)))
+					frame->setPixel(x, y, 0);
+			}
+		}
+	}
+
+	_riddleTopFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
+	_riddleBackgroundFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
 	_riddleBottomFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastleRiddlePalette, 16);
 
 	// Castle gate (game over background frame)
