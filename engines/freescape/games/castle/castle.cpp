@@ -90,6 +90,10 @@ CastleEngine::CastleEngine(OSystem *syst, const ADGameDescription *gd) : Freesca
 	_keysBorderCLUT8 = nullptr;
 	_menu = nullptr;
 	_menuButtons = nullptr;
+	_cursorData = nullptr;
+	_crosshairData = nullptr;
+	_cursorW = 0;
+	_cursorH = 0;
 
 	_riddleTopFrame = nullptr;
 	_riddleBottomFrame = nullptr;
@@ -779,6 +783,35 @@ void CastleEngine::pressedKey(const int keycode) {
 		activate();
 }
 
+void CastleEngine::setAmigaCursor(bool crosshair) {
+	if (!_cursorData || !_crosshairData)
+		return;
+
+	static const byte cursorPalette[16 * 3] = {
+		0x00, 0x00, 0x00,  0x44, 0x44, 0x44,  0x66, 0x66, 0x66,  0x88, 0x88, 0x88,
+		0xAA, 0xAA, 0xAA,  0xCC, 0xCC, 0xCC,  0xAA, 0xAA, 0xAA,  0xCC, 0xCC, 0xCC,
+		0x44, 0x44, 0x44,  0x66, 0x66, 0x66,  0x88, 0x88, 0x88,  0xCC, 0xCC, 0xCC,
+		0x66, 0x66, 0x66,  0xCC, 0xCC, 0xCC,  0xAA, 0xAA, 0xAA,  0xEE, 0xEE, 0xEE,
+	};
+
+	byte *srcData = crosshair ? _crosshairData : _cursorData;
+	int scale = MAX(1, g_system->getWidth() / _screenW);
+	int sw = _cursorW * scale;
+	int sh = _cursorH * scale;
+	int hotX = crosshair ? 7 * scale : 1 * scale;
+	int hotY = crosshair ? 7 * scale : 1 * scale;
+
+	byte *scaledCursor = new byte[sw * sh];
+	for (int y = 0; y < sh; y++)
+		for (int x = 0; x < sw; x++)
+			scaledCursor[y * sw + x] = srcData[(y / scale) * _cursorW + (x / scale)];
+
+	Graphics::PixelFormat cursorFormat = Graphics::PixelFormat::createFormatCLUT8();
+	CursorMan.replaceCursor(scaledCursor, sw, sh, hotX, hotY, 0, false, &cursorFormat);
+	CursorMan.replaceCursorPalette(cursorPalette, 0, 16);
+	delete[] scaledCursor;
+}
+
 void CastleEngine::drawInfoMenu() {
 	PauseToken pauseToken = pauseEngine();
 	if (_savedScreen) {
@@ -832,31 +865,81 @@ void CastleEngine::drawInfoMenu() {
 			}
 		}
 	} else if (isAmiga() || isAtariST()) {
+		if (_cursorData)
+			setAmigaCursor(false); // arrow for the menu
+		else
+			CursorMan.setDefaultArrowCursor();
+		CursorMan.showMouse(true);
 		if (_menu)
 			surface->copyRectToSurface(*_menu, 47, 35, Common::Rect(0, 0, MIN<int>(_menu->w, surface->w - 47), MIN<int>(_menu->h, surface->h - 35)));
 
 		_gfx->readFromPalette(15, r, g, b);
 		front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
-		drawStringInSurface(Common::String::format("%07d", score), 166, 71, front, black, surface);
-		drawStringInSurface(centerAndPadString(Common::String::format("%s", _messagesList[135 + shield / 6].c_str()), 10), 151, 102, front, black, surface);
 
-		Common::String keysCollected = _messagesList[141];
-		Common::replace(keysCollected, "X", Common::String::format("%d", _keysCollected.size()));
-		drawStringInSurface(keysCollected, 103, 41, front, black, surface);
+		// Positions and formulas from assembly at FUN_1AE0:
+		// Score at (167, 71): move.w #$a7,d0; move.w #$47,d1
+		drawStringInSurface(Common::String::format("%07d", score), 167, 71, front, black, surface);
 
-		Common::String spiritsDestroyedString = _messagesList[133];
-		Common::replace(spiritsDestroyedString, "X", Common::String::format("%d", spiritsDestroyed));
-		drawStringInSurface(spiritsDestroyedString, 145, 132, front, black, surface);
+		// Shield at (154, 102): move.w #$9a,d0; move.w #$66,d1
+		// Index = (shield - 1) / 4 (from: subq #1,d0; lsr #2,d0; muls #$c,d0)
+		// Amiga shield text at message indices 171-177 (skipping 174 which is empty)
+		{
+			static const int kAmigaShieldMsgIdx[] = {171, 172, 173, 175, 176, 177};
+			int shieldIdx = (shield > 0) ? (shield - 1) / 4 : 0;
+			if (shieldIdx > 5) shieldIdx = 5;
+			drawStringInSurface(centerAndPadString(_messagesList[kAmigaShieldMsgIdx[shieldIdx]], 10), 154, 102, front, black, surface);
+		}
 
-		for (int i = 0; i < int(_keysCollected.size()); i++) {
-			int y = 58 + (i / 2) * 18;
-			if (i % 2 == 0) {
-				surface->copyRectToSurfaceWithKey(*_keysBorderFrames[i], 58, y, Common::Rect(0, 0, _keysBorderFrames[i]->w, _keysBorderFrames[i]->h), black);
-				keyRects.push_back(Common::Rect(58, y, 58 + _keysBorderFrames[i]->w / 2, y + _keysBorderFrames[i]->h));
-			} else {
-				surface->copyRectToSurfaceWithKey(*_keysBorderFrames[i], 80, y, Common::Rect(0, 0, _keysBorderFrames[i]->w, _keysBorderFrames[i]->h), black);
-				keyRects.push_back(Common::Rect(80, y, 80 + _keysBorderFrames[i]->w / 2, y + _keysBorderFrames[i]->h));
+		// Keys collected at (104, 41): move.w #$68,d0; move.w #$29,d1 (from FUN_22CC)
+		// Messages: 162="NO KEYS COLLECTED", 163="XX KEYS COLLECTED", 164=" 1 KEY COLLECTED"
+		{
+			Common::String keysText;
+			int numKeys = _keysCollected.size();
+			if (numKeys == 0)
+				keysText = _messagesList[162];
+			else if (numKeys == 1)
+				keysText = _messagesList[164];
+			else {
+				keysText = _messagesList[163];
+				Common::replace(keysText, "XX", Common::String::format("%2d", numKeys));
 			}
+			drawStringInSurface(keysText, 104, 41, front, black, surface);
+		}
+
+		// Spirits destroyed at (145, 133): move.w #$91,d0; move.w #$85,d1
+		// Messages: 156="NONE DESTROYED", 157=" XX DESTROYED "
+		{
+			Common::String spiritsText;
+			if (spiritsDestroyed == 0)
+				spiritsText = _messagesList[156];
+			else {
+				spiritsText = _messagesList[157];
+				Common::replace(spiritsText, "XX", Common::String::format("%2d", spiritsDestroyed));
+			}
+			drawStringInSurface(spiritsText, 145, 133, front, black, surface);
+		}
+
+		// Movement indicator at (96, 118) from assembly at 0x1BE8-0x1BF0
+		{
+			Graphics::ManagedSurface *moveIndicator = nullptr;
+			if (_playerStepIndex == 0)
+				moveIndicator = _menuCrawlIndicator;
+			else if (_playerStepIndex == 1)
+				moveIndicator = _menuWalkIndicator;
+			else
+				moveIndicator = _menuRunIndicator;
+			if (moveIndicator)
+				surface->copyRectToSurfaceWithKey((const Graphics::Surface)*moveIndicator, 96, 118,
+					Common::Rect(0, 0, moveIndicator->w, moveIndicator->h), black);
+		}
+
+		// Sound indicator at (96, 103) from assembly at 0x1C1A-0x1C22
+		// Frame 3 = sound off, frame 4 = sound on (offset $360, optionally +$120)
+		{
+			Graphics::ManagedSurface *sndIndicator = _menuFxOnIndicator ? _menuFxOnIndicator : _menuFxOffIndicator;
+			if (sndIndicator)
+				surface->copyRectToSurfaceWithKey((const Graphics::Surface)*sndIndicator, 96, 103,
+					Common::Rect(0, 0, sndIndicator->w, sndIndicator->h), black);
 		}
 	} else if (isSpectrum() || isCPC()) {
 		Common::Array<Common::String> lines;
@@ -941,6 +1024,12 @@ void CastleEngine::drawInfoMenu() {
 				break;
 			case Common::EVENT_KEYDOWN:
 					cont = false;
+				break;
+			case Common::EVENT_MOUSEMOVE:
+				if ((isAmiga() || isAtariST()) && _cursorData && _crosshairData) {
+					Common::Point mp = getNormalizedPosition(event.mouse);
+					setAmigaCursor(_viewArea.contains(mp));
+				}
 				break;
 			case Common::EVENT_SCREEN_CHANGED:
 				_gfx->computeScreenViewport();

@@ -48,6 +48,11 @@ public:
 	Graphics::ManagedSurface *_menuFxOnIndicator;
 	Graphics::ManagedSurface *_menuFxOffIndicator;
 	Graphics::ManagedSurface *_menu;
+	byte *_cursorData;       // diagonal arrow (outside view area)
+	byte *_crosshairData;    // crosshair (# pointer, inside view area)
+	int _cursorW;
+	int _cursorH;
+	void setAmigaCursor(bool crosshair);
 
 	void beforeStarting() override;
 	void initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *infoScreenKeyMap, const char *target) override;

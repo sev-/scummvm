@@ -21,6 +21,7 @@
 
 #include "common/file.h"
 #include "common/memstream.h"
+#include "graphics/cursorman.h"
 
 #include "audio/mods/protracker.h"
 
@@ -136,6 +137,7 @@ void CastleEngine::loadAssetsAmigaDemo() {
 	loadMessagesVariableSize(&file, 0x8bb2, 178);
 	loadRiddles(&file, 0x96c8 - 2 - 19 * 2, 19);
 
+
 	file.seek(0x11eec);
 	Common::Array<Graphics::ManagedSurface *> chars;
 	Common::Array<Graphics::ManagedSurface *> charsRiddle;
@@ -220,12 +222,87 @@ void CastleEngine::loadAssetsAmigaDemo() {
 	//_strenghtBackgroundFrame = loadFrameFromPlanesInterleaved(&file, 5, 4);
 	//_strenghtBackgroundFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
 
-	// Key sprites (memory 0x3C096, 12 frames, 16x7 each, interleaved 4-plane)
+	// Eye icon sprites (memory 0x3C096, 12 frames, 16x7 each, interleaved 4-plane)
+	// Used for strength/compass display at screen (224, 164). Header at 0x3C08E.
+	// TODO: load as separate eye icon member, not _keysBorderFrames
 	file.seek(0x3c0b2);
 	for (int i = 0; i < 12; i++) {
 		Graphics::ManagedSurface *frame = loadFrameFromPlanesInterleaved(&file, 1, 7);
 		frame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
 		_keysBorderFrames.push_back(frame);
+	}
+
+	// Crawl/Walk/Run + Sound indicators (memory 0x3838A, file 0x383A6, 5 frames, 48x12)
+	// Header (6 bytes) + mask (3 words = 6 bytes) + graphics.
+	// From assembly: frames 0-2 = crawl/walk/run at (96,118), frames 3-4 = sound off/on at (96,103)
+	file.seek(0x383a6 + 6 + 6); // skip header + mask
+	{
+		_menuCrawlIndicator = loadFrameFromPlanesInterleaved(&file, 3, 12);
+		_menuCrawlIndicator->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+		_menuWalkIndicator = loadFrameFromPlanesInterleaved(&file, 3, 12);
+		_menuWalkIndicator->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+		_menuRunIndicator = loadFrameFromPlanesInterleaved(&file, 3, 12);
+		_menuRunIndicator->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+		_menuFxOffIndicator = loadFrameFromPlanesInterleaved(&file, 3, 12);
+		_menuFxOffIndicator->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+		_menuFxOnIndicator = loadFrameFromPlanesInterleaved(&file, 3, 12);
+		_menuFxOnIndicator->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+	}
+
+	// Mouse pointer from paired sprites at mem $22E/$276 (file 0x24A/0x292).
+	// SPR0 at $22E + SPR1 at $276 form the diagonal arrow cursor.
+	// Each: 2 control words + 16 data rows (p0,p1 interleaved) + end marker = 72 bytes.
+	// SPR0 contributes color bits 0-1, SPR1 contributes bits 2-3 (4-bit combined).
+	{
+		_cursorW = 16;
+		_cursorH = 16;
+		_cursorData = new byte[16 * 16];
+		memset(_cursorData, 0, 16 * 16);
+		// Read SPR0 (bits 0-1)
+		file.seek(0x24A + 4); // skip control
+		for (int row = 0; row < 16; row++) {
+			uint16 p0 = file.readUint16BE();
+			uint16 p1 = file.readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				byte c = ((p0 >> (15 - bit)) & 1) | (((p1 >> (15 - bit)) & 1) << 1);
+				_cursorData[row * 16 + bit] = c;
+			}
+		}
+		// Overlay SPR1 (bits 2-3)
+		file.seek(0x292 + 4); // skip control
+		for (int row = 0; row < 16; row++) {
+			uint16 p0 = file.readUint16BE();
+			uint16 p1 = file.readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				byte c = ((p0 >> (15 - bit)) & 1) | (((p1 >> (15 - bit)) & 1) << 1);
+				_cursorData[row * 16 + bit] |= (c << 2);
+			}
+		}
+	}
+
+	// Crosshair pointer from paired sprites at mem $19E/$1E6 (file 0x1BA/0x202).
+	// Used outside the view area. Same format as diagonal arrow.
+	{
+		_crosshairData = new byte[16 * 16];
+		memset(_crosshairData, 0, 16 * 16);
+		file.seek(0x1BA + 4);
+		for (int row = 0; row < 16; row++) {
+			uint16 p0 = file.readUint16BE();
+			uint16 p1 = file.readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				byte c = ((p0 >> (15 - bit)) & 1) | (((p1 >> (15 - bit)) & 1) << 1);
+				_crosshairData[row * 16 + bit] = c;
+			}
+		}
+		file.seek(0x202 + 4);
+		for (int row = 0; row < 16; row++) {
+			uint16 p0 = file.readUint16BE();
+			uint16 p1 = file.readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				byte c = ((p0 >> (15 - bit)) & 1) | (((p1 >> (15 - bit)) & 1) << 1);
+				_crosshairData[row * 16 + bit] |= (c << 2);
+			}
+		}
 	}
 
 	// Flag animation (memory 0x3C340, 5 frames, 32x11 each, interleaved 4-plane)
@@ -391,13 +468,7 @@ void CastleEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 	drawStringInSurface(_currentArea->_name, 97, 182, 0, 0, surface);
 	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 
-	// Draw last collected key at (224, 164)
-	if (!_keysCollected.empty() && !_keysBorderFrames.empty()) {
-		int k = int(_keysCollected.size()) - 1;
-		if (k < int(_keysBorderFrames.size()))
-			surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_keysBorderFrames[k], 224, 164,
-				Common::Rect(0, 0, _keysBorderFrames[k]->w, _keysBorderFrames[k]->h), black);
-	}
+	// TODO: Draw collected keys - key sprites location in binary still unknown
 
 	// Draw flag animation at (288, 5)
 	if (!_flagFrames.empty()) {
