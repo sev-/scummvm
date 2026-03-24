@@ -207,6 +207,19 @@ void CastleEngine::loadAssetsAmigaDemo() {
 	_spiritsMeterIndicatorFrame = loadFrameFromPlanesInterleaved(&file, 1, 10);
 	_spiritsMeterIndicatorFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
 
+	// Strength weight sprites (file 0x395F2, 1 word x 14 rows x 4 frames)
+	file.seek(0x395f2);
+	for (int i = 0; i < 4; i++) {
+		Graphics::ManagedSurface *frame = loadFrameFromPlanesInterleaved(&file, 1, 14);
+		frame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+		_strenghtWeightsFrames.push_back(frame);
+	}
+
+	// Strength background with bar (file 0x397B2, 5 words x 20 rows)
+	//file.seek(0x397b2);
+	//_strenghtBackgroundFrame = loadFrameFromPlanesInterleaved(&file, 5, 4);
+	//_strenghtBackgroundFrame->convertToInPlace(_gfx->_texturePixelFormat, (byte *)kAmigaCastlePalette, 16);
+
 	// Key sprites (memory 0x3C096, 12 frames, 16x7 each, interleaved 4-plane)
 	file.seek(0x3c0b2);
 	for (int i = 0; i < 12; i++) {
@@ -392,6 +405,9 @@ void CastleEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 		surface->copyRectToSurface(*_flagFrames[flagFrameIndex], 288, 5,
 			Common::Rect(0, 0, _flagFrames[flagFrameIndex]->w, _flagFrames[flagFrameIndex]->h));
 	}
+
+	// Draw energy meter (strength) - background placed at (0, 154) to match border
+	drawEnergyMeter(surface, Common::Point(40, 158));
 
 	// Draw spirit meter
 	if (_spiritsMeterIndicatorBackgroundFrame)

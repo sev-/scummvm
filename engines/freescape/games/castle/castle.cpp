@@ -1535,17 +1535,13 @@ void CastleEngine::drawRiddleStringInSurface(const Common::String &str, int x, i
 }
 
 void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point origin) {
-	if (!_strenghtBackgroundFrame)
-		return;
-
-	surface->copyRectToSurface((const Graphics::Surface)*_strenghtBackgroundFrame, origin.x, origin.y, Common::Rect(0, 0, _strenghtBackgroundFrame->w, _strenghtBackgroundFrame->h));
-	if (!_strenghtBarFrame)
-		return;
+	if (_strenghtBackgroundFrame)
+		surface->copyRectToSurface((const Graphics::Surface)*_strenghtBackgroundFrame, origin.x, origin.y, Common::Rect(0, 0, _strenghtBackgroundFrame->w, _strenghtBackgroundFrame->h));
 
 	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 	uint32 back = 0;
 
-	if (isDOS())
+	if (isDOS() || isAmiga() || isAtariST())
 		back = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
 
 	int strength = _gameStateVars[k8bitVariableShield];
@@ -1555,14 +1551,16 @@ void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point ori
 
 	Common::Point barFrameOrigin = origin;
 
-	if (isDOS())
-		barFrameOrigin += Common::Point(5, 6 + extraYOffset);
-	else if (isSpectrum())
-		barFrameOrigin += Common::Point(0, 6 + extraYOffset);
-	else if (isCPC())
-		barFrameOrigin += Common::Point(0, 6 + extraYOffset);
+	if (_strenghtBarFrame) {
+		if (isDOS())
+			barFrameOrigin += Common::Point(5, 6 + extraYOffset);
+		else if (isSpectrum())
+			barFrameOrigin += Common::Point(0, 6 + extraYOffset);
+		else if (isCPC())
+			barFrameOrigin += Common::Point(0, 6 + extraYOffset);
 
-	surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtBarFrame, barFrameOrigin.x, barFrameOrigin.y, Common::Rect(0, 0, _strenghtBarFrame->w, _strenghtBarFrame->h), black);
+		surface->copyRectToSurfaceWithKey((const Graphics::Surface)*_strenghtBarFrame, barFrameOrigin.x, barFrameOrigin.y, Common::Rect(0, 0, _strenghtBarFrame->w, _strenghtBarFrame->h), black);
+	}
 
 	Common::Point weightPoint;
 	int frameIdx = -1;
@@ -1586,6 +1584,10 @@ void CastleEngine::drawEnergyMeter(Graphics::Surface *surface, Common::Point ori
 		weightStep = 3;
 		weightOffset = 5;
 		rightWeightPos = 63;
+	} else if (isAmiga() || isAtariST()) {
+		weightStep = 3;
+		weightOffset = 10;
+		rightWeightPos = 62;
 	} else { // DOS
 		weightStep = 3;
 		weightOffset = 10;
