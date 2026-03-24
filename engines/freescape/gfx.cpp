@@ -48,6 +48,10 @@ Renderer::Renderer(int screenW, int screenH, Common::RenderMode renderMode, bool
 	_palette = nullptr;
 	_colorMap = nullptr;
 	_colorRemaps = nullptr;
+	_colorCyclingIndex = 0;
+	_colorCyclingTimer = -1;
+	_colorCyclingPaletteIndex = 15;
+	_colorCyclingSpeed = 3;
 	_renderMode = renderMode;
 	_isAccelerated = false;
 	_debugRenderBoundingBoxes = false;
@@ -299,9 +303,30 @@ void Renderer::setColorMap(ColorMap *colorMap_) {
 }
 
 void Renderer::readFromPalette(uint8 index, uint8 &r, uint8 &g, uint8 &b) {
+	// Amiga/Atari: COLOR15 hardware palette cycling.
+	// From assembly: interrupt handler at $12BA cycles $DFF19E (COLOR15)
+	// through table at $8B78 every 4 frames, gated by per-area flag at $7EC2.
+	// Only palette index 15 is affected; other indices render normally.
+	if (index == _colorCyclingPaletteIndex && _colorCyclingTimer >= 0 && !_colorCyclingTable.empty()) {
+		uint16 val = _colorCyclingTable[_colorCyclingIndex];
+		r = ((val >> 8) & 0xF) * 17;
+		g = ((val >> 4) & 0xF) * 17;
+		b = (val & 0xF) * 17;
+		return;
+	}
 	r = _palette[3 * index + 0];
 	g = _palette[3 * index + 1];
 	b = _palette[3 * index + 2];
+}
+
+void Renderer::updateColorCycling() {
+	if (_colorCyclingTimer < 0 || _colorCyclingTable.empty())
+		return;
+	_colorCyclingTimer--;
+	if (_colorCyclingTimer < 0) {
+		_colorCyclingTimer = _colorCyclingSpeed;
+		_colorCyclingIndex = (_colorCyclingIndex + 1) % _colorCyclingTable.size();
+	}
 }
 
 uint8 Renderer::indexFromColor(uint8 r, uint8 g, uint8 b) {
@@ -533,12 +558,27 @@ bool Renderer::getRGBAt(uint8 index, uint8 ecolor, uint8 &r1, uint8 &g1, uint8 &
 	}
 
 	if (_renderMode == Common::kRenderAmiga || _renderMode == Common::kRenderAtariST) {
+		// Hardware palette cycling: if the main color index matches the cycling
+		// palette entry and cycling is active, use the cycling color directly.
+		// This must happen BEFORE color pair resolution since on real hardware
+		// the Copper list sets the color register globally.
+		if (index == _colorCyclingPaletteIndex && _colorCyclingTimer >= 0 && !_colorCyclingTable.empty()) {
+			readFromPalette(index, r1, g1, b1);
+			r2 = r1; g2 = g1; b2 = b1;
+			if (ecolor > 0)
+				readFromPalette(ecolor, r2, g2, b2);
+			return true;
+		}
+
 		if (_colorPair[index] > 0) {
 			int color = 0;
 			color = _colorPair[index] & 0xf;
 			readFromPalette(color, r1, g1, b1);
 			color = _colorPair[index] >> 4;
 			readFromPalette(color, r2, g2, b2);
+			// Also apply cycling to ecolor if it matches the cycling index
+			if (ecolor > 0 && ecolor == _colorCyclingPaletteIndex && _colorCyclingTimer >= 0 && !_colorCyclingTable.empty())
+				readFromPalette(ecolor, r2, g2, b2);
 			return true;
 		} else if (_colorRemaps && _colorRemaps->contains(index)) {
 			int color = (*_colorRemaps)[index];

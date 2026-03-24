@@ -98,6 +98,7 @@ public:
 	uint8 _inkColor;
 	uint8 _paperColor;
 	uint8 _extraColor[4];
+	bool _colorCycling; // Amiga/Atari: bit 14 of area header enables COLOR15 cycling
 	ColorReMap _colorRemaps;
 
 	uint32 _lastTick;

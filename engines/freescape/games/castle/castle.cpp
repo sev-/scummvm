@@ -612,6 +612,10 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 
 	swapPalette(areaID);
 
+	// Enable/disable COLOR15 cycling based on per-area flag (Amiga/Atari)
+	if ((isAmiga() || isAtariST()) && _currentArea)
+		_gfx->_colorCyclingTimer = _currentArea->_colorCycling ? 0 : -1;
+
 	if (isCPC())
 		updateCPCSpritesPalette();
 

@@ -621,7 +621,17 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 	Common::String name;
 	uint32 base = file->pos();
 	debugC(1, kFreescapeDebugParser, "Area base: %x", base);
-	uint8 areaFlags = readField(file, 8);
+	// On Amiga/Atari, the first field is 16-bit. Bit 14 (0x4000) enables COLOR15 cycling.
+	// From assembly at $10076: move.w (a1),d0; bclr #$e,d0 → extracts bit 14.
+	bool areaColorCycling = false;
+	uint8 areaFlags;
+	if (isAmiga() || isAtariST()) {
+		uint16 fullWord = file->readUint16BE();
+		areaColorCycling = (fullWord & 0x4000) != 0;
+		areaFlags = fullWord & 0xFF;
+	} else {
+		areaFlags = readField(file, 8);
+	}
 	uint8 numberOfObjects = readField(file, 8);
 	uint8 areaNumber = readField(file, 8);
 
@@ -800,6 +810,7 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 	area->_usualBackgroundColor = usualBackgroundColor;
 	area->_underFireBackgroundColor = underFireBackgroundColor;
 
+	area->_colorCycling = areaColorCycling;
 	area->_extraColor[0] = extraColor[0];
 	area->_extraColor[1] = extraColor[1];
 	area->_extraColor[2] = extraColor[2];

@@ -175,6 +175,15 @@ void CastleEngine::loadAssetsAmigaDemo() {
 
 	loadPalettes(&file, 0x151a6);
 
+	// COLOR15 cycling table (mem $8B78, file 0x8B94): 14 entries of 12-bit Amiga RGB + 0xFFFF end.
+	// From assembly: interrupt handler at $12BA cycles $DFF19E through this table every 4 frames.
+	file.seek(0x8b94);
+	while (true) {
+		uint16 val = file.readUint16BE();
+		if (val == 0xFFFF) break;
+		_gfx->_colorCyclingTable.push_back(val);
+	}
+
 	file.seek(0x2be96); // Area 255
 	_areaMap[255] = load8bitArea(&file, 16);
 
