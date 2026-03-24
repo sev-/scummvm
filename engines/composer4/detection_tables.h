@@ -30,7 +30,7 @@ const PlainGameDescriptor gameNames[] = {
 const ADGameDescription gameDescriptions[] = {
 	{"jspreschool99",
 	 nullptr,
-	 AD_ENTRY1s("BOOK.INI", NULL, -1),
+	 AD_ENTRY1s("BOOK.INI", NULL, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_UNSTABLE | ADGF_DROPPLATFORM,
@@ -38,7 +38,7 @@ const ADGameDescription gameDescriptions[] = {
 
 	{"jsmath",
 	 nullptr,
-	 AD_ENTRY1s("BOOK.INI", NULL, -1),
+	 AD_ENTRY1s("BOOK.INI", NULL, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_UNSTABLE | ADGF_DROPPLATFORM,
@@ -46,7 +46,7 @@ const ADGameDescription gameDescriptions[] = {
 
 	{"fisherprice",
 	 nullptr,
-	 AD_ENTRY1s("BOOK.INI", NULL, -1),
+	 AD_ENTRY1s("BOOK.INI", NULL, AD_NO_SIZE),
 	 Common::EN_ANY,
 	 Common::kPlatformWindows,
 	 ADGF_UNSTABLE | ADGF_DROPPLATFORM,

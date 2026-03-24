@@ -48,7 +48,7 @@ Composer4Engine::Composer4Engine(OSystem *syst, const ADGameDescription *gameDes
 
 	_modules.push_back(new PaletteModule);
 	_modules.push_back(new ButtonManager);
-	_modules.push_back(_timersMan); 
+	_modules.push_back(_timersMan);
 }
 
 Composer4Engine::~Composer4Engine() {
@@ -153,7 +153,7 @@ Common::Path Composer4Engine::getFileName(int id, const Common::String &section)
 	Common::String fileName;
 	if (_bookIni.getKey(stringId, section, fileName)) {
 		fileName.replace(0, fileName.findFirstOf('\\', 1) + 1, "");
-		return {fileName, '\\'};
+		return Common::Path(fileName, '\\');
 	}
 
 	return {};

@@ -42,7 +42,7 @@ extern const ADGameDescription gameDescriptions[];
 
 } // End of namespace Composer4
 
-class Composer4MetaEngineDetection : public AdvancedMetaEngineDetection {
+class Composer4MetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription> {
 	static const DebugChannelDef debugFlagList[];
 
 public:

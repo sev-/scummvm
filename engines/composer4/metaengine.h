@@ -24,7 +24,7 @@
 
 #include "engines/advancedDetector.h"
 
-class Composer4MetaEngine : public AdvancedMetaEngine {
+class Composer4MetaEngine : public AdvancedMetaEngine<ADGameDescription> {
 public:
 	const char *getName() const override;
 

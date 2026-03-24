@@ -47,9 +47,9 @@ int PaletteModule::setPalette(uint16 id, byte brightness) {
 	if (id) {
 		Common::ScopedPtr<Common::SeekableReadStream> stream{g_engine->openResource(id, ResourceType::kPalette)};
 		if (stream) {
-			uint16 count = MIN<uint16>(PALETTE_COUNT, stream->readUint16LE());
+			uint16 count = MIN<uint16>(Graphics::PALETTE_COUNT, stream->readUint16LE());
 
-			byte palette[PALETTE_SIZE];
+			byte palette[Graphics::PALETTE_SIZE];
 			stream->read(palette, count * 3);
 
 			setPaletteFragment(palette, 0, count, brightness);
@@ -59,18 +59,18 @@ int PaletteModule::setPalette(uint16 id, byte brightness) {
 	}
 
 	// alter brightness
-	setPaletteFragment(nullptr, 0, PALETTE_COUNT, brightness);
+	setPaletteFragment(nullptr, 0, Graphics::PALETTE_COUNT, brightness);
 	return 1;
 }
 
 void PaletteModule::setPaletteFragment(byte *src, uint index, uint count, byte brightness) {
-	if (index >= PALETTE_COUNT)
+	if (index >= Graphics::PALETTE_COUNT)
 		return;
 
-	count = MIN(count, PALETTE_COUNT - index);
+	count = MIN(count, Graphics::PALETTE_COUNT - index);
 	brightness = MIN<byte>(brightness, 100);
 
-	byte palette[PALETTE_SIZE];
+	byte palette[Graphics::PALETTE_SIZE];
 	g_engine->_screen->getPalette(palette);
 
 	if (src) {
@@ -81,9 +81,9 @@ void PaletteModule::setPaletteFragment(byte *src, uint index, uint count, byte b
 		palette[i] = palette[i] * brightness / 100;
 	}
 
-	palette[PALETTE_SIZE - 1] = 0xff;
-	palette[PALETTE_SIZE - 2] = 0xff;
-	palette[PALETTE_SIZE - 3] = 0xff;
+	palette[Graphics::PALETTE_SIZE - 1] = 0xff;
+	palette[Graphics::PALETTE_SIZE - 2] = 0xff;
+	palette[Graphics::PALETTE_SIZE - 3] = 0xff;
 	palette[0] = 0;
 	palette[1] = 0;
 	palette[2] = 0;
@@ -92,8 +92,8 @@ void PaletteModule::setPaletteFragment(byte *src, uint index, uint count, byte b
 }
 
 void PaletteModule::getPaletteFragment(byte *dst, uint index, uint count) {
-	if (index < PALETTE_COUNT) {
-		count = MIN(count, PALETTE_COUNT - index);
+	if (index < Graphics::PALETTE_COUNT) {
+		count = MIN(count, Graphics::PALETTE_COUNT - index);
 		g_engine->_screen->getPalette(dst, index, count);
 	}
 }
