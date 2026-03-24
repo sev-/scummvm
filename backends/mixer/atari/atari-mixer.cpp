@@ -30,7 +30,12 @@
 #include "backends/platform/atari/atari-debug.h"
 #include "common/config-manager.h"
 
-#define DEFAULT_OUTPUT_RATE 24585
+#ifdef DISABLE_FANCY_THEMES
+#define DEFAULT_OUTPUT_RATE 11025
+#else
+#define DEFAULT_OUTPUT_RATE 22050
+#endif
+
 #define DEFAULT_OUTPUT_CHANNELS 2
 #define DEFAULT_SAMPLES 2048	// 83ms
 
