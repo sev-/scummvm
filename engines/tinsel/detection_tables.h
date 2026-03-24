@@ -282,12 +282,12 @@ static const TinselGameDescription gameDescriptions[] = {
 			},
 			Common::IT_ITA,
 			Common::kPlatformDOS,
-			ADGF_DROPLANGUAGE | ADGF_CD,
+			ADGF_CD,
 			GUIO0()
 		},
 		GID_DW1,
 		0,
-		GF_USE_4FLAGS | GF_ENHANCED_AUDIO_SUPPORT,
+		GF_ENHANCED_AUDIO_SUPPORT,
 		TINSEL_V1,
 	},
 
