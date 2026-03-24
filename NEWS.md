@@ -116,6 +116,10 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Implemented way to show startup screen and play startup sound for games
      what have those files. There will be new items in the About menu.
 
+ Atari port:
+   - Included out-of-tree m68k code optimizations for the SCUMM engine and
+     audio mixing to gather user feedback.
+
  macOS port:
    - Added support for the newer Text-to-Speech API of macOS 10.14+.
    - Restored Help menu and Copy from clipboard features for macOS 10.4-10.5.
