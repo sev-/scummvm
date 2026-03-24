@@ -592,7 +592,11 @@ OSX_STATIC_LIBS += $(STATICLIBPATH)/lib/libRetroWave.a
 endif
 
 ifdef USE_SONIVOX
+ifneq (,$(wildcard $(STATICLIBPATH)/lib/libsonivox-static.a))
 OSX_STATIC_LIBS += $(STATICLIBPATH)/lib/libsonivox-static.a
+else
+OSX_STATIC_LIBS += $(STATICLIBPATH)/lib/libsonivox.a
+endif
 endif
 
 ifdef USE_SPARKLE
