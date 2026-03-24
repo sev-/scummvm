@@ -409,6 +409,8 @@ Graphics::MacWidget *BitmapCastMember::createWidget(Common::Rect &bbox, Channel 
 }
 
 Graphics::Surface *BitmapCastMember::getDitherImg() {
+	if (!_picture->_surface.getPixels())
+        return nullptr;
 	Graphics::Surface *dither = nullptr;
 
 	// Convert indexed image to indexed palette
