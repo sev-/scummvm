@@ -103,7 +103,7 @@ namespace Beacon {
 #define BEAMSCREEN  "art\\BEAMS3.BMP"
 
 // Artwork data file constants
-#define DATA_FILE   ".\\BEACON.DAT"
+#define DATA_FILE   "BEACON.DAT"
 #define MAX_FILE_LENGTH      20
 
 // New Game button area

@@ -39,7 +39,7 @@ namespace NoVacancy {
 
 #define _STRINGTABLE    1                 // use stringtable for retrieving string constants.
 
-#define RULES                   ".\\novac.txt"                      //  rules text file.                
+#define RULES                   "novac.txt"                      //  rules text file.
 
 #if !_STRINGTABLE
 

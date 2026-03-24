@@ -41,7 +41,7 @@ namespace Mankala {
 
 
 // DATADIR is directory for *.BMP and other data files
-// #define DATADIR ".".\\"
+// #define DATADIR ".""
 #define DATADIR "art\\"
 // const XPSTR MNKSCREEN = DATADIR "mancrab.bmp" ;  // bitmap file for screen
 
@@ -90,7 +90,7 @@ const int BESTWINUNDEF = -1000 ;  // value of undefined minimax value
 
 #define IDC_SCROLL      419
 
-#define RULES   ".\\mankala.txt"
+#define RULES   "mankala.txt"
 
 #define RULES_NARRATION     "sound\\mankala.wav"
 #define IGO3                "sound\\igo3.wav"

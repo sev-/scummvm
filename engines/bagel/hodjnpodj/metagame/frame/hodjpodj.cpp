@@ -66,7 +66,7 @@ namespace Frame {
 #define HODJ_WIN_MOVIE  "..\\VIDEO\\HODJ.AVI"
 #define PODJ_WIN_MOVIE  "..\\VIDEO\\PODJ.AVI"
 
-#define CREDITSFILE     ".\\CREDITS.TXT"
+#define CREDITSFILE     "CREDITS.TXT"
 
 #define PATHSPECSIZE    256
 #define CDROMHOME       ":\\HODJPODJ\\META"
