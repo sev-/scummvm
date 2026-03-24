@@ -70,7 +70,7 @@ CColorButton    *pDFACancelButton = nullptr;
  *
  ****************************************************************/
 CDFAOptDlg::CDFAOptDlg(CWnd *pParent, CPalette *pPalette, unsigned int nID)
-	:  CBmpDialog(pParent, pPalette, nID, ".\\ART\\SSCROLL.BMP"),
+	:  CBmpDialog(pParent, pPalette, nID, "art\\SSCROLL.BMP"),
 		rDisplayGTime(43, 85, 174, 98),
 		rDisplayBTime(43, 35, 174, 48) {
 	CDC     *pDC = GetDC();

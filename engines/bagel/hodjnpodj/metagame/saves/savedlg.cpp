@@ -57,7 +57,7 @@ BEGIN_MESSAGE_MAP(CSaveDlg, CBmpDialog)
 END_MESSAGE_MAP()
 
 CSaveDlg::CSaveDlg(char *pszDescriptions[], CWnd *pWnd, CPalette *pPalette)
-	: CBmpDialog(pWnd, pPalette, 2000, ".\\ART\\MLSCROLL.BMP") {
+	: CBmpDialog(pWnd, pPalette, 2000, "art\\MLSCROLL.BMP") {
 	int i;
 
 	// Inits
