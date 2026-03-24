@@ -32,7 +32,7 @@ extern const ADGameDescription GameDescriptions[];
 
 } // namespace Composer4
 
-class Composer4MetaEngineDetection : public AdvancedMetaEngineDetection {
+class Composer4MetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription> {
 public:
 	Composer4MetaEngineDetection();
 	~Composer4MetaEngineDetection() override {}

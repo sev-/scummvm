@@ -29,7 +29,7 @@
 #include "composer4/detection_tables.h"
 
 Composer4MetaEngineDetection::Composer4MetaEngineDetection() : AdvancedMetaEngineDetection(Composer4::GameDescriptions,
-	sizeof(ADGameDescription), Composer4::GameNames) {
+	Composer4::GameNames) {
 }
 
 REGISTER_PLUGIN_STATIC(COMPOSER4_DETECTION, PLUGIN_TYPE_ENGINE_DETECTION, Composer4MetaEngineDetection);

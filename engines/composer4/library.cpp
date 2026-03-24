@@ -36,7 +36,7 @@ Library::~Library() {
 }
 
 bool Library::open(const Common::String &fileName) {
-	if (!_file.open(fileName))
+	if (!_file.open(Common::Path(fileName)))
 		return false;
 
 	const uint32 signature = _file.readUint32BE();

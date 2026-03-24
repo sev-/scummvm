@@ -26,7 +26,7 @@
 #include "common/scummsys.h"
 #include "common/system.h"
 #include "engines/util.h"
-#include "graphics/palette.h"
+#include "graphics/paletteman.h"
 
 #include "composer4/button.h"
 #include "composer4/composer4.h"
@@ -187,7 +187,7 @@ FunctionResult Composer4Engine::callFunction(uint16 opcode, Common::Array<Variab
 		return FunctionResult(1);
 	}
 	case kFreeLibrary:
-		_libraryLoadTasks.push_back({arguments[0].u16, false});
+		_libraryLoadTasks.push_back(LibraryLoadTask(arguments[0].u16, false));
 		break;
 	case kEnableLibrary: {
 		auto index = findLibraryIndex(arguments[0].u16);

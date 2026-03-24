@@ -81,10 +81,10 @@ public:
 			   (f == kSupportsReturnToLauncher);
 	};
 
-	bool canLoadGameStateCurrently() override {
+	bool canLoadGameStateCurrently(Common::U32String *msg = nullptr) override {
 		return true;
 	}
-	bool canSaveGameStateCurrently() override {
+	bool canSaveGameStateCurrently(Common::U32String *msg = nullptr) override {
 		return true;
 	}
 
@@ -143,6 +143,7 @@ private:
 	struct LibraryLoadTask {
 		uint16 id = 0;
 		bool load = false;
+		LibraryLoadTask(uint16 id_, bool load_) : id(id_), load(load_) {}
 	};
 	Common::Array<LibraryLoadTask> _libraryLoadTasks;
 	uint _callsDepth = 0;

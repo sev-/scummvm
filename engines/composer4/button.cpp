@@ -54,7 +54,7 @@ bool Button::contains(Common::Point point) const {
 }
 
 ButtonsContainer::ButtonsContainer()
-	: _buttons([](auto &a, auto &b) { return a.z - b.z; }) {}
+	: _buttons([](const Button &a, const Button &b) { return a.z - b.z; }) {}
 
 void ButtonsContainer::addButton(uint16 id, Common::SeekableReadStream &stream) {
 	const uint16 firstWord = stream.readUint16LE();
@@ -89,7 +89,7 @@ void ButtonsContainer::addButton(uint16 id, Common::SeekableReadStream &stream) 
 		}
 		isError = button.polygon.empty();
 		break;
-	*/	
+	*/
 	case ButtonType::kSpriteButton:
 		button.spriteIds.resize(stream.readUint16LE());
 		isError = button.spriteIds.empty();
