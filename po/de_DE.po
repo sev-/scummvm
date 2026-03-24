@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-23 00:14+0000\n"
-"PO-Revision-Date: 2026-02-11 14:22+0000\n"
-"Last-Translator: DwarfDev <dwarflin@gmx.de>\n"
+"PO-Revision-Date: 2026-03-24 20:06+0000\n"
+"Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
 "Language: de_DE\n"
@@ -1344,31 +1344,31 @@ msgstr ""
 "bevorzugten Cloud-Speicherdienst aus der Dropdown-Liste **Aktiver Speicher** "
 "und dann **Verbinden**.\n"
 "\n"
-"\t  ![Cloud-Dienst auswählen](choose_storage.png „Cloud-Dienst auswählen”)"
+"\t  ![Cloud-Dienst auswählen](choose_storage.png \"Cloud-Dienst auswählen\")"
 "{w=70%,maxw=50em} 3. Wählen Sie **Schnellmodus**. ![Schnellmodus]"
-"(quick_mode.png „Schnellmodus”){w=70%,maxw=50em} 4. Wählen Sie **Server "
+"(quick_mode.png \"Schnellmodus\"){w=70%,maxw=50em} 4. Wählen Sie **Server "
 "ausführen** und dann **Weiter**. \n"
 "\n"
-"\t  ![Server ausführen](run_server.png „Server ausführen”){w=70%,maxw=50em} !"
-"[Nächster Schritt](server_next.png „Nächster Schritt”){w=70%,maxw=50em} 5. "
-"Öffnen Sie den Link. ![Link öffnen](open_link.png „Link öffnen”)"
-"{w=70%,maxw=50em}\n"
+"\t  ![Server ausführen](run_server.png \"Server ausführen\")"
+"{w=70%,maxw=50em} ![Nächster Schritt](server_next.png \"Nächster Schritt\")"
+"{w=70%,maxw=50em} 5. Öffnen Sie den Link. ![Link öffnen](open_link.png "
+"\"Link öffnen\"){w=70%,maxw=50em}\n"
 "\n"
 "6. Wählen Sie im sich öffnenden Browserfenster den Cloud-Dienst aus, mit dem "
 "Sie sich verbinden möchten. ![Cloud-Dienst auswählen](cloud_browser.png "
-"„Cloud-Dienst auswählen”){w=70%,maxw=50em} 7. Melden Sie sich beim "
+"\"Cloud-Dienst auswählen\"){w=70%,maxw=50em} 7. Melden Sie sich beim "
 "ausgewählten Cloud-Dienst an. Kehren Sie anschließend zu ScummVM zurück. 8. "
 "Wählen Sie auf dem Erfolgsbildschirm **Fertigstellen**, um den Vorgang zu "
 "beenden. \n"
 "\n"
-"\t  ![Erfolg](cloud_success.png „Erfolg“){w=70%,maxw=50em} 9. Wählen Sie "
-"zurück auf der Hauptregisterkarte „Cloud“ die Option **Speicher "
-"aktivieren**. ![Speicher aktivieren](enable_storage.png „Speicher "
-"aktivieren“){w=70%,maxw=50em} 10. Jetzt können Sie loslegen! Verwenden Sie "
-"die Cloud-Funktion, um gespeicherte Spiele oder Spieledateien zwischen Ihren "
-"Geräten zu synchronisieren.\n"
+"\t  ![Erfolg](cloud_success.png \"Erfolg“){w=70%,maxw=50em} 9. Wählen Sie "
+"zurück auf der Hauptregisterkarte \"Cloud“ die Option **Speicher "
+"aktivieren**. ![Speicher aktivieren](enable_storage.png \"Speicher aktivieren"
+"“){w=70%,maxw=50em} 10. Jetzt können Sie loslegen! Verwenden Sie die Cloud-"
+"Funktion, um gespeicherte Spiele oder Spieledateien zwischen Ihren Geräten "
+"zu synchronisieren.\n"
 "\n"
-"\t  ![Cloud-Funktionalität](cloud_functions.png „Cloud-Funktionalität”)"
+"\t  ![Cloud-Funktionalität](cloud_functions.png \"Cloud-Funktionalität\")"
 "{w=70%,maxw=50em} Weitere Informationen, einschließlich der Verwendung des "
 "manuellen Verbindungsassistenten, finden Sie in unserer [Cloud-Dokumentation]"
 "(https://docs.scummvm.org/en/latest/use_scummvm/connect_cloud.html). "
@@ -2807,19 +2807,15 @@ msgstr "* ABC"
 
 #: gui/printing-dialog.cpp:54
 msgid "Print"
-msgstr ""
+msgstr "Drucken"
 
 #: gui/printing-dialog.cpp:56
-#, fuzzy
-#| msgid "Save Image"
 msgid "Save as image"
-msgstr "Bild speichern"
+msgstr "Als Bild speichern"
 
 #: gui/printing-dialog.cpp:58
-#, fuzzy
-#| msgid "First page"
 msgid "Fit to page"
-msgstr "Erste Seite"
+msgstr "Auf Seite anpassen"
 
 #: gui/printing-dialog.cpp:60 backends/graphics/opengl/opengl-graphics.cpp:315
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:127
@@ -2828,16 +2824,12 @@ msgid "Center"
 msgstr "Zentriert"
 
 #: gui/printing-dialog.cpp:63
-#, fuzzy
-#| msgid "Pointer Speed:"
 msgid "Printer:"
-msgstr "Zeiger-Geschw.:"
+msgstr "Drucker:"
 
 #: gui/printing-dialog.cpp:88
-#, fuzzy
-#| msgid "Next action"
 msgid "Orientation:"
-msgstr "Nächste Aktion"
+msgstr "Ausrichtung:"
 
 #: gui/recorderdialog.cpp:67
 msgid "Recorder or Playback Gameplay"
@@ -6907,7 +6899,7 @@ msgstr "Originale Spielstand-Menüs"
 
 #: engines/agos/dialogs.cpp:94
 msgid "Toggle between the system cursor and the default cursor."
-msgstr ""
+msgstr "Wechselt zwischen dem System-Mauszeiger und dem Standard-Mauszeiger."
 
 #: engines/agos/dialogs.cpp:107 engines/sci/detection_options.h:263
 msgid "MIDI mode:"
