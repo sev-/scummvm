@@ -139,6 +139,11 @@ void RichTextWidget::handleMouseMoved(int x, int y, int button) {
 
 	recalc();
 	_verticalScroll->recalc();
+
+	// Update scrollbar position 
+	_verticalScroll->_currentPos = _scrolledY;
+	_verticalScroll->checkBounds(_verticalScroll->_currentPos);
+
 	markAsDirty();
 }
 
