@@ -21,6 +21,9 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
      der translations.dat-Datei erforderlich ist.
    - Der Zeit- und Speicher-Bedarf für das Kompilieren der TinyGL-Komponente wurde
      deutlich reduziert.
+   - Ein "Hilfe"-Button wurde zur Benutzeroberfläche hinzugefügt.
+     Ebenso wurde die Geschwindigkeit des Dialogs verbessert.
+   - Unterstützung für entpackte GUI-Themes hinzugefügt.
 
  AGOS:
    - Verbesserte Unterstützung für die Acorn-Versionen von Simon the Sorcerer.
@@ -39,6 +42,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Absturz beim Betreten der Brettspiel-Geschäfte korrigiert.
    - Absturz beim Ausblenden des Spinners für den Beginn einer Brettspielrunde korrigiert.
    - Laufende Sprachausgabe wird jetzt korrekt beendet, wenn ein Mini-Spiel verlassen wird.
+   - Der Name der angelegten Spielstände kann jetzt auch mit der Enter-Taste bestätigt werden.
 
  M4:
    - Musik-Unterstützung in Ripley hinzugefügt.
@@ -78,6 +82,13 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Absturz behoben, der auftritt, wenn die Tastatur genutzt wird, während in Rose Tattoo Darts gespielt wird.
    - Darstellung und Logik der Anzeigetafel der Darts-Spiele in Rose Tattoo korrigiert.
 
+ SLUDGE:
+   - Absturz am Anfang von Nathan's Second Chance behoben.
+
+ Sword2:
+   - Absturz im Zusammenhang mit einigen DXA-Videos behoben, hauptsächlich in Verbindung
+     mit der Datei intro.dxa.
+
  Teenagent:
    - Fehler "could not locate language block" beim Start der polnischen und russischen Versionen behoben.
 
@@ -90,6 +101,8 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Absturz in Akt 4 von Discworld 1 behoben, der auftritt, wenn mit (unsichtbaren)
      City Guards interagiert wird. Der Absturz wird durch einen Skript-Fehler in einigen
      frühen Versionen verursacht.
+   - Fehler in Akt 4 von Discworld 1 behoben, der verursacht, dass der Drache zu früh auf
+     dem Marktplatz erscheint. Der Fehler ist im Code einiger frühen Versionen enthalten.
    - Fehler in Discworld 1 behoben, der verursacht, dass das Fenster für Konversationen in
      L-Space nicht geschlossen wird, wenn mit dem Bar-Mann gesprochen wurde.
 
@@ -97,6 +110,9 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Kampf-System implementiert.
    - Korrektur mehrerer Darstellungsfehler.
    - Maus-Scrolling in Text-Fenstern implementiert.
+   - Der Startbildschirm der Spiele und der entsprechende Start-Sound kann für Spiele,
+     die die entsprechenden Dateien mitbringen, aktiviert werden. Dazu werden neue
+     Menüpunkte zum "About"-Dialog hinzugefügt.
 
  macOS-Portierung:
    - Unterstützung für die neuere Text-to-Speech API von macOS 10.14+ hinzugefügt.
@@ -104,6 +120,8 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
 
  iOS-Portierung:
    - Unterstützung für Text-to-Speech hinzugefügt.
+   - Das CoreMIDI-Feature für die macOS-version wurde auf iOS/tvOS portiert, sodass
+     jetzt auch externe MIDI-Geräte für die Audio-Ausgabe genutzt werden können.
 
 
 #### 2026.1.0 "Like a version" (31.01.2026)
