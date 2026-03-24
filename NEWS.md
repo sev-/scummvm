@@ -45,6 +45,11 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Stop in-progress speech when closing a minigame exit dialog.
    - Fix using Enter key after typing savegame name to save it.
 
+ Gob:
+   - Optimized the number of screen blits, making Gobliiins and Ween
+     noticeably more responsive on weaker platforms. Other Gob games
+     are also positively affected.
+
  M4:
    - Added music support in Ripley.
    - Fixed numerous bugs in Ripley.
