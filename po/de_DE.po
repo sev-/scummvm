@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-23 00:14+0000\n"
-"PO-Revision-Date: 2026-03-25 06:27+0000\n"
+"PO-Revision-Date: 2026-03-25 07:00+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -49,7 +49,7 @@ msgstr "Eingeschaltet"
 #. I18N: CPU extensions are sets of extra processor instructions used to speed up operations. See Intel AVX2, ARM NEON, etc.
 #: gui/about.cpp:142
 msgid "CPU extensions support:"
-msgstr "Unterstützung von CPU-Erweiterungen:"
+msgstr "Unterstützte CPU-Erweiterungen:"
 
 #: gui/about.cpp:155
 msgid "Available engines:"
@@ -1139,7 +1139,7 @@ msgstr "Rücktaste"
 
 #: gui/gui-manager.cpp:204
 msgid "Delete Character"
-msgstr "Zeichen löschen"
+msgstr "Charakter löschen"
 
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) This action is used to go to the end of the save file name input field
 #. I18N: (Game name: The Lost Files of Sherlock Holmes: The Case of the Rose Tattoo) This action is used to go to the end of the password input field
@@ -3280,7 +3280,7 @@ msgstr "Macintosh (schwarz-weiß)"
 
 #: common/rendermode.cpp:57
 msgid "VGA Grey Scale"
-msgstr "VGA Graustufen"
+msgstr "VGA (Graustufen)"
 
 #: common/rendermode.cpp:58
 msgid "Windows (256 Colors)"
@@ -12395,12 +12395,14 @@ msgstr ""
 
 #: engines/scumm/dialogs.cpp:1226
 msgid "Show wait cursor when paused"
-msgstr ""
+msgstr "Wenn pausiert, Warte-Cursor anzeigen"
 
 #: engines/scumm/dialogs.cpp:1227
 msgid ""
 "When paused, show the animated wait cursor from the original Sega CD version."
 msgstr ""
+"Zeige den animierten Warte-Cursor der originalen Sega CD-Version, wenn das "
+"Spiel pausiert ist."
 
 #: engines/scumm/dialogs.cpp:1364
 msgid "Overture Timing:"
@@ -13198,6 +13200,9 @@ msgid ""
 "Disable the scripted part of the demo (dangerous!). This makes it "
 "interactive, but as this was never intended, expect frequent crashes!"
 msgstr ""
+"Deaktivieren den geskripteten Teil der Demo (gefährlich!). Dadurch wird die "
+"Demo interaktiv, aber da das nie vorgesehen war, sind häufige Abstürze zu "
+"erwarten!"
 
 #: engines/scumm/metaengine.cpp:848
 msgid "Use remastered audio"
