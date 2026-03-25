@@ -42,6 +42,8 @@ Debugger::Debugger(FreescapeEngine *vm) : GUI::Debugger(), _vm(vm) {
 	registerCmd("goto", WRAP_METHOD(Debugger, cmdGoto)); // teleport to a position
 	registerCmd("sort_order", WRAP_METHOD(Debugger, cmdSortOrder)); // print current draw order of objects
 	registerCmd("occ", WRAP_METHOD(Debugger, cmdShowOcclusion)); // toggle occlussion boxes
+	registerCmd("area", WRAP_METHOD(Debugger, cmdArea)); // show current area info
+	registerCmd("pos", WRAP_METHOD(Debugger, cmdPos)); // show camera position and direction
 }
 
 Debugger::~Debugger() {}
@@ -184,8 +186,8 @@ bool Debugger::cmdSortOrder(int argc, const char** argv) {
 
 	Common::Array<Object *> &objs = _vm->_currentArea->getSortedObjects();
 
-	debugPrintf("Current Draw Order:\n");
-	debugPrintf("Total Objects: %d\n", objs.size());
+	debugPrintf("Draw order (back-to-front, first drawn first):\n");
+	debugPrintf("Total visible objects: %d\n", objs.size());
 	for (uint i = 0; i < objs.size(); i++) {
 		Object *obj = objs[i];
 		debugPrintf("%d ", obj->getObjectID());
@@ -200,6 +202,88 @@ bool Debugger::cmdShowOcclusion(int argc, const char **argv) {
 		return true;
 	}
 	_vm->_gfx->_debugRenderOcclusionBoxes = atoi(argv[1]);
+	return true;
+}
+
+static const char *objectTypeNames[] = {
+	"Entrance",
+	"Cube",
+	"Sensor",
+	"Rectangle",
+	"EastPyramid",
+	"WestPyramid",
+	"UpPyramid",
+	"DownPyramid",
+	"NorthPyramid",
+	"SouthPyramid",
+	"Line",
+	"Triangle",
+	"Quadrilateral",
+	"Pentagon",
+	"Hexagon",
+	"Group"
+};
+
+bool Debugger::cmdArea(int argc, const char **argv) {
+	if (!_vm->_currentArea) {
+		debugPrintf("No area loaded.\n");
+		return true;
+	}
+
+	Area *area = _vm->_currentArea;
+	debugPrintf("Area ID: %d\n", area->getAreaID());
+	debugPrintf("Area name: %s\n", area->_name.c_str());
+	debugPrintf("Area flags: %04x\n", area->getAreaFlags());
+	debugPrintf("Scale: %d\n", area->getScale());
+	debugPrintf("Sky color: %d | Ground color: %d\n", area->_skyColor, area->_groundColor);
+	debugPrintf("Ink: %d | Paper: %d\n", area->_inkColor, area->_paperColor);
+	debugPrintf("Color cycling: %s\n", area->_colorCycling ? "yes" : "no");
+	debugPrintf("Outside: %s\n", area->isOutside() ? "yes" : "no");
+	debugPrintf("\n");
+
+	ObjectMap *objectsByID = area->getObjectsByID();
+	debugPrintf("Objects (%d):\n", objectsByID->size());
+	for (auto &it : *objectsByID) {
+		Object *obj = it._value;
+		int type = obj->getType();
+		const char *typeName = (type >= 0 && type <= 15) ? objectTypeNames[type] : "Unknown";
+		debugPrintf("  ID: %3d | Type: %-14s | Flags: %04x", obj->getObjectID(), typeName, obj->getObjectFlags());
+		if (obj->isInvisible()) {
+			debugPrintf(" [invisible]");
+		}
+		if (obj->isDestroyed()) {
+			debugPrintf(" [destroyed]");
+		}
+		if (obj->isGeometric()) {
+			Math::Vector3d origin = obj->getOrigin();
+			Math::Vector3d size = obj->getSize();
+			debugPrintf(" | Pos: (%.0f, %.0f, %.0f) Size: (%.0f, %.0f, %.0f)",
+				origin.x(), origin.y(), origin.z(),
+				size.x(), size.y(), size.z());
+		}
+		debugPrintf("\n");
+	}
+
+	ObjectMap *entrancesByID = area->getEntrancesByID();
+	if (entrancesByID->size() > 0) {
+		debugPrintf("\nEntrances (%d):\n", entrancesByID->size());
+		for (auto &it : *entrancesByID) {
+			Object *obj = it._value;
+			Math::Vector3d origin = obj->getOrigin();
+			debugPrintf("  ID: %3d | Pos: (%.0f, %.0f, %.0f)\n",
+				obj->getObjectID(), origin.x(), origin.y(), origin.z());
+		}
+	}
+
+	return true;
+}
+
+bool Debugger::cmdPos(int argc, const char **argv) {
+	Math::Vector3d pos = _vm->_position;
+	Math::Vector3d front = _vm->_cameraFront;
+	debugPrintf("Position: (%.2f, %.2f, %.2f)\n", pos.x(), pos.y(), pos.z());
+	debugPrintf("Direction: (%.2f, %.2f, %.2f)\n", front.x(), front.y(), front.z());
+	debugPrintf("Yaw: %.2f | Pitch: %.2f | Roll: %d\n", _vm->_yaw, _vm->_pitch, _vm->_roll);
 	return true;
 }
 

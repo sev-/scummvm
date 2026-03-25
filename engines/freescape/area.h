@@ -51,6 +51,8 @@ public:
 	ObjectArray getSensors();
 	uint16 getAreaID();
 	Common::Array<Object *> &getSortedObjects() { return _sortedObjects; }
+	ObjectMap *getObjectsByID() { return _objectsByID; }
+	ObjectMap *getEntrancesByID() { return _entrancesByID; }
 	uint16 getAreaFlags();
 	uint8 getScale();
 	void remapColor(int index, int color);
