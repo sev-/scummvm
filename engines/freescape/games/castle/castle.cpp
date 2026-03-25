@@ -686,13 +686,21 @@ void CastleEngine::initGameState() {
 		_walkSelectedMessage = _messagesList[24];
 		_runSelectedMessage = _messagesList[25];
 		_ghostInAreaMessage = _messagesList[126];
-	} else {
+	} else if (isDOS()) {
 		_notEnoughRoomMessage = _messagesList[11];
 		_tooWeakMessage = _messagesList[12];
 		_crawlSelectedMessage = _messagesList[13];
 		_walkSelectedMessage = _messagesList[14];
 		_runSelectedMessage = _messagesList[15];
 		_ghostInAreaMessage = _messagesList[116];
+	} else {
+		// ZX/CPC: same indices for movement messages, no ghost warning message
+		_notEnoughRoomMessage = _messagesList[11];
+		_tooWeakMessage = _messagesList[12];
+		_crawlSelectedMessage = _messagesList[13];
+		_walkSelectedMessage = _messagesList[14];
+		_runSelectedMessage = _messagesList[15];
+		_ghostInAreaMessage = "";
 	}
 
 	// Fix typos in the original Spanish releases
