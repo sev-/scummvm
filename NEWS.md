@@ -34,6 +34,12 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Fixed Simon's sprite having no color in the Acorn floppy demo
      of Simon the Sorcerer 1.
 
+ Alcachofa:
+   - Added support for ealier spanish CD variant of
+     Mortadelo y Filemón: Una Aventura de Cine - Edición Especial
+   - Added support for russian variant of Mort & Phil: A Movie Adventure
+     (Секретные агенты: Киномонстры атакуют)
+
  Bagel:
    - Fix Enter/Escape keys in The Guessing Game guess dialog.
    - Fix using Enter key to close info dialogs.
