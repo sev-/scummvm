@@ -263,20 +263,29 @@ void EclipseEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *in
 
 	act = new Common::Action("ROTR", _("Rotate right"));
 	act->setCustomEngineActionEvent(kActionRotateRight);
-	act->addDefaultInputMapping("w");
+	act->addDefaultInputMapping(_useWASDControls ? "e" : "w");
 	engineKeyMap->addAction(act);
 
 	// I18N: Illustrates the angle at which you turn left or right.
 	act = new Common::Action("CHNGANGLE", _("Change angle"));
 	act->setCustomEngineActionEvent(kActionIncreaseAngle);
-	act->addDefaultInputMapping("a");
+	act->addDefaultInputMapping(_useWASDControls ? "v" : "a");
 	engineKeyMap->addAction(act);
 
 	// I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 	act = new Common::Action("CHNGSTEPSIZE", _("Change step size"));
 	act->setCustomEngineActionEvent(kActionChangeStepSize);
-	act->addDefaultInputMapping("s");
+	act->addDefaultInputMapping(_useWASDControls ? "x" : "s");
 	engineKeyMap->addAction(act);
+
+	if (_useWASDControls) {
+		act = new Common::Action("RUNMOD", _("Sprint (hold)"));
+		act->setCustomEngineActionEvent(kActionRunModifier);
+		act->addDefaultInputMapping("LSHIFT");
+		act->addDefaultInputMapping("RSHIFT");
+		act->addDefaultInputMapping("JOY_LEFT_TRIGGER");
+		engineKeyMap->addAction(act);
+	}
 
 	act = new Common::Action("TGGLHEIGHT", _("Toggle height"));
 	act->setCustomEngineActionEvent(kActionToggleRiseLower);
@@ -540,6 +549,12 @@ void EclipseEngine::pressedKey(const int keycode) {
 		updateCamera();
 	} else if (keycode == kActionToggleFlashlight) {
 		_flashlightOn = !_flashlightOn;
+	} else if (keycode == kActionRunModifier) {
+		// Shift-to-sprint: save current step, switch to max while held
+		if (_savedPlayerStepIndex < 0) {
+			_savedPlayerStepIndex = _playerStepIndex;
+			_playerStepIndex = (int)_playerSteps.size() - 1;
+		}
 	}
 }
 
@@ -619,6 +634,13 @@ bool EclipseEngine::onScreenControls(Common::Point mouse) {
 void EclipseEngine::releasedKey(const int keycode) {
 	if (keycode == kActionRiseOrFlyUp)
 		_resting = false;
+	else if (keycode == kActionRunModifier) {
+		// Shift released: restore previous step size
+		if (_savedPlayerStepIndex >= 0) {
+			_playerStepIndex = _savedPlayerStepIndex;
+			_savedPlayerStepIndex = -1;
+		}
+	}
 }
 
 void EclipseEngine::drawAnalogClock(Graphics::Surface *surface, int x, int y, uint32 colorHand1, uint32 colorHand2, uint32 colorBack) {

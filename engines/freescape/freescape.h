@@ -104,6 +104,7 @@ enum FreescapeAction {
 	kActionRunMode,
 	kActionWalkMode,
 	kActionCrawlMode,
+	kActionRunModifier, // Shift-to-run: held = run, released = walk
 	kActionSelectPrince,
 	kActionSelectPrincess,
 	kActionQuit,
@@ -176,7 +177,8 @@ private:
 	Common::EventManager *_delegate;
 
 	Common::KeyState _currentKeyDown;
-	Common::CustomEventType _currentActionDown;
+	Common::CustomEventType _currentActionDown; // last action for key repeat
+	Common::Array<Common::CustomEventType> _activeActions; // all currently held actions
 	uint32 _keyRepeatTime;
 };
 
@@ -351,6 +353,7 @@ public:
 	bool _invertY;
 
 	bool _smoothMovement;
+	bool _useWASDControls;
 	// Player movement state
 	bool _moveForward;
 	bool _moveBackward;
@@ -429,6 +432,7 @@ public:
 	uint16 _stepUpDistance;
 
 	int _playerStepIndex;
+	int _savedPlayerStepIndex; // saved before shift-to-run, restored on release
 	Common::Array<int> _playerSteps;
 
 	Common::Point crossairPosToMousePos(const Common::Point &crossairPos);

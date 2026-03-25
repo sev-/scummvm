@@ -37,6 +37,8 @@ void FreescapeEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *
 	act->addDefaultInputMapping("UP");
 	act->addDefaultInputMapping("JOY_UP");
 	act->addDefaultInputMapping("o");
+	if (_useWASDControls)
+		act->addDefaultInputMapping("w");
 	engineKeyMap->addAction(act);
 
 	act = new Common::Action(Common::kStandardActionMoveDown, _("Down"));
@@ -44,20 +46,24 @@ void FreescapeEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *
 	act->addDefaultInputMapping("DOWN");
 	act->addDefaultInputMapping("JOY_DOWN");
 	act->addDefaultInputMapping("k");
+	if (_useWASDControls)
+		act->addDefaultInputMapping("s");
 	engineKeyMap->addAction(act);
 
 	act = new Common::Action(Common::kStandardActionMoveLeft, _("Strafe left"));
 	act->setCustomEngineActionEvent(kActionMoveLeft);
 	act->addDefaultInputMapping("LEFT");
 	act->addDefaultInputMapping("JOY_LEFT");
-	// act->addDefaultInputMapping("q");
+	if (_useWASDControls)
+		act->addDefaultInputMapping("a");
 	engineKeyMap->addAction(act);
 
 	act = new Common::Action(Common::kStandardActionMoveRight, _("Strafe right"));
 	act->setCustomEngineActionEvent(kActionMoveRight);
 	act->addDefaultInputMapping("RIGHT");
 	act->addDefaultInputMapping("JOY_RIGHT");
-	// act->addDefaultInputMapping("w");
+	if (_useWASDControls)
+		act->addDefaultInputMapping("d");
 	engineKeyMap->addAction(act);
 
 	act = new Common::Action("SHOOT", _("Shoot"));
@@ -448,13 +454,10 @@ void FreescapeEngine::updatePlayerMovementClassic(float deltaTime) {
 void FreescapeEngine::updatePlayerMovementSmooth(float deltaTime) {
 	if (_moveForward && !_eventManager->isActionActive(kActionMoveUp))
 		_moveForward = false;
-
 	if (_moveBackward && !_eventManager->isActionActive(kActionMoveDown))
 		_moveBackward = false;
-
 	if (_strafeLeft && !_eventManager->isActionActive(kActionMoveLeft))
 		_strafeLeft = false;
-
 	if (_strafeRight && !_eventManager->isActionActive(kActionMoveRight))
 		_strafeRight = false;
 

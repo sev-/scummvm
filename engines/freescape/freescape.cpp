@@ -131,6 +131,10 @@ FreescapeEngine::FreescapeEngine(OSystem *syst, const ADGameDescription *gd)
 	if (!Common::parseBool(ConfMan.get("smooth_movement"), _smoothMovement))
 		error("Failed to parse bool from smooth_movement option");
 
+	_useWASDControls = false;
+	if (ConfMan.hasKey("wasd_controls"))
+		Common::parseBool(ConfMan.get("wasd_controls"), _useWASDControls);
+
 	if (isDriller() || isSpaceStationOblivion() || isDark())
 		_smoothMovement = false;
 
@@ -181,6 +185,7 @@ FreescapeEngine::FreescapeEngine(OSystem *syst, const ADGameDescription *gd)
 
 	// TODO: this is not the same for every game
 	_playerStepIndex = 6;
+	_savedPlayerStepIndex = -1;
 	_playerSteps.push_back(1);
 	_playerSteps.push_back(2);
 	_playerSteps.push_back(5);

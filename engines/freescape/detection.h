@@ -35,9 +35,10 @@
 // Driller options
 #define GAMEOPTION_AUTOMATIC_DRILLING   GUIO_GAMEOPTIONS8
 
-// Castle Master options
+// Castle Master / Total Eclipse options
 
 #define GAMEOPTION_TRAVEL_ROCK   GUIO_GAMEOPTIONS9
+#define GAMEOPTION_WASD_CONTROLS GUIO_GAMEOPTIONS11
 
 
 #endif

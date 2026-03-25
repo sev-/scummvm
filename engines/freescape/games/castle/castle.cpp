@@ -521,7 +521,7 @@ void CastleEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *inf
 	act = new Common::Action("WALK", _("Walk"));
 	act->setCustomEngineActionEvent(kActionWalkMode);
 	act->addDefaultInputMapping("JOY_B");
-	act->addDefaultInputMapping("w");
+	act->addDefaultInputMapping(_useWASDControls ? "2" : "w");
 	engineKeyMap->addAction(act);
 
 	act = new Common::Action("CRAWL", _("Crawl"));
@@ -537,8 +537,17 @@ void CastleEngine::initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *inf
 
 	act = new Common::Action("ACTIVATE", _("Activate"));
 	act->setCustomEngineActionEvent(kActionActivate);
-	act->addDefaultInputMapping("a");
+	act->addDefaultInputMapping(_useWASDControls ? "e" : "a");
 	engineKeyMap->addAction(act);
+
+	if (_useWASDControls) {
+		act = new Common::Action("RUNMOD", _("Run (hold)"));
+		act->setCustomEngineActionEvent(kActionRunModifier);
+		act->addDefaultInputMapping("LSHIFT");
+		act->addDefaultInputMapping("RSHIFT");
+		act->addDefaultInputMapping("JOY_LEFT_TRIGGER");
+		engineKeyMap->addAction(act);
+	}
 }
 
 void CastleEngine::beforeStarting() {
@@ -780,11 +789,35 @@ void CastleEngine::pressedKey(const int keycode) {
 		}
 		_playerStepIndex = 0;
 		insertTemporaryMessage(_messagesList[13], _countdown - 2);
+	} else if (keycode == kActionRunModifier) {
+		// Shift-to-run: save current mode, switch to run while held
+		if (_playerStepIndex == 2)
+			return; // already running
+		if (_playerHeightNumber == 0) {
+			if (_gameStateVars[k8bitVariableShield] <= 3)
+				return;
+			if (!rise()) {
+				return;
+			}
+			_gameStateVars[k8bitVariableCrawling] = 0;
+		}
+		_savedPlayerStepIndex = _playerStepIndex;
+		_playerStepIndex = 2;
 	} else if (keycode == kActionFaceForward) {
 		_pitch = 0;
 		updateCamera();
 	} else if (keycode == kActionActivate)
 		activate();
+}
+
+void CastleEngine::releasedKey(const int keycode) {
+	if (keycode == kActionRunModifier) {
+		// Shift released: restore the mode from before running
+		if (_savedPlayerStepIndex >= 0) {
+			_playerStepIndex = _savedPlayerStepIndex;
+			_savedPlayerStepIndex = -1;
+		}
+	}
 }
 
 void CastleEngine::setAmigaCursor(bool crosshair) {

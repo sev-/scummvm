@@ -82,6 +82,7 @@ public:
 	void drawLiftingGate(Graphics::Surface *surface);
 	void drawDroppingGate(Graphics::Surface *surface);
 	void pressedKey(const int keycode) override;
+	void releasedKey(const int keycode) override;
 	void checkSensors() override;
 	void updateTimeVariables() override;
 	void drawBackground() override;

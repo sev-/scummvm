@@ -146,6 +146,18 @@ static const ADExtraGuiOptionsMap optionsList[] = {
 			0
 		}
 	},
+	{
+		GAMEOPTION_WASD_CONTROLS,
+		{
+			// I18N: Use modern FPS-style controls: WASD for movement, Shift to run
+			_s("WASD controls"),
+			_s("Use WASD keys for movement and Shift to run"),
+			"wasd_controls",
+			false,
+			0,
+			0
+		}
+	},
 	AD_EXTRA_GUI_OPTIONS_TERMINATOR
 };
 
