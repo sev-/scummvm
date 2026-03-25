@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-23 00:14+0000\n"
+"POT-Creation-Date: 2026-03-25 08:23+0000\n"
 "PO-Revision-Date: 2026-02-17 04:22+0000\n"
 "Last-Translator: Xaviu <xaviu@xaviu.com>\n"
 "Language-Team: Catalan <https://translations.scummvm.org/projects/scummvm/"
@@ -1068,7 +1068,7 @@ msgstr "Amunt"
 #: gui/gui-manager.cpp:180 engines/metaengine.cpp:143
 #: engines/awe/metaengine.cpp:58 engines/bagel/metaengine.cpp:67
 #: engines/crab/input/input.cpp:101 engines/crab/input/input.cpp:151
-#: engines/dragons/metaengine.cpp:164 engines/freescape/movement.cpp:42
+#: engines/dragons/metaengine.cpp:164 engines/freescape/movement.cpp:44
 #: engines/got/metaengine.cpp:71 engines/griffon/metaengine.cpp:127
 #: engines/grim/grim.cpp:486 engines/grim/grim.cpp:568 engines/icb/icb.cpp:73
 #: engines/icb/icb.cpp:157 engines/scumm/metaengine.cpp:1007
@@ -3906,7 +3906,7 @@ msgstr "Menú del joc"
 #. I18N: Skipping cutscene playback
 #: engines/metaengine.cpp:112 engines/access/metaengine.cpp:208
 #: engines/composer/metaengine.cpp:126 engines/drascula/metaengine.cpp:224
-#: engines/efh/metaengine.cpp:379 engines/freescape/movement.cpp:87
+#: engines/efh/metaengine.cpp:379 engines/freescape/movement.cpp:93
 #: engines/grim/grim.cpp:533 engines/grim/grim.cpp:633
 #: engines/illusions/metaengine.cpp:142 engines/made/metaengine.cpp:151
 #: engines/mohawk/myst.cpp:566 engines/mohawk/riven.cpp:847
@@ -6090,7 +6090,7 @@ msgid "Climb"
 msgstr "Escala"
 
 #: engines/access/metaengine.cpp:337 engines/bbvs/metaengine.cpp:142
-#: engines/freescape/games/castle/castle.cpp:397
+#: engines/freescape/games/castle/castle.cpp:521
 #: engines/petka/metaengine.cpp:137 engines/scumm/help.cpp:225
 #: engines/tsage/metaengine.cpp:201
 msgid "Walk"
@@ -6847,7 +6847,7 @@ msgid "Whether textures should be linearly filtered"
 msgstr ""
 
 #: engines/alcachofa/metaengine.cpp:98 engines/cine/metaengine.cpp:347
-#: engines/freescape/games/castle/castle.cpp:414
+#: engines/freescape/games/castle/castle.cpp:538
 msgid "Activate"
 msgstr "Activa"
 
@@ -7005,7 +7005,7 @@ msgstr "Truc de l'ull del soldat 714"
 #. I18N: ESC key
 #: engines/bagel/metaengine.cpp:59 engines/bagel/metaengine.cpp:65
 #: engines/bbvs/metaengine.cpp:111 engines/cruise/metaengine.cpp:223
-#: engines/freescape/movement.cpp:101 engines/got/metaengine.cpp:78
+#: engines/freescape/movement.cpp:107 engines/got/metaengine.cpp:78
 #: engines/hugo/metaengine.cpp:197 engines/lure/metaengine.cpp:209
 #: engines/mads/metaengine.cpp:292 engines/mm/mm1/metaengine.cpp:41
 #: engines/mm/mm1/metaengine.cpp:47 engines/saga/metaengine.cpp:328
@@ -7306,7 +7306,7 @@ msgstr "Activa / desactiva la privadesa de la pista"
 #: engines/cge/metaengine.cpp:221 engines/cge2/metaengine.cpp:235
 #: engines/dgds/metaengine.cpp:75 engines/dm/metaengine.cpp:174
 #: engines/drascula/metaengine.cpp:285 engines/efh/metaengine.cpp:272
-#: engines/freescape/games/castle/castle.cpp:359
+#: engines/freescape/games/castle/castle.cpp:483
 #: engines/freescape/games/dark/dark.cpp:197
 #: engines/freescape/games/driller/driller.cpp:123
 #: engines/freescape/games/eclipse/eclipse.cpp:236
@@ -7334,7 +7334,7 @@ msgstr "Desa la partida"
 #: engines/cge/metaengine.cpp:227 engines/cge2/metaengine.cpp:241
 #: engines/dgds/metaengine.cpp:74 engines/drascula/metaengine.cpp:260
 #: engines/efh/metaengine.cpp:279 engines/efh/metaengine.cpp:613
-#: engines/freescape/games/castle/castle.cpp:364
+#: engines/freescape/games/castle/castle.cpp:488
 #: engines/freescape/games/dark/dark.cpp:202
 #: engines/freescape/games/driller/driller.cpp:128
 #: engines/freescape/games/eclipse/eclipse.cpp:241
@@ -7384,7 +7384,7 @@ msgstr "Base de dades de pistes"
 #: engines/bladerunner/metaengine.cpp:375 engines/cruise/metaengine.cpp:229
 #: engines/darkseed/metaengine.cpp:60 engines/dragons/metaengine.cpp:223
 #: engines/efh/metaengine.cpp:373 engines/efh/metaengine.cpp:619
-#: engines/freescape/games/castle/castle.cpp:372
+#: engines/freescape/games/castle/castle.cpp:496
 #: engines/freescape/games/dark/dark.cpp:207
 #: engines/freescape/games/driller/driller.cpp:133
 #: engines/freescape/games/eclipse/eclipse.cpp:246
@@ -8063,7 +8063,7 @@ msgstr "Commuta l'inventari del campió 3"
 msgid "Toggle champion 4 inventory"
 msgstr "Commuta l'inventari del campió 4"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:49
+#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
 #: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
 msgid "Strafe left"
 msgstr "Desplaça't a l'esquerra"
@@ -8077,7 +8077,7 @@ msgstr "Desplaça't a l'esquerra"
 msgid "Move backwards"
 msgstr "Mou cap enrere"
 
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:56
+#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
 #: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
 msgid "Strafe right"
 msgstr "Desplaça't a la dreta"
@@ -8423,7 +8423,7 @@ msgstr "Defensa"
 
 #. I18N: Run is a movement type
 #. I18N: Action in In Cold Blood
-#: engines/efh/metaengine.cpp:530 engines/freescape/games/castle/castle.cpp:392
+#: engines/efh/metaengine.cpp:530 engines/freescape/games/castle/castle.cpp:516
 #: engines/grim/grim.cpp:501 engines/grim/grim.cpp:596
 #: engines/hpl1/metaengine.cpp:82 engines/icb/icb.cpp:131
 #: engines/icb/icb.cpp:197 engines/ultima/ultima8/metaengine.cpp:56
@@ -8592,45 +8592,56 @@ msgstr "Suavitza el moviment"
 msgid "Use smoother movements instead of discrete steps"
 msgstr "Usa moviments més suaus en lloc de passos discrets"
 
+#. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
+#: engines/freescape/metaengine.cpp:153
+#, fuzzy
+#| msgid "Volume controls"
+msgid "WASD controls"
+msgstr "Controls de volum"
+
+#: engines/freescape/metaengine.cpp:154
+msgid "Use WASD keys for movement and Shift to run"
+msgstr ""
+
 #. I18N: Combat command in Might & Magic 1
-#: engines/freescape/movement.cpp:63 engines/mm/mm1/metaengine.cpp:79
+#: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
 msgid "Shoot"
 msgstr "Dispara"
 
-#: engines/freescape/movement.cpp:72
+#: engines/freescape/movement.cpp:78
 msgid "Rotate up"
 msgstr "Rota cap amunt"
 
-#: engines/freescape/movement.cpp:77
+#: engines/freescape/movement.cpp:83
 msgid "Rotate down"
 msgstr "Rota cap avall"
 
-#: engines/freescape/movement.cpp:82
+#: engines/freescape/movement.cpp:88
 msgid "Turn back"
 msgstr "Torna enrere"
 
 #. I18N: Toggles between cursor lock modes, switching between free cursor movement and camera/head movement.
-#: engines/freescape/movement.cpp:95
+#: engines/freescape/movement.cpp:101
 msgid "Change mode"
 msgstr "Canvia el mode"
 
-#: engines/freescape/movement.cpp:106
+#: engines/freescape/movement.cpp:112
 msgid "Info menu"
 msgstr "Menú d'informació"
 
-#: engines/freescape/games/castle/castle.cpp:349
+#: engines/freescape/games/castle/castle.cpp:473
 #, fuzzy
 #| msgid "Select Prince"
 msgid "Select prince"
 msgstr "Selecciona el príncep"
 
-#: engines/freescape/games/castle/castle.cpp:354
+#: engines/freescape/games/castle/castle.cpp:478
 #, fuzzy
 #| msgid "Select Princess"
 msgid "Select princess"
 msgstr "Selecciona la princesa"
 
-#: engines/freescape/games/castle/castle.cpp:377
+#: engines/freescape/games/castle/castle.cpp:501
 #: engines/freescape/games/dark/dark.cpp:217
 #: engines/freescape/games/driller/driller.cpp:141
 #: engines/freescape/games/eclipse/eclipse.cpp:254
@@ -8638,7 +8649,7 @@ msgstr "Selecciona la princesa"
 msgid "Toggle sound"
 msgstr "Commuta el so"
 
-#: engines/freescape/games/castle/castle.cpp:382
+#: engines/freescape/games/castle/castle.cpp:506
 #: engines/freescape/games/dark/dark.cpp:223
 #: engines/freescape/games/driller/driller.cpp:147
 #: engines/freescape/games/eclipse/eclipse.cpp:259
@@ -8647,7 +8658,7 @@ msgstr "Commuta el so"
 msgid "Rotate left"
 msgstr "Gira cap a l'esquerra"
 
-#: engines/freescape/games/castle/castle.cpp:387
+#: engines/freescape/games/castle/castle.cpp:511
 #: engines/freescape/games/dark/dark.cpp:228
 #: engines/freescape/games/driller/driller.cpp:152
 #: engines/freescape/games/eclipse/eclipse.cpp:264
@@ -8656,16 +8667,20 @@ msgstr "Gira cap a l'esquerra"
 msgid "Rotate right"
 msgstr "Gira cap a la dreta"
 
-#: engines/freescape/games/castle/castle.cpp:403
+#: engines/freescape/games/castle/castle.cpp:527
 msgid "Crawl"
 msgstr "Arrossegar-se"
 
-#: engines/freescape/games/castle/castle.cpp:409
-#: engines/freescape/games/eclipse/eclipse.cpp:293
+#: engines/freescape/games/castle/castle.cpp:533
+#: engines/freescape/games/eclipse/eclipse.cpp:302
 #, fuzzy
 #| msgid "Face Forward"
 msgid "Face forward"
 msgstr "Mira endavant"
+
+#: engines/freescape/games/castle/castle.cpp:544
+msgid "Run (hold)"
+msgstr ""
 
 #: engines/freescape/games/dark/dark.cpp:233
 #: engines/freescape/games/driller/driller.cpp:186
@@ -8754,21 +8769,25 @@ msgstr "Canvia l'angle"
 msgid "Change step size"
 msgstr "Canvia la mida dels passos"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:281
+#: engines/freescape/games/eclipse/eclipse.cpp:282
+msgid "Sprint (hold)"
+msgstr ""
+
+#: engines/freescape/games/eclipse/eclipse.cpp:290
 #, fuzzy
 #| msgid "Toggle Height"
 msgid "Toggle height"
 msgstr "Commuta l'alçada"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:287
+#: engines/freescape/games/eclipse/eclipse.cpp:296
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Descansa"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:298
+#: engines/freescape/games/eclipse/eclipse.cpp:307
 #, fuzzy
 #| msgid "Flashlight"
 msgid "Toggle flashlight"
