@@ -33,7 +33,7 @@
 namespace Sludge {
 
 const char CustomSaveHelper::UTF8_CHECKER[] = {'U', 'N', '\xef', '\xbf', '\xbd', 'L', 'O', '\xef', '\xbf', '\xbd', 'C', 'K', 'E', 'D', '\0'};
-const char CustomSaveHelper::CP1252_CHECKER[] = {'U', 'N', '\xA3', 'L', 'O', '\xE5', 'C', 'K', 'E', 'D', '\0'};;
+const char CustomSaveHelper::CP1252_CHECKER[] = {'U', 'N', '\xA3', 'L', 'O', '\xE5', 'C', 'K', 'E', 'D', '\0'};
 uint16 CustomSaveHelper::_saveEncoding = false;
 char CustomSaveHelper::_encode1 = 0;
 char CustomSaveHelper::_encode2 = 0;
