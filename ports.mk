@@ -139,7 +139,7 @@ bundle_name = ScummVM.app
 bundle-pack:
 	mkdir -p $(bundle_name)/Contents/MacOS
 	mkdir -p $(bundle_name)/Contents/Resources
-	echo "APPL????" > $(bundle_name)/Contents/PkgInfo
+	printf "APPL????" > $(bundle_name)/Contents/PkgInfo
 	sed -e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/org.scummvm.app/' $(srcdir)/dists/macosx/Info.plist >$(bundle_name)/Contents/Info.plist
 ifdef USE_SPARKLE
 	mkdir -p $(bundle_name)/Contents/Frameworks
