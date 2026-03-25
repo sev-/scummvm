@@ -44,6 +44,11 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Laufende Sprachausgabe wird jetzt korrekt beendet, wenn ein Mini-Spiel verlassen wird.
    - Der Name der angelegten Spielstände kann jetzt auch mit der Enter-Taste bestätigt werden.
 
+ Gob:
+   - Anzahl der Übertragung der Bild-Daten optimiert, wodurch Gobliiins und Ween
+     auf schwächeren Plattformen deutlich besser laufen. Andere Gob-Spiele sind
+     ebenfalls positiv davon betroffen.
+
  M4:
    - Musik-Unterstützung in Ripley hinzugefügt.
    - Mehrere Fehler in Ripley korrigiert.
@@ -113,6 +118,10 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Der Startbildschirm der Spiele und der entsprechende Start-Sound kann für Spiele,
      die die entsprechenden Dateien mitbringen, aktiviert werden. Dazu werden neue
      Menüpunkte zum "About"-Dialog hinzugefügt.
+
+ Atari-Portierung:
+   - m86k-Code-Optimierungen für die SCUMM-Engine und Audio-Abmischung hinzugefügt,
+     um Nutzer-Feedback zu sammeln.
 
  macOS-Portierung:
    - Unterstützung für die neuere Text-to-Speech API von macOS 10.14+ hinzugefügt.
