@@ -162,6 +162,13 @@ static Common::Error identifyGame(const Common::String &debugLevels, const Plugi
 	Common::Error result = metaEngine.identifyGame(game, descriptor);
 	if (result.getCode() != Common::kNoError) {
 		warning("Couldn't identify game '%s' for the engine '%s'.", gameId.c_str(), engineId.c_str());
+
+		// If a temporary target failed to launch, remove it from the configuration manager
+		// so it not visible in the launcher.
+		// Temporary targets are created when starting games from the command line using the game id.
+		if (ConfMan.hasKey("id_came_from_command_line")) {
+			ConfMan.removeGameDomain(ConfMan.getActiveDomainName().c_str());
+		}
 	}
 	return result;
 }
