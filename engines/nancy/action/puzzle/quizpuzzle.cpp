@@ -516,8 +516,8 @@ void QuizPuzzle::execute() {
 		drawText();
 
 		_state = kRun;
-		// fall through
 	}
+		// fall through
 	case kRun:
 		if (g_nancy->getGameType() == kGameTypeNancy8)
 			executeOld();
