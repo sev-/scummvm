@@ -59,6 +59,8 @@ CastleEngine::CastleEngine(OSystem *syst, const ADGameDescription *gd) : Freesca
 	else if (isCPC())
 		initCPC();
 
+	// Messages are assigned after loading in initGameState()
+
 	_playerHeightNumber = 1;
 	_playerHeightMaxNumber = 1;
 	_lastTenSeconds = -1;
@@ -676,6 +678,23 @@ void CastleEngine::initGameState() {
 	FreescapeEngine::initGameState();
 	_playerHeightNumber = 1;
 
+	// Platform-specific message strings (indices differ between DOS and Amiga)
+	if (isAmiga() || isAtariST()) {
+		_notEnoughRoomMessage = _messagesList[21];
+		_tooWeakMessage = _messagesList[22];
+		_crawlSelectedMessage = _messagesList[23];
+		_walkSelectedMessage = _messagesList[24];
+		_runSelectedMessage = _messagesList[25];
+		_ghostInAreaMessage = _messagesList[126];
+	} else {
+		_notEnoughRoomMessage = _messagesList[11];
+		_tooWeakMessage = _messagesList[12];
+		_crawlSelectedMessage = _messagesList[13];
+		_walkSelectedMessage = _messagesList[14];
+		_runSelectedMessage = _messagesList[15];
+		_ghostInAreaMessage = _messagesList[116];
+	}
+
 	_gameStateVars[k8bitVariableShield] = 16;
 	_gameStateVars[k8bitVariableEnergy] = 1;
 	_gameStateVars[8] = 128; // -1
@@ -750,30 +769,30 @@ void CastleEngine::pressedKey(const int keycode) {
 	} else if (keycode == kActionRunMode) {
 		if (_playerHeightNumber == 0) {
 			if (_gameStateVars[k8bitVariableShield] <= 3) {
-				insertTemporaryMessage(_messagesList[12], _countdown - 2);
+				insertTemporaryMessage(_tooWeakMessage, _countdown - 2);
 				return;
 			}
 
 			if (!rise()) {
 				_playerStepIndex = 0;
-				insertTemporaryMessage(_messagesList[11], _countdown - 2);
+				insertTemporaryMessage(_notEnoughRoomMessage, _countdown - 2);
 				return;
 			}
 			_gameStateVars[k8bitVariableCrawling] = 0;
 		}
 		// TODO: raising can fail if there is no room, so the action should fail
 		_playerStepIndex = 2;
-		insertTemporaryMessage(_messagesList[15], _countdown - 2);
+		insertTemporaryMessage(_runSelectedMessage, _countdown - 2);
 	} else if (keycode == kActionWalkMode) {
 		if (_playerHeightNumber == 0) {
 			if (_gameStateVars[k8bitVariableShield] <= 3) {
-				insertTemporaryMessage(_messagesList[12], _countdown - 2);
+				insertTemporaryMessage(_tooWeakMessage, _countdown - 2);
 				return;
 			}
 
 			if (!rise()) {
 				_playerStepIndex = 0;
-				insertTemporaryMessage(_messagesList[11], _countdown - 2);
+				insertTemporaryMessage(_notEnoughRoomMessage, _countdown - 2);
 				return;
 			}
 			_gameStateVars[k8bitVariableCrawling] = 0;
@@ -781,14 +800,14 @@ void CastleEngine::pressedKey(const int keycode) {
 
 		// TODO: raising can fail if there is no room, so the action should fail
 		_playerStepIndex = 1;
-		insertTemporaryMessage(_messagesList[14], _countdown - 2);
+		insertTemporaryMessage(_walkSelectedMessage, _countdown - 2);
 	} else if (keycode == kActionCrawlMode) {
 		if (_playerHeightNumber == 1) {
 			lower();
 			_gameStateVars[k8bitVariableCrawling] = 128;
 		}
 		_playerStepIndex = 0;
-		insertTemporaryMessage(_messagesList[13], _countdown - 2);
+		insertTemporaryMessage(_crawlSelectedMessage, _countdown - 2);
 	} else if (keycode == kActionRunModifier) {
 		// Shift-to-run: save current mode, switch to run while held
 		if (_playerStepIndex == 2)
@@ -1342,6 +1361,9 @@ void CastleEngine::executePrint(FCLInstruction &instruction) {
 		index = index - 129;
 		drawFullscreenRiddleAndWait(index);
 		return;
+	}
+	if (isAmiga() || isAtariST()) {
+		index = index + 10;
 	}
 	debugC(1, kFreescapeDebugCode, "Printing message %d: \"%s\"", index, _messagesList[index].c_str());
 	insertTemporaryMessage(_messagesList[index], _countdown - 3);

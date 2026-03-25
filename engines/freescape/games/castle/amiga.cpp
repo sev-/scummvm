@@ -474,8 +474,29 @@ void CastleEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 	drawLiftingGate(surface);
 	drawDroppingGate(surface);
 
-	drawStringInSurface(_currentArea->_name, 97, 182, 0, 0, surface);
+	uint8 r, g, b;
+	_gfx->readFromPalette(15, r, g, b);
+	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00);
+
+	Common::Rect backRect(97, 181, 232, 190);
+	surface->fillRect(backRect, black);
+
+	Common::String message;
+	int deadline = -1;
+	getLatestMessages(message, deadline);
+	if (deadline > 0 && deadline <= _countdown) {
+		drawStringInSurface(message, 97, 182, front, black, surface);
+		_temporaryMessages.push_back(message);
+		_temporaryMessageDeadlines.push_back(deadline);
+	} else {
+		if (_gameStateControl != kFreescapeGameStateEnd) {
+			if (ghostInArea())
+				drawStringInSurface(_ghostInAreaMessage, 97, 182, front, black, surface);
+			else
+				drawStringInSurface(_currentArea->_name, 97, 182, front, black, surface);
+		}
+	}
 
 	// TODO: Draw collected keys - key sprites location in binary still unknown
 

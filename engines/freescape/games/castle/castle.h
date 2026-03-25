@@ -158,6 +158,13 @@ public:
 	Common::Array<Graphics::ManagedSurface *> loadFramesWithHeaderCPCIndexed(Common::SeekableReadStream *file, int pos, int numFrames);
 	void updateCPCSpritesPalette();
 
+	Common::String _notEnoughRoomMessage;
+	Common::String _tooWeakMessage;
+	Common::String _crawlSelectedMessage;
+	Common::String _walkSelectedMessage;
+	Common::String _runSelectedMessage;
+	Common::String _ghostInAreaMessage;
+
 	Common::Array<byte> _modData; // Embedded ProTracker module (Amiga demo)
 	Common::Array<int> _keysCollected;
 	bool _useRockTravel;
