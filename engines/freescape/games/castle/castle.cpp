@@ -695,6 +695,14 @@ void CastleEngine::initGameState() {
 		_ghostInAreaMessage = _messagesList[116];
 	}
 
+	// Fix typos in the original Spanish releases
+	if (_language == Common::ES_ESP) {
+		for (uint i = 0; i < _messagesList.size(); i++) {
+			Common::replace(_messagesList[i], "ELIGIDO", "ELEGIDO");
+			Common::replace(_messagesList[i], "BRILLIANTE", "BRILLANTE");
+		}
+	}
+
 	_gameStateVars[k8bitVariableShield] = 16;
 	_gameStateVars[k8bitVariableEnergy] = 1;
 	_gameStateVars[8] = 128; // -1
