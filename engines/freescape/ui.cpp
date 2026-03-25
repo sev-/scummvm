@@ -130,7 +130,7 @@ void FreescapeEngine::titleScreen() {
 			case Common::EVENT_RBUTTONDOWN:
 			// fallthrough
 			case Common::EVENT_LBUTTONDOWN:
-				if (g_system->hasFeature(OSystem::kFeatureTouchscreen))
+				if (isTouchscreenActive())
 					maxWait = -1;
 				break;
 			default:
@@ -337,7 +337,7 @@ void FreescapeEngine::drawBorderScreenAndWait(Graphics::Surface *surface, int ma
 			case Common::EVENT_RBUTTONDOWN:
 			// fallthrough
 			case Common::EVENT_LBUTTONDOWN:
-				if (g_system->hasFeature(OSystem::kFeatureTouchscreen))
+				if (isTouchscreenActive())
 					maxWait = -1;
 				break;
 			default:

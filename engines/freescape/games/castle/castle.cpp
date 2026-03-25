@@ -1574,7 +1574,7 @@ void CastleEngine::drawFullscreenRiddleAndWait(uint16 riddle) {
 			case Common::EVENT_RBUTTONDOWN:
 				// fallthrough
 			case Common::EVENT_LBUTTONDOWN:
-				if (g_system->hasFeature(OSystem::kFeatureTouchscreen))
+				if (isTouchscreenActive())
 					cont = false;
 				break;
 			default:
@@ -1994,10 +1994,47 @@ void CastleEngine::selectCharacterScreen() {
 		drawFullscreenSurface(surface);
 	}
 
+	if (isTouchscreenActive()) {
+		CursorMan.setDefaultArrowCursor();
+		CursorMan.showMouse(true);
+	}
 	_system->lockMouse(false);
 	_system->showMouse(true);
-	Common::Rect princeSelector(82, 100, 163, 109);
-	Common::Rect princessSelector(82, 110, 181, 120);
+
+	// Calculate tap/click rectangles from actual rendered text positions.
+	// lines[5] = prince, lines[6] = princess for ZX/CPC.
+	// For DOS, use riddle text line positions.
+	Common::Rect princeSelector, princessSelector;
+	if (isSpectrum() || isCPC()) {
+		int x = _viewArea.left + 3;
+		int lineHeight = 12; // Castle Master line spacing in drawStringsInSurface
+		int princeY = _viewArea.top + 3 + 5 * lineHeight;
+		int princessY = _viewArea.top + 3 + 6 * lineHeight;
+		// Use the full padded line (what's actually rendered on screen)
+		princeSelector = _font.getBoundingBox(lines[5], x, princeY);
+		princessSelector = _font.getBoundingBox(lines[6], x, princessY);
+	} else {
+		// DOS: text comes from _riddleList[21], calculate from actual riddle line positions
+		Common::Array<RiddleText> selectMessage = _riddleList[21]._lines;
+		int x = 0, y = 0;
+		for (int i = 0; i < int(selectMessage.size()); i++) {
+			x += selectMessage[i]._dx;
+			y += selectMessage[i]._dy;
+			if (i == int(selectMessage.size()) - 2)
+				princeSelector = _font.getBoundingBox(selectMessage[i]._text, x, y);
+			else if (i == int(selectMessage.size()) - 1)
+				princessSelector = _font.getBoundingBox(selectMessage[i]._text, x, y);
+		}
+	}
+
+	// On touchscreen, highlight the tap areas with red outlines (expand 1px for readability)
+	princeSelector.grow(1);
+	princessSelector.grow(1);
+	if (isTouchscreenActive()) {
+		uint32 red = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0xFF, 0x00, 0x00);
+		surface->frameRect(princeSelector, red);
+		surface->frameRect(princessSelector, red);
+	}
 
 	bool selected = false;
 	while (!selected) {
@@ -2010,7 +2047,7 @@ void CastleEngine::selectCharacterScreen() {
 				quitGame();
 				return;
 
-			// Left mouse click
+			// Left mouse click or touchscreen tap
 			case Common::EVENT_LBUTTONDOWN:
 				// fallthrough
 			case Common::EVENT_RBUTTONDOWN:
@@ -2057,6 +2094,7 @@ void CastleEngine::selectCharacterScreen() {
 	}
 	_system->lockMouse(true);
 	_system->showMouse(false);
+	CursorMan.showMouse(false);
 	_gfx->clear(0, 0, 0, true);
 
 }

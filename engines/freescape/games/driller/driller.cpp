@@ -474,7 +474,7 @@ void DrillerEngine::drawInfoMenu() {
 			case Common::EVENT_RBUTTONDOWN:
 			// fallthrough
 			case Common::EVENT_LBUTTONDOWN:
-				if (g_system->hasFeature(OSystem::kFeatureTouchscreen))
+				if (isTouchscreenActive())
 					cont = false;
 				break;
 			default:

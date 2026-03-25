@@ -354,6 +354,8 @@ public:
 
 	bool _smoothMovement;
 	bool _useWASDControls;
+	bool _debugSimulateTouchscreen;
+	bool isTouchscreenActive() const;
 	// Player movement state
 	bool _moveForward;
 	bool _moveBackward;
