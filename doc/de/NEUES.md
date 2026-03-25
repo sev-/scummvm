@@ -17,7 +17,7 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Intelligente Suche in der Icon-Ansicht im ScummVM-Launcher korrigiert.
    - Simulation eines MT-32-Displays für Nachrichten hinzugefügt.
    - Übersetzungen können jetzt direkt aus einem lokal vorliegenden Verzeichnis
-     /po geladen werden. Das ist hilfreich für Übersetzer, da hier keine Neuerstellung
+     `/po` geladen werden. Das ist hilfreich für Übersetzer, da hier keine Neuerstellung
      der translations.dat-Datei erforderlich ist.
    - Der Zeit- und Speicher-Bedarf für das Kompilieren der TinyGL-Komponente wurde
      deutlich reduziert.
@@ -26,11 +26,16 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Unterstützung für entpackte GUI-Themes hinzugefügt.
 
  AGOS:
+   - Musik-Unterstützung für die Atari ST-Versionen von Elvira 1 und 2 hinzugfügt.
    - Verbesserte Unterstützung für die Acorn-Versionen von Simon the Sorcerer.
      Sowohl der originale Mauszeiger als auch das für die Musik verwendete Format
      Desktop Tracker werden jetzt unterstützt.
    - Verbesserte Genauigkeit der Schrift-Darstellung in der DOS-Version von
      Personal Nightmare und der Amiga-Demoversion von Elvira 1.
+   - Unterstützung für die originalen Mauszeiger der Amiga-Version von
+     Personal Nightmare hinzugefügt.
+   - Fehlerhafte Farben der Invantar-Icons in den Amiga- und Atari ST-Versionen
+     von Personal Nightmare korrigiert.
    - Fehlende Farb-Darstellung für Simons Sprite in der Acorn-Disketten-Demo
      von Simon the Sorcerer 1 behoben.
 
@@ -82,8 +87,8 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
  SCUMM:
    - Unterstützung für den originalen Titel-Bildschirm in Maniac Mansion hinzugefügt
      (funktioniert nur mit PRG-Dateien).
-   - Unterstützung für die originale Wiedergabe-Datei in der DOS-Version der 
-     nicht-interaktiven Demo von Monkey Island 2 hinzugefügt.
+   - Unterstützung für das Wiedergabe-Feature der nicht-interaktiven Demos von
+     Monkey Island 1, Monkey Island 2 und Fate of Atlantis hinzugefügt.
    - Originale Mauszeiger für die Apple II-Version von Maniac Mansion implementiert.
    - Fehler behoben, der dafür sorgt, dass das Logo in der NES-Version von Maniac Mansion
      im Intro stecken bleibt.
@@ -104,6 +109,11 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Fehler "could not locate language block" beim Start der polnischen und russischen Versionen behoben.
 
  Tinsel:
+   - Zuweisung der Farb-Palette für die PSX-Versionen von Discworld 1 hinzugefügt.
+     Vor dieser Änderung wurde der Bildschirm nicht dunkel, wenn die Augenbinde
+     in Akt 3 verwendet wird.
+   - Durch das Drücken der ESC-Taste kann jetzt in allen Versionen von Discworld 1
+     die Einführung übersprungen werden.
    - Skript-Fehler in Akt 2 in Discworld 1 korrigiert, der dafür sorgt, dass die
      Sprachausgabe der Amazone beendet wird, wenn der Seestern eine Münze wirft.
    - Skript-Fehler in Akt 3 einiger früher Discworld 1-Versionen korrigiert, der
