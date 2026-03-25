@@ -34,6 +34,12 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Fehlende Farb-Darstellung für Simons Sprite in der Acorn-Disketten-Demo
      von Simon the Sorcerer 1 behoben.
 
+ Alcachofa:
+   - Unterstützung für eine frühere CD-Ausgabe der spanischen Version von
+     Mortadelo y Filemón: Una Aventura de Cine - Edición Especial hinzugefügt.
+   - Unterstützung für die russische Version von Mort & Phil: A Movie Adventure
+     (Секретные агенты: Киномонстры атакуют) hinzugefügt.
+
  Bagel:
    - Verhalten der Enter-/Escape-Taste im Raten-Dialog in The Guessing Game korrigiert.
    - Die Enter-Taste kann jetzt genutzt werden, um alle Info-Dialoge zu schließen.
