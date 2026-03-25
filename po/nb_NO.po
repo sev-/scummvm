@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-25 08:23+0000\n"
+"POT-Creation-Date: 2026-03-25 09:34+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Einar Johan Trøan Sømåen <einarjohants@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.scummvm.org/projects/"
@@ -328,7 +328,7 @@ msgstr "Et annet fillager er aktivt. Ønsker du å avbryte det?"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:152 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1913 gui/options.cpp:3485
+#: gui/launcher.cpp:530 gui/launcher.cpp:1921 gui/options.cpp:3485
 #: gui/options.cpp:3859 base/main.cpp:597
 #: backends/events/default/default-events.cpp:193 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:91 engines/director/events.cpp:122
@@ -347,7 +347,7 @@ msgstr "Ja"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:153 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1914 gui/options.cpp:3485
+#: gui/launcher.cpp:530 gui/launcher.cpp:1922 gui/options.cpp:3485
 #: gui/options.cpp:3859 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:97 engines/director/events.cpp:122
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
@@ -1747,10 +1747,13 @@ msgstr "Alle"
 msgid "Icons per row:"
 msgstr "Ikoner per rad:"
 
-#: gui/launcher.cpp:1841
-#, c-format
+#: gui/launcher.cpp:1852
+#, fuzzy, c-format
+#| msgid ""
+#| "Do you really want to remove the following %d game configuration(s)?\n"
+#| "\n"
 msgid ""
-"Do you really want to remove the following %d game configuration(s)?\n"
+"Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
 "Vil du virkelig fjerne de følgende %d spillkonfigurasjon(ene)?\n"
