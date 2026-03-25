@@ -217,6 +217,7 @@ OSystem_Atari::OSystem_Atari() {
 #endif
 
 	Supexec(atari_200hz_init);
+	_startTime = counter_200hz;
 	_timerInitialized = true;
 
 	// protect against sudden exit()
@@ -337,8 +338,6 @@ void OSystem_Atari::initBackend() {
 	_mixerManager = new AtariMixerManager();
 	// Setup and start mixer
 	_mixerManager->init();
-
-	_startTime = counter_200hz;
 
 	BaseBackend::initBackend();
 }
