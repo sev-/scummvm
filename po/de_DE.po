@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-25 09:34+0000\n"
-"PO-Revision-Date: 2026-03-25 07:00+0000\n"
+"PO-Revision-Date: 2026-03-25 11:30+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -1718,15 +1718,12 @@ msgid "Icons per row:"
 msgstr "Icons pro Reihe:"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
-"Möchten Sie wirklich die folgenden %d Spielkonfigurationen entfernen?\n"
+"Möchtest Du die folgenden %d Spiel-Konfigurationen wirklich löschen?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -6919,10 +6916,8 @@ msgstr ""
 "Der Bildschirm wird nicht mehr abgeblendet, wenn ein Raum verlassen wird."
 
 #: engines/agos/dialogs.cpp:93
-#, fuzzy
-#| msgid "Use original save/load screens"
 msgid "Use original Acorn system cursor"
-msgstr "Originale Spielstand-Menüs"
+msgstr "Verwende originalen Acorn-System-Cursor"
 
 #: engines/agos/dialogs.cpp:94
 msgid "Toggle between the system cursor and the default cursor."
@@ -7452,18 +7447,14 @@ msgstr ""
 "würden."
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
-msgstr "Auswählen/Treten/Laufen"
+msgstr "Auswählen / Treten / Laufen"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr "Springen"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "Level-Code eingeben"
 
@@ -8062,58 +8053,40 @@ msgstr "Beenden-Eingabeaufforderung"
 #. I18N: Here ALTered Item refers to the dice that has been altered/changed.
 #. In order to escape the dice game loop press Right/Left Alt
 #: engines/cge/metaengine.cpp:250
-#, fuzzy
-#| msgid "ALTered Item"
 msgid "ALTered item"
 msgstr "Verändertes Item"
 
 #: engines/cge/metaengine.cpp:257
-#, fuzzy
-#| msgid "Inventory Item 1 (Select / Deselect)"
 msgid "Inventory item 1 (Select / Deselect)"
-msgstr "Bestandsartikel 1 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 1 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:262
-#, fuzzy
-#| msgid "Inventory Item 2 (Select / Deselect)"
 msgid "Inventory item 2 (Select / Deselect)"
-msgstr "Bestandsartikel 2 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 2 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:267
-#, fuzzy
-#| msgid "Inventory Item 3 (Select / Deselect)"
 msgid "Inventory item 3 (Select / Deselect)"
-msgstr "Bestandsartikel 3 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 3 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:272
-#, fuzzy
-#| msgid "Inventory Item 4 (Select / Deselect)"
 msgid "Inventory item 4 (Select / Deselect)"
-msgstr "Bestandsartikel 4 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 4 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:277
-#, fuzzy
-#| msgid "Inventory Item 5 (Select / Deselect)"
 msgid "Inventory item 5 (Select / Deselect)"
-msgstr "Bestandsartikel 5 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 5 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:282
-#, fuzzy
-#| msgid "Inventory Item 6 (Select / Deselect)"
 msgid "Inventory item 6 (Select / Deselect)"
-msgstr "Bestandsartikel 6 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 6 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:287
-#, fuzzy
-#| msgid "Inventory Item 7 (Select / Deselect)"
 msgid "Inventory item 7 (Select / Deselect)"
-msgstr "Bestandsartikel 7 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 7 (Auswählen / Abwählen)"
 
 #: engines/cge/metaengine.cpp:292
-#, fuzzy
-#| msgid "Inventory Item 8 (Select / Deselect)"
 msgid "Inventory item 8 (Select / Deselect)"
-msgstr "Bestandsartikel 8 (Auswählen/Abwählen)"
+msgstr "Inventar-Gegenstand 8 (Auswählen / Abwählen)"
 
 #. I18N: There are 24 single-room/screen locations in the game.
 #. You switch between them from numbered buttons on interface.
@@ -9082,14 +9055,12 @@ msgstr "Verwenden Sie flüssigere Bewegungen anstelle von diskreten Schritten"
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "Lautstärkeregler"
+msgstr "WASD-Steuerung"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
-msgstr ""
+msgstr "Verwende die WASD-Tasten für die Steuerung und Shift zum rennen"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9118,14 +9089,10 @@ msgid "Info menu"
 msgstr "Info-Menü"
 
 #: engines/freescape/games/castle/castle.cpp:473
-#, fuzzy
-#| msgid "Select Prince"
 msgid "Select prince"
 msgstr "Prinz auswählen"
 
 #: engines/freescape/games/castle/castle.cpp:478
-#, fuzzy
-#| msgid "Select Princess"
 msgid "Select princess"
 msgstr "Prinzessin auswählen"
 
@@ -9141,8 +9108,6 @@ msgstr "Sound umschalten"
 #: engines/freescape/games/dark/dark.cpp:223
 #: engines/freescape/games/driller/driller.cpp:147
 #: engines/freescape/games/eclipse/eclipse.cpp:259
-#, fuzzy
-#| msgid "Rotate Left"
 msgid "Rotate left"
 msgstr "Nach links drehen"
 
@@ -9150,8 +9115,6 @@ msgstr "Nach links drehen"
 #: engines/freescape/games/dark/dark.cpp:228
 #: engines/freescape/games/driller/driller.cpp:152
 #: engines/freescape/games/eclipse/eclipse.cpp:264
-#, fuzzy
-#| msgid "Rotate Right"
 msgid "Rotate right"
 msgstr "Nach rechts drehen"
 
@@ -9161,14 +9124,12 @@ msgstr "Kriechen"
 
 #: engines/freescape/games/castle/castle.cpp:533
 #: engines/freescape/games/eclipse/eclipse.cpp:302
-#, fuzzy
-#| msgid "Face Forward"
 msgid "Face forward"
 msgstr "Nach vorne blicken"
 
 #: engines/freescape/games/castle/castle.cpp:544
 msgid "Run (hold)"
-msgstr ""
+msgstr "Laufen (halten)"
 
 #: engines/freescape/games/dark/dark.cpp:233
 #: engines/freescape/games/driller/driller.cpp:186
@@ -9185,51 +9146,37 @@ msgstr "Nach rechts rollen"
 #. I18N: Illustrates the angle at which you turn left or right.
 #: engines/freescape/games/dark/dark.cpp:244
 #: engines/freescape/games/driller/driller.cpp:158
-#, fuzzy
-#| msgid "Increase Turn Angle"
 msgid "Increase turn angle"
 msgstr "Drehwinkel erhöhen"
 
 #: engines/freescape/games/dark/dark.cpp:249
 #: engines/freescape/games/driller/driller.cpp:163
-#, fuzzy
-#| msgid "Decrease Turn Angle"
 msgid "Decrease turn angle"
 msgstr "Drehwinkel verringern"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:255
 #: engines/freescape/games/driller/driller.cpp:169
-#, fuzzy
-#| msgid "Increase Step Size"
 msgid "Increase step size"
 msgstr "Schrittgröße vergrößern"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:261
 #: engines/freescape/games/driller/driller.cpp:175
-#, fuzzy
-#| msgid "Decrease Step Size"
 msgid "Decrease step size"
 msgstr "Schrittgröße verkleinern"
 
 #: engines/freescape/games/dark/dark.cpp:266
 #: engines/freescape/games/driller/driller.cpp:180
-#, fuzzy
-#| msgid "Rise/Fly up"
 msgid "Rise / Fly up"
 msgstr "Nach oben fliegen"
 
 #: engines/freescape/games/dark/dark.cpp:272
 #: engines/freescape/games/driller/driller.cpp:196
-#, fuzzy
-#| msgid "Lower/Fly down"
 msgid "Lower / Fly down"
 msgstr "Nach unten fliegen"
 
 #: engines/freescape/games/dark/dark.cpp:278
-#, fuzzy
-#| msgid "Enable/Disable Jetpack"
 msgid "Enable / Disable jetpack"
 msgstr "Jetpack aktivieren/deaktivieren"
 
@@ -9245,25 +9192,19 @@ msgstr "Bohr-Plattform aufnehmen"
 
 #. I18N: Illustrates the angle at which you turn left or right.
 #: engines/freescape/games/eclipse/eclipse.cpp:270
-#, fuzzy
-#| msgid "Change Angle"
 msgid "Change angle"
 msgstr "Winkel ändern"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/eclipse/eclipse.cpp:276
-#, fuzzy
-#| msgid "Change Step Size"
 msgid "Change step size"
 msgstr "Schrittgröße anpassen"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:282
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "Sprinten (halten)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:290
-#, fuzzy
-#| msgid "Toggle Height"
 msgid "Toggle height"
 msgstr "Höhe umschalten"
 
@@ -9276,8 +9217,6 @@ msgid "Rest"
 msgstr "Ausruhen"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:307
-#, fuzzy
-#| msgid "Flashlight"
 msgid "Toggle flashlight"
 msgstr "Taschenlampe"
 
@@ -13212,10 +13151,8 @@ msgstr ""
 "Aktiviert den Demo-/Kiosk-Modus in der Verkaufsversion von Maniac Mansion."
 
 #: engines/scumm/metaengine.cpp:839
-#, fuzzy
-#| msgid "Playback"
 msgid "Disable Playback"
-msgstr "Wiedergabe"
+msgstr "Wiedergabe deaktivieren"
 
 #: engines/scumm/metaengine.cpp:840
 msgid ""
@@ -13742,10 +13679,8 @@ msgid "Menu scrolling keymappings"
 msgstr "Tastaturbelegung für Menü-Scrollen"
 
 #: engines/sherlock/metaengine.cpp:784
-#, fuzzy
-#| msgid "save / load menu keymappings"
 msgid "Save / load menu keymappings"
-msgstr "Menü-Tastaturbelegungen speichern/laden"
+msgstr "Menü-Tastenkürzel speichern / laden"
 
 #: engines/sherlock/metaengine.cpp:785
 msgid "Save files name editing keymappings"
@@ -14042,16 +13977,12 @@ msgid "Display all exits on current location"
 msgstr "Alle Ausgänge am aktuellen Ort anzeigen"
 
 #: engines/stark/metaengine.cpp:306
-#, fuzzy
-#| msgid "Scroll list up"
 msgid "Scroll dialogs up"
-msgstr "Liste hochblättern"
+msgstr "Dialoge nach oben scrollen"
 
 #: engines/stark/metaengine.cpp:312
-#, fuzzy
-#| msgid "Scroll list down"
 msgid "Scroll dialogs down"
-msgstr "Liste runterblättern"
+msgstr "Dialoge nach unten scrollen"
 
 #: engines/stark/metaengine.cpp:318
 msgid "Go to next dialog"
@@ -14599,10 +14530,8 @@ msgid "Save and load game"
 msgstr "Spiel speichern und laden"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
-msgstr "Hauptmenü/Beenden"
+msgstr "Hauptmenü / Beenden"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -15136,38 +15065,26 @@ msgid "Shield"
 msgstr "Schild"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
-#, fuzzy
-#| msgid "Bow & Arrow"
 msgid "Bow & arrow"
 msgstr "Pfeil & Bogen"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
-#, fuzzy
-#| msgid "Magic Amulet"
 msgid "Magic amulet"
 msgstr "Magisches Amulett"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
 msgstr "Amulett Option 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
 msgstr "Amulett Option 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
 msgstr "Amulett Option 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
 msgstr "Amulett Option 4"
 
@@ -15189,17 +15106,13 @@ msgstr "Osten"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter/Exit"
 msgid "Enter / Exit"
-msgstr "Eintritt/Austritt"
+msgstr "Betreten / Verlassen"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Pass/Wait"
 msgid "Pass / Wait"
-msgstr "Weiter/Warten"
+msgstr "Weiter / Warten"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
@@ -15207,8 +15120,6 @@ msgid "Minimap"
 msgstr "Minikarte"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn Around"
 msgid "Turn around"
 msgstr "Umdrehen"
 
@@ -15217,29 +15128,21 @@ msgstr "Umdrehen"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Basic Keys"
 msgid "Basic keys"
 msgstr "Grundlegende Tasten"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Menu Keys"
 msgid "Menu keys"
 msgstr "Menütasten"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "Overworld Keys"
 msgid "Overworld keys"
 msgstr "Oberwelt-Schlüssel"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
-#, fuzzy
-#| msgid "Dungeon Keys"
 msgid "Dungeon keys"
 msgstr "Dungeon-Schlüssel"
 
@@ -15568,8 +15471,6 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr "Spielmenü anzeigen; Aktion abbrechen, wenn sie gerade ausgeführt wird"
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Cursor"
 msgid "Toggle cursor"
 msgstr "Cursor umschalten"
 
