@@ -211,7 +211,9 @@ const char gScummVMFeatures[] = ""
 #endif
 
 #ifdef SDL_BACKEND
-#  ifdef USE_SDL2
+#  ifdef USE_SDL3
+	"SDL3 "
+#  elif USE_SDL2
 	"SDL2 "
 #  else
 	"SDL1.2 "
