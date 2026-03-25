@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-25 09:34+0000\n"
-"PO-Revision-Date: 2026-03-25 11:34+0000\n"
+"PO-Revision-Date: 2026-03-25 11:56+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -4526,7 +4526,7 @@ msgstr "Freude-Leitfaden"
 
 #: backends/keymapper/hardware-input.cpp:261
 msgid "Joy start"
-msgstr "Freude beginnen"
+msgstr "Joy-Start"
 
 #: backends/keymapper/hardware-input.cpp:262
 msgid "Left stick"
