@@ -581,7 +581,7 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			if (_selectedItem < (int)_list.size() - 1) {
 				int newItem = _selectedItem + 1;
 				bool scrolled = false;
-				if ( g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
+				if (_multiSelectEnabled && g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
 					// Skip selecting Group Headers
 					newItem = findSelectableItem(newItem, 1);
 
@@ -663,7 +663,7 @@ bool ListWidget::handleKeyDown(Common::KeyState state) {
 			if (_selectedItem > 0) {
 				int newItem = _selectedItem - 1;
 				bool scrolled = false;
-				if (g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
+				if (_multiSelectEnabled && g_system->getEventManager()->getModifierState() & Common::KBD_SHIFT) {
 					// Skip selecting Group Headers
 					newItem = findSelectableItem(newItem, -1);
 					if (newItem != -1) {
