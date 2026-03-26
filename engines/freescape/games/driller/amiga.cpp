@@ -84,7 +84,7 @@ void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsO
 }
 
 void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
-		int stepOffset, int angleOffset) {
+		int stepOffset, int angleOffset, int vehicleOffset) {
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
 
 	// Step indicator: 1 word × 4 rows, 8 frames, stride=40
@@ -103,6 +103,19 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
 		decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette, _gfx->_texturePixelFormat);
 		_angleSprites.push_back(surf);
+	}
+
+	// Vehicle indicator: 4 words × 43 rows, 5 frames, stride=1408 ($580)
+	// Frame 0=fly, frames 1-4=tank heights 0-3
+	{
+		uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+		for (int f = 0; f < 5; f++) {
+			auto *surf = new Graphics::ManagedSurface();
+			surf->create(64, 43, _gfx->_texturePixelFormat);
+			surf->fillRect(Common::Rect(0, 0, 64, 43), black);
+			decodeAmigaSprite(file, surf, vehicleOffset + f * 0x580, 4, 43, palette, _gfx->_texturePixelFormat);
+			_vehicleSprites.push_back(surf);
+		}
 	}
 }
 
@@ -191,7 +204,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 
 		byte *palette = getPaletteFromNeoImage(&file, 0x137f4);
 		loadRigSprites(&file, 0x2407A);
-		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222);
+		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222, 0x24D88);
 		loadCompassStrips(&file, palette, 0x23316, 0x26F4C);
 		free(palette);
 	} else if (_variant & GF_AMIGA_BUDGET) {
@@ -231,7 +244,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 			palette = getPaletteFromNeoImage(&neoFile, 0);
 		loadRigSprites(&file, 0x1B8C8);
 		if (palette) {
-			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510);
+			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510, 0x1C5D6);
 			loadCompassStrips(&file, palette, 0x1AB64, 0x1E23A);
 		}
 		free(palette);
@@ -442,7 +455,15 @@ void DrillerEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 		surface->fillRect(energyBar, yellow);
 	}
 
-	if (_indicators.size() > 0) {
+	if (!_vehicleSprites.empty()) {
+		int frame = _flyMode ? 0 : (_playerHeightNumber + 1);
+		frame = CLIP(frame, 0, (int)_vehicleSprites.size() - 1);
+		// Mask $FF00,$0000,$0000,$0007: 8 bits transparent left, 3 bits transparent right
+		// Visible pixels: x=8 to x=60 within the 64px sprite
+		surface->copyRectToSurface(*_vehicleSprites[frame], 104, 126,
+			Common::Rect(8, 0, 61, _vehicleSprites[frame]->h));
+	} else if (_indicators.size() > 0) {
+		// Fallback to bundled images
 		if (_flyMode)
 			surface->copyRectToSurface(*_indicators[4], 106, 128, Common::Rect(_indicators[1]->w, _indicators[1]->h));
 		else

@@ -110,9 +110,10 @@ private:
 	Common::Array<Graphics::ManagedSurface *> _rigSprites;     // 5 rig animation frames
 	Common::Array<Graphics::ManagedSurface *> _stepSprites;    // 8 step indicator frames
 	Common::Array<Graphics::ManagedSurface *> _angleSprites;   // 8 angle/compass frames
+	Common::Array<Graphics::ManagedSurface *> _vehicleSprites; // 5 vehicle mode frames (fly + 4 tank heights)
 	void loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset);
 	void loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
-		int stepOffset, int angleOffset);
+		int stepOffset, int angleOffset, int vehicleOffset);
 
 	// Compass indicators loaded from executable
 	Graphics::ManagedSurface *_compassPitchStrip;  // pitch: 32px wide × (144+29) rows scrolling strip
