@@ -97,6 +97,8 @@ public:
 	void drawScoreString(int score, int x, int y, uint32 front, uint32 back, Graphics::Surface *surface);
 
 	soundFx *load1bPCM(Common::SeekableReadStream *file, int offset);
+	void loadHeartFramesCPC(Common::SeekableReadStream *file, int restOffset, int beatOffset);
+	void drawHeartIndicator(Graphics::Surface *surface, int x, int y);
 
 	Common::Array<byte> _musicData; // TEMUSIC.ST TEXT segment (Atari ST)
 

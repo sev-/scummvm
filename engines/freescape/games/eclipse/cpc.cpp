@@ -63,6 +63,69 @@ byte kCPCPaletteEclipseBorderData[4][3] = {
 
 
 
+void EclipseEngine::loadHeartFramesCPC(Common::SeekableReadStream *file, int restOffset, int beatOffset) {
+	// Decode into _eclipseSprites[0] (beat) and _eclipseSprites[1] (rest),
+	// matching the Atari ST convention for future unification.
+	// Same CLUT8→ARGB approach as Castle's loadFrameWithHeaderCPCIndexed + convertCPCSprite.
+	int offsets[2] = { beatOffset, restOffset };
+
+	byte palette[4 * 3];
+	for (int c = 0; c < 4; c++) {
+		uint8 r, g, b;
+		_gfx->selectColorFromFourColorPalette(c, r, g, b);
+		palette[c * 3 + 0] = r;
+		palette[c * 3 + 1] = g;
+		palette[c * 3 + 2] = b;
+	}
+
+	for (int f = 0; f < 2; f++) {
+		file->seek(offsets[f]);
+		int height = file->readByte();
+		int widthBytes = file->readByte();
+
+		// Decode CPC mode 1 bytes into CLUT8 indexed surface (values 0-3)
+		Graphics::ManagedSurface clut8;
+		clut8.create(widthBytes * 4, height, Graphics::PixelFormat::createFormatCLUT8());
+		for (int y = 0; y < height; y++)
+			for (int col = 0; col < widthBytes; col++) {
+				byte cpc_byte = file->readByte();
+				for (int i = 0; i < 4; i++)
+					clut8.setPixel(col * 4 + i, y, getCPCPixelMode1(cpc_byte, i));
+			}
+
+		clut8.setPalette(palette, 0, 4);
+
+		// Convert CLUT8 to target pixel format
+		Graphics::Surface *converted = _gfx->convertImageFormatIfNecessary(&clut8);
+		auto *surf = new Graphics::ManagedSurface();
+		surf->copyFrom(*converted);
+		converted->free();
+		delete converted;
+
+		_eclipseSprites.push_back(surf);
+	}
+}
+
+void EclipseEngine::drawHeartIndicator(Graphics::Surface *surface, int x, int y) {
+	// CPC original: timer counts down from shield at 50Hz (_ticks rate).
+	// Beat frame shown for last 5 ticks of each cycle, rest frame for the remainder.
+	// Lower shield = faster heartbeat. At shield <= 5, heart beats constantly.
+	if (_eclipseSprites.size() < 2)
+		return;
+
+	int shield = _gameStateVars[k8bitVariableShield];
+	int beatCycle = MAX(shield, 1);
+	int phase = _ticks % beatCycle;
+	int beatStart = MAX(beatCycle - 5, 0);
+	int frame = (phase >= beatStart) ? 0 : 1;
+
+	if (phase == beatStart)
+		playSound(1, false, _soundFxHandle);
+
+	surface->copyRectToSurface(*_eclipseSprites[frame], x, y,
+		Common::Rect(_eclipseSprites[frame]->w, _eclipseSprites[frame]->h));
+}
+
 void EclipseEngine::loadAssetsCPCFullGame() {
 	Common::File file;
 
@@ -113,6 +176,9 @@ void EclipseEngine::loadAssetsCPCFullGame() {
 	loadColorPalette();
 	swapPalette(1);
 
+	if (!isEclipse2())
+		loadHeartFramesCPC(&file, 0x0CDB, 0x0D0D);
+
 	_indicators.push_back(loadBundledImage("eclipse_ankh_indicator"));
 
 	for (auto &it : _indicators)
@@ -142,6 +208,7 @@ void EclipseEngine::loadAssetsCPCDemo() {
 	loadSoundsCPC(&file, 0x0805, 104, 0x086D, 165, 0x0772, 147);
 	loadColorPalette();
 	swapPalette(1);
+	loadHeartFramesCPC(&file, 0x0D17, 0x0D49);
 
 	// This patch forces a solid color to the bottom of the chest in the area 5
 	// It was transparent in the original game
@@ -224,6 +291,8 @@ void EclipseEngine::drawCPCUI(Graphics::Surface *surface) {
 
 	Common::Rect jarWater(124, 192 - energy, 148, 192);
 	surface->fillRect(jarWater, blue);
+
+	drawHeartIndicator(surface, 176, 168);
 
 	surface->fillRect(Common::Rect(225, 168, 235, 187), front);
 	drawCompass(surface, 229, 177, _yaw, 10, back);
