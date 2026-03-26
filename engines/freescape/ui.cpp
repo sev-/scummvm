@@ -368,16 +368,7 @@ void FreescapeEngine::drawFullscreenSurface(Graphics::Surface *surface) {
 	_gfx->setViewport(_viewArea);
 }
 
-void FreescapeEngine::drawUI() {
-	Graphics::Surface *surface = nullptr;
-	if (_border) { // This can be removed when all the borders are loaded
-		uint32 gray = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0xA0, 0xA0, 0xA0);
-		surface = new Graphics::Surface();
-		surface->create(_screenW, _screenH, _gfx->_texturePixelFormat);
-		surface->fillRect(_fullscreenViewArea, gray);
-	} else
-		return;
-
+void FreescapeEngine::drawPlatformUI(Graphics::Surface *surface) {
 	if (isDOS())
 		drawDOSUI(surface);
 	else if (isC64())
@@ -388,6 +379,19 @@ void FreescapeEngine::drawUI() {
 		drawCPCUI(surface);
 	else if (isAmiga() || isAtariST())
 		drawAmigaAtariSTUI(surface);
+}
+
+void FreescapeEngine::drawUI() {
+	Graphics::Surface *surface = nullptr;
+	if (_border) { // This can be removed when all the borders are loaded
+		uint32 gray = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0xA0, 0xA0, 0xA0);
+		surface = new Graphics::Surface();
+		surface->create(_screenW, _screenH, _gfx->_texturePixelFormat);
+		surface->fillRect(_fullscreenViewArea, gray);
+	} else
+		return;
+
+	drawPlatformUI(surface);
 
 	drawFullscreenSurface(surface);
 

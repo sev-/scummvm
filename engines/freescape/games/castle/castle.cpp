@@ -1559,10 +1559,16 @@ void CastleEngine::drawFullscreenRiddleAndWait(uint16 riddle) {
 				break;
 			}
 		}
+		updateTimeVariables();
 		_gfx->clear(0, 0, 0, true);
 		drawBorder();
-		if (_currentArea)
-			drawUI();
+		if (_currentArea) {
+			// Draw both UI and riddle on the same surface, since
+			// drawFullscreenSurface uses a single shared texture.
+			uint32 gray = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0xA0, 0xA0, 0xA0);
+			surface->fillRect(Common::Rect(0, 0, _screenW, _screenH), gray);
+			drawPlatformUI(surface);
+		}
 		drawRiddle(riddle, front, transparent, surface);
 		_gfx->flipBuffer();
 		g_system->updateScreen();

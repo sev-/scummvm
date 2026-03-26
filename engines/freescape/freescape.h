@@ -227,6 +227,7 @@ public:
 	void drawTitle();
 	virtual void drawBackground();
 	void clearBackground();
+	void drawPlatformUI(Graphics::Surface *surface);
 	virtual void drawUI();
 	virtual void drawInfoMenu();
 	void drawBorderScreenAndWait(Graphics::Surface *surface, int maxWait = INT_MAX);
