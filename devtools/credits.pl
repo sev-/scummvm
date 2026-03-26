@@ -877,7 +877,7 @@ begin_credits("Credits");
 				end_section();
 				begin_section("French");
 					add_person("Thierry Crozat", "criezy", "");
-					add_person("Donovan Watteau", "dwatteau", "");
+					add_person("", "dwa", "");
 					add_person("", "Purple T", "");
 				end_section();
 				begin_section("Galician");
