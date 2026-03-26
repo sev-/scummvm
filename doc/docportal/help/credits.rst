@@ -1633,6 +1633,17 @@ Watchmaker
    * - Einar Johan Troan Somaen;
      -
 
+Wayne's World
+^^^^^^^^^^^^^
+
+.. list-table::
+   :widths: 35 65
+
+   * - Arnaud Boutonné
+     -
+   * - Benjamin Haisch
+     -
+
 Wintermute
 ^^^^^^^^^^
 
@@ -2373,7 +2384,7 @@ French
 
    * - Thierry Crozat
      -
-   * - Donovan Watteau
+   * - dwa
      -
    * - Purple T
      -
