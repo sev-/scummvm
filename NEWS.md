@@ -56,6 +56,19 @@ For a more comprehensive changelog of the latest experimental code, see:
    - Made in-progress speech stop when closing a minigame exit dialog.
    - Fixed using Enter key after typing savegame name to save it.
 
+ Freescape:
+   - Added sound emulation for Driller, Dark Side, Total Eclipse and
+     Castle Master on CPC, C64 and Amiga.
+   - Added music support for Total Eclipse on Atari ST.
+   - Added WASD movement option with shift for run.
+   - Improved touchscreen controls and alternative input mappings for
+     mobile devices.
+   - Added a debugger with position and area commands.
+   - Implemented compressed data loading for Driller on Atari ST.
+   - Fixed rendering artifacts and culling issues.
+   - Fixed various UI element positions and score rendering across
+     multiple releases.
+
  Gob:
    - Optimized the number of screen blits, making Gobliiins and Ween
      noticeably more responsive on weaker platforms. Other Gob games
