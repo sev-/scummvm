@@ -1290,6 +1290,29 @@ Graphics::ManagedSurface *FreescapeEngine::loadAndConvertScrImage(Common::Seekab
 	return surface;
 }
 
+Graphics::ManagedSurface *FreescapeEngine::loadFrame(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int width, int height, uint32 front) {
+	for (int i = 0; i < width * height; i++) {
+		byte color = file->readByte();
+		for (int n = 0; n < 8; n++) {
+			int y = i / width;
+			int x = (i % width) * 8 + (7 - n);
+			if ((color & (1 << n)))
+				surface->setPixel(x, y, front);
+		}
+	}
+	return surface;
+}
+
+Graphics::ManagedSurface *FreescapeEngine::loadFrameCPCIndexed(Common::SeekableReadStream *file, Graphics::ManagedSurface *surface, int widthBytes, int height) {
+	for (int y = 0; y < height; y++)
+		for (int col = 0; col < widthBytes; col++) {
+			byte cpc_byte = file->readByte();
+			for (int i = 0; i < 4; i++)
+				surface->setPixel(col * 4 + i, y, getCPCPixel(cpc_byte, i, true));
+		}
+	return surface;
+}
+
 void FreescapeEngine::getTimeFromCountdown(int &seconds, int &minutes, int &hours) {
 	int countdown = _countdown;
 	int h = countdown <= 0 ? 0 : countdown / 3600;

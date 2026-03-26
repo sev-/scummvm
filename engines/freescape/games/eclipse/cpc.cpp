@@ -66,7 +66,8 @@ byte kCPCPaletteEclipseBorderData[4][3] = {
 void EclipseEngine::loadHeartFramesCPC(Common::SeekableReadStream *file, int restOffset, int beatOffset) {
 	// Decode into _eclipseSprites[0] (beat) and _eclipseSprites[1] (rest),
 	// matching the Atari ST convention for future unification.
-	// Same CLUT8→ARGB approach as Castle's loadFrameWithHeaderCPCIndexed + convertCPCSprite.
+	// Uses loadFrameCPCIndexed (shared with Castle) for pixel decoding,
+	// then converts CLUT8→ARGB via convertImageFormatIfNecessary.
 	int offsets[2] = { beatOffset, restOffset };
 
 	byte palette[4 * 3];
@@ -83,19 +84,11 @@ void EclipseEngine::loadHeartFramesCPC(Common::SeekableReadStream *file, int res
 		int height = file->readByte();
 		int widthBytes = file->readByte();
 
-		// Decode CPC mode 1 bytes into CLUT8 indexed surface (values 0-3)
 		Graphics::ManagedSurface clut8;
 		clut8.create(widthBytes * 4, height, Graphics::PixelFormat::createFormatCLUT8());
-		for (int y = 0; y < height; y++)
-			for (int col = 0; col < widthBytes; col++) {
-				byte cpc_byte = file->readByte();
-				for (int i = 0; i < 4; i++)
-					clut8.setPixel(col * 4 + i, y, getCPCPixelMode1(cpc_byte, i));
-			}
-
+		loadFrameCPCIndexed(file, &clut8, widthBytes, height);
 		clut8.setPalette(palette, 0, 4);
 
-		// Convert CLUT8 to target pixel format
 		Graphics::Surface *converted = _gfx->convertImageFormatIfNecessary(&clut8);
 		auto *surf = new Graphics::ManagedSurface();
 		surf->copyFrom(*converted);
@@ -104,26 +97,6 @@ void EclipseEngine::loadHeartFramesCPC(Common::SeekableReadStream *file, int res
 
 		_eclipseSprites.push_back(surf);
 	}
-}
-
-void EclipseEngine::drawHeartIndicator(Graphics::Surface *surface, int x, int y) {
-	// CPC original: timer counts down from shield at 50Hz (_ticks rate).
-	// Beat frame shown for last 5 ticks of each cycle, rest frame for the remainder.
-	// Lower shield = faster heartbeat. At shield <= 5, heart beats constantly.
-	if (_eclipseSprites.size() < 2)
-		return;
-
-	int shield = _gameStateVars[k8bitVariableShield];
-	int beatCycle = MAX(shield, 1);
-	int phase = _ticks % beatCycle;
-	int beatStart = MAX(beatCycle - 5, 0);
-	int frame = (phase >= beatStart) ? 0 : 1;
-
-	if (phase == beatStart)
-		playSound(1, false, _soundFxHandle);
-
-	surface->copyRectToSurface(*_eclipseSprites[frame], x, y,
-		Common::Rect(_eclipseSprites[frame]->w, _eclipseSprites[frame]->h));
 }
 
 void EclipseEngine::loadAssetsCPCFullGame() {

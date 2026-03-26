@@ -797,6 +797,27 @@ void EclipseEngine::drawIndicator(Graphics::Surface *surface, int xPosition, int
 	}
 }
 
+void EclipseEngine::drawHeartIndicator(Graphics::Surface *surface, int x, int y) {
+	// Heartbeat animation shared across platforms.
+	// Timer counts down from shield at 50Hz (_ticks rate).
+	// Beat frame shown for last 5 ticks of each cycle, rest frame for the remainder.
+	// Lower shield = faster heartbeat. At shield <= 5, heart beats constantly.
+	if (_eclipseSprites.size() < 2)
+		return;
+
+	int shield = _gameStateVars[k8bitVariableShield];
+	int beatCycle = MAX(shield, 1);
+	int phase = _ticks % beatCycle;
+	int beatStart = MAX(beatCycle - 5, 0);
+	int frame = (phase >= beatStart) ? 0 : 1;
+
+	if (phase == beatStart)
+		playSound(1, false, _soundFxHandle);
+
+	surface->copyRectToSurface(*_eclipseSprites[frame], x, y,
+		Common::Rect(_eclipseSprites[frame]->w, _eclipseSprites[frame]->h));
+}
+
 void EclipseEngine::drawSensorShoot(Sensor *sensor) {
 	Math::Vector3d target;
 	float distance = 5;
