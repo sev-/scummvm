@@ -107,7 +107,7 @@ void EclipseEngine::loadAssetsCPCFullGame() {
 		loadFonts(&file, 0x6076);
 		loadMessagesFixedSize(&file, 0x326, 16, 30);
 		load8bitBinary(&file, 0x626e, 16);
-		// TODO: loadSoundsCPC for full game - need to determine table offsets from TECODE.BIN
+		loadSoundsCPC(&file, 0x07C9, 104, 0x0831, 165, 0x0736, 147);
 	}
 
 	loadColorPalette();
