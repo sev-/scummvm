@@ -302,6 +302,7 @@ void FreescapeEngine::drawFullscreenMessageAndWait(Common::String message) {
 }
 
 void FreescapeEngine::drawBorderScreenAndWait(Graphics::Surface *surface, int maxWait) {
+	PauseToken pauseToken = pauseEngine();
 	for (int i = 0; i < maxWait; i++) {
 		Common::Event event;
 		while (_eventManager->pollEvent(event)) {
@@ -347,12 +348,16 @@ void FreescapeEngine::drawBorderScreenAndWait(Graphics::Surface *surface, int ma
 
 		_gfx->clear(0, 0, 0, true);
 		drawBorder();
-		if (surface)
+		if (surface) {
+			if (_currentArea)
+				drawPlatformUI(surface);
 			drawFullscreenSurface(surface);
+		}
 		_gfx->flipBuffer();
 		g_system->updateScreen();
 		g_system->delayMillis(15); // try to target ~60 FPS
 	}
+	pauseToken.clear();
 	playSound(_soundIndexMenu, false, _soundFxHandle);
 	_gfx->clear(0, 0, 0, true);
 }

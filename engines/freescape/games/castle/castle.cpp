@@ -1559,7 +1559,6 @@ void CastleEngine::drawFullscreenRiddleAndWait(uint16 riddle) {
 				break;
 			}
 		}
-		updateTimeVariables();
 		_gfx->clear(0, 0, 0, true);
 		drawBorder();
 		if (_currentArea) {
