@@ -375,19 +375,23 @@ void OpenGLShaderRenderer::renderPlayerShootBall(byte color, const Common::Point
 
 	int triangleAmount = 20;
 	float twicePi = (float)(2.0 * M_PI);
-	float coef = (9 - frame) / 9.0;
-	float radius = (1 - coef) * 4.0;
 
-	Common::Point position(_position.x, _screenH - _position.y);
+	// Exponential ease-out trajectory inspired by the original ZX animation.
+	float coef = 1.0f - powf(0.5f, (8 - frame + 1) / 2.0f);
+	float radius = 1.0f + frame * 0.5f;
 
-	Common::Point initial_position(viewArea.left + viewArea.width() / 2 + 2, _screenH - (viewArea.height() + viewArea.top));
-	Common::Point ball_position = coef * position + (1 - coef) * initial_position;
+	float posX = (float)_position.x;
+	float posY = (float)(_screenH - _position.y);
+	float startX = viewArea.left + viewArea.width() / 2.0f + 2;
+	float startY = (float)(_screenH - (viewArea.height() + viewArea.top));
+	float ballX = coef * posX + (1.0f - coef) * startX;
+	float ballY = coef * posY + (1.0f - coef) * startY;
 
-	copyToVertexArray(0, Math::Vector3d(remap(ball_position.x, _screenW), remap(ball_position.y, _screenH), 0));
+	copyToVertexArray(0, Math::Vector3d(remap(ballX, _screenW), remap(ballY, _screenH), 0));
 
 	for (int i = 0; i <= triangleAmount; i++) {
-		float x = remap(ball_position.x + (radius * cos(i *  twicePi / triangleAmount)), _screenW);
-		float y = remap(ball_position.y + (radius * sin(i * twicePi / triangleAmount)), _screenH);
+		float x = remap(ballX + (radius * cos(i * twicePi / triangleAmount)), _screenW);
+		float y = remap(ballY + (radius * sin(i * twicePi / triangleAmount)), _screenH);
 		copyToVertexArray(i + 1, Math::Vector3d(x, y, 0));
 	}
 

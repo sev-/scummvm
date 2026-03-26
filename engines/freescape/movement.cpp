@@ -236,7 +236,7 @@ void FreescapeEngine::shoot() {
 
 	playSound(_soundIndexShoot, false, _movementSoundHandle);
 	g_system->delayMillis(2);
-	_shootingFrames = 10;
+	_shootingFrames = 8;
 
 	// Convert to normalized coordinates [-1, 1]
 	float ndcX = (2.0f * (_crossairPosition.x - _viewArea.left) / _viewArea.width()) - 1.0f;
