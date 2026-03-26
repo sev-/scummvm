@@ -276,7 +276,7 @@ void OpenGLRenderer::positionCamera(const Math::Vector3d &pos, const Math::Vecto
 	GLfloat projMatrix[16];
 	glGetFloatv(GL_PROJECTION_MATRIX, projMatrix);
 	glLoadIdentity();
-	glTranslatef(_shakeOffset.x * 0.05f, _shakeOffset.y * 0.05f, 0.0f);
+	glTranslatef(_shakeOffset.x * 0.025f, _shakeOffset.y * 0.025f, 0.0f);
 	glMultMatrixf(projMatrix);
 	glMatrixMode(GL_MODELVIEW);
 }

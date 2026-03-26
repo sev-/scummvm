@@ -211,6 +211,16 @@ void TinyGLRenderer::positionCamera(const Math::Vector3d &pos, const Math::Vecto
 	tglMultMatrixf(lookMatrix.getData());
 	tglRotatef(rollAngle, 0.0f, 0.0f, 1.0f);
 	tglTranslatef(-pos.x(), -pos.y(), -pos.z());
+
+	// Apply a 2D shake effect on the projection matrix,
+	// matching the OpenGL fixed-function implementation.
+	tglMatrixMode(TGL_PROJECTION);
+	TGLfloat projMatrix[16];
+	tglGetFloatv(TGL_PROJECTION_MATRIX, projMatrix);
+	tglLoadIdentity();
+	tglTranslatef(_shakeOffset.x * 0.025f, _shakeOffset.y * 0.025f, 0.0f);
+	tglMultMatrixf(projMatrix);
+	tglMatrixMode(TGL_MODELVIEW);
 }
 
 void TinyGLRenderer::renderSensorShoot(byte color, const Math::Vector3d sensor, const Math::Vector3d player, const Common::Rect &viewArea) {

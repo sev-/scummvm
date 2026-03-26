@@ -305,7 +305,12 @@ void OpenGLShaderRenderer::positionCamera(const Math::Vector3d &pos, const Math:
 	model.transpose();
 	_mvpMatrix = proj * model;
 	_mvpMatrix.transpose();
+
+	_triangleShader->use();
+	_triangleShader->setUniform("shakeOffset",
+		Math::Vector2d(_shakeOffset.x * 0.025f, _shakeOffset.y * 0.025f));
 }
+
 void OpenGLShaderRenderer::renderSensorShoot(byte color, const Math::Vector3d sensor, const Math::Vector3d target, const Common::Rect &viewArea) {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
@@ -343,6 +348,7 @@ void OpenGLShaderRenderer::renderPlayerShootBall(byte color, const Common::Point
 	_triangleShader->use();
 	_triangleShader->setUniform("useStipple", false);
 	_triangleShader->setUniform("mvpMatrix", identity);
+	_triangleShader->setUniform("shakeOffset", Math::Vector2d(0, 0));
 
 	if (_renderMode == Common::kRenderCGA || _renderMode == Common::kRenderZX) {
 		r = g = b = 255;
@@ -407,6 +413,7 @@ void OpenGLShaderRenderer::renderPlayerShootRay(byte color, const Common::Point 
 	_triangleShader->use();
 	_triangleShader->setUniform("useStipple", false);
 	_triangleShader->setUniform("mvpMatrix", identity);
+	_triangleShader->setUniform("shakeOffset", Math::Vector2d(0, 0));
 
 	if (_renderMode == Common::kRenderCGA || _renderMode == Common::kRenderZX) {
 		r = g = b = 255;
@@ -525,6 +532,7 @@ void OpenGLShaderRenderer::drawCelestialBody(const Math::Vector3d position, floa
 	// === Shader uniforms ===
 	_triangleShader->use();
 	_triangleShader->setUniform("mvpMatrix", billboardMVP);
+	_triangleShader->setUniform("shakeOffset", Math::Vector2d(0, 0));
 	_triangleShader->setUniform("useStipple", false);
 
 	// === Render settings ===
@@ -621,6 +629,7 @@ void OpenGLShaderRenderer::renderCrossair(const Common::Point &crossairPosition)
 	_triangleShader->use();
 	_triangleShader->setUniform("useStipple", false);
 	_triangleShader->setUniform("mvpMatrix", identity);
+	_triangleShader->setUniform("shakeOffset", Math::Vector2d(0, 0));
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE_MINUS_DST_COLOR, GL_ZERO);
