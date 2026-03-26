@@ -55,6 +55,17 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
    - Laufende Sprachausgabe wird jetzt korrekt beendet, wenn ein Mini-Spiel verlassen wird.
    - Der Name der angelegten Spielstände kann jetzt auch mit der Enter-Taste bestätigt werden.
 
+ Freescape:
+   - Sound-Emulation für die CPC-, C64- und Amiga-Versionen von Driller, Dark Side,
+     Total Eclipse und Castle Master hinzugefügt.
+   - Musik-UNterstützung für die Atari ST-Version von Total Eclipse hinzugefügt.
+   - Unterstützung für die Steuerung über die WASD-Tasten hinzugefügt. Shift wird zum Sprinten benutzt.
+   - Verbesserte Touchscreen-Steuerung und alternative Eingabe-Zuordnungen für Mobil-Geräte.
+   - Debugger mit Befehlen für Position und Spielwelt hinzugefügt.
+   - Unterstützung für das Laden komprimierter Daten für die Atari ST-Version von Driller hinzugefügt.
+   - Korrektur einer Darstellungs-FEhler.
+   - Korrektur der Position einiger UI-Elemente und des Spielstands für mehrere Veröffentlichungen.
+
  Gob:
    - Anzahl der Übertragung der Bild-Daten optimiert, wodurch Gobliiins und Ween
      auf schwächeren Plattformen deutlich besser laufen. Andere Gob-Spiele sind
