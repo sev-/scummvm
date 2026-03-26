@@ -26,6 +26,146 @@
 
 namespace Freescape {
 
+static void decodeAmigaSprite(Common::SeekableReadStream *file, Graphics::ManagedSurface *surf,
+		int dataOffset, int widthWords, int height, byte *palette,
+		const Graphics::PixelFormat &fmt) {
+	for (int y = 0; y < height; y++) {
+		for (int col = 0; col < widthWords; col++) {
+			int off = dataOffset + (y * widthWords + col) * 8;
+			file->seek(off);
+			uint16 p0 = file->readUint16BE();
+			uint16 p1 = file->readUint16BE();
+			uint16 p2 = file->readUint16BE();
+			uint16 p3 = file->readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				byte colorIdx = 0;
+				if (p0 & (0x8000 >> bit)) colorIdx |= 1;
+				if (p1 & (0x8000 >> bit)) colorIdx |= 2;
+				if (p2 & (0x8000 >> bit)) colorIdx |= 4;
+				if (p3 & (0x8000 >> bit)) colorIdx |= 8;
+				if (colorIdx == 0)
+					continue;
+				uint32 color = fmt.ARGBToColor(0xFF,
+					palette[colorIdx * 3], palette[colorIdx * 3 + 1], palette[colorIdx * 3 + 2]);
+				surf->setPixel(col * 16 + bit, y, color);
+			}
+		}
+	}
+}
+
+void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset) {
+	// SPRIGS: 2 word columns × 25 rows × 5 frames, stride=$1A0 (416 bytes)
+	const int frameStride = 0x1A0;
+	const int numFrames = 5;
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+
+	// Get the console palette
+	byte *palette = nullptr;
+	if (_variant & GF_AMIGA_RETAIL)
+		palette = getPaletteFromNeoImage(file, 0x137f4);
+	else {
+		Common::File neoFile;
+		neoFile.open("console.neo");
+		if (neoFile.isOpen())
+			palette = getPaletteFromNeoImage(&neoFile, 0);
+	}
+	if (!palette)
+		return;
+
+	for (int f = 0; f < numFrames; f++) {
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(32, 25, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 32, 25), transparent);
+		decodeAmigaSprite(file, surf, sprigsOffset + (f + 1) * frameStride, 2, 25, palette, _gfx->_texturePixelFormat);
+		_rigSprites.push_back(surf);
+	}
+
+	free(palette);
+}
+
+void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
+		int stepOffset, int angleOffset) {
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+
+	// Step indicator: 1 word × 4 rows, 8 frames, stride=40
+	for (int f = 0; f < 8; f++) {
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(16, 4, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
+		decodeAmigaSprite(file, surf, stepOffset + f * 40, 1, 4, palette, _gfx->_texturePixelFormat);
+		_stepSprites.push_back(surf);
+	}
+
+	// Angle indicator: 1 word × 4 rows, 8 frames, stride=40
+	for (int f = 0; f < 8; f++) {
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(16, 4, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
+		decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette, _gfx->_texturePixelFormat);
+		_angleSprites.push_back(surf);
+	}
+}
+
+void DrillerEngine::loadCompassStrips(Common::SeekableReadStream *file, byte *palette,
+		int pitchStripOffset, int yawCogOffset) {
+	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+
+	// Pitch strip (SPRATT): 32px wide, 144+29=173 rows of continuous data.
+	// stride=16 bytes per row, 2 word columns × 4 planes = 16 bytes/row.
+	// 144 start positions, 29 visible rows at a time → need 173 total rows.
+	{
+		int totalRows = 144 + 29;
+		_compassPitchStrip = new Graphics::ManagedSurface();
+		_compassPitchStrip->create(32, totalRows, _gfx->_texturePixelFormat);
+		_compassPitchStrip->fillRect(Common::Rect(0, 0, 32, totalRows), black);
+		decodeAmigaSprite(file, _compassPitchStrip, pitchStripOffset, 2, totalRows, palette, _gfx->_texturePixelFormat);
+	}
+
+	// Yaw compass (SPRCOG): pre-render all 72 rotation frames.
+	// The original uses 70 bytes of pre-computed needle data, accessed at different
+	// byte offsets and bit-shifted to produce 72 unique 30×5 pixel frames.
+	// Each frame: read long(4)+word(2) per row, shift left, mask with $3FFFFE00.
+	// The needle is written to bitplane 1 only (green in Amiga palette).
+	{
+		byte cogData[70];
+		file->seek(yawCogOffset);
+		file->read(cogData, 70);
+
+		uint32 needleColor = _gfx->_texturePixelFormat.ARGBToColor(0xFF,
+			palette[2 * 3], palette[2 * 3 + 1], palette[2 * 3 + 2]); // bitplane 1 = color 2
+
+		uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+		for (int rot = 0; rot < 72; rot++) {
+			auto *surf = new Graphics::ManagedSurface();
+			surf->create(30, 5, _gfx->_texturePixelFormat);
+			surf->fillRect(Common::Rect(0, 0, 30, 5), transparent);
+
+			int wordOff = (rot >> 3) & ~1;
+			int bitShift = rot & 15;
+			int a1 = wordOff;
+
+			for (int row = 0; row < 5; row++) {
+				uint32 longVal = ((uint32)cogData[a1] << 24) | ((uint32)cogData[a1+1] << 16) |
+				                 ((uint32)cogData[a1+2] << 8) | cogData[a1+3];
+				uint16 wordVal = ((uint16)cogData[a1+4] << 8) | cogData[a1+5];
+
+				longVal = (longVal << bitShift);
+				uint32 wordExt = ((uint32)wordVal << bitShift) >> 16;
+				uint32 result = (longVal | wordExt) & 0x3FFFFE00;
+
+				for (int b = 0; b < 30; b++) {
+					if (result & (0x40000000 >> b))
+						surf->setPixel(b, row, needleColor);
+				}
+
+				a1 += 14; // 6 bytes data + 8 bytes skip per row
+			}
+
+			_compassYawFrames.push_back(surf);
+		}
+	}
+}
+
 void DrillerEngine::loadAssetsAmigaFullGame() {
 	Common::File file;
 	if (_variant & GF_AMIGA_RETAIL) {
@@ -48,6 +188,12 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 		load8bitBinary(&file, 0x29c16, 16);
 		loadPalettes(&file, 0x297d4);
 		loadSoundsFx(&file, 0x30e80, 25);
+
+		byte *palette = getPaletteFromNeoImage(&file, 0x137f4);
+		loadRigSprites(&file, 0x2407A);
+		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222);
+		loadCompassStrips(&file, palette, 0x23316, 0x26F4C);
+		free(palette);
 	} else if (_variant & GF_AMIGA_BUDGET) {
 		file.open("lift.neo");
 		if (!file.isOpen())
@@ -77,6 +223,18 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 		loadGlobalObjects(&file, 0x4098, 8);
 		load8bitBinary(&file, 0x21a3e, 16);
 		loadPalettes(&file, 0x215fc);
+
+		byte *palette = nullptr;
+		Common::File neoFile;
+		neoFile.open("console.neo");
+		if (neoFile.isOpen())
+			palette = getPaletteFromNeoImage(&neoFile, 0);
+		loadRigSprites(&file, 0x1B8C8);
+		if (palette) {
+			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510);
+			loadCompassStrips(&file, palette, 0x1AB64, 0x1E23A);
+		}
+		free(palette);
 
 		file.close();
 		file.open("soundfx");
@@ -290,6 +448,48 @@ void DrillerEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 		else
 			surface->copyRectToSurface(*_indicators[_playerHeightNumber], 106, 128, Common::Rect(_indicators[1]->w, _indicators[1]->h));
 	}
+
+	// Step indicator: shows current step size (0-7)
+	if (!_stepSprites.empty()) {
+		int frame = _playerStepIndex % _stepSprites.size();
+		surface->copyRectToSurfaceWithKey(*_stepSprites[frame], 48, 160,
+			Common::Rect(_stepSprites[frame]->w, _stepSprites[frame]->h), transparent);
+	}
+
+	// Angle/compass indicator: shows current rotation angle setting (0-7)
+	if (!_angleSprites.empty()) {
+		int frame = _angleRotationIndex % _angleSprites.size();
+		surface->copyRectToSurfaceWithKey(*_angleSprites[frame], 64, 160,
+			Common::Rect(_angleSprites[frame]->w, _angleSprites[frame]->h), transparent);
+	}
+
+	// Pitch compass (SPRATT): vertically scrolling strip at x=$4E=78, y=$89=137
+	// Mask $FFFC,$0078 means only 14 pixels visible: 2 from column 0 right + 12 from column 1
+	// Visible pixel range: x=14 to x=27 within the 32px strip (bits 0-1 of col0 + bits 0-2,7-15 of col1)
+	if (_compassPitchStrip) {
+		int pos = ((int)(_pitch * 0.4f) + 144) % 144;
+		Common::Rect srcRect(14, pos, 28, pos + 29);
+		surface->copyRectToSurface(*_compassPitchStrip, 78, 138, srcRect);
+	}
+
+	// Yaw compass: purple gradient background (SPRCBG) drawn first,
+	// then scrolling N/E/S/W needle (SPRCOG) drawn on top one line below.
+	// Background at x=$32→48, y=$8E=142. Needle at y=$8E+1=143.
+	if (!_compassYawFrames.empty()) {
+		float yaw = _yaw;
+		if (yaw < 0) yaw += 360;
+		if (yaw >= 360) yaw -= 360;
+		int rot = ((int)(yaw / 5.0f)) % 72;
+		surface->copyRectToSurfaceWithKey(*_compassYawFrames[rot], 49, 143,
+			Common::Rect(_compassYawFrames[rot]->w, _compassYawFrames[rot]->h), transparent);
+	}
+
+	// Drilling rig animation: cycles through 5 frames when rig is placed
+	if (!_rigSprites.empty() && _drillStatusByArea[_currentArea->getAreaID()] == 1) {
+		int frame = (_ticks / 7) % _rigSprites.size();
+		surface->copyRectToSurfaceWithKey(*_rigSprites[frame], 272, 143,
+			Common::Rect(_rigSprites[frame]->w, _rigSprites[frame]->h), transparent);
+	}
 }
 
 void DrillerEngine::drawString(const DrillerFontSize size, const Common::String &str, int x, int y, uint32 primaryColor, uint32 secondaryColor, uint32 backColor, Graphics::Surface *surface) {
@@ -329,6 +529,7 @@ void DrillerEngine::initAmigaAtari() {
 	_loadGameArea = Common::Rect(9, 156, 39, 164);
 
 	_borderExtra = nullptr;
+	_compassPitchStrip = nullptr;
 	_borderExtraTexture = nullptr;
 
 	_soundIndexShoot = 1;
