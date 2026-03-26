@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-25 20:27+0000\n"
-"PO-Revision-Date: 2026-03-23 07:22+0000\n"
+"PO-Revision-Date: 2026-03-26 12:16+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fr/>\n"
@@ -1717,16 +1717,13 @@ msgid "Icons per row:"
 msgstr "Icônes par ligne :"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
-"Voulez-vous vraiment supprimer la(les) configuration(s) suivante(s) du jeu "
-"%d ?\n"
+"Voulez-vous vraiment supprimer les\n"
+"configurations suivantes du jeu %d ?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -9078,14 +9075,12 @@ msgstr "Effectue des mouvements fluides plutôt que des étapes distinctes"
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "Contrôles du volume"
+msgstr "Contrôles WASD"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
-msgstr ""
+msgstr "Utiliser les touches WASD pour les déplacements et Maj pour courir"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9154,7 +9149,7 @@ msgstr "Marcher vers l'avant"
 
 #: engines/freescape/games/castle/castle.cpp:546
 msgid "Run (hold)"
-msgstr ""
+msgstr "Courir (maintenir)"
 
 #: engines/freescape/games/dark/dark.cpp:233
 #: engines/freescape/games/driller/driller.cpp:186
@@ -9227,7 +9222,7 @@ msgstr "Changer la taille des pas"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:282
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "Sprinter (maintenir)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:290
 msgid "Toggle height"
