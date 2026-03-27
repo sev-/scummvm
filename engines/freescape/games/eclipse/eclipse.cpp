@@ -92,6 +92,8 @@ EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : Frees
 
 	_lastThirtySeconds = 0;
 	_lastFiveSeconds = 0;
+	_lastHeartbeatSoundTick = -1;
+	_lastHeartIndicatorFrame = 1;
 	_lastSecond = -1;
 	_resting = false;
 	_flashlightOn = false;
@@ -109,6 +111,8 @@ void EclipseEngine::initGameState() {
 	getTimeFromCountdown(seconds, minutes, hours);
 	_lastThirtySeconds = seconds / 30;
 	_lastFiveSeconds = seconds / 5;
+	_lastHeartbeatSoundTick = -1;
+	_lastHeartIndicatorFrame = 1;
 	_resting = false;
 	_flashlightOn = false;
 
@@ -809,10 +813,20 @@ void EclipseEngine::drawHeartIndicator(Graphics::Surface *surface, int x, int y)
 	int beatCycle = MAX(shield, 1);
 	int phase = _ticks % beatCycle;
 	int beatStart = MAX(beatCycle - 5, 0);
-	int frame = (phase >= beatStart) ? 0 : 1;
+	int frame = _lastHeartIndicatorFrame;
 
-	if (phase == beatStart)
-		playSound(1, false, _soundFxHandle);
+	if (_avoidRenderingFrames > 0 || _hasFallen) {
+		frame = 1;
+		_lastHeartIndicatorFrame = frame;
+	} else if (!_inWaitLoop) {
+		frame = (phase >= beatStart) ? 0 : 1;
+		_lastHeartIndicatorFrame = frame;
+
+		if (!isPaused() && phase == beatStart && _lastHeartbeatSoundTick != _ticks) {
+			playSound(1, false, _soundFxHandle);
+			_lastHeartbeatSoundTick = _ticks;
+		}
+	}
 
 	surface->copyRectToSurface(*_eclipseSprites[frame], x, y,
 		Common::Rect(_eclipseSprites[frame]->w, _eclipseSprites[frame]->h));
@@ -994,6 +1008,8 @@ Common::Error EclipseEngine::saveGameStreamExtended(Common::WriteStream *stream,
 }
 
 Common::Error EclipseEngine::loadGameStreamExtended(Common::SeekableReadStream *stream) {
+	_lastHeartbeatSoundTick = -1;
+	_lastHeartIndicatorFrame = 1;
 	return Common::kNoError;
 }
 

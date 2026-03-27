@@ -25,6 +25,7 @@ namespace Freescape {
 
 void FreescapeEngine::waitInLoop(int maxWait) {
 	long int startTick = _ticks;
+	_inWaitLoop = true;
 	while (_ticks <= startTick + maxWait) {
 		Common::Event event;
 		while (_eventManager->pollEvent(event)) {
@@ -35,6 +36,7 @@ void FreescapeEngine::waitInLoop(int maxWait) {
 			switch (event.type) {
 			case Common::EVENT_QUIT:
 			case Common::EVENT_RETURN_TO_LAUNCHER:
+				_inWaitLoop = false;
 				quitGame();
 				return;
 
@@ -95,6 +97,7 @@ void FreescapeEngine::waitInLoop(int maxWait) {
 		g_system->updateScreen();
 		g_system->delayMillis(15); // try to target ~60 FPS
 	}
+	_inWaitLoop = false;
 	_gfx->clear(0, 0, 0, true);
 	_eventManager->purgeMouseEvents();
 	_eventManager->purgeKeyboardEvents();
@@ -303,12 +306,21 @@ void FreescapeEngine::drawFullscreenMessageAndWait(Common::String message) {
 
 void FreescapeEngine::drawBorderScreenAndWait(Graphics::Surface *surface, int maxWait) {
 	PauseToken pauseToken = pauseEngine();
+	Graphics::Surface *compositedSurface = nullptr;
+	if (surface)
+		compositedSurface = new Graphics::Surface();
+
 	for (int i = 0; i < maxWait; i++) {
 		Common::Event event;
 		while (_eventManager->pollEvent(event)) {
 			switch (event.type) {
 			case Common::EVENT_QUIT:
 			case Common::EVENT_RETURN_TO_LAUNCHER:
+				if (compositedSurface) {
+					compositedSurface->free();
+					delete compositedSurface;
+				}
+				pauseToken.clear();
 				quitGame();
 				return;
 
@@ -349,13 +361,18 @@ void FreescapeEngine::drawBorderScreenAndWait(Graphics::Surface *surface, int ma
 		_gfx->clear(0, 0, 0, true);
 		drawBorder();
 		if (surface) {
+			compositedSurface->copyFrom(*surface);
 			if (_currentArea)
-				drawPlatformUI(surface);
-			drawFullscreenSurface(surface);
+				drawPlatformUI(compositedSurface);
+			drawFullscreenSurface(compositedSurface);
 		}
 		_gfx->flipBuffer();
 		g_system->updateScreen();
 		g_system->delayMillis(15); // try to target ~60 FPS
+	}
+	if (compositedSurface) {
+		compositedSurface->free();
+		delete compositedSurface;
 	}
 	pauseToken.clear();
 	playSound(_soundIndexMenu, false, _soundFxHandle);

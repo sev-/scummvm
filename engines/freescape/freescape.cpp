@@ -206,6 +206,7 @@ FreescapeEngine::FreescapeEngine(OSystem *syst, const ADGameDescription *gd)
 	_fontLoaded = false;
 	_dataBundle = nullptr;
 	_extraBuffer = nullptr;
+	_inWaitLoop = false;
 
 	_lastFrame = 0;
 	// The near clip plane of 2 is useful for Driller and Dark Side as they have open spaces without too much

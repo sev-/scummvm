@@ -62,6 +62,8 @@ public:
 	bool _flashlightOn;
 	int _lastThirtySeconds;
 	int _lastFiveSeconds;
+	int _lastHeartbeatSoundTick;
+	int _lastHeartIndicatorFrame;
 
 	int _lastSecond;
 	void updateTimeVariables() override;

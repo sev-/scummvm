@@ -649,6 +649,7 @@ public:
 	int _ticksFromEnd;
 	int _lastTick;
 	int _lastMinute;
+	bool _inWaitLoop;
 
 	void getTimeFromCountdown(int &seconds, int &minutes, int &hours);
 	virtual void updateTimeVariables();
