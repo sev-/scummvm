@@ -62,26 +62,30 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
 
 	// Step indicator: 1 word × 4 rows, 8 frames, stride=40
-	for (int f = 0; f < 8; f++) {
-		auto *surf = new Graphics::ManagedSurface();
-		surf->create(16, 4, _gfx->_texturePixelFormat);
-		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
-		decodeAmigaSprite(file, surf, stepOffset + f * 40, 1, 4, palette);
-		_stepSprites.push_back(surf);
+	if (stepOffset >= 0) {
+		for (int f = 0; f < 8; f++) {
+			auto *surf = new Graphics::ManagedSurface();
+			surf->create(16, 4, _gfx->_texturePixelFormat);
+			surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
+			decodeAmigaSprite(file, surf, stepOffset + f * 40, 1, 4, palette);
+			_stepSprites.push_back(surf);
+		}
 	}
 
 	// Angle indicator: 1 word × 4 rows, 8 frames, stride=40
-	for (int f = 0; f < 8; f++) {
-		auto *surf = new Graphics::ManagedSurface();
-		surf->create(16, 4, _gfx->_texturePixelFormat);
-		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
-		decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette);
-		_angleSprites.push_back(surf);
+	if (angleOffset >= 0) {
+		for (int f = 0; f < 8; f++) {
+			auto *surf = new Graphics::ManagedSurface();
+			surf->create(16, 4, _gfx->_texturePixelFormat);
+			surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
+			decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette);
+			_angleSprites.push_back(surf);
+		}
 	}
 
 	// Vehicle indicator: 4 words × 43 rows, 5 frames, stride=1408 ($580)
 	// Frame 0=fly, frames 1-4=tank heights 0-3
-	{
+	if (vehicleOffset >= 0) {
 		uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
 		for (int f = 0; f < 5; f++) {
 			auto *surf = new Graphics::ManagedSurface();
@@ -94,7 +98,7 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 
 	// Quit/abort indicator: 2 words × 8 rows, 11 frames, stride=$90=144
 	// Frames 0-6: shutter animation, 7-10: confirmation squares filling in
-	{
+	if (quitOffset >= 0) {
 		uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
 		for (int f = 0; f < 11; f++) {
 			auto *surf = new Graphics::ManagedSurface();
@@ -334,6 +338,22 @@ void DrillerEngine::loadAssetsAmigaDemo() {
 		loadFonts(&file, 0xa30);
 		loadMessagesFixedSize(&file, 0x3960, 14, 20);
 		loadGlobalObjects(&file, 0x3716, 8);
+
+		byte *palette = nullptr;
+		Common::File neoFile;
+		neoFile.open("console.neo");
+		if (neoFile.isOpen())
+			palette = getPaletteFromNeoImage(&neoFile, 0);
+
+		loadRigSprites(&file, 0x1A960);
+		if (palette) {
+			// The rolling demo matches the retail executable for these indicator blocks,
+			// but its vehicle sprite set differs, so keep the bundled fallback for that one.
+			loadIndicatorSprites(&file, palette, 0x1D320, 0x1D5A8, -1, 0x1CC98);
+			loadCompassStrips(&file, palette, 0x19BFC, 0x1D2D2);
+			loadEarthquakeSprites(&file, palette, 0x1D8E6);
+		}
+		free(palette);
 	}
 
 	file.close();
