@@ -509,6 +509,11 @@ Math::Vector3d getProjectionToPlane(const Math::Vector3d &vect, const Math::Vect
 }
 
 void DrillerEngine::pressedKey(const int keycode) {
+	// Any key press during quit confirmation cancels it
+	if ((isAmiga() || isAtariST()) && _quitConfirmCounter > 0) {
+		_quitConfirmCounter = 0;
+	}
+
 	if (keycode == kActionIncreaseStepSize) {
 		increaseStepSize();
 	} else if (keycode == kActionDecreaseStepSize) {
@@ -869,6 +874,8 @@ void DrillerEngine::removeDrill(Area *area) {
 
 void DrillerEngine::initGameState() {
 	FreescapeEngine::initGameState();
+	_quitConfirmCounter = 0;
+	_quitStartTicks = 0;
 
 	for (auto &it : _areaMap) {
 		if (_drillStatusByArea[it._key] != kDrillerNoRig)
@@ -959,6 +966,14 @@ bool DrillerEngine::onScreenControls(Common::Point mouse) {
 		_gfx->setViewport(_fullscreenViewArea);
 		loadGameDialog();
 		_gfx->setViewport(_viewArea);
+		return true;
+	} else if ((isAmiga() || isAtariST()) && !_quitSprites.empty() && _quitArea.contains(mouse)) {
+		if (_quitConfirmCounter == 0)
+			_quitStartTicks = _ticks;
+		_quitConfirmCounter++;
+		if (_quitConfirmCounter > 4) {
+			_gameStateControl = kFreescapeGameStateEnd;
+		}
 		return true;
 	}
 	return false;

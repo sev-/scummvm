@@ -111,9 +111,13 @@ private:
 	Common::Array<Graphics::ManagedSurface *> _stepSprites;    // 8 step indicator frames
 	Common::Array<Graphics::ManagedSurface *> _angleSprites;   // 8 angle/compass frames
 	Common::Array<Graphics::ManagedSurface *> _vehicleSprites; // 5 vehicle mode frames (fly + 4 tank heights)
+	Common::Array<Graphics::ManagedSurface *> _quitSprites;   // 11 quit animation frames
+	int _quitConfirmCounter;  // 0=not quitting, 1-4=waiting for confirmations
+	int _quitStartTicks;      // _ticks when quit was initiated (for shutter animation)
+	Common::Rect _quitArea;   // click area for quit button on Amiga/Atari console
 	void loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset);
 	void loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
-		int stepOffset, int angleOffset, int vehicleOffset);
+		int stepOffset, int angleOffset, int vehicleOffset, int quitOffset);
 
 	// Compass indicators loaded from executable
 	Graphics::ManagedSurface *_compassPitchStrip;  // pitch: 32px wide × (144+29) rows scrolling strip

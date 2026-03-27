@@ -84,7 +84,7 @@ void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsO
 }
 
 void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
-		int stepOffset, int angleOffset, int vehicleOffset) {
+		int stepOffset, int angleOffset, int vehicleOffset, int quitOffset) {
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
 
 	// Step indicator: 1 word × 4 rows, 8 frames, stride=40
@@ -115,6 +115,19 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 			surf->fillRect(Common::Rect(0, 0, 64, 43), black);
 			decodeAmigaSprite(file, surf, vehicleOffset + f * 0x580, 4, 43, palette, _gfx->_texturePixelFormat);
 			_vehicleSprites.push_back(surf);
+		}
+	}
+
+	// Quit/abort indicator: 2 words × 8 rows, 11 frames, stride=$90=144
+	// Frames 0-6: shutter animation, 7-10: confirmation squares filling in
+	{
+		uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+		for (int f = 0; f < 11; f++) {
+			auto *surf = new Graphics::ManagedSurface();
+			surf->create(32, 8, _gfx->_texturePixelFormat);
+			surf->fillRect(Common::Rect(0, 0, 32, 8), black);
+			decodeAmigaSprite(file, surf, quitOffset + f * 0x90, 2, 8, palette, _gfx->_texturePixelFormat);
+			_quitSprites.push_back(surf);
 		}
 	}
 }
@@ -204,7 +217,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 
 		byte *palette = getPaletteFromNeoImage(&file, 0x137f4);
 		loadRigSprites(&file, 0x2407A);
-		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222, 0x24D88);
+		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222, 0x24D88, 0x26912);
 		loadCompassStrips(&file, palette, 0x23316, 0x26F4C);
 		free(palette);
 	} else if (_variant & GF_AMIGA_BUDGET) {
@@ -244,7 +257,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 			palette = getPaletteFromNeoImage(&neoFile, 0);
 		loadRigSprites(&file, 0x1B8C8);
 		if (palette) {
-			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510, 0x1C5D6);
+			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510, 0x1C5D6, 0x1DC00);
 			loadCompassStrips(&file, palette, 0x1AB64, 0x1E23A);
 		}
 		free(palette);
@@ -505,6 +518,30 @@ void DrillerEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 			Common::Rect(_compassYawFrames[rot]->w, _compassYawFrames[rot]->h), transparent);
 	}
 
+	// Quit indicator (ABORTSQ): shows on the console when quit is initiated.
+	// First click: shutter rolls down (frames 0-6), then shows 3 empty squares (frame 7).
+	// Clicks 2-4: squares fill in (frames 8-10). Fourth click = quit confirmed.
+	// Mask $0000,$0FFF: 20 visible pixels.
+	// Quit sequence from assembly (ABORTSQ):
+	// Click 1: shutter rolls down (frames 0-6), settles on frame 7 (3 empty lights)
+	// Click 2: frame 8 (first light on)
+	// Click 3: frame 9 (second light on)
+	// Click 4: frame 10 (third light on, bar turns green) → next click quits
+	if (!_quitSprites.empty() && _quitConfirmCounter > 0) {
+		int frame;
+		if (_quitConfirmCounter == 1) {
+			// Shutter intro: animate frames 0-6, then hold frame 7
+			int shutterFrame = (_ticks - _quitStartTicks) / 2;
+			frame = (shutterFrame >= 7) ? 7 : shutterFrame;
+		} else {
+			// Counter 2→frame 8, 3→frame 9, 4→frame 10
+			frame = 6 + _quitConfirmCounter;
+		}
+		frame = CLIP(frame, 0, (int)_quitSprites.size() - 1);
+		surface->copyRectToSurface(*_quitSprites[frame], 176, 5,
+			Common::Rect(0, 0, 20, _quitSprites[frame]->h));
+	}
+
 	// Drilling rig animation: cycles through 5 frames when rig is placed
 	if (!_rigSprites.empty() && _drillStatusByArea[_currentArea->getAreaID()] == 1) {
 		int frame = (_ticks / 7) % _rigSprites.size();
@@ -551,6 +588,9 @@ void DrillerEngine::initAmigaAtari() {
 
 	_borderExtra = nullptr;
 	_compassPitchStrip = nullptr;
+	_quitConfirmCounter = 0;
+	_quitStartTicks = 0;
+	_quitArea = Common::Rect(188, 5, 208, 13);
 	_borderExtraTexture = nullptr;
 
 	_soundIndexShoot = 1;
