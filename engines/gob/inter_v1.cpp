@@ -1348,6 +1348,11 @@ void Inter_v1::o1_palLoad(OpFuncParams &params) {
 }
 
 void Inter_v1::o1_keyFunc(OpFuncParams &params) {
+	if (_vm->getGameType() != kGameTypeWeen && !_vm->_vidPlayer->isPlayingLive()) {
+		_vm->_draw->forceBlit();
+		_vm->_video->retrace();
+	}
+
 	animPalette();
 	_vm->_draw->blitInvalidated();
 
