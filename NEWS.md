@@ -34,15 +34,17 @@ For a more comprehensive changelog of the latest experimental code, see:
      the Amiga Elvira 1 demo.
    - Implemented original cursors for the Amiga release of Personal
      Nightmare.
+   - Fixed Personal Nightmare 'Wait' command being far too quick on
+     modern systems.
    - Fixed inventory icon colors in the Amiga and Atari ST releases of
      Personal Nightmare.
    - Fixed Simon's sprite having no color in the Acorn floppy demo
      of Simon the Sorcerer 1.
 
  Alcachofa:
-   - Added support for earlier spanish CD variant of
+   - Added support for earlier Spanish CD variant of
      Mortadelo y Filemón: Una Aventura de Cine - Edición Especial.
-   - Added support for russian variant of Mort & Phil: A Movie Adventure
+   - Added support for Russian variant of Mort & Phil: A Movie Adventure
      (Секретные агенты: Киномонстры атакуют).
 
  Bagel:
@@ -113,8 +115,12 @@ For a more comprehensive changelog of the latest experimental code, see:
  SLUDGE:
    - Fixed crash at start of Nathan's Second Chance game.
 
+ Sword1:
+   - Fixed music from the original Broken Sword 1 release being played at a
+     wrong sample rate on PS3, Wii and OSXPPC.
+
  Sword2:
-   - Fixed crash with some DXA movies, particularly noticeable in intro.dxa.
+   - Fixed crash with some DXA movies, such as the ones played in the intro.
 
  Teenagent:
    - Fixed 'could not locate language block' error when starting the Polish and
