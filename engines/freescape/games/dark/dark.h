@@ -116,6 +116,9 @@ public:
 	Common::Array<Graphics::ManagedSurface *> _amigaCompassNeedleFrames;
 	Common::Array<Graphics::ManagedSurface *> _amigaCompassLeftFrames;
 	Common::Array<Graphics::ManagedSurface *> _amigaCompassRightFrames;
+	bool _amigaCompassYawPhaseInitialized;
+	int _amigaCompassYawPhase;
+	int _amigaCompassYawLastUpdateTick;
 	bool _jetpackIndicatorStateInitialized;
 	bool _jetpackIndicatorLastFlyMode;
 	int _jetpackIndicatorTransitionFrame;

@@ -91,6 +91,9 @@ DarkEngine::DarkEngine(OSystem *syst, const ADGameDescription *gd) : FreescapeEn
 
 	_jetFuelSeconds = _initialEnergy * 6;
 	_amigaCompassPitchMarker = nullptr;
+	_amigaCompassYawPhaseInitialized = false;
+	_amigaCompassYawPhase = 0;
+	_amigaCompassYawLastUpdateTick = -1;
 	_jetpackIndicatorStateInitialized = false;
 	_jetpackIndicatorLastFlyMode = false;
 	_jetpackIndicatorTransitionFrame = 0;
@@ -308,6 +311,9 @@ void DarkEngine::initGameState() {
 
 	_angleRotationIndex = 0;
 	_playerStepIndex = 6;
+	_amigaCompassYawPhaseInitialized = false;
+	_amigaCompassYawPhase = 0;
+	_amigaCompassYawLastUpdateTick = -1;
 	_jetpackIndicatorStateInitialized = false;
 	_jetpackIndicatorTransitionDirection = 0;
 
@@ -1067,6 +1073,9 @@ Common::Error DarkEngine::loadGameStreamExtended(Common::SeekableReadStream *str
 		uint16 key = stream->readUint16LE();
 		_exploredAreas[key] = stream->readUint32LE();
 	}
+	_amigaCompassYawPhaseInitialized = false;
+	_amigaCompassYawPhase = 0;
+	_amigaCompassYawLastUpdateTick = -1;
 	_jetpackIndicatorStateInitialized = false;
 	_jetpackIndicatorTransitionDirection = 0;
 	return Common::kNoError;

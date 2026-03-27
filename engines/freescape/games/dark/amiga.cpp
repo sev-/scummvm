@@ -31,13 +31,54 @@ namespace Freescape {
 
 namespace {
 
-static const int kAmigaGemdosHeaderSize = 0x1C;
+const int kAmigaGemdosHeaderSize = 0x1C;
 
-static int amigaProgToFile(int address) {
+int amigaProgToFile(int address) {
 	return address + kAmigaGemdosHeaderSize;
 }
 
-static void decodeMaskedAmigaSprite(Common::SeekableReadStream *file, Graphics::ManagedSurface *surf,
+int wrapCompassPhase(int phase, int frameCount) {
+	if (frameCount <= 0)
+		return 0;
+
+	phase %= frameCount;
+	if (phase < 0)
+		phase += frameCount;
+	return phase;
+}
+
+int darkAmigaForcedCompassStep(int areaId) {
+	switch (areaId) {
+	case 1:
+	case 27:
+	case 28:
+		return 1;
+	case 18:
+		return -1;
+	default:
+		return 0;
+	}
+}
+
+int yawToCompassPhase(float yaw, int frameCount) {
+	while (yaw < 0.0f)
+		yaw += 360.0f;
+	while (yaw >= 360.0f)
+		yaw -= 360.0f;
+
+	return wrapCompassPhase((int)(yaw / 5.0f), frameCount);
+}
+
+int stepCompassPhaseTowardTarget(int current, int target, int frameCount) {
+	if (frameCount <= 0 || current == target)
+		return 0;
+
+	int forwardDistance = wrapCompassPhase(target - current, frameCount);
+	int backwardDistance = wrapCompassPhase(current - target, frameCount);
+	return (forwardDistance < backwardDistance) ? 1 : -1;
+}
+
+void decodeMaskedAmigaSprite(Common::SeekableReadStream *file, Graphics::ManagedSurface *surf,
 		int dataOffset, int widthWords, int height, const uint16 *maskWords,
 		const Graphics::PixelFormat &pixelFormat, const byte *palette) {
 	for (int y = 0; y < height; y++) {
@@ -110,7 +151,7 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 	// Dark Side: COLOR5 palette cycling from assembly interrupt handler at $10E4.
 	// Cycles $DFF18A (COLOR5) every 2 frames through 30 entries.
 	{
-		static const uint16 kDarkSideCyclingTable[] = {
+		const uint16 kDarkSideCyclingTable[] = {
 			0x000, 0xE6D, 0x600, 0x900, 0xC00, 0xF00, 0xF30, 0xF60,
 			0xF90, 0xFC0, 0xFF0, 0xAF0, 0x5F0, 0x6F8, 0x7FD, 0x7EF,
 			0xBDF, 0xDDF, 0xBCF, 0x9BF, 0x7BF, 0x6BF, 0x5AF, 0x4AF,
@@ -137,9 +178,9 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 
 	// Load HDSMUSIC.AM music data (Wally Beben custom engine)
 	// HDSMUSIC.AM is an embedded GEMDOS executable at stream offset $BA64
-	static const uint32 kHdsMusicOffset = 0xBA64;
-	static const uint32 kGemdosHeaderSize = 0x1C;
-	static const uint32 kHdsMusicTextSize = 0xF4BC;
+	const uint32 kHdsMusicOffset = 0xBA64;
+	const uint32 kGemdosHeaderSize = 0x1C;
+	const uint32 kHdsMusicTextSize = 0xF4BC;
 
 	stream->seek(kHdsMusicOffset + kGemdosHeaderSize);
 	_musicData.resize(kHdsMusicTextSize);
@@ -185,9 +226,9 @@ void DarkEngine::loadAmigaIndicatorSprites(Common::SeekableReadStream *file, byt
 		_amigaCompassNeedleFrames.push_back(surf);
 	}
 
-	static const uint16 kLeftMasks[2] = { 0xE000, 0x01FF };
-	static const uint16 kRightMasks[2] = { 0xFF80, 0x003F };
-	static const int kSideFrameOrder[4] = { 3, 2, 1, 0 };
+	const uint16 kLeftMasks[2] = { 0xE000, 0x01FF };
+	const uint16 kRightMasks[2] = { 0xFF80, 0x003F };
+	const int kSideFrameOrder[4] = { 3, 2, 1, 0 };
 
 	_amigaCompassLeftFrames.clear();
 	for (int phase = 0; phase < 4; phase++) {
@@ -264,10 +305,10 @@ void DarkEngine::loadJetpackRawFrames(Common::SeekableReadStream *file) {
 	// Original Amiga layout:
 	// - transition strip at prog 0x23B9E, 9 frames, stride 0x160
 	// - crouch frame at prog 0x2481E
-	static const int kTransitionBaseOffset = 0x23B9E + kAmigaGemdosHeaderSize;
-	static const int kTransitionFrameCount = 9;
-	static const int kCrouchFrameOffset = 0x2481E + kAmigaGemdosHeaderSize;
-	static const int kFrameSize = 0x160; // 2 word columns * 22 rows * 8 bytes/row
+	const int kTransitionBaseOffset = 0x23B9E + kAmigaGemdosHeaderSize;
+	const int kTransitionFrameCount = 9;
+	const int kCrouchFrameOffset = 0x2481E + kAmigaGemdosHeaderSize;
+	const int kFrameSize = 0x160; // 2 word columns * 22 rows * 8 bytes/row
 	_jetpackTransitionFrames.clear();
 	for (int i = 0; i < kTransitionFrameCount; i++) {
 		file->seek(kTransitionBaseOffset + i * kFrameSize);
@@ -285,18 +326,18 @@ void DarkEngine::loadJetpackRawFrames(Common::SeekableReadStream *file) {
 }
 
 void DarkEngine::drawJetpackIndicator(Graphics::Surface *surface) {
-	static const int kTransitionFrameCount = 9;
-	static const uint32 kFrameDelayMs = 60;
-	static const int kVisibleLeftX = 109;
-	static const int kSourceLeftPadding = 13;
-	static const int kDrawBaseX = kVisibleLeftX - kSourceLeftPadding;
-	static const int kHeight = 22;
-	static const int kWidthWords = 2;
-	static const int kDrawY = 175;
-	static const uint16 kMaskWords[kWidthWords] = { 0xFFF8, 0x00FF };
-	static const int kFlyingBaseFrame = 0;
-	static const int kGroundStandingFrame = 8;
-	static const uint16 kJetpackColors[16] = {
+	const int kTransitionFrameCount = 9;
+	const uint32 kFrameDelayMs = 60;
+	const int kVisibleLeftX = 109;
+	const int kSourceLeftPadding = 13;
+	const int kDrawBaseX = kVisibleLeftX - kSourceLeftPadding;
+	const int kHeight = 22;
+	const int kWidthWords = 2;
+	const int kDrawY = 175;
+	const uint16 kMaskWords[kWidthWords] = { 0xFFF8, 0x00FF };
+	const int kFlyingBaseFrame = 0;
+	const int kGroundStandingFrame = 8;
+	const uint16 kJetpackColors[16] = {
 		0x000, 0x222, 0x000, 0x000,
 		0x000, 0x000, 0x444, 0x666,
 		0x000, 0x800, 0xA00, 0xF00,
@@ -382,13 +423,24 @@ void DarkEngine::drawAmigaCompass(Graphics::Surface *surface) {
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
 
 	if (!_amigaCompassYawFrames.empty()) {
-		float yaw = _yaw;
-		while (yaw < 0.0f)
-			yaw += 360.0f;
-		while (yaw >= 360.0f)
-			yaw -= 360.0f;
+		const int frameCount = _amigaCompassYawFrames.size();
+		const int targetPhase = yawToCompassPhase(_yaw, frameCount);
+		if (!_amigaCompassYawPhaseInitialized) {
+			_amigaCompassYawPhaseInitialized = true;
+			_amigaCompassYawPhase = targetPhase;
+			_amigaCompassYawLastUpdateTick = _ticks;
+		} else if (_amigaCompassYawLastUpdateTick != _ticks) {
+			int step = 0;
+			if (_currentArea)
+				step = darkAmigaForcedCompassStep(_currentArea->getAreaID());
+			if (step == 0)
+				step = stepCompassPhaseTowardTarget(_amigaCompassYawPhase, targetPhase, frameCount);
 
-		int frame = ((int)(yaw / 5.0f)) % _amigaCompassYawFrames.size();
+			_amigaCompassYawPhase = wrapCompassPhase(_amigaCompassYawPhase + step, frameCount);
+			_amigaCompassYawLastUpdateTick = _ticks;
+		}
+
+		const int frame = wrapCompassPhase(_amigaCompassYawPhase, frameCount);
 		surface->copyRectToSurfaceWithKey(*_amigaCompassYawFrames[frame], 48, 15,
 			Common::Rect(_amigaCompassYawFrames[frame]->w, _amigaCompassYawFrames[frame]->h), transparent);
 	}
