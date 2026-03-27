@@ -111,12 +111,21 @@ public:
 	// hardcoded palette at draw time.
 	Common::Array<Common::Array<byte>> _jetpackTransitionFrames;
 	Common::Array<byte> _jetpackCrouchFrame;
+	Common::Array<Graphics::ManagedSurface *> _amigaCompassYawFrames;
+	Graphics::ManagedSurface *_amigaCompassPitchMarker;
+	Common::Array<Graphics::ManagedSurface *> _amigaCompassNeedleFrames;
+	Common::Array<Graphics::ManagedSurface *> _amigaCompassLeftFrames;
+	Common::Array<Graphics::ManagedSurface *> _amigaCompassRightFrames;
 	bool _jetpackIndicatorStateInitialized;
 	bool _jetpackIndicatorLastFlyMode;
 	int _jetpackIndicatorTransitionFrame;
 	int _jetpackIndicatorTransitionDirection;
 	uint32 _jetpackIndicatorNextFrameMillis;
 	void loadJetpackRawFrames(Common::SeekableReadStream *file);
+	void loadAmigaIndicatorSprites(Common::SeekableReadStream *file, byte *palette);
+	void loadAmigaCompass(Common::SeekableReadStream *file, byte *palette);
+	void drawAmigaCompass(Graphics::Surface *surface);
+	void drawAmigaAmbientIndicators(Graphics::Surface *surface);
 	void drawJetpackIndicator(Graphics::Surface *surface);
 
 	int _soundIndexRestoreECD;

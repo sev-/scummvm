@@ -29,6 +29,47 @@
 
 namespace Freescape {
 
+namespace {
+
+static const int kAmigaGemdosHeaderSize = 0x1C;
+
+static int amigaProgToFile(int address) {
+	return address + kAmigaGemdosHeaderSize;
+}
+
+static void decodeMaskedAmigaSprite(Common::SeekableReadStream *file, Graphics::ManagedSurface *surf,
+		int dataOffset, int widthWords, int height, const uint16 *maskWords,
+		const Graphics::PixelFormat &pixelFormat, const byte *palette) {
+	for (int y = 0; y < height; y++) {
+		for (int col = 0; col < widthWords; col++) {
+			int off = dataOffset + (y * widthWords + col) * 8;
+			file->seek(off);
+			uint16 p0 = file->readUint16BE();
+			uint16 p1 = file->readUint16BE();
+			uint16 p2 = file->readUint16BE();
+			uint16 p3 = file->readUint16BE();
+			for (int bit = 0; bit < 16; bit++) {
+				if (maskWords[col] & (0x8000 >> bit))
+					continue;
+
+				byte colorIdx = 0;
+				if (p0 & (0x8000 >> bit)) colorIdx |= 1;
+				if (p1 & (0x8000 >> bit)) colorIdx |= 2;
+				if (p2 & (0x8000 >> bit)) colorIdx |= 4;
+				if (p3 & (0x8000 >> bit)) colorIdx |= 8;
+				if (colorIdx == 0)
+					continue;
+
+				uint32 color = pixelFormat.ARGBToColor(0xFF,
+					palette[colorIdx * 3], palette[colorIdx * 3 + 1], palette[colorIdx * 3 + 2]);
+				surf->setPixel(col * 16 + bit, y, color);
+			}
+		}
+	}
+}
+
+} // namespace
+
 void DarkEngine::loadAssetsAmigaFullGame() {
 	Common::File file;
 	file.open("0.drk");
@@ -117,7 +158,11 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 
 	_fontLoaded = true;
 
+	byte *palette = getPaletteFromNeoImage(stream, 0x1b762);
+	loadAmigaCompass(stream, palette);
+	loadAmigaIndicatorSprites(stream, palette);
 	loadJetpackRawFrames(stream);
+	free(palette);
 
 	for (auto &area : _areaMap) {
 		// Center and pad each area name so we do not have to do it at each frame
@@ -125,16 +170,103 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 	}
 }
 
+void DarkEngine::loadAmigaIndicatorSprites(Common::SeekableReadStream *file, byte *palette) {
+	if (!palette)
+		return;
+
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+
+	_amigaCompassNeedleFrames.clear();
+	for (int frame = 0; frame < 13; frame++) {
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(32, 3, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 32, 3), transparent);
+		decodeAmigaSprite(file, surf, amigaProgToFile(0x2784E) + frame * 0x30, 2, 3, palette);
+		_amigaCompassNeedleFrames.push_back(surf);
+	}
+
+	static const uint16 kLeftMasks[2] = { 0xE000, 0x01FF };
+	static const uint16 kRightMasks[2] = { 0xFF80, 0x003F };
+	static const int kSideFrameOrder[4] = { 3, 2, 1, 0 };
+
+	_amigaCompassLeftFrames.clear();
+	for (int phase = 0; phase < 4; phase++) {
+		int frameIndex = kSideFrameOrder[phase];
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(32, 21, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 32, 21), transparent);
+		decodeMaskedAmigaSprite(file, surf, amigaProgToFile(0x29B34) + frameIndex * 0x150, 2, 21,
+			kLeftMasks, _gfx->_texturePixelFormat, palette);
+		_amigaCompassLeftFrames.push_back(surf);
+	}
+
+	_amigaCompassRightFrames.clear();
+	for (int phase = 0; phase < 4; phase++) {
+		int frameIndex = kSideFrameOrder[phase];
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(32, 21, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 32, 21), transparent);
+		decodeMaskedAmigaSprite(file, surf, amigaProgToFile(0x2A07E) + frameIndex * 0x150, 2, 21,
+			kRightMasks, _gfx->_texturePixelFormat, palette);
+		_amigaCompassRightFrames.push_back(surf);
+	}
+}
+
+void DarkEngine::loadAmigaCompass(Common::SeekableReadStream *file, byte *palette) {
+	if (!palette)
+		return;
+
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+
+	Graphics::ManagedSurface base;
+	base.create(32, 5, _gfx->_texturePixelFormat);
+	base.fillRect(Common::Rect(0, 0, 32, 5), transparent);
+	decodeAmigaSprite(file, &base, amigaProgToFile(0x238B4), 2, 5, palette);
+
+	_amigaCompassYawFrames.clear();
+	file->seek(amigaProgToFile(0x234CC));
+	uint32 cursorMaskBase = file->readUint32BE();
+	for (int pos = 0; pos < 72; pos++) {
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(32, 5, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 32, 5), transparent);
+		surf->copyRectToSurface(base, 0, 0, Common::Rect(base.w, base.h));
+
+		int rowOffset = amigaProgToFile(0x234D0) + ((pos >> 3) & 0xFFFE);
+		int shift = pos & 0xF;
+		for (int row = 0; row < 5; row++) {
+			file->seek(rowOffset + row * 14);
+			uint32 longVal = file->readUint32BE();
+			uint16 wordVal = file->readUint16BE();
+			uint32 mask = ((longVal << shift) & 0xFFFFFFFF);
+			mask |= (((uint32)wordVal << shift) >> 16) & 0xFFFF;
+			mask |= cursorMaskBase;
+
+			for (int bit = 0; bit < 32; bit++) {
+				if ((mask & (0x80000000 >> bit)) == 0 && base.getPixel(bit, row) != transparent)
+					surf->setPixel(bit, row, black);
+			}
+		}
+
+		_amigaCompassYawFrames.push_back(surf);
+	}
+
+	_amigaCompassPitchMarker = new Graphics::ManagedSurface();
+	_amigaCompassPitchMarker->create(16, 9, _gfx->_texturePixelFormat);
+	_amigaCompassPitchMarker->fillRect(Common::Rect(0, 0, 16, 9), transparent);
+	decodeAmigaSprite(file, _amigaCompassPitchMarker, amigaProgToFile(0x27AC6), 1, 9, palette);
+}
+
 void DarkEngine::loadJetpackRawFrames(Common::SeekableReadStream *file) {
 	// The executable stream still includes the 0x1C-byte GEMDOS header, so the
 	// original program addresses need to be converted back to file offsets here.
-	static const int kGemdosHeaderSize = 0x1C;
 	// Original Amiga layout:
 	// - transition strip at prog 0x23B9E, 9 frames, stride 0x160
 	// - crouch frame at prog 0x2481E
-	static const int kTransitionBaseOffset = 0x23B9E + kGemdosHeaderSize;
+	static const int kTransitionBaseOffset = 0x23B9E + kAmigaGemdosHeaderSize;
 	static const int kTransitionFrameCount = 9;
-	static const int kCrouchFrameOffset = 0x2481E + kGemdosHeaderSize;
+	static const int kCrouchFrameOffset = 0x2481E + kAmigaGemdosHeaderSize;
 	static const int kFrameSize = 0x160; // 2 word columns * 22 rows * 8 bytes/row
 	_jetpackTransitionFrames.clear();
 	for (int i = 0; i < kTransitionFrameCount; i++) {
@@ -246,6 +378,50 @@ void DarkEngine::drawJetpackIndicator(Graphics::Surface *surface) {
 	}
 }
 
+void DarkEngine::drawAmigaCompass(Graphics::Surface *surface) {
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+
+	if (!_amigaCompassYawFrames.empty()) {
+		float yaw = _yaw;
+		while (yaw < 0.0f)
+			yaw += 360.0f;
+		while (yaw >= 360.0f)
+			yaw -= 360.0f;
+
+		int frame = ((int)(yaw / 5.0f)) % _amigaCompassYawFrames.size();
+		surface->copyRectToSurfaceWithKey(*_amigaCompassYawFrames[frame], 48, 15,
+			Common::Rect(_amigaCompassYawFrames[frame]->w, _amigaCompassYawFrames[frame]->h), transparent);
+	}
+
+	if (_amigaCompassPitchMarker) {
+		int pos = CLIP<int>((int)(_pitch / 1.65f), -36, 36);
+		surface->copyRectToSurfaceWithKey(*_amigaCompassPitchMarker, 304, 94 + pos,
+			Common::Rect(_amigaCompassPitchMarker->w, _amigaCompassPitchMarker->h), transparent);
+	}
+}
+
+void DarkEngine::drawAmigaAmbientIndicators(Graphics::Surface *surface) {
+	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
+
+	if (!_amigaCompassNeedleFrames.empty()) {
+		int frame = (_ticks / 4) % _amigaCompassNeedleFrames.size();
+		surface->copyRectToSurfaceWithKey(*_amigaCompassNeedleFrames[frame], 208, 21,
+			Common::Rect(_amigaCompassNeedleFrames[frame]->w, _amigaCompassNeedleFrames[frame]->h), transparent);
+	}
+
+	if (!_amigaCompassLeftFrames.empty()) {
+		int frame = (_ticks / 5) % _amigaCompassLeftFrames.size();
+		surface->copyRectToSurfaceWithKey(*_amigaCompassLeftFrames[frame], 0, 143,
+			Common::Rect(_amigaCompassLeftFrames[frame]->w, _amigaCompassLeftFrames[frame]->h), transparent);
+	}
+
+	if (!_amigaCompassRightFrames.empty()) {
+		int frame = (_ticks / 5) % _amigaCompassRightFrames.size();
+		surface->copyRectToSurfaceWithKey(*_amigaCompassRightFrames[frame], 288, 143,
+			Common::Rect(_amigaCompassRightFrames[frame]->w, _amigaCompassRightFrames[frame]->h), transparent);
+	}
+}
+
 void DarkEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 	uint32 white = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0xFF, 0xFF, 0xFF);
 	uint32 yellow = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0xEE, 0xCC, 0x00);
@@ -281,6 +457,8 @@ void DarkEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 	drawString(kDarkFontSmall, _currentArea->_name, 32, 151, grey8, greyA, transparent, surface);
 	drawBinaryClock(surface, 6, 110, white, grey);
 
+	drawAmigaCompass(surface);
+	drawAmigaAmbientIndicators(surface);
 	drawJetpackIndicator(surface);
 
 	int x = 229;

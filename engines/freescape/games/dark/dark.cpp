@@ -90,6 +90,7 @@ DarkEngine::DarkEngine(OSystem *syst, const ADGameDescription *gd) : FreescapeEn
 	_initialShield = 15;
 
 	_jetFuelSeconds = _initialEnergy * 6;
+	_amigaCompassPitchMarker = nullptr;
 	_jetpackIndicatorStateInitialized = false;
 	_jetpackIndicatorLastFlyMode = false;
 	_jetpackIndicatorTransitionFrame = 0;
