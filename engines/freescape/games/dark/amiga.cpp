@@ -19,6 +19,7 @@
  *
  */
 #include "common/file.h"
+#include "common/system.h"
 
 #include "graphics/palette.h"
 
@@ -116,9 +117,132 @@ void DarkEngine::loadAssetsAmigaFullGame() {
 
 	_fontLoaded = true;
 
+	loadJetpackRawFrames(stream);
+
 	for (auto &area : _areaMap) {
 		// Center and pad each area name so we do not have to do it at each frame
 		area._value->_name = centerAndPadString(area._value->_name, 26);
+	}
+}
+
+void DarkEngine::loadJetpackRawFrames(Common::SeekableReadStream *file) {
+	// The executable stream still includes the 0x1C-byte GEMDOS header, so the
+	// original program addresses need to be converted back to file offsets here.
+	static const int kGemdosHeaderSize = 0x1C;
+	// Original Amiga layout:
+	// - transition strip at prog 0x23B9E, 9 frames, stride 0x160
+	// - crouch frame at prog 0x2481E
+	static const int kTransitionBaseOffset = 0x23B9E + kGemdosHeaderSize;
+	static const int kTransitionFrameCount = 9;
+	static const int kCrouchFrameOffset = 0x2481E + kGemdosHeaderSize;
+	static const int kFrameSize = 0x160; // 2 word columns * 22 rows * 8 bytes/row
+	_jetpackTransitionFrames.clear();
+	for (int i = 0; i < kTransitionFrameCount; i++) {
+		file->seek(kTransitionBaseOffset + i * kFrameSize);
+		Common::Array<byte> raw(kFrameSize);
+		file->read(raw.data(), kFrameSize);
+		_jetpackTransitionFrames.push_back(raw);
+	}
+
+	file->seek(kCrouchFrameOffset);
+	_jetpackCrouchFrame.resize(kFrameSize);
+	file->read(_jetpackCrouchFrame.data(), kFrameSize);
+
+	_jetpackIndicatorStateInitialized = false;
+	_jetpackIndicatorTransitionDirection = 0;
+}
+
+void DarkEngine::drawJetpackIndicator(Graphics::Surface *surface) {
+	static const int kTransitionFrameCount = 9;
+	static const uint32 kFrameDelayMs = 60;
+	static const int kVisibleLeftX = 109;
+	static const int kSourceLeftPadding = 13;
+	static const int kDrawBaseX = kVisibleLeftX - kSourceLeftPadding;
+	static const int kHeight = 22;
+	static const int kWidthWords = 2;
+	static const int kDrawY = 175;
+	static const uint16 kMaskWords[kWidthWords] = { 0xFFF8, 0x00FF };
+	static const int kFlyingBaseFrame = 0;
+	static const int kGroundStandingFrame = 8;
+	static const uint16 kJetpackColors[16] = {
+		0x000, 0x222, 0x000, 0x000,
+		0x000, 0x000, 0x444, 0x666,
+		0x000, 0x800, 0xA00, 0xF00,
+		0xF80, 0xFD0, 0x000, 0x000
+	};
+
+	if (_jetpackTransitionFrames.size() != kTransitionFrameCount || _jetpackCrouchFrame.empty())
+		return;
+
+	if (!_jetpackIndicatorStateInitialized) {
+		_jetpackIndicatorStateInitialized = true;
+		_jetpackIndicatorLastFlyMode = _flyMode;
+		_jetpackIndicatorTransitionFrame = _flyMode ? 0 : kTransitionFrameCount - 1;
+		_jetpackIndicatorTransitionDirection = 0;
+		_jetpackIndicatorNextFrameMillis = 0;
+	} else if (_jetpackIndicatorLastFlyMode != _flyMode) {
+		// The original routines at 0x89F4 and 0x8ACC play 8->0 on enable
+		// and 0->8 on disable via $D18.
+		_jetpackIndicatorLastFlyMode = _flyMode;
+		_jetpackIndicatorTransitionFrame = _flyMode ? kTransitionFrameCount - 1 : 0;
+		_jetpackIndicatorTransitionDirection = _flyMode ? -1 : 1;
+		_jetpackIndicatorNextFrameMillis = g_system->getMillis() + kFrameDelayMs;
+	}
+
+	if (_jetpackIndicatorTransitionDirection != 0) {
+		uint32 now = g_system->getMillis();
+		while (now >= _jetpackIndicatorNextFrameMillis) {
+			int nextFrame = _jetpackIndicatorTransitionFrame + _jetpackIndicatorTransitionDirection;
+			if (nextFrame < 0 || nextFrame >= kTransitionFrameCount) {
+				_jetpackIndicatorTransitionDirection = 0;
+				break;
+			}
+			_jetpackIndicatorTransitionFrame = nextFrame;
+			_jetpackIndicatorNextFrameMillis += kFrameDelayMs;
+		}
+	}
+
+	const byte *raw = nullptr;
+	if (_jetpackIndicatorTransitionDirection != 0) {
+		raw = _jetpackTransitionFrames[_jetpackIndicatorTransitionFrame].data();
+	} else if (_flyMode) {
+		// 0x89F4 leaves the grounded strip on frame 0 after the 8->0 startup
+		// transition. The later 0x24988 path in FUN_106A is an incremental
+		// overlay, so the redraw-from-scratch UI still needs the base frame.
+		raw = _jetpackTransitionFrames[kFlyingBaseFrame].data();
+	} else {
+		// Dark uses two grounded stances. The engine-side stance maps to the
+		// same standing/crouch split used by the other Dark ports.
+		raw = (_playerHeightNumber == 0) ? _jetpackCrouchFrame.data() : _jetpackTransitionFrames[kGroundStandingFrame].data();
+	}
+
+	for (int y = 0; y < kHeight; y++) {
+		for (int col = 0; col < kWidthWords; col++) {
+			int off = (y * kWidthWords + col) * 8;
+			uint16 srcPlanes[4] = {
+				(uint16)((raw[off] << 8) | raw[off + 1]),
+				(uint16)((raw[off + 2] << 8) | raw[off + 3]),
+				(uint16)((raw[off + 4] << 8) | raw[off + 5]),
+				(uint16)((raw[off + 6] << 8) | raw[off + 7])
+			};
+			for (int bit = 0; bit < 16; bit++) {
+				if (kMaskWords[col] & (0x8000 >> bit))
+					continue;
+
+				int px = col * 16 + bit;
+				byte colorIdx = 0;
+				if (srcPlanes[0] & (0x8000 >> bit)) colorIdx |= 1;
+				if (srcPlanes[1] & (0x8000 >> bit)) colorIdx |= 2;
+				if (srcPlanes[2] & (0x8000 >> bit)) colorIdx |= 4;
+				if (srcPlanes[3] & (0x8000 >> bit)) colorIdx |= 8;
+				uint16 colorWord = kJetpackColors[colorIdx];
+				uint32 color = _gfx->_texturePixelFormat.ARGBToColor(0xFF,
+					((colorWord >> 8) & 0xF) * 17,
+					((colorWord >> 4) & 0xF) * 17,
+					(colorWord & 0xF) * 17);
+				surface->setPixel(kDrawBaseX + px, kDrawY + y, color);
+			}
+		}
 	}
 }
 
@@ -156,6 +280,8 @@ void DarkEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 
 	drawString(kDarkFontSmall, _currentArea->_name, 32, 151, grey8, greyA, transparent, surface);
 	drawBinaryClock(surface, 6, 110, white, grey);
+
+	drawJetpackIndicator(surface);
 
 	int x = 229;
 	int y = 180;

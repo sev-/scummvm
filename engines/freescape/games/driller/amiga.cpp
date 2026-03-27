@@ -27,33 +27,6 @@
 
 namespace Freescape {
 
-static void decodeAmigaSprite(Common::SeekableReadStream *file, Graphics::ManagedSurface *surf,
-		int dataOffset, int widthWords, int height, byte *palette,
-		const Graphics::PixelFormat &fmt) {
-	for (int y = 0; y < height; y++) {
-		for (int col = 0; col < widthWords; col++) {
-			int off = dataOffset + (y * widthWords + col) * 8;
-			file->seek(off);
-			uint16 p0 = file->readUint16BE();
-			uint16 p1 = file->readUint16BE();
-			uint16 p2 = file->readUint16BE();
-			uint16 p3 = file->readUint16BE();
-			for (int bit = 0; bit < 16; bit++) {
-				byte colorIdx = 0;
-				if (p0 & (0x8000 >> bit)) colorIdx |= 1;
-				if (p1 & (0x8000 >> bit)) colorIdx |= 2;
-				if (p2 & (0x8000 >> bit)) colorIdx |= 4;
-				if (p3 & (0x8000 >> bit)) colorIdx |= 8;
-				if (colorIdx == 0)
-					continue;
-				uint32 color = fmt.ARGBToColor(0xFF,
-					palette[colorIdx * 3], palette[colorIdx * 3 + 1], palette[colorIdx * 3 + 2]);
-				surf->setPixel(col * 16 + bit, y, color);
-			}
-		}
-	}
-}
-
 void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset) {
 	// SPRIGS: 2 word columns × 25 rows × 5 frames, stride=$1A0 (416 bytes)
 	const int frameStride = 0x1A0;
@@ -77,7 +50,7 @@ void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsO
 		auto *surf = new Graphics::ManagedSurface();
 		surf->create(32, 25, _gfx->_texturePixelFormat);
 		surf->fillRect(Common::Rect(0, 0, 32, 25), transparent);
-		decodeAmigaSprite(file, surf, sprigsOffset + (f + 1) * frameStride, 2, 25, palette, _gfx->_texturePixelFormat);
+		decodeAmigaSprite(file, surf, sprigsOffset + (f + 1) * frameStride, 2, 25, palette);
 		_rigSprites.push_back(surf);
 	}
 
@@ -93,7 +66,7 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 		auto *surf = new Graphics::ManagedSurface();
 		surf->create(16, 4, _gfx->_texturePixelFormat);
 		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
-		decodeAmigaSprite(file, surf, stepOffset + f * 40, 1, 4, palette, _gfx->_texturePixelFormat);
+		decodeAmigaSprite(file, surf, stepOffset + f * 40, 1, 4, palette);
 		_stepSprites.push_back(surf);
 	}
 
@@ -102,7 +75,7 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 		auto *surf = new Graphics::ManagedSurface();
 		surf->create(16, 4, _gfx->_texturePixelFormat);
 		surf->fillRect(Common::Rect(0, 0, 16, 4), transparent);
-		decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette, _gfx->_texturePixelFormat);
+		decodeAmigaSprite(file, surf, angleOffset + f * 40, 1, 4, palette);
 		_angleSprites.push_back(surf);
 	}
 
@@ -114,7 +87,7 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 			auto *surf = new Graphics::ManagedSurface();
 			surf->create(64, 43, _gfx->_texturePixelFormat);
 			surf->fillRect(Common::Rect(0, 0, 64, 43), black);
-			decodeAmigaSprite(file, surf, vehicleOffset + f * 0x580, 4, 43, palette, _gfx->_texturePixelFormat);
+			decodeAmigaSprite(file, surf, vehicleOffset + f * 0x580, 4, 43, palette);
 			_vehicleSprites.push_back(surf);
 		}
 	}
@@ -127,7 +100,7 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 			auto *surf = new Graphics::ManagedSurface();
 			surf->create(32, 8, _gfx->_texturePixelFormat);
 			surf->fillRect(Common::Rect(0, 0, 32, 8), black);
-			decodeAmigaSprite(file, surf, quitOffset + f * 0x90, 2, 8, palette, _gfx->_texturePixelFormat);
+			decodeAmigaSprite(file, surf, quitOffset + f * 0x90, 2, 8, palette);
 			_quitSprites.push_back(surf);
 		}
 	}
@@ -153,7 +126,7 @@ void DrillerEngine::loadEarthquakeSprites(Common::SeekableReadStream *file, byte
 		Graphics::ManagedSurface full;
 		full.create(32, 11, _gfx->_texturePixelFormat);
 		full.fillRect(Common::Rect(0, 0, 32, 11), black);
-		decodeAmigaSprite(file, &full, earthquakeOffset + offsets[i], 2, 11, palette, _gfx->_texturePixelFormat);
+		decodeAmigaSprite(file, &full, earthquakeOffset + offsets[i], 2, 11, palette);
 
 		auto *surf = new Graphics::ManagedSurface();
 		surf->create(20, 11, _gfx->_texturePixelFormat);
@@ -175,7 +148,7 @@ void DrillerEngine::loadCompassStrips(Common::SeekableReadStream *file, byte *pa
 		_compassPitchStrip = new Graphics::ManagedSurface();
 		_compassPitchStrip->create(32, totalRows, _gfx->_texturePixelFormat);
 		_compassPitchStrip->fillRect(Common::Rect(0, 0, 32, totalRows), black);
-		decodeAmigaSprite(file, _compassPitchStrip, pitchStripOffset, 2, totalRows, palette, _gfx->_texturePixelFormat);
+		decodeAmigaSprite(file, _compassPitchStrip, pitchStripOffset, 2, totalRows, palette);
 	}
 
 	// Yaw compass (SPRCOG): pre-render all 72 rotation frames.

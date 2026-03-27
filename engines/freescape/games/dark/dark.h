@@ -104,6 +104,21 @@ public:
 	Font _fontBig;
 	Font _fontMedium;
 	Font _fontSmall;
+
+	// Dark Side Amiga stores the grounded jetpack indicator states as raw
+	// 4-plane bitplane data. The executable drives those frames through a tiny
+	// fixed color ramp, so the renderer keeps the raw planes and applies a
+	// hardcoded palette at draw time.
+	Common::Array<Common::Array<byte>> _jetpackTransitionFrames;
+	Common::Array<byte> _jetpackCrouchFrame;
+	bool _jetpackIndicatorStateInitialized;
+	bool _jetpackIndicatorLastFlyMode;
+	int _jetpackIndicatorTransitionFrame;
+	int _jetpackIndicatorTransitionDirection;
+	uint32 _jetpackIndicatorNextFrameMillis;
+	void loadJetpackRawFrames(Common::SeekableReadStream *file);
+	void drawJetpackIndicator(Graphics::Surface *surface);
+
 	int _soundIndexRestoreECD;
 	int _soundIndexDestroyECD;
 	Audio::SoundHandle _soundFxHandleJetpack;
