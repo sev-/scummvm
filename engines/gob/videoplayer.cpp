@@ -488,6 +488,8 @@ bool VideoPlayer::play(int slot, Properties &properties) {
 									video->decoder->getNbFramesPastEnd();
 		}
 
+		_vm->_draw->updateAnimatedCursor();
+
 		bool playFrameResult = playFrame(slot, properties);
 		if ((_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4) &&
 				!playFrameResult &&
