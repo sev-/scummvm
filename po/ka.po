@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-27 01:06+0000\n"
-"PO-Revision-Date: 2026-03-12 13:22+0000\n"
+"PO-Revision-Date: 2026-03-27 06:22+0000\n"
 "Last-Translator: NorwayFun <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ka/>\n"
@@ -1571,10 +1571,7 @@ msgid "Icons per row:"
 msgstr "ხატულა მწკრივში:"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
@@ -2630,7 +2627,7 @@ msgstr "*  Abc"
 
 #: gui/printing-dialog.cpp:54
 msgid "Print"
-msgstr ""
+msgstr "დაბეჭდვა"
 
 #: gui/printing-dialog.cpp:56
 msgid "Save as image"
@@ -5826,7 +5823,7 @@ msgstr "გამოყენება"
 
 #: engines/access/metaengine.cpp:296
 msgid "Goto"
-msgstr ""
+msgstr "გადასვლა"
 
 #: engines/access/metaengine.cpp:301 engines/access/metaengine.cpp:332
 #: engines/bbvs/metaengine.cpp:130 engines/drascula/metaengine.cpp:250
@@ -6541,7 +6538,7 @@ msgstr "გადართავს ზოგიერთ არასავა�
 
 #: engines/alcachofa/metaengine.cpp:51
 msgid "32 Bits"
-msgstr ""
+msgstr "32-ბიტიანი"
 
 #: engines/alcachofa/metaengine.cpp:52
 msgid "Whether to render the game in 16-bit color"
@@ -6677,18 +6674,14 @@ msgid ""
 msgstr ""
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
-msgstr "მონიშვნა/მირტყმა/გაქცევა"
+msgstr "მონიშვნა / მირტყმა / გაქცევა"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr "ახტომა"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "შეიყვანეთ დონის კოდი"
 
@@ -7169,17 +7162,17 @@ msgstr ""
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the Artificial Intelligence biochip.
 #: engines/buried/metaengine.cpp:237
 msgid "Biochip AI"
-msgstr ""
+msgstr "ხი ბიოჩიპი"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the blank biochip.
 #: engines/buried/metaengine.cpp:243
 msgid "Biochip blank"
-msgstr ""
+msgstr "ცარიელი ბიოჩიპი"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the cloak biochip.
 #: engines/buried/metaengine.cpp:249
 msgid "Biochip cloak"
-msgstr ""
+msgstr "ბიოჩიპი მოსასხამი"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the evidence biochip.
 #: engines/buried/metaengine.cpp:255
@@ -7194,17 +7187,17 @@ msgstr "ბიოჩიპის ფაილები"
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the interface biochip.
 #: engines/buried/metaengine.cpp:267
 msgid "Biochip interface"
-msgstr ""
+msgstr "ბიოჩიპის ინტერფეისი"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the jump biochip.
 #: engines/buried/metaengine.cpp:273
 msgid "Biochip jump"
-msgstr ""
+msgstr "ახტომის ბიოჩიპი"
 
 #. I18N: The game has an inventory with a list of biochips. This action is used to switch the equipped biochip to the translate biochip.
 #: engines/buried/metaengine.cpp:279
 msgid "Biochip translate"
-msgstr ""
+msgstr "თარგმანის ბიოჩიპი"
 
 #. I18N: Shows a summary of collected points in the game.
 #: engines/buried/metaengine.cpp:285
@@ -8017,7 +8010,7 @@ msgstr "ინფორმაცია"
 
 #: engines/efh/metaengine.cpp:452
 msgid "Passive skills"
-msgstr ""
+msgstr "პასიური უნარები"
 
 #: engines/efh/metaengine.cpp:457
 msgid "Trade"
@@ -8207,7 +8200,7 @@ msgstr ""
 
 #: engines/freescape/metaengine.cpp:141
 msgid "Smoother movement"
-msgstr ""
+msgstr "უფრო გლუვი მოძრაობა"
 
 #: engines/freescape/metaengine.cpp:142
 msgid "Use smoother movements instead of discrete steps"
@@ -8215,10 +8208,8 @@ msgstr ""
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "ხმის კონტროლები"
+msgstr "WASD-ით კონტროლი"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
@@ -8291,7 +8282,7 @@ msgstr "სახე წინ"
 
 #: engines/freescape/games/castle/castle.cpp:524
 msgid "Run (hold)"
-msgstr ""
+msgstr "გაქცევა (გეჭიროთ)"
 
 #: engines/freescape/games/dark/dark.cpp:233
 #: engines/freescape/games/driller/driller.cpp:186
@@ -8364,7 +8355,7 @@ msgstr "ნაბიჯის ზომის შეცვლა"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:282
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "სწრაფი სირბილი (გეჭიროთ)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:290
 msgid "Toggle height"
@@ -8932,11 +8923,11 @@ msgstr "შესავლის კლავიატურის მალს�
 
 #: engines/hypno/metaengine.cpp:134
 msgid "Primary shoot"
-msgstr ""
+msgstr "ძირითადი სროლა"
 
 #: engines/hypno/metaengine.cpp:140
 msgid "Secondary shoot"
-msgstr ""
+msgstr "მეორადი სროლა"
 
 #: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
 #: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
@@ -8968,22 +8959,22 @@ msgstr "დონის გამოტოვება (ჩიტი)"
 #: engines/hypno/metaengine.cpp:180 engines/hypno/metaengine.cpp:278
 #: engines/hypno/metaengine.cpp:329
 msgid "Kill player"
-msgstr ""
+msgstr "მოთამაშის მოკვლა"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Chump is the easy mode.
 #: engines/hypno/metaengine.cpp:205
 msgid "Chump"
-msgstr ""
+msgstr "ყეყეჩი"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Punk is the medium mode.
 #: engines/hypno/metaengine.cpp:212
 msgid "Punk"
-msgstr ""
+msgstr "პანკი"
 
 #. I18N: (Game name: Soldier Boyz) the game has 3 difficulty levels: Chump, Punk and Badass. Badass is the hard mode.
 #: engines/hypno/metaengine.cpp:219
 msgid "Badass"
-msgstr ""
+msgstr "მაგარი კაცი"
 
 #. I18N: (Game name: Soldier Boyz) This makes the player restart from the last checkpoint.
 #: engines/hypno/metaengine.cpp:232
@@ -9447,7 +9438,7 @@ msgstr "შემდეგი ინვენტარის ნივთი"
 
 #: engines/lab/metaengine.cpp:373
 msgid "Exit map display"
-msgstr ""
+msgstr "გასვლა რუკის ჩვენებიდან"
 
 #: engines/lab/metaengine.cpp:379
 msgid "Up one level"
@@ -13073,7 +13064,7 @@ msgstr "გადახვევა ბოლოში"
 
 #: engines/titanic/metaengine.cpp:291
 msgid "Translation"
-msgstr "გადასვლა"
+msgstr "თარგმანი"
 
 #: engines/titanic/metaengine.cpp:307
 msgid "Toggle between Star Map and photo of your home"
@@ -13191,10 +13182,8 @@ msgid "Save and load game"
 msgstr "თამაშის შენახვა და ჩატვირთვა"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
-msgstr "მთავარი მენიუ/გასვლა"
+msgstr "მთავარი მენიუ / გასვლა"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -13677,27 +13666,27 @@ msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:49
 msgid "Swing"
-msgstr ""
+msgstr "ჩარტყმა"
 
 #: engines/ultima/ultima0/metaengine.cpp:50
 msgid "Throw"
-msgstr ""
+msgstr "გადაგდება"
 
 #: engines/ultima/ultima0/metaengine.cpp:51
 msgid "Food"
-msgstr ""
+msgstr "საჭმელი"
 
 #: engines/ultima/ultima0/metaengine.cpp:52
 msgid "Rapier"
-msgstr ""
+msgstr "დაშნა"
 
 #: engines/ultima/ultima0/metaengine.cpp:53
 msgid "Axe"
-msgstr ""
+msgstr "ცული"
 
 #: engines/ultima/ultima0/metaengine.cpp:54
 msgid "Shield"
-msgstr ""
+msgstr "ფარი"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
 msgid "Bow & arrow"
@@ -13705,29 +13694,21 @@ msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:56
 msgid "Magic amulet"
-msgstr ""
+msgstr "ჯადოსნური გულსაკიდი"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
 msgstr "ამულეტის პარამეტრი 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
 msgstr "ამულეტის პარამეტრი 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
 msgstr "ამულეტის პარამეტრი 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
 msgstr "ამულეტის პარამეტრი 4"
 
@@ -13741,25 +13722,21 @@ msgstr "სამხრეთი"
 
 #: engines/ultima/ultima0/metaengine.cpp:67
 msgid "West"
-msgstr ""
+msgstr "დასავლეთი"
 
 #: engines/ultima/ultima0/metaengine.cpp:68
 msgid "East"
-msgstr ""
+msgstr "აღმოსავლეთი"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter/Exit"
 msgid "Enter / Exit"
-msgstr "შესვლა/გასვლა"
+msgstr "შესვლა / გასვლა"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Pass/Wait"
 msgid "Pass / Wait"
-msgstr "გატარება/მოცდა"
+msgstr "გატარება / მოცდა"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
@@ -13767,8 +13744,6 @@ msgid "Minimap"
 msgstr "მინირუკა"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn Around"
 msgid "Turn around"
 msgstr "შემობრუნება"
 
@@ -13777,29 +13752,23 @@ msgstr "შემობრუნება"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Basic Keys"
 msgid "Basic keys"
 msgstr "ძირითადი ღილაკები"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Menu Keys"
 msgid "Menu keys"
 msgstr "მენიუს ღილაკები"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "Overworld Keys"
 msgid "Overworld keys"
 msgstr "Overworld-ის ღილაკები"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
 msgid "Dungeon keys"
-msgstr ""
+msgstr "მიწისქვეშეთის ღილაკები"
 
 #: engines/ultima/ultima4/metaengine.cpp:43
 #: engines/ultima/ultima4/metaengine.cpp:133
@@ -13894,7 +13863,7 @@ msgstr "ნორმალური სიჩქარე"
 
 #: engines/ultima/ultima4/metaengine.cpp:85
 msgid "Combat speed up"
-msgstr ""
+msgstr "ბრძოლის სიჩქარის გაზრდა"
 
 #: engines/ultima/ultima4/metaengine.cpp:86
 msgid "Combat speed down"
@@ -13902,11 +13871,11 @@ msgstr "ბრძოლის სიჩქარის შენელება"
 
 #: engines/ultima/ultima4/metaengine.cpp:87
 msgid "Combat speed normal"
-msgstr ""
+msgstr "ნორმალური ბრძოლის სიჩქარე"
 
 #: engines/ultima/ultima4/metaengine.cpp:93
 msgid "Party - None"
-msgstr ""
+msgstr "ჯგუფი - არავინ"
 
 #: engines/ultima/ultima4/metaengine.cpp:94
 msgid "Party - Character #1"
@@ -13942,7 +13911,7 @@ msgstr "გუნდი - გმირი #8"
 
 #: engines/ultima/ultima4/metaengine.cpp:107
 msgid "Destroy all creatures"
-msgstr ""
+msgstr "ყველა ქმნილების განადგურება"
 
 #: engines/ultima/ultima4/metaengine.cpp:108
 msgid "Toggle collision handling"
@@ -14126,8 +14095,6 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Cursor"
 msgid "Toggle cursor"
 msgstr "კურსორის გადართვა"
 
@@ -14191,43 +14158,43 @@ msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:116
 msgid "ALT code 0"
-msgstr ""
+msgstr "ALT კოდი 0"
 
 #: engines/ultima/nuvie/metaengine.cpp:117
 msgid "ALT code 1"
-msgstr ""
+msgstr "ALT კოდი 1"
 
 #: engines/ultima/nuvie/metaengine.cpp:118
 msgid "ALT code 2"
-msgstr ""
+msgstr "ALT კოდი 2"
 
 #: engines/ultima/nuvie/metaengine.cpp:119
 msgid "ALT code 3"
-msgstr ""
+msgstr "ALT კოდი 3"
 
 #: engines/ultima/nuvie/metaengine.cpp:120
 msgid "ALT code 4"
-msgstr ""
+msgstr "ALT კოდი 4"
 
 #: engines/ultima/nuvie/metaengine.cpp:121
 msgid "ALT code 5"
-msgstr ""
+msgstr "ALT კოდი 5"
 
 #: engines/ultima/nuvie/metaengine.cpp:122
 msgid "ALT code 6"
-msgstr ""
+msgstr "ALT კოდი 6"
 
 #: engines/ultima/nuvie/metaengine.cpp:123
 msgid "ALT code 7"
-msgstr ""
+msgstr "ALT კოდი 7"
 
 #: engines/ultima/nuvie/metaengine.cpp:124
 msgid "ALT code 8"
-msgstr ""
+msgstr "ALT კოდი 8"
 
 #: engines/ultima/nuvie/metaengine.cpp:125
 msgid "ALT code 9"
-msgstr ""
+msgstr "ALT კოდი 9"
 
 #: engines/ultima/nuvie/metaengine.cpp:129
 msgid "Open the asset viewer"
@@ -14492,7 +14459,7 @@ msgstr "ინვენტარის და სტატისტიკის 
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/ultima8/metaengine.cpp:70
 msgid "Close all displays"
-msgstr ""
+msgstr "ყველა ჩვენების დახურვა"
 
 #: engines/ultima/ultima8/metaengine.cpp:71
 msgid "Jump (fake both-button-click)"
