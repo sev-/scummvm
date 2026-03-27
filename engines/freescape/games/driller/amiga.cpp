@@ -19,6 +19,7 @@
  *
  */
 #include "common/file.h"
+#include "common/random.h"
 
 #include "freescape/freescape.h"
 #include "freescape/games/driller/driller.h"
@@ -132,6 +133,36 @@ void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte 
 	}
 }
 
+void DrillerEngine::loadEarthquakeSprites(Common::SeekableReadStream *file, byte *palette, int earthquakeOffset) {
+	// Seismograph monitor: 2 word columns (32px) × 11 rows, decoded from overlapping
+	// frames in a continuous sprite buffer. SPREQW={1,10,$200} means 2 columns, 11 rows
+	// (dbra counts). SPREQM={$8000,$07FF} masks out pixel 0 and pixels 21-31, leaving
+	// a visible area of 20×11 pixels. The original picks random byte offsets in steps
+	// of 32 from two ranges:
+	//   Sound ON:  2048..2528 (step 32) → 16 frames of dense seismic activity
+	//   Sound OFF: 0..480 (step 32) → 16 frames of sparse activity
+	// We precompute all 32 frames, storing only the 20×11 visible region.
+	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
+	static const int offsets[] = {
+		0, 32, 64, 96, 128, 160, 192, 224, 256, 288, 320, 352, 384, 416, 448, 480,
+		2048, 2080, 2112, 2144, 2176, 2208, 2240, 2272, 2304, 2336, 2368, 2400, 2432, 2464, 2496, 2528
+	};
+
+	for (int i = 0; i < 32; i++) {
+		// Decode the full 32×11 sprite, then extract the 20-pixel visible region
+		Graphics::ManagedSurface full;
+		full.create(32, 11, _gfx->_texturePixelFormat);
+		full.fillRect(Common::Rect(0, 0, 32, 11), black);
+		decodeAmigaSprite(file, &full, earthquakeOffset + offsets[i], 2, 11, palette, _gfx->_texturePixelFormat);
+
+		auto *surf = new Graphics::ManagedSurface();
+		surf->create(20, 11, _gfx->_texturePixelFormat);
+		surf->fillRect(Common::Rect(0, 0, 20, 11), black);
+		surf->copyRectToSurface(full, 0, 0, Common::Rect(1, 0, 21, 11));
+		_earthquakeSprites.push_back(surf);
+	}
+}
+
 void DrillerEngine::loadCompassStrips(Common::SeekableReadStream *file, byte *palette,
 		int pitchStripOffset, int yawCogOffset) {
 	uint32 black = _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0, 0, 0);
@@ -219,6 +250,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 		loadRigSprites(&file, 0x2407A);
 		loadIndicatorSprites(&file, palette, 0x26F9A, 0x27222, 0x24D88, 0x26912);
 		loadCompassStrips(&file, palette, 0x23316, 0x26F4C);
+		loadEarthquakeSprites(&file, palette, 0x27560);
 		free(palette);
 	} else if (_variant & GF_AMIGA_BUDGET) {
 		file.open("lift.neo");
@@ -259,6 +291,7 @@ void DrillerEngine::loadAssetsAmigaFullGame() {
 		if (palette) {
 			loadIndicatorSprites(&file, palette, 0x1E288, 0x1E510, 0x1C5D6, 0x1DC00);
 			loadCompassStrips(&file, palette, 0x1AB64, 0x1E23A);
+			loadEarthquakeSprites(&file, palette, 0x1E84E);
 		}
 		free(palette);
 
@@ -518,6 +551,16 @@ void DrillerEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 			Common::Rect(_compassYawFrames[rot]->w, _compassYawFrames[rot]->h), transparent);
 	}
 
+	// Seismograph monitor (SPREQL): animated noise at x=50, y=1 (20×11 visible pixels).
+	// The original updates every 4th tick picking a random frame.
+	// Sound-on frames (indices 16-31) show dense activity; sound-off (0-15) sparse.
+	if (!_earthquakeSprites.empty()) {
+		if ((_ticks & 3) == 0)
+			_earthquakeLastFrame = 16 + _rnd->getRandomNumber(15);
+		surface->copyRectToSurface(*_earthquakeSprites[_earthquakeLastFrame], 50, 1,
+			Common::Rect(0, 0, 20, 11));
+	}
+
 	// Quit indicator (ABORTSQ): shows on the console when quit is initiated.
 	// First click: shutter rolls down (frames 0-6), then shows 3 empty squares (frame 7).
 	// Clicks 2-4: squares fill in (frames 8-10). Fourth click = quit confirmed.
@@ -590,6 +633,7 @@ void DrillerEngine::initAmigaAtari() {
 	_compassPitchStrip = nullptr;
 	_quitConfirmCounter = 0;
 	_quitStartTicks = 0;
+	_earthquakeLastFrame = 16;
 	_quitArea = Common::Rect(188, 5, 208, 13);
 	_borderExtraTexture = nullptr;
 

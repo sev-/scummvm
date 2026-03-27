@@ -115,9 +115,12 @@ private:
 	int _quitConfirmCounter;  // 0=not quitting, 1-4=waiting for confirmations
 	int _quitStartTicks;      // _ticks when quit was initiated (for shutter animation)
 	Common::Rect _quitArea;   // click area for quit button on Amiga/Atari console
+	Common::Array<Graphics::ManagedSurface *> _earthquakeSprites; // seismograph monitor frames
+	int _earthquakeLastFrame;
 	void loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset);
 	void loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
 		int stepOffset, int angleOffset, int vehicleOffset, int quitOffset);
+	void loadEarthquakeSprites(Common::SeekableReadStream *file, byte *palette, int earthquakeOffset);
 
 	// Compass indicators loaded from executable
 	Graphics::ManagedSurface *_compassPitchStrip;  // pitch: 32px wide × (144+29) rows scrolling strip
