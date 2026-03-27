@@ -42,7 +42,8 @@ BSUM::BSUM(Common::SeekableReadStream *chunkStream) : EngineData(chunkStream) {
 
 	s.skip(0x17, kGameTypeVampire, kGameTypeVampire);
 	s.skip(0x49, kGameTypeNancy1, kGameTypeNancy1);
-	s.skip(0x43, kGameTypeNancy2);
+	s.skip(0x43, kGameTypeNancy2, kGameTypeNancy9);
+	s.skip(0x41, kGameTypeNancy10);
 
 	readFilename(s, conversationTextsFilename, kGameTypeNancy6);
 	readFilename(s, autotextFilename, kGameTypeNancy6);

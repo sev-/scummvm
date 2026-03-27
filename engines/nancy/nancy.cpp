@@ -428,10 +428,6 @@ void NancyEngine::bootGameEngine() {
 	// Setup mixer
 	syncSoundSettings();
 
-	if (getGameType() >= kGameTypeNancy10) {
-		error("Game not supported; Use console to inspect game data");
-	}
-
 	IFF *iff = _resource->loadIFF("boot");
 	if (!iff)
 		error("Failed to load boot script");
@@ -477,10 +473,30 @@ void NancyEngine::bootGameEngine() {
 	LOAD_BOOT(TABL)
 	LOAD_BOOT(MARK)
 
+	// New boot chunks for Nancy 10+
+	// TODO
+	//LOAD_BOOT(SHUI)
+	//LOAD_BOOT(TASK)
+	//LOAD_BOOT(UIIV)
+	//LOAD_BOOT(UICO)
+	//LOAD_BOOT(UICL)
+	//LOAD_BOOT(UIBW)
+	//LOAD_BOOT(UINB)
+
 	_cursor->init(iff->getChunkStream("CURS"));
 
 	_graphics->init();
-	_graphics->loadFonts(iff->getChunkStream("FONT"));
+
+	if (getGameType() <= kGameTypeNancy9) {
+		_graphics->loadFonts(iff->getChunkStream("FONT"));
+	} else {
+		IFF *fontIFF = _resource->loadIFF("font");
+		if (!fontIFF)
+			error("Failed to load font IFF");
+		// TODO: font count is hardcoded to 18 for now
+		_graphics->loadFontsNew(fontIFF->getChunkStream("FONT"), 18);
+		delete fontIFF;
+	}
 
 	preloadCals();
 

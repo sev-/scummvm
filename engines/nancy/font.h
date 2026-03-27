@@ -117,6 +117,18 @@ private:
 	int16 _uWithAcuteOffset					= -1;
 	int16 _eszettOffset						= -1;
 
+	// Even more specific offsets for extended ASCII characters. Introduced in nancy10
+	int16 _uppercaseAWithDotOffset          = -1;
+	int16 _aWithDotOffset                   = -1;
+	int16 _underscoreOffset                 = -1;
+	int16 _hashOffset                       = -1;
+	int16 _dollarOffset                     = -1;
+	int16 _lessThanOffset                   = -1;
+	int16 _greaterThanOffset                = -1;
+	int16 _leftCurlyBracketOffset           = -1;
+	int16 _rightCurlyBracketOffset          = -1;
+	int16 _euroOffset                       = -1;
+
 	Common::Array<Common::Rect> _characterRects;
 
 	Graphics::ManagedSurface _image;
