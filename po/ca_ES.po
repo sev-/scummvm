@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-27 15:04+0000\n"
-"PO-Revision-Date: 2026-02-17 04:22+0000\n"
+"PO-Revision-Date: 2026-03-27 15:22+0000\n"
 "Last-Translator: Xaviu <xaviu@xaviu.com>\n"
 "Language-Team: Catalan <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ca/>\n"
@@ -1615,10 +1615,7 @@ msgid "Icons per row:"
 msgstr "Icones per línia:"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
@@ -2744,10 +2741,8 @@ msgid "Save as image"
 msgstr "Desa com a imatge"
 
 #: gui/printing-dialog.cpp:58
-#, fuzzy
-#| msgid "First page"
 msgid "Fit to page"
-msgstr "Primera pàgina"
+msgstr "Ajusta a la pàgina"
 
 #: gui/printing-dialog.cpp:60 backends/graphics/opengl/opengl-graphics.cpp:315
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:127
@@ -6453,10 +6448,8 @@ msgid "Don't fade every screen to black when leaving a room."
 msgstr "No esvaeixis cada pantalla a negre quan surtis d'una habitació."
 
 #: engines/agos/dialogs.cpp:93
-#, fuzzy
-#| msgid "Use original save/load screens"
 msgid "Use original Acorn system cursor"
-msgstr "Utilitza les pantalles originals de desat/càrrega"
+msgstr "Utilitza el cursor original del sistema Acorn"
 
 #: engines/agos/dialogs.cpp:94
 msgid "Toggle between the system cursor and the default cursor."
@@ -6977,18 +6970,14 @@ msgstr ""
 "defecte."
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
-msgstr "Selecciona/Puntada/Córrer"
+msgstr "Selecciona / Puntada / Córrer"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr "Salta"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "Introduïu el codi de nivell"
 
@@ -7580,56 +7569,38 @@ msgstr "Finestra de confirmació per sortir"
 #. I18N: Here ALTered Item refers to the dice that has been altered/changed.
 #. In order to escape the dice game loop press Right/Left Alt
 #: engines/cge/metaengine.cpp:250
-#, fuzzy
-#| msgid "ALTered Item"
 msgid "ALTered item"
 msgstr "Element ALTerat"
 
 #: engines/cge/metaengine.cpp:257
-#, fuzzy
-#| msgid "Inventory Item 1 (Select / Deselect)"
 msgid "Inventory item 1 (Select / Deselect)"
 msgstr "Element 1 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:262
-#, fuzzy
-#| msgid "Inventory Item 2 (Select / Deselect)"
 msgid "Inventory item 2 (Select / Deselect)"
 msgstr "Element 2 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:267
-#, fuzzy
-#| msgid "Inventory Item 3 (Select / Deselect)"
 msgid "Inventory item 3 (Select / Deselect)"
 msgstr "Element 3 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:272
-#, fuzzy
-#| msgid "Inventory Item 4 (Select / Deselect)"
 msgid "Inventory item 4 (Select / Deselect)"
 msgstr "Element 4 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:277
-#, fuzzy
-#| msgid "Inventory Item 5 (Select / Deselect)"
 msgid "Inventory item 5 (Select / Deselect)"
 msgstr "Element 5 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:282
-#, fuzzy
-#| msgid "Inventory Item 6 (Select / Deselect)"
 msgid "Inventory item 6 (Select / Deselect)"
 msgstr "Element 6 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:287
-#, fuzzy
-#| msgid "Inventory Item 7 (Select / Deselect)"
 msgid "Inventory item 7 (Select / Deselect)"
 msgstr "Element 7 de l'inventari (selecciona / desselecciona)"
 
 #: engines/cge/metaengine.cpp:292
-#, fuzzy
-#| msgid "Inventory Item 8 (Select / Deselect)"
 msgid "Inventory item 8 (Select / Deselect)"
 msgstr "Element 8 de l'inventari (selecciona / desselecciona)"
 
@@ -8597,10 +8568,8 @@ msgstr "Usa moviments més suaus en lloc de passos discrets"
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "Controls de volum"
+msgstr "Controls tecles WASD"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
@@ -8633,14 +8602,10 @@ msgid "Info menu"
 msgstr "Menú d'informació"
 
 #: engines/freescape/games/castle/castle.cpp:453
-#, fuzzy
-#| msgid "Select Prince"
 msgid "Select prince"
 msgstr "Selecciona el príncep"
 
 #: engines/freescape/games/castle/castle.cpp:458
-#, fuzzy
-#| msgid "Select Princess"
 msgid "Select princess"
 msgstr "Selecciona la princesa"
 
@@ -8656,8 +8621,6 @@ msgstr "Commuta el so"
 #: engines/freescape/games/dark/dark.cpp:232
 #: engines/freescape/games/driller/driller.cpp:147
 #: engines/freescape/games/eclipse/eclipse.cpp:263
-#, fuzzy
-#| msgid "Rotate Left"
 msgid "Rotate left"
 msgstr "Gira cap a l'esquerra"
 
@@ -8665,8 +8628,6 @@ msgstr "Gira cap a l'esquerra"
 #: engines/freescape/games/dark/dark.cpp:237
 #: engines/freescape/games/driller/driller.cpp:152
 #: engines/freescape/games/eclipse/eclipse.cpp:268
-#, fuzzy
-#| msgid "Rotate Right"
 msgid "Rotate right"
 msgstr "Gira cap a la dreta"
 
@@ -8676,8 +8637,6 @@ msgstr "Arrossegar-se"
 
 #: engines/freescape/games/castle/castle.cpp:513
 #: engines/freescape/games/eclipse/eclipse.cpp:306
-#, fuzzy
-#| msgid "Face Forward"
 msgid "Face forward"
 msgstr "Mira endavant"
 
@@ -8700,53 +8659,39 @@ msgstr "Roda cap a la dreta"
 #. I18N: Illustrates the angle at which you turn left or right.
 #: engines/freescape/games/dark/dark.cpp:253
 #: engines/freescape/games/driller/driller.cpp:158
-#, fuzzy
-#| msgid "Increase Turn Angle"
 msgid "Increase turn angle"
 msgstr "Augmenta l'angle de gir"
 
 #: engines/freescape/games/dark/dark.cpp:258
 #: engines/freescape/games/driller/driller.cpp:163
-#, fuzzy
-#| msgid "Decrease Turn Angle"
 msgid "Decrease turn angle"
 msgstr "Disminueix l'angle de gir"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:264
 #: engines/freescape/games/driller/driller.cpp:169
-#, fuzzy
-#| msgid "Increase Step Size"
 msgid "Increase step size"
 msgstr "Augmenta la mida dels passos"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:270
 #: engines/freescape/games/driller/driller.cpp:175
-#, fuzzy
-#| msgid "Decrease Step Size"
 msgid "Decrease step size"
 msgstr "Disminueix la mida dels passos"
 
 #: engines/freescape/games/dark/dark.cpp:275
 #: engines/freescape/games/driller/driller.cpp:180
-#, fuzzy
-#| msgid "Rise/Fly up"
 msgid "Rise / Fly up"
-msgstr "Ascendeix/Vola amunt"
+msgstr "Ascendeix / Vola amunt"
 
 #: engines/freescape/games/dark/dark.cpp:281
 #: engines/freescape/games/driller/driller.cpp:196
-#, fuzzy
-#| msgid "Lower/Fly down"
 msgid "Lower / Fly down"
-msgstr "Descendeix/Vola avall"
+msgstr "Descendeix / Vola avall"
 
 #: engines/freescape/games/dark/dark.cpp:287
-#, fuzzy
-#| msgid "Enable/Disable Jetpack"
 msgid "Enable / Disable jetpack"
-msgstr "Activa/Desactiva Jetpack"
+msgstr "Activa / Desactiva Jetpack"
 
 #. I18N: drilling rig is an in game item
 #: engines/freescape/games/driller/driller.cpp:203
@@ -8760,15 +8705,11 @@ msgstr "Recull l'equip de perforació"
 
 #. I18N: Illustrates the angle at which you turn left or right.
 #: engines/freescape/games/eclipse/eclipse.cpp:274
-#, fuzzy
-#| msgid "Change Angle"
 msgid "Change angle"
 msgstr "Canvia l'angle"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/eclipse/eclipse.cpp:280
-#, fuzzy
-#| msgid "Change Step Size"
 msgid "Change step size"
 msgstr "Canvia la mida dels passos"
 
@@ -8777,8 +8718,6 @@ msgid "Sprint (hold)"
 msgstr ""
 
 #: engines/freescape/games/eclipse/eclipse.cpp:294
-#, fuzzy
-#| msgid "Toggle Height"
 msgid "Toggle height"
 msgstr "Commuta l'alçada"
 
@@ -8791,10 +8730,8 @@ msgid "Rest"
 msgstr "Descansa"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:311
-#, fuzzy
-#| msgid "Flashlight"
 msgid "Toggle flashlight"
-msgstr "Llanterna"
+msgstr "Commuta la llanterna"
 
 #: engines/glk/glk_api.cpp:62
 msgid "[ press any key to exit ]"
@@ -12521,10 +12458,8 @@ msgid "Enable demo/kiosk mode in the full retail version of Maniac Mansion."
 msgstr ""
 
 #: engines/scumm/metaengine.cpp:839
-#, fuzzy
-#| msgid "Playback"
 msgid "Disable Playback"
-msgstr "Reproducció"
+msgstr "Inhabilita la reproducció"
 
 #: engines/scumm/metaengine.cpp:840
 msgid ""
@@ -12998,8 +12933,6 @@ msgid "Menu scrolling keymappings"
 msgstr "Assignacions de tecles de desplaçament del menú"
 
 #: engines/sherlock/metaengine.cpp:784
-#, fuzzy
-#| msgid "save / load menu keymappings"
 msgid "Save / load menu keymappings"
 msgstr "Assignació de tecles del menú Desa / Carrega"
 
@@ -13295,16 +13228,12 @@ msgid "Display all exits on current location"
 msgstr ""
 
 #: engines/stark/metaengine.cpp:306
-#, fuzzy
-#| msgid "Scroll list up"
 msgid "Scroll dialogs up"
-msgstr "Desplaça la llista amunt"
+msgstr "Desplaça els diàlegs cap amunt"
 
 #: engines/stark/metaengine.cpp:312
-#, fuzzy
-#| msgid "Scroll list down"
 msgid "Scroll dialogs down"
-msgstr "Desplaça la llista avall"
+msgstr "Desplaça els diàlegs avall"
 
 #: engines/stark/metaengine.cpp:318
 msgid "Go to next dialog"
@@ -13815,10 +13744,8 @@ msgid "Save and load game"
 msgstr "Desa i carrega partida"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
-msgstr "Menú principal/Surt"
+msgstr "Menú principal / Surt"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -14339,26 +14266,18 @@ msgid "Magic amulet"
 msgstr ""
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
 msgstr "Opció d'amulet 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
 msgstr "Opció d'amulet 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
 msgstr "Opció d'amulet 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
 msgstr "Opció d'amulet 4"
 
@@ -14380,17 +14299,13 @@ msgstr "Est"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter/Exit"
 msgid "Enter / Exit"
-msgstr "Entra/Surt"
+msgstr "Entra / Surt"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Pass/Wait"
 msgid "Pass / Wait"
-msgstr "Passa/Espera"
+msgstr "Passa / Espera"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
@@ -14398,8 +14313,6 @@ msgid "Minimap"
 msgstr "Minimapa"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn Around"
 msgid "Turn around"
 msgstr "Gira't"
 
@@ -14408,22 +14321,16 @@ msgstr "Gira't"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Basic Keys"
 msgid "Basic keys"
 msgstr "Tecles bàsiques"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Menu Keys"
 msgid "Menu keys"
 msgstr "Tecles del menú"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "Overworld Keys"
 msgid "Overworld keys"
 msgstr "Tecles del món superior"
 
@@ -14757,8 +14664,6 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr ""
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Cursor"
 msgid "Toggle cursor"
 msgstr "Commuta el cursor"
 
@@ -15123,15 +15028,15 @@ msgstr "Obre l'inventari i les estadístiques"
 #. I18N: gump is Graphical User Menu Pop-up
 #: engines/ultima/ultima8/metaengine.cpp:70
 msgid "Close all displays"
-msgstr ""
+msgstr "Tanca totes les pantalles"
 
 #: engines/ultima/ultima8/metaengine.cpp:71
 msgid "Jump (fake both-button-click)"
-msgstr ""
+msgstr "Salta (simula prémer ambdós botons)"
 
 #: engines/ultima/ultima8/metaengine.cpp:72
 msgid "Careful step"
-msgstr ""
+msgstr "Pas acurat"
 
 #: engines/ultima/ultima8/metaengine.cpp:78
 msgid "Cycle through weapon inventory"
@@ -15477,15 +15382,15 @@ msgstr "Utilitza el paquet de parla italià"
 
 #: engines/wintermute/metaengine.cpp:95
 msgid "Use Italian dubbing instead of the default English one"
-msgstr ""
+msgstr "Usa el doblatge italià en lloc de l'anglès per defecte"
 
 #: engines/wintermute/metaengine.cpp:106
 msgid "Run SD version (1280x800)"
-msgstr ""
+msgstr "Executa la versió SD (1280x800)"
 
 #: engines/wintermute/metaengine.cpp:107
 msgid "Run the legacy SD version, which is better for small screens"
-msgstr ""
+msgstr "Executa la versió SD antiga, que és millor per a pantalles petites"
 
 #: engines/wintermute/metaengine.cpp:148
 msgid "FoxTail support is not compiled in"
