@@ -27,21 +27,25 @@
 
 namespace Freescape {
 
-void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset) {
+void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset, byte *paletteOverride) {
 	// SPRIGS: 2 word columns × 25 rows × 5 frames, stride=$1A0 (416 bytes)
 	const int frameStride = 0x1A0;
 	const int numFrames = 5;
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0, 0, 0);
 
 	// Get the console palette
-	byte *palette = nullptr;
-	if (_variant & GF_AMIGA_RETAIL)
-		palette = getPaletteFromNeoImage(file, 0x137f4);
-	else {
-		Common::File neoFile;
-		neoFile.open("console.neo");
-		if (neoFile.isOpen())
-			palette = getPaletteFromNeoImage(&neoFile, 0);
+	byte *palette = paletteOverride;
+	bool ownsPalette = false;
+	if (!palette) {
+		if (_variant & GF_AMIGA_RETAIL)
+			palette = getPaletteFromNeoImage(file, 0x137f4);
+		else {
+			Common::File neoFile;
+			neoFile.open("console.neo");
+			if (neoFile.isOpen())
+				palette = getPaletteFromNeoImage(&neoFile, 0);
+		}
+		ownsPalette = true;
 	}
 	if (!palette)
 		return;
@@ -54,7 +58,8 @@ void DrillerEngine::loadRigSprites(Common::SeekableReadStream *file, int sprigsO
 		_rigSprites.push_back(surf);
 	}
 
-	free(palette);
+	if (ownsPalette)
+		free(palette);
 }
 
 void DrillerEngine::loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,

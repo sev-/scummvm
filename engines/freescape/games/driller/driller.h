@@ -117,7 +117,7 @@ private:
 	Common::Rect _quitArea;   // click area for quit button on Amiga/Atari console
 	Common::Array<Graphics::ManagedSurface *> _earthquakeSprites; // seismograph monitor frames
 	int _earthquakeLastFrame;
-	void loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset);
+	void loadRigSprites(Common::SeekableReadStream *file, int sprigsOffset, byte *palette = nullptr);
 	void loadIndicatorSprites(Common::SeekableReadStream *file, byte *palette,
 		int stepOffset, int angleOffset, int vehicleOffset, int quitOffset);
 	void loadEarthquakeSprites(Common::SeekableReadStream *file, byte *palette, int earthquakeOffset);
