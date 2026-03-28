@@ -937,7 +937,7 @@ void FreescapeEngine::endGame() {
 
 	_shootingFrames = 0;
 	_delayedShootObject = nullptr;
-	if (_gameStateControl == kFreescapeGameStateEnd && !isPlayingSound() && !_endGamePlayerEndArea) {
+	if (_gameStateControl == kFreescapeGameStateEnd && !_endGamePlayerEndArea) {
 		_endGamePlayerEndArea = true;
 		gotoArea(_endArea, _endEntrance);
 	}
