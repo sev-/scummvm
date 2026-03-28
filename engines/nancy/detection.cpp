@@ -56,6 +56,8 @@ static const PlainGameDescriptor nancyGames[] = {
 	{ "nancy9",  "Nancy Drew: Danger on Deception Island" },
 	{ "nancy10", "Nancy Drew: The Secret of Shadow Ranch" },
 	{ "nancy11", "Nancy Drew: Curse of Blackmoor Manor" },
+	{ "nancy12", "Nancy Drew: Secret of the Old Clock" },
+	{ "nancy13", "Nancy Drew: Last Train to Blue Moon Canyon" },
 	{ nullptr, nullptr }
 };
 
@@ -753,6 +755,28 @@ static const Nancy::NancyGameDescription gameDescriptions[] = {
 			NANCY8_GUIOPTIONS
 		},
 		Nancy::kGameTypeNancy11
+	},
+	{ // MD5 by bluegr
+		{
+			"nancy12", nullptr,
+			AD_ENTRY1s("ciftree.dat", "b71cc174ce0481be835360395864eeb1", 43101199),
+			Common::EN_ANY,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE | ADGF_DROPPLATFORM,
+			NANCY8_GUIOPTIONS
+		},
+		Nancy::kGameTypeNancy12
+	},
+	{ // MD5 by bluegr
+		{
+			"nancy13", nullptr,
+			AD_ENTRY1s("ciftree.dat", "9d39bd2ff549c83a8300fae70e057593", 58580545),
+			Common::EN_ANY,
+			Common::kPlatformWindows,
+			ADGF_UNSTABLE | ADGF_DROPPLATFORM,
+			NANCY8_GUIOPTIONS
+		},
+		Nancy::kGameTypeNancy13
 	},
 
 	// Do not delete
