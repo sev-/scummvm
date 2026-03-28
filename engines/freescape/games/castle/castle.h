@@ -57,6 +57,7 @@ public:
 	void beforeStarting() override;
 	void initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *infoScreenKeyMap, const char *target) override;
 	void initGameState() override;
+	bool triggerWinCondition() override;
 	void endGame() override;
 
 	void drawInfoMenu() override;
@@ -185,6 +186,7 @@ private:
 	void drawRiddle(uint16 riddle, uint32 front, uint32 back, Graphics::Surface *surface);
 	void tryToCollectKey();
 	void addGhosts();
+	bool hasEscaped();
 	bool ghostInArea();
 	void updateThunder();
 

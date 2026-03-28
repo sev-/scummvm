@@ -438,7 +438,9 @@ void DrillerEngine::drawAmigaAtariSTUI(Graphics::Surface *surface) {
 		_temporaryMessages.push_back(message);
 		_temporaryMessageDeadlines.push_back(deadline);
 	} else {
-		if (_currentArea->_gasPocketRadius == 0)
+		if (_gameStateVars[32] == 18)
+			message = _messagesList[19];
+		else if (_currentArea->_gasPocketRadius == 0)
 			message = _messagesList[2];
 		else if (_drillStatusByArea[_currentArea->getAreaID()])
 			message = _messagesList[0];

@@ -62,6 +62,7 @@ public:
 
 	void initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *infoScreenKeyMap, const char *target) override;
 	void initGameState() override;
+	bool triggerWinCondition() override;
 	bool checkIfGameEnded() override;
 	void endGame() override;
 
@@ -77,6 +78,8 @@ public:
 	Common::Error loadGameStreamExtended(Common::SeekableReadStream *stream) override;
 
 private:
+	int _finalAreaWinConditionIndex;
+	int _amigaAtariEndGameStep;
 	bool drillDeployed(Area *area);
 	GeometricObject *_drillBase;
 	Math::Vector3d drillPosition();

@@ -940,6 +940,10 @@ void FreescapeEngine::endGame() {
 	}
 }
 
+bool FreescapeEngine::triggerWinCondition() {
+	return false;
+}
+
 void FreescapeEngine::loadBorder() {
 	if (_border) {
 		Graphics::Surface *border = _gfx->convertImageFormatIfNecessary(_border);

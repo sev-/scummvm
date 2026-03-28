@@ -44,6 +44,7 @@ Debugger::Debugger(FreescapeEngine *vm) : GUI::Debugger(), _vm(vm) {
 	registerCmd("occ", WRAP_METHOD(Debugger, cmdShowOcclusion)); // toggle occlussion boxes
 	registerCmd("area", WRAP_METHOD(Debugger, cmdArea)); // show current area info
 	registerCmd("pos", WRAP_METHOD(Debugger, cmdPos)); // show camera position and direction
+	registerCmd("win", WRAP_METHOD(Debugger, cmdWin)); // trigger the current game's win condition
 }
 
 Debugger::~Debugger() {}
@@ -284,6 +285,21 @@ bool Debugger::cmdPos(int argc, const char **argv) {
 	debugPrintf("Position: (%.2f, %.2f, %.2f)\n", pos.x(), pos.y(), pos.z());
 	debugPrintf("Direction: (%.2f, %.2f, %.2f)\n", front.x(), front.y(), front.z());
 	debugPrintf("Yaw: %.2f | Pitch: %.2f | Roll: %d\n", _vm->_yaw, _vm->_pitch, _vm->_roll);
+	return true;
+}
+
+bool Debugger::cmdWin(int argc, const char **argv) {
+	if (argc > 1) {
+		debugPrintf("Usage: win\n");
+		return true;
+	}
+
+	if (!_vm->triggerWinCondition()) {
+		debugPrintf("No win condition is available for this game or platform.\n");
+		return true;
+	}
+
+	debugPrintf("Triggered the win condition.\n");
 	return true;
 }
 

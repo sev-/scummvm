@@ -61,6 +61,7 @@ public:
 	void initKeymaps(Common::Keymap *engineKeyMap, Common::Keymap *infoScreenKeyMap, const char *target) override;
 	void initGameState() override;
 	void borderScreen() override;
+	bool triggerWinCondition() override;
 	bool checkIfGameEnded() override;
 	void endGame() override;
 

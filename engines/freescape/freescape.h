@@ -614,6 +614,7 @@ public:
 	StateVars _gameStateVars;
 	uint32 _gameStateBits;
 	void checkIfPlayerWasCrushed();
+	virtual bool triggerWinCondition();
 	virtual bool checkIfGameEnded();
 	virtual void endGame();
 	int _endGameDelayTicks;

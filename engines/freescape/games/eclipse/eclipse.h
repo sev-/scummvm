@@ -139,6 +139,7 @@ public:
 	Common::Rect _saveGameArea;
 	Common::Rect _loadGameArea;
 
+	bool triggerWinCondition() override;
 	bool checkIfGameEnded() override;
 	void endGame() override;
 	void loadSoundsFx(Common::SeekableReadStream *file, int offset, int number) override;

@@ -93,6 +93,8 @@ DrillerEngine::DrillerEngine(OSystem *syst, const ADGameDescription *gd) : Frees
 
 	_endArea = 127;
 	_endEntrance = 0;
+	_finalAreaWinConditionIndex = -1;
+	_amigaAtariEndGameStep = -1;
 
 	_borderExtra = nullptr;
 	_borderExtraTexture = nullptr;
@@ -305,6 +307,7 @@ void DrillerEngine::gotoArea(uint16 areaID, int entranceID) {
 
 void DrillerEngine::loadAssets() {
 	FreescapeEngine::loadAssets();
+	_finalAreaWinConditionIndex = -1;
 	if (_areaMap.contains(18)) {
 		/*
 		We are going to inject a small script in the
@@ -328,6 +331,7 @@ void DrillerEngine::loadAssets() {
 		debugC(1, kFreescapeDebugParser, "%s", conditionSource.c_str());
 		_areaMap[18]->_conditions.push_back(instructions);
 		_areaMap[18]->_conditionSources.push_back(conditionSource);
+		_finalAreaWinConditionIndex = _areaMap[18]->_conditions.size() - 1;
 	}
 
 	_timeoutMessage = _messagesList[14];
@@ -876,6 +880,7 @@ void DrillerEngine::initGameState() {
 	FreescapeEngine::initGameState();
 	_quitConfirmCounter = 0;
 	_quitStartTicks = 0;
+	_amigaAtariEndGameStep = -1;
 
 	for (auto &it : _areaMap) {
 		if (_drillStatusByArea[it._key] != kDrillerNoRig)
@@ -910,19 +915,91 @@ bool DrillerEngine::checkIfGameEnded() {
 		if (_demoData[_demoIndex + 1] == 0x5f)
 			return true;
 
+	if ((isAmiga() || isAtariST()) && _gameStateControl == kFreescapeGameStatePlaying &&
+		_currentArea && _currentArea->getAreaID() == _endArea) {
+		stopMovement();
+		_endGameDelayTicks = 0;
+		_endGameKeyPressed = false;
+		_endGamePlayerEndArea = false;
+		_amigaAtariEndGameStep = -1;
+		_gameStateControl = kFreescapeGameStateEnd;
+		return true;
+	}
+
 	FreescapeEngine::checkIfGameEnded();
 	return false;
 }
 
+bool DrillerEngine::triggerWinCondition() {
+	_gameStateVars[32] = 18;
+
+	stopMovement();
+	if (!_currentArea || _currentArea->getAreaID() != 18)
+		gotoArea(18, 20);
+
+	if ((isAmiga() || isAtariST()) && _currentArea && _currentArea->getAreaID() == _endArea) {
+		_endGameDelayTicks = 0;
+		_endGameKeyPressed = false;
+		_endGamePlayerEndArea = false;
+		_amigaAtariEndGameStep = -1;
+		_gameStateControl = kFreescapeGameStateEnd;
+	}
+
+	return true;
+}
+
 void DrillerEngine::endGame() {
-	FreescapeEngine::endGame();
+	if (isAmiga() || isAtariST()) {
+		_shootingFrames = 0;
+		_delayedShootObject = nullptr;
 
-	if (!_endGamePlayerEndArea)
+		if (_amigaAtariEndGameStep < 0) {
+			stopMovement();
+			if (!_currentArea || _currentArea->getAreaID() != _endArea)
+				gotoArea(_endArea, _endEntrance);
+
+			// ENDGAME on Amiga/Atari ST switches to set 127 and then runs a 21-step
+			// flythrough. The original Amiga coordinates are stored at twice the engine
+			// position scale, so convert the CMVY/CMVZ deltas before applying them.
+			// The original routine is blocking, so keep the redraw pacing in the
+			// engine's wait loop instead of stretching it across separate frames.
+			const int areaScale = MAX<int>(_currentArea ? _currentArea->getScale() : 1, 1);
+			playSound(11, false, _soundFxHandle);
+			_position.z() -= 8000.0f / areaScale;
+			_position.y() += 3000.0f / areaScale;
+			_lastPosition = _position;
+			_endGamePlayerEndArea = false;
+			_amigaAtariEndGameStep = 0;
+
+			if (_gameStateVars[32] == 18) // All areas are complete
+				insertTemporaryMessage(_messagesList[19], INT_MIN);
+
+			waitInLoop(0); // Initial BT01 after switching to set 127
+			for (int step = 0; step < 21; step++) {
+				_position.z() += 400.0f / areaScale;
+				_position.y() -= 140.0f / areaScale;
+				_lastPosition = _position;
+				waitInLoop(5);
+			}
+
+			waitInLoop(0); // Final BT01 before LIFTUP
+			waitInLoop(102);
+			_endGamePlayerEndArea = true;
+			waitInLoop(500);
+			_gameStateControl = kFreescapeGameStateRestart;
+		}
+		_endGameKeyPressed = false;
 		return;
+	} else {
+		FreescapeEngine::endGame();
 
-	if (_gameStateVars[32] == 18) { // All areas are complete
-		insertTemporaryMessage(_messagesList[19], _countdown - 2);
-		_gameStateVars[32] = 0;  // Avoid repeating the message
+		if (!_endGamePlayerEndArea)
+			return;
+
+		if (_gameStateVars[32] == 18) { // All areas are complete
+			insertTemporaryMessage(_messagesList[19], _countdown - 2);
+			_gameStateVars[32] = 0;  // Avoid repeating the message
+		}
 	}
 
 	if (_endGameKeyPressed) {

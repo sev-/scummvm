@@ -48,6 +48,7 @@ private:
 	bool cmdShowOcclusion(int argc, const char **argv);
 	bool cmdArea(int argc, const char **argv);
 	bool cmdPos(int argc, const char **argv);
+	bool cmdWin(int argc, const char **argv);
 };
 
 }

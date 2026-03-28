@@ -45,6 +45,8 @@ void FreescapeEngine::waitInLoop(int maxWait) {
 					break;
 				if (isCastle() && isSpectrum() && getGameBit(31)) // Game is finished
 					break;
+				if (isDriller() && _gameStateVars[32] == 18) // Game is finished
+					break;
 				mousePos = event.mouse;
 
 				if (_demoMode)

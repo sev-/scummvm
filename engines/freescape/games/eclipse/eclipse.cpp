@@ -204,6 +204,15 @@ bool EclipseEngine::checkIfGameEnded() {
 	return false;
 }
 
+bool EclipseEngine::triggerWinCondition() {
+	setGameBit(16);
+	_endGameDelayTicks = 0;
+	_endGameKeyPressed = false;
+	_endGamePlayerEndArea = false;
+	_gameStateControl = kFreescapeGameStateEnd;
+	return true;
+}
+
 void EclipseEngine::endGame() {
 	FreescapeEngine::endGame();
 

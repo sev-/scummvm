@@ -559,6 +559,18 @@ bool DarkEngine::checkIfGameEnded() {
 	return false;
 }
 
+bool DarkEngine::triggerWinCondition() {
+	_gameStateVars[kVariableActiveECDs] = 0;
+	_gameStateVars[kVariableDarkECD] = 0;
+	_gameStateVars[kVariableDarkEnding] = kDarkEndingECDsDestroyed;
+	_ticksFromEnd = 0;
+	_endGameDelayTicks = 0;
+	_endGameKeyPressed = false;
+	_endGamePlayerEndArea = false;
+	_gameStateControl = kFreescapeGameStateEnd;
+	return true;
+}
+
 void DarkEngine::endGame() {
 	FreescapeEngine::endGame();
 
