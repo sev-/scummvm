@@ -937,14 +937,6 @@ bool DrillerEngine::triggerWinCondition() {
 	if (!_currentArea || _currentArea->getAreaID() != 18)
 		gotoArea(18, 20);
 
-	if ((isAmiga() || isAtariST()) && _currentArea && _currentArea->getAreaID() == _endArea) {
-		_endGameDelayTicks = 0;
-		_endGameKeyPressed = false;
-		_endGamePlayerEndArea = false;
-		_amigaAtariEndGameStep = -1;
-		_gameStateControl = kFreescapeGameStateEnd;
-	}
-
 	return true;
 }
 
@@ -974,7 +966,6 @@ void DrillerEngine::endGame() {
 			if (_gameStateVars[32] == 18) // All areas are complete
 				insertTemporaryMessage(_messagesList[19], INT_MIN);
 
-			waitInLoop(0); // Initial BT01 after switching to set 127
 			for (int step = 0; step < 21; step++) {
 				_position.z() += 400.0f / areaScale;
 				_position.y() -= 140.0f / areaScale;
