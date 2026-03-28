@@ -494,6 +494,18 @@ bool Renderer::getRGBAtCPC(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 		return true;
 	}
 	assert(_renderMode == Common::kRenderCPC);
+
+	// Driller CPC area/background colors are raw 0..31 ink values. Only
+	// Freescape drawable colors 1..15 use the packed four-pen color map.
+	if (index >= _colorMap->size() + 1) {
+		readFromPalette(index, r1, g1, b1);
+		r2 = r1;
+		g2 = g1;
+		b2 = b1;
+		stipple = nullptr;
+		return true;
+	}
+
 	stipple = (byte *)_stipples[index - 1];
 	byte *entry = (*_colorMap)[index - 1];
 	uint8 i1 = getCPCPixel(entry[0], 0, true);

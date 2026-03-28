@@ -288,7 +288,7 @@ void DrillerEngine::gotoArea(uint16 areaID, int entranceID) {
 
 	debugC(1, kFreescapeDebugMove, "starting player position: %f, %f, %f", _position.x(), _position.y(), _position.z());
 	clearTemporalMessages();
-	// Ignore sky/ground fields
+	// DOS/Amiga/Atari ST ignore the area sky/background fields here.
 	_gfx->_keyColor = 0;
 	_gfx->setColorRemaps(&_currentArea->_colorRemaps);
 
@@ -298,8 +298,11 @@ void DrillerEngine::gotoArea(uint16 areaID, int entranceID) {
 		_currentArea->_skyColor = 0;
 		_currentArea->_usualBackgroundColor = 0;
 	} else if (isCPC()) {
-		_currentArea->_usualBackgroundColor = 1;
-		_currentArea->_skyColor = 1;
+		// The CPC loader still uses the generic area header parser, but the
+		// original Driller code does not use the first header byte as split
+		// sky/ground colors. Keep the real per-area background ink and reuse it
+		// for the viewport fill instead of interpreting the flag nibble as a sky.
+		_currentArea->_skyColor = _currentArea->_usualBackgroundColor;
 	}
 
 	resetInput();
@@ -915,19 +918,15 @@ bool DrillerEngine::checkIfGameEnded() {
 		if (_demoData[_demoIndex + 1] == 0x5f)
 			return true;
 
-	if ((isAmiga() || isAtariST()) && _gameStateControl == kFreescapeGameStatePlaying &&
-		_currentArea && _currentArea->getAreaID() == _endArea) {
-		stopMovement();
-		_endGameDelayTicks = 0;
-		_endGameKeyPressed = false;
-		_endGamePlayerEndArea = false;
-		_amigaAtariEndGameStep = -1;
+	if (_currentArea && _currentArea->getAreaID() == _endArea && 
+	    _gameStateControl == kFreescapeGameStatePlaying       &&
+		_gameStateVars[32] == 18
+	) { 
 		_gameStateControl = kFreescapeGameStateEnd;
 		return true;
 	}
 
-	FreescapeEngine::checkIfGameEnded();
-	return false;
+	return FreescapeEngine::checkIfGameEnded();
 }
 
 bool DrillerEngine::triggerWinCondition() {
@@ -941,14 +940,15 @@ bool DrillerEngine::triggerWinCondition() {
 }
 
 void DrillerEngine::endGame() {
-	if (isAmiga() || isAtariST()) {
-		_shootingFrames = 0;
-		_delayedShootObject = nullptr;
+	if (!_currentArea || _currentArea->getAreaID() != _endArea)
+		gotoArea(_endArea, _endEntrance);
 
+	_shootingFrames = 0;
+	_delayedShootObject = nullptr;
+
+	if (isAmiga() || isAtariST()) {
 		if (_amigaAtariEndGameStep < 0) {
 			stopMovement();
-			if (!_currentArea || _currentArea->getAreaID() != _endArea)
-				gotoArea(_endArea, _endEntrance);
 
 			// ENDGAME on Amiga/Atari ST switches to set 127 and then runs a 21-step
 			// flythrough. The original Amiga coordinates are stored at twice the engine
@@ -963,33 +963,19 @@ void DrillerEngine::endGame() {
 			_endGamePlayerEndArea = false;
 			_amigaAtariEndGameStep = 0;
 
-			for (int step = 0; step < 21; step++) {
+			for (int step = 0; step < 20; step++) {
 				_position.z() += 400.0f / areaScale;
 				_position.y() -= 140.0f / areaScale;
 				_lastPosition = _position;
 				waitInLoop(5);
 			}
-
-			waitInLoop(0); // Final BT01 before LIFTUP
 			waitInLoop(102);
-			_endGamePlayerEndArea = true;
-			waitInLoop(500);
-			_gameStateControl = kFreescapeGameStateRestart;
 		}
-		_endGameKeyPressed = false;
-		return;
 	} else {
-		FreescapeEngine::endGame();
-
-		if (!_endGamePlayerEndArea)
-			return;
+		waitInLoop(100);
 	}
 
-	if (_endGameKeyPressed) {
-		_gameStateControl = kFreescapeGameStateRestart;
-	}
-
-	_endGameKeyPressed = false;
+	_gameStateControl = kFreescapeGameStateRestart;
 }
 
 bool DrillerEngine::onScreenControls(Common::Point mouse) {

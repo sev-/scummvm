@@ -710,8 +710,13 @@ void DarkEngine::gotoArea(uint16 areaID, int entranceID) {
 	_gfx->setColorRemaps(&_currentArea->_colorRemaps);
 
 	swapPalette(areaID);
-	_currentArea->_skyColor = isCPC() ? 1 : 0;
-	_currentArea->_usualBackgroundColor = isCPC() ? 1 : 0;
+	if (isCPC()) {
+		// The CPC loader still uses the generic area header parser, but the
+		// original Driller code does not use the first header byte as split
+		// sky/ground colors. Keep the real per-area background ink and reuse it
+		// for the viewport fill instead of interpreting the flag nibble as a sky.
+		_currentArea->_skyColor = _currentArea->_usualBackgroundColor;	
+	}
 
 	resetInput();
 }

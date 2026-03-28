@@ -458,7 +458,10 @@ void FreescapeEngine::checkSensors() {
 void FreescapeEngine::drawSensorShoot(Sensor *sensor) {}
 
 void FreescapeEngine::flashScreen(int backgroundColor) {
-	if (backgroundColor >= 16)
+	// CPC area colors are stored as 0..31 ink values, not 0..15 palette slots.
+	// Driller uses these raw values directly in the area headers and the original
+	// CPC code feeds them to the hardware/Gate Array without clamping.
+	if (backgroundColor >= (isCPC() ? 32 : 16))
 		return;
 	_currentArea->remapColor(_currentArea->_usualBackgroundColor, backgroundColor);
 	_currentArea->remapColor(_currentArea->_skyColor, backgroundColor);

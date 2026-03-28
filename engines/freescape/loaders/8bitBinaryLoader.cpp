@@ -652,6 +652,9 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 	uint8 inkColor = 0;
 
 	if (!(isCastle() && (isSpectrum() || isCPC() || isC64()))) {
+		// On Driller/Dark/Eclipse 8-bit targets these are four consecutive
+		// per-area color bytes. CPC stores raw 0..31 ink values here, matching
+		// the original area descriptor layout at offsets +6..+9.
 		usualBackgroundColor = readField(file, 8);
 		underFireBackgroundColor = readField(file, 8);
 		paperColor = readField(file, 8);
