@@ -1771,6 +1771,9 @@ bool VMDDecoder::seek(int32 frame, int whence, bool restart) {
 	if (_hasSound && (frame == -1) &&
 			((_soundStage == kSoundNone) || (_soundStage == kSoundFinished))) {
 
+		if (_soundStage == kSoundFinished)
+			_mixer->stopHandle(_audioHandle);
+
 		delete _audioStream;
 
 		_soundStage  = kSoundLoaded;
