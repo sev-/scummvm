@@ -106,6 +106,7 @@ extern const char *getLanguageDescription(Language id);
 
 // TODO: Document this GUIO related function
 const String getGameGUIOptionsDescriptionLanguage(Common::Language lang);
+List<Language> parseLanguagesFromGameGUIOptionsString(const String &optionsString);
 
 // TODO: Document this GUIO related function
 bool checkGameGUIOptionLanguage(Common::Language lang, const String &str);
