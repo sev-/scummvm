@@ -714,11 +714,6 @@ ideprojects: devtools/create_project
 ifeq ($(VER_DIRTY), -dirty)
 	$(error You have uncommitted changes)
 endif
-ifeq "$(CUR_BRANCH)" "heads/master"
-	$(error You cannot do it on master)
-else ifeq "$(CUR_BRANCH)" ""
-	$(error You must be on a release branch)
-endif
 	@echo Creating Code::Blocks project files...
 	@cd $(srcdir)/dists/codeblocks && $(PWD)/devtools/create_project/create_project ../.. --codeblocks >/dev/null && git add -f engines/*.h *.workspace *.cbp
 	@echo Creating MSVC project files...
