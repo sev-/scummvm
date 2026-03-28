@@ -440,8 +440,12 @@ Graphics::Surface *OSystem_3DS::lockScreen() {
 	else
 		return &_gameScreen;
 }
+
 void OSystem_3DS::unlockScreen() {
-	_gameTextureDirty = true;
+	if (_pfGame == _gameTopTexture.format)
+		_gameTopTexture.markDirty();
+	else
+		_gameTextureDirty = true;
 }
 
 void OSystem_3DS::updateScreen() {
