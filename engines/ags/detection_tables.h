@@ -5214,24 +5214,31 @@ const AGSGameDescription GAME_DESCRIPTIONS[] = {
 	GAME_ENTRY_EN_GOG("resonance", "resonance.exe", "6cc23ce7cdf62de776c6b8ddb6b8a7ff", 850643390),  // v2.3
 	GAME_ENTRY_EN_GOG("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732933098),  // v3.0
 	GAME_ENTRY_EN_GOG("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732944570),  // v3.1c
+	GAME_ENTRY_EN_GOG("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732944702),  // v3.5
 	GAME_ENTRY_EN_GOG("resonance", "ac2game.dat", "1dd9f78fbd1947fdf66a820928baf8a4", 847433642), // Mac v2.3
 	GAME_ENTRY_EN_GOG("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729663446), // Mac v3.0
 	GAME_ENTRY_EN_GOG("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729674918), // Mac v3.2d
+	GAME_ENTRY_EN_GOG("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729675050), // Mac v3.5
 	GAME_ENTRY_EN_GOG("resonance", "agsgame.dat", "2e635c22bcbf0ed3d46f1bcde71812d4", 849404957), // Linux
 	GAME_ENTRY_EN_GOG("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729663446), // Linux 3.0
 	GAME_ENTRY_EN_GOG("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729674918), // Linux 3.0d
+	GAME_ENTRY_EN_GOG("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729675050), // Linux 3.5
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "2e635c22bcbf0ed3d46f1bcde71812d4", 849410915, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win original
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "6cc23ce7cdf62de776c6b8ddb6b8a7ff", 850642889, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win-Linux
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732932834, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win 3.0
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732932842, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win 3.0 updated
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732944314, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win 3.1
+	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.exe", "b6ce764bf83d025c7c0aa50ceb006e09", 732944446, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Win 3.5
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729663182, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Linux 3.0
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729674662, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Linux 3.0d
+	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729674794, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Linux 3.5
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729681114, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Steamdeck
+	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "resonance.ags", "920f99ac1e32f07ccde5c960aac52d8c", 729681246, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Steamdeck
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "ac2game.dat", "1dd9f78fbd1947fdf66a820928baf8a4", 847433141, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Mac
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729663182, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Mac 3.0
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729663190, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Mac 3.0 updated
 	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729674662, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Mac 3.2
+	GAME_ENTRY_PLUGIN_STEAM_EN("resonance", "ac2game.dat", "920f99ac1e32f07ccde5c960aac52d8c", 729674794, GAMEFLAG_PLUGINS_AGSTEAM_WADJETEYE),  // Mac 3.5
 	GAME_ENTRY_PLUGIN_STEAM_EN_NOAUTOSAVE("richardandalice", "richardandalice.exe", "1023d348f67ba958f78ed62d029565c7", 109164768, 0),
 	GAME_ENTRY_PLUGIN_STEAM_EN_NOAUTOSAVE("richardandalice", "richardandalice.exe", "f47d11397e2059a25b11057ea6cf3409", 108264256, 0),
 	GAME_ENTRY_PLUGIN_GOG_EN_NOAUTOSAVE("richardandalice", "richardandalice.exe", "9a7e38a1810e6a1839601fb5c6bd42e6", 108602238, 0), // Desura - GOG v1.0
