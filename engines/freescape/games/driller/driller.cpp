@@ -963,9 +963,6 @@ void DrillerEngine::endGame() {
 			_endGamePlayerEndArea = false;
 			_amigaAtariEndGameStep = 0;
 
-			if (_gameStateVars[32] == 18) // All areas are complete
-				insertTemporaryMessage(_messagesList[19], INT_MIN);
-
 			for (int step = 0; step < 21; step++) {
 				_position.z() += 400.0f / areaScale;
 				_position.y() -= 140.0f / areaScale;
@@ -986,11 +983,6 @@ void DrillerEngine::endGame() {
 
 		if (!_endGamePlayerEndArea)
 			return;
-
-		if (_gameStateVars[32] == 18) { // All areas are complete
-			insertTemporaryMessage(_messagesList[19], _countdown - 2);
-			_gameStateVars[32] = 0;  // Avoid repeating the message
-		}
 	}
 
 	if (_endGameKeyPressed) {
