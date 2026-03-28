@@ -1,7 +1,7 @@
 For a more comprehensive changelog of the latest experimental code, see:
         https://github.com/scummvm/scummvm/commits/
 
-#### 2026.1.1 (2026-XX-XX)
+#### 2026.2.0 (2026-03-28)
 
  New games:
    - Added support for Necronomicon: The Dawning of Darkness.
