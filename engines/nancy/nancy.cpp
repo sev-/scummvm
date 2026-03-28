@@ -101,7 +101,7 @@ NancyEngine::~NancyEngine() {
 }
 
 NancyEngine *NancyEngine::create(GameType type, OSystem *syst, const NancyGameDescription *gd) {
-	if (type >= kGameTypeVampire && type <= kGameTypeNancy11) {
+	if (type >= kGameTypeVampire && type <= kGameTypeNancy13) {
 		return new NancyEngine(syst, gd);
 	}
 
@@ -428,6 +428,11 @@ void NancyEngine::bootGameEngine() {
 	// Setup mixer
 	syncSoundSettings();
 
+	if (getGameType() >= kGameTypeNancy13) {
+		// Nancy13+ games use 24/32bpp images, which we don't support yet.
+		error("Game not supported; Use console to inspect game data");
+	}
+
 	IFF *iff = _resource->loadIFF("boot");
 	if (!iff)
 		error("Failed to load boot script");
@@ -473,8 +478,9 @@ void NancyEngine::bootGameEngine() {
 	LOAD_BOOT(TABL)
 	LOAD_BOOT(MARK)
 
-	// New boot chunks for Nancy 10+
-	// TODO
+	// Nancy 10+
+	// FONT chunk has been moved into a separate file
+	// FR0 chunk has been removed
 	//LOAD_BOOT(SHUI)
 	//LOAD_BOOT(TASK)
 	//LOAD_BOOT(UIIV)
@@ -483,6 +489,18 @@ void NancyEngine::bootGameEngine() {
 	//LOAD_BOOT(UIBW)
 	//LOAD_BOOT(UINB)
 
+	// Nancy 11+
+	// LOAD_BOOT(SCTB)
+
+	// Nancy 12+
+	// HINT chunk has been removed
+	// LOAD_BOOT(EVNT)
+	// LOAD_BOOT(UIRC)
+
+	// Nancy 13+
+	// RCPR and RCLB chunks have been removed
+	// LOAD_BOOT(MMIX)
+	
 	_cursor->init(iff->getChunkStream("CURS"));
 
 	_graphics->init();
