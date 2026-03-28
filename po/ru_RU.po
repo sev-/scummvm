@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-28 08:24+0000\n"
-"PO-Revision-Date: 2026-03-23 23:21+0000\n"
+"PO-Revision-Date: 2026-03-28 17:49+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ru/>\n"
@@ -1697,10 +1697,7 @@ msgid "Icons per row:"
 msgstr "Иконок в ряду:"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
@@ -8990,14 +8987,12 @@ msgstr "Использовать более плавное передвижен�
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "Управление громкостью"
+msgstr "Управление WASD"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
-msgstr ""
+msgstr "Использовать клавиши WASD для движения, а Shift — для бега"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9066,7 +9061,7 @@ msgstr "Лицом вперёд"
 
 #: engines/freescape/games/castle/castle.cpp:524
 msgid "Run (hold)"
-msgstr ""
+msgstr "Бег (удерживайте)"
 
 #: engines/freescape/games/dark/dark.cpp:242
 #: engines/freescape/games/driller/driller.cpp:188
@@ -9139,7 +9134,7 @@ msgstr "Изменить размер шага"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:295
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "Спринт (удерживайте)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:303
 msgid "Toggle height"
