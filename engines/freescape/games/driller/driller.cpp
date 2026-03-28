@@ -282,7 +282,7 @@ void DrillerEngine::gotoArea(uint16 areaID, int entranceID) {
 		_pitch = 335;
 		_flyMode = true; // Avoid falling
 		// Show the number of completed areas
-		_areaMap[127]->_name.replace(0, 3, Common::String::format("%4d", _gameStateVars[32]));
+		_areaMap[127]->_name.replace(0, isAmiga() || isAtariST() ? 4 : 3, Common::String::format("%4d", _gameStateVars[32]));
 	} else
 		playSound(_soundIndexAreaChange, false, _soundFxHandle);
 
