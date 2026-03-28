@@ -43,7 +43,7 @@ void FreescapeEngine::waitInLoop(int maxWait) {
 			case Common::EVENT_MOUSEMOVE:
 				if (_hasFallen || _playerWasCrushed || _gameStateControl != kFreescapeGameStatePlaying)
 					break;
-				if (isCastle() && isSpectrum() && getGameBit(31)) // Game is finished
+				if (isCastle() && (isSpectrum() || isCPC()) && getGameBit(31)) // Game is finished
 					break;
 				if (isDriller() && _gameStateVars[32] == 18) // Game is finished
 					break;

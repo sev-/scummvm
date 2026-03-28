@@ -737,18 +737,14 @@ bool CastleEngine::checkIfGameEnded() {
 }
 
 bool CastleEngine::triggerWinCondition() {
-	if (isDOS()) {
+	if (isDOS() || isAmiga() || isAtariST()) {
 		if (!_areaMap.contains(74))
 			return false;
 		gotoArea(74, 0);
 	} else {
-		setGameBit(31);
+		_gameStateVars[31] = 10;
+		gotoArea(16, 136);
 	}
-
-	_endGameDelayTicks = 0;
-	_endGameKeyPressed = false;
-	_endGamePlayerEndArea = false;
-	_gameStateControl = kFreescapeGameStateEnd;
 	return true;
 }
 
