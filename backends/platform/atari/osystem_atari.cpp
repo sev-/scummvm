@@ -405,12 +405,15 @@ void OSystem_Atari::quit() {
 
 	if (!s_dtor_already_called)
 		destroy();
+
+	exit(0);
 }
 
 void OSystem_Atari::fatalError() {
 	atari_debug("OSystem_Atari::fatalError()");
 
-	quit();
+	if (!s_dtor_already_called)
+		destroy();
 
 	// let exit_restore() and critical_restore() handle the recovery
 	exit(1);
