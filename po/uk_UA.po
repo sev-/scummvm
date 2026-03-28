@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-27 15:04+0000\n"
+"POT-Creation-Date: 2026-03-28 08:24+0000\n"
 "PO-Revision-Date: 2026-03-23 23:21+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
@@ -7705,8 +7705,8 @@ msgstr "Перемкнути приватність підказок"
 #: engines/drascula/metaengine.cpp:285 engines/efh/metaengine.cpp:272
 #: engines/freescape/games/castle/castle.cpp:463
 #: engines/freescape/games/dark/dark.cpp:206
-#: engines/freescape/games/driller/driller.cpp:123
-#: engines/freescape/games/eclipse/eclipse.cpp:240
+#: engines/freescape/games/driller/driller.cpp:125
+#: engines/freescape/games/eclipse/eclipse.cpp:249
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7733,8 +7733,8 @@ msgstr "Зберегти гру"
 #: engines/efh/metaengine.cpp:279 engines/efh/metaengine.cpp:613
 #: engines/freescape/games/castle/castle.cpp:468
 #: engines/freescape/games/dark/dark.cpp:211
-#: engines/freescape/games/driller/driller.cpp:128
-#: engines/freescape/games/eclipse/eclipse.cpp:245
+#: engines/freescape/games/driller/driller.cpp:130
+#: engines/freescape/games/eclipse/eclipse.cpp:254
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7783,8 +7783,8 @@ msgstr "База даних доказів"
 #: engines/efh/metaengine.cpp:373 engines/efh/metaengine.cpp:619
 #: engines/freescape/games/castle/castle.cpp:476
 #: engines/freescape/games/dark/dark.cpp:216
-#: engines/freescape/games/driller/driller.cpp:133
-#: engines/freescape/games/eclipse/eclipse.cpp:250
+#: engines/freescape/games/driller/driller.cpp:135
+#: engines/freescape/games/eclipse/eclipse.cpp:259
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9014,23 +9014,23 @@ msgstr "Вибрати Принцесу"
 
 #: engines/freescape/games/castle/castle.cpp:481
 #: engines/freescape/games/dark/dark.cpp:226
-#: engines/freescape/games/driller/driller.cpp:141
-#: engines/freescape/games/eclipse/eclipse.cpp:258
+#: engines/freescape/games/driller/driller.cpp:143
+#: engines/freescape/games/eclipse/eclipse.cpp:267
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "Перемкнути звук"
 
 #: engines/freescape/games/castle/castle.cpp:486
 #: engines/freescape/games/dark/dark.cpp:232
-#: engines/freescape/games/driller/driller.cpp:147
-#: engines/freescape/games/eclipse/eclipse.cpp:263
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:272
 msgid "Rotate left"
 msgstr "Обертання наліво"
 
 #: engines/freescape/games/castle/castle.cpp:491
 #: engines/freescape/games/dark/dark.cpp:237
-#: engines/freescape/games/driller/driller.cpp:152
-#: engines/freescape/games/eclipse/eclipse.cpp:268
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:277
 msgid "Rotate right"
 msgstr "Обертання направо"
 
@@ -9039,7 +9039,7 @@ msgid "Crawl"
 msgstr "Повзти"
 
 #: engines/freescape/games/castle/castle.cpp:513
-#: engines/freescape/games/eclipse/eclipse.cpp:306
+#: engines/freescape/games/eclipse/eclipse.cpp:315
 msgid "Face forward"
 msgstr "Повернутись уперед"
 
@@ -9048,47 +9048,47 @@ msgid "Run (hold)"
 msgstr ""
 
 #: engines/freescape/games/dark/dark.cpp:242
-#: engines/freescape/games/driller/driller.cpp:186
+#: engines/freescape/games/driller/driller.cpp:188
 #: engines/ultima/ultima8/metaengine.cpp:97
 msgid "Roll left"
 msgstr "Перекотитись наліво"
 
 #: engines/freescape/games/dark/dark.cpp:247
-#: engines/freescape/games/driller/driller.cpp:191
+#: engines/freescape/games/driller/driller.cpp:193
 #: engines/ultima/ultima8/metaengine.cpp:98
 msgid "Roll right"
 msgstr "Перекотитись направо"
 
 #. I18N: Illustrates the angle at which you turn left or right.
 #: engines/freescape/games/dark/dark.cpp:253
-#: engines/freescape/games/driller/driller.cpp:158
+#: engines/freescape/games/driller/driller.cpp:160
 msgid "Increase turn angle"
 msgstr "Підвищення кута повороту"
 
 #: engines/freescape/games/dark/dark.cpp:258
-#: engines/freescape/games/driller/driller.cpp:163
+#: engines/freescape/games/driller/driller.cpp:165
 msgid "Decrease turn angle"
 msgstr "Пониження кута повороту"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:264
-#: engines/freescape/games/driller/driller.cpp:169
+#: engines/freescape/games/driller/driller.cpp:171
 msgid "Increase step size"
 msgstr "Збільшити розмір кроку"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
 #: engines/freescape/games/dark/dark.cpp:270
-#: engines/freescape/games/driller/driller.cpp:175
+#: engines/freescape/games/driller/driller.cpp:177
 msgid "Decrease step size"
 msgstr "Зменшити розмір кроку"
 
 #: engines/freescape/games/dark/dark.cpp:275
-#: engines/freescape/games/driller/driller.cpp:180
+#: engines/freescape/games/driller/driller.cpp:182
 msgid "Rise / Fly up"
 msgstr "Піднятися / Летіти догори"
 
 #: engines/freescape/games/dark/dark.cpp:281
-#: engines/freescape/games/driller/driller.cpp:196
+#: engines/freescape/games/driller/driller.cpp:198
 msgid "Lower / Fly down"
 msgstr "Знизитись / Летіти додолу"
 
@@ -9097,42 +9097,42 @@ msgid "Enable / Disable jetpack"
 msgstr "Ввімкнути / Вимкнути реактивний ранець"
 
 #. I18N: drilling rig is an in game item
-#: engines/freescape/games/driller/driller.cpp:203
+#: engines/freescape/games/driller/driller.cpp:205
 msgid "Deploy drilling rig"
 msgstr "Запустити обладнання буріння"
 
 #. I18N: drilling rig is an in game item
-#: engines/freescape/games/driller/driller.cpp:210
+#: engines/freescape/games/driller/driller.cpp:212
 msgid "Collect drilling rig"
 msgstr "Взяти обладнання буріння"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:274
+#: engines/freescape/games/eclipse/eclipse.cpp:283
 msgid "Change angle"
 msgstr "Змінити кут"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:280
+#: engines/freescape/games/eclipse/eclipse.cpp:289
 msgid "Change step size"
 msgstr "Змінити розмір кроку"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:286
+#: engines/freescape/games/eclipse/eclipse.cpp:295
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:294
+#: engines/freescape/games/eclipse/eclipse.cpp:303
 msgid "Toggle height"
 msgstr "Перемкнути висоту"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:300
+#: engines/freescape/games/eclipse/eclipse.cpp:309
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Відпочити"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:311
+#: engines/freescape/games/eclipse/eclipse.cpp:320
 msgid "Toggle flashlight"
 msgstr "Перемкнути ліхтарик"
 
