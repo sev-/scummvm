@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-28 08:24+0000\n"
-"PO-Revision-Date: 2026-03-25 11:56+0000\n"
+"PO-Revision-Date: 2026-03-28 08:34+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -1038,7 +1038,7 @@ msgstr ""
 
 #: gui/gui-manager.cpp:159 gui/options.cpp:2357
 msgid "GUI"
-msgstr "Grafische Benutzeroberfläche"
+msgstr "Benutzeroberfläche"
 
 #. I18N: Action in In Cold Blood
 #: gui/gui-manager.cpp:163 engines/hpl1/metaengine.cpp:91
@@ -2662,8 +2662,8 @@ msgstr "Verwende Sprachausgabe"
 #: gui/options.cpp:2873
 msgid "Will read text in gui on mouse over."
 msgstr ""
-"List den Text der Benutzeroberfläche vor, wenn mit der Maus darüber gefahren "
-"wird."
+"Liest den Text der Benutzeroberfläche vor, wenn mit der Maus darüber "
+"gefahren wird."
 
 #: gui/options.cpp:2954
 msgid "Ignore"
@@ -13561,7 +13561,7 @@ msgstr "Scroll-Tastenbelegungen"
 
 #: engines/sherlock/metaengine.cpp:332 engines/sherlock/metaengine.cpp:776
 msgid "Main user interface keymappings"
-msgstr "Tastaturbelegung der Hauptbenutzeroberfläche"
+msgstr "Tastaturbelegung der Benutzeroberfläche"
 
 #: engines/sherlock/metaengine.cpp:333 engines/sherlock/metaengine.cpp:781
 msgid "Darts minigame keymappings"
