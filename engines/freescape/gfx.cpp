@@ -507,9 +507,9 @@ bool Renderer::getRGBAtCPC(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 	}
 
 	stipple = (byte *)_stipples[index - 1];
-	byte *entry = (*_colorMap)[index - 1];
-	uint8 i1 = getCPCPixel(entry[0], 0, true);
-	uint8 i2 = getCPCPixel(entry[0], 1, true);
+	byte pair = _colorPair[index - 1];
+	uint8 i1 = pair & 0xf;
+	uint8 i2 = (pair >> 4) & 0xf;
 	selectColorFromFourColorPalette(i1, r1, g1, b1);
 	selectColorFromFourColorPalette(i2, r2, g2, b2);
 	if (r1 == r2 && g1 == g2 && b1 == b2) {
