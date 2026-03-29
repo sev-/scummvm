@@ -26,6 +26,6 @@ The source code is available from https://github.com/scummvm/scummvm.
 
 *** Release notes (limit is 500 characters):
 - Fixed a crash when restarting the app quickly
-- Fixed a Cloud related crash
+- Fixed a Cloud-related crash
 
 Full release notes: https://scummvm.org/frs/scummvm/2026.2.0/ReleaseNotes.html
