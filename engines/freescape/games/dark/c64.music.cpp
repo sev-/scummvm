@@ -53,7 +53,7 @@ static const uint8 kFreqLo[96] = {
 };
 
 // Instrument table at $1010 (18 instruments x 8 bytes)
-// Bytes: ctrl, AD, SR, envCtl, vibrato, pwMod, autoFx, flags
+// Bytes: ctrl, AD, SR, initPW, vib/env mode, pwMod, autoFx, flags
 // Instruments 16-17 are stored between $1090-$109F (past the nominal 16-entry table)
 static const uint8 kInstruments[18 * 8] = {
 	0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 0: Pulse (silence)
@@ -76,8 +76,8 @@ static const uint8 kInstruments[18 * 8] = {
 	0x81, 0x0B, 0x20, 0x66, 0x00, 0x00, 0x00, 0x01, // 17: Noise+G (percussion, envelope seq)
 };
 
-// Envelope volume tables ($154B and $156B, 16 entries each)
-static const uint8 kEnvVolume[2][16] = {
+// Auxiliary envelope data tables ($154B and $156B, 16 entries each)
+static const uint8 kEnvData[2][16] = {
 	{ 0xFA, 0x01, 0xFF, 0x20, 0x0A, 0x12, 0x04, 0x16, 0x0E, 0x0C, 0x0A, 0x08, 0x06, 0x04, 0x02, 0x00 },
 	{ 0x10, 0x0A, 0x06, 0x00, 0x04, 0x00, 0x00, 0x00, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00 },
 };
@@ -183,7 +183,6 @@ void DarkSideC64MusicPlayer::ChannelState::reset() {
 	patData = nullptr;
 	patOffset = 0;
 	instIdx = 0;
-	noteActive = 0;
 	curNote = 0;
 	transpose = 0;
 	freqLo = 0;
@@ -199,24 +198,27 @@ void DarkSideC64MusicPlayer::ChannelState::reset() {
 	arpSeqPos = 0;
 	arpSeqLen = 0;
 	memset(arpSeqData, 0, sizeof(arpSeqData));
-	portaDelta = 0;
-	portaTarget = 0;
+	noteStepCommand = 0;
+	stepDownCounter = 0;
 	vibPhase = 0;
 	vibCounter = 0;
 	pwDirection = 0;
+	delayValue = 0;
 	delayCounter = 0;
 	envCounter = 0;
-	envTable = 0;
-	envSeqActive = false;
-	sustainMode = false;
+	gateOffDisabled = false;
+	gateModeControl = false;
+	specialAttack = false;
+	attackDone = false;
 	waveform = 0;
+	instFlags = 0;
 }
 
 DarkSideC64MusicPlayer::DarkSideC64MusicPlayer() {
 	_sid = nullptr;
 	_musicActive = false;
 	_speedDiv = 1;
-	_speedCounter = 1;
+	_speedCounter = 0;
 	for (int i = 0; i < 3; i++)
 		_ch[i].reset();
 	initSID();
@@ -274,12 +276,12 @@ void DarkSideC64MusicPlayer::stopMusic() {
 void DarkSideC64MusicPlayer::setupSong() {
 	silenceAll();
 
-	// Set filter: LP+HP on, full volume ($5F)
+	// Init routine at $0FF6.
 	sidWrite(0x18, 0x5F);
 	sidWrite(0x17, 0x00);
 
 	_speedDiv = 1;
-	_speedCounter = 1;
+	_speedCounter = 0;
 
 	for (int ch = 0; ch < 3; ch++) {
 		_ch[ch].reset();
@@ -324,98 +326,145 @@ uint8 DarkSideC64MusicPlayer::readPatByte(int ch) {
 	return b;
 }
 
+void DarkSideC64MusicPlayer::buildEffectArpeggio(int ch) {
+	uint8 bits = _ch[ch].effectParam;
+	uint8 len = 1;
+
+	_ch[ch].arpSeqData[0] = 0;
+	for (int i = 0; i < 8 && len < sizeof(_ch[ch].arpSeqData); i++) {
+		if (bits & (1 << i))
+			_ch[ch].arpSeqData[len++] = kArpIntervals[i];
+	}
+
+	_ch[ch].arpSeqLen = len;
+	_ch[ch].arpSeqPos = 0;
+	_ch[ch].arpPattern = 0;
+}
+
+void DarkSideC64MusicPlayer::loadCurrentFrequency(int ch) {
+	int off = kSIDOffset[ch];
+	uint8 note = (_ch[ch].curNote > 94) ? 94 : _ch[ch].curNote;
+
+	_ch[ch].freqLo = kFreqLo[note];
+	_ch[ch].freqHi = kFreqHi[note];
+	sidWrite(off + 0, _ch[ch].freqLo);
+	sidWrite(off + 1, _ch[ch].freqHi);
+}
+
+void DarkSideC64MusicPlayer::finalizeChannel(int ch) {
+	int off = kSIDOffset[ch];
+
+	if (_ch[ch].durReload != 0 && !_ch[ch].gateOffDisabled) {
+		if ((_ch[ch].durReload >> 1) == _ch[ch].durCounter)
+			sidWrite(off + 4, _ch[ch].waveform & 0xFE);
+	}
+
+	applyPWModulation(ch);
+	sidWrite(off + 2, _ch[ch].pwLo);
+	sidWrite(off + 3, _ch[ch].pwHi & 0x0F);
+}
+
 // ---- Main timer callback (50 Hz) ----
 
 void DarkSideC64MusicPlayer::onTimer() {
 	if (!_musicActive)
 		return;
 
-	// Increment envelope counters for all channels
-	for (int ch = 0; ch < 3; ch++) {
-		if (_ch[ch].envCounter < 15)
-			_ch[ch].envCounter++;
-	}
+	for (int ch = 0; ch < 3; ch++)
+		_ch[ch].envCounter++;
 
-	// Speed counter
-	_speedCounter--;
 	bool newBeat = (_speedCounter == 0);
-	if (newBeat)
-		_speedCounter = _speedDiv;
 
-	// Process channels (2 down to 0, matching original)
 	for (int ch = 2; ch >= 0; ch--)
 		processChannel(ch, newBeat);
+
+	if (!_musicActive)
+		return;
+
+	if (newBeat)
+		_speedCounter = _speedDiv;
+	else
+		_speedCounter--;
 }
 
 void DarkSideC64MusicPlayer::processChannel(int ch, bool newBeat) {
-	int off = kSIDOffset[ch];
-
-	// Handle delay countdown
-	if (_ch[ch].delayCounter > 0) {
-		_ch[ch].delayCounter--;
-		if (_ch[ch].delayCounter == 0 && _ch[ch].noteActive) {
-			// Delay expired: gate on now
-			sidWrite(off + 4, _ch[ch].waveform | 0x01);
-		}
-	}
-
 	if (newBeat) {
-		if (_ch[ch].durCounter > 0)
-			_ch[ch].durCounter--;
-
-		if (_ch[ch].durCounter == 0) {
+		_ch[ch].durCounter--;
+		if (_ch[ch].durCounter == 0xFF) {
 			parseCommands(ch);
+			if (!_musicActive)
+				return;
+			finalizeChannel(ch);
+			return;
 		}
+
+		if (_ch[ch].noteStepCommand != 0) {
+			if (_ch[ch].noteStepCommand == 0xDE) {
+				if (_ch[ch].curNote > 0)
+					_ch[ch].curNote--;
+			} else if (_ch[ch].curNote < 94) {
+				_ch[ch].curNote++;
+			}
+			loadCurrentFrequency(ch);
+			finalizeChannel(ch);
+			return;
+		}
+	} else if (_ch[ch].stepDownCounter != 0) {
+		_ch[ch].stepDownCounter--;
+		if (_ch[ch].curNote > 0)
+			_ch[ch].curNote--;
+		loadCurrentFrequency(ch);
+		finalizeChannel(ch);
+		return;
 	}
 
-	// Apply continuous effects
-	applyContinuousEffects(ch);
-
-	// Gate-off at half duration (if not in sustain mode and not in envelope seq mode)
-	if (!_ch[ch].sustainMode && !_ch[ch].envSeqActive && _ch[ch].noteActive) {
-		if (_ch[ch].durReload > 1 && _ch[ch].durCounter == _ch[ch].durReload / 2) {
-			sidWrite(off + 4, _ch[ch].waveform & 0xFE);
-		}
-	}
+	applyFrameEffects(ch);
+	finalizeChannel(ch);
 }
 
 // ---- Command parser ----
 
 void DarkSideC64MusicPlayer::parseCommands(int ch) {
+	if (_ch[ch].effectMode != 2) {
+		_ch[ch].effectParam = 0;
+		_ch[ch].effectMode = 0;
+		_ch[ch].arpSeqLen = 0;
+		_ch[ch].arpSeqPos = 0;
+	}
+	_ch[ch].arpPattern = 0;
+	_ch[ch].noteStepCommand = 0;
+
 	int safety = 200;
 	while (safety-- > 0) {
 		uint8 cmd = readPatByte(ch);
 
 		if (cmd == 0xFF) {
-			// End of pattern: load next from order list
 			loadNextPattern(ch);
 			continue;
 		}
 
 		if (cmd == 0xFE) {
-			// End of song: stop
 			stopMusic();
 			return;
 		}
 
 		if (cmd == 0xFD) {
-			// Filter control: read 1 parameter byte
 			uint8 filterVal = readPatByte(ch);
 			sidWrite(0x18, filterVal);
 			sidWrite(0x17, (filterVal >> 4) | 0x07);
-			continue;
+			cmd = readPatByte(ch);
+			if (cmd == 0xFF) {
+				loadNextPattern(ch);
+				continue;
+			}
 		}
 
 		if (cmd >= 0xF0) {
-			// Speed: low nybble
 			_speedDiv = cmd & 0x0F;
-			if (_speedDiv == 0)
-				_speedDiv = 1;
 			continue;
 		}
 
 		if (cmd >= 0xC0) {
-			// Instrument: (cmd & 0x1F) * 8
 			uint8 instNum = cmd & 0x1F;
 			if (instNum < 18)
 				_ch[ch].instIdx = instNum * 8;
@@ -423,66 +472,51 @@ void DarkSideC64MusicPlayer::parseCommands(int ch) {
 		}
 
 		if (cmd >= 0x80) {
-			// Duration: cmd & 0x3F
 			_ch[ch].durReload = cmd & 0x3F;
-			if (_ch[ch].durReload == 0)
-				_ch[ch].durReload = 1;
 			continue;
 		}
 
 		if (cmd == 0x7F) {
-			// Portamento up
+			_ch[ch].noteStepCommand = 0xDE;
 			_ch[ch].effectMode = 0xDE;
 			continue;
 		}
 
 		if (cmd == 0x7E) {
-			// Portamento down
+			_ch[ch].noteStepCommand = 0xFE;
 			_ch[ch].effectMode = 0xFE;
 			continue;
 		}
 
 		if (cmd == 0x7D) {
-			// Vibrato mode 1
 			_ch[ch].effectMode = 1;
 			_ch[ch].effectParam = readPatByte(ch);
-			_ch[ch].arpPattern = 0;
-			_ch[ch].vibPhase = 0;
-			_ch[ch].vibCounter = 0;
+			buildEffectArpeggio(ch);
 			continue;
 		}
 
 		if (cmd == 0x7C) {
-			// Vibrato mode 2
 			_ch[ch].effectMode = 2;
 			_ch[ch].effectParam = readPatByte(ch);
-			_ch[ch].vibPhase = 0;
-			_ch[ch].vibCounter = 0;
+			buildEffectArpeggio(ch);
 			continue;
 		}
 
 		if (cmd == 0x7B) {
-			// Arpeggio: read 2 bytes
-			uint8 arpX = readPatByte(ch);
-			uint8 arpY = readPatByte(ch);
-			_ch[ch].effectMode = 1;
 			_ch[ch].effectParam = 0;
-			_ch[ch].arpPattern = (arpX + _ch[ch].transpose) & 0xFF;
-			_ch[ch].arpParam2 = arpY;
-			_ch[ch].arpSeqPos = 0;
-			unpackArpeggio(ch);
+			_ch[ch].effectMode = 1;
+			_ch[ch].arpPattern = (readPatByte(ch) + _ch[ch].transpose) & 0xFF;
+			_ch[ch].arpParam2 = readPatByte(ch);
 			continue;
 		}
 
 		if (cmd == 0x7A) {
-			// Delay: read 1 byte (delay value)
-			_ch[ch].delayCounter = readPatByte(ch);
-			continue;
+			_ch[ch].delayValue = readPatByte(ch);
+			cmd = readPatByte(ch);
 		}
 
-		// Note (0x00-0x5F)
 		applyNote(ch, cmd);
-		break;
+		return;
 	}
 }
 
@@ -491,226 +525,220 @@ void DarkSideC64MusicPlayer::parseCommands(int ch) {
 void DarkSideC64MusicPlayer::applyNote(int ch, uint8 note) {
 	int off = kSIDOffset[ch];
 	uint8 instBase = _ch[ch].instIdx;
-
-	if (note == 0) {
-		// Rest: gate off
-		_ch[ch].noteActive = 0;
-		sidWrite(off + 4, _ch[ch].waveform & 0xFE);
-		_ch[ch].durCounter = _ch[ch].durReload;
-		return;
-	}
-
-	// Compute actual note index with transpose
-	uint8 actualNote = (note + _ch[ch].transpose) & 0xFF;
-	if (actualNote > 94)
-		actualNote = 94;
-
-	// Previous frequency (for portamento)
-	uint16 prevFreq = ((uint16)_ch[ch].freqHi << 8) | _ch[ch].freqLo;
-
-	// Look up new frequency
-	_ch[ch].freqLo = kFreqLo[actualNote];
-	_ch[ch].freqHi = kFreqHi[actualNote];
-	_ch[ch].curNote = actualNote;
-	_ch[ch].noteActive = 1;
-
-	// Load instrument parameters
 	uint8 ctrl = kInstruments[instBase + 0];
 	uint8 ad = kInstruments[instBase + 1];
 	uint8 sr = kInstruments[instBase + 2];
-	uint8 vibrato = kInstruments[instBase + 4];
+	uint8 initialPW = kInstruments[instBase + 3];
 	uint8 autoFx = kInstruments[instBase + 6];
 	uint8 flags = kInstruments[instBase + 7];
+	uint8 actualNote = note;
 
+	if (actualNote != 0)
+		actualNote = (actualNote + _ch[ch].transpose) & 0xFF;
+	if (actualNote > 94)
+		actualNote = 94;
+
+	_ch[ch].curNote = actualNote;
 	_ch[ch].waveform = ctrl;
-	_ch[ch].sustainMode = (flags & 0x08) != 0;
-	_ch[ch].envSeqActive = (flags & 0x01) != 0;
-	_ch[ch].envTable = (vibrato >> 4) & 0x01;
+	_ch[ch].instFlags = flags;
+	_ch[ch].attackDone = false;
+	_ch[ch].envCounter = 0xFF;
+	_ch[ch].gateModeControl = (flags & 0x80) != 0;
+	_ch[ch].specialAttack = (flags & 0x08) != 0;
+	_ch[ch].stepDownCounter = 0;
 
-	// Write ADSR
+	if (actualNote != 0 && _ch[ch].effectParam == 0 && autoFx != 0) {
+		_ch[ch].effectParam = autoFx;
+		buildEffectArpeggio(ch);
+	}
+
+	if (actualNote != 0 && (flags & 0x02)) {
+		_ch[ch].stepDownCounter = 2;
+		_ch[ch].curNote = (_ch[ch].curNote > 92) ? 94 : _ch[ch].curNote + 2;
+	}
+
+	loadCurrentFrequency(ch);
+
+	if (!_ch[ch].gateModeControl) {
+		_ch[ch].pwLo = initialPW & 0xF0;
+		_ch[ch].pwHi = initialPW & 0x0F;
+		sidWrite(off + 2, _ch[ch].pwLo);
+		sidWrite(off + 3, _ch[ch].pwHi & 0x0F);
+	}
+
 	sidWrite(off + 5, ad);
 	sidWrite(off + 6, sr);
-
-	// Write PW
-	sidWrite(off + 2, _ch[ch].pwLo);
-	sidWrite(off + 3, _ch[ch].pwHi & 0x0F);
-
-	// Write frequency
-	sidWrite(off + 0, _ch[ch].freqLo);
-	sidWrite(off + 1, _ch[ch].freqHi);
-
-	// Setup portamento if active
-	if (_ch[ch].effectMode == 0xDE || _ch[ch].effectMode == 0xFE) {
-		uint16 newFreq = ((uint16)_ch[ch].freqHi << 8) | _ch[ch].freqLo;
-		_ch[ch].portaTarget = newFreq;
-		// Slide from previous frequency
-		_ch[ch].freqLo = prevFreq & 0xFF;
-		_ch[ch].freqHi = (prevFreq >> 8) & 0xFF;
-		if (_ch[ch].durReload > 0) {
-			_ch[ch].portaDelta = (int16)(newFreq - prevFreq) / (int16)_ch[ch].durReload;
-		}
-		sidWrite(off + 0, _ch[ch].freqLo);
-		sidWrite(off + 1, _ch[ch].freqHi);
-	}
-
-	// Setup auto-effect from instrument
-	if (autoFx != 0 && _ch[ch].effectMode == 0) {
-		_ch[ch].effectMode = 1;
-		_ch[ch].effectParam = autoFx;
-	}
-
-	// Gate on (unless delay is active)
-	if (_ch[ch].delayCounter > 0) {
-		// Delay: don't gate on yet, gate off first
-		sidWrite(off + 4, ctrl & 0xFE);
-	} else if (_ch[ch].envSeqActive) {
-		// Envelope sequencer controls the gate
-		_ch[ch].envCounter = 0;
-		sidWrite(off + 4, kEnvControl[_ch[ch].envTable][0]);
-	} else {
-		sidWrite(off + 4, ctrl | 0x01);
-	}
-
-	// Reset envelope counter
-	_ch[ch].envCounter = 0;
-
-	// Set duration
+	_ch[ch].gateOffDisabled = (sr & 0x0F) == 0x0F;
+	sidWrite(off + 4, 0);
+	sidWrite(off + 4, ctrl);
 	_ch[ch].durCounter = _ch[ch].durReload;
-}
-
-// ---- Continuous effects ----
-
-void DarkSideC64MusicPlayer::applyContinuousEffects(int ch) {
-	// PW modulation
-	applyPWModulation(ch);
-
-	// Frequency effects (mutually exclusive based on effectMode)
-	switch (_ch[ch].effectMode) {
-	case 1:
-		if (_ch[ch].arpPattern != 0)
-			applyArpeggio(ch);
-		else
-			applyVibrato(ch);
-		break;
-	case 2:
-		applyVibrato(ch);
-		break;
-	case 0xDE:
-	case 0xFE:
-		applyPortamento(ch);
-		break;
-	default:
-		break;
-	}
-
-	// Envelope sequencer
-	if (_ch[ch].envSeqActive)
-		applyEnvelope(ch);
-
-	// Write frequency to SID
-	int off = kSIDOffset[ch];
-	sidWrite(off + 0, _ch[ch].freqLo);
-	sidWrite(off + 1, _ch[ch].freqHi);
-
-	// Write PW to SID
-	sidWrite(off + 2, _ch[ch].pwLo);
-	sidWrite(off + 3, _ch[ch].pwHi & 0x0F);
-}
-
-void DarkSideC64MusicPlayer::applyVibrato(int ch) {
-	if (!_ch[ch].noteActive)
-		return;
-
-	uint8 vibParam = _ch[ch].effectParam;
-	if (vibParam == 0)
-		return;
-
-	uint8 depth = vibParam >> 4;
-	uint8 speed = vibParam & 0x0F;
-	if (depth == 0 || speed == 0)
-		return;
-
-	uint8 note = _ch[ch].curNote;
-	if (note == 0 || note >= 94)
-		return;
-
-	// Compute frequency delta between this note and the next semitone
-	uint16 curFreq = ((uint16)kFreqHi[note] << 8) | kFreqLo[note];
-	uint16 nextFreq = ((uint16)kFreqHi[note + 1] << 8) | kFreqLo[note + 1];
-	int16 semitoneDelta = (int16)(nextFreq - curFreq);
-
-	// Scale by depth
-	int16 vibDelta = semitoneDelta * depth / 16;
-
-	// Oscillate: counter counts up to speed, then phase flips
-	_ch[ch].vibCounter++;
-	if (_ch[ch].vibCounter >= speed) {
-		_ch[ch].vibCounter = 0;
-		_ch[ch].vibPhase ^= 1;
-	}
-
-	// Apply offset
-	int16 offset = _ch[ch].vibPhase ? vibDelta : -vibDelta;
-	int16 baseFreq = (int16)curFreq;
-	uint16 newFreq = (uint16)(baseFreq + offset);
-
-	_ch[ch].freqLo = newFreq & 0xFF;
-	_ch[ch].freqHi = (newFreq >> 8) & 0xFF;
-}
-
-void DarkSideC64MusicPlayer::applyArpeggio(int ch) {
-	if (!_ch[ch].noteActive || _ch[ch].arpSeqLen == 0)
-		return;
-
-	// Cycle through unpacked arpeggio intervals
-	uint8 interval = _ch[ch].arpSeqData[_ch[ch].arpSeqPos];
-	_ch[ch].arpSeqPos++;
-	if (_ch[ch].arpSeqPos >= _ch[ch].arpSeqLen)
-		_ch[ch].arpSeqPos = 0;
-
-	// Compute arpeggiated note
-	uint8 arpNote = _ch[ch].curNote + interval;
-	if (arpNote > 94)
-		arpNote = 94;
-
-	_ch[ch].freqLo = kFreqLo[arpNote];
-	_ch[ch].freqHi = kFreqHi[arpNote];
-}
-
-void DarkSideC64MusicPlayer::unpackArpeggio(int ch) {
-	uint8 bits = _ch[ch].arpPattern;
-
-	// First entry: base note (interval 0)
-	_ch[ch].arpSeqData[0] = 0;
-	uint8 len = 1;
-
-	for (int i = 0; i < 8 && len < 19; i++) {
-		if (bits & (1 << i)) {
-			_ch[ch].arpSeqData[len] = kArpIntervals[i];
-			len++;
-		}
-	}
-
-	_ch[ch].arpSeqLen = len;
+	_ch[ch].delayCounter = _ch[ch].delayValue;
 	_ch[ch].arpSeqPos = 0;
 }
 
-void DarkSideC64MusicPlayer::applyPortamento(int ch) {
-	if (!_ch[ch].noteActive)
+void DarkSideC64MusicPlayer::applyFrameEffects(int ch) {
+	if (_ch[ch].curNote == 0)
 		return;
 
-	uint16 curFreq = ((uint16)_ch[ch].freqHi << 8) | _ch[ch].freqLo;
-	int32 newFreq = (int32)curFreq + _ch[ch].portaDelta;
+	if (applySpecialAttack(ch))
+		return;
 
-	// Clamp and check if target reached
-	if (_ch[ch].portaDelta > 0 && (uint16)newFreq >= _ch[ch].portaTarget) {
-		newFreq = _ch[ch].portaTarget;
-	} else if (_ch[ch].portaDelta < 0 && (uint16)newFreq <= _ch[ch].portaTarget) {
-		newFreq = _ch[ch].portaTarget;
+	if (applyEnvelopeSequence(ch))
+		return;
+
+	if (applyInstrumentVibrato(ch))
+		return;
+
+	applyEffectArpeggio(ch);
+	applyTimedSlide(ch);
+}
+
+bool DarkSideC64MusicPlayer::applySpecialAttack(int ch) {
+	if (!_ch[ch].specialAttack || _ch[ch].attackDone)
+		return false;
+
+	int off = kSIDOffset[ch];
+	if (_ch[ch].envCounter < 1) {
+		sidWrite(off + 0, 0x00);
+		sidWrite(off + 1, 0x48);
+		sidWrite(off + 4, 0x81);
+	} else {
+		loadCurrentFrequency(ch);
+		_ch[ch].attackDone = true;
+		sidWrite(off + 4, _ch[ch].waveform);
+	}
+	return true;
+}
+
+bool DarkSideC64MusicPlayer::applyEnvelopeSequence(int ch) {
+	if ((_ch[ch].instFlags & 0x01) == 0 || _ch[ch].envCounter >= 15)
+		return false;
+
+	int off = kSIDOffset[ch];
+	uint8 instBase = _ch[ch].instIdx;
+	uint8 envMode = kInstruments[instBase + 4];
+	uint8 table = (envMode & 0x0F) ? 1 : 0;
+	uint8 data = kEnvData[table][_ch[ch].envCounter];
+
+	sidWrite(off + 4, kEnvControl[table][_ch[ch].envCounter]);
+	if (envMode & 0x10) {
+		uint8 note = (_ch[ch].curNote + data > 94) ? 94 : _ch[ch].curNote + data;
+		sidWrite(off + 0, kFreqLo[note]);
+		sidWrite(off + 1, kFreqHi[note]);
+	} else {
+		sidWrite(off + 0, 0x00);
+		sidWrite(off + 1, data + 0x0D);
+	}
+	return true;
+}
+
+bool DarkSideC64MusicPlayer::applyInstrumentVibrato(int ch) {
+	uint8 instBase = _ch[ch].instIdx;
+	uint8 vib = kInstruments[instBase + 4];
+	if (vib == 0 || _ch[ch].curNote >= 94)
+		return false;
+
+	uint8 shift = vib & 0x0F;
+	uint8 span = vib >> 4;
+	if (span == 0)
+		return false;
+
+	uint16 noteFreq = ((uint16)kFreqHi[_ch[ch].curNote] << 8) | kFreqLo[_ch[ch].curNote];
+	uint16 nextFreq = ((uint16)kFreqHi[_ch[ch].curNote + 1] << 8) | kFreqLo[_ch[ch].curNote + 1];
+	uint16 delta = nextFreq - noteFreq;
+
+	while (shift-- != 0)
+		delta >>= 1;
+
+	if (_ch[ch].vibPhase & 0x80) {
+		if (_ch[ch].vibCounter != 0)
+			_ch[ch].vibCounter--;
+		if (_ch[ch].vibCounter == 0)
+			_ch[ch].vibPhase = 0;
+	} else {
+		_ch[ch].vibCounter++;
+		if (_ch[ch].vibCounter >= span)
+			_ch[ch].vibPhase = 0xFF;
 	}
 
-	_ch[ch].freqLo = (uint16)newFreq & 0xFF;
-	_ch[ch].freqHi = ((uint16)newFreq >> 8) & 0xFF;
+	if (_ch[ch].delayCounter != 0) {
+		_ch[ch].delayCounter--;
+		return false;
+	}
+
+	int32 freq = ((uint16)_ch[ch].freqHi << 8) | _ch[ch].freqLo;
+	for (uint8 i = 0; i < (span >> 1); i++)
+		freq -= delta;
+	for (uint8 i = 0; i < _ch[ch].vibCounter; i++)
+		freq += delta;
+
+	if (freq < 0)
+		freq = 0;
+	if (freq > 0xFFFF)
+		freq = 0xFFFF;
+
+	int off = kSIDOffset[ch];
+	sidWrite(off + 0, freq & 0xFF);
+	sidWrite(off + 1, (freq >> 8) & 0xFF);
+	return true;
+}
+
+void DarkSideC64MusicPlayer::applyEffectArpeggio(int ch) {
+	if (_ch[ch].effectParam == 0 || _ch[ch].arpSeqLen == 0)
+		return;
+
+	if (_ch[ch].arpSeqPos >= _ch[ch].arpSeqLen)
+		_ch[ch].arpSeqPos = 0;
+
+	uint8 note = (_ch[ch].curNote + _ch[ch].arpSeqData[_ch[ch].arpSeqPos] > 94) ? 94 : _ch[ch].curNote + _ch[ch].arpSeqData[_ch[ch].arpSeqPos];
+	_ch[ch].arpSeqPos++;
+
+	int off = kSIDOffset[ch];
+	sidWrite(off + 0, kFreqLo[note]);
+	sidWrite(off + 1, kFreqHi[note]);
+}
+
+void DarkSideC64MusicPlayer::applyTimedSlide(int ch) {
+	if (_ch[ch].arpPattern == 0)
+		return;
+
+	uint8 total = _ch[ch].durReload;
+	uint8 remaining = _ch[ch].durCounter;
+	uint8 start = _ch[ch].arpParam2 >> 4;
+	uint8 span = _ch[ch].arpParam2 & 0x0F;
+	uint8 elapsed = total - remaining;
+
+	if (elapsed <= start || elapsed > start + span || span == 0)
+		return;
+
+	uint8 currentNote = (_ch[ch].curNote > 94) ? 94 : _ch[ch].curNote;
+	uint8 targetNote = (_ch[ch].arpPattern > 94) ? 94 : _ch[ch].arpPattern;
+	if (currentNote == targetNote)
+		return;
+
+	uint16 currentFreq = ((uint16)_ch[ch].freqHi << 8) | _ch[ch].freqLo;
+	uint16 sourceFreq = ((uint16)kFreqHi[currentNote] << 8) | kFreqLo[currentNote];
+	uint16 targetFreq = ((uint16)kFreqHi[targetNote] << 8) | kFreqLo[targetNote];
+	uint16 diff = (sourceFreq > targetFreq) ? (sourceFreq - targetFreq) : (targetFreq - sourceFreq);
+	uint16 divisor = span * (_speedDiv + 1);
+	if (divisor == 0)
+		return;
+
+	uint16 delta = diff / divisor;
+	if (delta == 0)
+		return;
+
+	if (targetFreq > sourceFreq)
+		currentFreq += delta;
+	else
+		currentFreq -= delta;
+
+	_ch[ch].freqLo = currentFreq & 0xFF;
+	_ch[ch].freqHi = (currentFreq >> 8) & 0xFF;
+
+	int off = kSIDOffset[ch];
+	sidWrite(off + 0, _ch[ch].freqLo);
+	sidWrite(off + 1, _ch[ch].freqHi);
 }
 
 void DarkSideC64MusicPlayer::applyPWModulation(int ch) {
@@ -721,44 +749,23 @@ void DarkSideC64MusicPlayer::applyPWModulation(int ch) {
 
 	uint8 flags = kInstruments[instBase + 7];
 
-	uint16 pw = ((uint16)_ch[ch].pwHi << 8) | _ch[ch].pwLo;
-
 	if (flags & 0x04) {
-		// Direct add (one-directional sweep)
-		pw += pwMod;
+		_ch[ch].pwLo += pwMod;
 	} else {
-		// Triangle sweep between pwHi=$08 and pwHi=$0F
+		uint16 pw = ((uint16)_ch[ch].pwHi << 8) | _ch[ch].pwLo;
 		if (_ch[ch].pwDirection == 0) {
 			pw += pwMod;
-			if ((_ch[ch].pwHi + (pw >> 8)) >= 0x0F || (pw >> 8) >= 0x0F) {
-				pw = ((uint16)_ch[ch].pwHi << 8) | _ch[ch].pwLo;
-				pw += pwMod;
-				if ((pw >> 8) >= 0x0F)
-					_ch[ch].pwDirection = 1;
-			}
+			if ((pw >> 8) >= 0x0F)
+				_ch[ch].pwDirection = 1;
 		} else {
 			pw -= pwMod;
-			if ((pw >> 8) <= 0x08)
+			if ((pw >> 8) < 0x08)
 				_ch[ch].pwDirection = 0;
 		}
+
+		_ch[ch].pwLo = pw & 0xFF;
+		_ch[ch].pwHi = (pw >> 8) & 0xFF;
 	}
-
-	_ch[ch].pwLo = pw & 0xFF;
-	_ch[ch].pwHi = (pw >> 8) & 0xFF;
-}
-
-void DarkSideC64MusicPlayer::applyEnvelope(int ch) {
-	if (_ch[ch].envCounter >= 15)
-		return;
-
-	int off = kSIDOffset[ch];
-	uint8 tbl = _ch[ch].envTable;
-
-	// Write waveform control from envelope table
-	sidWrite(off + 4, kEnvControl[tbl][_ch[ch].envCounter]);
-
-	// Write AD register from envelope volume table
-	sidWrite(off + 5, kEnvVolume[tbl][_ch[ch].envCounter]);
 }
 
 } // namespace Freescape

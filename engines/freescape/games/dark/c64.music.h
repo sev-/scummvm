@@ -49,18 +49,21 @@ private:
 	void setupSong();
 	void silenceAll();
 	void loadNextPattern(int ch);
-	void unpackArpeggio(int ch);
+	void buildEffectArpeggio(int ch);
+	void loadCurrentFrequency(int ch);
+	void finalizeChannel(int ch);
 
 	// Per-tick processing
 	void processChannel(int ch, bool newBeat);
 	void parseCommands(int ch);
 	void applyNote(int ch, uint8 note);
-	void applyContinuousEffects(int ch);
-	void applyVibrato(int ch);
-	void applyArpeggio(int ch);
-	void applyPortamento(int ch);
+	void applyFrameEffects(int ch);
+	bool applySpecialAttack(int ch);
+	bool applyEnvelopeSequence(int ch);
+	bool applyInstrumentVibrato(int ch);
+	void applyEffectArpeggio(int ch);
+	void applyTimedSlide(int ch);
 	void applyPWModulation(int ch);
-	void applyEnvelope(int ch);
 
 	uint8 readPatByte(int ch);
 
@@ -78,7 +81,6 @@ private:
 		int patOffset;
 
 		uint8 instIdx;         // $15F6: instrument# * 8
-		uint8 noteActive;      // $1599
 		uint8 curNote;         // $159C: note index (with transpose)
 		uint8 transpose;       // $15C4
 
@@ -90,7 +92,7 @@ private:
 		uint8 durReload;       // $15B8
 		uint8 durCounter;      // $15BB
 
-		uint8 effectMode;      // $15BE: 0=none, 1=arp/vib1, 2=vib2, 0xDE=portaUp, 0xFE=portaDn
+		uint8 effectMode;      // $15BE: mode 2 keeps effectParam alive across note loads
 		uint8 effectParam;     // $15C1
 
 		uint8 arpPattern;      // $15C7
@@ -99,23 +101,24 @@ private:
 		uint8 arpSeqData[20];  // $160C
 		uint8 arpSeqLen;
 
-		int16 portaDelta;      // $15CD/$15CE: per-tick freq delta
-		uint16 portaTarget;    // target frequency for portamento
+		uint8 noteStepCommand; // $15D0: self-modified INC/DEC opcode for beat step
+		uint8 stepDownCounter; // $15D3: short downward slide counter
 
 		uint8 vibPhase;        // $15DE
 		uint8 vibCounter;      // $15E1
 
 		uint8 pwDirection;     // $15D6: 0=up, 1=down
 
+		uint8 delayValue;      // $15E4
 		uint8 delayCounter;    // $15E7
 
 		uint8 envCounter;      // $15FC
-		uint8 envTable;        // envelope table set (0 or 1)
-		bool envSeqActive;     // flags bit 0
-
-		bool sustainMode;      // flags bit 3
-
-		uint8 waveform;        // current waveform ctrl byte (from instrument)
+		bool gateOffDisabled;  // $1606: set when SR release nibble is $F
+		bool gateModeControl;  // $1600: flags bit 7
+		bool specialAttack;    // flags bit 3
+		bool attackDone;       // $1603
+		uint8 waveform;        // current instrument ctrl byte
+		uint8 instFlags;       // current instrument flags byte
 
 		void reset();
 	};
