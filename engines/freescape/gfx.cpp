@@ -29,7 +29,7 @@
 	#include "graphics/opengl/context.h"
 #endif
 
-#include "freescape/gfx.h"
+#include "freescape/freescape.h"
 #include "freescape/objects/object.h"
 
 namespace Freescape {
@@ -260,7 +260,9 @@ void Renderer::setColorMap(ColorMap *colorMap_) {
 		}
 	} else if (_renderMode == Common::kRenderCPC) {
 		fillColorPairArray();
-		for (int i = 4; i < 15; i++) {
+		// Castle CPC uses color-map entry 3 as a genuine checker pattern,
+		// so CPC stipples need to be generated for all 15 Freescape entries.
+		for (int i = 0; i < 15; i++) {
 			byte pair = _colorPair[i];
 			byte c1 = pair & 0xf;
 			byte c2 = (pair >> 4) & 0xf;
@@ -382,6 +384,8 @@ bool Renderer::getRGBAtC64(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 			stipple = nullptr;
 			return true;
 		}
+		if (isEncodedCPCDirectColor(index))
+			index = decodeCPCDirectColor(index);
 		readFromPalette(index, r1, g1, b1);
 		r2 = r1;
 		g2 = g1;
@@ -486,6 +490,8 @@ bool Renderer::getRGBAtCPC(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 			stipple = nullptr;
 			return true;
 		}
+		if (isEncodedCPCDirectColor(index))
+			index = decodeCPCDirectColor(index);
 		readFromPalette(index, r1, g1, b1);
 		r2 = r1;
 		g2 = g1;
@@ -495,9 +501,8 @@ bool Renderer::getRGBAtCPC(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 	}
 	assert(_renderMode == Common::kRenderCPC);
 
-	// Driller CPC area/background colors are raw 0..31 ink values. Only
-	// Freescape drawable colors 1..15 use the packed four-pen color map.
-	if (index >= _colorMap->size() + 1) {
+	if (isEncodedCPCDirectColor(index)) {
+		index = decodeCPCDirectColor(index);
 		readFromPalette(index, r1, g1, b1);
 		r2 = r1;
 		g2 = g1;
@@ -1238,6 +1243,8 @@ void Renderer::drawBackground(uint8 color) {
 
 	if (_colorRemaps && _colorRemaps->contains(color)) {
 		color = (*_colorRemaps)[color];
+		if (_renderMode == Common::kRenderCPC && isEncodedCPCDirectColor(color))
+			color = decodeCPCDirectColor(color);
 		readFromPalette(color, r1, g1, b1);
 		clear(r1, g1, b1);
 		return;

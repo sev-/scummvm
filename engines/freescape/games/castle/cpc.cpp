@@ -489,9 +489,10 @@ void CastleEngine::drawCPCUI(Graphics::Surface *surface) {
 	_gfx->readFromPalette(color, r, g, b);
 	uint32 front = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 
-	color = 1;
-
-	_gfx->readFromPalette(color, r, g, b);
+	// Castle CPC draws the message strip text through the UI row-pointer path,
+	// and the original string routine erases with zero pixels there. In the CPC
+	// HUD palette that is pen 0, i.e. black, not global CPC palette index 0.
+	_gfx->selectColorFromFourColorPalette(0, r, g, b);
 	uint32 back = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 
 	Common::Rect backRect(97, 181, 232, 190);

@@ -672,6 +672,17 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 		skyColor = 0;
 	}
 
+	if (isCPC() && isDriller()) {
+		// Driller CPC stores the four area colors at bytes +6..+9 as raw 0..31
+		// CPC ink values. The original code copies them straight into the live
+		// pens before programming the hardware, so encode them in the Area and
+		// let the generic renderer treat them as direct CPC inks.
+		usualBackgroundColor = encodeCPCDirectColor(usualBackgroundColor);
+		underFireBackgroundColor = encodeCPCDirectColor(underFireBackgroundColor);
+		paperColor = encodeCPCDirectColor(paperColor);
+		inkColor = encodeCPCDirectColor(inkColor);
+	}
+
 	debugC(1, kFreescapeDebugParser, "Colors usual background: %d", usualBackgroundColor);
 	debugC(1, kFreescapeDebugParser, "Colors under fire background: %d", underFireBackgroundColor);
 	debugC(1, kFreescapeDebugParser, "Color Paper: %d", paperColor);

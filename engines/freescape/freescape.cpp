@@ -39,6 +39,20 @@ namespace Freescape {
 
 FreescapeEngine *g_freescape;
 
+bool isEncodedCPCDirectColor(uint8 index) {
+	return index >= 64 && index < 96;
+}
+
+uint8 encodeCPCDirectColor(uint8 index) {
+	assert(index < 32);
+	return index + 64;
+}
+
+uint8 decodeCPCDirectColor(uint8 index) {
+	assert(isEncodedCPCDirectColor(index));
+	return index - 64;
+}
+
 byte getCPCPixelMode1(byte cpc_byte, int index) {
 	if (index == 0)
 		return ((cpc_byte & 0x08) >> 2) | ((cpc_byte & 0x80) >> 7);
@@ -458,11 +472,13 @@ void FreescapeEngine::checkSensors() {
 void FreescapeEngine::drawSensorShoot(Sensor *sensor) {}
 
 void FreescapeEngine::flashScreen(int backgroundColor) {
-	// CPC area colors are stored as 0..31 ink values, not 0..15 palette slots.
-	// Driller uses these raw values directly in the area headers and the original
-	// CPC code feeds them to the hardware/Gate Array without clamping.
-	if (backgroundColor >= (isCPC() ? 32 : 16))
+	if (isCPC()) {
+		if (backgroundColor >= 32 && !isEncodedCPCDirectColor(backgroundColor))
+			return;
+	} else if (backgroundColor >= 16) {
 		return;
+	}
+
 	_currentArea->remapColor(_currentArea->_usualBackgroundColor, backgroundColor);
 	_currentArea->remapColor(_currentArea->_skyColor, backgroundColor);
 	drawFrame();

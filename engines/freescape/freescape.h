@@ -53,6 +53,10 @@ namespace Freescape {
 class Renderer;
 class Debugger;
 
+bool isEncodedCPCDirectColor(uint8 index);
+uint8 encodeCPCDirectColor(uint8 index);
+uint8 decodeCPCDirectColor(uint8 index);
+
 #define FREESCAPE_DATA_BUNDLE "freescape.dat"
 
 enum CameraMovement {

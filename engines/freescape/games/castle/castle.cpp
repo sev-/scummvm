@@ -598,6 +598,7 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 	// Ignore sky/ground fields
 	_gfx->_keyColor = 0;
 	_gfx->clearColorPairArray();
+	_gfx->fillColorPairArray();
 
 	swapPalette(areaID);
 
@@ -637,14 +638,10 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 	if (isSpectrum())
 		_gfx->_paperColor = 0;
 
-	// Unclear why this is needed
 	if (isCPC()) {
-		for (int i = 0; i < 128; i++) {
-			_gfx->_stipples[2][i] = _gfx->_stipples[11][i];
-		}
-		ColorMap *cm = _gfx->_colorMap;
-		(*cm)[2] = (*cm)[11];
+		_currentArea->_skyColor = _currentArea->_usualBackgroundColor;
 	}
+
 	resetInput();
 
 	if (entranceID > 0) {

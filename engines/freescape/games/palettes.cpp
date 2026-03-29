@@ -232,6 +232,15 @@ void FreescapeEngine::swapPalette(uint16 levelID) {
 		_gfx->_paperColor = _areaMap[levelID]->_paperColor;
 		_gfx->_underFireBackgroundColor = _areaMap[levelID]->_underFireBackgroundColor;
 
+		if (isCPC()) {
+			if (isEncodedCPCDirectColor(_gfx->_inkColor))
+				_gfx->_inkColor = decodeCPCDirectColor(_gfx->_inkColor);
+			if (isEncodedCPCDirectColor(_gfx->_paperColor))
+				_gfx->_paperColor = decodeCPCDirectColor(_gfx->_paperColor);
+			if (isEncodedCPCDirectColor(_gfx->_underFireBackgroundColor))
+				_gfx->_underFireBackgroundColor = decodeCPCDirectColor(_gfx->_underFireBackgroundColor);
+		}
+
 		if (isC64()) {
 			_gfx->_inkColor %= 16;
 			_gfx->_paperColor %= 16;
