@@ -21,35 +21,53 @@
 
 /*
  * This code is based on the original source code of Lord Avalot d'Argent version 1.3.
- * Copyright (c) 1994-1995 Mike, Mark and Thomas Thurman.
+ * Copyright (c) 1994-1995 Mike: Mark and Thomas Thurman.
  */
 
-#ifndef AVALANCHE_MAINMENU_H
-#define AVALANCHE_MAINMENU_H
+#ifndef AVALANCHE_INTRO_H
+#define AVALANCHE_INTRO_H
+
+#include "common/str.h"
+#include "common/array.h"
+
+namespace Audio {
+class SoundHandle;
+}
 
 namespace Avalanche {
+
 class AvalancheEngine;
 
-class MainMenu {
+class Intro {
 public:
-	MainMenu(AvalancheEngine *vm);
+	Intro(AvalancheEngine *vm);
+	virtual ~Intro();
 
 	void run();
 
 private:
+	void loadText();
+	void resetPlanes();
+	void movePlanes();
+	void plotStar(uint8 plane, int x, int y);
+	void plotStars(uint8 plane, int y);
+	void combineAndDraw();
+
 	AvalancheEngine *_vm;
+	Common::Array<Common::String> _textStrings;
+	
+	// Each plane is 320x200 (40 bytes per row)
+	// Plane 0-2: Different pace stars, Plane 3: Scrolling text
+	uint8 *_planes[4]; 
+	
+	int _thisLine;
+	int _nextBitline;
+	bool _cutOut;
+	int _displayCounter;
 
-	Common::String _registrant;
-	FontType _font;
-
-	void loadFont();
-	void loadRegiInfo();
-	void option(byte which, Common::String what);
-	void drawMenu();
-	void centre(int16 y, Common::String text);
-	void wait();
+	Audio::SoundHandle *_musicHandle;
 };
 
 } // End of namespace Avalanche
 
-#endif // AVALANCHE_MAINMENU_H
+#endif // AVALANCHE_INTRO_H
