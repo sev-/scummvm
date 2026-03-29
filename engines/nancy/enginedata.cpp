@@ -294,6 +294,13 @@ TBOX::TBOX(Common::SeekableReadStream *chunkStream) : EngineData(chunkStream) {
 	} else {
 		textBackground = highlightTextBackground = 0;
 	}
+
+	// FIXME: Data fixup/HACK for Nancy10 and later
+	if (g_nancy->getGameType() >= kGameTypeNancy10) {
+		highlightConversationFontID = conversationFontID;
+		tabWidth = 4;
+		leftOffset = rightOffset = 0;
+	}
 }
 
 MAP::MAP(Common::SeekableReadStream *chunkStream) : EngineData(chunkStream) {
