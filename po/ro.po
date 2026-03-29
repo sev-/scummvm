@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-28 20:47+0000\n"
+"POT-Creation-Date: 2026-03-29 13:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -6950,7 +6950,7 @@ msgstr ""
 #: engines/dgds/metaengine.cpp:75 engines/dm/metaengine.cpp:174
 #: engines/drascula/metaengine.cpp:285 engines/efh/metaengine.cpp:272
 #: engines/freescape/games/castle/castle.cpp:463
-#: engines/freescape/games/dark/dark.cpp:206
+#: engines/freescape/games/dark/dark.cpp:220
 #: engines/freescape/games/driller/driller.cpp:125
 #: engines/freescape/games/eclipse/eclipse.cpp:249
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
@@ -6978,7 +6978,7 @@ msgstr ""
 #: engines/dgds/metaengine.cpp:74 engines/drascula/metaengine.cpp:260
 #: engines/efh/metaengine.cpp:279 engines/efh/metaengine.cpp:613
 #: engines/freescape/games/castle/castle.cpp:468
-#: engines/freescape/games/dark/dark.cpp:211
+#: engines/freescape/games/dark/dark.cpp:225
 #: engines/freescape/games/driller/driller.cpp:130
 #: engines/freescape/games/eclipse/eclipse.cpp:254
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
@@ -7028,7 +7028,7 @@ msgstr ""
 #: engines/darkseed/metaengine.cpp:60 engines/dragons/metaengine.cpp:223
 #: engines/efh/metaengine.cpp:373 engines/efh/metaengine.cpp:619
 #: engines/freescape/games/castle/castle.cpp:476
-#: engines/freescape/games/dark/dark.cpp:216
+#: engines/freescape/games/dark/dark.cpp:230
 #: engines/freescape/games/driller/driller.cpp:135
 #: engines/freescape/games/eclipse/eclipse.cpp:259
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
@@ -8215,7 +8215,7 @@ msgid "Select princess"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:481
-#: engines/freescape/games/dark/dark.cpp:226
+#: engines/freescape/games/dark/dark.cpp:240
 #: engines/freescape/games/driller/driller.cpp:143
 #: engines/freescape/games/eclipse/eclipse.cpp:267
 #: engines/hugo/metaengine.cpp:154
@@ -8223,14 +8223,14 @@ msgid "Toggle sound"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:486
-#: engines/freescape/games/dark/dark.cpp:232
+#: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:149
 #: engines/freescape/games/eclipse/eclipse.cpp:272
 msgid "Rotate left"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:491
-#: engines/freescape/games/dark/dark.cpp:237
+#: engines/freescape/games/dark/dark.cpp:251
 #: engines/freescape/games/driller/driller.cpp:154
 #: engines/freescape/games/eclipse/eclipse.cpp:277
 msgid "Rotate right"
@@ -8249,52 +8249,52 @@ msgstr ""
 msgid "Run (hold)"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:242
+#: engines/freescape/games/dark/dark.cpp:256
 #: engines/freescape/games/driller/driller.cpp:188
 #: engines/ultima/ultima8/metaengine.cpp:97
 msgid "Roll left"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:247
+#: engines/freescape/games/dark/dark.cpp:261
 #: engines/freescape/games/driller/driller.cpp:193
 #: engines/ultima/ultima8/metaengine.cpp:98
 msgid "Roll right"
 msgstr ""
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/dark/dark.cpp:253
+#: engines/freescape/games/dark/dark.cpp:267
 #: engines/freescape/games/driller/driller.cpp:160
 msgid "Increase turn angle"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:258
+#: engines/freescape/games/dark/dark.cpp:272
 #: engines/freescape/games/driller/driller.cpp:165
 msgid "Decrease turn angle"
 msgstr ""
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:264
+#: engines/freescape/games/dark/dark.cpp:278
 #: engines/freescape/games/driller/driller.cpp:171
 msgid "Increase step size"
 msgstr ""
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:270
+#: engines/freescape/games/dark/dark.cpp:284
 #: engines/freescape/games/driller/driller.cpp:177
 msgid "Decrease step size"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:275
+#: engines/freescape/games/dark/dark.cpp:289
 #: engines/freescape/games/driller/driller.cpp:182
 msgid "Rise / Fly up"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:281
+#: engines/freescape/games/dark/dark.cpp:295
 #: engines/freescape/games/driller/driller.cpp:198
 msgid "Lower / Fly down"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:287
+#: engines/freescape/games/dark/dark.cpp:301
 msgid "Enable / Disable jetpack"
 msgstr ""
 
