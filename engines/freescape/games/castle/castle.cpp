@@ -598,7 +598,8 @@ void CastleEngine::gotoArea(uint16 areaID, int entranceID) {
 	// Ignore sky/ground fields
 	_gfx->_keyColor = 0;
 	_gfx->clearColorPairArray();
-	_gfx->fillColorPairArray();
+	if (isCPC())
+		_gfx->fillColorPairArray();
 
 	swapPalette(areaID);
 
