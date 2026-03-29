@@ -192,7 +192,10 @@ void CastleEngine::loadAssetsCPCFullGame() {
 	if (!file.isOpen())
 		error("Failed to open TECODE.BIN/TE2.BI2");
 
-	loadMessagesVariableSize(&file, 0x16c6, 71);
+	int messagesOffset = -1;
+	int riddlesOffset = -1;
+	// Multi-language CM.BIN keeps per-language message/riddle blocks in-place:
+	// FR at 0x027B/0x0716, DE at 0x0A47/0x0EE2, EN at 0x16C6/0x1B61.
 	switch (_language) {
 		/*case Common::ES_ESP:
 			loadRiddles(&file, 0x1470 - 4 - 2 - 9 * 2, 9);
@@ -211,26 +214,39 @@ void CastleEngine::loadAssetsCPCFullGame() {
 			_fontLoaded = true;
 
 			break;*/
+		case Common::FR_FRA:
+			messagesOffset = 0x027b;
+			riddlesOffset = 0x0716;
+			break;
+		case Common::DE_DEU:
+			messagesOffset = 0x0a47;
+			riddlesOffset = 0x0ee2;
+			break;
 		case Common::EN_ANY:
-			loadRiddles(&file, 0x1b75 - 2 - 9 * 2, 9);
-			load8bitBinary(&file, 0x791a, 16);
-			loadSoundsCPC(&file, 0x21E2, 48, 0x2212, 204, 0x2179, 105);
-
-			file.seek(0x2724);
-			for (int i = 0; i < 90; i++) {
-				Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
-				surface->create(8, 8, Graphics::PixelFormat::createFormatCLUT8());
-				chars.push_back(loadFrame(&file, surface, 1, 8, 1));
-			}
-			_font = Font(chars);
-			_font.setCharWidth(9);
-			_fontLoaded = true;
-
+			messagesOffset = 0x16c6;
+			riddlesOffset = 0x1b75 - 2 - 9 * 2;
 			break;
 		default:
 			error("Language not supported");
 			break;
 	}
+
+	// Castle Master CPC keeps the info-menu strings in entries 68..74, just before
+	// the tape/disk prompt block and before the riddle table for each language.
+	loadMessagesVariableSize(&file, messagesOffset, 75);
+	loadRiddles(&file, riddlesOffset, 9);
+	load8bitBinary(&file, 0x791a, 16);
+	loadSoundsCPC(&file, 0x21E2, 48, 0x2212, 204, 0x2179, 105);
+
+	file.seek(0x2724);
+	for (int i = 0; i < 90; i++) {
+		Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+		surface->create(8, 8, Graphics::PixelFormat::createFormatCLUT8());
+		chars.push_back(loadFrame(&file, surface, 1, 8, 1));
+	}
+	_font = Font(chars);
+	_font.setCharWidth(9);
+	_fontLoaded = true;
 
 	loadColorPalette();
 

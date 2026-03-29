@@ -1011,7 +1011,36 @@ void CastleEngine::drawInfoMenu() {
 		Common::Array<Common::String> lines;
 		lines.push_back(centerAndPadString("********************", 21));
 
-		if (_language == Common::EN_ANY) {
+		if (isCPC() && _messagesList.size() > 74) {
+			Common::String commandLine = _messagesList[68];
+			Common::String keysLabel = _messagesList[69];
+			Common::String spiritsLabel = _messagesList[70];
+			Common::String strengthLabel = _messagesList[71];
+			Common::String keysText = _messagesList[72];
+			Common::String spiritsText = _messagesList[73];
+			Common::String scoreText = _messagesList[74];
+			Common::String strengthText = _messagesList[62 + shield / 6];
+
+			commandLine.trim();
+			keysLabel.trim();
+			spiritsLabel.trim();
+			strengthLabel.trim();
+			keysText.trim();
+			spiritsText.trim();
+			scoreText.trim();
+			strengthText.trim();
+
+			Common::replace(keysText, "XX", Common::String::format("%2d", _keysCollected.size()));
+			Common::replace(spiritsText, "XX", Common::String::format("%2d", spiritsDestroyed));
+			Common::replace(scoreText, "XXXXXXX", Common::String::format("%07d", score));
+
+			lines.push_back(centerAndPadString(commandLine, 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString(Common::String::format("%s %s", keysLabel.c_str(), keysText.c_str()), 21));
+			lines.push_back(centerAndPadString(Common::String::format("%s %s", spiritsLabel.c_str(), spiritsText.c_str()), 21));
+			lines.push_back(centerAndPadString(Common::String::format("%s %s", strengthLabel.c_str(), strengthText.c_str()), 21));
+			lines.push_back(centerAndPadString(scoreText, 21));
+		} else if (_language == Common::EN_ANY) {
 			lines.push_back(centerAndPadString("s-save l-load q-quit", 21));
 			lines.push_back("");
 			lines.push_back(centerAndPadString(Common::String::format("keys   %d collected", _keysCollected.size()), 21));
@@ -1026,7 +1055,12 @@ void CastleEngine::drawInfoMenu() {
 			lines.push_back(centerAndPadString(Common::String::format("fuerza  %s", _messagesList[62 + shield / 6].c_str()), 21));
 			lines.push_back(centerAndPadString(Common::String::format("puntos   %07d", score), 21));
 		} else {
-			error("Language not supported");
+			lines.push_back(centerAndPadString("s-save l-load q-quit", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString(Common::String::format("keys   %d collected", _keysCollected.size()), 21));
+			lines.push_back(centerAndPadString(Common::String::format("spirits  %d destroyed", spiritsDestroyed), 21));
+			lines.push_back(centerAndPadString(Common::String::format("strength  %s", _messagesList[62 + shield / 6].c_str()), 21));
+			lines.push_back(centerAndPadString(Common::String::format("score   %07d", score), 21));
 		}
 
 		lines.push_back("");
@@ -1258,7 +1292,7 @@ void CastleEngine::drawFullscreenGameOverAndWait() {
 		else if (_language == Common::ES_ESP)
 			scoreString = "PUNTOS XXXXXXX";
 		else
-			error("Language not supported");
+			scoreString = "SCORE XXXXXXX";
 	}
 
 	Common::replace(scoreString, "XXXXXXX", Common::String::format("%07d", score));
@@ -1273,7 +1307,7 @@ void CastleEngine::drawFullscreenGameOverAndWait() {
 		else if (_language == Common::ES_ESP)
 			spiritsDestroyedString = "X DESTRUIDOS";
 		else
-			error("Language not supported");
+			spiritsDestroyedString = "X DESTROYED";
 	}
 
 	Common::replace(spiritsDestroyedString, "X", Common::String::format("%d", spiritsDestroyed));
@@ -1479,7 +1513,13 @@ void CastleEngine::loadRiddles(Common::SeekableReadStream *file, int offset, int
 			x = file->readByte();
 			y = file->readByte();
 			int size = file->readByte();
+			const uint32 recordOffset = file->pos() - 3;
 			debugC(1, kFreescapeDebugParser, "size: %d (max %d?)", size, maxLineSize);
+
+			// Castle CPC French has one malformed riddle record in CM.BIN where the
+			// stored size for "NOUS PARVIENT" is 11 instead of 13.
+			if (isCPC() && _language == Common::FR_FRA && recordOffset == 0x86d && size == 11)
+				size = 13;
 
 			Common::String message = "";
 			if (size == 255) {
@@ -1966,6 +2006,39 @@ void CastleEngine::selectCharacterScreen() {
 			lines.push_back("");
 			lines.push_back(centerAndPadString("1. Principe", 21));
 			lines.push_back(centerAndPadString("2. Princesa", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("*******************", 21));
+		} else if (isCPC() && _language == Common::FR_FRA) {
+			// Original Castle Master CPC multilingual strings from CM.BIN @ 0x143.
+			lines.push_back(centerAndPadString("*******************", 21));
+			lines.push_back(centerAndPadString("SELECTIONNEZ LE", 21));
+			lines.push_back(centerAndPadString("PERSONNAGE DESIRE ET", 21));
+			lines.push_back(centerAndPadString("APPUYEZ SUR RETURN", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("1. PRINCE", 21));
+			lines.push_back(centerAndPadString("2. PRINCESSE", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("*******************", 21));
+		} else if (isCPC() && _language == Common::DE_DEU) {
+			// Original Castle Master CPC multilingual strings from CM.BIN @ 0x1ac.
+			lines.push_back(centerAndPadString("*******************", 21));
+			lines.push_back(centerAndPadString("GEWUNSCHTE FIGUR", 21));
+			lines.push_back(centerAndPadString("WAHLEN UND", 21));
+			lines.push_back(centerAndPadString("RETURN DRUCKEN", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("1. PRINZ", 21));
+			lines.push_back(centerAndPadString("2. PRINZESSIN", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("*******************", 21));
+		} else if (isCPC()) {
+			// Original Castle Master CPC English strings from CM.BIN @ 0xda.
+			lines.push_back(centerAndPadString("*******************", 21));
+			lines.push_back(centerAndPadString("SELECT THE CHARACTER", 21));
+			lines.push_back(centerAndPadString("YOU WISH TO PLAY", 21));
+			lines.push_back(centerAndPadString("AND PRESS RETURN", 21));
+			lines.push_back("");
+			lines.push_back(centerAndPadString("1. PRINCE", 21));
+			lines.push_back(centerAndPadString("2. PRINCESS", 21));
 			lines.push_back("");
 			lines.push_back(centerAndPadString("*******************", 21));
 		} else {

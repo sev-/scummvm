@@ -874,7 +874,7 @@ static const ADGameDescription gameDescriptions[] = {
 			{"CMSCR.BIN", 0, "75fe4a8af0ca797c51922f0ceeb8d383", 16512},
 			AD_LISTEND
 		},
-		Common::EN_ANY,
+		Common::UNK_LANG, // Multi-language
 		Common::kPlatformAmstradCPC,
 		ADGF_NO_FLAGS,
 		GUIO4(GUIO_NOMIDI, GUIO_RENDERCPC, GAMEOPTION_TRAVEL_ROCK, GAMEOPTION_WASD_CONTROLS)

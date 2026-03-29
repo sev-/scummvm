@@ -246,6 +246,26 @@ void FreescapeEngine::borderScreen() {
 				lines.push_back("");
 				lines.push_back(centerAndPadString("ENTER: EMPEZAR MISION", pad));
 				lines.push_back(centerAndPadString("(c) 1990 INCENTIVE", pad));
+			} else if (isCastle() && _language == Common::FR_FRA) {
+				lines.push_back(centerAndPadString("MENU CONFIGURATION", pad));
+				lines.push_back("");
+				lines.push_back(centerAndPadString("1 CLAVIER          ", pad));
+				lines.push_back(centerAndPadString("2 JOYSTICK SINCLAIR", pad));
+				lines.push_back(centerAndPadString("3 JOYSTICK KEMSTON ", pad));
+				lines.push_back(centerAndPadString("4 JOYSTICK CURSEUR ", pad));
+				lines.push_back("");
+				lines.push_back(centerAndPadString("RETURN: DEBUT MISSION", pad));
+				lines.push_back(centerAndPadString("(c) 1990 INCENTIVE", pad));
+			} else if (isCastle() && _language == Common::DE_DEU) {
+				lines.push_back(centerAndPadString("AUSWAHL-MENUE", pad));
+				lines.push_back("");
+				lines.push_back(centerAndPadString("1 TASTATUR         ", pad));
+				lines.push_back(centerAndPadString("2 SINCLAIR JOYSTICK", pad));
+				lines.push_back(centerAndPadString("3 KEMSTON JOYSTICK ", pad));
+				lines.push_back(centerAndPadString("4 CURSOR JOYSTICK  ", pad));
+				lines.push_back("");
+				lines.push_back(centerAndPadString("RETURN: MISSION START", pad));
+				lines.push_back(centerAndPadString("(c) 1990 INCENTIVE", pad));
 			} else {
 				lines.push_back(centerAndPadString("CONTROL OPTIONS", pad));
 				lines.push_back("");
