@@ -986,6 +986,17 @@ void DarkEngine::drawIndicator(Graphics::Surface *surface, int xPosition, int yP
 		return;
 	}
 
+	if (isC64() && _indicators.size() >= 4) {
+		if (_hasFallen)
+			return;
+
+		const Graphics::Surface *indicator = _indicators[1];
+		if (_flyMode)
+			indicator = _indicators[2 + ((g_system->getMillis() / 40) & 1)];
+		surface->copyRectToSurfaceWithKey(*indicator, xPosition, yPosition, Common::Rect(indicator->w, indicator->h), 0);
+		return;
+	}
+
 	if (_indicators.size() == 0)
 		return;
 	if (_hasFallen)

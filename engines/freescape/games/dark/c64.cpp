@@ -28,11 +28,59 @@
 
 namespace Freescape {
 
+extern byte kC64Palette[16][3];
+
+static const byte *getDarkC64IndicatorSprite(const byte *spriteData, byte pointer) {
+	assert(pointer >= 3 && pointer <= 10);
+	return spriteData + (pointer - 3) * 64;
+}
+
+static void blitDarkC64IndicatorSprite(Graphics::Surface *surface, const byte *sprite, byte color, const Graphics::PixelFormat &pixelFormat) {
+	uint32 pixel = pixelFormat.ARGBToColor(0xFF, kC64Palette[color][0], kC64Palette[color][1], kC64Palette[color][2]);
+	for (int y = 0; y < 21; y++) {
+		for (int byteIndex = 0; byteIndex < 3; byteIndex++) {
+			byte value = sprite[y * 3 + byteIndex];
+			for (int bit = 0; bit < 8; bit++) {
+				if ((value & (0x80 >> bit)) == 0)
+					continue;
+				surface->setPixel(byteIndex * 8 + bit, y, pixel);
+			}
+		}
+	}
+}
+
+static Graphics::Surface *composeDarkC64Indicator(const byte *spriteData, byte basePointer, byte overlayPointer1, byte overlayColor1, byte overlayPointer2, byte overlayColor2, bool includeSprite6, const Graphics::PixelFormat &pixelFormat) {
+	Graphics::Surface *surface = new Graphics::Surface();
+	surface->create(24, 21, pixelFormat);
+	surface->fillRect(Common::Rect(0, 0, surface->w, surface->h), pixelFormat.ARGBToColor(0x00, 0x00, 0x00, 0x00));
+
+	blitDarkC64IndicatorSprite(surface, getDarkC64IndicatorSprite(spriteData, basePointer), 2, pixelFormat);
+	blitDarkC64IndicatorSprite(surface, getDarkC64IndicatorSprite(spriteData, 4), 12, pixelFormat);
+	if (overlayPointer1)
+		blitDarkC64IndicatorSprite(surface, getDarkC64IndicatorSprite(spriteData, overlayPointer1), overlayColor1, pixelFormat);
+	if (overlayPointer2)
+		blitDarkC64IndicatorSprite(surface, getDarkC64IndicatorSprite(spriteData, overlayPointer2), overlayColor2, pixelFormat);
+	if (includeSprite6)
+		blitDarkC64IndicatorSprite(surface, getDarkC64IndicatorSprite(spriteData, 6), 8, pixelFormat);
+	return surface;
+}
+
+static void loadDarkC64Indicators(Common::SeekableReadStream *file, uint32 offset, Common::Array<Graphics::Surface *> &indicators, const Graphics::PixelFormat &pixelFormat) {
+	byte spriteData[8 * 64];
+	file->seek(offset);
+	file->read(spriteData, sizeof(spriteData));
+
+	// $8161 has three distinct body states: crawl (pointer 3 with layers 5/7),
+	// walk (pointer 3 with layers disabled), and fly (pointer 8 with 5/7 then 9/10).
+	indicators.push_back(composeDarkC64Indicator(spriteData, 3, 0, 0, 0, 0, false, pixelFormat));
+	indicators.push_back(composeDarkC64Indicator(spriteData, 3, 0, 0, 0, 0, false, pixelFormat));
+	indicators.push_back(composeDarkC64Indicator(spriteData, 8, 5, 7, 7, 8, true, pixelFormat));
+	indicators.push_back(composeDarkC64Indicator(spriteData, 8, 9, 7, 10, 8, true, pixelFormat));
+}
+
 void DarkEngine::initC64() {
 	_viewArea = Common::Rect(32, 24, 288, 127);
 }
-
-extern byte kC64Palette[16][3];
 
 void DarkEngine::loadAssetsC64FullGame() {
 	Common::File file;
@@ -52,6 +100,7 @@ void DarkEngine::loadAssetsC64FullGame() {
 		loadFonts(&dfile, 0xc3e);
 		loadGlobalObjects(&dfile, 0x20bd, 23);
 		load8bitBinary(&dfile, 0x9b3e, 16);
+		loadDarkC64Indicators(&dfile, 0xadba, _indicators, _gfx->_texturePixelFormat);
 	} else if (_variant & GF_C64_DISC) {
 		loadMessagesFixedSize(&file, 0x16a3, 16, 27);
 		loadFonts(&file, 0x402);
@@ -66,6 +115,7 @@ void DarkEngine::loadAssetsC64FullGame() {
 		Common::MemoryReadStream stream(_extraBuffer, 0x300, DisposeAfterUse::NO);
 		loadGlobalObjects(&stream, 0x0, 23);
 		load8bitBinary(&file, 0x8914, 16);
+		loadDarkC64Indicators(&file, 0xb2d4, _indicators, _gfx->_texturePixelFormat);
 	} else
 		error("Unknown C64 variant %x", _variant);
 
@@ -274,6 +324,8 @@ void DarkEngine::drawC64UI(Graphics::Surface *surface) {
 	}
 	drawBinaryClock(surface, 304, 124, front, back);
 	drawVerticalCompass(surface, 17, 77, _pitch, front);
+	surface->fillRect(Common::Rect(152, 148 - 5, 184, 176 - 15), _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00));
+	drawIndicator(surface, 160 - 1, 148 - 1);
 }
 
 } // End of namespace Freescape
