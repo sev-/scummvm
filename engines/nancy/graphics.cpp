@@ -177,18 +177,6 @@ void GraphicsManager::loadFonts(Common::SeekableReadStream *chunkStream) {
 	delete chunkStream;
 }
 
-void GraphicsManager::loadFontsNew(Common::SeekableReadStream *chunkStream, uint16 fontCount) {
-	assert(chunkStream);
-
-	chunkStream->seek(0);
-	_fonts.resize(fontCount);
-	for (uint i = 0; i < _fonts.size(); ++i) {
-		_fonts[i].read(*chunkStream);
-	}
-
-	delete chunkStream;
-}
-
 void GraphicsManager::addObject(RenderObject *object) {
 	for (auto &r : _objects) {
 		if (r == object) {

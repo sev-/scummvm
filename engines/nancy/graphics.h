@@ -43,7 +43,6 @@ public:
 	void draw(bool updateScreen = true);
 
 	void loadFonts(Common::SeekableReadStream *chunkStream);
-	void loadFontsNew(Common::SeekableReadStream *chunkStream, uint16 fontCount);
 
 	void addObject(RenderObject *object);
 	void removeObject(RenderObject *object);

@@ -481,16 +481,16 @@ void NancyEngine::bootGameEngine() {
 	// Nancy 10+
 	// FONT chunk has been moved into a separate file
 	// FR0 chunk has been removed
-	//LOAD_BOOT(SHUI)
-	//LOAD_BOOT(TASK)
-	//LOAD_BOOT(UIIV)
-	//LOAD_BOOT(UICO)
-	//LOAD_BOOT(UICL)
-	//LOAD_BOOT(UIBW)
-	//LOAD_BOOT(UINB)
+	LOAD_BOOT(SHUI)	// Shared UI elements
+	LOAD_BOOT(TASK)	// Task list UI
+	LOAD_BOOT(UIIV)	// Inventory UI
+	LOAD_BOOT(UICO)	// Conversation UI
+	LOAD_BOOT(UICL) // Cell phone UI
+	LOAD_BOOT(UIBW) // Web browser UI
+	LOAD_BOOT(UINB) // Notebook UI
 
 	// Nancy 11+
-	// LOAD_BOOT(SCTB)
+	LOAD_BOOT(SCTB)	// Scheduled talk (?) UI
 
 	// Nancy 12+
 	// HINT chunk has been removed
@@ -511,8 +511,7 @@ void NancyEngine::bootGameEngine() {
 		IFF *fontIFF = _resource->loadIFF("font");
 		if (!fontIFF)
 			error("Failed to load font IFF");
-		// TODO: font count is hardcoded to 18 for now
-		_graphics->loadFontsNew(fontIFF->getChunkStream("FONT"), 18);
+		_graphics->loadFonts(fontIFF->getChunkStream("FONT"));
 		delete fontIFF;
 	}
 
