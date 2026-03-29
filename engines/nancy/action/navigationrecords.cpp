@@ -75,6 +75,8 @@ void Hot1FrSceneChange::readData(Common::SeekableReadStream &stream) {
 	if (!_isTerse) {
 		SceneChange::readData(stream);
 		_hotspotDesc.readData(stream);
+		if (g_nancy->getGameType() >= kGameTypeNancy10)
+			stream.skip(14);	// TODO
 	} else {
 		_sceneChange.sceneID = stream.readUint16LE();
 		_sceneChange.continueSceneSound = kContinueSceneSound;

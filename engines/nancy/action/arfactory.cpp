@@ -113,9 +113,17 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 			return new HotMultiframeSceneChange(CursorManager::kMoveDown);
 		}
 	case 22:
-		return new Hot1FrSceneChange(CursorManager::kMoveLeft);
+		if (g_nancy->getGameType() <= kGameTypeNancy9) {
+			return new Hot1FrSceneChange(CursorManager::kMoveLeft);
+		} else {
+			return new HotMultiframeSceneChange(CursorManager::kMoveLeft);
+		}
 	case 23:
-		return new Hot1FrSceneChange(CursorManager::kMoveRight);
+		if (g_nancy->getGameType() <= kGameTypeNancy9) {
+			return new Hot1FrSceneChange(CursorManager::kMoveRight);
+		} else {
+			return new HotMultiframeSceneChange(CursorManager::kMoveRight);
+		}
 	case 24:
 		return new HotMultiframeMultisceneCursorTypeSceneChange();
 	case 25: {
@@ -132,6 +140,10 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 	}
 	case 26:
 		return new InteractiveVideo();
+	case 29:
+		// Nancy 10+
+		warning("ControlUIItems - not implemented yet");
+		return nullptr;
 	case 40:
 		if (g_nancy->getGameType() < kGameTypeNancy2) {
 			// Only used in TVD
@@ -288,6 +300,14 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 		return new PopInvViewPriorScene();
 	case 126:
 		return new GoInvViewScene();
+	case 130:
+		// Nancy 10+
+		warning("ChangeCellPhoneInfo - not implemented yet");
+		return nullptr;
+	case 131:
+		// Nancy 10+
+		warning("AddSearchLink - not implemented yet");
+		return nullptr;
 	case 140:
 		return new SetVolume();
 	case 148:
