@@ -553,6 +553,8 @@ bool DarkEngine::checkIfGameEnded() {
 		int index = _gameStateVars[kVariableDarkECD] - 1;
 		bool destroyed = tryDestroyECD(index);
 
+		waitInLoop(10);
+
 		if (destroyed) {
 			_gameStateVars[kVariableActiveECDs] -= 4;
 			_gameStateVars[k8bitVariableScore] += 52750;
