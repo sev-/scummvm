@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.5.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-03-28 20:47+0000\n"
-"PO-Revision-Date: 2026-03-12 13:22+0000\n"
+"PO-Revision-Date: 2026-03-29 10:38+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/sv/>\n"
@@ -1698,15 +1698,12 @@ msgid "Icons per row:"
 msgstr "Ikoner per rad:"
 
 #: gui/launcher.cpp:1852
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
-"Vill du verkligen ta bort följande %d spelkonfiguration(er)?\n"
+"Vill du verkligen ta bort följande %d spelkonfigurationer?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -7362,18 +7359,14 @@ msgstr ""
 "över som standard."
 
 #: engines/awe/metaengine.cpp:61
-#, fuzzy
-#| msgid "Select/Kick/Run"
 msgid "Select / Kick / Run"
-msgstr "Välj/Sparka/Spring"
+msgstr "Välj / Sparka / Spring"
 
 #: engines/awe/metaengine.cpp:62 engines/hpl1/metaengine.cpp:83
 msgid "Jump"
 msgstr "Hoppa"
 
 #: engines/awe/metaengine.cpp:63
-#, fuzzy
-#| msgid "Enter Level Code"
 msgid "Enter level code"
 msgstr "Ange nivåkod"
 
@@ -8960,14 +8953,12 @@ msgstr "Använd mjuka rörelser i stället för diskreta steg"
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "Volymkontroller"
+msgstr "WASD-kontroller"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
-msgstr ""
+msgstr "Använd WASD-tangenter för förflyttning och Skift för att springa"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9036,7 +9027,7 @@ msgstr "Vänd framåt"
 
 #: engines/freescape/games/castle/castle.cpp:524
 msgid "Run (hold)"
-msgstr ""
+msgstr "Spring (håll ner)"
 
 #: engines/freescape/games/dark/dark.cpp:242
 #: engines/freescape/games/driller/driller.cpp:188
@@ -9109,7 +9100,7 @@ msgstr "Ändra stegstorlek"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:295
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "Rusa (håll ner)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:303
 msgid "Toggle height"
@@ -11597,34 +11588,24 @@ msgid "I Have No Mouth support not compiled in"
 msgstr "Stöd för I Have No Mouth har inte kompilerats in"
 
 #: engines/saga/metaengine.cpp:269
-#, fuzzy
-#| msgid "Option panel keymapping"
 msgid "Option panel keymappings"
-msgstr "Tangentmappning för alternativpanel"
+msgstr "Tangentmappningar för alternativpanel"
 
 #: engines/saga/metaengine.cpp:270
-#, fuzzy
-#| msgid "Save panel keymapping"
 msgid "Save panel keymappings"
-msgstr "Tangentmappning för sparningspanel"
+msgstr "Tangentmappningar för sparningspanel"
 
 #: engines/saga/metaengine.cpp:271
-#, fuzzy
-#| msgid "Load panel keymapping"
 msgid "Load panel keymappings"
-msgstr "Tangentmappning för inläsningspanel"
+msgstr "Tangentmappningar för inläsningspanel"
 
 #: engines/saga/metaengine.cpp:272
-#, fuzzy
-#| msgid "Quit panel keymapping"
 msgid "Quit panel keymappings"
-msgstr "Tangentmappning för avslutningspanel"
+msgstr "Tangentmappningar för avslutningspanel"
 
 #: engines/saga/metaengine.cpp:273
-#, fuzzy
-#| msgid "Converse panel keymapping"
 msgid "Converse panel keymappings"
-msgstr "Tangentmappning för konversationspanel"
+msgstr "Tangentmappningar för konversationspanel"
 
 #. I18N: the boss key is a feature,
 #. that allows players to quickly switch to a fake screen that looks like a business application,
@@ -13519,10 +13500,8 @@ msgid "Menu scrolling keymappings"
 msgstr "Kortkommandon för menyrullning"
 
 #: engines/sherlock/metaengine.cpp:784
-#, fuzzy
-#| msgid "save / load menu keymappings"
 msgid "Save / load menu keymappings"
-msgstr "spara / läs in kortkommandon för meny"
+msgstr "Tangentmappningar för menyn Spara / läs in"
 
 #: engines/sherlock/metaengine.cpp:785
 msgid "Save files name editing keymappings"
@@ -14350,10 +14329,8 @@ msgid "Save and load game"
 msgstr "Spara och läs in spel"
 
 #: engines/tot/metaengine.cpp:164
-#, fuzzy
-#| msgid "Main menu/Exit"
 msgid "Main menu / Exit"
-msgstr "Huvudmeny/Avsluta"
+msgstr "Huvudmeny / Avsluta"
 
 #: engines/touche/metaengine.cpp:135
 msgid "Skip sequence / open quit dialog"
@@ -14871,38 +14848,26 @@ msgid "Shield"
 msgstr "Sköld"
 
 #: engines/ultima/ultima0/metaengine.cpp:55
-#, fuzzy
-#| msgid "Bow & Arrow"
 msgid "Bow & arrow"
 msgstr "Båge och pil"
 
 #: engines/ultima/ultima0/metaengine.cpp:56
-#, fuzzy
-#| msgid "Magic Amulet"
 msgid "Magic amulet"
 msgstr "Magisk amulett"
 
 #: engines/ultima/ultima0/metaengine.cpp:57
-#, fuzzy
-#| msgid "Amulet Option 1"
 msgid "Amulet option 1"
 msgstr "Amulettalternativ 1"
 
 #: engines/ultima/ultima0/metaengine.cpp:58
-#, fuzzy
-#| msgid "Amulet Option 2"
 msgid "Amulet option 2"
 msgstr "Amulettalternativ 2"
 
 #: engines/ultima/ultima0/metaengine.cpp:59
-#, fuzzy
-#| msgid "Amulet Option 3"
 msgid "Amulet option 3"
 msgstr "Amulettalternativ 3"
 
 #: engines/ultima/ultima0/metaengine.cpp:60
-#, fuzzy
-#| msgid "Amulet Option 4"
 msgid "Amulet option 4"
 msgstr "Amulettalternativ 4"
 
@@ -14924,17 +14889,13 @@ msgstr "Öst"
 
 #: engines/ultima/ultima0/metaengine.cpp:69
 #: engines/ultima/ultima0/metaengine.cpp:83
-#, fuzzy
-#| msgid "Enter/Exit"
 msgid "Enter / Exit"
-msgstr "Gå in/ut"
+msgstr "Gå in / ut"
 
 #: engines/ultima/ultima0/metaengine.cpp:72
 #: engines/ultima/ultima0/metaengine.cpp:86
-#, fuzzy
-#| msgid "Pass/Wait"
 msgid "Pass / Wait"
-msgstr "Passera/Vänta"
+msgstr "Passera / Vänta"
 
 #: engines/ultima/ultima0/metaengine.cpp:73
 #: engines/ultima/ultima0/metaengine.cpp:87
@@ -14942,8 +14903,6 @@ msgid "Minimap"
 msgstr "Minikarta"
 
 #: engines/ultima/ultima0/metaengine.cpp:79
-#, fuzzy
-#| msgid "Turn Around"
 msgid "Turn around"
 msgstr "Vänd om"
 
@@ -14952,29 +14911,21 @@ msgstr "Vänd om"
 #: engines/ultima/ultima0/metaengine.cpp:111
 #: engines/ultima/ultima0/metaengine.cpp:117
 #: engines/ultima/ultima0/metaengine.cpp:123
-#, fuzzy
-#| msgid "Basic Keys"
 msgid "Basic keys"
 msgstr "Grundläggande tangenter"
 
 #: engines/ultima/ultima0/metaengine.cpp:99
 #: engines/ultima/ultima0/metaengine.cpp:112
-#, fuzzy
-#| msgid "Menu Keys"
 msgid "Menu keys"
 msgstr "Menytangenter"
 
 #: engines/ultima/ultima0/metaengine.cpp:100
 #: engines/ultima/ultima0/metaengine.cpp:118
-#, fuzzy
-#| msgid "Overworld Keys"
 msgid "Overworld keys"
-msgstr "Världstangenter"
+msgstr "Omvärldstangenter"
 
 #: engines/ultima/ultima0/metaengine.cpp:101
 #: engines/ultima/ultima0/metaengine.cpp:124
-#, fuzzy
-#| msgid "Dungeon Keys"
 msgid "Dungeon keys"
 msgstr "Fängelsehålstangenter"
 
@@ -15303,8 +15254,6 @@ msgid "Show game menu; Cancel action if in middle of action"
 msgstr "Visa spelmeny; Avbryt handling om du är mitt i en handling"
 
 #: engines/ultima/nuvie/metaengine.cpp:97
-#, fuzzy
-#| msgid "Toggle Cursor"
 msgid "Toggle cursor"
 msgstr "Växla markör"
 
