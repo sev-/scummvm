@@ -363,7 +363,7 @@ void EclipseEngine::gotoArea(uint16 areaID, int entranceID) {
 
 	_gfx->_keyColor = 0;
 	swapPalette(areaID);
-	_currentArea->_usualBackgroundColor = isCPC() ? 1 : 0;
+	//_currentArea->_usualBackgroundColor = isCPC() ? 1 : 0;
 	if (isAmiga() || isAtariST())
 		_currentArea->_skyColor = 15;
 

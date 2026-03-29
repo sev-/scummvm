@@ -105,6 +105,10 @@ public:
 	Font _fontBig;
 	Font _fontMedium;
 	Font _fontSmall;
+	Common::Array<Graphics::ManagedSurface *> _cpcIndicators;
+	Common::Array<Graphics::ManagedSurface *> _cpcJetpackIndicators;
+	Common::Array<Graphics::ManagedSurface *> _cpcActionIndicators;
+	uint32 _cpcActionIndicatorUntilMillis;
 
 	// Dark Side Amiga stores the grounded jetpack indicator states as raw
 	// 4-plane bitplane data. The executable drives those frames through a tiny
@@ -158,6 +162,11 @@ private:
 	bool tryDestroyECD(int index);
 	bool tryDestroyECDFullGame(int index);
 	void addWalls(Area *area);
+	void loadCPCIndicator(Common::SeekableReadStream *file, uint32 offset, Common::Array<Graphics::ManagedSurface *> &target);
+	void loadCPCIndicatorData(const byte *data, int widthBytes, int height, Common::Array<Graphics::ManagedSurface *> &target);
+	void loadCPCIndicators(Common::SeekableReadStream *file);
+	void drawCPCSprite(Graphics::Surface *surface, const Graphics::ManagedSurface *indicator, int xPosition, int yPosition);
+	void drawCPCIndicator(Graphics::Surface *surface, int xPosition, int yPosition);
 	void drawVerticalCompass(Graphics::Surface *surface, int x, int y, float angle, uint32 color);
 	void drawHorizontalCompass(int x, int y, float angle, uint32 front, uint32 back, Graphics::Surface *surface);
 };

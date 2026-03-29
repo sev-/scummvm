@@ -99,11 +99,25 @@ DarkEngine::DarkEngine(OSystem *syst, const ADGameDescription *gd) : FreescapeEn
 	_jetpackIndicatorTransitionFrame = 0;
 	_jetpackIndicatorTransitionDirection = 0;
 	_jetpackIndicatorNextFrameMillis = 0;
+	_cpcActionIndicatorUntilMillis = 0;
 }
 
 DarkEngine::~DarkEngine() {
 	delete _playerC64Sfx;
 	delete _playerC64Music;
+
+	for (auto &indicator : _cpcIndicators) {
+		indicator->free();
+		delete indicator;
+	}
+	for (auto &indicator : _cpcJetpackIndicators) {
+		indicator->free();
+		delete indicator;
+	}
+	for (auto &indicator : _cpcActionIndicators) {
+		indicator->free();
+		delete indicator;
+	}
 }
 
 void DarkEngine::addECDs(Area *area) {
@@ -722,6 +736,9 @@ void DarkEngine::gotoArea(uint16 areaID, int entranceID) {
 }
 
 void DarkEngine::pressedKey(const int keycode) {
+	if (isCPC())
+		_cpcActionIndicatorUntilMillis = g_system->getMillis() + 150;
+
 	// This code is duplicated in the DrillerEngine::pressedKey (except for the J case)
 	if (keycode == kActionIncreaseStepSize) {
 		increaseStepSize();
@@ -894,6 +911,11 @@ void DarkEngine::drawHorizontalCompass(int x, int y, float angle, uint32 front, 
 	uint32 transparent = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0x00, 0x00, 0x00);
 
 	uint32 green = _gfx->_texturePixelFormat.ARGBToColor(0xff, 0x00, 0xaa, 0x00);
+	if (isCPC()) {
+		uint8 r, g, b;
+		_gfx->selectColorFromFourColorPalette(3, r, g, b);
+		green = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	}
 
 	int delta = (angle - 180) / 5.5;
 	Common::String compass = "-N-E-S-W-N-E-S";
@@ -913,7 +935,55 @@ void DarkEngine::drawHorizontalCompass(int x, int y, float angle, uint32 front, 
 	surface->fillRect(Common::Rect(x + 80, y - 5, 320, y + 10), transparent);
 }
 
+void DarkEngine::drawCPCSprite(Graphics::Surface *surface, const Graphics::ManagedSurface *indicator, int xPosition, int yPosition) {
+	uint32 colors[4];
+	for (uint8 i = 0; i < 4; i++) {
+		uint8 r, g, b;
+		_gfx->selectColorFromFourColorPalette(i, r, g, b);
+		colors[i] = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	}
+
+	for (int y = 0; y < indicator->h; y++) {
+		for (int x = 0; x < indicator->w; x++)
+			surface->setPixel(xPosition + x, yPosition + y, colors[(byte)indicator->getPixel(x, y)]);
+	}
+}
+
+void DarkEngine::drawCPCIndicator(Graphics::Surface *surface, int xPosition, int yPosition) {
+	if (_cpcIndicators.empty())
+		return;
+
+	const Graphics::ManagedSurface *indicator = nullptr;
+	if (_hasFallen)
+		indicator = _cpcIndicators[0];
+	else if (_flyMode)
+		indicator = _cpcIndicators[3];
+	else if (_playerHeightNumber == 0)
+		indicator = _cpcIndicators[1];
+	else
+		indicator = _cpcIndicators[2];
+
+	drawCPCSprite(surface, indicator, xPosition, yPosition);
+
+	if (_flyMode && _cpcJetpackIndicators.size() > 1) {
+		uint32 frame = (g_system->getMillis() / 40) & 1;
+		drawCPCSprite(surface, _cpcJetpackIndicators[frame], xPosition + 4, yPosition + 12);
+	}
+
+	bool showActionIndicator = _moveForward || _moveBackward || _moveUp || _moveDown ||
+		_shootingFrames > 0 || g_system->getMillis() < _cpcActionIndicatorUntilMillis;
+	if (showActionIndicator && _cpcActionIndicators.size() > 1) {
+		uint32 frame = (g_system->getMillis() / 40) & 1;
+		drawCPCSprite(surface, _cpcActionIndicators[frame], 256, 169);
+	}
+}
+
 void DarkEngine::drawIndicator(Graphics::Surface *surface, int xPosition, int yPosition) {
+	if (isCPC() && !_cpcIndicators.empty()) {
+		drawCPCIndicator(surface, xPosition, yPosition);
+		return;
+	}
+
 	if (_indicators.size() == 0)
 		return;
 	if (_hasFallen)
