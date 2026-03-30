@@ -187,7 +187,11 @@ void FreescapeEngine::traverseEntrance(uint16 entranceID) {
 	debugC(1, kFreescapeDebugMove, "entrace position: %f %f %f", _position.x(), _position.y(), _position.z());
 	// Set the player height
 	_playerHeight = 0;
-	changePlayerHeight(_playerHeightNumber);
+	if (isDriller() && _playerHeightNumber == -1) {
+		_playerHeight = 2;
+		_position.setValue(1, _position.y() + _playerHeight);
+	} else
+		changePlayerHeight(_playerHeightNumber);
 	debugC(1, kFreescapeDebugMove, "player height: %d", _playerHeight);
 
 	_sensors = _currentArea->getSensors();
@@ -286,6 +290,11 @@ void FreescapeEngine::changeAngle(int offset, bool wrapAround) {
 }
 
 void FreescapeEngine::changePlayerHeight(int index) {
+	if (index < 0) {
+		warning("Invalid player height index %d, clamping to 0", index);
+		index = 0;
+	}
+
 	int scale = _currentArea->getScale();
 
 	_position.setValue(1, _position.y() - _playerHeight);
@@ -385,7 +394,7 @@ void FreescapeEngine::checkIfStillInArea() {
 			_position.setValue(i, maxPositiveDistance);
 	}
 	if (_position.y() >= 2016)
-		_position.y() = _lastPosition.z();
+		_position.y() = _lastPosition.y();
 }
 
 void FreescapeEngine::updatePlayerMovement(float deltaTime) {

@@ -1198,14 +1198,25 @@ Common::Error FreescapeEngine::loadGameStream(Common::SeekableReadStream *stream
 
 	_flyMode = stream->readByte();
 	_noClipMode = false;
-	_playerHeightNumber = stream->readUint32LE();
+	_playerHeightNumber = stream->readSint32LE();
 	_playerStepIndex = stream->readUint32LE();
 	_countdown = stream->readUint32LE();
 	_ticks = 0;
 	if (!_currentArea || _currentArea->getAreaID() != areaID)
 		gotoArea(areaID, -1); // Do not change position nor rotation
 
-	_playerHeight = 32 * (_playerHeightNumber + 1) - 16 / float(_currentArea->_scale);
+	if (isDriller() && _playerHeightNumber == -1) {
+		_playerHeight = 2;
+	} else {
+		int playerHeightIndex = _playerHeightNumber;
+		if (playerHeightIndex < 0) {
+			warning("Invalid player height index %d in savegame, clamping to 0", playerHeightIndex);
+			playerHeightIndex = 0;
+		}
+
+		_playerHeight = 32 * (playerHeightIndex + 1) - 16 / float(_currentArea->_scale);
+	}
+	assert(_playerHeight > 0);
 	_gameStateControl = kFreescapeGameStatePlaying;
 	return loadGameStreamExtended(stream);
 }
@@ -1240,7 +1251,7 @@ Common::Error FreescapeEngine::saveGameStream(Common::WriteStream *stream, bool 
 	}
 
 	stream->writeByte(_flyMode);
-	stream->writeUint32LE(_playerHeightNumber);
+	stream->writeSint32LE(_playerHeightNumber);
 	stream->writeUint32LE(_playerStepIndex);
 	stream->writeUint32LE(_countdown);
 	return saveGameStreamExtended(stream, isAutosave);
