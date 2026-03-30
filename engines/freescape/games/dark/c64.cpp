@@ -30,6 +30,26 @@ namespace Freescape {
 
 extern byte kC64Palette[16][3];
 
+static const byte kDarkC64CompassMask[] = {0xfe, 0xfa, 0x69, 0xf5, 0xea};
+static const byte kDarkC64CompassColor1[] = {0xfc, 0x1f, 0xf1, 0xcb, 0x3b};
+static const byte kDarkC64CompassColor2[] = {0x0b, 0x0c, 0x0c, 0x0f, 0x0c};
+static const byte kDarkC64ModeIndicatorPalette[2][3][4] = {
+	{{0, 11, 15, 1}, {0, 11, 15, 2}, {0, 15, 1, 11}},
+	{{0, 15, 12, 11}, {0, 15, 12, 11}, {0, 15, 2, 11}}
+};
+
+static bool isDarkC64BrokenCompassArea(uint16 areaID) {
+	return areaID == 1 || areaID == 18 || areaID == 27 || areaID == 28;
+}
+
+static int getDarkC64CompassTarget(float yaw) {
+	int target = int(yaw / 5.0f + 0.5f);
+	target = (target + 18) % 72;
+	if (target < 0)
+		target += 72;
+	return target;
+}
+
 static const byte *getDarkC64IndicatorSprite(const byte *spriteData, byte pointer) {
 	assert(pointer >= 3 && pointer <= 10);
 	return spriteData + (pointer - 3) * 64;
@@ -65,6 +85,12 @@ static Graphics::Surface *composeDarkC64Indicator(const byte *spriteData, byte b
 	return surface;
 }
 
+static void loadDarkC64CompassTable(Common::SeekableReadStream *file, uint32 offset, Common::Array<byte> &table) {
+	table.resize(80);
+	file->seek(offset);
+	file->read(table.data(), table.size());
+}
+
 static void loadDarkC64Indicators(Common::SeekableReadStream *file, uint32 offset, Common::Array<Graphics::Surface *> &indicators, const Graphics::PixelFormat &pixelFormat) {
 	byte spriteData[8 * 64];
 	file->seek(offset);
@@ -78,8 +104,110 @@ static void loadDarkC64Indicators(Common::SeekableReadStream *file, uint32 offse
 	indicators.push_back(composeDarkC64Indicator(spriteData, 8, 9, 7, 10, 8, true, pixelFormat));
 }
 
+static void loadDarkC64ModeFrames(Common::SeekableReadStream *file, uint32 offset, Common::Array<Graphics::ManagedSurface *> &frames, const Graphics::PixelFormat &pixelFormat) {
+	byte data[6 * 48];
+	file->seek(offset);
+	file->read(data, sizeof(data));
+
+	for (int frameIndex = 0; frameIndex < 6; frameIndex++) {
+		Graphics::ManagedSurface *surface = new Graphics::ManagedSurface();
+		surface->create(24, 16, pixelFormat);
+		surface->fillRect(Common::Rect(0, 0, surface->w, surface->h),
+			pixelFormat.ARGBToColor(0xFF, kC64Palette[0][0], kC64Palette[0][1], kC64Palette[0][2]));
+
+		for (int band = 0; band < 2; band++) {
+			for (int cell = 0; cell < 3; cell++) {
+				for (int row = 0; row < 8; row++) {
+					byte bitmapByte = data[frameIndex * 48 + band * 24 + cell * 8 + row];
+					for (int pair = 0; pair < 4; pair++) {
+						byte color = kDarkC64ModeIndicatorPalette[band][cell][(bitmapByte >> (6 - pair * 2)) & 0x03];
+						uint32 pixel = pixelFormat.ARGBToColor(0xFF, kC64Palette[color][0], kC64Palette[color][1], kC64Palette[color][2]);
+						int x = cell * 8 + pair * 2;
+						int y = band * 8 + row;
+						surface->setPixel(x, y, pixel);
+						surface->setPixel(x + 1, y, pixel);
+					}
+				}
+			}
+		}
+		frames.push_back(surface);
+	}
+}
+
 void DarkEngine::initC64() {
 	_viewArea = Common::Rect(32, 24, 288, 127);
+}
+
+void DarkEngine::drawC64Compass(Graphics::Surface *surface) {
+	if (!_currentArea || _c64CompassTable.size() < 80)
+		return;
+
+	int target = getDarkC64CompassTarget(_yaw);
+	if (!_c64CompassInitialized) {
+		_c64CompassPosition = target;
+		_c64CompassInitialized = true;
+	}
+
+	if (isDarkC64BrokenCompassArea(_currentArea->getAreaID())) {
+		if ((_ticks & 1) == 0)
+			_c64CompassPosition = (_c64CompassPosition + 71) % 72;
+	} else {
+		int delta = (_c64CompassPosition - target + 72) % 72;
+		if (delta != 0) {
+			if (delta < 37)
+				_c64CompassPosition = (_c64CompassPosition + 71) % 72;
+			else
+				_c64CompassPosition = (_c64CompassPosition + 1) % 72;
+		}
+	}
+
+	int start = (_c64CompassPosition + 72 - 20) % 72;
+	int tableOffset = start & 0xf8;
+	int shift = (start & 0x07) >> 1;
+
+	for (int cell = 0; cell < 5; cell++) {
+		byte color1 = kDarkC64CompassColor2[cell] & 0x0f;
+		byte color2 = kDarkC64CompassColor1[cell] >> 4;
+		byte color3 = kDarkC64CompassColor1[cell] & 0x0f;
+		byte mask = kDarkC64CompassMask[cell];
+
+		for (int row = 0; row < 8; row++) {
+			int index = tableOffset + cell * 8 + row;
+			if (index >= 72)
+				index -= 72;
+
+			byte bitmapByte = _c64CompassTable[index];
+			if (shift > 0) {
+				byte nextByte = _c64CompassTable[index + 8];
+				bitmapByte = ((bitmapByte << (2 * shift)) | (nextByte >> (8 - 2 * shift))) & 0xff;
+			}
+			bitmapByte &= mask;
+
+			for (int pair = 0; pair < 4; pair++) {
+				byte pixelPair = (bitmapByte >> (6 - pair * 2)) & 0x03;
+				byte color = 0;
+				if (pixelPair == 1)
+					color = color2;
+				else if (pixelPair == 2)
+					color = color3;
+				else if (pixelPair == 3)
+					color = color1;
+
+				uint32 pixel = _gfx->_texturePixelFormat.ARGBToColor(0xFF, kC64Palette[color][0], kC64Palette[color][1], kC64Palette[color][2]);
+				surface->setPixel(256 + cell * 8 + pair * 2, 144 + row, pixel);
+				surface->setPixel(256 + cell * 8 + pair * 2 + 1, 144 + row, pixel);
+			}
+		}
+	}
+}
+
+void DarkEngine::drawC64ModeIndicator(Graphics::Surface *surface) {
+	if (_c64ModeFrames.size() < 6)
+		return;
+
+	const Graphics::ManagedSurface *frame = _shootMode ? _c64ModeFrames[0] : _c64ModeFrames[1];
+
+	surface->copyRectToSurface(*frame, 264, 176, Common::Rect(frame->w, frame->h));
 }
 
 void DarkEngine::loadAssetsC64FullGame() {
@@ -100,7 +228,9 @@ void DarkEngine::loadAssetsC64FullGame() {
 		loadFonts(&dfile, 0xc3e);
 		loadGlobalObjects(&dfile, 0x20bd, 23);
 		load8bitBinary(&dfile, 0x9b3e, 16);
+		loadDarkC64CompassTable(&dfile, 0x7e37, _c64CompassTable);
 		loadDarkC64Indicators(&dfile, 0xadba, _indicators, _gfx->_texturePixelFormat);
+		loadDarkC64ModeFrames(&dfile, 0xd2f6, _c64ModeFrames, _gfx->_texturePixelFormat);
 	} else if (_variant & GF_C64_DISC) {
 		loadMessagesFixedSize(&file, 0x16a3, 16, 27);
 		loadFonts(&file, 0x402);
@@ -115,7 +245,9 @@ void DarkEngine::loadAssetsC64FullGame() {
 		Common::MemoryReadStream stream(_extraBuffer, 0x300, DisposeAfterUse::NO);
 		loadGlobalObjects(&stream, 0x0, 23);
 		load8bitBinary(&file, 0x8914, 16);
+		loadDarkC64CompassTable(&file, 0x7c5a, _c64CompassTable);
 		loadDarkC64Indicators(&file, 0xb2d4, _indicators, _gfx->_texturePixelFormat);
+		loadDarkC64ModeFrames(&file, 0xc0d1, _c64ModeFrames, _gfx->_texturePixelFormat);
 	} else
 		error("Unknown C64 variant %x", _variant);
 
@@ -323,9 +455,11 @@ void DarkEngine::drawC64UI(Graphics::Surface *surface) {
 			surface->drawLine(64, 147 + 8, 127 - (_maxEnergy - energy) - 1, 155, lineColor);
 	}
 	drawBinaryClock(surface, 304, 124, front, back);
+	drawC64Compass(surface);
 	drawVerticalCompass(surface, 17, 77, _pitch, front);
 	surface->fillRect(Common::Rect(152, 148 - 5, 184, 176 - 15), _gfx->_texturePixelFormat.ARGBToColor(0xFF, 0x00, 0x00, 0x00));
 	drawIndicator(surface, 160 - 1, 148 - 1);
+	drawC64ModeIndicator(surface);
 }
 
 } // End of namespace Freescape

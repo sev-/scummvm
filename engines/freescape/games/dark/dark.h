@@ -101,6 +101,7 @@ public:
 	void drawZXUI(Graphics::Surface *surface) override;
 	void drawCPCUI(Graphics::Surface *surface) override;
 	void drawAmigaAtariSTUI(Graphics::Surface *surface) override;
+	void drawC64Compass(Graphics::Surface *surface);
 
 	Font _fontBig;
 	Font _fontMedium;
@@ -109,6 +110,7 @@ public:
 	Common::Array<Graphics::ManagedSurface *> _cpcJetpackIndicators;
 	Common::Array<Graphics::ManagedSurface *> _cpcActionIndicators;
 	uint32 _cpcActionIndicatorUntilMillis;
+	Common::Array<Graphics::ManagedSurface *> _c64ModeFrames;
 
 	// Dark Side Amiga stores the grounded jetpack indicator states as raw
 	// 4-plane bitplane data. The executable drives those frames through a tiny
@@ -143,6 +145,9 @@ public:
 	DarkSideC64SFXPlayer *_playerC64Sfx;
 	DarkSideC64MusicPlayer *_playerC64Music;
 	bool _c64UseSFX;
+	bool _c64CompassInitialized;
+	int _c64CompassPosition;
+	Common::Array<byte> _c64CompassTable;
 	void playSoundC64(int index) override;
 	void toggleC64Sound();
 
@@ -165,6 +170,7 @@ private:
 	void loadCPCIndicator(Common::SeekableReadStream *file, uint32 offset, Common::Array<Graphics::ManagedSurface *> &target);
 	void loadCPCIndicatorData(const byte *data, int widthBytes, int height, Common::Array<Graphics::ManagedSurface *> &target);
 	void loadCPCIndicators(Common::SeekableReadStream *file);
+	void drawC64ModeIndicator(Graphics::Surface *surface);
 	void drawCPCSprite(Graphics::Surface *surface, const Graphics::ManagedSurface *indicator, int xPosition, int yPosition);
 	void drawCPCIndicator(Graphics::Surface *surface, int xPosition, int yPosition);
 	void drawVerticalCompass(Graphics::Surface *surface, int x, int y, float angle, uint32 color);
