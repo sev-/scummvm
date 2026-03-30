@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-29 13:28+0000\n"
+"POT-Creation-Date: 2026-03-30 09:32+0000\n"
 "PO-Revision-Date: 2026-02-24 22:26+0000\n"
 "Last-Translator: Mohamed Shaaban <mohmedbashamedo@hotmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -7615,9 +7615,9 @@ msgstr "تبديل مفتاح الخصوصية"
 #: engines/dgds/metaengine.cpp:75 engines/dm/metaengine.cpp:174
 #: engines/drascula/metaengine.cpp:285 engines/efh/metaengine.cpp:272
 #: engines/freescape/games/castle/castle.cpp:463
-#: engines/freescape/games/dark/dark.cpp:220
+#: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:249
+#: engines/freescape/games/eclipse/eclipse.cpp:258
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7643,9 +7643,9 @@ msgstr "حفظ اللعبة"
 #: engines/dgds/metaengine.cpp:74 engines/drascula/metaengine.cpp:260
 #: engines/efh/metaengine.cpp:279 engines/efh/metaengine.cpp:613
 #: engines/freescape/games/castle/castle.cpp:468
-#: engines/freescape/games/dark/dark.cpp:225
+#: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:254
+#: engines/freescape/games/eclipse/eclipse.cpp:263
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7699,9 +7699,9 @@ msgstr "قاعدة بيانات الدليل"
 #: engines/darkseed/metaengine.cpp:60 engines/dragons/metaengine.cpp:223
 #: engines/efh/metaengine.cpp:373 engines/efh/metaengine.cpp:619
 #: engines/freescape/games/castle/castle.cpp:476
-#: engines/freescape/games/dark/dark.cpp:230
+#: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:259
+#: engines/freescape/games/eclipse/eclipse.cpp:268
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9205,9 +9205,9 @@ msgid "Select princess"
 msgstr "حدد تظليل"
 
 #: engines/freescape/games/castle/castle.cpp:481
-#: engines/freescape/games/dark/dark.cpp:240
+#: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:267
+#: engines/freescape/games/eclipse/eclipse.cpp:276
 #: engines/hugo/metaengine.cpp:154
 #, fuzzy
 #| msgid "Toggle mute"
@@ -9215,18 +9215,18 @@ msgid "Toggle sound"
 msgstr "تبديل كتم الصوت"
 
 #: engines/freescape/games/castle/castle.cpp:486
-#: engines/freescape/games/dark/dark.cpp:246
+#: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:272
+#: engines/freescape/games/eclipse/eclipse.cpp:281
 #, fuzzy
 #| msgid "Strafe Left"
 msgid "Rotate left"
 msgstr "مهاجم اليسار"
 
 #: engines/freescape/games/castle/castle.cpp:491
-#: engines/freescape/games/dark/dark.cpp:251
+#: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:277
+#: engines/freescape/games/eclipse/eclipse.cpp:286
 #, fuzzy
 #| msgid "Strafe Right"
 msgid "Rotate right"
@@ -9237,7 +9237,7 @@ msgid "Crawl"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:513
-#: engines/freescape/games/eclipse/eclipse.cpp:315
+#: engines/freescape/games/eclipse/eclipse.cpp:324
 #, fuzzy
 #| msgid "Move Forward"
 msgid "Face forward"
@@ -9247,7 +9247,7 @@ msgstr "تحرك إلى الأمام"
 msgid "Run (hold)"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:256
+#: engines/freescape/games/dark/dark.cpp:262
 #: engines/freescape/games/driller/driller.cpp:188
 #: engines/ultima/ultima8/metaengine.cpp:97
 #, fuzzy
@@ -9255,7 +9255,7 @@ msgstr ""
 msgid "Roll left"
 msgstr "تحرك يسارا"
 
-#: engines/freescape/games/dark/dark.cpp:261
+#: engines/freescape/games/dark/dark.cpp:267
 #: engines/freescape/games/driller/driller.cpp:193
 #: engines/ultima/ultima8/metaengine.cpp:98
 #, fuzzy
@@ -9264,14 +9264,14 @@ msgid "Roll right"
 msgstr "تحرك يمينا"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/dark/dark.cpp:267
+#: engines/freescape/games/dark/dark.cpp:273
 #: engines/freescape/games/driller/driller.cpp:160
 #, fuzzy
 #| msgid "Increasing Volume"
 msgid "Increase turn angle"
 msgstr "زيادة حجم الصوت"
 
-#: engines/freescape/games/dark/dark.cpp:272
+#: engines/freescape/games/dark/dark.cpp:278
 #: engines/freescape/games/driller/driller.cpp:165
 #, fuzzy
 #| msgid "Decreasing Volume"
@@ -9279,7 +9279,7 @@ msgid "Decrease turn angle"
 msgstr "تقليل الحجم صوت"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:278
+#: engines/freescape/games/dark/dark.cpp:284
 #: engines/freescape/games/driller/driller.cpp:171
 #, fuzzy
 #| msgid "Increase the scale factor"
@@ -9287,26 +9287,26 @@ msgid "Increase step size"
 msgstr "زيادة معامل القياس"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:284
+#: engines/freescape/games/dark/dark.cpp:290
 #: engines/freescape/games/driller/driller.cpp:177
 #, fuzzy
 #| msgid "Decrease the scale factor"
 msgid "Decrease step size"
 msgstr "إنقاص عامل القياس"
 
-#: engines/freescape/games/dark/dark.cpp:289
+#: engines/freescape/games/dark/dark.cpp:295
 #: engines/freescape/games/driller/driller.cpp:182
 msgid "Rise / Fly up"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:295
+#: engines/freescape/games/dark/dark.cpp:301
 #: engines/freescape/games/driller/driller.cpp:198
 #, fuzzy
 #| msgid "Fly down"
 msgid "Lower / Fly down"
 msgstr "طر للأسفل"
 
-#: engines/freescape/games/dark/dark.cpp:301
+#: engines/freescape/games/dark/dark.cpp:307
 #, fuzzy
 #| msgid "Disable falling"
 msgid "Enable / Disable jetpack"
@@ -9325,38 +9325,38 @@ msgid "Collect drilling rig"
 msgstr ""
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:283
+#: engines/freescape/games/eclipse/eclipse.cpp:292
 #, fuzzy
 #| msgid "Change Command"
 msgid "Change angle"
 msgstr "تغيير الأمر"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:289
+#: engines/freescape/games/eclipse/eclipse.cpp:298
 #, fuzzy
 #| msgid "Change font size"
 msgid "Change step size"
 msgstr "تغيير حجم الخط"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:295
+#: engines/freescape/games/eclipse/eclipse.cpp:304
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:303
+#: engines/freescape/games/eclipse/eclipse.cpp:312
 #, fuzzy
 #| msgid "Toggle mute"
 msgid "Toggle height"
 msgstr "تبديل كتم الصوت"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:309
+#: engines/freescape/games/eclipse/eclipse.cpp:318
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "استراحة"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:320
+#: engines/freescape/games/eclipse/eclipse.cpp:329
 #, fuzzy
 #| msgid "Flashlight"
 msgid "Toggle flashlight"

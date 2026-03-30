@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-29 13:28+0000\n"
+"POT-Creation-Date: 2026-03-30 09:32+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
@@ -7871,9 +7871,9 @@ msgstr "Vihjeen julkisuus päälle / pois"
 #: engines/dgds/metaengine.cpp:75 engines/dm/metaengine.cpp:174
 #: engines/drascula/metaengine.cpp:285 engines/efh/metaengine.cpp:272
 #: engines/freescape/games/castle/castle.cpp:463
-#: engines/freescape/games/dark/dark.cpp:220
+#: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:249
+#: engines/freescape/games/eclipse/eclipse.cpp:258
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7899,9 +7899,9 @@ msgstr "Luo pelitallennus"
 #: engines/dgds/metaengine.cpp:74 engines/drascula/metaengine.cpp:260
 #: engines/efh/metaengine.cpp:279 engines/efh/metaengine.cpp:613
 #: engines/freescape/games/castle/castle.cpp:468
-#: engines/freescape/games/dark/dark.cpp:225
+#: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:254
+#: engines/freescape/games/eclipse/eclipse.cpp:263
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7949,9 +7949,9 @@ msgstr "Vihjeiden tietokanta"
 #: engines/darkseed/metaengine.cpp:60 engines/dragons/metaengine.cpp:223
 #: engines/efh/metaengine.cpp:373 engines/efh/metaengine.cpp:619
 #: engines/freescape/games/castle/castle.cpp:476
-#: engines/freescape/games/dark/dark.cpp:230
+#: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:259
+#: engines/freescape/games/eclipse/eclipse.cpp:268
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9221,26 +9221,26 @@ msgid "Select princess"
 msgstr "Valitse Prinsessa"
 
 #: engines/freescape/games/castle/castle.cpp:481
-#: engines/freescape/games/dark/dark.cpp:240
+#: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:267
+#: engines/freescape/games/eclipse/eclipse.cpp:276
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "Äänet päälle / pois"
 
 #: engines/freescape/games/castle/castle.cpp:486
-#: engines/freescape/games/dark/dark.cpp:246
+#: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:272
+#: engines/freescape/games/eclipse/eclipse.cpp:281
 #, fuzzy
 #| msgid "Rotate Left"
 msgid "Rotate left"
 msgstr "Kierrä vasemmalle"
 
 #: engines/freescape/games/castle/castle.cpp:491
-#: engines/freescape/games/dark/dark.cpp:251
+#: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:277
+#: engines/freescape/games/eclipse/eclipse.cpp:286
 #, fuzzy
 #| msgid "Rotate Right"
 msgid "Rotate right"
@@ -9251,7 +9251,7 @@ msgid "Crawl"
 msgstr "Ryömi"
 
 #: engines/freescape/games/castle/castle.cpp:513
-#: engines/freescape/games/eclipse/eclipse.cpp:315
+#: engines/freescape/games/eclipse/eclipse.cpp:324
 #, fuzzy
 #| msgid "Face Forward"
 msgid "Face forward"
@@ -9261,27 +9261,27 @@ msgstr "Katse eteenpäin"
 msgid "Run (hold)"
 msgstr ""
 
-#: engines/freescape/games/dark/dark.cpp:256
+#: engines/freescape/games/dark/dark.cpp:262
 #: engines/freescape/games/driller/driller.cpp:188
 #: engines/ultima/ultima8/metaengine.cpp:97
 msgid "Roll left"
 msgstr "Kallista vasemmalle"
 
-#: engines/freescape/games/dark/dark.cpp:261
+#: engines/freescape/games/dark/dark.cpp:267
 #: engines/freescape/games/driller/driller.cpp:193
 #: engines/ultima/ultima8/metaengine.cpp:98
 msgid "Roll right"
 msgstr "Kallista oikealle"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/dark/dark.cpp:267
+#: engines/freescape/games/dark/dark.cpp:273
 #: engines/freescape/games/driller/driller.cpp:160
 #, fuzzy
 #| msgid "Increase Turn Angle"
 msgid "Increase turn angle"
 msgstr "Kasvata kääntökulmaa"
 
-#: engines/freescape/games/dark/dark.cpp:272
+#: engines/freescape/games/dark/dark.cpp:278
 #: engines/freescape/games/driller/driller.cpp:165
 #, fuzzy
 #| msgid "Decrease Turn Angle"
@@ -9289,7 +9289,7 @@ msgid "Decrease turn angle"
 msgstr "Pienennä kääntökulmaa"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:278
+#: engines/freescape/games/dark/dark.cpp:284
 #: engines/freescape/games/driller/driller.cpp:171
 #, fuzzy
 #| msgid "Increase Step Size"
@@ -9297,28 +9297,28 @@ msgid "Increase step size"
 msgstr "Kasvata askelen pituutta"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/dark/dark.cpp:284
+#: engines/freescape/games/dark/dark.cpp:290
 #: engines/freescape/games/driller/driller.cpp:177
 #, fuzzy
 #| msgid "Decrease Step Size"
 msgid "Decrease step size"
 msgstr "Pienennä askelen pituutta"
 
-#: engines/freescape/games/dark/dark.cpp:289
+#: engines/freescape/games/dark/dark.cpp:295
 #: engines/freescape/games/driller/driller.cpp:182
 #, fuzzy
 #| msgid "Rise/Fly up"
 msgid "Rise / Fly up"
 msgstr "Nouse/Lennä ylös"
 
-#: engines/freescape/games/dark/dark.cpp:295
+#: engines/freescape/games/dark/dark.cpp:301
 #: engines/freescape/games/driller/driller.cpp:198
 #, fuzzy
 #| msgid "Lower/Fly down"
 msgid "Lower / Fly down"
 msgstr "Laskeudu/Lennä alas"
 
-#: engines/freescape/games/dark/dark.cpp:301
+#: engines/freescape/games/dark/dark.cpp:307
 #, fuzzy
 #| msgid "Enable/Disable Jetpack"
 msgid "Enable / Disable jetpack"
@@ -9335,38 +9335,38 @@ msgid "Collect drilling rig"
 msgstr "Kerää porauslautta"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:283
+#: engines/freescape/games/eclipse/eclipse.cpp:292
 #, fuzzy
 #| msgid "Change Angle"
 msgid "Change angle"
 msgstr "Vaihda kulmaa"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:289
+#: engines/freescape/games/eclipse/eclipse.cpp:298
 #, fuzzy
 #| msgid "Change Step Size"
 msgid "Change step size"
 msgstr "Muuta askelpituutta"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:295
+#: engines/freescape/games/eclipse/eclipse.cpp:304
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:303
+#: engines/freescape/games/eclipse/eclipse.cpp:312
 #, fuzzy
 #| msgid "Toggle Height"
 msgid "Toggle height"
 msgstr "Muuta korkeutta"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:309
+#: engines/freescape/games/eclipse/eclipse.cpp:318
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Lepää"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:320
+#: engines/freescape/games/eclipse/eclipse.cpp:329
 #, fuzzy
 #| msgid "Flashlight"
 msgid "Toggle flashlight"
