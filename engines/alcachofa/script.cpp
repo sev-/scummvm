@@ -951,7 +951,12 @@ private:
 
 		// Inventory control
 		case ScriptKernelTask::Pickup:
-			relatedCharacter().pickup(getStringArg(0), !getNumberArg(1));
+			if (process().character() == MainCharacterKind::None) {
+				// This happens in Secta, the original game just ignores this case
+				// A ChangeCharacter(0) is executed right before so this is actually just a script bug
+				warning("Tried to drop from none-character-process: %s at %u", getStringArg(0), _pc);
+			} else
+				relatedCharacter().pickup(getStringArg(0), !getNumberArg(1));
 			return TaskReturn::finish(1);
 		case ScriptKernelTask::CharacterPickup: {
 			auto &character = g_engine->world().getMainCharacterByKind(getMainCharacterKindArg(1));
