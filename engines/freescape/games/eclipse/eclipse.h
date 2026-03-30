@@ -25,6 +25,8 @@
 
 namespace Freescape {
 
+class EclipseC64MusicPlayer;
+
 enum EclipseReleaseFlags {
 	GF_ZX_DEMO_CRASH = (1 << 0),
 	GF_ZX_DEMO_MICROHOBBY = (1 << 1),
@@ -37,6 +39,7 @@ enum {
 class EclipseEngine : public FreescapeEngine {
 public:
 	EclipseEngine(OSystem *syst, const ADGameDescription *gd);
+	~EclipseEngine() override;
 
 	void gotoArea(uint16 areaID, int entranceID) override;
 
@@ -105,6 +108,8 @@ public:
 	void drawHeartIndicator(Graphics::Surface *surface, int x, int y);
 
 	Common::Array<byte> _musicData; // TEMUSIC.ST TEXT segment (Atari ST)
+	Common::Array<byte> _c64MusicData;
+	EclipseC64MusicPlayer *_playerC64Music;
 
 	// Atari ST UI sprites (extracted from binary, pre-converted to target format)
 	Font _fontScore; // Font B (10 score digit glyphs, 4-plane at $249BE)

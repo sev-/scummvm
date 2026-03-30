@@ -22,6 +22,7 @@
 #include "common/file.h"
 
 #include "freescape/freescape.h"
+#include "freescape/games/eclipse/c64.music.h"
 #include "freescape/games/eclipse/eclipse.h"
 #include "freescape/language/8bitDetokeniser.h"
 
@@ -83,6 +84,18 @@ void EclipseEngine::loadAssetsC64FullGame() {
 
 	for (auto &it : _indicators)
 		it->convertToInPlace(_gfx->_texturePixelFormat);
+
+	Common::File musicFile;
+	musicFile.open("totec1.prg");
+	if (musicFile.isOpen()) {
+		uint16 loadAddress = musicFile.readUint16LE();
+		if (loadAddress == 0x0410) {
+			_c64MusicData.resize(musicFile.size() - 2);
+			musicFile.read(_c64MusicData.data(), _c64MusicData.size());
+			delete _playerC64Music;
+			_playerC64Music = new EclipseC64MusicPlayer(_c64MusicData);
+		}
+	}
 }
 
 

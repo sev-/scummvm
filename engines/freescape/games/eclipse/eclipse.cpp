@@ -30,6 +30,7 @@
 #include "common/translation.h"
 
 #include "freescape/freescape.h"
+#include "freescape/games/eclipse/c64.music.h"
 #include "freescape/games/eclipse/eclipse.h"
 #include "freescape/language/8bitDetokeniser.h"
 
@@ -40,6 +41,8 @@ Audio::AudioStream *makeEclipseAtariMusicStream(const byte *data, uint32 dataSiz
                                                   int songNum = 1, int rate = 44100);
 
 EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : FreescapeEngine(syst, gd) {
+	_playerC64Music = nullptr;
+
 	// These sounds can be overriden by the class of each platform
 	_soundIndexStartFalling = -1;
 	_soundIndexEndFalling = -1;
@@ -99,6 +102,10 @@ EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : Frees
 	_flashlightOn = false;
 }
 
+EclipseEngine::~EclipseEngine() {
+	delete _playerC64Music;
+}
+
 void EclipseEngine::initGameState() {
 	FreescapeEngine::initGameState();
 
@@ -116,8 +123,10 @@ void EclipseEngine::initGameState() {
 	_resting = false;
 	_flashlightOn = false;
 
-	// Start playing music, if any, in any supported format
-	playMusic("Total Eclipse Theme");
+	if (isC64() && _playerC64Music)
+		_playerC64Music->startMusic();
+	else
+		playMusic("Total Eclipse Theme");
 }
 
 void EclipseEngine::loadAssets() {
