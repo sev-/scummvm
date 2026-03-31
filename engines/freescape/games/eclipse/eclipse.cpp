@@ -524,8 +524,15 @@ void EclipseEngine::drawInfoMenu() {
 					_eventManager->purgeKeyboardEvents();
 					saveGameDialog();
 					_gfx->setViewport(_viewArea);
-				} else if (isDOS() && event.customType == kActionToggleSound) {
-					playSound(_soundIndexMenu, false, _soundFxHandle);
+				} else if (event.customType == kActionToggleSound) {
+					if (isC64() && _playerC64Music) {
+						if (_playerC64Music->isPlaying())
+							_playerC64Music->stopMusic();
+						else
+							_playerC64Music->startMusic();
+					} else {
+						playSound(_soundIndexMenu, false, _soundFxHandle);
+					}
 				} else if ((isDOS() || isCPC() || isSpectrum()) && event.customType == kActionEscape) {
 					_forceEndGame = true;
 					cont = false;
