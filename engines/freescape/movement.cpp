@@ -486,11 +486,11 @@ void FreescapeEngine::updatePlayerMovementSmooth(float deltaTime) {
 
 	if (_moveForward)
 		moveDir += _cameraFront;
-	else if (_moveBackward)
+	if (_moveBackward)
 		moveDir -= _cameraFront;
-	else if (_strafeLeft)
+	if (_strafeLeft)
 		moveDir += _cameraRight;
-	else if (_strafeRight)
+	if (_strafeRight)
 		moveDir -= _cameraRight;
 
 	if (_flyMode) {
