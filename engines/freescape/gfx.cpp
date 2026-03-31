@@ -511,6 +511,18 @@ bool Renderer::getRGBAtCPC(uint8 index, uint8 &r1, uint8 &g1, uint8 &b1, uint8 &
 		return true;
 	}
 
+	if (index == 0 || index > 15) {
+		// Color indices outside the 1-15 stipple range are raw CPC ink
+		// values used for backgrounds. Read directly from the hardware
+		// palette instead of the stipple tables.
+		readFromPalette(index, r1, g1, b1);
+		r2 = r1;
+		g2 = g1;
+		b2 = b1;
+		stipple = nullptr;
+		return true;
+	}
+
 	stipple = (byte *)_stipples[index - 1];
 	byte pair = _colorPair[index - 1];
 	uint8 i1 = pair & 0xf;
