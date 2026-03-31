@@ -50,12 +50,13 @@ class DataStream;
 class VideoPlayer {
 public:
 	enum Flags {
-		kFlagNone                  = 0x000000,
-		kFlagUseBackSurfaceContent = 0x000040, ///< Use the back surface as a video "base".
-		kFlagFrontSurface          = 0x000080, ///< Draw directly into the front surface.
-		kFlagNoVideo               = 0x000100, ///< Only sound.
-		kFlagOtherSurface          = 0x000800, ///< Draw into a specific sprite.
-		kFlagScreenSurface         = 0x400000  ///< Draw into a newly created sprite of screen dimensions.
+		kFlagNone                               = 0x000000,
+		kFlagUseBackSurfaceContentOrDoubleVideo = 0x000040, ///< Use the back surface as a video "base".
+		// In later version of the engine, this 0x40 flag indicates instead that the video should be doubled.
+		kFlagFrontSurface                       = 0x000080, ///< Draw directly into the front surface.
+		kFlagNoVideo                            = 0x000100, ///< Only sound.
+		kFlagOtherSurface                       = 0x000800, ///< Draw into a specific sprite.
+		kFlagScreenSurface                      = 0x400000  ///< Draw into a newly created sprite of screen dimensions.
 	};
 
 	/** Video format. */

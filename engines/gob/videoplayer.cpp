@@ -262,7 +262,10 @@ int VideoPlayer::openVideo(bool primary, const Common::String &file, Properties 
 				if (properties.sprite == Draw::kBackSurface)
 					video->surface = _vm->_draw->_backSurface;
 
-				video->doubleVideo = _vm->_draw->_renderFlags & RENDERFLAG_DOUBLEVIDEO;
+				video->doubleVideo = (_vm->_draw->_renderFlags & RENDERFLAG_DOUBLEVIDEO) ||
+									 ((properties.flags & kFlagUseBackSurfaceContentOrDoubleVideo) &&
+									  _vm->getGameType() == kGameTypeAdi4); // TODO: May be needed by other games
+
 				if (video->doubleVideo) {
 					video->doubleVideo = true;
 					video->tmpSurfDouble = _vm->_video->initSurfDesc(
@@ -331,7 +334,7 @@ int VideoPlayer::openVideo(bool primary, const Common::String &file, Properties 
 	}
 
 	if (primary)
-		_needBlit = (properties.flags & kFlagUseBackSurfaceContent) && (properties.sprite == Draw::kFrontSurface);
+		_needBlit = (properties.flags & kFlagUseBackSurfaceContentOrDoubleVideo) && (properties.sprite == Draw::kFrontSurface);
 
 	properties.hasSound = video->decoder->hasSound();
 
