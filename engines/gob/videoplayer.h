@@ -178,11 +178,15 @@ private:
 		Common::String fileName;
 
 		SurfacePtr surface;
+		SurfacePtr tmpSurfDouble; ///< Intermediate 1x surface for video doubling
+		int16 doubleVideoDestX;   ///< Saved destination X on target surface for the doubled video
+		int16 doubleVideoDestY;   ///< Saved destination Y on target surface for the doubled video
 		Common::SharedPtr<Graphics::Surface> tmpSurfBppConversion;
 		uint32 *highColorMap;
 
 		Properties properties;
 
+		bool doubleVideo; ///< Should the video be doubled (each pixel drawn as a 2x2 block)
 		bool live;
 		bool autoUpdate; ///< Should the video be automatically advanced by updateVideos()
 
