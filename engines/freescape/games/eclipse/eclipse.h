@@ -107,6 +107,10 @@ public:
 	void loadHeartFramesDOS(Common::SeekableReadStream *file, int restOffset, int beatOffset);
 	void drawHeartIndicator(Graphics::Surface *surface, int x, int y);
 
+	// CPC heart frames stored as indexed (CLUT8) for per-area re-paletting
+	Common::Array<Graphics::ManagedSurface *> _heartFramesCPCIndexed;
+	void updateHeartFramesCPC();
+
 	Common::Array<byte> _musicData; // TEMUSIC.ST TEXT segment (Atari ST)
 	Common::Array<byte> _c64MusicData;
 	EclipseC64MusicPlayer *_playerC64Music;

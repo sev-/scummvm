@@ -64,38 +64,20 @@ byte kCPCPaletteEclipseBorderData[4][3] = {
 
 
 void EclipseEngine::loadHeartFramesCPC(Common::SeekableReadStream *file, int restOffset, int beatOffset) {
-	// Decode into _eclipseSprites[0] (beat) and _eclipseSprites[1] (rest),
-	// matching the Atari ST convention for future unification.
-	// Uses loadFrameCPCIndexed (shared with Castle) for pixel decoding,
-	// then converts CLUT8→ARGB via convertImageFormatIfNecessary.
+	// Decode heart frames as indexed (CLUT8) pixel data.
+	// The actual palette is applied at draw time from the current area's
+	// ink/paper colors, since CPC pen assignments change per area.
 	int offsets[2] = { beatOffset, restOffset };
-
-	byte palette[4 * 3];
-	for (int c = 0; c < 4; c++) {
-		uint8 r, g, b;
-		_gfx->selectColorFromFourColorPalette(c, r, g, b);
-		palette[c * 3 + 0] = r;
-		palette[c * 3 + 1] = g;
-		palette[c * 3 + 2] = b;
-	}
 
 	for (int f = 0; f < 2; f++) {
 		file->seek(offsets[f]);
 		int height = file->readByte();
 		int widthBytes = file->readByte();
 
-		Graphics::ManagedSurface clut8;
-		clut8.create(widthBytes * 4, height, Graphics::PixelFormat::createFormatCLUT8());
-		loadFrameCPCIndexed(file, &clut8, widthBytes, height);
-		clut8.setPalette(palette, 0, 4);
-
-		Graphics::Surface *converted = _gfx->convertImageFormatIfNecessary(&clut8);
-		auto *surf = new Graphics::ManagedSurface();
-		surf->copyFrom(*converted);
-		converted->free();
-		delete converted;
-
-		_eclipseSprites.push_back(surf);
+		auto *indexed = new Graphics::ManagedSurface();
+		indexed->create(widthBytes * 4, height, Graphics::PixelFormat::createFormatCLUT8());
+		loadFrameCPCIndexed(file, indexed, widthBytes, height);
+		_heartFramesCPCIndexed.push_back(indexed);
 	}
 }
 
@@ -149,8 +131,10 @@ void EclipseEngine::loadAssetsCPCFullGame() {
 	loadColorPalette();
 	swapPalette(1);
 
-	if (!isEclipse2())
+	if (!isEclipse2()) {
 		loadHeartFramesCPC(&file, 0x0CDB, 0x0D0D);
+		updateHeartFramesCPC();
+	}
 
 	_indicators.push_back(loadBundledImage("eclipse_ankh_indicator"));
 
@@ -182,6 +166,7 @@ void EclipseEngine::loadAssetsCPCDemo() {
 	loadColorPalette();
 	swapPalette(1);
 	loadHeartFramesCPC(&file, 0x0D17, 0x0D49);
+	updateHeartFramesCPC();
 
 	// This patch forces a solid color to the bottom of the chest in the area 5
 	// It was transparent in the original game
@@ -193,6 +178,40 @@ void EclipseEngine::loadAssetsCPCDemo() {
 
 	for (auto &it : _indicators)
 		it->convertToInPlace(_gfx->_texturePixelFormat);
+}
+
+void EclipseEngine::updateHeartFramesCPC() {
+	if (_heartFramesCPCIndexed.empty())
+		return;
+
+	uint8 r, g, b;
+	byte palette[4 * 3];
+	for (int c = 0; c < 4; c++) {
+		_gfx->selectColorFromFourColorPalette(c, r, g, b);
+		palette[c * 3 + 0] = r;
+		palette[c * 3 + 1] = g;
+		palette[c * 3 + 2] = b;
+	}
+
+	for (auto &sprite : _eclipseSprites) {
+		sprite->free();
+		delete sprite;
+	}
+	_eclipseSprites.clear();
+
+	for (uint i = 0; i < _heartFramesCPCIndexed.size(); i++) {
+		Graphics::ManagedSurface clut8;
+		clut8.copyFrom(*_heartFramesCPCIndexed[i]);
+		clut8.setPalette(palette, 0, 4);
+
+		Graphics::Surface *converted = _gfx->convertImageFormatIfNecessary(&clut8);
+		auto *surf = new Graphics::ManagedSurface();
+		surf->copyFrom(*converted);
+		converted->free();
+		delete converted;
+
+		_eclipseSprites.push_back(surf);
+	}
 }
 
 void EclipseEngine::drawCPCUI(Graphics::Surface *surface) {
@@ -256,14 +275,14 @@ void EclipseEngine::drawCPCUI(Graphics::Surface *surface) {
 	if (energy < 0)
 		energy = 0;
 
-	_gfx->readFromPalette(19, r, g, b);
-	uint32 blue = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
+	_gfx->readFromPalette(_currentArea->_paperColor, r, g, b);
+	uint32 waterColor = _gfx->_texturePixelFormat.ARGBToColor(0xFF, r, g, b);
 
 	Common::Rect jarBackground(124, 165, 148, 192);
 	surface->fillRect(jarBackground, back);
 
 	Common::Rect jarWater(124, 192 - energy, 148, 192);
-	surface->fillRect(jarWater, blue);
+	surface->fillRect(jarWater, waterColor);
 
 	drawHeartIndicator(surface, 176, 168);
 
