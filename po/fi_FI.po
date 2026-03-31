@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.6.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-30 19:13+0000\n"
+"POT-Creation-Date: 2026-03-31 12:56+0000\n"
 "PO-Revision-Date: 2026-02-07 15:22+0000\n"
 "Last-Translator: Timo Mikkolainen <tmikkola@gmail.com>\n"
 "Language-Team: Finnish <https://translations.scummvm.org/projects/scummvm/"
@@ -74,7 +74,7 @@ msgstr "Sulje"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. ONLINE HELP
 #. I18N: Opens the help screen.
-#: gui/browser.cpp:64 gui/launcher.cpp:277 gui/launcher.cpp:955
+#: gui/browser.cpp:64 gui/launcher.cpp:277 gui/launcher.cpp:959
 #: backends/platform/sdl/macosx/appmenu_osx.mm:319
 #: engines/access/metaengine.cpp:343 engines/bladerunner/metaengine.cpp:321
 #: engines/ngi/metaengine.cpp:162 engines/supernova/metaengine.cpp:238
@@ -327,7 +327,7 @@ msgstr "Toinen tallennustila on aktiivinen. Haluatko keskeyttää sen?"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:152 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1921 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1926 gui/options.cpp:3485
 #: gui/options.cpp:3859 base/main.cpp:604
 #: backends/events/default/default-events.cpp:193 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:91 engines/director/events.cpp:122
@@ -346,7 +346,7 @@ msgstr "Kyllä"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:153 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1922 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1927 gui/options.cpp:3485
 #: gui/options.cpp:3859 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:97 engines/director/events.cpp:122
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
@@ -469,7 +469,7 @@ msgid ""
 msgstr ""
 "Yhteytesi vaikuttaa rajatulta. Haluatko varmasti ladata tiedostoja sillä?"
 
-#: gui/downloaddialog.cpp:136 gui/launcher.cpp:693
+#: gui/downloaddialog.cpp:136 gui/launcher.cpp:697
 msgid "ScummVM couldn't open the specified directory!"
 msgstr "ScummVM ei voi avata kyseistä hakemistoa!"
 
@@ -571,7 +571,7 @@ msgstr "ikonipaketit"
 msgid "shader packs"
 msgstr "sävytinpaketit"
 
-#: gui/dump-all-dialogs.cpp:146 gui/launcher.cpp:744
+#: gui/dump-all-dialogs.cpp:146 gui/launcher.cpp:748
 msgid "Pick the game:"
 msgstr "Valitse peli:"
 
@@ -1498,7 +1498,7 @@ msgstr "Vuosi"
 msgid "Select Group by"
 msgstr "Valitse ryhmitys"
 
-#: gui/launcher.cpp:236 gui/launcher.cpp:939
+#: gui/launcher.cpp:236 gui/launcher.cpp:943
 msgid "Group:"
 msgstr "Ryhmitä:"
 
@@ -1528,7 +1528,7 @@ msgstr "~T~ietoa"
 msgid "About ScummVM"
 msgstr "Tietoa ScummVM:stä"
 
-#: gui/launcher.cpp:277 gui/launcher.cpp:955
+#: gui/launcher.cpp:277 gui/launcher.cpp:959
 #, fuzzy
 #| msgid "General Keys"
 msgid "General help"
@@ -1595,12 +1595,12 @@ msgctxt "lowres"
 msgid "Mass Add..."
 msgstr "Lisää monta..."
 
-#: gui/launcher.cpp:309 gui/launcher.cpp:909 gui/shaderbrowser-dialog.cpp:61
+#: gui/launcher.cpp:309 gui/launcher.cpp:913 gui/shaderbrowser-dialog.cpp:61
 #: gui/shaderbrowser-dialog.cpp:97
 msgid "Search in game list"
 msgstr "Etsi peliä listasta"
 
-#: gui/launcher.cpp:313 gui/launcher.cpp:930 gui/shaderbrowser-dialog.cpp:65
+#: gui/launcher.cpp:313 gui/launcher.cpp:934 gui/shaderbrowser-dialog.cpp:65
 #: gui/shaderbrowser-dialog.cpp:107
 msgid "Search:"
 msgstr "Etsi:"
@@ -1628,19 +1628,19 @@ msgstr ""
 msgid "Do you really want to remove this game configuration?"
 msgstr "Haluatko varmasti poistaa pelin asetuksineen listalta?"
 
-#: gui/launcher.cpp:529
+#: gui/launcher.cpp:533
 msgid "Do you want to load saved game?"
 msgstr "Haluatko ladata tallennetun pelin?"
 
-#: gui/launcher.cpp:586
+#: gui/launcher.cpp:590
 msgid "This game does not support loading games from the launcher."
 msgstr "Tämä peli ei tue pelitallennuksien lataamista pelin ulkopuolelta."
 
-#: gui/launcher.cpp:590
+#: gui/launcher.cpp:594
 msgid "ScummVM could not find any engine capable of running the selected game!"
 msgstr "ScummVM ei löytänyt pelimoottoria joka tukee valittua peliä!"
 
-#: gui/launcher.cpp:696 gui/launcher.cpp:720
+#: gui/launcher.cpp:700 gui/launcher.cpp:724
 msgid ""
 "Have you given ScummVM access rights to this directory? Press the help "
 "button [?] on the top for detailed instructions"
@@ -1648,102 +1648,102 @@ msgstr ""
 "Oletko antanut ScummVM:lle pääsyn tähän kansioon? Paina ohjenappia [?] "
 "ylhäällä nähdäksesi tarkat ohjeet"
 
-#: gui/launcher.cpp:717
+#: gui/launcher.cpp:721
 msgid "ScummVM could not find any game in the specified directory!"
 msgstr "ScummVM ei löytänyt yhtään peliä kyseisestä hakemistosta!"
 
 #. I18N: Unknown game variant
-#: gui/launcher.cpp:738 engines/engine.cpp:1235
+#: gui/launcher.cpp:742 engines/engine.cpp:1235
 msgid "Unknown variant"
 msgstr "Tuntematon versio"
 
-#: gui/launcher.cpp:990 gui/saveload-dialog.cpp:381
+#: gui/launcher.cpp:994 gui/saveload-dialog.cpp:381
 msgid "List view"
 msgstr "Listanäkymä"
 
-#: gui/launcher.cpp:991 gui/saveload-dialog.cpp:382
+#: gui/launcher.cpp:995 gui/saveload-dialog.cpp:382
 msgid "Grid view"
 msgstr "Ruudukkonäkymä"
 
-#: gui/launcher.cpp:1139
+#: gui/launcher.cpp:1143
 msgid "~S~tart"
 msgstr "~P~elaa"
 
-#: gui/launcher.cpp:1139
+#: gui/launcher.cpp:1143
 msgid "Start selected game"
 msgstr "Pelaa valittua peliä"
 
-#: gui/launcher.cpp:1142
+#: gui/launcher.cpp:1146
 msgid "~L~oad..."
 msgstr "~L~ataa..."
 
-#: gui/launcher.cpp:1142
+#: gui/launcher.cpp:1146
 msgid "Load saved game for selected game"
 msgstr "Lataa pelitallennus valitulle pelille"
 
-#: gui/launcher.cpp:1144
+#: gui/launcher.cpp:1148
 msgid "Record..."
 msgstr "Nauhoita..."
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgid "~G~ame Options..."
 msgstr "~P~elin Asetukset..."
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgid "Change game options"
 msgstr "Muuta pelin asetuksia"
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgctxt "lowres"
 msgid "~G~ame Opts..."
 msgstr "~P~elin Asetukset..."
 
-#: gui/launcher.cpp:1236
+#: gui/launcher.cpp:1240
 msgid "Add-on"
 msgstr "Lisäosa"
 
 #. I18N: List grouping when no engine is specified
-#: gui/launcher.cpp:1287 gui/launcher.cpp:1532
+#: gui/launcher.cpp:1297 gui/launcher.cpp:1542
 msgid "Unknown Engine"
 msgstr "Tuntematon pelimoottori"
 
 #. I18N: List grouping when no publisher is specified
 #. I18N: List group when no publisher is specified
-#: gui/launcher.cpp:1304 gui/launcher.cpp:1549
+#: gui/launcher.cpp:1314 gui/launcher.cpp:1559
 msgid "Unknown Publisher"
 msgstr "Tuntematon julkaisija"
 
 #. I18N: List group when no game series is specified
 #. I18N: List grouping when no game series is specified
-#: gui/launcher.cpp:1321 gui/launcher.cpp:1566
+#: gui/launcher.cpp:1331 gui/launcher.cpp:1576
 msgid "No Series"
 msgstr "Ei sarjaa"
 
 #. I18N: List group when no language is specified
-#: gui/launcher.cpp:1335 gui/launcher.cpp:1580
+#: gui/launcher.cpp:1345 gui/launcher.cpp:1590
 msgid "Language not detected"
 msgstr "Kieli ei tiedossa"
 
 #. I18N: List group when no platform is specified
-#: gui/launcher.cpp:1349 gui/launcher.cpp:1594
+#: gui/launcher.cpp:1359 gui/launcher.cpp:1604
 msgid "Platform not detected"
 msgstr "Alusta ei tiedossa"
 
 #. I18N: List group when no year is specified
-#: gui/launcher.cpp:1366 gui/launcher.cpp:1611
+#: gui/launcher.cpp:1376 gui/launcher.cpp:1621
 msgid "Unknown Year"
 msgstr "Tuntematon vuosi"
 
 #. I18N: Group for All items
-#: gui/launcher.cpp:1618 gui/widgets/groupedlist.cpp:81
+#: gui/launcher.cpp:1628 gui/widgets/groupedlist.cpp:81
 msgid "All"
 msgstr "Kaikki"
 
-#: gui/launcher.cpp:1790
+#: gui/launcher.cpp:1800
 msgid "Icons per row:"
 msgstr "Ikoneita per rivi:"
 
-#: gui/launcher.cpp:1852
+#: gui/launcher.cpp:1857
 #, fuzzy, c-format
 #| msgid ""
 #| "Do you really want to remove the following %d game configuration(s)?\n"

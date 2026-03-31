@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.4.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-30 19:13+0000\n"
+"POT-Creation-Date: 2026-03-31 12:56+0000\n"
 "PO-Revision-Date: 2026-03-25 10:45+0000\n"
 "Last-Translator: IlDucci <pajaroloco_2@hotmail.com>\n"
 "Language-Team: Spanish <https://translations.scummvm.org/projects/scummvm/"
@@ -74,7 +74,7 @@ msgstr "Cerrar"
 #. on the KIA Help Page, under Keyboard Shortcuts. In the English version it is
 #. ONLINE HELP
 #. I18N: Opens the help screen.
-#: gui/browser.cpp:64 gui/launcher.cpp:277 gui/launcher.cpp:955
+#: gui/browser.cpp:64 gui/launcher.cpp:277 gui/launcher.cpp:959
 #: backends/platform/sdl/macosx/appmenu_osx.mm:319
 #: engines/access/metaengine.cpp:343 engines/bladerunner/metaengine.cpp:321
 #: engines/ngi/metaengine.cpp:162 engines/supernova/metaengine.cpp:238
@@ -327,7 +327,7 @@ msgstr "Ya hay otro almacenamiento activo. ¿Quieres interrumpirlo?"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:152 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1921 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1926 gui/options.cpp:3485
 #: gui/options.cpp:3859 base/main.cpp:604
 #: backends/events/default/default-events.cpp:193 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:91 engines/director/events.cpp:122
@@ -346,7 +346,7 @@ msgstr "Sí"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:153 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:530 gui/launcher.cpp:1922 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1927 gui/options.cpp:3485
 #: gui/options.cpp:3859 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:97 engines/director/events.cpp:122
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
@@ -470,7 +470,7 @@ msgstr ""
 "Parece que estás usando una conexión limitada. ¿Seguro que quieres descargar "
 "archivos?"
 
-#: gui/downloaddialog.cpp:136 gui/launcher.cpp:693
+#: gui/downloaddialog.cpp:136 gui/launcher.cpp:697
 msgid "ScummVM couldn't open the specified directory!"
 msgstr "¡ScummVM no ha podido abrir el directorio!"
 
@@ -572,7 +572,7 @@ msgstr "paquetes de iconos"
 msgid "shader packs"
 msgstr "paquetes de shaders"
 
-#: gui/dump-all-dialogs.cpp:146 gui/launcher.cpp:744
+#: gui/dump-all-dialogs.cpp:146 gui/launcher.cpp:748
 msgid "Pick the game:"
 msgstr "Elige el juego:"
 
@@ -1457,7 +1457,7 @@ msgstr "Año"
 msgid "Select Group by"
 msgstr "Seleccionar grupo por..."
 
-#: gui/launcher.cpp:236 gui/launcher.cpp:939
+#: gui/launcher.cpp:236 gui/launcher.cpp:943
 msgid "Group:"
 msgstr "Agrupar por:"
 
@@ -1487,7 +1487,7 @@ msgstr "Acerca ~d~e..."
 msgid "About ScummVM"
 msgstr "Acerca de ScummVM"
 
-#: gui/launcher.cpp:277 gui/launcher.cpp:955
+#: gui/launcher.cpp:277 gui/launcher.cpp:959
 msgid "General help"
 msgstr "Ayuda general"
 
@@ -1552,12 +1552,12 @@ msgctxt "lowres"
 msgid "Mass Add..."
 msgstr "Añad. varios"
 
-#: gui/launcher.cpp:309 gui/launcher.cpp:909 gui/shaderbrowser-dialog.cpp:61
+#: gui/launcher.cpp:309 gui/launcher.cpp:913 gui/shaderbrowser-dialog.cpp:61
 #: gui/shaderbrowser-dialog.cpp:97
 msgid "Search in game list"
 msgstr "Buscar en la lista de juegos"
 
-#: gui/launcher.cpp:313 gui/launcher.cpp:930 gui/shaderbrowser-dialog.cpp:65
+#: gui/launcher.cpp:313 gui/launcher.cpp:934 gui/shaderbrowser-dialog.cpp:65
 #: gui/shaderbrowser-dialog.cpp:107
 msgid "Search:"
 msgstr "Buscar:"
@@ -1587,19 +1587,19 @@ msgstr ""
 msgid "Do you really want to remove this game configuration?"
 msgstr "¿Seguro que quieres eliminar la configuración de este juego?"
 
-#: gui/launcher.cpp:529
+#: gui/launcher.cpp:533
 msgid "Do you want to load saved game?"
 msgstr "¿Quieres cargar la partida guardada?"
 
-#: gui/launcher.cpp:586
+#: gui/launcher.cpp:590
 msgid "This game does not support loading games from the launcher."
 msgstr "Este juego no permite cargar partidas desde el iniciador."
 
-#: gui/launcher.cpp:590
+#: gui/launcher.cpp:594
 msgid "ScummVM could not find any engine capable of running the selected game!"
 msgstr "¡ScummVM no ha encontrado ningún motor capaz de ejecutar el juego!"
 
-#: gui/launcher.cpp:696 gui/launcher.cpp:720
+#: gui/launcher.cpp:700 gui/launcher.cpp:724
 msgid ""
 "Have you given ScummVM access rights to this directory? Press the help "
 "button [?] on the top for detailed instructions"
@@ -1607,102 +1607,102 @@ msgstr ""
 "¿Has dado a ScummVM permisos de acceso a este directorio? Pulsa el botón de "
 "ayuda [?] de la parte superior para ver instrucciones detalladas"
 
-#: gui/launcher.cpp:717
+#: gui/launcher.cpp:721
 msgid "ScummVM could not find any game in the specified directory!"
 msgstr "¡ScummVM no ha encontrado ningún juego en el directorio!"
 
 #. I18N: Unknown game variant
-#: gui/launcher.cpp:738 engines/engine.cpp:1235
+#: gui/launcher.cpp:742 engines/engine.cpp:1235
 msgid "Unknown variant"
 msgstr "Variante desconocida"
 
-#: gui/launcher.cpp:990 gui/saveload-dialog.cpp:381
+#: gui/launcher.cpp:994 gui/saveload-dialog.cpp:381
 msgid "List view"
 msgstr "Modo lista"
 
-#: gui/launcher.cpp:991 gui/saveload-dialog.cpp:382
+#: gui/launcher.cpp:995 gui/saveload-dialog.cpp:382
 msgid "Grid view"
 msgstr "Modo mosaico"
 
-#: gui/launcher.cpp:1139
+#: gui/launcher.cpp:1143
 msgid "~S~tart"
 msgstr "~J~ugar"
 
-#: gui/launcher.cpp:1139
+#: gui/launcher.cpp:1143
 msgid "Start selected game"
 msgstr "Ejecuta el juego seleccionado"
 
-#: gui/launcher.cpp:1142
+#: gui/launcher.cpp:1146
 msgid "~L~oad..."
 msgstr "~C~argar..."
 
-#: gui/launcher.cpp:1142
+#: gui/launcher.cpp:1146
 msgid "Load saved game for selected game"
 msgstr "Carga una partida del juego seleccionado"
 
-#: gui/launcher.cpp:1144
+#: gui/launcher.cpp:1148
 msgid "Record..."
 msgstr "Grabar..."
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgid "~G~ame Options..."
 msgstr "Opciones del j~u~ego..."
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgid "Change game options"
 msgstr "Cambia las opciones del juego"
 
-#: gui/launcher.cpp:1150
+#: gui/launcher.cpp:1154
 msgctxt "lowres"
 msgid "~G~ame Opts..."
 msgstr "Opc. j~u~ego..."
 
-#: gui/launcher.cpp:1236
+#: gui/launcher.cpp:1240
 msgid "Add-on"
 msgstr "Expansiones"
 
 #. I18N: List grouping when no engine is specified
-#: gui/launcher.cpp:1287 gui/launcher.cpp:1532
+#: gui/launcher.cpp:1297 gui/launcher.cpp:1542
 msgid "Unknown Engine"
 msgstr "Motor desconocido"
 
 #. I18N: List grouping when no publisher is specified
 #. I18N: List group when no publisher is specified
-#: gui/launcher.cpp:1304 gui/launcher.cpp:1549
+#: gui/launcher.cpp:1314 gui/launcher.cpp:1559
 msgid "Unknown Publisher"
 msgstr "Distribuidora desconocida"
 
 #. I18N: List group when no game series is specified
 #. I18N: List grouping when no game series is specified
-#: gui/launcher.cpp:1321 gui/launcher.cpp:1566
+#: gui/launcher.cpp:1331 gui/launcher.cpp:1576
 msgid "No Series"
 msgstr "No hay series"
 
 #. I18N: List group when no language is specified
-#: gui/launcher.cpp:1335 gui/launcher.cpp:1580
+#: gui/launcher.cpp:1345 gui/launcher.cpp:1590
 msgid "Language not detected"
 msgstr "Idioma no detectado"
 
 #. I18N: List group when no platform is specified
-#: gui/launcher.cpp:1349 gui/launcher.cpp:1594
+#: gui/launcher.cpp:1359 gui/launcher.cpp:1604
 msgid "Platform not detected"
 msgstr "Plataforma no detectada"
 
 #. I18N: List group when no year is specified
-#: gui/launcher.cpp:1366 gui/launcher.cpp:1611
+#: gui/launcher.cpp:1376 gui/launcher.cpp:1621
 msgid "Unknown Year"
 msgstr "Año desconocido"
 
 #. I18N: Group for All items
-#: gui/launcher.cpp:1618 gui/widgets/groupedlist.cpp:81
+#: gui/launcher.cpp:1628 gui/widgets/groupedlist.cpp:81
 msgid "All"
 msgstr "Todo"
 
-#: gui/launcher.cpp:1790
+#: gui/launcher.cpp:1800
 msgid "Icons per row:"
 msgstr "Iconos por fila:"
 
-#: gui/launcher.cpp:1852
+#: gui/launcher.cpp:1857
 #, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
