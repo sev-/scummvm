@@ -21,6 +21,7 @@
 
 #include "freescape/debugger.h"
 #include "freescape/freescape.h"
+#include "freescape/games/eclipse/eclipse.h"
 #include "freescape/gfx.h"
 #include "freescape/objects/object.h"
 #include "freescape/area.h"
@@ -39,12 +40,13 @@ Debugger::Debugger(FreescapeEngine *vm) : GUI::Debugger(), _vm(vm) {
 	registerCmd("iso", WRAP_METHOD(Debugger, cmdHighlightID)); // isolate object
 	registerCmd("obj_pos", WRAP_METHOD(Debugger, cmdObjPos)); // get object pos
 	registerCmd("obj_mov", WRAP_METHOD(Debugger, cmdSetObjPos)); // move object
-	registerCmd("goto", WRAP_METHOD(Debugger, cmdGoto)); // teleport to a position
+	registerCmd("goto", WRAP_METHOD(Debugger, cmdGoto)); // teleport to area/entrance or position
 	registerCmd("sort_order", WRAP_METHOD(Debugger, cmdSortOrder)); // print current draw order of objects
 	registerCmd("occ", WRAP_METHOD(Debugger, cmdShowOcclusion)); // toggle occlussion boxes
 	registerCmd("area", WRAP_METHOD(Debugger, cmdArea)); // show current area info
 	registerCmd("pos", WRAP_METHOD(Debugger, cmdPos)); // show camera position and direction
 	registerCmd("win", WRAP_METHOD(Debugger, cmdWin)); // trigger the current game's win condition
+	registerCmd("ankh", WRAP_METHOD(Debugger, cmdAnkh)); // set ankh count (Total Eclipse only)
 }
 
 Debugger::~Debugger() {}
@@ -167,15 +169,25 @@ bool Debugger::cmdSetObjPos(int argc, const char **argv) {
 }
 
 bool Debugger::cmdGoto(int argc, const char **argv) {
-	if (argc < 4) {
-		debugPrintf("Usage: goto <x> <y> <z>\n");
+	if (argc == 3) {
+		uint16 areaID = atoi(argv[1]);
+		int entranceID = atoi(argv[2]);
+		_vm->gotoArea(areaID, entranceID);
+		debugPrintf("Jumped to area %d, entrance %d\n", areaID, entranceID);
 		return true;
 	}
-	float x = atof(argv[1]);
-	float y = atof(argv[2]);
-	float z = atof(argv[3]);
-	_vm->_position = Math::Vector3d(x, y, z);
-	debugPrintf("Teleported to %f %f %f\n", x, y, z);
+
+	if (argc >= 4) {
+		float x = atof(argv[1]);
+		float y = atof(argv[2]);
+		float z = atof(argv[3]);
+		_vm->_position = Math::Vector3d(x, y, z);
+		debugPrintf("Teleported to %f %f %f\n", x, y, z);
+		return true;
+	}
+
+	debugPrintf("Usage: goto <area> <entrance>\n");
+	debugPrintf("       goto <x> <y> <z>\n");
 	return true;
 }
 
@@ -300,6 +312,24 @@ bool Debugger::cmdWin(int argc, const char **argv) {
 	}
 
 	debugPrintf("Triggered the win condition.\n");
+	return true;
+}
+
+bool Debugger::cmdAnkh(int argc, const char **argv) {
+	if (!_vm->isEclipse()) {
+		debugPrintf("This command is only available in Total Eclipse.\n");
+		return true;
+	}
+
+	if (argc < 2) {
+		debugPrintf("Current ankhs: %d\n", _vm->_gameStateVars[kVariableEclipseAnkhs]);
+		debugPrintf("Usage: ankh <count>\n");
+		return true;
+	}
+
+	int count = atoi(argv[1]);
+	_vm->_gameStateVars[kVariableEclipseAnkhs] = count;
+	debugPrintf("Ankhs set to %d\n", count);
 	return true;
 }
 

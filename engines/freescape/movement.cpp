@@ -347,6 +347,14 @@ bool FreescapeEngine::rise() {
 				changePlayerHeight(_playerHeightNumber);
 				if (!isCastle())
 					setGameBit(31);
+
+				Math::Ray ray(_position, _upVector);
+				Object *collidedUp = _currentArea->checkCollisionRay(ray, _playerHeight + 3);
+				if (collidedUp) {
+					GeometricObject *gobj = (GeometricObject *)collidedUp;
+					debugC(1, kFreescapeDebugMove, "Collided up with object id %d", gobj->getObjectID());
+					executeObjectConditions(gobj, false, true, false);
+				}
 			}
 		} else
 			result = true;

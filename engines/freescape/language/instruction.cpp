@@ -361,6 +361,9 @@ void FreescapeEngine::executeRedraw(FCLInstruction &instruction) {
 	if (isDriller() && (isSpectrum() || isCPC() || isC64()) && _gameStateVars[32] == 18)
 		delay = delay * 15; // Slow down redraws when the final cutscene is playing
 
+	if (isEclipse() && _currentArea->getAreaID() == 37 && getGameBit(6))
+		delay = delay * 10; // Slow down redraws in the final area of Eclipse
+
 	waitInLoop(delay);
 }
 
