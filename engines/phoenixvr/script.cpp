@@ -325,7 +325,10 @@ void Script::parseLine(const Common::String &line, uint lineno) {
 			if (p.maybe(','))
 				test = p.nextWord();
 			_currentWarp.reset(new Warp{vr, Common::move(test), {}});
-			_warpsIndex[vr] = _warps.size();
+			if (!_warpsIndex.contains(vr))
+				_warpsIndex[vr] = _warps.size();
+			else
+				warning("duplicate warp %s\n", vr.c_str());
 			_warps.push_back(_currentWarp);
 			_warpNames.push_back(vr);
 		} else if (p.maybe("test]=")) {
