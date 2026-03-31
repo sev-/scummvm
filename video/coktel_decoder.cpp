@@ -188,6 +188,10 @@ bool CoktelDecoder::hasVideo() const {
 	return true;
 }
 
+bool CoktelDecoder::hasVideoData() const {
+	return hasVideo();
+}
+
 bool CoktelDecoder::hasSound() const {
 	return _hasSound;
 }
@@ -1799,7 +1803,7 @@ VMDDecoder::VMDDecoder(Audio::Mixer *mixer, Audio::Mixer::SoundType soundType) :
 	_soundFlags(0), _soundFreq(0), _soundSliceSize(0), _soundSlicesCount(0),
 	_soundBytesPerSample(0), _soundStereo(0), _soundHeaderSize(0), _soundDataSize(0),
 	_soundLastFilledFrame(0), _audioFormat(kAudioFormat8bitRaw),
-	_hasVideo(false), _videoCodec(0), _blitMode(0), _bytesPerPixel(0),
+	_hasVideo(false), _hasVideoData(false), _videoCodec(0), _blitMode(0), _bytesPerPixel(0),
 	_firstFramePos(0), _videoBufferSize(0), _externalCodec(false), _codec(0),
 	_subtitle(-1), _isPaletted(true), _autoStartSound(true), _oldStereoBuffer(nullptr) {
 
@@ -2189,6 +2193,7 @@ bool VMDDecoder::readFrameTable(int &numFiles) {
 		_frames[i].offset = _stream->readUint32LE();
 	}
 
+	_hasVideoData = false;
 	_soundLastFilledFrame = 0;
 	for (uint16 i = 0; i < _frameCount; i++) {
 		bool separator = false;
@@ -2198,6 +2203,9 @@ bool VMDDecoder::readFrameTable(int &numFiles) {
 			_frames[i].parts[j].type    = (PartType) _stream->readByte();
 			_frames[i].parts[j].field_1 = _stream->readByte();
 			_frames[i].parts[j].size    = _stream->readUint32LE();
+
+			if (_frames[i].parts[j].type == kPartTypeVideo)
+				_hasVideoData = true;
 
 			if (_frames[i].parts[j].type == kPartTypeAudio) {
 
@@ -2316,6 +2324,7 @@ void VMDDecoder::close() {
 	_oldStereoBuffer      = nullptr;
 
 	_hasVideo      = false;
+	_hasVideoData  = false;
 	_videoCodec    = 0;
 	_blitMode      = 0;
 	_bytesPerPixel = 0;
@@ -2999,6 +3008,10 @@ int32 VMDDecoder::getSubtitleIndex() const {
 
 bool VMDDecoder::hasVideo() const {
 	return _hasVideo;
+}
+
+bool VMDDecoder::hasVideoData() const {
+	return _hasVideoData;
 }
 
 bool VMDDecoder::isPaletted() const {

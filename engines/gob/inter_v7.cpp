@@ -769,8 +769,6 @@ void Inter_v7::o7_playVmdOrMusic() {
 			// if (video not in cache)
 			//   return;
 
-			props.noWaitSound = true;
-
 			props.lastFrame += 100;
 		}
 
@@ -810,9 +808,13 @@ void Inter_v7::o7_playVmdOrMusic() {
 		props.noBlock = true;
 	}
 
-	if (_vm->_vidPlayer->getSoundFlags() & 0x100) {
-		props.noWaitSound = true;
-	}
+	// if (_vm->_vidPlayer->getSoundFlags() & 0x100) {
+	// 	props.noWaitSound = true;
+	// }
+	// Actually, the noWaitSound flag seems to be always set (at least in Adibou/Adi4),
+	// independently of the "no wait" sound flag 0x100 in the VMD file header.
+
+	props.noWaitSound = true;
 
 	if (props.startFrame == -2 || props.startFrame == -3) {
 		props.startFrame = 0;

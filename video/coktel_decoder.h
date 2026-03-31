@@ -122,6 +122,7 @@ public:
 
 	bool hasPalette() const;
 	virtual bool hasVideo() const;
+	virtual bool hasVideoData() const;
 
 	bool hasSound()       const;
 	bool isSoundEnabled() const;
@@ -444,6 +445,7 @@ public:
 	int32 getSubtitleIndex() const;
 
 	bool hasVideo() const;
+	bool hasVideoData() const;
 	bool isPaletted() const;
 
 	bool loadStream(Common::SeekableReadStream *stream);
@@ -548,6 +550,7 @@ private:
 
 	// Video properties
 	bool   _hasVideo;
+	bool   _hasVideoData; ///< True if at least a frame contains a "video" part (even with dimensions 0x0)
 	uint32 _videoCodec;
 	byte   _blitMode;
 	byte   _bytesPerPixel;

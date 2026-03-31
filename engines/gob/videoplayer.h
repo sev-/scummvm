@@ -184,6 +184,7 @@ private:
 		Properties properties;
 
 		bool live;
+		bool autoUpdate; ///< Should the video be automatically advanced by updateVideos()
 
 		Video();
 
