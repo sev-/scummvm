@@ -555,7 +555,7 @@ void EclipseEngine::pressedKey(const int keycode) {
 		else
 			error("Invalid player height index: %d", _playerHeightNumber);
 	} else if (keycode == kActionRest) {
-		if (_currentArea->getAreaID() == 1) {
+		if (_currentArea->getAreaID() == 1 || _currentArea->getAreaID() == 51) {
 			playSoundFx(3, false);
 			if (_temporaryMessages.empty())
 				insertTemporaryMessage(_messagesList[6], _countdown - 2);
