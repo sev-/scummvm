@@ -1386,25 +1386,11 @@ void Inter_v1::o1_keyFunc(OpFuncParams &params) {
 		break;
 
 	case -1:
-		if (_vm->getGameType() != kGameTypeAdibou2 && _vm->getGameType() != kGameTypeAdi4)
-			break;
-		// fall through
-	case 1:
-		if (_vm->getGameType() != kGameTypeFascination &&
-				_vm->getGameType() != kGameTypeAdibou2 &&
-				_vm->getGameType() != kGameTypeAdi4)
-			_vm->_util->forceMouseUp(true);
+		break;
 
-		// FIXME This is a hack to fix an issue with "text" tool in Adibou2 paint game.
-		// keyFunc() is called twice in a loop before testing its return value.
-		// If the first keyFunc call catches the key event, the second call will reset
-		// the key buffer, and the loop continues.
-		// Strangely in the original game it seems that the event is always caught by the
-		// second keyFunc.
-		if (_vm->getGameType() == kGameTypeAdibou2 &&
-				(_vm->_game->_script->pos() == 18750 || _vm->_game->_script->pos() == 18955) &&
-				_vm->isCurrentTot("palette.tot"))
-			break;
+	case 1:
+		if (_vm->getGameType() != kGameTypeFascination)
+			_vm->_util->forceMouseUp(true);
 
 		key = _vm->_game->checkKeys(&_vm->_global->_inter_mouseX,
 				&_vm->_global->_inter_mouseY, &_vm->_game->_mouseButtons, 0);
@@ -1436,15 +1422,6 @@ void Inter_v1::o1_keyFunc(OpFuncParams &params) {
 			_vm->_util->delay(cmd);
 			_noBusyWait = true;
 		} else {
-			if (_vm->getGameType() == kGameTypeAdibou2 || _vm->getGameType() == kGameTypeAdi4) {
-				// The engine calls updateLive() every 100ms while waiting there
-				while (cmd > 100) {
-					_vm->_vidPlayer->updateVideos();
-					_vm->_util->longDelay(100);
-					cmd -= 100;
-				}
-			}
-
 			_vm->_util->longDelay(cmd);
 		}
 		break;
