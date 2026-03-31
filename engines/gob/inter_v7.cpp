@@ -1115,6 +1115,9 @@ void Inter_v7::o7_loadImage() {
 		warning("o7_loadImage(): Failed to load image \"%s\"", file.c_str());
 		return;
 	}
+
+	if (spriteIndex == Draw::kBackSurface)
+		_vm->_draw->dirtiedRect(spriteIndex, x, y, x + width - 1, y + height - 1);
 }
 
 void Inter_v7::o7_copyDataToClipboard() {
