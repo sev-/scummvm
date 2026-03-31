@@ -535,7 +535,7 @@ void VR::render(Graphics::Screen *screen, float ax, float ay, float fov, float d
 		if (regSet) {
 			for (auto &rect : regSet->getRegions()) {
 				auto dstRect = rect.toRect().toRect();
-				if (dstRect.isValidRect())
+				if (dstRect.isValidRect() && !dstRect.isEmpty())
 					screen->drawRoundRect(dstRect, 4, _pic->format.RGBToColor(255, 255, 255), false);
 			}
 		}
