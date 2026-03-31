@@ -81,9 +81,19 @@ namespace Action {
 ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableReadStream *recordStream) {
 	switch (type) {
 	case 10:
-		return new Hot1FrSceneChange(CursorManager::kHotspot);
+		if (g_nancy->getGameType() <= kGameTypeNancy9) {
+			return new Hot1FrSceneChange(CursorManager::kHotspot);
+		} else {
+			return new SceneChange();
+		}
 	case 11:
-		return new HotMultiframeSceneChange(CursorManager::kHotspot);
+		if (g_nancy->getGameType() <= kGameTypeNancy9) {
+			return new HotMultiframeSceneChange(CursorManager::kHotspot);
+		} else {
+			// TODO: Handle this correctly, as it messes up scene hotspots
+			return nullptr;
+			//return new HotSingleFrameSceneChange(true);
+		}
 	case 12:
 		return new SceneChange();
 	case 13:
@@ -109,8 +119,10 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 	case 21:
 		if (g_nancy->getGameType() == kGameTypeVampire) {
 			return new PaletteNextScene();
-		} else {
+		} else if (g_nancy->getGameType() <= kGameTypeNancy9) {
 			return new HotMultiframeSceneChange(CursorManager::kMoveDown);
+		} else {
+			return new HotSingleFrameSceneChange();
 		}
 	case 22:
 		if (g_nancy->getGameType() <= kGameTypeNancy9) {
@@ -222,6 +234,10 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 		return new ModifyListEntry(ModifyListEntry::kDelete);
 	case 73:
 		return new ModifyListEntry(ModifyListEntry::kMark);
+	case 74:
+		// Nancy 10+
+		warning("FrameTextBox - not implemented yet");
+		return nullptr;
 	case 75:
 		return new TextBoxWrite();
 	case 76:
