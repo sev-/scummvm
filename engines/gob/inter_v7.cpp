@@ -178,11 +178,6 @@ void Inter_v7::o7_draw0x0C() {
 }
 
 void Inter_v7::o7_keyFunc(OpFuncParams &params) {
-	if (!_vm->_vidPlayer->isPlayingLive()) {
-		_vm->_draw->forceBlit();
-		_vm->_video->retrace();
-	}
-
 	int16 cmd = _vm->_game->_script->readInt16();
 
 	if (cmd >= 0)
