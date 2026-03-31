@@ -1318,8 +1318,8 @@ bool PhoenixVREngine::enterScript() {
 	}
 	debug("vars at %08x", (uint32)ms.pos());
 	for (auto &name : _script->getVarNames()) {
-		auto value = ms.readUint32LE();
-		debug("var %s: %u", name.c_str(), value);
+		auto value = ms.readSint32LE();
+		debug("var %s: %d", name.c_str(), value);
 		g_engine->setVariable(name, value);
 	}
 	debug("vars end at %08x", (uint32)ms.pos());
