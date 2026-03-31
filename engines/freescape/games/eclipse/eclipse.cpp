@@ -342,6 +342,22 @@ void EclipseEngine::gotoArea(uint16 areaID, int entranceID) {
 	_currentAreaMessages.clear();
 	_currentAreaMessages.push_back(_currentArea->_name);
 
+	if (isEclipse2() && areaID != _startArea && _messagesList.size() > 15) {
+		// Eclipse 2 displays the sphinx parts count when entering indoor areas
+		Common::String partsMsg = _messagesList[15];
+		Common::String::size_type pos = partsMsg.find("XX");
+		if (pos != Common::String::npos) {
+			int parts = _gameStateVars[kVariableEclipse2SphinxParts];
+			Common::String replacement;
+			if (parts < 10)
+				replacement = Common::String::format("%d ", parts);
+			else
+				replacement = Common::String::format("%d", parts);
+			partsMsg.replace(pos, 2, replacement);
+		}
+		insertTemporaryMessage(partsMsg, _countdown - 2);
+	}
+
 	if (entranceID > 0)
 		traverseEntrance(entranceID);
 	else if (entranceID == -1)
@@ -559,12 +575,10 @@ void EclipseEngine::pressedKey(const int keycode) {
 	} else if (keycode == kActionRest) {
 		if (_currentArea->getAreaID() == 1 || _currentArea->getAreaID() == 51) {
 			playSoundFx(3, false);
-			if (_temporaryMessages.empty())
-				insertTemporaryMessage(_messagesList[6], _countdown - 2);
+			insertTemporaryMessage(_messagesList[6], _countdown - 2);
 		} else {
 			_resting = true;
-			if (_temporaryMessages.empty())
-				insertTemporaryMessage(_messagesList[7], _countdown - 2);
+			insertTemporaryMessage(_messagesList[7], _countdown - 2);
 			_countdown = _countdown - 5;
 		}
 	} else if (keycode == kActionFaceForward) {
@@ -1019,7 +1033,22 @@ void EclipseEngine::executePrint(FCLInstruction &instruction) {
 		drawFullscreenMessageAndWait(_messagesList[index]);
 		return;
 	}
-	insertTemporaryMessage(_messagesList[index], _countdown - 2);
+	Common::String message = _messagesList[index];
+	if (isEclipse2()) {
+		// Message 16 (1-based, index 15) contains "XX" placeholder for sphinx parts count.
+		// The original Z80 code at $22FC patches these bytes with the count from variable 0.
+		Common::String::size_type pos = message.find("XX");
+		if (pos != Common::String::npos) {
+			int parts = _gameStateVars[kVariableEclipse2SphinxParts];
+			Common::String replacement;
+			if (parts < 10)
+				replacement = Common::String::format("%d ", parts);
+			else
+				replacement = Common::String::format("%d", parts);
+			message.replace(pos, 2, replacement);
+		}
+	}
+	insertTemporaryMessage(message, _countdown - 2);
 }
 
 Common::Error EclipseEngine::saveGameStreamExtended(Common::WriteStream *stream, bool isAutosave) {

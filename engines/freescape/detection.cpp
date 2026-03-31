@@ -630,7 +630,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformAmstradCPC,
 		ADGF_NO_FLAGS,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERCPC)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERCPC, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse2",
@@ -644,7 +644,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformAmstradCPC,
 		ADGF_NO_FLAGS,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERCPC)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERCPC, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse2",
@@ -658,7 +658,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformAmstradCPC,
 		ADGF_NO_FLAGS,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERCPC)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERCPC, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse2", // Tape release
@@ -667,7 +667,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformC64,
 		ADGF_UNSTABLE | GF_C64_TAPE,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERC64)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERC64, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse2", // Disk release
@@ -676,7 +676,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformC64,
 		ADGF_UNSTABLE | GF_C64_DISC,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERC64)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERC64, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse2", // Commodore Format #18
@@ -685,7 +685,7 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::EN_ANY,
 		Common::kPlatformC64,
 		ADGF_UNSUPPORTED | GF_C64_DISC,
-		GUIO2(GUIO_NOMIDI, GUIO_RENDERC64)
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERC64, GAMEOPTION_MODERN_MOVEMENT, GAMEOPTION_WASD_CONTROLS)
 	},
 	{
 		"totaleclipse",

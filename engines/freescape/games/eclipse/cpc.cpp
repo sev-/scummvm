@@ -118,9 +118,9 @@ void EclipseEngine::loadAssetsCPCFullGame() {
 
 	if (isEclipse2()) {
 		loadFonts(&file, 0x60bc);
-		loadMessagesFixedSize(&file, 0x326, 16, 30);
+		loadMessagesFixedSize(&file, 0x326, 16, 34);
 		load8bitBinary(&file, 0x62b4, 16);
-		// TODO: loadSoundsCPC for Eclipse 2 - need to determine table offsets from TE2.BI2
+		loadSoundsCPC(&file, 0x0879, 104, 0x08E1, 165, 0x07E6, 147);
 	} else {
 		loadFonts(&file, 0x6076);
 		loadMessagesFixedSize(&file, 0x326, 16, 30);
@@ -131,10 +131,12 @@ void EclipseEngine::loadAssetsCPCFullGame() {
 	loadColorPalette();
 	swapPalette(1);
 
-	if (!isEclipse2()) {
+	if (isEclipse2()) {
+		loadHeartFramesCPC(&file, 0x0D8B, 0x0DBD);
+	} else {
 		loadHeartFramesCPC(&file, 0x0CDB, 0x0D0D);
-		updateHeartFramesCPC();
 	}
+	updateHeartFramesCPC();
 
 	_indicators.push_back(loadBundledImage("eclipse_ankh_indicator"));
 

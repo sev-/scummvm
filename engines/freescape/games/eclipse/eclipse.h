@@ -33,6 +33,7 @@ enum EclipseReleaseFlags {
 };
 
 enum {
+	kVariableEclipse2SphinxParts = 1,
 	kVariableEclipseAnkhs = 32,
 };
 
