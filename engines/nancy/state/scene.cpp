@@ -685,7 +685,7 @@ void Scene::synchronize(Common::Serializer &ser) {
 		order.pop_back();
 	}
 
-	if (ser.isLoading()) {
+	if (ser.isLoading() && g_nancy->getGameType() <= kGameTypeNancy9) {
 		// Make sure the shades are open if we have items
 		getInventoryBox().onReorder();
 	}
