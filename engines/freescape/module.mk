@@ -37,6 +37,7 @@ MODULE_OBJS := \
 	games/eclipse/atari.music.o \
 	games/eclipse/c64.o \
 	games/eclipse/c64.music.o \
+	games/eclipse/c64.sfx.o \
 	games/eclipse/dos.o \
 	games/eclipse/eclipse.o \
 	games/eclipse/cpc.o \

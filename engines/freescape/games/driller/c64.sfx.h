@@ -23,40 +23,9 @@
 #define FREESCAPE_DRILLER_C64_SFX_H
 
 #include "audio/sid.h"
+#include "freescape/sid.h"
 
 namespace Freescape {
-
-// SID register offsets
-enum SIDRegs {
-	kSIDV1FreqLo  = 0x00,
-	kSIDV1FreqHi  = 0x01,
-	kSIDV1PwLo    = 0x02,
-	kSIDV1PwHi    = 0x03,
-	kSIDV1Ctrl    = 0x04,
-	kSIDV1AD      = 0x05,
-	kSIDV1SR      = 0x06,
-
-	kSIDV2FreqLo  = 0x07,
-	kSIDV2FreqHi  = 0x08,
-	kSIDV2PwLo    = 0x09,
-	kSIDV2PwHi    = 0x0A,
-	kSIDV2Ctrl    = 0x0B,
-	kSIDV2AD      = 0x0C,
-	kSIDV2SR      = 0x0D,
-
-	kSIDV3FreqLo  = 0x0E,
-	kSIDV3FreqHi  = 0x0F,
-	kSIDV3PwLo    = 0x10,
-	kSIDV3PwHi    = 0x11,
-	kSIDV3Ctrl    = 0x12,
-	kSIDV3AD      = 0x13,
-	kSIDV3SR      = 0x14,
-
-	kSIDFilterLo  = 0x15,
-	kSIDFilterHi  = 0x16,
-	kSIDFilterCtrl = 0x17,
-	kSIDVolume    = 0x18
-};
 
 class DrillerC64SFXPlayer {
 public:

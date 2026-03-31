@@ -31,6 +31,7 @@
 
 #include "freescape/freescape.h"
 #include "freescape/games/eclipse/c64.music.h"
+#include "freescape/games/eclipse/c64.sfx.h"
 #include "freescape/games/eclipse/eclipse.h"
 #include "freescape/language/8bitDetokeniser.h"
 
@@ -42,6 +43,8 @@ Audio::AudioStream *makeEclipseAtariMusicStream(const byte *data, uint32 dataSiz
 
 EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : FreescapeEngine(syst, gd) {
 	_playerC64Music = nullptr;
+	_playerC64Sfx = nullptr;
+	_c64UseSFX = false;
 
 	// These sounds can be overriden by the class of each platform
 	_soundIndexStartFalling = -1;
@@ -104,6 +107,7 @@ EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : Frees
 
 EclipseEngine::~EclipseEngine() {
 	delete _playerC64Music;
+	delete _playerC64Sfx;
 }
 
 void EclipseEngine::initGameState() {
@@ -525,11 +529,9 @@ void EclipseEngine::drawInfoMenu() {
 					saveGameDialog();
 					_gfx->setViewport(_viewArea);
 				} else if (event.customType == kActionToggleSound) {
-					if (isC64() && _playerC64Music) {
-						if (_playerC64Music->isPlaying())
-							_playerC64Music->stopMusic();
-						else
-							_playerC64Music->startMusic();
+					if (isC64() && _playerC64Sfx) {
+						toggleC64Sound();
+						_eventManager->purgeKeyboardEvents();
 					} else {
 						playSound(_soundIndexMenu, false, _soundFxHandle);
 					}

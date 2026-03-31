@@ -23,6 +23,7 @@
 
 #include "freescape/freescape.h"
 #include "freescape/games/eclipse/c64.music.h"
+#include "freescape/games/eclipse/c64.sfx.h"
 #include "freescape/games/eclipse/eclipse.h"
 #include "freescape/language/8bitDetokeniser.h"
 
@@ -32,6 +33,24 @@ void EclipseEngine::initC64() {
 	_viewArea = Common::Rect(32, 32, 288, 136);
 
 	_maxEnergy = 35;
+
+	// SFX indices mapped from totec1.prg disassembly (JSR $CB4B call sites)
+	_soundIndexShoot = 1;            // $5F27: opcode $16 destroy handler
+	_soundIndexCollide = 12;         // $4E80/$4F50: deferred via $1549
+	_soundIndexStepDown = 12;        // same as collide (matches CPC pattern)
+	_soundIndexStepUp = 12;          // same as collide (matches CPC pattern)
+	_soundIndexStart = 7;            // $4118: game start after title screen
+	_soundIndexAreaChange = 7;       // $66CF: FCL opcode $12 area change
+	_soundIndexStartFalling = 6;     // $790B: deferred via $1549
+	_soundIndexEndFalling = 8;       // $792D: deferred via $1549
+	_soundIndexFall = 5;             // $7C20/$7C45: death/fall animation
+	_soundIndexNoShield = 5;         // game-over conditions reuse fall sound
+	_soundIndexNoEnergy = -1;
+	_soundIndexFallen = 5;
+	_soundIndexTimeout = 5;
+	_soundIndexForceEndGame = 5;
+	_soundIndexCrushed = 5;
+	_soundIndexMissionComplete = -1;
 }
 
 extern byte kC64Palette[16][3];
@@ -124,6 +143,36 @@ void EclipseEngine::loadAssetsC64FullGame() {
 				_playerC64Music = new EclipseC64MusicPlayer(_c64MusicData);
 			}
 		}
+	}
+
+	// Only one SID instance can be active at a time; music is the default.
+	// Create the inactive player first so its SID is destroyed before
+	// the active player's SID is created.
+	_playerC64Sfx = new EclipseC64SFXPlayer();
+	_playerC64Sfx->destroySID();
+}
+
+void EclipseEngine::playSoundC64(int index) {
+	debugC(1, kFreescapeDebugMedia, "Playing Eclipse C64 SFX %d", index);
+	if (_playerC64Sfx && _c64UseSFX)
+		_playerC64Sfx->playSfx(index);
+}
+
+void EclipseEngine::toggleC64Sound() {
+	if (_c64UseSFX) {
+		if (_playerC64Sfx)
+			_playerC64Sfx->destroySID();
+		if (_playerC64Music) {
+			_playerC64Music->initSID();
+			_playerC64Music->startMusic();
+		}
+		_c64UseSFX = false;
+	} else {
+		if (_playerC64Music)
+			_playerC64Music->destroySID();
+		if (_playerC64Sfx)
+			_playerC64Sfx->initSID();
+		_c64UseSFX = true;
 	}
 }
 

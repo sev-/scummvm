@@ -30,7 +30,7 @@ namespace Freescape {
 // 25 SFX entries extracted from dark2.prg at $C802 (address $C802-$CBEA).
 // Each entry is 40 bytes in the original 6502 format.
 // See SOUND_ANALYSIS.md for full documentation.
-static const DarkSideSFXData kDarkSideSFXData[25] = {
+static const C64SFXData kC64SFXData[25] = {
 	// SFX #1: Shoot (Noise, high→silence)
 	{2, 1, 0,
 	 {0x00, 0x38, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -244,7 +244,7 @@ void DarkSideC64SFXPlayer::initSID() {
 
 	for (int i = 0; i < 0x19; i++)
 		sidWrite(i, 0);
-	sidWrite(kDarkSIDVolume, 0x0F);
+	sidWrite(kSIDVolume, 0x0F);
 
 	_sid->start(new Common::Functor0Mem<void, DarkSideC64SFXPlayer>(this, &DarkSideC64SFXPlayer::onTimer), 50);
 }
@@ -272,7 +272,7 @@ void DarkSideC64SFXPlayer::stopAllSfx() {
 void DarkSideC64SFXPlayer::silenceV1() {
 	// $CE5C: zero V1 SID registers ($D400-$D406), clear state
 	_state = 0;
-	for (int i = kDarkSIDV1FreqLo; i <= kDarkSIDV1SR; i++)
+	for (int i = kSIDV1FreqLo; i <= kSIDV1SR; i++)
 		sidWrite(i, 0);
 }
 
@@ -281,7 +281,7 @@ void DarkSideC64SFXPlayer::silenceAll() {
 	_state = 0;
 	for (int i = 0; i <= 0x13; i++)
 		sidWrite(i, 0);
-	sidWrite(kDarkSIDVolume, 0x0F);
+	sidWrite(kSIDVolume, 0x0F);
 }
 
 // Signed 32÷16 division matching the original $2122 routine.
@@ -293,7 +293,7 @@ static int16 signedDivide(int16 dividend, uint8 divisor) {
 }
 
 void DarkSideC64SFXPlayer::setupSfx(int index) {
-	const DarkSideSFXData &sfx = kDarkSideSFXData[index];
+	const C64SFXData &sfx = kC64SFXData[index];
 
 	debugC(1, kFreescapeDebugMedia, "Dark Side C64 SFX: setup #%d (notes=%d repeat=%d wf=$%02X)",
 		   index + 1, sfx.numNotes, sfx.repeatCount, sfx.waveform);
@@ -302,13 +302,13 @@ void DarkSideC64SFXPlayer::setupSfx(int index) {
 	silenceV1();
 
 	// Gate off
-	sidWrite(kDarkSIDV1Ctrl, 0);
+	sidWrite(kSIDV1Ctrl, 0);
 
 	// Load SID registers from descriptor
-	sidWrite(kDarkSIDV1PwLo, sfx.pwLo);
-	sidWrite(kDarkSIDV1PwHi, sfx.pwHi);
-	sidWrite(kDarkSIDV1AD, sfx.attackDecay);
-	sidWrite(kDarkSIDV1SR, sfx.sustainRelease);
+	sidWrite(kSIDV1PwLo, sfx.pwLo);
+	sidWrite(kSIDV1PwHi, sfx.pwHi);
+	sidWrite(kSIDV1AD, sfx.attackDecay);
+	sidWrite(kSIDV1SR, sfx.sustainRelease);
 
 	// Store working copies
 	_numNotes = sfx.numNotes;
@@ -391,14 +391,14 @@ void DarkSideC64SFXPlayer::tickStart() {
 	uint16 freq = (uint16)_startFreqs[0];
 	_curFreqLo = freq & 0xFF;
 	_curFreqHi = (freq >> 8) & 0xFF;
-	sidWrite(kDarkSIDV1FreqLo, _curFreqLo);
-	sidWrite(kDarkSIDV1FreqHi, _curFreqHi);
+	sidWrite(kSIDV1FreqLo, _curFreqLo);
+	sidWrite(kSIDV1FreqHi, _curFreqHi);
 
 	// Load first duration
 	_durCounter = _durCopies[0];
 
 	// Gate on: waveform | 0x01
-	sidWrite(kDarkSIDV1Ctrl, _waveform | 0x01);
+	sidWrite(kSIDV1Ctrl, _waveform | 0x01);
 
 	// Transition to slide state
 	_state = 2;
@@ -422,8 +422,8 @@ void DarkSideC64SFXPlayer::tickSlide() {
 	_curFreqLo = freq & 0xFF;
 	_curFreqHi = (freq >> 8) & 0xFF;
 
-	sidWrite(kDarkSIDV1FreqLo, _curFreqLo);
-	sidWrite(kDarkSIDV1FreqHi, _curFreqHi);
+	sidWrite(kSIDV1FreqLo, _curFreqLo);
+	sidWrite(kSIDV1FreqHi, _curFreqHi);
 
 	// Decrement duration
 	_durCounter--;
@@ -445,8 +445,8 @@ void DarkSideC64SFXPlayer::tickSlide() {
 		freq = (uint16)_startFreqs[noteIdx];
 		_curFreqLo = freq & 0xFF;
 		_curFreqHi = (freq >> 8) & 0xFF;
-		sidWrite(kDarkSIDV1FreqLo, _curFreqLo);
-		sidWrite(kDarkSIDV1FreqHi, _curFreqHi);
+		sidWrite(kSIDV1FreqLo, _curFreqLo);
+		sidWrite(kSIDV1FreqHi, _curFreqHi);
 		return;
 	}
 
@@ -463,8 +463,8 @@ void DarkSideC64SFXPlayer::tickSlide() {
 		freq = (uint16)_startFreqs[0];
 		_curFreqLo = freq & 0xFF;
 		_curFreqHi = (freq >> 8) & 0xFF;
-		sidWrite(kDarkSIDV1FreqLo, _curFreqLo);
-		sidWrite(kDarkSIDV1FreqHi, _curFreqHi);
+		sidWrite(kSIDV1FreqLo, _curFreqLo);
+		sidWrite(kSIDV1FreqHi, _curFreqHi);
 
 		_durCounter = _durCopies[0];
 		return;
@@ -472,7 +472,7 @@ void DarkSideC64SFXPlayer::tickSlide() {
 
 	// Sequence finished: gate off
 	_state = 0;
-	sidWrite(kDarkSIDV1Ctrl, _waveform & 0xFE);  // Clear gate bit
+	sidWrite(kSIDV1Ctrl, _waveform & 0xFE);  // Clear gate bit
 }
 
 } // End of namespace Freescape
