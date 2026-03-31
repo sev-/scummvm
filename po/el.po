@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-31 12:56+0000\n"
+"POT-Creation-Date: 2026-03-31 17:20+0000\n"
 "PO-Revision-Date: 2026-03-06 15:22+0000\n"
 "Last-Translator: Antoniou Athanasios <a.antoniou79@gmail.com>\n"
 "Language-Team: Greek <https://translations.scummvm.org/projects/scummvm/"
@@ -7917,7 +7917,7 @@ msgstr "Εναλλαγή ιδιωτικότητας ευρημάτων"
 #: engines/freescape/games/castle/castle.cpp:463
 #: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:258
+#: engines/freescape/games/eclipse/eclipse.cpp:262
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7945,7 +7945,7 @@ msgstr "Αποθήκευση παιχνιδιού"
 #: engines/freescape/games/castle/castle.cpp:468
 #: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:263
+#: engines/freescape/games/eclipse/eclipse.cpp:267
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7995,7 +7995,7 @@ msgstr "Βάση δεδομένων στοιχείων έρευνας"
 #: engines/freescape/games/castle/castle.cpp:476
 #: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:268
+#: engines/freescape/games/eclipse/eclipse.cpp:272
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9239,7 +9239,7 @@ msgstr "Επιλογή πριγκίπισσας"
 #: engines/freescape/games/castle/castle.cpp:481
 #: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:276
+#: engines/freescape/games/eclipse/eclipse.cpp:280
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "Εναλλαγή ήχου"
@@ -9247,14 +9247,14 @@ msgstr "Εναλλαγή ήχου"
 #: engines/freescape/games/castle/castle.cpp:486
 #: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:281
+#: engines/freescape/games/eclipse/eclipse.cpp:285
 msgid "Rotate left"
 msgstr "Περιστροφή αριστερά"
 
 #: engines/freescape/games/castle/castle.cpp:491
 #: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:286
+#: engines/freescape/games/eclipse/eclipse.cpp:290
 msgid "Rotate right"
 msgstr "Περιστροφή δεξιά"
 
@@ -9263,7 +9263,7 @@ msgid "Crawl"
 msgstr "Σύρσου"
 
 #: engines/freescape/games/castle/castle.cpp:513
-#: engines/freescape/games/eclipse/eclipse.cpp:324
+#: engines/freescape/games/eclipse/eclipse.cpp:328
 msgid "Face forward"
 msgstr "Μέτωπο μπροστά"
 
@@ -9331,32 +9331,32 @@ msgid "Collect drilling rig"
 msgstr "Συμμάζεμα γεωτρύπανου"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:292
+#: engines/freescape/games/eclipse/eclipse.cpp:296
 msgid "Change angle"
 msgstr "Αλλαγή γωνίας περιστροφής"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:298
+#: engines/freescape/games/eclipse/eclipse.cpp:302
 msgid "Change step size"
 msgstr "Αλλαγή διαστήματος βήματος"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:304
+#: engines/freescape/games/eclipse/eclipse.cpp:308
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:312
+#: engines/freescape/games/eclipse/eclipse.cpp:316
 msgid "Toggle height"
 msgstr "Εναλλαγή ύψους"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:318
+#: engines/freescape/games/eclipse/eclipse.cpp:322
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Ανάπαυση"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:329
+#: engines/freescape/games/eclipse/eclipse.cpp:333
 msgid "Toggle flashlight"
 msgstr "Χρήση φακού"
 

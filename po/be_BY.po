@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-03-31 12:56+0000\n"
+"POT-Creation-Date: 2026-03-31 17:20+0000\n"
 "PO-Revision-Date: 2021-03-21 08:24+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Belarusian <https://translations.scummvm.org/projects/scummvm/"
@@ -7542,7 +7542,7 @@ msgstr "Пераключыць гук"
 #: engines/freescape/games/castle/castle.cpp:463
 #: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:258
+#: engines/freescape/games/eclipse/eclipse.cpp:262
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7570,7 +7570,7 @@ msgstr "Захаваць гульню"
 #: engines/freescape/games/castle/castle.cpp:468
 #: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:263
+#: engines/freescape/games/eclipse/eclipse.cpp:267
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7620,7 +7620,7 @@ msgstr ""
 #: engines/freescape/games/castle/castle.cpp:476
 #: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:268
+#: engines/freescape/games/eclipse/eclipse.cpp:272
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9097,7 +9097,7 @@ msgstr "Абярыце тэму"
 #: engines/freescape/games/castle/castle.cpp:481
 #: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:276
+#: engines/freescape/games/eclipse/eclipse.cpp:280
 #: engines/hugo/metaengine.cpp:154
 #, fuzzy
 #| msgid "Toggle mute"
@@ -9107,7 +9107,7 @@ msgstr "Пераключыць гук"
 #: engines/freescape/games/castle/castle.cpp:486
 #: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:281
+#: engines/freescape/games/eclipse/eclipse.cpp:285
 #, fuzzy
 #| msgid "Slide Left"
 msgid "Rotate left"
@@ -9116,7 +9116,7 @@ msgstr "Слізгаць налева"
 #: engines/freescape/games/castle/castle.cpp:491
 #: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:286
+#: engines/freescape/games/eclipse/eclipse.cpp:290
 #, fuzzy
 #| msgid "Slide Right"
 msgid "Rotate right"
@@ -9127,7 +9127,7 @@ msgid "Crawl"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:513
-#: engines/freescape/games/eclipse/eclipse.cpp:324
+#: engines/freescape/games/eclipse/eclipse.cpp:328
 #, fuzzy
 #| msgid "Move Forward"
 msgid "Face forward"
@@ -9212,38 +9212,38 @@ msgid "Collect drilling rig"
 msgstr ""
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:292
+#: engines/freescape/games/eclipse/eclipse.cpp:296
 #, fuzzy
 #| msgid "Change Command"
 msgid "Change angle"
 msgstr "Змяніць каманду"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:298
+#: engines/freescape/games/eclipse/eclipse.cpp:302
 #, fuzzy
 #| msgid "Change font size"
 msgid "Change step size"
 msgstr "Змяніць памер шрыфта"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:304
+#: engines/freescape/games/eclipse/eclipse.cpp:308
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:312
+#: engines/freescape/games/eclipse/eclipse.cpp:316
 #, fuzzy
 #| msgid "Toggle mute"
 msgid "Toggle height"
 msgstr "Пераключыць гук"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:318
+#: engines/freescape/games/eclipse/eclipse.cpp:322
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Адпачыць"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:329
+#: engines/freescape/games/eclipse/eclipse.cpp:333
 #, fuzzy
 #| msgid "Fly straight"
 msgid "Toggle flashlight"
