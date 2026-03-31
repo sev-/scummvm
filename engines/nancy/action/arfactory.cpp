@@ -234,8 +234,8 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 		return new ModifyListEntry(ModifyListEntry::kDelete);
 	case 73:
 		return new ModifyListEntry(ModifyListEntry::kMark);
-	case 74:
-		// Nancy 10+
+	case 74:	// Nancy 10
+	case 81:	// Nancy 11+
 		warning("FrameTextBox - not implemented yet");
 		return nullptr;
 	case 75:
