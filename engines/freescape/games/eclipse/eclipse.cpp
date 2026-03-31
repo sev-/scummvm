@@ -976,7 +976,8 @@ void EclipseEngine::drawScoreString(int score, int x, int y, uint32 front, uint3
 
 	for (int i = 0; i < int(scoreStr.size()); i++) {
 		Common::String digit(scoreStr[i]);
-		digit.toUppercase();
+		if (!isCPC())
+			digit.toUppercase();
 		scoreFont->drawString(surface, digit, x, y, _screenW, front);
 		x += charStep;
 		if ((i - scoreStr.size() + 1) % 3 == 1)
