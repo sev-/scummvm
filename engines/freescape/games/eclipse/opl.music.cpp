@@ -19,9 +19,10 @@
  *
  */
 
-#include "engines/freescape/games/eclipse/ay.music.h"
+#include "engines/freescape/games/eclipse/opl.music.h"
 
 #include "common/textconsole.h"
+#include "common/util.h"
 #include "freescape/wb.h"
 #include "freescape/games/eclipse/eclipse.musicdata.h"
 
@@ -30,61 +31,98 @@ using namespace Freescape::EclipseMusicData;
 namespace Freescape {
 
 // ============================================================================
-// Embedded music data (extracted from Total Eclipse C64)
+// Embedded music data (shared with AY player, extracted from C64)
 // ============================================================================
 
-// AY-3-8910 period table (95 entries, derived from SID frequency table)
-// AY clock = 1MHz, period = clock / (16 * freq_hz)
-const uint16 kAYPeriods[] = {
-	    0,  3657,  3455,  3265,  3076,  2908,  2743,  2589,
-	 2447,  2309,  2176,  2055,  1939,  1832,  1728,  1632,
-	 1540,  1454,  1371,  1295,  1222,  1153,  1088,  1027,
-	  970,   915,   864,   816,   770,   726,   686,   647,
-	  611,   577,   544,   514,   485,   458,   432,   406,
-	  385,   363,   343,   324,   305,   288,   272,   257,
-	  242,   229,   216,   204,   192,   182,   171,   162,
-	  153,   144,   136,   128,   121,   114,   108,   102,
-	   96,    91,    86,    81,    76,    72,    68,    64,
-	   61,    57,    54,    51,    48,    45,    43,    40,
-	   38,    36,    34,    32,    30,    29,    27,    25,
-	   24,    23,    21,    20,    19,    18,    17
+// OPL2 F-number/block table (95 entries)
+// Format: fnum (bits 0-9) | block (bits 10-12)
+// Derived from SID frequency table
+static const uint16 kOPLFreqs[] = {
+	0x0000, 0x0168, 0x017D, 0x0194, 0x01AD, 0x01C5,
+	0x01E1, 0x01FD, 0x021B, 0x023B, 0x025E, 0x0282,
+	0x02A8, 0x02D0, 0x02FB, 0x0328, 0x0358, 0x038B,
+	0x03C1, 0x03FA, 0x061B, 0x063C, 0x065E, 0x0682,
+	0x06A7, 0x06D0, 0x06FB, 0x0728, 0x0758, 0x078B,
+	0x07C1, 0x07FA, 0x0A1B, 0x0A3B, 0x0A5D, 0x0A81,
+	0x0AA8, 0x0AD0, 0x0AFB, 0x0B2B, 0x0B58, 0x0B8B,
+	0x0BC1, 0x0BFA, 0x0E1B, 0x0E3B, 0x0E5D, 0x0E81,
+	0x0EA8, 0x0ED0, 0x0EFB, 0x0F28, 0x0F58, 0x0F8B,
+	0x0FC1, 0x0FFA, 0x121B, 0x123B, 0x125D, 0x1281,
+	0x12A8, 0x12D0, 0x12FB, 0x1328, 0x1358, 0x138B,
+	0x13C1, 0x13FA, 0x161B, 0x163B, 0x1661, 0x1681,
+	0x16A8, 0x16D0, 0x16FB, 0x1729, 0x1758, 0x178B,
+	0x17C1, 0x17FA, 0x1A1B, 0x1A3B, 0x1A5D, 0x1A81,
+	0x1AA8, 0x1AD0, 0x1AFB, 0x1B28, 0x1B58, 0x1B8B,
+	0x1BC1, 0x1BFA, 0x1E1B, 0x1E3B, 0x1E5D
 };
 
 // Instruments, order lists, pattern data, and arpeggio intervals
-// are in eclipse.musicdata.h (shared with the OPL player).
+// are in eclipse.musicdata.h (shared with the AY player).
 
 // ============================================================================
-
-
-
-
+// (pattern data removed - now in eclipse.musicdata.h)
+//
 // ============================================================================
-// Software ADSR rate tables (8.8 fixed point, per-frame at 50Hz)
+// OPL2 FM instrument patches (our own creation, not from C64)
 // ============================================================================
 
-// Attack rate: 0x0F00 / (time_ms / 20) in 8.8 fixed point at 50Hz
-// SID attack times: 2, 8, 16, 24, 38, 56, 68, 80, 100, 250, 500, 800, 1000, 3000, 5000, 8000 ms
-const uint16 kAttackRate[16] = {
-	0x0F00, 0x0F00, 0x0F00, 0x0C80, // 0-2: <1 frame (instant), 3: 1.2 frames
-	0x07E5, 0x055B, 0x0469, 0x03C0, // 4-7: 1.9-4.0 frames
-	0x0300, 0x0133, 0x009A, 0x0060, // 8-11: 5-40 frames
-	0x004D, 0x001A, 0x000F, 0x000A  // 12-15: 50-400 frames
-};
+// OPL operator register offsets for channels 0-2
+// Each OPL channel has 2 operators (modulator + carrier)
+// Modulator offsets: 0x00, 0x01, 0x02 for channels 0-2
+// Carrier offsets:   0x03, 0x04, 0x05 for channels 0-2
+static const byte kOPLModOffset[] = { 0x00, 0x01, 0x02 };
+static const byte kOPLCarOffset[] = { 0x03, 0x04, 0x05 };
 
-// Decay/Release rate: 0x0F00 / (time_ms / 20) in 8.8 fixed point at 50Hz
-// SID decay/release times: 6, 24, 48, 72, 114, 168, 204, 240, 300, 750, 1500, 2400, 3000, 9000, 15000, 24000 ms
-const uint16 kDecayReleaseRate[16] = {
-	0x0F00, 0x0C80, 0x0640, 0x042B, // 0-3: instant to 3.6 frames
-	0x02A2, 0x01C9, 0x0178, 0x0140, // 4-7: 5.7-12 frames
-	0x0100, 0x0066, 0x0033, 0x0020, // 8-11: 15-120 frames
-	0x001A, 0x0009, 0x0005, 0x0003  // 12-15: 150-1200 frames
+// FM patch definitions, 11 bytes each:
+//  [0] mod: AM/VIB/EG/KSR/MULT  (reg 0x20+mod)
+//  [1] car: AM/VIB/EG/KSR/MULT  (reg 0x20+car)
+//  [2] mod: KSL/output level     (reg 0x40+mod)
+//  [3] car: KSL/output level     (reg 0x40+car)
+//  [4] mod: attack/decay          (reg 0x60+mod)
+//  [5] car: attack/decay          (reg 0x60+car)
+//  [6] mod: sustain/release       (reg 0x80+mod)
+//  [7] car: sustain/release       (reg 0x80+car)
+//  [8] mod: wave select           (reg 0xE0+mod)
+//  [9] car: wave select           (reg 0xE0+car)
+// [10] feedback/connection        (reg 0xC0+ch)
+// Carrier ADSR derived from SID AD/SR bytes using timing-matched conversion.
+// Modulator settings tuned per SID waveform type:
+//   triangle → additive sine (soft, warm)
+//   pulse    → FM with slight harmonic content (brighter)
+//   sawtooth → FM with feedback (rich harmonics)
+//   noise    → inharmonic FM (metallic percussion)
+static const byte kOPLPatches[][11] = {
+	// 0: rest — silent
+	{ 0x00, 0x00, 0x3F, 0x3F, 0xFF, 0xFF, 0x0F, 0x0F, 0x00, 0x00, 0x00 },
+	// 1: bass pulse (AD=0x42 SR=0x24) — punchy FM bass
+	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x8A, 0x07, 0xD9, 0x00, 0x01, 0x06 },
+	// 2: triangle lead (AD=0x8A SR=0xAC) — warm sine lead
+	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x75, 0x07, 0x54, 0x00, 0x00, 0x01 },
+	// 3: triangle pad (AD=0x6C SR=0x4F) — soft sustained pad
+	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x84, 0x07, 0xB1, 0x00, 0x00, 0x01 },
+	// 4: pulse arpeggio (AD=0x3A SR=0xAC) — bright arpeggio
+	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x95, 0x07, 0x54, 0x00, 0x01, 0x06 },
+	// 5: noise percussion (AD=0x42 SR=0x00) — metallic hit
+	{ 0x01, 0x0C, 0x00, 0x00, 0xFA, 0x8A, 0x07, 0xFD, 0x00, 0x00, 0x01 },
+	// 6: triangle melody (AD=0x3D SR=0x1C) — flute-like
+	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x92, 0x07, 0xE4, 0x00, 0x00, 0x01 },
+	// 7: pulse melody (AD=0x4C SR=0x2C) — vibrato lead
+	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x84, 0x07, 0xD4, 0x00, 0x01, 0x06 },
+	// 8: triangle sustain (AD=0x5D SR=0xBC) — organ-like
+	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x82, 0x07, 0x44, 0x00, 0x00, 0x01 },
+	// 9: pulse sustain (AD=0x4C SR=0xAF) — electric piano
+	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x84, 0x07, 0x51, 0x00, 0x01, 0x06 },
+	// 10: sawtooth lead (AD=0x4A SR=0x2A) — brass-like
+	{ 0x21, 0x21, 0x1A, 0x00, 0xF1, 0x85, 0x07, 0xD5, 0x02, 0x00, 0x0E },
+	// 11: pulse w/ arpeggio (AD=0x6A SR=0x6B) — harpsichord-like
+	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x85, 0x07, 0x94, 0x00, 0x01, 0x06 },
 };
 
 // ============================================================================
 // ChannelState
 // ============================================================================
 
-void EclipseAYMusicPlayer::ChannelState::reset() {
+void EclipseOPLMusicPlayer::ChannelState::reset() {
 	orderList = nullptr;
 	orderPos = 0;
 	patternDataOffset = 0;
@@ -92,7 +130,6 @@ void EclipseAYMusicPlayer::ChannelState::reset() {
 	instrumentOffset = 0;
 	currentNote = 0;
 	transpose = 0;
-	currentPeriod = 0;
 	durationReload = 0;
 	durationCounter = 0;
 	effectMode = 0;
@@ -111,91 +148,130 @@ void EclipseAYMusicPlayer::ChannelState::reset() {
 	waveform = 0;
 	instrumentFlags = 0;
 	gateOffDisabled = false;
-	adsrPhase = kPhaseOff;
-	adsrVolume = 0;
-	attackRate = 0;
-	decayRate = 0;
-	sustainLevel = 0;
-	releaseRate = 0;
+	keyOn = false;
 }
 
 // ============================================================================
 // Constructor / Destructor
 // ============================================================================
 
-EclipseAYMusicPlayer::EclipseAYMusicPlayer(Audio::Mixer *mixer)
-	: AY8912Stream(44100, 1000000),
-	  _mixer(mixer),
+EclipseOPLMusicPlayer::EclipseOPLMusicPlayer()
+	: _opl(nullptr),
 	  _musicActive(false),
 	  _speedDivider(1),
-	  _speedCounter(0),
-	  _mixerRegister(0x38),
-	  _tickSampleCount(0) {
+	  _speedCounter(0) {
 	memcpy(_arpeggioIntervals, kArpeggioIntervals, 8);
+
+	_opl = OPL::Config::create();
+	if (!_opl || !_opl->init()) {
+		warning("EclipseOPLMusicPlayer: Failed to create OPL emulator");
+		delete _opl;
+		_opl = nullptr;
+	}
 }
 
-EclipseAYMusicPlayer::~EclipseAYMusicPlayer() {
+EclipseOPLMusicPlayer::~EclipseOPLMusicPlayer() {
 	stopMusic();
+	delete _opl;
 }
 
 // ============================================================================
 // Public interface
 // ============================================================================
 
-void EclipseAYMusicPlayer::startMusic() {
-	_mixer->playStream(Audio::Mixer::kMusicSoundType, &_handle, toAudioStream(),
-	                   -1, Audio::Mixer::kMaxChannelVolume, 0, DisposeAfterUse::NO);
+void EclipseOPLMusicPlayer::startMusic() {
+	if (!_opl)
+		return;
+	_opl->start(new Common::Functor0Mem<void, EclipseOPLMusicPlayer>(
+		this, &EclipseOPLMusicPlayer::onTimer), 50);
 	setupSong();
 }
 
-void EclipseAYMusicPlayer::stopMusic() {
+void EclipseOPLMusicPlayer::stopMusic() {
 	_musicActive = false;
-	silenceAll();
-	if (_mixer)
-		_mixer->stopHandle(_handle);
+	if (_opl) {
+		silenceAll();
+		_opl->stop();
+	}
 }
 
-bool EclipseAYMusicPlayer::isPlaying() const {
+bool EclipseOPLMusicPlayer::isPlaying() const {
 	return _musicActive;
 }
 
 // ============================================================================
-// AudioStream
+// OPL register helpers
 // ============================================================================
 
-int EclipseAYMusicPlayer::readBuffer(int16 *buffer, const int numSamples) {
-	if (!_musicActive) {
-		memset(buffer, 0, numSamples * sizeof(int16));
-		return numSamples;
-	}
+void EclipseOPLMusicPlayer::noteToFnumBlock(byte note, uint16 &fnum, byte &block) const {
+	if (note > kMaxNote)
+		note = kMaxNote;
+	uint16 combined = kOPLFreqs[note];
+	fnum = combined & 0x03FF;
+	block = (combined >> 10) & 0x07;
+}
 
-	int samplesGenerated = 0;
-	int samplesPerTick = (getRate() / 50) * 2; // stereo: 2 int16 per frame
+void EclipseOPLMusicPlayer::setFrequency(int channel, uint16 fnum, byte block) {
+	if (!_opl)
+		return;
+	_opl->writeReg(0xA0 + channel, fnum & 0xFF);
+	// Preserve key-on bit in 0xB0
+	byte b0 = ((fnum >> 8) & 0x03) | (block << 2);
+	if (_channels[channel].keyOn)
+		b0 |= 0x20;
+	_opl->writeReg(0xB0 + channel, b0);
+}
 
-	while (samplesGenerated < numSamples) {
-		int remaining = samplesPerTick - _tickSampleCount;
-		int toGenerate = MIN(numSamples - samplesGenerated, remaining);
+void EclipseOPLMusicPlayer::setOPLInstrument(int channel, byte instrumentOffset) {
+	if (!_opl)
+		return;
+	byte patchIdx = instrumentOffset / kInstrumentSize;
+	if (patchIdx >= ARRAYSIZE(kOPLPatches))
+		patchIdx = 0;
 
-		if (toGenerate > 0) {
-			generateSamples(buffer + samplesGenerated, toGenerate);
-			samplesGenerated += toGenerate;
-			_tickSampleCount += toGenerate;
-		}
+	const byte *patch = kOPLPatches[patchIdx];
+	byte mod = kOPLModOffset[channel];
+	byte car = kOPLCarOffset[channel];
 
-		if (_tickSampleCount >= samplesPerTick) {
-			_tickSampleCount -= samplesPerTick;
-			onTimer();
-		}
-	}
+	_opl->writeReg(0x20 + mod, patch[0]);
+	_opl->writeReg(0x20 + car, patch[1]);
+	_opl->writeReg(0x40 + mod, patch[2]);
+	_opl->writeReg(0x40 + car, patch[3]);
+	_opl->writeReg(0x60 + mod, patch[4]);
+	_opl->writeReg(0x60 + car, patch[5]);
+	_opl->writeReg(0x80 + mod, patch[6]);
+	_opl->writeReg(0x80 + car, patch[7]);
+	_opl->writeReg(0xE0 + mod, patch[8]);
+	_opl->writeReg(0xE0 + car, patch[9]);
+	_opl->writeReg(0xC0 + channel, patch[10]);
+}
 
-	return samplesGenerated;
+void EclipseOPLMusicPlayer::noteOn(int channel, byte note) {
+	if (!_opl)
+		return;
+	uint16 fnum;
+	byte block;
+	noteToFnumBlock(note, fnum, block);
+
+	_channels[channel].keyOn = true;
+	_opl->writeReg(0xA0 + channel, fnum & 0xFF);
+	_opl->writeReg(0xB0 + channel, 0x20 | (block << 2) | ((fnum >> 8) & 0x03));
+}
+
+void EclipseOPLMusicPlayer::noteOff(int channel) {
+	if (!_opl)
+		return;
+	_channels[channel].keyOn = false;
+	// Clear key-on bit, preserve frequency
+	byte b0 = _opl ? 0x00 : 0x00; // just clear everything
+	_opl->writeReg(0xB0 + channel, b0);
 }
 
 // ============================================================================
 // Timer / sequencer core
 // ============================================================================
 
-void EclipseAYMusicPlayer::onTimer() {
+void EclipseOPLMusicPlayer::onTimer() {
 	if (!_musicActive)
 		return;
 
@@ -213,7 +289,7 @@ void EclipseAYMusicPlayer::onTimer() {
 		_speedCounter--;
 }
 
-void EclipseAYMusicPlayer::processChannel(int channel, bool newBeat) {
+void EclipseOPLMusicPlayer::processChannel(int channel, bool newBeat) {
 	if (newBeat) {
 		_channels[channel].durationCounter--;
 		if (_channels[channel].durationCounter == 0xFF) {
@@ -231,7 +307,7 @@ void EclipseAYMusicPlayer::processChannel(int channel, bool newBeat) {
 			} else if (_channels[channel].currentNote < kMaxNote) {
 				_channels[channel].currentNote++;
 			}
-			loadCurrentPeriod(channel);
+			loadCurrentFrequency(channel);
 			finalizeChannel(channel);
 			return;
 		}
@@ -239,7 +315,7 @@ void EclipseAYMusicPlayer::processChannel(int channel, bool newBeat) {
 		_channels[channel].stepDownCounter--;
 		if (_channels[channel].currentNote > 0)
 			_channels[channel].currentNote--;
-		loadCurrentPeriod(channel);
+		loadCurrentFrequency(channel);
 		finalizeChannel(channel);
 		return;
 	}
@@ -248,28 +324,25 @@ void EclipseAYMusicPlayer::processChannel(int channel, bool newBeat) {
 	finalizeChannel(channel);
 }
 
-void EclipseAYMusicPlayer::finalizeChannel(int channel) {
-	// Gate off at half duration triggers release phase
+void EclipseOPLMusicPlayer::finalizeChannel(int channel) {
+	// Gate off at half duration: trigger release via key-off
 	if (_channels[channel].durationReload != 0 &&
 	    !_channels[channel].gateOffDisabled &&
 	    ((_channels[channel].durationReload >> 1) == _channels[channel].durationCounter)) {
-		releaseADSR(channel);
+		noteOff(channel);
 	}
-
-	updateADSR(channel);
 }
 
 // ============================================================================
 // Song setup
 // ============================================================================
 
-void EclipseAYMusicPlayer::setupSong() {
+void EclipseOPLMusicPlayer::setupSong() {
 	silenceAll();
 
-	// Initialize AY: all tone enabled, noise disabled, default noise period
-	_mixerRegister = 0x38;
-	setReg(7, _mixerRegister);
-	setReg(6, 0x07);
+	// Enable wave select (required for non-sine waveforms)
+	if (_opl)
+		_opl->writeReg(0x01, 0x20);
 
 	_speedDivider = 1;
 	_speedCounter = 0;
@@ -285,18 +358,21 @@ void EclipseAYMusicPlayer::setupSong() {
 	_musicActive = true;
 }
 
-void EclipseAYMusicPlayer::silenceAll() {
-	for (int r = 0; r < 14; r++)
-		setReg(r, 0);
-	_mixerRegister = 0x38;
-	setReg(7, _mixerRegister);
+void EclipseOPLMusicPlayer::silenceAll() {
+	if (!_opl)
+		return;
+	for (int ch = 0; ch < 9; ch++) {
+		_opl->writeReg(0xB0 + ch, 0x00); // key off
+		_opl->writeReg(0x40 + kOPLModOffset[ch < 3 ? ch : 0], 0x3F); // silence mod
+		_opl->writeReg(0x40 + kOPLCarOffset[ch < 3 ? ch : 0], 0x3F); // silence car
+	}
 }
 
 // ============================================================================
 // Order list / pattern navigation
 // ============================================================================
 
-void EclipseAYMusicPlayer::loadNextPattern(int channel) {
+void EclipseOPLMusicPlayer::loadNextPattern(int channel) {
 	int safety = 200;
 	while (safety-- > 0) {
 		byte value = _channels[channel].orderList[_channels[channel].orderPos];
@@ -320,13 +396,13 @@ void EclipseAYMusicPlayer::loadNextPattern(int channel) {
 	}
 }
 
-byte EclipseAYMusicPlayer::readPatternByte(int channel) {
+byte EclipseOPLMusicPlayer::readPatternByte(int channel) {
 	byte value = kPatternData[_channels[channel].patternDataOffset + _channels[channel].patternOffset];
 	_channels[channel].patternOffset++;
 	return value;
 }
 
-byte EclipseAYMusicPlayer::clampNote(byte note) const {
+byte EclipseOPLMusicPlayer::clampNote(byte note) const {
 	return note > kMaxNote ? kMaxNote : note;
 }
 
@@ -334,7 +410,7 @@ byte EclipseAYMusicPlayer::clampNote(byte note) const {
 // Pattern command parser
 // ============================================================================
 
-void EclipseAYMusicPlayer::parseCommands(int channel) {
+void EclipseOPLMusicPlayer::parseCommands(int channel) {
 	if (_channels[channel].effectMode != 2) {
 		_channels[channel].effectParam = 0;
 		_channels[channel].effectMode = 0;
@@ -359,9 +435,8 @@ void EclipseAYMusicPlayer::parseCommands(int channel) {
 			return;
 		}
 
-		// Filter command: consume the byte (no filters on AY), continue
 		if (cmd == 0xFD) {
-			readPatternByte(channel); // discard filter value
+			readPatternByte(channel);
 			cmd = readPatternByte(channel);
 			if (cmd == 0xFF) {
 				loadNextPattern(channel);
@@ -433,13 +508,12 @@ void EclipseAYMusicPlayer::parseCommands(int channel) {
 // Note application
 // ============================================================================
 
-void EclipseAYMusicPlayer::applyNote(int channel, byte note) {
+void EclipseOPLMusicPlayer::applyNote(int channel, byte note) {
 	byte instrumentOffset = _channels[channel].instrumentOffset;
 	byte ctrl = kInstruments[instrumentOffset + 0];
-	byte attackDecay = kInstruments[instrumentOffset + 1];
-	byte sustainRelease = kInstruments[instrumentOffset + 2];
 	byte autoEffect = kInstruments[instrumentOffset + 4];
 	byte flags = kInstruments[instrumentOffset + 5];
+	byte sustainRelease = kInstruments[instrumentOffset + 2];
 	byte actualNote = note;
 
 	if (actualNote != 0)
@@ -460,32 +534,17 @@ void EclipseAYMusicPlayer::applyNote(int channel, byte note) {
 		_channels[channel].currentNote = clampNote(_channels[channel].currentNote + 2);
 	}
 
-	loadCurrentPeriod(channel);
+	// Set the OPL FM patch for this instrument
+	setOPLInstrument(channel, instrumentOffset);
 
-	// Configure AY mixer for this channel: tone or noise
-	if (actualNote == 0) {
-		// Rest: disable both tone and noise
-		_mixerRegister |= (1 << channel);
-		_mixerRegister |= (1 << (channel + 3));
-	} else if (ctrl & 0x80) {
-		// Noise waveform
-		_mixerRegister |= (1 << channel);        // disable tone
-		_mixerRegister &= ~(1 << (channel + 3)); // enable noise
-	} else {
-		// Tone waveform (pulse, triangle, sawtooth all map to AY square)
-		_mixerRegister &= ~(1 << channel);       // enable tone
-		_mixerRegister |= (1 << (channel + 3));  // disable noise
-	}
-	setReg(7, _mixerRegister);
-
-	// Trigger ADSR envelope if gate bit is set
 	_channels[channel].gateOffDisabled = (sustainRelease & 0x0F) == 0x0F;
-	if (ctrl & 0x01) {
-		triggerADSR(channel, attackDecay, sustainRelease);
+
+	if (actualNote == 0) {
+		noteOff(channel);
 	} else {
-		_channels[channel].adsrPhase = kPhaseOff;
-		_channels[channel].adsrVolume = 0;
-		setReg(8 + channel, 0);
+		// Key off then on to retrigger envelope
+		noteOff(channel);
+		noteOn(channel, actualNote);
 	}
 
 	_channels[channel].durationCounter = _channels[channel].durationReload;
@@ -494,25 +553,22 @@ void EclipseAYMusicPlayer::applyNote(int channel, byte note) {
 }
 
 // ============================================================================
-// Period / frequency helpers
+// Frequency helpers
 // ============================================================================
 
-void EclipseAYMusicPlayer::writeChannelPeriod(int channel, uint16 period) {
-	_channels[channel].currentPeriod = period;
-	setReg(channel * 2, period & 0xFF);
-	setReg(channel * 2 + 1, (period >> 8) & 0x0F);
-}
-
-void EclipseAYMusicPlayer::loadCurrentPeriod(int channel) {
+void EclipseOPLMusicPlayer::loadCurrentFrequency(int channel) {
 	byte note = clampNote(_channels[channel].currentNote);
-	writeChannelPeriod(channel, kAYPeriods[note]);
+	uint16 fnum;
+	byte block;
+	noteToFnumBlock(note, fnum, block);
+	setFrequency(channel, fnum, block);
 }
 
 // ============================================================================
 // Effects
 // ============================================================================
 
-void EclipseAYMusicPlayer::buildEffectArpeggio(int channel) {
+void EclipseOPLMusicPlayer::buildEffectArpeggio(int channel) {
 	_channels[channel].arpeggioSequenceLen = WBCommon::buildArpeggioTable(
 		_arpeggioIntervals,
 		_channels[channel].effectParam,
@@ -522,7 +578,7 @@ void EclipseAYMusicPlayer::buildEffectArpeggio(int channel) {
 	_channels[channel].arpeggioSequencePos = 0;
 }
 
-void EclipseAYMusicPlayer::applyFrameEffects(int channel) {
+void EclipseOPLMusicPlayer::applyFrameEffects(int channel) {
 	if (_channels[channel].currentNote == 0)
 		return;
 
@@ -533,7 +589,7 @@ void EclipseAYMusicPlayer::applyFrameEffects(int channel) {
 	applyTimedSlide(channel);
 }
 
-bool EclipseAYMusicPlayer::applyInstrumentVibrato(int channel) {
+bool EclipseOPLMusicPlayer::applyInstrumentVibrato(int channel) {
 	byte vibrato = kInstruments[_channels[channel].instrumentOffset + 3];
 	if (vibrato == 0 || _channels[channel].currentNote >= kMaxNote)
 		return false;
@@ -543,13 +599,17 @@ bool EclipseAYMusicPlayer::applyInstrumentVibrato(int channel) {
 	if (span == 0)
 		return false;
 
-	uint16 notePeriod = kAYPeriods[_channels[channel].currentNote];
-	uint16 nextPeriod = kAYPeriods[_channels[channel].currentNote + 1];
+	uint16 noteFnum, nextFnum;
+	byte noteBlock, nextBlock;
+	noteToFnumBlock(_channels[channel].currentNote, noteFnum, noteBlock);
+	noteToFnumBlock(_channels[channel].currentNote + 1, nextFnum, nextBlock);
 
-	if (notePeriod <= nextPeriod)
+	// Normalize to same block for delta computation
+	int32 noteFreq = noteFnum << noteBlock;
+	int32 nextFreq = nextFnum << nextBlock;
+	int32 delta = nextFreq - noteFreq;
+	if (delta <= 0)
 		return false;
-
-	uint16 delta = notePeriod - nextPeriod;
 
 	while (shift-- != 0)
 		delta >>= 1;
@@ -570,25 +630,25 @@ bool EclipseAYMusicPlayer::applyInstrumentVibrato(int channel) {
 		return false;
 	}
 
-	// Modulate period: higher period = lower pitch
-	// Start low (high period), sweep toward high (low period)
-	int32 period = _channels[channel].currentPeriod;
+	int32 freq = noteFreq;
 	for (byte i = 0; i < (span >> 1); i++)
-		period += delta;  // go down (increase period)
+		freq -= delta;
 	for (byte i = 0; i < _channels[channel].vibratoCounter; i++)
-		period -= delta;  // go up (decrease period)
+		freq += delta;
 
-	if (period < 1)
-		period = 1;
-	if (period > 4095)
-		period = 4095;
+	if (freq < 1) freq = 1;
 
-	setReg(channel * 2, period & 0xFF);
-	setReg(channel * 2 + 1, (period >> 8) & 0x0F);
+	// Convert back to fnum/block
+	byte block = 0;
+	while (freq > 1023 && block < 7) {
+		freq >>= 1;
+		block++;
+	}
+	setFrequency(channel, freq & 0x3FF, block);
 	return true;
 }
 
-void EclipseAYMusicPlayer::applyEffectArpeggio(int channel) {
+void EclipseOPLMusicPlayer::applyEffectArpeggio(int channel) {
 	if (_channels[channel].effectParam == 0 || _channels[channel].arpeggioSequenceLen == 0)
 		return;
 
@@ -599,12 +659,13 @@ void EclipseAYMusicPlayer::applyEffectArpeggio(int channel) {
 	                      _channels[channel].arpeggioSequence[_channels[channel].arpeggioSequencePos]);
 	_channels[channel].arpeggioSequencePos++;
 
-	uint16 period = kAYPeriods[note];
-	setReg(channel * 2, period & 0xFF);
-	setReg(channel * 2 + 1, (period >> 8) & 0x0F);
+	uint16 fnum;
+	byte block;
+	noteToFnumBlock(note, fnum, block);
+	setFrequency(channel, fnum, block);
 }
 
-void EclipseAYMusicPlayer::applyTimedSlide(int channel) {
+void EclipseOPLMusicPlayer::applyTimedSlide(int channel) {
 	if (_channels[channel].arpeggioTarget == 0)
 		return;
 
@@ -622,90 +683,41 @@ void EclipseAYMusicPlayer::applyTimedSlide(int channel) {
 	if (currentNote == targetNote)
 		return;
 
-	uint16 currentPeriod = _channels[channel].currentPeriod;
-	uint16 sourcePeriod = kAYPeriods[currentNote];
-	uint16 targetPeriod = kAYPeriods[targetNote];
-	uint16 difference = sourcePeriod > targetPeriod ?
-	                    sourcePeriod - targetPeriod :
-	                    targetPeriod - sourcePeriod;
+	uint16 srcFnum, tgtFnum;
+	byte srcBlock, tgtBlock;
+	noteToFnumBlock(currentNote, srcFnum, srcBlock);
+	noteToFnumBlock(targetNote, tgtFnum, tgtBlock);
+
+	int32 srcFreq = srcFnum << srcBlock;
+	int32 tgtFreq = tgtFnum << tgtBlock;
+	int32 difference = srcFreq > tgtFreq ? srcFreq - tgtFreq : tgtFreq - srcFreq;
 	uint16 divisor = span * (_speedDivider + 1);
 	if (divisor == 0)
 		return;
 
-	uint16 delta = difference / divisor;
+	int32 delta = difference / divisor;
 	if (delta == 0)
 		return;
 
-	if (targetPeriod > sourcePeriod)
-		currentPeriod += delta;
+	// Read current frequency from stored fnum/block
+	uint16 curFnum;
+	byte curBlock;
+	noteToFnumBlock(currentNote, curFnum, curBlock);
+	int32 curFreq = curFnum << curBlock;
+
+	if (tgtFreq > srcFreq)
+		curFreq += delta;
 	else
-		currentPeriod -= delta;
+		curFreq -= delta;
 
-	writeChannelPeriod(channel, currentPeriod);
-}
+	if (curFreq < 1) curFreq = 1;
 
-// ============================================================================
-// Software ADSR envelope
-// ============================================================================
-
-void EclipseAYMusicPlayer::triggerADSR(int channel, byte ad, byte sr) {
-	_channels[channel].adsrPhase = kPhaseAttack;
-	// Don't reset volume: SID re-gate (gate-off + gate-on in same frame)
-	// starts the attack from the current volume, not from zero.
-	// This avoids audible clicks between consecutive notes.
-	_channels[channel].attackRate = kAttackRate[ad >> 4];
-	_channels[channel].decayRate = kDecayReleaseRate[ad & 0x0F];
-	_channels[channel].sustainLevel = sr >> 4;
-	_channels[channel].releaseRate = kDecayReleaseRate[sr & 0x0F];
-}
-
-void EclipseAYMusicPlayer::releaseADSR(int channel) {
-	if (_channels[channel].adsrPhase != kPhaseRelease &&
-	    _channels[channel].adsrPhase != kPhaseOff) {
-		_channels[channel].adsrPhase = kPhaseRelease;
+	byte block = 0;
+	while (curFreq > 1023 && block < 7) {
+		curFreq >>= 1;
+		block++;
 	}
-}
-
-void EclipseAYMusicPlayer::updateADSR(int channel) {
-	switch (_channels[channel].adsrPhase) {
-	case kPhaseAttack:
-		_channels[channel].adsrVolume += _channels[channel].attackRate;
-		if (_channels[channel].adsrVolume >= 0x0F00) {
-			_channels[channel].adsrVolume = 0x0F00;
-			_channels[channel].adsrPhase = kPhaseDecay;
-		}
-		break;
-
-	case kPhaseDecay: {
-		uint16 sustainTarget = (uint16)_channels[channel].sustainLevel << 8;
-		if (_channels[channel].adsrVolume > _channels[channel].decayRate + sustainTarget) {
-			_channels[channel].adsrVolume -= _channels[channel].decayRate;
-		} else {
-			_channels[channel].adsrVolume = sustainTarget;
-			_channels[channel].adsrPhase = kPhaseSustain;
-		}
-		break;
-	}
-
-	case kPhaseSustain:
-		// Volume stays at sustain level
-		break;
-
-	case kPhaseRelease:
-		if (_channels[channel].adsrVolume > _channels[channel].releaseRate) {
-			_channels[channel].adsrVolume -= _channels[channel].releaseRate;
-		} else {
-			_channels[channel].adsrVolume = 0;
-			_channels[channel].adsrPhase = kPhaseOff;
-		}
-		break;
-
-	case kPhaseOff:
-		_channels[channel].adsrVolume = 0;
-		break;
-	}
-
-	setReg(8 + channel, _channels[channel].adsrVolume >> 8);
+	setFrequency(channel, curFreq & 0x3FF, block);
 }
 
 } // namespace Freescape

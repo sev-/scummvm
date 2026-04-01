@@ -21,9 +21,11 @@
 
 #include "audio/audiostream.h"
 #include "audio/decoders/raw.h"
+#include "common/config-manager.h"
 
 #include "freescape/freescape.h"
 #include "freescape/games/eclipse/eclipse.h"
+#include "freescape/games/eclipse/opl.music.h"
 #include "freescape/language/8bitDetokeniser.h"
 
 namespace Freescape {
@@ -158,6 +160,9 @@ void EclipseEngine::loadAssetsDOSFullGame() {
 		swapPalette(_startArea);
 	} else
 		error("Invalid or unsupported render mode %s for Total Eclipse", Common::getRenderModeDescription(_renderMode));
+
+	if (ConfMan.getBool("opl_music"))
+		_playerOPLMusic = new EclipseOPLMusicPlayer();
 }
 
 void EclipseEngine::drawDOSUI(Graphics::Surface *surface) {

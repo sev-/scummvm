@@ -42,6 +42,7 @@ MODULE_OBJS := \
 	games/eclipse/c64.sfx.o \
 	games/eclipse/dos.o \
 	games/eclipse/eclipse.o \
+	games/eclipse/opl.music.o \
 	games/eclipse/cpc.o \
 	games/eclipse/zx.o \
 	games/palettes.o \
