@@ -184,6 +184,20 @@ const String getGameGUIOptionsDescriptionLanguage(Language lang) {
 	return String("lang_") + getLanguageDescription(lang);
 }
 
+const String getGameGUIOptionsDescriptionLanguages(const List<Language> &languages) {
+	Common::String result;
+
+	for (const Language &lang : languages) {
+		if (lang != UNK_LANG)
+			result = result + getGameGUIOptionsDescriptionLanguage(lang) + " ";
+	}
+
+	if (result.lastChar() == ' ')
+		result.chop(1);
+
+	return result;
+}
+
 List<Language> parseLanguagesFromGameGUIOptionsString(const String &optionsString) {
 	List<Language> result;
 
