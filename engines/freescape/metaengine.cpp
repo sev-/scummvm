@@ -158,6 +158,18 @@ static const ADExtraGuiOptionsMap optionsList[] = {
 			0
 		}
 	},
+	{
+		GAMEOPTION_CPC_MUSIC,
+		{
+			// I18N: Enable background music on CPC versions using AY chip emulation
+			_s("Backported music from C64 releases"),
+			_s("Enable background music ported from the C64 version"),
+			"cpc_music",
+			false,
+			0,
+			0
+		}
+	},
 	AD_EXTRA_GUI_OPTIONS_TERMINATOR
 };
 
