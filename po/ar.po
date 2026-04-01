@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-01 14:54+0000\n"
+"POT-Creation-Date: 2026-04-01 17:29+0000\n"
 "PO-Revision-Date: 2026-02-24 22:26+0000\n"
 "Last-Translator: Mohamed Shaaban <mohmedbashamedo@hotmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -7617,7 +7617,7 @@ msgstr "تبديل مفتاح الخصوصية"
 #: engines/freescape/games/castle/castle.cpp:465
 #: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:267
+#: engines/freescape/games/eclipse/eclipse.cpp:272
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -7645,7 +7645,7 @@ msgstr "حفظ اللعبة"
 #: engines/freescape/games/castle/castle.cpp:470
 #: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:272
+#: engines/freescape/games/eclipse/eclipse.cpp:277
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -7701,7 +7701,7 @@ msgstr "قاعدة بيانات الدليل"
 #: engines/freescape/games/castle/castle.cpp:478
 #: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:277
+#: engines/freescape/games/eclipse/eclipse.cpp:282
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9156,12 +9156,22 @@ msgstr "تحكم"
 msgid "Use WASD keys for movement and Shift to run"
 msgstr ""
 
-#. I18N: Enable background music using AY chip emulation
+#. I18N: Enable background music using AdLib/OPL2 FM synthesis
 #: engines/freescape/metaengine.cpp:165
-msgid "Backported music from C64 releases"
+msgid "Backported music from C64 releases (AdLib)"
 msgstr ""
 
 #: engines/freescape/metaengine.cpp:166
+msgid ""
+"Enable background music ported from the C64 version using AdLib FM synthesis"
+msgstr ""
+
+#. I18N: Enable background music using AY chip emulation
+#: engines/freescape/metaengine.cpp:177
+msgid "Backported music from C64 releases"
+msgstr ""
+
+#: engines/freescape/metaengine.cpp:178
 msgid "Enable background music ported from the C64 version"
 msgstr ""
 
@@ -9216,7 +9226,7 @@ msgstr "حدد تظليل"
 #: engines/freescape/games/castle/castle.cpp:483
 #: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:285
+#: engines/freescape/games/eclipse/eclipse.cpp:290
 #: engines/hugo/metaengine.cpp:154
 #, fuzzy
 #| msgid "Toggle mute"
@@ -9226,7 +9236,7 @@ msgstr "تبديل كتم الصوت"
 #: engines/freescape/games/castle/castle.cpp:488
 #: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:290
+#: engines/freescape/games/eclipse/eclipse.cpp:295
 #, fuzzy
 #| msgid "Strafe Left"
 msgid "Rotate left"
@@ -9235,7 +9245,7 @@ msgstr "مهاجم اليسار"
 #: engines/freescape/games/castle/castle.cpp:493
 #: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:295
+#: engines/freescape/games/eclipse/eclipse.cpp:300
 #, fuzzy
 #| msgid "Strafe Right"
 msgid "Rotate right"
@@ -9246,7 +9256,7 @@ msgid "Crawl"
 msgstr ""
 
 #: engines/freescape/games/castle/castle.cpp:515
-#: engines/freescape/games/eclipse/eclipse.cpp:333
+#: engines/freescape/games/eclipse/eclipse.cpp:338
 #, fuzzy
 #| msgid "Move Forward"
 msgid "Face forward"
@@ -9334,38 +9344,38 @@ msgid "Collect drilling rig"
 msgstr ""
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:301
+#: engines/freescape/games/eclipse/eclipse.cpp:306
 #, fuzzy
 #| msgid "Change Command"
 msgid "Change angle"
 msgstr "تغيير الأمر"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:307
+#: engines/freescape/games/eclipse/eclipse.cpp:312
 #, fuzzy
 #| msgid "Change font size"
 msgid "Change step size"
 msgstr "تغيير حجم الخط"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:313
+#: engines/freescape/games/eclipse/eclipse.cpp:318
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:321
+#: engines/freescape/games/eclipse/eclipse.cpp:326
 #, fuzzy
 #| msgid "Toggle mute"
 msgid "Toggle height"
 msgstr "تبديل كتم الصوت"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:327
+#: engines/freescape/games/eclipse/eclipse.cpp:332
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "استراحة"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:338
+#: engines/freescape/games/eclipse/eclipse.cpp:343
 #, fuzzy
 #| msgid "Flashlight"
 msgid "Toggle flashlight"
@@ -12429,7 +12439,7 @@ msgid "Incomplete game detected. You have to copy data from all the CDs."
 msgstr ""
 "تم اكتشاف لعبة غير مكتملة. يجب عليك نسخ البيانات من جميع الأقراص المضغوطة."
 
-#: engines/sci/engine/kfile.cpp:491 engines/sci/metaengine.cpp:285
+#: engines/sci/engine/kfile.cpp:491 engines/sci/metaengine.cpp:289
 msgid "(Autosave)"
 msgstr "(الحفظ التلقائي)"
 
