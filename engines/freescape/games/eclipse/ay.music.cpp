@@ -19,7 +19,7 @@
  *
  */
 
-#include "engines/freescape/games/eclipse/cpc.music.h"
+#include "engines/freescape/games/eclipse/ay.music.h"
 
 #include "common/textconsole.h"
 #include "freescape/wb.h"

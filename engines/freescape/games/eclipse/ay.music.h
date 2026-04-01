@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef FREESCAPE_ECLIPSE_CPC_MUSIC_H
-#define FREESCAPE_ECLIPSE_CPC_MUSIC_H
+#ifndef FREESCAPE_ECLIPSE_AY_MUSIC_H
+#define FREESCAPE_ECLIPSE_AY_MUSIC_H
 
 #include "audio/softsynth/ay8912.h"
 #include "audio/mixer.h"
@@ -36,8 +36,6 @@ namespace Freescape {
  * - Replacing SID hardware ADSR with a software envelope
  * - Dropping SID-specific features (pulse width, filters)
  *
- * The music data is extracted from the C64 version and embedded
- * directly so no C64-specific game files are required.
  */
 class EclipseAYMusicPlayer : public Audio::AY8912Stream {
 public:
