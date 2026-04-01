@@ -58,6 +58,8 @@ CastleEngine::CastleEngine(OSystem *syst, const ADGameDescription *gd) : Freesca
 		initZX();
 	else if (isCPC())
 		initCPC();
+	else if (isC64())
+		initC64();
 
 	// Messages are assigned after loading in initGameState()
 
@@ -1950,7 +1952,7 @@ void CastleEngine::borderScreen() {
 	if (isAmiga() && isDemo())
 		return; // Skip character selection
 
-	if (isSpectrum() || isCPC())
+	if (isSpectrum() || isCPC() || isC64())
 		FreescapeEngine::borderScreen();
 	else {
 		uint32 color = _gfx->_texturePixelFormat.ARGBToColor(0x00, 0x00, 0x00, 0x00);

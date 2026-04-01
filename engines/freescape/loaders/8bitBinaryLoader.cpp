@@ -743,7 +743,7 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 		byte idx = readField(file, 8);
 		if (isAmiga())
 			name = _messagesList[idx + 51];
-		else if (isSpectrum() || isCPC())
+		else if (isSpectrum() || isCPC() || isC64())
 			name = areaNumber == 255 ? "GLOBAL" : _messagesList[idx + 16];
 		else
 			name = _messagesList[idx + 41];
@@ -875,7 +875,7 @@ void FreescapeEngine::load8bitBinary(Common::SeekableReadStream *file, int offse
 	uint8 initialEnergy2 = 0;
 	uint8 initialShield2 = 0;
 
-	if (isCastle() && (isSpectrum() || isCPC())) {
+	if (isCastle() && (isSpectrum() || isCPC() || isC64())) {
 		initialShield1 = readField(file, 8);
 	} else {
 		readField(file, 8); // Unknown
@@ -889,7 +889,7 @@ void FreescapeEngine::load8bitBinary(Common::SeekableReadStream *file, int offse
 	debugC(1, kFreescapeDebugParser, "Initial levels of energy: %d and shield: %d", initialEnergy1, initialShield1);
 	debugC(1, kFreescapeDebugParser, "Initial levels of energy: %d and shield: %d", initialEnergy2, initialShield2);
 
-	if (isCastle() && (isSpectrum() || isCPC()))
+	if (isCastle() && (isSpectrum() || isCPC() || isC64()))
 		file->seek(offset + 0x6);
 	else if (isAmiga() || isAtariST())
 		file->seek(offset + 0x14);
@@ -923,6 +923,8 @@ void FreescapeEngine::load8bitBinary(Common::SeekableReadStream *file, int offse
 
 	if (isCastle() && (isSpectrum() || isCPC()))
 		file->seek(offset + 0x42);
+	else if (isCastle() && isC64())
+		file->seek(offset + 0x3e);
 	else if (isAmiga() || isAtariST())
 		file->seek(offset + 0x8c);
 	else
@@ -998,6 +1000,8 @@ void FreescapeEngine::load8bitBinary(Common::SeekableReadStream *file, int offse
 
 	if (isCastle() && (isSpectrum() || isCPC()))
 		file->seek(offset + 0x4f);
+	else if (isCastle() && isC64())
+		file->seek(offset + 0x4b);
 	else if (isAmiga() || isAtariST())
 		file->seek(offset + 0x190);
 	else
@@ -1015,7 +1019,10 @@ void FreescapeEngine::load8bitBinary(Common::SeekableReadStream *file, int offse
 	for (uint16 area = 0; area < numberOfAreas; area++) {
 		debugC(1, kFreescapeDebugParser, "Starting to parse area index %d at offset %x", area, fileOffsetForArea[area]);
 
-		file->seek(offset + fileOffsetForArea[area]);
+		if (isCastle() && isC64())
+			file->seek(offset + fileOffsetForArea[area] - 4);
+		else
+			file->seek(offset + fileOffsetForArea[area]);
 		newArea = load8bitArea(file, ncolors);
 
 		if (newArea) {

@@ -74,6 +74,10 @@ public:
 	void initZX();
 	void initDOS();
 	void initCPC();
+	void initC64();
+
+	void loadAssetsC64FullGame() override;
+	void drawC64UI(Graphics::Surface *surface) override;
 
 	void drawDOSUI(Graphics::Surface *surface) override;
 	void drawZXUI(Graphics::Surface *surface) override;

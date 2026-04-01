@@ -879,6 +879,16 @@ static const ADGameDescription gameDescriptions[] = {
 		ADGF_NO_FLAGS,
 		GUIO4(GUIO_NOMIDI, GUIO_RENDERCPC, GAMEOPTION_TRAVEL_ROCK, GAMEOPTION_WASD_CONTROLS)
 	},
+	// C64 tape release
+	{
+		"castlemaster",
+		"",
+		AD_ENTRY1s("CASTLEMASTER.C64.DATA", "d433af0fc854d91fb22f986e274d809b", 51198),
+		Common::EN_ANY,
+		Common::kPlatformC64,
+		ADGF_UNSTABLE | GF_C64_TAPE,
+		GUIO4(GUIO_NOMIDI, GUIO_RENDERC64, GAMEOPTION_TRAVEL_ROCK, GAMEOPTION_WASD_CONTROLS)
+	},
 	{
 		"castlemaster",
 		"",
