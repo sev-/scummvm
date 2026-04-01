@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-01 17:29+0000\n"
-"PO-Revision-Date: 2026-03-23 20:22+0000\n"
+"PO-Revision-Date: 2026-04-01 20:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ko/>\n"
@@ -1680,15 +1680,12 @@ msgid "Icons per row:"
 msgstr "열당 아이콘:"
 
 #: gui/launcher.cpp:1857
-#, fuzzy, c-format
-#| msgid ""
-#| "Do you really want to remove the following %d game configuration(s)?\n"
-#| "\n"
+#, c-format
 msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
-"다음 %d개의 게임 설정을 정말로 삭제할까요?\n"
+"다음 %d개의 게임 구성을 정말로 삭제할까요?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -8859,14 +8856,12 @@ msgstr "개별적인 단계 대신 더 부드러운 움직임 사용"
 
 #. I18N: Use modern FPS-style controls: WASD for movement, Shift to run
 #: engines/freescape/metaengine.cpp:153
-#, fuzzy
-#| msgid "Volume controls"
 msgid "WASD controls"
-msgstr "볼륨 조작"
+msgstr "WASD 제어"
 
 #: engines/freescape/metaengine.cpp:154
 msgid "Use WASD keys for movement and Shift to run"
-msgstr ""
+msgstr "WASD 키로 이동하고 Shift 키로 달리기"
 
 #. I18N: Enable background music using AdLib/OPL2 FM synthesis
 #: engines/freescape/metaengine.cpp:165
@@ -8954,7 +8949,7 @@ msgstr "얼굴 앞으로"
 
 #: engines/freescape/games/castle/castle.cpp:526
 msgid "Run (hold)"
-msgstr ""
+msgstr "달리기 (유지)"
 
 #: engines/freescape/games/dark/dark.cpp:262
 #: engines/freescape/games/driller/driller.cpp:188
@@ -9027,7 +9022,7 @@ msgstr "단계 크기 변경"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:318
 msgid "Sprint (hold)"
-msgstr ""
+msgstr "스프린트 (유지)"
 
 #: engines/freescape/games/eclipse/eclipse.cpp:326
 msgid "Toggle height"
