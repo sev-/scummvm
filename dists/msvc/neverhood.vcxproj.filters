@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="modules">
-			<UniqueIdentifier>59542DB7-63A1-4F51-93C1-976F57EC0A92</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\neverhood\background.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\blbarchive.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\console.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\dialogs.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\diskplayerscene.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\entity.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\gamemodule.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\gamevars.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\graphics.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\klaymen.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\menumodule.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\microtiles.cpp" />
+		<ClCompile Include="..\..\engines\neverhood\module_scene.cpp" />
 		<ClCompile Include="..\..\engines\neverhood\modules\module1000.cpp">
 			<Filter>modules</Filter>
 		</ClCompile>
@@ -123,20 +137,6 @@
 		<ClCompile Include="..\..\engines\neverhood\modules\module3000_sprites.cpp">
 			<Filter>modules</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\neverhood\background.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\blbarchive.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\console.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\diskplayerscene.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\entity.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\gamemodule.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\gamevars.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\graphics.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\klaymen.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\menumodule.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\microtiles.cpp" />
-		<ClCompile Include="..\..\engines\neverhood\module_scene.cpp" />
 		<ClCompile Include="..\..\engines\neverhood\mouse.cpp" />
 		<ClCompile Include="..\..\engines\neverhood\navigationscene.cpp" />
 		<ClCompile Include="..\..\engines\neverhood\neverhood.cpp" />
@@ -155,6 +155,21 @@
 		<ClCompile Include="..\..\engines\neverhood\subtitles.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\neverhood\background.h" />
+		<ClInclude Include="..\..\engines\neverhood\blbarchive.h" />
+		<ClInclude Include="..\..\engines\neverhood\console.h" />
+		<ClInclude Include="..\..\engines\neverhood\detection.h" />
+		<ClInclude Include="..\..\engines\neverhood\dialogs.h" />
+		<ClInclude Include="..\..\engines\neverhood\diskplayerscene.h" />
+		<ClInclude Include="..\..\engines\neverhood\entity.h" />
+		<ClInclude Include="..\..\engines\neverhood\gamemodule.h" />
+		<ClInclude Include="..\..\engines\neverhood\gamevars.h" />
+		<ClInclude Include="..\..\engines\neverhood\graphics.h" />
+		<ClInclude Include="..\..\engines\neverhood\klaymen.h" />
+		<ClInclude Include="..\..\engines\neverhood\menumodule.h" />
+		<ClInclude Include="..\..\engines\neverhood\messages.h" />
+		<ClInclude Include="..\..\engines\neverhood\microtiles.h" />
+		<ClInclude Include="..\..\engines\neverhood\module.h" />
 		<ClInclude Include="..\..\engines\neverhood\modules\module1000.h">
 			<Filter>modules</Filter>
 		</ClInclude>
@@ -272,21 +287,6 @@
 		<ClInclude Include="..\..\engines\neverhood\modules\module3000_sprites.h">
 			<Filter>modules</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\neverhood\background.h" />
-		<ClInclude Include="..\..\engines\neverhood\blbarchive.h" />
-		<ClInclude Include="..\..\engines\neverhood\console.h" />
-		<ClInclude Include="..\..\engines\neverhood\detection.h" />
-		<ClInclude Include="..\..\engines\neverhood\dialogs.h" />
-		<ClInclude Include="..\..\engines\neverhood\diskplayerscene.h" />
-		<ClInclude Include="..\..\engines\neverhood\entity.h" />
-		<ClInclude Include="..\..\engines\neverhood\gamemodule.h" />
-		<ClInclude Include="..\..\engines\neverhood\gamevars.h" />
-		<ClInclude Include="..\..\engines\neverhood\graphics.h" />
-		<ClInclude Include="..\..\engines\neverhood\klaymen.h" />
-		<ClInclude Include="..\..\engines\neverhood\menumodule.h" />
-		<ClInclude Include="..\..\engines\neverhood\messages.h" />
-		<ClInclude Include="..\..\engines\neverhood\microtiles.h" />
-		<ClInclude Include="..\..\engines\neverhood\module.h" />
 		<ClInclude Include="..\..\engines\neverhood\mouse.h" />
 		<ClInclude Include="..\..\engines\neverhood\navigationscene.h" />
 		<ClInclude Include="..\..\engines\neverhood\neverhood.h" />

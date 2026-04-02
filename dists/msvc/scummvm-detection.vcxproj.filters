@@ -1,365 +1,371 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="access">
-			<UniqueIdentifier>70AA4648-0DA7-448F-8BF8-B345AD95EB99</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB481-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="adl">
-			<UniqueIdentifier>301A7928-9756-4C31-8B5D-593A9C852AB9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB482-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="agds">
-			<UniqueIdentifier>F92BEB46-995C-454B-8B7D-E13E41F34D98</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB483-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="agi">
-			<UniqueIdentifier>B0AA0261-E395-4353-9842-B51B5ED12139</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB484-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="agos">
-			<UniqueIdentifier>20C1F434-065A-4C00-945B-442E75D42C47</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB485-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ags">
-			<UniqueIdentifier>BDBFF201-CFA8-4E49-A8E9-F8FE8695ACF6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB486-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="alcachofa">
-			<UniqueIdentifier>438952DE-4294-4268-BAD8-24331AA1E069</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB487-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="alg">
-			<UniqueIdentifier>CEAD5F2D-2E88-4DDC-B72E-776D5E31A047</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB488-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="asylum">
-			<UniqueIdentifier>4FEFD8BC-17D5-4E32-8AA8-ED0F6FD2133B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB489-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="avalanche">
-			<UniqueIdentifier>70B88D0B-53A5-4F6C-8C31-54E45BDB3C9B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="awe">
-			<UniqueIdentifier>9F92F203-2229-4352-970D-E933A88A9646</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="bagel">
-			<UniqueIdentifier>2B2FCCAD-D021-40D5-ADC1-434929AB105F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="bbvs">
-			<UniqueIdentifier>19DA079E-5488-40F2-872E-101D49E66286</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="bladerunner">
-			<UniqueIdentifier>11571281-5E8A-45AD-AC3C-BE5724C41DDE</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="buried">
-			<UniqueIdentifier>BEE0C6E9-5273-433E-9459-5E92ED2D1DBD</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB48F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cge">
-			<UniqueIdentifier>35E71154-480D-418E-A472-C71F7D03572A</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB490-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cge2">
-			<UniqueIdentifier>B98F3B96-00C5-4F35-9682-ACD6DC00A071</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB491-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="chamber">
-			<UniqueIdentifier>5CCC483F-7EE2-43C8-B20F-2F84B1785915</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB492-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="chewy">
-			<UniqueIdentifier>7AB0DAC2-F0E2-4B5D-B25E-D58E11CECC29</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB493-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cine">
-			<UniqueIdentifier>36F3F341-6D7E-4230-B34A-D274989B1407</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB494-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="composer">
-			<UniqueIdentifier>E329F8FD-565A-416E-8AA0-1D5681612A3C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB495-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="crab">
-			<UniqueIdentifier>D4EE0A60-360C-4CFB-9353-60F647AE8CB6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB496-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cruise">
-			<UniqueIdentifier>23E64795-B997-40F3-A9E5-5826DB64AE6B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB497-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cryo">
-			<UniqueIdentifier>A6685473-13D8-4A29-97BA-88C86A5DC417</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB498-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="cryomni3d">
-			<UniqueIdentifier>763AF260-28EA-4F80-8E9B-29D59FA19784</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB499-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="darkseed">
-			<UniqueIdentifier>BC14800F-0690-4FD9-BA94-1782B1CBDD39</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dgds">
-			<UniqueIdentifier>1680028F-219F-4B41-8AF3-2AD240327E79</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="director">
-			<UniqueIdentifier>54221F71-31D4-4FAB-BAF0-390CD42D49FD</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dm">
-			<UniqueIdentifier>7ECCB8F3-50AC-48B6-98D7-E23B45884BED</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="draci">
-			<UniqueIdentifier>E9A77918-20AA-4857-8E83-56F58987EC01</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dragons">
-			<UniqueIdentifier>EE1BA76B-3300-43CE-830C-4A8BACF0BA7F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB49F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+		</Filter>
+		<Filter Include="dragonslair2">
+			<UniqueIdentifier>FEEDB4A0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="drascula">
-			<UniqueIdentifier>65E3947E-DD2D-418F-86FE-4AA26B8F3516</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dreamweb">
-			<UniqueIdentifier>D1C273A6-656A-459F-840A-00B602E575FC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="efh">
-			<UniqueIdentifier>A8E819E0-DE9B-447B-8243-428163FC5F8B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="freescape">
-			<UniqueIdentifier>FA06BAB4-7B54-4CB1-98B5-4B2559D3D51C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gamos">
-			<UniqueIdentifier>9DA7D719-170A-4BD9-9BC3-2A2699472080</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="glk">
-			<UniqueIdentifier>F996E7AD-C2F1-4459-856C-DA0F518F192C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gnap">
-			<UniqueIdentifier>EA0774CD-2FCF-4A20-A811-A95B2CC65613</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gob">
-			<UniqueIdentifier>2AD4B7B6-8D36-47E2-BA0E-8EF86B48A387</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gob\detection">
-			<UniqueIdentifier>8A3AE2BD-6559-4A6C-999C-14DEF4D64EF9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4A9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="got">
-			<UniqueIdentifier>6562B264-0ADD-4EED-9D30-937FB0D2AE55</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="griffon">
-			<UniqueIdentifier>A09E5544-27C6-4EDE-AA65-17DA191FE0FB</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="grim">
-			<UniqueIdentifier>90F9AAF2-DF5D-4E8F-9B04-B0E450F043A1</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="groovie">
-			<UniqueIdentifier>91E225AF-A810-4D41-B40C-B41E7D79E9B2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hadesch">
-			<UniqueIdentifier>F38EB40C-E490-4421-8914-D5595D24FC28</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hdb">
-			<UniqueIdentifier>07B695BC-2ED6-45F6-85FD-2DDF969FFCB7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4AF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hopkins">
-			<UniqueIdentifier>4DC7D95D-18BC-42F7-99CE-10A354D05DA6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hpl1">
-			<UniqueIdentifier>4365866F-3A38-4E43-9C76-9D19E398F540</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hugo">
-			<UniqueIdentifier>3E8DE294-BF98-44CA-B95A-5AFAD0F4AF53</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hypno">
-			<UniqueIdentifier>CEA7CAE7-0163-47CC-B585-E227E310BAB6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="icb">
-			<UniqueIdentifier>B20BCAE3-9206-4611-9991-E4E5642B4779</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="illusions">
-			<UniqueIdentifier>5A95A74A-0E3D-4A6C-B447-E61A61ACF134</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="immortal">
-			<UniqueIdentifier>ED1A034D-8A65-4C80-A470-0A6A2424B6CF</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="kingdom">
-			<UniqueIdentifier>9476ED04-ED8E-445F-A410-2A69DB64B0C4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="kyra">
-			<UniqueIdentifier>7AE5373D-C7AB-43E0-9AD7-9E5983A462F4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lab">
-			<UniqueIdentifier>3EEE68F5-9067-43A0-B37A-748AB7B95F83</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4B9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lastexpress">
-			<UniqueIdentifier>5C785561-C01C-402A-9621-78B43F1ECE05</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lilliput">
-			<UniqueIdentifier>4B1120D6-7739-438A-8490-461B4F0646B3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lure">
-			<UniqueIdentifier>442456D2-84BF-4B61-9EA6-ADD869E893A2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="m4">
-			<UniqueIdentifier>9030E66B-F05C-42E0-BA1D-6F762C0366B4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="macventure">
-			<UniqueIdentifier>7322653C-1216-476F-B2A7-00C466402F04</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="made">
-			<UniqueIdentifier>BF2ABA8A-6ACA-42DB-B390-C0F96D919A4C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4BF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mads">
-			<UniqueIdentifier>20A365CB-85EB-4F02-B329-EB908C1F0A3B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mediastation">
-			<UniqueIdentifier>9DBC854F-971E-4A83-9DD7-CE923512CDAD</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm">
-			<UniqueIdentifier>D2A0C808-4F95-4E04-85CB-764908E40B7A</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mohawk">
-			<UniqueIdentifier>A2FD22EA-2EA2-43CD-BFE5-80A23C2B4B2B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mortevielle">
-			<UniqueIdentifier>8F211CE8-543D-4904-A8AB-59C7D2E3B467</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mtropolis">
-			<UniqueIdentifier>5275BFDA-693C-4443-AD3E-180DEF486C8B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mutationofjb">
-			<UniqueIdentifier>E8A54C25-A5EC-4599-8C3A-BF63D17F22AF</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="myst3">
-			<UniqueIdentifier>AD0A2B73-D5D3-4F6F-A28A-1EA7A4B277E9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nancy">
-			<UniqueIdentifier>EF788DAF-2B7F-4615-A7E2-43BEDDED14D2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neverhood">
-			<UniqueIdentifier>50E5220B-0E02-4E50-97E9-6394F5362B5B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4C9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ngi">
-			<UniqueIdentifier>1A590F99-F04E-4602-8557-A51DA52AF2C1</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="parallaction">
-			<UniqueIdentifier>DACFF562-AB99-44DF-85B8-82FA112D7AC9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="pegasus">
-			<UniqueIdentifier>2103A86C-F895-49E8-8355-B8DCB5EB5986</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="petka">
-			<UniqueIdentifier>08E374F3-60A8-414C-B2E7-8642C2ABA4A9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="phoenixvr">
-			<UniqueIdentifier>1B5A309B-87C5-41B8-9EFA-C5175CE45AF2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="pink">
-			<UniqueIdentifier>56639638-99A1-40D8-80AE-A6ECC616A850</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4CF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="playground3d">
-			<UniqueIdentifier>6EB6878B-04A0-4754-937B-DCFC18388DCA</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plumbers">
-			<UniqueIdentifier>AD73268D-C536-430C-974F-9451DB44C40B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="prince">
-			<UniqueIdentifier>555965C1-39A7-48AD-B06B-D28A21E516D8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="private">
-			<UniqueIdentifier>FCD886F5-7BA2-415B-A4D9-BD0D44FA3AB0</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="qdengine">
-			<UniqueIdentifier>A8BA0C08-F1C3-453B-9933-55371BE3260D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="queen">
-			<UniqueIdentifier>D6BD8438-845B-4981-BF1A-769B6DC5BE90</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="saga">
-			<UniqueIdentifier>64EC1F52-F4B4-41BA-804D-96611CDED2D8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="saga2">
-			<UniqueIdentifier>78ABCF8C-FC6D-4AD3-8E7A-5F35DF93B31B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sci">
-			<UniqueIdentifier>E4FC2541-E75E-4284-8CDC-BCB389BBABDC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scumm">
-			<UniqueIdentifier>C07638C6-21AD-4540-B7E3-48F0189C092D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4D9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sherlock">
-			<UniqueIdentifier>8689C0F8-8F00-4F42-B19C-B20790AE3B1B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sky">
-			<UniqueIdentifier>08C633CA-B184-4874-908F-49DD6C2E70A0</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sludge">
-			<UniqueIdentifier>41A32879-DC6C-4E34-9AD6-187F70291ED3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="stark">
-			<UniqueIdentifier>11A19C1C-C5CD-4946-A75E-1C3050893548</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="startrek">
-			<UniqueIdentifier>83BB4C2C-1F32-4E70-B6E7-8C3BC559032B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="supernova">
-			<UniqueIdentifier>2DFE122E-C9AF-4031-8D71-791005AA6042</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4DF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sword1">
-			<UniqueIdentifier>6E62E9A9-BF22-4152-8F89-A77DF5FCAC08</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sword2">
-			<UniqueIdentifier>355F480F-CE90-4795-891F-FC4F6B63956D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sword25">
-			<UniqueIdentifier>F0D1EB43-6B0D-4383-B4E2-491D32BACCD7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="teenagent">
-			<UniqueIdentifier>CAE0AD0C-CABB-4CF1-8371-81C77112858A</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="testbed">
-			<UniqueIdentifier>901B87FA-F0C4-426F-AA84-48C697C27022</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tetraedge">
-			<UniqueIdentifier>00214391-F567-4ED9-8D70-C574107D1E0E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tinsel">
-			<UniqueIdentifier>BE897D8A-1453-4BBB-B8CE-5941190DFCFA</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="titanic">
-			<UniqueIdentifier>02631014-545C-4538-B00F-35C459CABF7B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="toltecs">
-			<UniqueIdentifier>4BFAD979-B2F0-4E44-8D94-BF448A75413C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tony">
-			<UniqueIdentifier>AF084669-6823-4D34-9CF1-05968134CEFD</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4E9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="toon">
-			<UniqueIdentifier>1D93CE7C-37BF-421A-BCC2-4815616F521F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4EA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tot">
-			<UniqueIdentifier>90BC7921-B787-4949-97CE-A5646D642936</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4EB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="touche">
-			<UniqueIdentifier>58A0369E-5FB3-4634-A823-E5879EF2D578</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4EC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="trecision">
-			<UniqueIdentifier>D984CFFD-44DF-4608-B91E-D94B6558D4EA</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4ED-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tsage">
-			<UniqueIdentifier>7102BEEC-8C33-475C-9DCF-52E00D41D38D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4EE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tucker">
-			<UniqueIdentifier>69757285-34BE-4E07-A411-7C1F2395A4AB</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4EF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="twine">
-			<UniqueIdentifier>BF303F3C-7F99-42F4-96BE-C9280D7915E5</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="twp">
-			<UniqueIdentifier>9CB9066C-6A06-4C81-9975-185A3D7C498F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima">
-			<UniqueIdentifier>64C5E3BE-DDA2-4A43-9835-7E86B554D89A</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="vcruise">
-			<UniqueIdentifier>69A89B29-4668-441D-B310-0E26E395BFC7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="voyeur">
-			<UniqueIdentifier>B9AD31A4-B087-4BA5-9CB7-080865831481</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="wage">
-			<UniqueIdentifier>2373BDBC-354B-49EE-A7B0-11CD068385F4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="watchmaker">
-			<UniqueIdentifier>3DF5FCE7-A48A-4AB4-BDCC-1835C9C61666</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="waynesworld">
-			<UniqueIdentifier>DCC4614C-0729-4856-99C9-82317942A771</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="wintermute">
-			<UniqueIdentifier>76DC3054-57AD-494F-BCC8-281ECB65CF41</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4F8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+		</Filter>
+		<Filter Include="yaga">
+			<UniqueIdentifier>FEEDB4F9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="zvision">
-			<UniqueIdentifier>89C78475-C11B-4878-82AA-6DD17A880ABC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -411,11 +417,11 @@
 		<ClCompile Include="..\..\engines\buried\detection.cpp">
 			<Filter>buried</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\cge\detection.cpp">
-			<Filter>cge</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\cge2\detection.cpp">
 			<Filter>cge2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\cge\detection.cpp">
+			<Filter>cge</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\chamber\detection.cpp">
 			<Filter>chamber</Filter>
@@ -458,6 +464,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\dragons\detection.cpp">
 			<Filter>dragons</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\dragonslair2\detection.cpp">
+			<Filter>dragonslair2</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\drascula\detection.cpp">
 			<Filter>drascula</Filter>
@@ -612,11 +621,11 @@
 		<ClCompile Include="..\..\engines\queen\detection.cpp">
 			<Filter>queen</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\saga\detection.cpp">
-			<Filter>saga</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\saga2\detection.cpp">
 			<Filter>saga2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\saga\detection.cpp">
+			<Filter>saga</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\detection.cpp">
 			<Filter>sci</Filter>
@@ -645,11 +654,11 @@
 		<ClCompile Include="..\..\engines\sword1\detection.cpp">
 			<Filter>sword1</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\sword2\detection.cpp">
-			<Filter>sword2</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\sword25\detection.cpp">
 			<Filter>sword25</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\sword2\detection.cpp">
+			<Filter>sword2</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\teenagent\detection.cpp">
 			<Filter>teenagent</Filter>
@@ -716,6 +725,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\wintermute\detection.cpp">
 			<Filter>wintermute</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\yaga\detection.cpp">
+			<Filter>yaga</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\zvision\detection.cpp">
 			<Filter>zvision</Filter>
@@ -1235,6 +1247,9 @@
 		<ClInclude Include="..\..\engines\avalanche\highscore.h">
 			<Filter>avalanche</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\avalanche\intro.h">
+			<Filter>avalanche</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\avalanche\mainmenu.h">
 			<Filter>avalanche</Filter>
 		</ClInclude>
@@ -1664,54 +1679,6 @@
 		<ClInclude Include="..\..\engines\buried\window.h">
 			<Filter>buried</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\bitmap.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\cge.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\cge_main.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\console.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\detection.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\events.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\fileio.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\game.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\general.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\snail.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\sound.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\talk.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\text.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\vga13h.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\vmenu.h">
-			<Filter>cge</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\cge\walk.h">
-			<Filter>cge</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\cge2\bitmap.h">
 			<Filter>cge2</Filter>
 		</ClInclude>
@@ -1762,6 +1729,54 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\cge2\vmenu.h">
 			<Filter>cge2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\bitmap.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\cge.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\cge_main.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\console.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\detection.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\events.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\fileio.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\game.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\general.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\snail.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\sound.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\talk.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\text.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\vga13h.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\vmenu.h">
+			<Filter>cge</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\cge\walk.h">
+			<Filter>cge</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\chamber\anim.h">
 			<Filter>chamber</Filter>
@@ -2726,6 +2741,21 @@
 		<ClInclude Include="..\..\engines\dragons\vabsound.h">
 			<Filter>dragons</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\dragonslair2\console.h">
+			<Filter>dragonslair2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\dragonslair2\detection.h">
+			<Filter>dragonslair2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\dragonslair2\detection_tables.h">
+			<Filter>dragonslair2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\dragonslair2\dragonslair2.h">
+			<Filter>dragonslair2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\dragonslair2\metaengine.h">
+			<Filter>dragonslair2</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\drascula\console.h">
 			<Filter>drascula</Filter>
 		</ClInclude>
@@ -2963,6 +2993,36 @@
 		<ClInclude Include="..\..\engines\gnap\sound.h">
 			<Filter>gnap</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\anifile.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\aniobject.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\backbuffer.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\cheater.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\cmpfile.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\console.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\databases.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\dataio.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\dbase.h">
+			<Filter>gob</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\gob\decfile.h">
+			<Filter>gob</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\gob\detection\detection.h">
 			<Filter>gob\detection</Filter>
 		</ClInclude>
@@ -3055,36 +3115,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\gob\detection\tables_woodruff.h">
 			<Filter>gob\detection</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\anifile.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\aniobject.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\backbuffer.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\cheater.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\cmpfile.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\console.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\databases.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\dataio.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\dbase.h">
-			<Filter>gob</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\gob\decfile.h">
-			<Filter>gob</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\gob\draw.h">
 			<Filter>gob</Filter>
@@ -5498,87 +5528,6 @@
 		<ClInclude Include="..\..\engines\queen\walk.h">
 			<Filter>queen</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\actor.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\animation.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\console.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\detection.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\detection_tables.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\displayinfo.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\events.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\font.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\gfx.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\interface.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\isomap.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\ite8.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\itedata.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\music.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\objectmap.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\palanim.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\puzzle.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\render.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\resource.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\saga.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\scene.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\script.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\shared_detection_defines.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\small8.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\sndres.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\sound.h">
-			<Filter>saga</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\saga\sprite.h">
-			<Filter>saga</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\saga2\actor.h">
 			<Filter>saga2</Filter>
 		</ClInclude>
@@ -5887,6 +5836,87 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\saga2\weapons.h">
 			<Filter>saga2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\actor.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\animation.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\console.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\detection.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\detection_tables.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\displayinfo.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\events.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\font.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\gfx.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\interface.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\isomap.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\ite8.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\itedata.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\music.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\objectmap.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\palanim.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\puzzle.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\render.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\resource.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\saga.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\scene.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\script.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\shared_detection_defines.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\small8.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\sndres.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\sound.h">
+			<Filter>saga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\saga\sprite.h">
+			<Filter>saga</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\console.h">
 			<Filter>sci</Filter>
@@ -6485,6 +6515,18 @@
 		<ClInclude Include="..\..\engines\sword1\text.h">
 			<Filter>sword1</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\sword25\console.h">
+			<Filter>sword25</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\sword25\detection.h">
+			<Filter>sword25</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\sword25\detection_tables.h">
+			<Filter>sword25</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\sword25\sword25.h">
+			<Filter>sword25</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\sword2\animation.h">
 			<Filter>sword2</Filter>
 		</ClInclude>
@@ -6547,18 +6589,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\sword2\sword2.h">
 			<Filter>sword2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sword25\console.h">
-			<Filter>sword25</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sword25\detection.h">
-			<Filter>sword25</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sword25\detection_tables.h">
-			<Filter>sword25</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sword25\sword25.h">
-			<Filter>sword25</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\teenagent\actor.h">
 			<Filter>teenagent</Filter>
@@ -7652,6 +7682,42 @@
 		<ClInclude Include="..\..\engines\wintermute\wintypes.h">
 			<Filter>wintermute</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\animation.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\audiofile.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\console.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\detection.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\detection_tables.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\installer.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\metaengine.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\pythonhost.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\scripthandler.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\text.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\video.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\yaga\yaga.h">
+			<Filter>yaga</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\zvision\detection.h">
 			<Filter>zvision</Filter>
 		</ClInclude>
@@ -7708,11 +7774,11 @@
 		<None Include="..\..\engines\buried\module.mk">
 			<Filter>buried</Filter>
 		</None>
-		<None Include="..\..\engines\cge\module.mk">
-			<Filter>cge</Filter>
-		</None>
 		<None Include="..\..\engines\cge2\module.mk">
 			<Filter>cge2</Filter>
+		</None>
+		<None Include="..\..\engines\cge\module.mk">
+			<Filter>cge</Filter>
 		</None>
 		<None Include="..\..\engines\chamber\module.mk">
 			<Filter>chamber</Filter>
@@ -7755,6 +7821,9 @@
 		</None>
 		<None Include="..\..\engines\dragons\module.mk">
 			<Filter>dragons</Filter>
+		</None>
+		<None Include="..\..\engines\dragonslair2\module.mk">
+			<Filter>dragonslair2</Filter>
 		</None>
 		<None Include="..\..\engines\drascula\module.mk">
 			<Filter>drascula</Filter>
@@ -7912,11 +7981,11 @@
 		<None Include="..\..\engines\queen\module.mk">
 			<Filter>queen</Filter>
 		</None>
-		<None Include="..\..\engines\saga\module.mk">
-			<Filter>saga</Filter>
-		</None>
 		<None Include="..\..\engines\saga2\module.mk">
 			<Filter>saga2</Filter>
+		</None>
+		<None Include="..\..\engines\saga\module.mk">
+			<Filter>saga</Filter>
 		</None>
 		<None Include="..\..\engines\sci\module.mk">
 			<Filter>sci</Filter>
@@ -7945,11 +8014,11 @@
 		<None Include="..\..\engines\sword1\module.mk">
 			<Filter>sword1</Filter>
 		</None>
-		<None Include="..\..\engines\sword2\module.mk">
-			<Filter>sword2</Filter>
-		</None>
 		<None Include="..\..\engines\sword25\module.mk">
 			<Filter>sword25</Filter>
+		</None>
+		<None Include="..\..\engines\sword2\module.mk">
+			<Filter>sword2</Filter>
 		</None>
 		<None Include="..\..\engines\teenagent\module.mk">
 			<Filter>teenagent</Filter>
@@ -8016,6 +8085,9 @@
 		</None>
 		<None Include="..\..\engines\wintermute\module.mk">
 			<Filter>wintermute</Filter>
+		</None>
+		<None Include="..\..\engines\yaga\module.mk">
+			<Filter>yaga</Filter>
 		</None>
 		<None Include="..\..\engines\zvision\module.mk">
 			<Filter>zvision</Filter>

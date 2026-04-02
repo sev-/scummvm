@@ -1,203 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="engine">
-			<UniqueIdentifier>FB945DC5-844A-49FC-AFD7-2011DA3DA14D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5AC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\ac">
-			<UniqueIdentifier>6A275CBF-0B11-4676-8685-C8F67BBBD058</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5AD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\ac\dynobj">
-			<UniqueIdentifier>80881446-28F1-4D36-B908-A20729B03A96</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5AE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\debugging">
-			<UniqueIdentifier>7943402B-16FA-45B3-A155-FB2C17533F2D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5AF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\device">
-			<UniqueIdentifier>1BE7D517-1E93-435C-B6A5-ACA7FC13D63B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\game">
-			<UniqueIdentifier>EF8E8553-8FC7-472F-82C9-295882662622</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\gfx">
-			<UniqueIdentifier>98891A60-2566-4967-BA0E-BD76F0627A61</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\gui">
-			<UniqueIdentifier>56E557F2-20F5-470C-B822-5BF337622FC4</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\main">
-			<UniqueIdentifier>AE7F0F51-1A3B-4084-962E-5ABA4567ADA8</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\media">
-			<UniqueIdentifier>134ADEF9-9AE8-4A15-8C53-D774AD3810A6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\media\audio">
-			<UniqueIdentifier>341FFA58-4A1E-4975-8072-526B11BDF46E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\media\video">
-			<UniqueIdentifier>BF93357F-9B6C-4659-9D5B-B71A05E986CD</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\platform">
-			<UniqueIdentifier>24D036D3-7351-40F0-BE42-9E45036BBD3B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\platform\base">
-			<UniqueIdentifier>928A0028-AF8A-480E-BA20-3270F5EC692D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5B9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\platform\scummvm">
-			<UniqueIdentifier>6814AB4C-A4C2-41F4-A12C-0A9EF24CCBA2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engine\script">
-			<UniqueIdentifier>8A178464-102E-4F45-B963-9A16E5E22C97</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib">
-			<UniqueIdentifier>287BD4CF-3AC9-46C1-A537-B55D2500E58B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\aastr-0.1.1">
-			<UniqueIdentifier>C693653D-FC36-4CDB-B4A8-9A8AF6ED1341</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\alfont">
-			<UniqueIdentifier>971D4CAA-2EF8-472E-A848-E270E87205C7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\allegro">
-			<UniqueIdentifier>807A1920-C5CC-4ECC-AAEA-448D0ABAE4B9</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5BF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\freetype-2.1.3">
-			<UniqueIdentifier>828C377A-F968-4503-B6DF-74874CDA7BD4</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\freetype-2.1.3\autohint">
-			<UniqueIdentifier>309C5243-4462-4BA2-A93C-D6E9261A533B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lib\system">
-			<UniqueIdentifier>ED02E87C-2490-4CA1-851B-95C44BAB7906</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins">
-			<UniqueIdentifier>E4A9B40D-61CF-4715-A6ED-C1C2F86C5E32</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_agi">
-			<UniqueIdentifier>FAB911D1-DAE9-46A2-8ACF-9409A0898CFD</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_app_open_url">
-			<UniqueIdentifier>027A7C30-BFAF-4510-B85F-ABE92B8706F6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_blend">
-			<UniqueIdentifier>40D331B8-D93D-49A6-B285-E46E15F4F718</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_bm_font_renderer">
-			<UniqueIdentifier>738916C6-848C-438D-A299-1FC2274CBBAD</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_clipboard">
-			<UniqueIdentifier>A1FEECFD-5001-4E35-9B99-A9A1923DC10F</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_collision_detector">
-			<UniqueIdentifier>871E7E8D-E539-477E-8CAD-6A624AA4530D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5C9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_consoles">
-			<UniqueIdentifier>AF3366DC-BC5C-453F-BCF7-A56E1B708CA5</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_controller">
-			<UniqueIdentifier>F620B11B-EC1F-43BB-AC29-2C6036B5E659</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_creditz">
-			<UniqueIdentifier>0B87433D-C3CD-4189-B62E-93B54E6608FD</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_filedel">
-			<UniqueIdentifier>032106BB-06E2-4A11-B569-4ABBD00FB21A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_fire">
-			<UniqueIdentifier>0B4F4048-5D37-4D18-9C82-1AB5A7512C1C</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_flashlight">
-			<UniqueIdentifier>C80EDE87-5C46-4B57-AC1F-AA5BB932D9B5</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5CF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_galaxy_steam">
-			<UniqueIdentifier>6CA1B84D-7A5C-4691-8CA5-FC4FE27657A2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_joy">
-			<UniqueIdentifier>D51A0AA4-B4E8-4D49-8CC2-39BF31262617</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_maya">
-			<UniqueIdentifier>524E1D7B-AB23-4E4F-B83C-6A36C32348CE</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_nickenstien_gfx">
-			<UniqueIdentifier>486A5E5E-35C6-4AA3-9E0D-E4991ABC01A6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_pal_render">
-			<UniqueIdentifier>10CA34F1-D87C-4AED-8EE4-10A8B8E3B86E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_parallax">
-			<UniqueIdentifier>762AD1A7-2F4C-4910-8C61-99E28B80B333</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_shell">
-			<UniqueIdentifier>E90A091A-E83F-4FF7-885F-90C1FBB61D53</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_snow_rain">
-			<UniqueIdentifier>06642E97-E971-45B8-AC46-820D1107BFF2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_sock">
-			<UniqueIdentifier>65479A58-126F-4114-8531-F43A6D8343FE</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_sprite_font">
-			<UniqueIdentifier>E1818D87-0F50-40CD-BB25-2642FBF0D6C0</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5D9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_sprite_video">
-			<UniqueIdentifier>A7FE6036-FC4E-4A2C-9C3B-C578F109A548</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_tcp_ip">
-			<UniqueIdentifier>0AA7FEAA-4DFE-4860-89F8-4B3F11253BD9</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_touch">
-			<UniqueIdentifier>4EE4B9F8-66E9-481D-B662-3BB2A735A4A2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_trans">
-			<UniqueIdentifier>AE5071E6-411F-4850-989B-A7E4EC1B14E3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_utils">
-			<UniqueIdentifier>A2D4E7A0-5E06-4510-AEA8-52D01D1FD67D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_wadjet_util">
-			<UniqueIdentifier>8E294B1E-F65E-490B-9180-9EDC4B35632A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5DF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\ags_waves">
-			<UniqueIdentifier>14766BC5-91E4-4E65-9117-181F4D269CC8</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="plugins\core">
-			<UniqueIdentifier>05B7E178-38A1-482D-A054-B8663D4CE280</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared">
-			<UniqueIdentifier>B05598CD-1414-4733-8CAD-3A11FAC292FD</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\ac">
-			<UniqueIdentifier>F0E7F9AD-9838-4F62-8B15-E0D57254604F</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\ac\dynobj">
-			<UniqueIdentifier>5B4B8429-ED61-42F8-AD1B-17313B2C8E74</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\core">
-			<UniqueIdentifier>33B35530-C211-4F1B-9DC0-C801F1C10479</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\debugging">
-			<UniqueIdentifier>CF8266EA-BC01-4795-8038-675967BA3798</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\font">
-			<UniqueIdentifier>60411F90-C37F-4E2A-A7B7-5E5E3C244F9B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\game">
-			<UniqueIdentifier>5AA72CFC-8C43-41E0-B479-BCCB9086C878</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\gfx">
-			<UniqueIdentifier>9C82A70B-8A43-4456-BA33-DD4AFA12D4D0</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5E9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\gui">
-			<UniqueIdentifier>635A4247-67D4-4A17-AAF2-682EF04B7021</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5EA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\script">
-			<UniqueIdentifier>FE8B918B-FDD8-4D72-8529-54A4B00CEB72</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5EB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\util">
-			<UniqueIdentifier>889DA3FE-E730-4DBA-9FBA-A154FA34F8D2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5EC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\ags\ags.cpp" />
+		<ClCompile Include="..\..\engines\ags\console.cpp" />
+		<ClCompile Include="..\..\engines\ags\dialogs.cpp" />
+		<ClCompile Include="..\..\engines\ags\engine\ac\audio_channel.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\audio_clip.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\button.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\cd_audio.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\character.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\character_extras.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\character_info_engine.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\date_time.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\dialog.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\dialog_options_rendering.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\display.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\draw.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\draw_software.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\drawing_surface.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\engine\ac\dynamic_sprite.cpp">
+			<Filter>engine\ac</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\engine\ac\dynobj\cc_ags_dynamic_object.cpp">
 			<Filter>engine\ac\dynobj</Filter>
 		</ClCompile>
@@ -293,51 +341,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\engine\ac\dynobj\script_viewport.cpp">
 			<Filter>engine\ac\dynobj</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\audio_channel.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\audio_clip.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\button.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\cd_audio.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\character.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\character_extras.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\character_info_engine.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\date_time.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\dialog.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\dialog_options_rendering.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\display.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\draw.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\draw_software.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\drawing_surface.cpp">
-			<Filter>engine\ac</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\engine\ac\dynamic_sprite.cpp">
-			<Filter>engine\ac</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\engine\ac\event.cpp">
 			<Filter>engine\ac</Filter>
@@ -753,6 +756,9 @@
 		<ClCompile Include="..\..\engines\ags\engine\script\system_imports.cpp">
 			<Filter>engine\script</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\events.cpp" />
+		<ClCompile Include="..\..\engines\ags\game_scanner.cpp" />
+		<ClCompile Include="..\..\engines\ags\globals.cpp" />
 		<ClCompile Include="..\..\engines\ags\lib\aastr-0.1.1\aarot.cpp">
 			<Filter>lib\aastr-0.1.1</Filter>
 		</ClCompile>
@@ -828,6 +834,8 @@
 		<ClCompile Include="..\..\engines\ags\lib\system\datetime.cpp">
 			<Filter>lib\system</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\ags\music.cpp" />
 		<ClCompile Include="..\..\engines\ags\plugins\ags_agi\ags_agi.cpp">
 			<Filter>plugins\ags_agi</Filter>
 		</ClCompile>
@@ -902,6 +910,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\plugins\ags_parallax\ags_parallax.cpp">
 			<Filter>plugins\ags_parallax</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\plugins\ags_plugin.cpp">
+			<Filter>plugins</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\plugins\ags_shell\ags_shell.cpp">
 			<Filter>plugins\ags_shell</Filter>
@@ -1077,14 +1088,8 @@
 		<ClCompile Include="..\..\engines\ags\plugins\core\view_frame.cpp">
 			<Filter>plugins\core</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\plugins\ags_plugin.cpp">
-			<Filter>plugins</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\plugins\plugin_base.cpp">
 			<Filter>plugins</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\shared\ac\dynobj\script_audio_clip.cpp">
-			<Filter>shared\ac\dynobj</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\shared\ac\audio_clip_type.cpp">
 			<Filter>shared\ac</Filter>
@@ -1097,6 +1102,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\shared\ac\dialog_topic.cpp">
 			<Filter>shared\ac</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ags\shared\ac\dynobj\script_audio_clip.cpp">
+			<Filter>shared\ac\dynobj</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ags\shared\ac\game_setup_struct.cpp">
 			<Filter>shared\ac</Filter>
@@ -1278,16 +1286,58 @@
 		<ClCompile Include="..\..\engines\ags\shared\util\wgt2_allg.cpp">
 			<Filter>shared\util</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ags\ags.cpp" />
-		<ClCompile Include="..\..\engines\ags\console.cpp" />
-		<ClCompile Include="..\..\engines\ags\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\ags\events.cpp" />
-		<ClCompile Include="..\..\engines\ags\game_scanner.cpp" />
-		<ClCompile Include="..\..\engines\ags\globals.cpp" />
-		<ClCompile Include="..\..\engines\ags\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\ags\music.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\ags\achievements_tables.h" />
+		<ClInclude Include="..\..\engines\ags\ags.h" />
+		<ClInclude Include="..\..\engines\ags\console.h" />
+		<ClInclude Include="..\..\engines\ags\detection.h" />
+		<ClInclude Include="..\..\engines\ags\detection_tables.h" />
+		<ClInclude Include="..\..\engines\ags\engine\ac\asset_helper.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\audio_channel.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\audio_clip.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\button.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\cd_audio.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\character.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\character_extras.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\date_time.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\dialog.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\dialog_options_rendering.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\display.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\draw.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\draw_software.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\drawing_surface.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\engine\ac\dynamic_sprite.h">
+			<Filter>engine\ac</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\engine\ac\dynobj\all_dynamic_classes.h">
 			<Filter>engine\ac\dynobj</Filter>
 		</ClInclude>
@@ -1416,51 +1466,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\engine\ac\dynobj\script_viewport.h">
 			<Filter>engine\ac\dynobj</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\asset_helper.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\audio_channel.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\audio_clip.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\button.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\cd_audio.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\character.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\character_extras.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\date_time.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\dialog.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\dialog_options_rendering.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\display.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\draw.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\draw_software.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\drawing_surface.h">
-			<Filter>engine\ac</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\engine\ac\dynamic_sprite.h">
-			<Filter>engine\ac</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\engine\ac\event.h">
 			<Filter>engine\ac</Filter>
@@ -1906,6 +1911,9 @@
 		<ClInclude Include="..\..\engines\ags\engine\script\system_imports.h">
 			<Filter>engine\script</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\events.h" />
+		<ClInclude Include="..\..\engines\ags\game_scanner.h" />
+		<ClInclude Include="..\..\engines\ags\globals.h" />
 		<ClInclude Include="..\..\engines\ags\lib\aastr-0.1.1\aastr.h">
 			<Filter>lib\aastr-0.1.1</Filter>
 		</ClInclude>
@@ -1914,6 +1922,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\lib\alfont\alfont.h">
 			<Filter>lib\alfont</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\lib\allegro.h">
+			<Filter>lib</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\lib\allegro\aintern.h">
 			<Filter>lib\allegro</Filter>
@@ -1990,15 +2001,14 @@
 		<ClInclude Include="..\..\engines\ags\lib\freetype-2.1.3\ftmemory.h">
 			<Filter>lib\freetype-2.1.3</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\lib\system\datetime.h">
-			<Filter>lib\system</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\lib\allegro.h">
-			<Filter>lib</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\lib\std.h">
 			<Filter>lib</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\lib\system\datetime.h">
+			<Filter>lib\system</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\metaengine.h" />
+		<ClInclude Include="..\..\engines\ags\music.h" />
 		<ClInclude Include="..\..\engines\ags\plugins\ags_agi\ags_agi.h">
 			<Filter>plugins\ags_agi</Filter>
 		</ClInclude>
@@ -2073,6 +2083,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\plugins\ags_parallax\ags_parallax.h">
 			<Filter>plugins\ags_parallax</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\plugins\ags_plugin.h">
+			<Filter>plugins</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\plugins\ags_plugin_evts.h">
+			<Filter>plugins</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\plugins\ags_shell\ags_shell.h">
 			<Filter>plugins\ags_shell</Filter>
@@ -2239,12 +2255,6 @@
 		<ClInclude Include="..\..\engines\ags\plugins\core\view_frame.h">
 			<Filter>plugins\core</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\plugins\ags_plugin.h">
-			<Filter>plugins</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\plugins\ags_plugin_evts.h">
-			<Filter>plugins</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\plugins\plugin_base.h">
 			<Filter>plugins</Filter>
 		</ClInclude>
@@ -2253,6 +2263,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\plugins\serializer.h">
 			<Filter>plugins</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\shared\ac\audio_clip_type.h">
+			<Filter>shared\ac</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\shared\ac\character_info.h">
 			<Filter>shared\ac</Filter>
@@ -2263,14 +2276,11 @@
 		<ClInclude Include="..\..\engines\ags\shared\ac\common_defines.h">
 			<Filter>shared\ac</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\shared\ac\dynobj\script_audio_clip.h">
-			<Filter>shared\ac\dynobj</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\shared\ac\audio_clip_type.h">
-			<Filter>shared\ac</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\shared\ac\dialog_topic.h">
 			<Filter>shared\ac</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ags\shared\ac\dynobj\script_audio_clip.h">
+			<Filter>shared\ac\dynobj</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ags\shared\ac\game_setup_struct.h">
 			<Filter>shared\ac</Filter>
@@ -2530,16 +2540,6 @@
 		<ClInclude Include="..\..\engines\ags\shared\util\wgt2_allg.h">
 			<Filter>shared\util</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ags\achievements_tables.h" />
-		<ClInclude Include="..\..\engines\ags\ags.h" />
-		<ClInclude Include="..\..\engines\ags\console.h" />
-		<ClInclude Include="..\..\engines\ags\detection.h" />
-		<ClInclude Include="..\..\engines\ags\detection_tables.h" />
-		<ClInclude Include="..\..\engines\ags\events.h" />
-		<ClInclude Include="..\..\engines\ags\game_scanner.h" />
-		<ClInclude Include="..\..\engines\ags\globals.h" />
-		<ClInclude Include="..\..\engines\ags\metaengine.h" />
-		<ClInclude Include="..\..\engines\ags\music.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\ags\module.mk" />

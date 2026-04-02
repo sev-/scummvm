@@ -1,71 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="mm1">
-			<UniqueIdentifier>65E010CD-D60B-4E59-9896-4C4F9A59E2EB</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6D7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\data">
-			<UniqueIdentifier>18AF0D39-7A77-47AD-9767-56328F365B35</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6D8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\game">
-			<UniqueIdentifier>AAAD8CE7-7C4A-49CC-B4A4-8F5F9BBB0B75</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6D9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\gfx">
-			<UniqueIdentifier>E1AA4E51-7FAA-4EF7-ABBD-5A2B3EA077B9</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\maps">
-			<UniqueIdentifier>D1233D50-DAFB-4A10-BD31-60CC846B3223</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\utils">
-			<UniqueIdentifier>07346A2D-526F-4B21-AF0C-C0A8868BDB55</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views">
-			<UniqueIdentifier>CB78974E-3BF2-4554-9810-B77B2758A69D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views\interactions">
-			<UniqueIdentifier>A989876D-538C-40AA-B25A-CEC517E9FD02</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views\locations">
-			<UniqueIdentifier>4B44F861-244D-42E1-B917-9C6EF6D03A45</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6DF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views\spells">
-			<UniqueIdentifier>63951133-77F5-4C99-B44B-C0EAA5E1E791</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views_enh">
-			<UniqueIdentifier>1E490C26-52E5-433D-8CE6-BF1CD9388237</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views_enh\interactions">
-			<UniqueIdentifier>30979C64-FAEF-4855-8B61-DE5E07A7AD3B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views_enh\locations">
-			<UniqueIdentifier>60F238C9-8AB2-4B51-A8F9-491ECD71699B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mm1\views_enh\spells">
-			<UniqueIdentifier>E682BBF0-3779-4908-97EF-2C689E0D26B9</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared">
-			<UniqueIdentifier>9BD8002A-C0EE-46F7-900C-90717124B6AA</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\utils">
-			<UniqueIdentifier>EB015059-C0D6-4DE0-A620-F8396C5D41F7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\xeen">
-			<UniqueIdentifier>2E988C49-1A77-4433-A152-FC780D77A8B3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="xeen">
-			<UniqueIdentifier>9E0A5994-2F91-4E2C-89D8-7EC77F1A2F9D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="xeen\dialogs">
-			<UniqueIdentifier>AA3816B9-B9D9-47EC-B1C9-4FBC1AA6FEFC</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6E9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="xeen\swordsofxeen">
-			<UniqueIdentifier>37072D73-C4F0-4565-B2F3-15928AAB8D38</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6EA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="xeen\worldofxeen">
-			<UniqueIdentifier>2AD4D172-4C55-4462-BBB2-6D5E9F92BB7B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6EB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\mm\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\mm\mm.cpp" />
+		<ClCompile Include="..\..\engines\mm\mm1\console.cpp">
+			<Filter>mm1</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\data\active_spells.cpp">
 			<Filter>mm1\data</Filter>
 		</ClCompile>
@@ -98,6 +103,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\data\treasure.cpp">
 			<Filter>mm1\data</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\events.cpp">
+			<Filter>mm1</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\game\arenko.cpp">
 			<Filter>mm1\game</Filter>
@@ -167,6 +175,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\gfx\symbols.cpp">
 			<Filter>mm1\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\globals.cpp">
+			<Filter>mm1</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\maps\map.cpp">
 			<Filter>mm1\maps</Filter>
@@ -348,11 +359,74 @@
 		<ClCompile Include="..\..\engines\mm\mm1\maps\maps.cpp">
 			<Filter>mm1\maps</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\messages.cpp">
+			<Filter>mm1</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\metaengine.cpp">
+			<Filter>mm1</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\mm1.cpp">
+			<Filter>mm1</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\sound.cpp">
+			<Filter>mm1</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\utils\mouse.cpp">
 			<Filter>mm1\utils</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\utils\strings.cpp">
 			<Filter>mm1\utils</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\are_you_ready.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\bash.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\character_base.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\character_info.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\character_manage.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\character_view_combat.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\characters.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\color_questions.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\combat.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\create_characters.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\dead.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\encounter.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\game.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\game_commands.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\game_messages.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\game_party.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\game_view.cpp">
+			<Filter>mm1\views</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views\interactions\access_code.cpp">
 			<Filter>mm1\views\interactions</Filter>
@@ -471,6 +545,24 @@
 		<ClCompile Include="..\..\engines\mm\mm1\views\locations\training.cpp">
 			<Filter>mm1\views\locations</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\main_menu.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\order.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\protect.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\quick_ref.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\rest.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views\search.cpp">
+			<Filter>mm1\views</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views\spells\cast_spell.cpp">
 			<Filter>mm1\views\spells</Filter>
 		</ClCompile>
@@ -495,75 +587,6 @@
 		<ClCompile Include="..\..\engines\mm\mm1\views\spells\teleport.cpp">
 			<Filter>mm1\views\spells</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\are_you_ready.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\bash.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\character_base.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\character_info.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\character_manage.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\character_view_combat.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\characters.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\color_questions.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\combat.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\create_characters.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\dead.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\encounter.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\game.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\game_commands.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\game_messages.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\game_party.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\game_view.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\main_menu.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\order.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\protect.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\quick_ref.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\rest.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views\search.cpp">
-			<Filter>mm1\views</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views\text_entry.cpp">
 			<Filter>mm1\views</Filter>
 		</ClCompile>
@@ -581,6 +604,69 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views\wheel_spin.cpp">
 			<Filter>mm1\views</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\button_container.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_base.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_info.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_inventory.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_manage.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_select.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_view.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\characters.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\color_questions.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\combat.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\confirm.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\create_characters.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\dead.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\dialogs.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\encounter.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\exchange.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_commands.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_messages.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_party.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_view.cpp">
+			<Filter>mm1\views_enh</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\interactions\access_code.cpp">
 			<Filter>mm1\views_enh\interactions</Filter>
@@ -666,6 +752,9 @@
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\interactions\volcano_god.cpp">
 			<Filter>mm1\views_enh\interactions</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\items_view.cpp">
+			<Filter>mm1\views_enh</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\locations\blacksmith.cpp">
 			<Filter>mm1\views_enh\locations</Filter>
 		</ClCompile>
@@ -689,96 +778,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\locations\training.cpp">
 			<Filter>mm1\views_enh\locations</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\cast_spell.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\detect_magic.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\duplication.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\fly.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\location.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\recharge_item.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\spellbook.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\teleport.cpp">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\button_container.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_base.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_info.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_inventory.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_manage.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_select.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\character_view.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\characters.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\color_questions.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\combat.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\confirm.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\create_characters.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\dead.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\dialogs.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\encounter.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\exchange.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_commands.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_messages.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_party.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\game_view.cpp">
-			<Filter>mm1\views_enh</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\views_enh\items_view.cpp">
-			<Filter>mm1\views_enh</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\main_menu.cpp">
 			<Filter>mm1\views_enh</Filter>
@@ -816,6 +815,30 @@
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\select_number.cpp">
 			<Filter>mm1\views_enh</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\cast_spell.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\detect_magic.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\duplication.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\fly.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\location.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\recharge_item.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\spellbook.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\mm1\views_enh\spells\teleport.cpp">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\text_entry.cpp">
 			<Filter>mm1\views_enh</Filter>
 		</ClCompile>
@@ -852,27 +875,6 @@
 		<ClCompile Include="..\..\engines\mm\mm1\views_enh\yes_no.cpp">
 			<Filter>mm1\views_enh</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\console.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\events.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\globals.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\messages.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\metaengine.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\mm1.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\mm1\sound.cpp">
-			<Filter>mm1</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\shared\utils\bitmap_font.cpp">
 			<Filter>shared\utils</Filter>
 		</ClCompile>
@@ -908,6 +910,18 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\shared\xeen\xsurface.cpp">
 			<Filter>shared\xeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\character.cpp">
+			<Filter>xeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\combat.cpp">
+			<Filter>xeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\cutscenes.cpp">
+			<Filter>xeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\debugger.cpp">
+			<Filter>xeen</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\xeen\dialogs\credits_screen.cpp">
 			<Filter>xeen\dialogs</Filter>
@@ -978,39 +992,6 @@
 		<ClCompile Include="..\..\engines\mm\xeen\dialogs\please_wait.cpp">
 			<Filter>xeen\dialogs</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen.cpp">
-			<Filter>xeen\swordsofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen_menu.cpp">
-			<Filter>xeen\swordsofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\clouds_cutscenes.cpp">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\darkside_cutscenes.cpp">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen.cpp">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_cutscenes.cpp">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_menu.cpp">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\character.cpp">
-			<Filter>xeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\combat.cpp">
-			<Filter>xeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\cutscenes.cpp">
-			<Filter>xeen</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\xeen\debugger.cpp">
-			<Filter>xeen</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\xeen\events.cpp">
 			<Filter>xeen</Filter>
 		</ClCompile>
@@ -1068,16 +1049,41 @@
 		<ClCompile Include="..\..\engines\mm\xeen\subtitles.cpp">
 			<Filter>xeen</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen.cpp">
+			<Filter>xeen\swordsofxeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen_menu.cpp">
+			<Filter>xeen\swordsofxeen</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\xeen\window.cpp">
 			<Filter>xeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\clouds_cutscenes.cpp">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\darkside_cutscenes.cpp">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen.cpp">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_cutscenes.cpp">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_menu.cpp">
+			<Filter>xeen\worldofxeen</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\mm\xeen\xeen.cpp">
 			<Filter>xeen</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\mm\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\mm\mm.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\mm\detection.h" />
+		<ClInclude Include="..\..\engines\mm\detection_tables.h" />
+		<ClInclude Include="..\..\engines\mm\mm.h" />
+		<ClInclude Include="..\..\engines\mm\mm1\console.h">
+			<Filter>mm1</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\data\active_spells.h">
 			<Filter>mm1\data</Filter>
 		</ClInclude>
@@ -1116,6 +1122,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\data\treasure.h">
 			<Filter>mm1\data</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\events.h">
+			<Filter>mm1</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\game\arenko.h">
 			<Filter>mm1\game</Filter>
@@ -1188,6 +1197,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\gfx\symbols.h">
 			<Filter>mm1\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\globals.h">
+			<Filter>mm1</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\maps\map.h">
 			<Filter>mm1\maps</Filter>
@@ -1369,11 +1381,80 @@
 		<ClInclude Include="..\..\engines\mm\mm1\maps\maps.h">
 			<Filter>mm1\maps</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\messages.h">
+			<Filter>mm1</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\metaengine.h">
+			<Filter>mm1</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\mm1.h">
+			<Filter>mm1</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\sound.h">
+			<Filter>mm1</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\utils\mouse.h">
 			<Filter>mm1\utils</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\utils\strings.h">
 			<Filter>mm1\utils</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\are_you_ready.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\bash.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\character_base.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\character_info.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\character_manage.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\character_view.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\character_view_combat.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\characters.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\color_questions.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\combat.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\create_characters.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\dead.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\dialogs.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\encounter.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\game.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\game_commands.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\game_messages.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\game_party.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\game_view.h">
+			<Filter>mm1\views</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views\interactions\access_code.h">
 			<Filter>mm1\views\interactions</Filter>
@@ -1492,6 +1573,24 @@
 		<ClInclude Include="..\..\engines\mm\mm1\views\locations\training.h">
 			<Filter>mm1\views\locations</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\main_menu.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\order.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\protect.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\quick_ref.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\rest.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views\search.h">
+			<Filter>mm1\views</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views\spells\cast_spell.h">
 			<Filter>mm1\views\spells</Filter>
 		</ClInclude>
@@ -1516,81 +1615,6 @@
 		<ClInclude Include="..\..\engines\mm\mm1\views\spells\teleport.h">
 			<Filter>mm1\views\spells</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\are_you_ready.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\bash.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\character_base.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\character_info.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\character_manage.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\character_view.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\character_view_combat.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\characters.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\color_questions.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\combat.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\create_characters.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\dead.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\dialogs.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\encounter.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\game.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\game_commands.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\game_messages.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\game_party.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\game_view.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\main_menu.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\order.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\protect.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\quick_ref.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\rest.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views\search.h">
-			<Filter>mm1\views</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views\text_entry.h">
 			<Filter>mm1\views</Filter>
 		</ClInclude>
@@ -1608,6 +1632,69 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views\wheel_spin.h">
 			<Filter>mm1\views</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\button_container.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_base.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_info.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_inventory.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_manage.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_select.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_view.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\characters.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\color_questions.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\combat.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\confirm.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\create_characters.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\dead.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\dialogs.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\encounter.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\exchange.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_commands.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_messages.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_party.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_view.h">
+			<Filter>mm1\views_enh</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\interactions\access_code.h">
 			<Filter>mm1\views_enh\interactions</Filter>
@@ -1693,6 +1780,9 @@
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\interactions\volcano_god.h">
 			<Filter>mm1\views_enh\interactions</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\items_view.h">
+			<Filter>mm1\views_enh</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\locations\blacksmith.h">
 			<Filter>mm1\views_enh\locations</Filter>
 		</ClInclude>
@@ -1716,96 +1806,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\locations\training.h">
 			<Filter>mm1\views_enh\locations</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\cast_spell.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\detect_magic.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\duplication.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\fly.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\location.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\recharge_item.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\spellbook.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\teleport.h">
-			<Filter>mm1\views_enh\spells</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\button_container.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_base.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_info.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_inventory.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_manage.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_select.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\character_view.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\characters.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\color_questions.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\combat.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\confirm.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\create_characters.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\dead.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\dialogs.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\encounter.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\exchange.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_commands.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_messages.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_party.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\game_view.h">
-			<Filter>mm1\views_enh</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\views_enh\items_view.h">
-			<Filter>mm1\views_enh</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\main_menu.h">
 			<Filter>mm1\views_enh</Filter>
@@ -1843,6 +1843,30 @@
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\select_number.h">
 			<Filter>mm1\views_enh</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\cast_spell.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\detect_magic.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\duplication.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\fly.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\location.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\recharge_item.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\spellbook.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\mm1\views_enh\spells\teleport.h">
+			<Filter>mm1\views_enh\spells</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\text_entry.h">
 			<Filter>mm1\views_enh</Filter>
 		</ClInclude>
@@ -1879,27 +1903,6 @@
 		<ClInclude Include="..\..\engines\mm\mm1\views_enh\yes_no.h">
 			<Filter>mm1\views_enh</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\console.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\events.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\globals.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\messages.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\metaengine.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\mm1.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\mm1\sound.h">
-			<Filter>mm1</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\shared\utils\bitmap_font.h">
 			<Filter>shared\utils</Filter>
 		</ClInclude>
@@ -1935,6 +1938,18 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\shared\xeen\xsurface.h">
 			<Filter>shared\xeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\character.h">
+			<Filter>xeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\combat.h">
+			<Filter>xeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\cutscenes.h">
+			<Filter>xeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\debugger.h">
+			<Filter>xeen</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\xeen\dialogs\credits_screen.h">
 			<Filter>xeen\dialogs</Filter>
@@ -2005,39 +2020,6 @@
 		<ClInclude Include="..\..\engines\mm\xeen\dialogs\please_wait.h">
 			<Filter>xeen\dialogs</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen.h">
-			<Filter>xeen\swordsofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen_menu.h">
-			<Filter>xeen\swordsofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\clouds_cutscenes.h">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\darkside_cutscenes.h">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen.h">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_cutscenes.h">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_menu.h">
-			<Filter>xeen\worldofxeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\character.h">
-			<Filter>xeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\combat.h">
-			<Filter>xeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\cutscenes.h">
-			<Filter>xeen</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\xeen\debugger.h">
-			<Filter>xeen</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\xeen\events.h">
 			<Filter>xeen</Filter>
 		</ClInclude>
@@ -2098,15 +2080,33 @@
 		<ClInclude Include="..\..\engines\mm\xeen\subtitles.h">
 			<Filter>xeen</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen.h">
+			<Filter>xeen\swordsofxeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\swordsofxeen\swordsofxeen_menu.h">
+			<Filter>xeen\swordsofxeen</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\xeen\window.h">
 			<Filter>xeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\clouds_cutscenes.h">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\darkside_cutscenes.h">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen.h">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_cutscenes.h">
+			<Filter>xeen\worldofxeen</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\mm\xeen\worldofxeen\worldofxeen_menu.h">
+			<Filter>xeen\worldofxeen</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\mm\xeen\xeen.h">
 			<Filter>xeen</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\mm\detection.h" />
-		<ClInclude Include="..\..\engines\mm\detection_tables.h" />
-		<ClInclude Include="..\..\engines\mm\mm.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\mm\module.mk" />

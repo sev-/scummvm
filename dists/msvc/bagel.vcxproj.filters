@@ -1,122 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="boflib">
-			<UniqueIdentifier>7250330D-69A1-4936-A443-032941829A6B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj">
-			<UniqueIdentifier>AF53E23E-73B9-402C-A8D6-EA6ABB7D5C24</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\archeroids">
-			<UniqueIdentifier>4A173A6F-706F-46AF-8FC1-E42F5339A9EB</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\artparts">
-			<UniqueIdentifier>8A1EE7AD-4189-4625-B4D1-0D21AC5E3FDC</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\barbershop">
-			<UniqueIdentifier>DF6621EF-CFD6-4303-8A08-6934A8A2F2C7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\battlefish">
-			<UniqueIdentifier>4D1364C6-B368-4625-AD46-00FB886A7850</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\beacon">
-			<UniqueIdentifier>2FA74892-4868-4D70-AFB8-503414D5AE91</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\crypt">
-			<UniqueIdentifier>EF7A2B98-9150-4B10-927C-876F0D0E01C2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5F9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\dfa">
-			<UniqueIdentifier>7C9FC488-4213-4AB3-A9A3-D3FC174720ED</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\fuge">
-			<UniqueIdentifier>BCD84202-7617-4FBC-A201-C5D883400A5E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\garfunkle">
-			<UniqueIdentifier>E0CBC81E-B430-4567-A864-0586177AA578</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\gfx">
-			<UniqueIdentifier>8FF551EE-9207-4ADA-9CDD-08BA6F1C059D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\hnplibs">
-			<UniqueIdentifier>7C5F53E4-F2A0-4D24-8825-0373F392AF63</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\libs">
-			<UniqueIdentifier>F9E0DCF6-DA35-4E26-B4C4-BD98A407979A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA5FF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\life">
-			<UniqueIdentifier>B6BFCACA-4326-49B4-BDFA-8215935FAA9D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA600-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\mankala">
-			<UniqueIdentifier>7BA83E91-E711-4431-89AA-E52BD9F0256E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA601-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\mazedoom">
-			<UniqueIdentifier>8DE22640-C0AA-4446-A684-A6161C57C33F</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA602-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame">
-			<UniqueIdentifier>154902AD-2183-44CB-BA32-B6DB45904E6E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA603-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\bgen">
-			<UniqueIdentifier>A3EC06D7-6A2E-4077-8E9A-36BB32419FBB</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA604-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\demo">
-			<UniqueIdentifier>7E42B24A-6962-4679-A23A-6AB6FE96CC8A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA605-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\frame">
-			<UniqueIdentifier>EAF0EE20-D537-4790-BAA8-5D8EE23A7630</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA606-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\grand_tour">
-			<UniqueIdentifier>2EB45ADC-08FB-404B-92E9-F1211F584A53</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA607-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\gtl">
-			<UniqueIdentifier>9D01B805-4643-49A4-994F-4F3CEED8BDE4</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA608-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\saves">
-			<UniqueIdentifier>E3C11160-9319-4ABE-9C71-297CF7BA9D4A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA609-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\metagame\zoom">
-			<UniqueIdentifier>5802D796-CF3A-479F-9ADB-915A3DEB028C</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\novacancy">
-			<UniqueIdentifier>E4EDC80E-173E-4447-91F4-D350552B4C9D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\packrat">
-			<UniqueIdentifier>74E4073D-59BF-45B1-AA6E-F08D417011E6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\pdq">
-			<UniqueIdentifier>6ADF1D52-FBAC-499E-AEE9-9F7A209A13BC</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\peggle">
-			<UniqueIdentifier>D846AA35-4551-47D1-B055-5DE4EB9FA9E8</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\poker">
-			<UniqueIdentifier>B5BD2D2A-5EAF-41A8-B6A2-EBFA2B2D462A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA60F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\riddles">
-			<UniqueIdentifier>624C4FF0-CE42-4D46-B3F4-FD6711776D77</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA610-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hodjnpodj\wordsearch">
-			<UniqueIdentifier>7E4C3901-0A29-4391-81F6-7153F0D485C2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA611-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar">
-			<UniqueIdentifier>09F0229E-435A-482E-9AFA-670774FE1D11</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA612-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar\baglib">
-			<UniqueIdentifier>038374A7-4AA4-48CD-A079-F76E2927F0EB</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA613-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar\boflib">
-			<UniqueIdentifier>E4305332-7A51-4637-BC26-77BEF4A8F918</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA614-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar\boflib\gfx">
-			<UniqueIdentifier>C6B20F9E-77A0-432E-8AEA-74E482F9D9F1</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA615-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar\boflib\gui">
-			<UniqueIdentifier>BE02A68C-9A7F-4436-A155-AFCE990C930D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA616-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spacebar\dialogs">
-			<UniqueIdentifier>547DE4C2-0A00-4224-B427-9A273B0D028C</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA617-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\bagel\bagel.cpp" />
 		<ClCompile Include="..\..\engines\bagel\boflib\cache.cpp">
 			<Filter>boflib</Filter>
 		</ClCompile>
@@ -234,6 +235,9 @@
 		<ClCompile Include="..\..\engines\bagel\hodjnpodj\beacon\optndlg.cpp">
 			<Filter>hodjnpodj\beacon</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\hodjnpodj\console.cpp">
+			<Filter>hodjnpodj</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\hodjnpodj\crypt\crypt.cpp">
 			<Filter>hodjnpodj\crypt</Filter>
 		</ClCompile>
@@ -332,6 +336,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\hodjnpodj\hnplibs\text.cpp">
 			<Filter>hodjnpodj\hnplibs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\hodjnpodj\hodjnpodj.cpp">
+			<Filter>hodjnpodj</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\hodjnpodj\libs\vector.cpp">
 			<Filter>hodjnpodj\libs</Filter>
@@ -636,12 +643,8 @@
 		<ClCompile Include="..\..\engines\bagel\hodjnpodj\wordsearch\wordsearch.cpp">
 			<Filter>hodjnpodj\wordsearch</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\hodjnpodj\console.cpp">
-			<Filter>hodjnpodj</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\hodjnpodj\hodjnpodj.cpp">
-			<Filter>hodjnpodj</Filter>
-		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\bagel\music.cpp" />
 		<ClCompile Include="..\..\engines\bagel\spacebar\baglib\area_object.cpp">
 			<Filter>spacebar\baglib</Filter>
 		</ClCompile>
@@ -771,6 +774,27 @@
 		<ClCompile Include="..\..\engines\bagel\spacebar\baglib\zoom_pda.cpp">
 			<Filter>spacebar\baglib</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\bib_odds_wnd.cpp">
+			<Filter>spacebar</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\bibble_window.cpp">
+			<Filter>spacebar</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\app.cpp">
+			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\crc.cpp">
+			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\dat_file.cpp">
+			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\debug.cpp">
+			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\file.cpp">
+			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\gfx\bitmap.cpp">
 			<Filter>spacebar\boflib\gfx</Filter>
 		</ClCompile>
@@ -807,21 +831,6 @@
 		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\gui\window.cpp">
 			<Filter>spacebar\boflib\gui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\app.cpp">
-			<Filter>spacebar\boflib</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\crc.cpp">
-			<Filter>spacebar\boflib</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\dat_file.cpp">
-			<Filter>spacebar\boflib</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\debug.cpp">
-			<Filter>spacebar\boflib</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\file.cpp">
-			<Filter>spacebar\boflib</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\options.cpp">
 			<Filter>spacebar\boflib</Filter>
 		</ClCompile>
@@ -833,6 +842,12 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\boflib\vector.cpp">
 			<Filter>spacebar\boflib</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\computer.cpp">
+			<Filter>spacebar</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bagel\spacebar\console.cpp">
+			<Filter>spacebar</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\dialogs\credits_dialog.cpp">
 			<Filter>spacebar\dialogs</Filter>
@@ -857,18 +872,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\dialogs\start_dialog.cpp">
 			<Filter>spacebar\dialogs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\bib_odds_wnd.cpp">
-			<Filter>spacebar</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\bibble_window.cpp">
-			<Filter>spacebar</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\computer.cpp">
-			<Filter>spacebar</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\spacebar\console.cpp">
-			<Filter>spacebar</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bagel\spacebar\filter.cpp">
 			<Filter>spacebar</Filter>
@@ -903,11 +906,10 @@
 		<ClCompile Include="..\..\engines\bagel\spacebar\vid_wnd.cpp">
 			<Filter>spacebar</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\bagel\bagel.cpp" />
-		<ClCompile Include="..\..\engines\bagel\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\bagel\music.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\bagel\afxwin.h" />
+		<ClInclude Include="..\..\engines\bagel\bagel.h" />
 		<ClInclude Include="..\..\engines\bagel\boflib\cache.h">
 			<Filter>boflib</Filter>
 		</ClInclude>
@@ -962,6 +964,8 @@
 		<ClInclude Include="..\..\engines\bagel\boflib\string_functions.h">
 			<Filter>boflib</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\detection.h" />
+		<ClInclude Include="..\..\engines\bagel\detection_tables.h" />
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\archeroids\init.h">
 			<Filter>hodjnpodj\archeroids</Filter>
 		</ClInclude>
@@ -1052,6 +1056,9 @@
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\beacon\resource.h">
 			<Filter>hodjnpodj\beacon</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\hodjnpodj\console.h">
+			<Filter>hodjnpodj</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\crypt\crypt.h">
 			<Filter>hodjnpodj\crypt</Filter>
 		</ClInclude>
@@ -1133,6 +1140,9 @@
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\gfx\palette.h">
 			<Filter>hodjnpodj\gfx</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\hodjnpodj\globals.h">
+			<Filter>hodjnpodj</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\hnplibs\audiocfg.h">
 			<Filter>hodjnpodj\hnplibs</Filter>
 		</ClInclude>
@@ -1180,6 +1190,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\hnplibs\text.h">
 			<Filter>hodjnpodj\hnplibs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\hodjnpodj\hodjnpodj.h">
+			<Filter>hodjnpodj</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\libs\array.h">
 			<Filter>hodjnpodj\libs</Filter>
@@ -1547,15 +1560,8 @@
 		<ClInclude Include="..\..\engines\bagel\hodjnpodj\wordsearch\wordsearch.h">
 			<Filter>hodjnpodj\wordsearch</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\hodjnpodj\console.h">
-			<Filter>hodjnpodj</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\hodjnpodj\globals.h">
-			<Filter>hodjnpodj</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\hodjnpodj\hodjnpodj.h">
-			<Filter>hodjnpodj</Filter>
-		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\metaengine.h" />
+		<ClInclude Include="..\..\engines\bagel\music.h" />
 		<ClInclude Include="..\..\engines\bagel\spacebar\baglib\area_object.h">
 			<Filter>spacebar\baglib</Filter>
 		</ClInclude>
@@ -1691,6 +1697,33 @@
 		<ClInclude Include="..\..\engines\bagel\spacebar\baglib\zoom_pda.h">
 			<Filter>spacebar\baglib</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\bib_odds_wnd.h">
+			<Filter>spacebar</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\bibble_window.h">
+			<Filter>spacebar</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\app.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\array.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\crc.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\dat_file.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\debug.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\events.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\file.h">
+			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\fixed.h">
 			<Filter>spacebar\boflib</Filter>
 		</ClInclude>
@@ -1730,27 +1763,6 @@
 		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\gui\window.h">
 			<Filter>spacebar\boflib\gui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\app.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\array.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\crc.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\dat_file.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\debug.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\events.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\file.h">
-			<Filter>spacebar\boflib</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\list.h">
 			<Filter>spacebar\boflib</Filter>
 		</ClInclude>
@@ -1771,6 +1783,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\boflib\vhash_table.h">
 			<Filter>spacebar\boflib</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\computer.h">
+			<Filter>spacebar</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\bagel\spacebar\console.h">
+			<Filter>spacebar</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\dialogs\credits_dialog.h">
 			<Filter>spacebar\dialogs</Filter>
@@ -1795,18 +1813,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\dialogs\start_dialog.h">
 			<Filter>spacebar\dialogs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\bib_odds_wnd.h">
-			<Filter>spacebar</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\bibble_window.h">
-			<Filter>spacebar</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\computer.h">
-			<Filter>spacebar</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\spacebar\console.h">
-			<Filter>spacebar</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\bagel\spacebar\filter.h">
 			<Filter>spacebar</Filter>
@@ -1850,12 +1856,6 @@
 		<ClInclude Include="..\..\engines\bagel\spacebar\vid_wnd.h">
 			<Filter>spacebar</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\bagel\afxwin.h" />
-		<ClInclude Include="..\..\engines\bagel\bagel.h" />
-		<ClInclude Include="..\..\engines\bagel\detection.h" />
-		<ClInclude Include="..\..\engines\bagel\detection_tables.h" />
-		<ClInclude Include="..\..\engines\bagel\metaengine.h" />
-		<ClInclude Include="..\..\engines\bagel\music.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\bagel\module.mk" />

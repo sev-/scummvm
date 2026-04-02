@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="debugger">
-			<UniqueIdentifier>A4528861-0DEA-434D-A063-B580389C0FC3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA70C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="minigames">
-			<UniqueIdentifier>C826D8FB-6C3B-4930-BD26-BB88507F020E</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA70D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="minigames\adv">
-			<UniqueIdentifier>3532103A-8CDA-4B40-98D4-016114652337</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA70E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="parser">
-			<UniqueIdentifier>25D82D54-F7D2-4CFE-9F47-211A930F89A6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA70F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="qdcore">
-			<UniqueIdentifier>4DC42B4F-F4E9-49D7-AE9D-5093DFE27EE1</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA710-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="qdcore\util">
-			<UniqueIdentifier>E9799DB8-704C-4859-A2E8-3C1A46B703EB</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA711-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="system">
-			<UniqueIdentifier>6133E264-E987-4C72-870E-9ED75E1D5EEE</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA712-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="system\graphics">
-			<UniqueIdentifier>06B27FFD-86FA-475F-9990-6B3F7B93FDE2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA713-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="system\input">
-			<UniqueIdentifier>EF46DA63-DD75-4ECE-B929-700A821110F7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA714-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="system\sound">
-			<UniqueIdentifier>40F3D5CD-5A90-4910-8B39-EBB37372B7FE</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA715-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\qdengine\console.cpp" />
 		<ClCompile Include="..\..\engines\qdengine\debugger\debugtools.cpp">
 			<Filter>debugger</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\dialogs.cpp" />
+		<ClCompile Include="..\..\engines\qdengine\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\qdengine\minigames\adv\EffectManager.cpp">
 			<Filter>minigames\adv</Filter>
 		</ClCompile>
@@ -86,27 +89,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\qdengine\parser\xml_tag_buffer.cpp">
 			<Filter>parser</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\AIAStar_API.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\LZ77.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\ResourceDispatcher.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\WinVideo.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\fps_counter.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\plaympp_api.cpp">
-			<Filter>qdcore\util</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\qdcore\util\splash_screen.cpp">
-			<Filter>qdcore\util</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\qdengine\qdcore\qd_animation.cpp">
 			<Filter>qdcore</Filter>
@@ -309,6 +291,28 @@
 		<ClCompile Include="..\..\engines\qdengine\qdcore\qd_video.cpp">
 			<Filter>qdcore</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\AIAStar_API.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\LZ77.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\ResourceDispatcher.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\WinVideo.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\fps_counter.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\plaympp_api.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdcore\util\splash_screen.cpp">
+			<Filter>qdcore\util</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\qdengine\qdengine.cpp" />
 		<ClCompile Include="..\..\engines\qdengine\system\graphics\UI_TextParser.cpp">
 			<Filter>system\graphics</Filter>
 		</ClCompile>
@@ -357,17 +361,41 @@
 		<ClCompile Include="..\..\engines\qdengine\system\sound\wav_sound.cpp">
 			<Filter>system\sound</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\qdengine\console.cpp" />
-		<ClCompile Include="..\..\engines\qdengine\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\qdengine\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\qdengine\qdengine.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\qdengine\console.h" />
 		<ClInclude Include="..\..\engines\qdengine\debugger\debugtools.h">
 			<Filter>debugger</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\qdengine\debugger\dt-internal.h">
 			<Filter>debugger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\detection_tables.h" />
+		<ClInclude Include="..\..\engines\qdengine\dialogs.h" />
+		<ClInclude Include="..\..\engines\qdengine\metaengine.h" />
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_babochka.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_kovrik.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_plate.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_raskr_all.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_sbor_karty.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_states.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_sudoku.h">
+			<Filter>minigames</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_testo.h">
+			<Filter>minigames</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\qdengine\minigames\adv\EffectManager.h">
 			<Filter>minigames\adv</Filter>
@@ -419,30 +447,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\qdengine\minigames\adv\qdMath.h">
 			<Filter>minigames\adv</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_babochka.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_kovrik.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_plate.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_raskr_all.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_sbor_karty.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_states.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_sudoku.h">
-			<Filter>minigames</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\minigames\3mice2_testo.h">
-			<Filter>minigames</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\qdengine\minigames\arkada_avtomat.h">
 			<Filter>minigames</Filter>
@@ -498,42 +502,7 @@
 		<ClInclude Include="..\..\engines\qdengine\parser\xml_tag_buffer.h">
 			<Filter>parser</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\2PassScale.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\AIAStar.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\AIAStar_API.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\Filters.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\Handle.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\LZ77.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\ResourceDispatcher.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\SynchroTimer.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\WinVideo.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\fps_counter.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\plaympp_api.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\qdcore\util\splash_screen.h">
-			<Filter>qdcore\util</Filter>
-		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qd_fwd.h" />
 		<ClInclude Include="..\..\engines\qdengine\qdcore\qd_animation.h">
 			<Filter>qdcore</Filter>
 		</ClInclude>
@@ -762,6 +731,44 @@
 		<ClInclude Include="..\..\engines\qdengine\qdcore\qd_video.h">
 			<Filter>qdcore</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\2PassScale.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\AIAStar.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\AIAStar_API.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\Filters.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\Handle.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\LZ77.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\ResourceDispatcher.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\SynchroTimer.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\WinVideo.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\fps_counter.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\plaympp_api.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdcore\util\splash_screen.h">
+			<Filter>qdcore\util</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\qdengine\qdengine.h" />
+		<ClInclude Include="..\..\engines\qdengine\resource.h" />
 		<ClInclude Include="..\..\engines\qdengine\system\graphics\UI_TextParser.h">
 			<Filter>system\graphics</Filter>
 		</ClInclude>
@@ -801,13 +808,6 @@
 		<ClInclude Include="..\..\engines\qdengine\system\sound\wav_sound.h">
 			<Filter>system\sound</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\qdengine\console.h" />
-		<ClInclude Include="..\..\engines\qdengine\detection_tables.h" />
-		<ClInclude Include="..\..\engines\qdengine\dialogs.h" />
-		<ClInclude Include="..\..\engines\qdengine\metaengine.h" />
-		<ClInclude Include="..\..\engines\qdengine\qd_fwd.h" />
-		<ClInclude Include="..\..\engines\qdengine\qdengine.h" />
-		<ClInclude Include="..\..\engines\qdengine\resource.h" />
 		<ClInclude Include="..\..\engines\qdengine\xmath.h" />
 	</ItemGroup>
 	<ItemGroup>

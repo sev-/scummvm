@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="ai">
-			<UniqueIdentifier>ABBA37A2-0E55-429B-A6E6-C52F7FED0C61</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="items">
-			<UniqueIdentifier>FBE3DCE2-8F2A-461A-8A7D-CA250F59A856</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="items\biochips">
-			<UniqueIdentifier>FDAC2D16-87A6-4366-833E-3D96F67C7F18</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="items\inventory">
-			<UniqueIdentifier>ADE4782A-CACF-4E24-A532-BA46C1ADFAA2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood">
-			<UniqueIdentifier>56E86373-9C17-4AF2-9292-3C629E26A27D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\caldoria">
-			<UniqueIdentifier>B2ACB825-C8CA-46F0-818F-08537F40669C</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\mars">
-			<UniqueIdentifier>F7B09C48-A65A-4852-9B53-DE211A91BB72</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\norad">
-			<UniqueIdentifier>2F75DA7F-EE98-4B85-A3A3-3E8B7C2F926B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\norad\alpha">
-			<UniqueIdentifier>CA54E3E6-0E4B-4CD2-BC4F-A53E19CE430F</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\norad\delta">
-			<UniqueIdentifier>A26F7A82-AB8D-4F1A-A13F-EE63A6D99F9D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6FF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\prehistoric">
-			<UniqueIdentifier>858BB521-60F2-449C-8514-6A86C481A2D5</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA700-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\tsa">
-			<UniqueIdentifier>A9580D35-39D5-41B9-AC71-C9A1425F6993</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA701-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="neighborhood\wsc">
-			<UniqueIdentifier>81555A6A-B091-4B2D-9570-7E3DD7BEB970</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA702-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -54,6 +54,19 @@
 		<ClCompile Include="..\..\engines\pegasus\ai\ai_rule.cpp">
 			<Filter>ai</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\chase.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\compass.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\console.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\cursor.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\elements.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\energymonitor.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\fader.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\gamestate.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\graphics.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\hotspot.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\input.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\interaction.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\interface.cpp" />
 		<ClCompile Include="..\..\engines\pegasus\items\autodragger.cpp">
 			<Filter>items</Filter>
 		</ClCompile>
@@ -84,6 +97,9 @@
 		<ClCompile Include="..\..\engines\pegasus\items\biochips\shieldchip.cpp">
 			<Filter>items\biochips</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\items\inventory.cpp">
+			<Filter>items</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\items\inventory\airmask.cpp">
 			<Filter>items\inventory</Filter>
 		</ClCompile>
@@ -95,9 +111,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\items\inventory\keycard.cpp">
 			<Filter>items\inventory</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\items\inventory.cpp">
-			<Filter>items</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\items\inventorypicture.cpp">
 			<Filter>items</Filter>
@@ -111,6 +124,9 @@
 		<ClCompile Include="..\..\engines\pegasus\items\itemlist.cpp">
 			<Filter>items</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\menu.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\pegasus\movie.cpp" />
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\caldoria\caldoria.cpp">
 			<Filter>neighborhood\caldoria</Filter>
 		</ClCompile>
@@ -125,6 +141,18 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\caldoria\caldoriamirror.cpp">
 			<Filter>neighborhood\caldoria</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\door.cpp">
+			<Filter>neighborhood</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\exit.cpp">
+			<Filter>neighborhood</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\extra.cpp">
+			<Filter>neighborhood</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\hotspotinfo.cpp">
+			<Filter>neighborhood</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\mars\canyonchase.cpp">
 			<Filter>neighborhood\mars</Filter>
@@ -171,6 +199,9 @@
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\mars\tunnelpod.cpp">
 			<Filter>neighborhood\mars</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\neighborhood.cpp">
+			<Filter>neighborhood</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\norad\alpha\ecrmonitor.cpp">
 			<Filter>neighborhood\norad\alpha</Filter>
 		</ClCompile>
@@ -216,35 +247,14 @@
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\prehistoric\prehistoric.cpp">
 			<Filter>neighborhood\prehistoric</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\spot.cpp">
+			<Filter>neighborhood</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\tsa\fulltsa.cpp">
 			<Filter>neighborhood\tsa</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\tsa\tinytsa.cpp">
 			<Filter>neighborhood\tsa</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\wsc\moleculebin.cpp">
-			<Filter>neighborhood\wsc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\wsc\wsc.cpp">
-			<Filter>neighborhood\wsc</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\door.cpp">
-			<Filter>neighborhood</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\exit.cpp">
-			<Filter>neighborhood</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\extra.cpp">
-			<Filter>neighborhood</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\hotspotinfo.cpp">
-			<Filter>neighborhood</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\neighborhood.cpp">
-			<Filter>neighborhood</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\neighborhood\spot.cpp">
-			<Filter>neighborhood</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\turn.cpp">
 			<Filter>neighborhood</Filter>
@@ -252,25 +262,15 @@
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\view.cpp">
 			<Filter>neighborhood</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\wsc\moleculebin.cpp">
+			<Filter>neighborhood\wsc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pegasus\neighborhood\wsc\wsc.cpp">
+			<Filter>neighborhood\wsc</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\pegasus\neighborhood\zoom.cpp">
 			<Filter>neighborhood</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\pegasus\chase.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\compass.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\console.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\cursor.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\elements.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\energymonitor.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\fader.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\gamestate.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\graphics.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\hotspot.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\input.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\interaction.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\interface.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\menu.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\pegasus\movie.cpp" />
 		<ClCompile Include="..\..\engines\pegasus\notification.cpp" />
 		<ClCompile Include="..\..\engines\pegasus\pegasus.cpp" />
 		<ClCompile Include="..\..\engines\pegasus\sound.cpp" />
@@ -291,6 +291,24 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\ai\ai_rule.h">
 			<Filter>ai</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\chase.h" />
+		<ClInclude Include="..\..\engines\pegasus\compass.h" />
+		<ClInclude Include="..\..\engines\pegasus\console.h" />
+		<ClInclude Include="..\..\engines\pegasus\constants.h" />
+		<ClInclude Include="..\..\engines\pegasus\cursor.h" />
+		<ClInclude Include="..\..\engines\pegasus\detection.h" />
+		<ClInclude Include="..\..\engines\pegasus\elements.h" />
+		<ClInclude Include="..\..\engines\pegasus\energymonitor.h" />
+		<ClInclude Include="..\..\engines\pegasus\fader.h" />
+		<ClInclude Include="..\..\engines\pegasus\gamestate.h" />
+		<ClInclude Include="..\..\engines\pegasus\graphics.h" />
+		<ClInclude Include="..\..\engines\pegasus\hotspot.h" />
+		<ClInclude Include="..\..\engines\pegasus\input.h" />
+		<ClInclude Include="..\..\engines\pegasus\interaction.h" />
+		<ClInclude Include="..\..\engines\pegasus\interface.h" />
+		<ClInclude Include="..\..\engines\pegasus\items\autodragger.h">
+			<Filter>items</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\items\biochips\aichip.h">
 			<Filter>items\biochips</Filter>
@@ -319,6 +337,9 @@
 		<ClInclude Include="..\..\engines\pegasus\items\biochips\shieldchip.h">
 			<Filter>items\biochips</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\items\inventory.h">
+			<Filter>items</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\items\inventory\airmask.h">
 			<Filter>items\inventory</Filter>
 		</ClInclude>
@@ -330,12 +351,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\items\inventory\keycard.h">
 			<Filter>items\inventory</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\items\autodragger.h">
-			<Filter>items</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\items\inventory.h">
-			<Filter>items</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\items\inventorypicture.h">
 			<Filter>items</Filter>
@@ -349,6 +364,8 @@
 		<ClInclude Include="..\..\engines\pegasus\items\itemlist.h">
 			<Filter>items</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\menu.h" />
+		<ClInclude Include="..\..\engines\pegasus\movie.h" />
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\caldoria\caldoria.h">
 			<Filter>neighborhood\caldoria</Filter>
 		</ClInclude>
@@ -363,6 +380,18 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\caldoria\caldoriamirror.h">
 			<Filter>neighborhood\caldoria</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\door.h">
+			<Filter>neighborhood</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\exit.h">
+			<Filter>neighborhood</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\extra.h">
+			<Filter>neighborhood</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\hotspotinfo.h">
+			<Filter>neighborhood</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\mars\canyonchase.h">
 			<Filter>neighborhood\mars</Filter>
@@ -412,6 +441,9 @@
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\mars\tunnelpod.h">
 			<Filter>neighborhood\mars</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\neighborhood.h">
+			<Filter>neighborhood</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\norad\alpha\ecrmonitor.h">
 			<Filter>neighborhood\norad\alpha</Filter>
 		</ClInclude>
@@ -460,35 +492,14 @@
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\prehistoric\prehistoric.h">
 			<Filter>neighborhood\prehistoric</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\spot.h">
+			<Filter>neighborhood</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\tsa\fulltsa.h">
 			<Filter>neighborhood\tsa</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\tsa\tinytsa.h">
 			<Filter>neighborhood\tsa</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\wsc\moleculebin.h">
-			<Filter>neighborhood\wsc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\wsc\wsc.h">
-			<Filter>neighborhood\wsc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\door.h">
-			<Filter>neighborhood</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\exit.h">
-			<Filter>neighborhood</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\extra.h">
-			<Filter>neighborhood</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\hotspotinfo.h">
-			<Filter>neighborhood</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\neighborhood.h">
-			<Filter>neighborhood</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\neighborhood\spot.h">
-			<Filter>neighborhood</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\turn.h">
 			<Filter>neighborhood</Filter>
@@ -496,26 +507,15 @@
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\view.h">
 			<Filter>neighborhood</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\wsc\moleculebin.h">
+			<Filter>neighborhood\wsc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pegasus\neighborhood\wsc\wsc.h">
+			<Filter>neighborhood\wsc</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\pegasus\neighborhood\zoom.h">
 			<Filter>neighborhood</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\pegasus\chase.h" />
-		<ClInclude Include="..\..\engines\pegasus\compass.h" />
-		<ClInclude Include="..\..\engines\pegasus\console.h" />
-		<ClInclude Include="..\..\engines\pegasus\constants.h" />
-		<ClInclude Include="..\..\engines\pegasus\cursor.h" />
-		<ClInclude Include="..\..\engines\pegasus\detection.h" />
-		<ClInclude Include="..\..\engines\pegasus\elements.h" />
-		<ClInclude Include="..\..\engines\pegasus\energymonitor.h" />
-		<ClInclude Include="..\..\engines\pegasus\fader.h" />
-		<ClInclude Include="..\..\engines\pegasus\gamestate.h" />
-		<ClInclude Include="..\..\engines\pegasus\graphics.h" />
-		<ClInclude Include="..\..\engines\pegasus\hotspot.h" />
-		<ClInclude Include="..\..\engines\pegasus\input.h" />
-		<ClInclude Include="..\..\engines\pegasus\interaction.h" />
-		<ClInclude Include="..\..\engines\pegasus\interface.h" />
-		<ClInclude Include="..\..\engines\pegasus\menu.h" />
-		<ClInclude Include="..\..\engines\pegasus\movie.h" />
 		<ClInclude Include="..\..\engines\pegasus\notification.h" />
 		<ClInclude Include="..\..\engines\pegasus\pegasus.h" />
 		<ClInclude Include="..\..\engines\pegasus\scoring.h" />

@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="common">
-			<UniqueIdentifier>B80D0CA5-0D62-4E86-B23F-D55258512532</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9724-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="core">
-			<UniqueIdentifier>7FC7E4A8-0DB8-419B-B7B7-881287DE4E32</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9725-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="file">
-			<UniqueIdentifier>A8272DE2-73C1-461F-B3DD-1365B6FD29BA</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9726-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics">
-			<UniqueIdentifier>CFA58406-3386-4ACC-887F-2CB5932BD943</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9727-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\cursors">
-			<UniqueIdentifier>090C2331-82C3-4C42-9E73-94BF3B9130A8</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9728-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\effects">
-			<UniqueIdentifier>849EF4F3-25D0-4FE5-B603-EF220CCCC47B</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9729-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scripting">
-			<UniqueIdentifier>F6257866-F7D1-4C44-86C4-084BF1682EA4</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scripting\controls">
-			<UniqueIdentifier>30AA2486-7A61-4618-BDAC-65630416088B</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scripting\effects">
-			<UniqueIdentifier>52101098-66BD-4DB0-88C4-B0B2BFC52BCF</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound">
-			<UniqueIdentifier>F263541A-E7C6-451E-98B2-36C47E40D046</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="text">
-			<UniqueIdentifier>DB751B96-5FDD-4480-BB87-12A337852C3B</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="video">
-			<UniqueIdentifier>630BB48B-8C2F-402C-BA7E-4D2E0FB1C3BA</UniqueIdentifier>
+			<UniqueIdentifier>F5DE972F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -83,6 +83,13 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\zvision\graphics\render_table.cpp">
 			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\zvision\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\zvision\scripting\actions.cpp">
+			<Filter>scripting</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\zvision\scripting\control.cpp">
+			<Filter>scripting</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\zvision\scripting\controls\fist_control.cpp">
 			<Filter>scripting\controls</Filter>
@@ -135,12 +142,6 @@
 		<ClCompile Include="..\..\engines\zvision\scripting\effects\ttytext_effect.cpp">
 			<Filter>scripting\effects</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\zvision\scripting\actions.cpp">
-			<Filter>scripting</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\zvision\scripting\control.cpp">
-			<Filter>scripting</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\zvision\scripting\inventory.cpp">
 			<Filter>scripting</Filter>
 		</ClCompile>
@@ -183,7 +184,6 @@
 		<ClCompile Include="..\..\engines\zvision\video\zork_avi_decoder.cpp">
 			<Filter>video</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\zvision\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\zvision\zvision.cpp" />
 	</ItemGroup>
 	<ItemGroup>
@@ -199,6 +199,8 @@
 		<ClInclude Include="..\..\engines\zvision\core\console.h">
 			<Filter>core</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\zvision\detection.h" />
+		<ClInclude Include="..\..\engines\zvision\detection_tables.h" />
 		<ClInclude Include="..\..\engines\zvision\file\file_manager.h">
 			<Filter>file</Filter>
 		</ClInclude>
@@ -234,6 +236,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\zvision\graphics\render_table.h">
 			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\zvision\scripting\actions.h">
+			<Filter>scripting</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\zvision\scripting\control.h">
+			<Filter>scripting</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\zvision\scripting\controls\fist_control.h">
 			<Filter>scripting\controls</Filter>
@@ -286,12 +294,6 @@
 		<ClInclude Include="..\..\engines\zvision\scripting\effects\ttytext_effect.h">
 			<Filter>scripting\effects</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\zvision\scripting\actions.h">
-			<Filter>scripting</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\zvision\scripting\control.h">
-			<Filter>scripting</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\zvision\scripting\menu.h">
 			<Filter>scripting</Filter>
 		</ClInclude>
@@ -331,8 +333,6 @@
 		<ClInclude Include="..\..\engines\zvision\video\zork_avi_decoder.h">
 			<Filter>video</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\zvision\detection.h" />
-		<ClInclude Include="..\..\engines\zvision\detection_tables.h" />
 		<ClInclude Include="..\..\engines\zvision\zvision.h" />
 	</ItemGroup>
 	<ItemGroup>

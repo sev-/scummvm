@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="engine">
-			<UniqueIdentifier>65732E51-AE26-4BF4-A9F6-54EA5EBDCDA2</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA716-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics">
-			<UniqueIdentifier>8792C27D-ED37-4E5D-B213-28EB91DF4743</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA717-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\drivers">
-			<UniqueIdentifier>769EE61A-5E0C-4F54-981C-891F0787AFF3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA718-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="parser">
-			<UniqueIdentifier>E61E6F29-10A5-4E32-9C22-62EF2574D0C7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA719-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="resource">
-			<UniqueIdentifier>918EEB44-90C1-4FCE-A0CE-B944E2E61FD8</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA71A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound">
-			<UniqueIdentifier>EA17A1D1-E0BB-4473-95BA-4E2C89721662</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA71B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound\decoders">
-			<UniqueIdentifier>3224F749-0C0D-4023-B20F-1B1935F5A244</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA71C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound\drivers">
-			<UniqueIdentifier>C87C0532-5538-4ED8-BEC4-8FE89662D26D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA71D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="video">
-			<UniqueIdentifier>EF8007DF-EBAE-4F1A-A13D-3A175F1FE012</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA71E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\sci\console.cpp" />
+		<ClCompile Include="..\..\engines\sci\detection_internal.cpp" />
+		<ClCompile Include="..\..\engines\sci\dialogs.cpp" />
 		<ClCompile Include="..\..\engines\sci\engine\features.cpp">
 			<Filter>engine</Filter>
 		</ClCompile>
@@ -138,6 +141,10 @@
 		<ClCompile Include="..\..\engines\sci\engine\workarounds.cpp">
 			<Filter>engine</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\sci\event.cpp" />
+		<ClCompile Include="..\..\engines\sci\graphics\animate.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\graphics\cache.cpp">
 			<Filter>graphics</Filter>
 		</ClCompile>
@@ -203,9 +210,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\graphics\drivers\win256col.cpp">
 			<Filter>graphics\drivers</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\sci\graphics\animate.cpp">
-			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\graphics\fontkorean.cpp">
 			<Filter>graphics</Filter>
@@ -288,6 +292,7 @@
 		<ClCompile Include="..\..\engines\sci\graphics\view.cpp">
 			<Filter>graphics</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\sci\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\sci\parser\grammar.cpp">
 			<Filter>parser</Filter>
 		</ClCompile>
@@ -308,6 +313,13 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\resource\resource_patcher.cpp">
 			<Filter>resource</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\sci\sci.cpp" />
+		<ClCompile Include="..\..\engines\sci\sound\audio.cpp">
+			<Filter>sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\sci\sound\audio32.cpp">
+			<Filter>sound</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\sound\decoders\sol.cpp">
 			<Filter>sound\decoders</Filter>
@@ -342,12 +354,6 @@
 		<ClCompile Include="..\..\engines\sci\sound\drivers\pcjr.cpp">
 			<Filter>sound\drivers</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\sci\sound\audio.cpp">
-			<Filter>sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\sci\sound\audio32.cpp">
-			<Filter>sound</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\sound\midiparser_sci.cpp">
 			<Filter>sound</Filter>
 		</ClCompile>
@@ -360,21 +366,22 @@
 		<ClCompile Include="..\..\engines\sci\sound\sync.cpp">
 			<Filter>sound</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\sci\util.cpp" />
 		<ClCompile Include="..\..\engines\sci\video\robot_decoder.cpp">
 			<Filter>video</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\sci\video\seq_decoder.cpp">
 			<Filter>video</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\sci\console.cpp" />
-		<ClCompile Include="..\..\engines\sci\detection_internal.cpp" />
-		<ClCompile Include="..\..\engines\sci\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\sci\event.cpp" />
-		<ClCompile Include="..\..\engines\sci\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\sci\sci.cpp" />
-		<ClCompile Include="..\..\engines\sci\util.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\sci\console.h" />
+		<ClInclude Include="..\..\engines\sci\debug.h" />
+		<ClInclude Include="..\..\engines\sci\detection.h" />
+		<ClInclude Include="..\..\engines\sci\detection_internal.h" />
+		<ClInclude Include="..\..\engines\sci\detection_options.h" />
+		<ClInclude Include="..\..\engines\sci\detection_tables.h" />
+		<ClInclude Include="..\..\engines\sci\dialogs.h" />
 		<ClInclude Include="..\..\engines\sci\engine\features.h">
 			<Filter>engine</Filter>
 		</ClInclude>
@@ -438,6 +445,10 @@
 		<ClInclude Include="..\..\engines\sci\engine\workarounds.h">
 			<Filter>engine</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\sci\event.h" />
+		<ClInclude Include="..\..\engines\sci\graphics\animate.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\graphics\cache.h">
 			<Filter>graphics</Filter>
 		</ClInclude>
@@ -467,9 +478,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\graphics\drivers\gfxdriver_intern.h">
 			<Filter>graphics\drivers</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sci\graphics\animate.h">
-			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\graphics\fontkorean.h">
 			<Filter>graphics</Filter>
@@ -576,6 +584,13 @@
 		<ClInclude Include="..\..\engines\sci\resource\resource_patcher.h">
 			<Filter>resource</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\sci\sci.h" />
+		<ClInclude Include="..\..\engines\sci\sound\audio.h">
+			<Filter>sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\sci\sound\audio32.h">
+			<Filter>sound</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\sound\decoders\sol.h">
 			<Filter>sound\decoders</Filter>
 		</ClInclude>
@@ -591,12 +606,6 @@
 		<ClInclude Include="..\..\engines\sci\sound\drivers\mididriver.h">
 			<Filter>sound\drivers</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\sci\sound\audio.h">
-			<Filter>sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\sci\sound\audio32.h">
-			<Filter>sound</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\sound\midiparser_sci.h">
 			<Filter>sound</Filter>
 		</ClInclude>
@@ -609,23 +618,14 @@
 		<ClInclude Include="..\..\engines\sci\sound\sync.h">
 			<Filter>sound</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\sci\util.h" />
+		<ClInclude Include="..\..\engines\sci\version.h" />
 		<ClInclude Include="..\..\engines\sci\video\robot_decoder.h">
 			<Filter>video</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\sci\video\seq_decoder.h">
 			<Filter>video</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\sci\console.h" />
-		<ClInclude Include="..\..\engines\sci\debug.h" />
-		<ClInclude Include="..\..\engines\sci\detection.h" />
-		<ClInclude Include="..\..\engines\sci\detection_internal.h" />
-		<ClInclude Include="..\..\engines\sci\detection_options.h" />
-		<ClInclude Include="..\..\engines\sci\detection_tables.h" />
-		<ClInclude Include="..\..\engines\sci\dialogs.h" />
-		<ClInclude Include="..\..\engines\sci\event.h" />
-		<ClInclude Include="..\..\engines\sci\sci.h" />
-		<ClInclude Include="..\..\engines\sci\util.h" />
-		<ClInclude Include="..\..\engines\sci\version.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\sci\module.mk" />

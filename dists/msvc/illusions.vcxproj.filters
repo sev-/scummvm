@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="bbdou">
-			<UniqueIdentifier>3A962B31-BF08-4BB7-AB2F-C26DAA11BF0D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA69E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="duckman">
-			<UniqueIdentifier>E8E251B1-BBFD-4276-89D2-2FAC51C19C20</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA69F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="resources">
-			<UniqueIdentifier>48044E61-F2BE-4183-AF8D-8FB8E8586DAA</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6A0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="threads">
-			<UniqueIdentifier>AFF83515-186A-4A0D-872B-0A92E9D0FEF6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6A1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\illusions\actor.cpp" />
 		<ClCompile Include="..\..\engines\illusions\bbdou\bbdou_bubble.cpp">
 			<Filter>bbdou</Filter>
 		</ClCompile>
@@ -57,6 +58,10 @@
 		<ClCompile Include="..\..\engines\illusions\bbdou\scriptopcodes_bbdou.cpp">
 			<Filter>bbdou</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\illusions\camera.cpp" />
+		<ClCompile Include="..\..\engines\illusions\console.cpp" />
+		<ClCompile Include="..\..\engines\illusions\cursor.cpp" />
+		<ClCompile Include="..\..\engines\illusions\dictionary.cpp" />
 		<ClCompile Include="..\..\engines\illusions\duckman\duckman_credits.cpp">
 			<Filter>duckman</Filter>
 		</ClCompile>
@@ -90,6 +95,17 @@
 		<ClCompile Include="..\..\engines\illusions\duckman\scriptopcodes_duckman.cpp">
 			<Filter>duckman</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\illusions\fileresourcereader.cpp" />
+		<ClCompile Include="..\..\engines\illusions\fixedpoint.cpp" />
+		<ClCompile Include="..\..\engines\illusions\gamarchive.cpp" />
+		<ClCompile Include="..\..\engines\illusions\gamestate.cpp" />
+		<ClCompile Include="..\..\engines\illusions\gamresourcereader.cpp" />
+		<ClCompile Include="..\..\engines\illusions\graphics.cpp" />
+		<ClCompile Include="..\..\engines\illusions\illusions.cpp" />
+		<ClCompile Include="..\..\engines\illusions\input.cpp" />
+		<ClCompile Include="..\..\engines\illusions\menusystem.cpp" />
+		<ClCompile Include="..\..\engines\illusions\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\illusions\pathfinder.cpp" />
 		<ClCompile Include="..\..\engines\illusions\resources\actorresource.cpp">
 			<Filter>resources</Filter>
 		</ClCompile>
@@ -114,6 +130,17 @@
 		<ClCompile Include="..\..\engines\illusions\resources\talkresource.cpp">
 			<Filter>resources</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\illusions\resourcesystem.cpp" />
+		<ClCompile Include="..\..\engines\illusions\saveload.cpp" />
+		<ClCompile Include="..\..\engines\illusions\screen.cpp" />
+		<ClCompile Include="..\..\engines\illusions\screentext.cpp" />
+		<ClCompile Include="..\..\engines\illusions\scriptopcodes.cpp" />
+		<ClCompile Include="..\..\engines\illusions\scriptstack.cpp" />
+		<ClCompile Include="..\..\engines\illusions\sequenceopcodes.cpp" />
+		<ClCompile Include="..\..\engines\illusions\sound.cpp" />
+		<ClCompile Include="..\..\engines\illusions\specialcode.cpp" />
+		<ClCompile Include="..\..\engines\illusions\textdrawer.cpp" />
+		<ClCompile Include="..\..\engines\illusions\thread.cpp" />
 		<ClCompile Include="..\..\engines\illusions\threads\abortablethread.cpp">
 			<Filter>threads</Filter>
 		</ClCompile>
@@ -132,37 +159,11 @@
 		<ClCompile Include="..\..\engines\illusions\threads\timerthread.cpp">
 			<Filter>threads</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\illusions\actor.cpp" />
-		<ClCompile Include="..\..\engines\illusions\camera.cpp" />
-		<ClCompile Include="..\..\engines\illusions\console.cpp" />
-		<ClCompile Include="..\..\engines\illusions\cursor.cpp" />
-		<ClCompile Include="..\..\engines\illusions\dictionary.cpp" />
-		<ClCompile Include="..\..\engines\illusions\fileresourcereader.cpp" />
-		<ClCompile Include="..\..\engines\illusions\fixedpoint.cpp" />
-		<ClCompile Include="..\..\engines\illusions\gamarchive.cpp" />
-		<ClCompile Include="..\..\engines\illusions\gamestate.cpp" />
-		<ClCompile Include="..\..\engines\illusions\gamresourcereader.cpp" />
-		<ClCompile Include="..\..\engines\illusions\graphics.cpp" />
-		<ClCompile Include="..\..\engines\illusions\illusions.cpp" />
-		<ClCompile Include="..\..\engines\illusions\input.cpp" />
-		<ClCompile Include="..\..\engines\illusions\menusystem.cpp" />
-		<ClCompile Include="..\..\engines\illusions\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\illusions\pathfinder.cpp" />
-		<ClCompile Include="..\..\engines\illusions\resourcesystem.cpp" />
-		<ClCompile Include="..\..\engines\illusions\saveload.cpp" />
-		<ClCompile Include="..\..\engines\illusions\screen.cpp" />
-		<ClCompile Include="..\..\engines\illusions\screentext.cpp" />
-		<ClCompile Include="..\..\engines\illusions\scriptopcodes.cpp" />
-		<ClCompile Include="..\..\engines\illusions\scriptstack.cpp" />
-		<ClCompile Include="..\..\engines\illusions\sequenceopcodes.cpp" />
-		<ClCompile Include="..\..\engines\illusions\sound.cpp" />
-		<ClCompile Include="..\..\engines\illusions\specialcode.cpp" />
-		<ClCompile Include="..\..\engines\illusions\textdrawer.cpp" />
-		<ClCompile Include="..\..\engines\illusions\thread.cpp" />
 		<ClCompile Include="..\..\engines\illusions\time.cpp" />
 		<ClCompile Include="..\..\engines\illusions\updatefunctions.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\illusions\actor.h" />
 		<ClInclude Include="..\..\engines\illusions\bbdou\bbdou_bubble.h">
 			<Filter>bbdou</Filter>
 		</ClInclude>
@@ -202,6 +203,11 @@
 		<ClInclude Include="..\..\engines\illusions\bbdou\scriptopcodes_bbdou.h">
 			<Filter>bbdou</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\illusions\camera.h" />
+		<ClInclude Include="..\..\engines\illusions\console.h" />
+		<ClInclude Include="..\..\engines\illusions\cursor.h" />
+		<ClInclude Include="..\..\engines\illusions\detection.h" />
+		<ClInclude Include="..\..\engines\illusions\dictionary.h" />
 		<ClInclude Include="..\..\engines\illusions\duckman\duckman_credits.h">
 			<Filter>duckman</Filter>
 		</ClInclude>
@@ -235,6 +241,17 @@
 		<ClInclude Include="..\..\engines\illusions\duckman\scriptopcodes_duckman.h">
 			<Filter>duckman</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\illusions\fileresourcereader.h" />
+		<ClInclude Include="..\..\engines\illusions\fixedpoint.h" />
+		<ClInclude Include="..\..\engines\illusions\gamarchive.h" />
+		<ClInclude Include="..\..\engines\illusions\gamestate.h" />
+		<ClInclude Include="..\..\engines\illusions\gamresourcereader.h" />
+		<ClInclude Include="..\..\engines\illusions\graphics.h" />
+		<ClInclude Include="..\..\engines\illusions\illusions.h" />
+		<ClInclude Include="..\..\engines\illusions\input.h" />
+		<ClInclude Include="..\..\engines\illusions\menusystem.h" />
+		<ClInclude Include="..\..\engines\illusions\pathfinder.h" />
+		<ClInclude Include="..\..\engines\illusions\resourcereader.h" />
 		<ClInclude Include="..\..\engines\illusions\resources\actorresource.h">
 			<Filter>resources</Filter>
 		</ClInclude>
@@ -259,6 +276,16 @@
 		<ClInclude Include="..\..\engines\illusions\resources\talkresource.h">
 			<Filter>resources</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\illusions\resourcesystem.h" />
+		<ClInclude Include="..\..\engines\illusions\screen.h" />
+		<ClInclude Include="..\..\engines\illusions\screentext.h" />
+		<ClInclude Include="..\..\engines\illusions\scriptopcodes.h" />
+		<ClInclude Include="..\..\engines\illusions\scriptstack.h" />
+		<ClInclude Include="..\..\engines\illusions\sequenceopcodes.h" />
+		<ClInclude Include="..\..\engines\illusions\sound.h" />
+		<ClInclude Include="..\..\engines\illusions\specialcode.h" />
+		<ClInclude Include="..\..\engines\illusions\textdrawer.h" />
+		<ClInclude Include="..\..\engines\illusions\thread.h" />
 		<ClInclude Include="..\..\engines\illusions\threads\abortablethread.h">
 			<Filter>threads</Filter>
 		</ClInclude>
@@ -277,33 +304,6 @@
 		<ClInclude Include="..\..\engines\illusions\threads\timerthread.h">
 			<Filter>threads</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\illusions\actor.h" />
-		<ClInclude Include="..\..\engines\illusions\camera.h" />
-		<ClInclude Include="..\..\engines\illusions\console.h" />
-		<ClInclude Include="..\..\engines\illusions\cursor.h" />
-		<ClInclude Include="..\..\engines\illusions\detection.h" />
-		<ClInclude Include="..\..\engines\illusions\dictionary.h" />
-		<ClInclude Include="..\..\engines\illusions\fileresourcereader.h" />
-		<ClInclude Include="..\..\engines\illusions\fixedpoint.h" />
-		<ClInclude Include="..\..\engines\illusions\gamarchive.h" />
-		<ClInclude Include="..\..\engines\illusions\gamestate.h" />
-		<ClInclude Include="..\..\engines\illusions\gamresourcereader.h" />
-		<ClInclude Include="..\..\engines\illusions\graphics.h" />
-		<ClInclude Include="..\..\engines\illusions\illusions.h" />
-		<ClInclude Include="..\..\engines\illusions\input.h" />
-		<ClInclude Include="..\..\engines\illusions\menusystem.h" />
-		<ClInclude Include="..\..\engines\illusions\pathfinder.h" />
-		<ClInclude Include="..\..\engines\illusions\resourcereader.h" />
-		<ClInclude Include="..\..\engines\illusions\resourcesystem.h" />
-		<ClInclude Include="..\..\engines\illusions\screen.h" />
-		<ClInclude Include="..\..\engines\illusions\screentext.h" />
-		<ClInclude Include="..\..\engines\illusions\scriptopcodes.h" />
-		<ClInclude Include="..\..\engines\illusions\scriptstack.h" />
-		<ClInclude Include="..\..\engines\illusions\sequenceopcodes.h" />
-		<ClInclude Include="..\..\engines\illusions\sound.h" />
-		<ClInclude Include="..\..\engines\illusions\specialcode.h" />
-		<ClInclude Include="..\..\engines\illusions\textdrawer.h" />
-		<ClInclude Include="..\..\engines\illusions\thread.h" />
 		<ClInclude Include="..\..\engines\illusions\time.h" />
 		<ClInclude Include="..\..\engines\illusions\updatefunctions.h" />
 	</ItemGroup>

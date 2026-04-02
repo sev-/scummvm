@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="costume">
-			<UniqueIdentifier>9F211F24-28EA-43ED-828D-197FF46B2C0D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA68C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="emi">
-			<UniqueIdentifier>3F4A3FE9-FEBA-422D-A767-E203229E884A</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA68D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="emi\costume">
-			<UniqueIdentifier>EAA6B220-577C-4A9E-9CDA-3A4081F49AC1</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA68E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="emi\sound">
-			<UniqueIdentifier>C2179FDD-8A19-4355-993F-3F7025E0DF8B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA68F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="emi\sound\codecs">
-			<UniqueIdentifier>AAE2CB42-6D1E-46B6-B1D7-2D81C9EBB2C4</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA690-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="imuse">
-			<UniqueIdentifier>227518F3-3E1B-4C44-A6E0-B69D38FB6605</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA691-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="lua">
-			<UniqueIdentifier>77698442-F69B-4705-9317-A91C3C5DDBDF</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA692-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="movie">
-			<UniqueIdentifier>E9B0658C-BA79-4ABE-ABBC-06A16CF50CC4</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA693-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="movie\codecs">
-			<UniqueIdentifier>122523A1-0140-4CC6-963C-64231CE3BA55</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA694-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="remastered">
-			<UniqueIdentifier>3B411F96-2934-4881-B6AA-3AEB5BC74E10</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA695-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="update">
-			<UniqueIdentifier>217E329F-2687-492A-ADAE-46386C1F04B6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA696-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\grim\actor.cpp" />
+		<ClCompile Include="..\..\engines\grim\animation.cpp" />
+		<ClCompile Include="..\..\engines\grim\bitmap.cpp" />
+		<ClCompile Include="..\..\engines\grim\color.cpp" />
+		<ClCompile Include="..\..\engines\grim\colormap.cpp" />
+		<ClCompile Include="..\..\engines\grim\costume.cpp" />
 		<ClCompile Include="..\..\engines\grim\costume\anim_component.cpp">
 			<Filter>costume</Filter>
 		</ClCompile>
@@ -78,6 +84,11 @@
 		<ClCompile Include="..\..\engines\grim\costume\sprite_component.cpp">
 			<Filter>costume</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\debug.cpp" />
+		<ClCompile Include="..\..\engines\grim\debugger.cpp" />
+		<ClCompile Include="..\..\engines\grim\emi\animationemi.cpp">
+			<Filter>emi</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\grim\emi\costume\emianim_component.cpp">
 			<Filter>emi\costume</Filter>
 		</ClCompile>
@@ -104,30 +115,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\grim\emi\costume\emitexi_component.cpp">
 			<Filter>emi\costume</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\codecs\scx.cpp">
-			<Filter>emi\sound\codecs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\aifftrack.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\emisound.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\mp3track.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\scxtrack.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\track.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\sound\vimatrack.cpp">
-			<Filter>emi\sound</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\emi\animationemi.cpp">
-			<Filter>emi</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\grim\emi\costumeemi.cpp">
 			<Filter>emi</Filter>
@@ -159,6 +146,34 @@
 		<ClCompile Include="..\..\engines\grim\emi\skeleton.cpp">
 			<Filter>emi</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\aifftrack.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\codecs\scx.cpp">
+			<Filter>emi\sound\codecs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\emisound.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\mp3track.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\scxtrack.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\track.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\emi\sound\vimatrack.cpp">
+			<Filter>emi\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\font.cpp" />
+		<ClCompile Include="..\..\engines\grim\gfx_base.cpp" />
+		<ClCompile Include="..\..\engines\grim\gfx_opengl.cpp" />
+		<ClCompile Include="..\..\engines\grim\gfx_opengl_shaders.cpp" />
+		<ClCompile Include="..\..\engines\grim\gfx_tinygl.cpp" />
+		<ClCompile Include="..\..\engines\grim\grim.cpp" />
+		<ClCompile Include="..\..\engines\grim\grim_controls.cpp" />
 		<ClCompile Include="..\..\engines\grim\imuse\imuse.cpp">
 			<Filter>imuse</Filter>
 		</ClCompile>
@@ -180,6 +195,13 @@
 		<ClCompile Include="..\..\engines\grim\imuse\imuse_track.cpp">
 			<Filter>imuse</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\inputdialog.cpp" />
+		<ClCompile Include="..\..\engines\grim\iris.cpp" />
+		<ClCompile Include="..\..\engines\grim\keyframe.cpp" />
+		<ClCompile Include="..\..\engines\grim\lab.cpp" />
+		<ClCompile Include="..\..\engines\grim\lipsync.cpp" />
+		<ClCompile Include="..\..\engines\grim\localize.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua.cpp" />
 		<ClCompile Include="..\..\engines\grim\lua\lapi.cpp">
 			<Filter>lua</Filter>
 		</ClCompile>
@@ -252,6 +274,18 @@
 		<ClCompile Include="..\..\engines\grim\lua\lzio.cpp">
 			<Filter>lua</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\lua_grim_patch.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1_actor.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1_graphics.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1_set.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1_sound.cpp" />
+		<ClCompile Include="..\..\engines\grim\lua_v1_text.cpp" />
+		<ClCompile Include="..\..\engines\grim\material.cpp" />
+		<ClCompile Include="..\..\engines\grim\md5check.cpp" />
+		<ClCompile Include="..\..\engines\grim\md5checkdialog.cpp" />
+		<ClCompile Include="..\..\engines\grim\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\grim\model.cpp" />
 		<ClCompile Include="..\..\engines\grim\movie\bink.cpp">
 			<Filter>movie</Filter>
 		</ClCompile>
@@ -282,6 +316,11 @@
 		<ClCompile Include="..\..\engines\grim\movie\smush.cpp">
 			<Filter>movie</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\object.cpp" />
+		<ClCompile Include="..\..\engines\grim\objectstate.cpp" />
+		<ClCompile Include="..\..\engines\grim\patchr.cpp" />
+		<ClCompile Include="..\..\engines\grim\primitives.cpp" />
+		<ClCompile Include="..\..\engines\grim\registry.cpp" />
 		<ClCompile Include="..\..\engines\grim\remastered\commentary.cpp">
 			<Filter>remastered</Filter>
 		</ClCompile>
@@ -294,6 +333,14 @@
 		<ClCompile Include="..\..\engines\grim\remastered\overlay.cpp">
 			<Filter>remastered</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\grim\resource.cpp" />
+		<ClCompile Include="..\..\engines\grim\savegame.cpp" />
+		<ClCompile Include="..\..\engines\grim\sector.cpp" />
+		<ClCompile Include="..\..\engines\grim\set.cpp" />
+		<ClCompile Include="..\..\engines\grim\sound.cpp" />
+		<ClCompile Include="..\..\engines\grim\sprite.cpp" />
+		<ClCompile Include="..\..\engines\grim\textobject.cpp" />
+		<ClCompile Include="..\..\engines\grim\textsplit.cpp" />
 		<ClCompile Include="..\..\engines\grim\update\lang_filter.cpp">
 			<Filter>update</Filter>
 		</ClCompile>
@@ -306,55 +353,14 @@
 		<ClCompile Include="..\..\engines\grim\update\update.cpp">
 			<Filter>update</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\grim\actor.cpp" />
-		<ClCompile Include="..\..\engines\grim\animation.cpp" />
-		<ClCompile Include="..\..\engines\grim\bitmap.cpp" />
-		<ClCompile Include="..\..\engines\grim\color.cpp" />
-		<ClCompile Include="..\..\engines\grim\colormap.cpp" />
-		<ClCompile Include="..\..\engines\grim\costume.cpp" />
-		<ClCompile Include="..\..\engines\grim\debug.cpp" />
-		<ClCompile Include="..\..\engines\grim\debugger.cpp" />
-		<ClCompile Include="..\..\engines\grim\font.cpp" />
-		<ClCompile Include="..\..\engines\grim\gfx_base.cpp" />
-		<ClCompile Include="..\..\engines\grim\gfx_opengl.cpp" />
-		<ClCompile Include="..\..\engines\grim\gfx_opengl_shaders.cpp" />
-		<ClCompile Include="..\..\engines\grim\gfx_tinygl.cpp" />
-		<ClCompile Include="..\..\engines\grim\grim.cpp" />
-		<ClCompile Include="..\..\engines\grim\grim_controls.cpp" />
-		<ClCompile Include="..\..\engines\grim\inputdialog.cpp" />
-		<ClCompile Include="..\..\engines\grim\iris.cpp" />
-		<ClCompile Include="..\..\engines\grim\keyframe.cpp" />
-		<ClCompile Include="..\..\engines\grim\lab.cpp" />
-		<ClCompile Include="..\..\engines\grim\lipsync.cpp" />
-		<ClCompile Include="..\..\engines\grim\localize.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_grim_patch.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1_actor.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1_graphics.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1_set.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1_sound.cpp" />
-		<ClCompile Include="..\..\engines\grim\lua_v1_text.cpp" />
-		<ClCompile Include="..\..\engines\grim\material.cpp" />
-		<ClCompile Include="..\..\engines\grim\md5check.cpp" />
-		<ClCompile Include="..\..\engines\grim\md5checkdialog.cpp" />
-		<ClCompile Include="..\..\engines\grim\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\grim\model.cpp" />
-		<ClCompile Include="..\..\engines\grim\object.cpp" />
-		<ClCompile Include="..\..\engines\grim\objectstate.cpp" />
-		<ClCompile Include="..\..\engines\grim\patchr.cpp" />
-		<ClCompile Include="..\..\engines\grim\primitives.cpp" />
-		<ClCompile Include="..\..\engines\grim\registry.cpp" />
-		<ClCompile Include="..\..\engines\grim\resource.cpp" />
-		<ClCompile Include="..\..\engines\grim\savegame.cpp" />
-		<ClCompile Include="..\..\engines\grim\sector.cpp" />
-		<ClCompile Include="..\..\engines\grim\set.cpp" />
-		<ClCompile Include="..\..\engines\grim\sound.cpp" />
-		<ClCompile Include="..\..\engines\grim\sprite.cpp" />
-		<ClCompile Include="..\..\engines\grim\textobject.cpp" />
-		<ClCompile Include="..\..\engines\grim\textsplit.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\grim\actor.h" />
+		<ClInclude Include="..\..\engines\grim\animation.h" />
+		<ClInclude Include="..\..\engines\grim\bitmap.h" />
+		<ClInclude Include="..\..\engines\grim\color.h" />
+		<ClInclude Include="..\..\engines\grim\colormap.h" />
+		<ClInclude Include="..\..\engines\grim\costume.h" />
 		<ClInclude Include="..\..\engines\grim\costume\anim_component.h">
 			<Filter>costume</Filter>
 		</ClInclude>
@@ -397,6 +403,13 @@
 		<ClInclude Include="..\..\engines\grim\costume\sprite_component.h">
 			<Filter>costume</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\debug.h" />
+		<ClInclude Include="..\..\engines\grim\debugger.h" />
+		<ClInclude Include="..\..\engines\grim\detection.h" />
+		<ClInclude Include="..\..\engines\grim\detection_tables.h" />
+		<ClInclude Include="..\..\engines\grim\emi\animationemi.h">
+			<Filter>emi</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\grim\emi\costume\emianim_component.h">
 			<Filter>emi\costume</Filter>
 		</ClInclude>
@@ -424,30 +437,6 @@
 		<ClInclude Include="..\..\engines\grim\emi\costume\emitexi_component.h">
 			<Filter>emi\costume</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\codecs\scx.h">
-			<Filter>emi\sound\codecs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\aifftrack.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\emisound.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\mp3track.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\scxtrack.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\track.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\sound\vimatrack.h">
-			<Filter>emi\sound</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\emi\animationemi.h">
-			<Filter>emi</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\grim\emi\costumeemi.h">
 			<Filter>emi</Filter>
 		</ClInclude>
@@ -472,6 +461,33 @@
 		<ClInclude Include="..\..\engines\grim\emi\skeleton.h">
 			<Filter>emi</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\aifftrack.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\codecs\scx.h">
+			<Filter>emi\sound\codecs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\emisound.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\mp3track.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\scxtrack.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\track.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\emi\sound\vimatrack.h">
+			<Filter>emi\sound</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\font.h" />
+		<ClInclude Include="..\..\engines\grim\gfx_base.h" />
+		<ClInclude Include="..\..\engines\grim\gfx_opengl.h" />
+		<ClInclude Include="..\..\engines\grim\gfx_opengl_shaders.h" />
+		<ClInclude Include="..\..\engines\grim\gfx_tinygl.h" />
+		<ClInclude Include="..\..\engines\grim\grim.h" />
 		<ClInclude Include="..\..\engines\grim\imuse\imuse.h">
 			<Filter>imuse</Filter>
 		</ClInclude>
@@ -487,6 +503,13 @@
 		<ClInclude Include="..\..\engines\grim\imuse\imuse_track.h">
 			<Filter>imuse</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\inputdialog.h" />
+		<ClInclude Include="..\..\engines\grim\iris.h" />
+		<ClInclude Include="..\..\engines\grim\keyframe.h" />
+		<ClInclude Include="..\..\engines\grim\lab.h" />
+		<ClInclude Include="..\..\engines\grim\lipsync.h" />
+		<ClInclude Include="..\..\engines\grim\localize.h" />
+		<ClInclude Include="..\..\engines\grim\lua.h" />
 		<ClInclude Include="..\..\engines\grim\lua\lapi.h">
 			<Filter>lua</Filter>
 		</ClInclude>
@@ -556,6 +579,11 @@
 		<ClInclude Include="..\..\engines\grim\lua\lzio.h">
 			<Filter>lua</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\lua_v1.h" />
+		<ClInclude Include="..\..\engines\grim\material.h" />
+		<ClInclude Include="..\..\engines\grim\md5check.h" />
+		<ClInclude Include="..\..\engines\grim\md5checkdialog.h" />
+		<ClInclude Include="..\..\engines\grim\model.h" />
 		<ClInclude Include="..\..\engines\grim\movie\bink.h">
 			<Filter>movie</Filter>
 		</ClInclude>
@@ -586,6 +614,12 @@
 		<ClInclude Include="..\..\engines\grim\movie\smush.h">
 			<Filter>movie</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\object.h" />
+		<ClInclude Include="..\..\engines\grim\objectstate.h" />
+		<ClInclude Include="..\..\engines\grim\patchr.h" />
+		<ClInclude Include="..\..\engines\grim\pool.h" />
+		<ClInclude Include="..\..\engines\grim\primitives.h" />
+		<ClInclude Include="..\..\engines\grim\registry.h" />
 		<ClInclude Include="..\..\engines\grim\remastered\commentary.h">
 			<Filter>remastered</Filter>
 		</ClInclude>
@@ -598,6 +632,14 @@
 		<ClInclude Include="..\..\engines\grim\remastered\overlay.h">
 			<Filter>remastered</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\grim\resource.h" />
+		<ClInclude Include="..\..\engines\grim\savegame.h" />
+		<ClInclude Include="..\..\engines\grim\sector.h" />
+		<ClInclude Include="..\..\engines\grim\set.h" />
+		<ClInclude Include="..\..\engines\grim\sound.h" />
+		<ClInclude Include="..\..\engines\grim\sprite.h" />
+		<ClInclude Include="..\..\engines\grim\textobject.h" />
+		<ClInclude Include="..\..\engines\grim\textsplit.h" />
 		<ClInclude Include="..\..\engines\grim\update\lang_filter.h">
 			<Filter>update</Filter>
 		</ClInclude>
@@ -610,48 +652,6 @@
 		<ClInclude Include="..\..\engines\grim\update\update.h">
 			<Filter>update</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\grim\actor.h" />
-		<ClInclude Include="..\..\engines\grim\animation.h" />
-		<ClInclude Include="..\..\engines\grim\bitmap.h" />
-		<ClInclude Include="..\..\engines\grim\color.h" />
-		<ClInclude Include="..\..\engines\grim\colormap.h" />
-		<ClInclude Include="..\..\engines\grim\costume.h" />
-		<ClInclude Include="..\..\engines\grim\debug.h" />
-		<ClInclude Include="..\..\engines\grim\debugger.h" />
-		<ClInclude Include="..\..\engines\grim\detection.h" />
-		<ClInclude Include="..\..\engines\grim\detection_tables.h" />
-		<ClInclude Include="..\..\engines\grim\font.h" />
-		<ClInclude Include="..\..\engines\grim\gfx_base.h" />
-		<ClInclude Include="..\..\engines\grim\gfx_opengl.h" />
-		<ClInclude Include="..\..\engines\grim\gfx_opengl_shaders.h" />
-		<ClInclude Include="..\..\engines\grim\gfx_tinygl.h" />
-		<ClInclude Include="..\..\engines\grim\grim.h" />
-		<ClInclude Include="..\..\engines\grim\inputdialog.h" />
-		<ClInclude Include="..\..\engines\grim\iris.h" />
-		<ClInclude Include="..\..\engines\grim\keyframe.h" />
-		<ClInclude Include="..\..\engines\grim\lab.h" />
-		<ClInclude Include="..\..\engines\grim\lipsync.h" />
-		<ClInclude Include="..\..\engines\grim\localize.h" />
-		<ClInclude Include="..\..\engines\grim\lua.h" />
-		<ClInclude Include="..\..\engines\grim\lua_v1.h" />
-		<ClInclude Include="..\..\engines\grim\material.h" />
-		<ClInclude Include="..\..\engines\grim\md5check.h" />
-		<ClInclude Include="..\..\engines\grim\md5checkdialog.h" />
-		<ClInclude Include="..\..\engines\grim\model.h" />
-		<ClInclude Include="..\..\engines\grim\object.h" />
-		<ClInclude Include="..\..\engines\grim\objectstate.h" />
-		<ClInclude Include="..\..\engines\grim\patchr.h" />
-		<ClInclude Include="..\..\engines\grim\pool.h" />
-		<ClInclude Include="..\..\engines\grim\primitives.h" />
-		<ClInclude Include="..\..\engines\grim\registry.h" />
-		<ClInclude Include="..\..\engines\grim\resource.h" />
-		<ClInclude Include="..\..\engines\grim\savegame.h" />
-		<ClInclude Include="..\..\engines\grim\sector.h" />
-		<ClInclude Include="..\..\engines\grim\set.h" />
-		<ClInclude Include="..\..\engines\grim\sound.h" />
-		<ClInclude Include="..\..\engines\grim\sprite.h" />
-		<ClInclude Include="..\..\engines\grim\textobject.h" />
-		<ClInclude Include="..\..\engines\grim\textsplit.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\grim\module.mk" />

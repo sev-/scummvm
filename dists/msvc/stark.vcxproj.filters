@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="formats">
-			<UniqueIdentifier>E3A924D3-3700-4E58-9ABA-F28CE7E9FA15</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA734-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gfx">
-			<UniqueIdentifier>C02036CE-9AB1-4358-969B-4E8E30CD3520</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA735-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="model">
-			<UniqueIdentifier>D4AE8891-887F-4481-BEBC-5DAFA9A9AD20</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA736-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="movement">
-			<UniqueIdentifier>60EBC8A2-ADE4-4685-9E1F-697089DB76D6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA737-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="resources">
-			<UniqueIdentifier>8A68754F-99F6-445D-851F-DBAA740F6DC5</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA738-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="services">
-			<UniqueIdentifier>8FDCA311-7609-4151-9414-26FEA22990B3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA739-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tools">
-			<UniqueIdentifier>5B6E6246-ACE0-4C1F-B49F-4F1CEF2F515F</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui">
-			<UniqueIdentifier>1CC67868-2FBF-484E-AA09-68210E704DD6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui\menu">
-			<UniqueIdentifier>96158DB6-C4DE-47EC-AC23-7E052EB742B6</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui\world">
-			<UniqueIdentifier>6BD4F016-3C2B-4696-9744-D06B71E4A066</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="visual">
-			<UniqueIdentifier>88279050-4C7D-4CBA-8880-CFA892CCE2B9</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="visual\effects">
-			<UniqueIdentifier>891B1584-7FAD-4E8B-B492-6FAF9FBED2D7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA73F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\stark\console.cpp" />
 		<ClCompile Include="..\..\engines\stark\formats\biff.cpp">
 			<Filter>formats</Filter>
 		</ClCompile>
@@ -132,6 +133,7 @@
 		<ClCompile Include="..\..\engines\stark\gfx\tinygltexture.cpp">
 			<Filter>gfx</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\stark\model\animhandler.cpp">
 			<Filter>model</Filter>
 		</ClCompile>
@@ -162,6 +164,7 @@
 		<ClCompile Include="..\..\engines\stark\movement\walk.cpp">
 			<Filter>movement</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\resourcereference.cpp" />
 		<ClCompile Include="..\..\engines\stark\resources\anim.cpp">
 			<Filter>resources</Filter>
 		</ClCompile>
@@ -264,6 +267,8 @@
 		<ClCompile Include="..\..\engines\stark\resources\textureset.cpp">
 			<Filter>resources</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\savemetadata.cpp" />
+		<ClCompile Include="..\..\engines\stark\scene.cpp" />
 		<ClCompile Include="..\..\engines\stark\services\archiveloader.cpp">
 			<Filter>services</Filter>
 		</ClCompile>
@@ -306,6 +311,7 @@
 		<ClCompile Include="..\..\engines\stark\services\userinterface.cpp">
 			<Filter>services</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\stark.cpp" />
 		<ClCompile Include="..\..\engines\stark\tools\abstractsyntaxtree.cpp">
 			<Filter>tools</Filter>
 		</ClCompile>
@@ -317,6 +323,12 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\tools\decompiler.cpp">
 			<Filter>tools</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\ui\cursor.cpp">
+			<Filter>ui</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\ui\dialogbox.cpp">
+			<Filter>ui</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\ui\menu\dialogmenu.cpp">
 			<Filter>ui\menu</Filter>
@@ -341,6 +353,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\ui\menu\settingsmenu.cpp">
 			<Filter>ui\menu</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\stark\ui\window.cpp">
+			<Filter>ui</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\ui\world\actionmenu.cpp">
 			<Filter>ui\world</Filter>
@@ -369,14 +384,8 @@
 		<ClCompile Include="..\..\engines\stark\ui\world\topmenu.cpp">
 			<Filter>ui\world</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\stark\ui\cursor.cpp">
-			<Filter>ui</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\stark\ui\dialogbox.cpp">
-			<Filter>ui</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\stark\ui\window.cpp">
-			<Filter>ui</Filter>
+		<ClCompile Include="..\..\engines\stark\visual\actor.cpp">
+			<Filter>visual</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\visual\effects\bubbles.cpp">
 			<Filter>visual\effects</Filter>
@@ -389,9 +398,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\visual\effects\fish.cpp">
 			<Filter>visual\effects</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\stark\visual\actor.cpp">
-			<Filter>visual</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\stark\visual\explodingimage.cpp">
 			<Filter>visual</Filter>
@@ -411,14 +417,11 @@
 		<ClCompile Include="..\..\engines\stark\visual\text.cpp">
 			<Filter>visual</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\stark\console.cpp" />
-		<ClCompile Include="..\..\engines\stark\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\stark\resourcereference.cpp" />
-		<ClCompile Include="..\..\engines\stark\savemetadata.cpp" />
-		<ClCompile Include="..\..\engines\stark\scene.cpp" />
-		<ClCompile Include="..\..\engines\stark\stark.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\stark\console.h" />
+		<ClInclude Include="..\..\engines\stark\debug.h" />
+		<ClInclude Include="..\..\engines\stark\detection.h" />
 		<ClInclude Include="..\..\engines\stark\formats\biff.h">
 			<Filter>formats</Filter>
 		</ClInclude>
@@ -551,6 +554,7 @@
 		<ClInclude Include="..\..\engines\stark\movement\walk.h">
 			<Filter>movement</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\resourcereference.h" />
 		<ClInclude Include="..\..\engines\stark\resources\anim.h">
 			<Filter>resources</Filter>
 		</ClInclude>
@@ -653,6 +657,8 @@
 		<ClInclude Include="..\..\engines\stark\resources\textureset.h">
 			<Filter>resources</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\savemetadata.h" />
+		<ClInclude Include="..\..\engines\stark\scene.h" />
 		<ClInclude Include="..\..\engines\stark\services\archiveloader.h">
 			<Filter>services</Filter>
 		</ClInclude>
@@ -695,6 +701,7 @@
 		<ClInclude Include="..\..\engines\stark\services\userinterface.h">
 			<Filter>services</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\stark.h" />
 		<ClInclude Include="..\..\engines\stark\tools\abstractsyntaxtree.h">
 			<Filter>tools</Filter>
 		</ClInclude>
@@ -706,6 +713,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\tools\decompiler.h">
 			<Filter>tools</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\ui\cursor.h">
+			<Filter>ui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\ui\dialogbox.h">
+			<Filter>ui</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\ui\menu\dialogmenu.h">
 			<Filter>ui\menu</Filter>
@@ -730,6 +743,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\ui\menu\settingsmenu.h">
 			<Filter>ui\menu</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\ui\screen.h">
+			<Filter>ui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\stark\ui\window.h">
+			<Filter>ui</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\ui\world\actionmenu.h">
 			<Filter>ui\world</Filter>
@@ -758,17 +777,8 @@
 		<ClInclude Include="..\..\engines\stark\ui\world\topmenu.h">
 			<Filter>ui\world</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\ui\cursor.h">
-			<Filter>ui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\ui\dialogbox.h">
-			<Filter>ui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\ui\screen.h">
-			<Filter>ui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\ui\window.h">
-			<Filter>ui</Filter>
+		<ClInclude Include="..\..\engines\stark\visual\actor.h">
+			<Filter>visual</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\visual\effects\bubbles.h">
 			<Filter>visual\effects</Filter>
@@ -781,9 +791,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\visual\effects\fish.h">
 			<Filter>visual\effects</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\visual\actor.h">
-			<Filter>visual</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\stark\visual\explodingimage.h">
 			<Filter>visual</Filter>
@@ -806,13 +813,6 @@
 		<ClInclude Include="..\..\engines\stark\visual\visual.h">
 			<Filter>visual</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\stark\console.h" />
-		<ClInclude Include="..\..\engines\stark\debug.h" />
-		<ClInclude Include="..\..\engines\stark\detection.h" />
-		<ClInclude Include="..\..\engines\stark\resourcereference.h" />
-		<ClInclude Include="..\..\engines\stark\savemetadata.h" />
-		<ClInclude Include="..\..\engines\stark\scene.h" />
-		<ClInclude Include="..\..\engines\stark\stark.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\stark\module.mk" />

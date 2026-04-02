@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup Label="ProjectConfigurations">
 		<ProjectConfiguration Include="Debug|Win32">
 			<Configuration>Debug</Configuration>
@@ -51,70 +51,73 @@
 		</ProjectConfiguration>
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{974B8C37-9C6D-44C3-BF92-04B6EDF46A01}</ProjectGuid>
+		<ProjectGuid>{21F7A724-F038-32DA-9B59-C043222633FC}</ProjectGuid>
 		<RootNamespace>scummvm-detection</RootNamespace>
 		<Keyword>Win32Proj</Keyword>
-		<VCTargetsPath Condition="'$(VCTargetsPath14)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath14)</VCTargetsPath>
+		<VCTargetsPath Condition="'$(VCTargetsPath18)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath18)</VCTargetsPath>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
+		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>LLVM-vs2014</PlatformToolset>
+		<PlatformToolset>llvm</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
+		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>LLVM-vs2014</PlatformToolset>
+		<PlatformToolset>llvm</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
+		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>LLVM-vs2014</PlatformToolset>
+		<PlatformToolset>llvm</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v140</PlatformToolset>
+		<PlatformToolset>v145</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -202,6 +205,7 @@
 		<ClCompile Include="..\..\engines\dm\detection.cpp" />
 		<ClCompile Include="..\..\engines\draci\detection.cpp" />
 		<ClCompile Include="..\..\engines\dragons\detection.cpp" />
+		<ClCompile Include="..\..\engines\dragonslair2\detection.cpp" />
 		<ClCompile Include="..\..\engines\drascula\detection.cpp" />
 		<ClCompile Include="..\..\engines\dreamweb\detection.cpp" />
 		<ClCompile Include="..\..\engines\efh\detection.cpp" />
@@ -288,6 +292,7 @@
 		<ClCompile Include="..\..\engines\watchmaker\detection.cpp" />
 		<ClCompile Include="..\..\engines\waynesworld\detection.cpp" />
 		<ClCompile Include="..\..\engines\wintermute\detection.cpp" />
+		<ClCompile Include="..\..\engines\yaga\detection.cpp" />
 		<ClCompile Include="..\..\engines\zvision\detection.cpp" />
 	</ItemGroup>
 	<ItemGroup>
@@ -462,6 +467,7 @@
 		<ClInclude Include="..\..\engines\avalanche\graphics.h" />
 		<ClInclude Include="..\..\engines\avalanche\help.h" />
 		<ClInclude Include="..\..\engines\avalanche\highscore.h" />
+		<ClInclude Include="..\..\engines\avalanche\intro.h" />
 		<ClInclude Include="..\..\engines\avalanche\mainmenu.h" />
 		<ClInclude Include="..\..\engines\avalanche\nim.h" />
 		<ClInclude Include="..\..\engines\avalanche\parser.h" />
@@ -959,6 +965,11 @@
 		<ClInclude Include="..\..\engines\dragons\strplayer.h" />
 		<ClInclude Include="..\..\engines\dragons\talk.h" />
 		<ClInclude Include="..\..\engines\dragons\vabsound.h" />
+		<ClInclude Include="..\..\engines\dragonslair2\console.h" />
+		<ClInclude Include="..\..\engines\dragonslair2\detection.h" />
+		<ClInclude Include="..\..\engines\dragonslair2\detection_tables.h" />
+		<ClInclude Include="..\..\engines\dragonslair2\dragonslair2.h" />
+		<ClInclude Include="..\..\engines\dragonslair2\metaengine.h" />
 		<ClInclude Include="..\..\engines\drascula\console.h" />
 		<ClInclude Include="..\..\engines\drascula\detection.h" />
 		<ClInclude Include="..\..\engines\drascula\drascula.h" />
@@ -2601,6 +2612,18 @@
 		<ClInclude Include="..\..\engines\wintermute\platform_osystem.h" />
 		<ClInclude Include="..\..\engines\wintermute\wintermute.h" />
 		<ClInclude Include="..\..\engines\wintermute\wintypes.h" />
+		<ClInclude Include="..\..\engines\yaga\animation.h" />
+		<ClInclude Include="..\..\engines\yaga\audiofile.h" />
+		<ClInclude Include="..\..\engines\yaga\console.h" />
+		<ClInclude Include="..\..\engines\yaga\detection.h" />
+		<ClInclude Include="..\..\engines\yaga\detection_tables.h" />
+		<ClInclude Include="..\..\engines\yaga\installer.h" />
+		<ClInclude Include="..\..\engines\yaga\metaengine.h" />
+		<ClInclude Include="..\..\engines\yaga\pythonhost.h" />
+		<ClInclude Include="..\..\engines\yaga\scripthandler.h" />
+		<ClInclude Include="..\..\engines\yaga\text.h" />
+		<ClInclude Include="..\..\engines\yaga\video.h" />
+		<ClInclude Include="..\..\engines\yaga\yaga.h" />
 		<ClInclude Include="..\..\engines\zvision\detection.h" />
 		<ClInclude Include="..\..\engines\zvision\detection_tables.h" />
 		<ClInclude Include="..\..\engines\zvision\zvision.h" />
@@ -2637,6 +2660,7 @@
 		<None Include="..\..\engines\dm\module.mk" />
 		<None Include="..\..\engines\draci\module.mk" />
 		<None Include="..\..\engines\dragons\module.mk" />
+		<None Include="..\..\engines\dragonslair2\module.mk" />
 		<None Include="..\..\engines\drascula\module.mk" />
 		<None Include="..\..\engines\dreamweb\module.mk" />
 		<None Include="..\..\engines\efh\module.mk" />
@@ -2724,6 +2748,7 @@
 		<None Include="..\..\engines\watchmaker\module.mk" />
 		<None Include="..\..\engines\waynesworld\module.mk" />
 		<None Include="..\..\engines\wintermute\module.mk" />
+		<None Include="..\..\engines\yaga\module.mk" />
 		<None Include="..\..\engines\zvision\module.mk" />
 	</ItemGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

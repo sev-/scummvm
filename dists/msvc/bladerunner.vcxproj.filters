@@ -1,20 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="script">
-			<UniqueIdentifier>9AEF799A-449F-4227-8DD0-B3E4307CDE57</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA619-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="script\ai">
-			<UniqueIdentifier>157CC22D-581E-4627-91E2-9C7200F1125B</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA61A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="script\scene">
-			<UniqueIdentifier>065EA6D1-C8AA-4926-8DC1-22102AEEAD3D</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA61B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui">
-			<UniqueIdentifier>C480B156-C6C0-4D46-877D-9766C4E6B4E3</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA61C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\bladerunner\actor.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\actor_clues.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\actor_combat.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\actor_dialogue_queue.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\actor_walk.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\adpcm_decoder.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\ambient_sounds.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\archive.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\aud_stream.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\audio_cache.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\audio_mixer.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\audio_player.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\audio_speech.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\bladerunner.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\boundingbox.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\chapters.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\color.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\combat.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\crimes_database.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\debugger.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\decompress_lcw.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\decompress_lzo.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\dialogue_menu.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\fog.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\font.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\framelimiter.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\game_flags.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\game_info.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\image.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\item.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\item_pickup.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\items.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\light.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\lights.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\matrix.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\mouse.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\movement_track.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\music.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\obstacles.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\outtake.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\overlays.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\regions.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\savefile.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\scene.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\scene_objects.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\screen_effects.cpp" />
 		<ClCompile Include="..\..\engines\bladerunner\script\ai\answering_machine.cpp">
 			<Filter>script\ai</Filter>
 		</ClCompile>
@@ -233,6 +280,21 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bladerunner\script\ai\zuben.cpp">
 			<Filter>script\ai</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\script\ai_script.cpp">
+			<Filter>script</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\script\esper_script.cpp">
+			<Filter>script</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\script\init_script.cpp">
+			<Filter>script</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\script\kia_script.cpp">
+			<Filter>script</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\script\police_maze.cpp">
+			<Filter>script</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\bladerunner\script\scene\ar01.cpp">
 			<Filter>script\scene</Filter>
@@ -570,21 +632,6 @@
 		<ClCompile Include="..\..\engines\bladerunner\script\scene\ug19.cpp">
 			<Filter>script\scene</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\script\ai_script.cpp">
-			<Filter>script</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\script\esper_script.cpp">
-			<Filter>script</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\script\init_script.cpp">
-			<Filter>script</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\script\kia_script.cpp">
-			<Filter>script</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\script\police_maze.cpp">
-			<Filter>script</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\bladerunner\script\scene_script.cpp">
 			<Filter>script</Filter>
 		</ClCompile>
@@ -594,6 +641,16 @@
 		<ClCompile Include="..\..\engines\bladerunner\script\vk_script.cpp">
 			<Filter>script</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\bladerunner\set.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\set_effects.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\settings.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\shape.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\slice_animations.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\slice_renderer.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\subtitles.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\suspects_database.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\text_resource.cpp" />
+		<ClCompile Include="..\..\engines\bladerunner\time.cpp" />
 		<ClCompile Include="..\..\engines\bladerunner\ui\elevator.cpp">
 			<Filter>ui</Filter>
 		</ClCompile>
@@ -669,63 +726,6 @@
 		<ClCompile Include="..\..\engines\bladerunner\ui\vk.cpp">
 			<Filter>ui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\bladerunner\actor.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\actor_clues.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\actor_combat.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\actor_dialogue_queue.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\actor_walk.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\adpcm_decoder.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\ambient_sounds.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\archive.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\aud_stream.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\audio_cache.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\audio_mixer.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\audio_player.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\audio_speech.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\bladerunner.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\boundingbox.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\chapters.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\color.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\combat.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\crimes_database.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\debugger.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\decompress_lcw.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\decompress_lzo.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\dialogue_menu.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\fog.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\font.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\framelimiter.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\game_flags.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\game_info.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\image.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\item.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\item_pickup.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\items.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\light.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\lights.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\matrix.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\mouse.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\movement_track.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\music.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\obstacles.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\outtake.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\overlays.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\regions.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\savefile.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\scene.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\scene_objects.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\screen_effects.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\set.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\set_effects.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\settings.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\shape.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\slice_animations.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\slice_renderer.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\subtitles.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\suspects_database.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\text_resource.cpp" />
-		<ClCompile Include="..\..\engines\bladerunner\time.cpp" />
 		<ClCompile Include="..\..\engines\bladerunner\view.cpp" />
 		<ClCompile Include="..\..\engines\bladerunner\vqa_decoder.cpp" />
 		<ClCompile Include="..\..\engines\bladerunner\vqa_player.cpp" />
@@ -733,6 +733,56 @@
 		<ClCompile Include="..\..\engines\bladerunner\zbuffer.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\bladerunner\actor.h" />
+		<ClInclude Include="..\..\engines\bladerunner\actor_clues.h" />
+		<ClInclude Include="..\..\engines\bladerunner\actor_combat.h" />
+		<ClInclude Include="..\..\engines\bladerunner\actor_dialogue_queue.h" />
+		<ClInclude Include="..\..\engines\bladerunner\actor_walk.h" />
+		<ClInclude Include="..\..\engines\bladerunner\adpcm_decoder.h" />
+		<ClInclude Include="..\..\engines\bladerunner\ambient_sounds.h" />
+		<ClInclude Include="..\..\engines\bladerunner\archive.h" />
+		<ClInclude Include="..\..\engines\bladerunner\aud_stream.h" />
+		<ClInclude Include="..\..\engines\bladerunner\audio_cache.h" />
+		<ClInclude Include="..\..\engines\bladerunner\audio_mixer.h" />
+		<ClInclude Include="..\..\engines\bladerunner\audio_player.h" />
+		<ClInclude Include="..\..\engines\bladerunner\audio_speech.h" />
+		<ClInclude Include="..\..\engines\bladerunner\bladerunner.h" />
+		<ClInclude Include="..\..\engines\bladerunner\boundingbox.h" />
+		<ClInclude Include="..\..\engines\bladerunner\chapters.h" />
+		<ClInclude Include="..\..\engines\bladerunner\color.h" />
+		<ClInclude Include="..\..\engines\bladerunner\combat.h" />
+		<ClInclude Include="..\..\engines\bladerunner\crimes_database.h" />
+		<ClInclude Include="..\..\engines\bladerunner\debugger.h" />
+		<ClInclude Include="..\..\engines\bladerunner\decompress_lcw.h" />
+		<ClInclude Include="..\..\engines\bladerunner\decompress_lzo.h" />
+		<ClInclude Include="..\..\engines\bladerunner\detection.h" />
+		<ClInclude Include="..\..\engines\bladerunner\detection_tables.h" />
+		<ClInclude Include="..\..\engines\bladerunner\dialogue_menu.h" />
+		<ClInclude Include="..\..\engines\bladerunner\fog.h" />
+		<ClInclude Include="..\..\engines\bladerunner\font.h" />
+		<ClInclude Include="..\..\engines\bladerunner\framelimiter.h" />
+		<ClInclude Include="..\..\engines\bladerunner\game_constants.h" />
+		<ClInclude Include="..\..\engines\bladerunner\game_flags.h" />
+		<ClInclude Include="..\..\engines\bladerunner\game_info.h" />
+		<ClInclude Include="..\..\engines\bladerunner\image.h" />
+		<ClInclude Include="..\..\engines\bladerunner\item.h" />
+		<ClInclude Include="..\..\engines\bladerunner\item_pickup.h" />
+		<ClInclude Include="..\..\engines\bladerunner\items.h" />
+		<ClInclude Include="..\..\engines\bladerunner\light.h" />
+		<ClInclude Include="..\..\engines\bladerunner\lights.h" />
+		<ClInclude Include="..\..\engines\bladerunner\matrix.h" />
+		<ClInclude Include="..\..\engines\bladerunner\mouse.h" />
+		<ClInclude Include="..\..\engines\bladerunner\movement_track.h" />
+		<ClInclude Include="..\..\engines\bladerunner\music.h" />
+		<ClInclude Include="..\..\engines\bladerunner\obstacles.h" />
+		<ClInclude Include="..\..\engines\bladerunner\outtake.h" />
+		<ClInclude Include="..\..\engines\bladerunner\overlays.h" />
+		<ClInclude Include="..\..\engines\bladerunner\rect_float.h" />
+		<ClInclude Include="..\..\engines\bladerunner\regions.h" />
+		<ClInclude Include="..\..\engines\bladerunner\savefile.h" />
+		<ClInclude Include="..\..\engines\bladerunner\scene.h" />
+		<ClInclude Include="..\..\engines\bladerunner\scene_objects.h" />
+		<ClInclude Include="..\..\engines\bladerunner\screen_effects.h" />
 		<ClInclude Include="..\..\engines\bladerunner\script\ai_script.h">
 			<Filter>script</Filter>
 		</ClInclude>
@@ -757,6 +807,16 @@
 		<ClInclude Include="..\..\engines\bladerunner\script\vk_script.h">
 			<Filter>script</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\bladerunner\set.h" />
+		<ClInclude Include="..\..\engines\bladerunner\set_effects.h" />
+		<ClInclude Include="..\..\engines\bladerunner\settings.h" />
+		<ClInclude Include="..\..\engines\bladerunner\shape.h" />
+		<ClInclude Include="..\..\engines\bladerunner\slice_animations.h" />
+		<ClInclude Include="..\..\engines\bladerunner\slice_renderer.h" />
+		<ClInclude Include="..\..\engines\bladerunner\subtitles.h" />
+		<ClInclude Include="..\..\engines\bladerunner\suspects_database.h" />
+		<ClInclude Include="..\..\engines\bladerunner\text_resource.h" />
+		<ClInclude Include="..\..\engines\bladerunner\time.h" />
 		<ClInclude Include="..\..\engines\bladerunner\ui\elevator.h">
 			<Filter>ui</Filter>
 		</ClInclude>
@@ -835,66 +895,6 @@
 		<ClInclude Include="..\..\engines\bladerunner\ui\vk.h">
 			<Filter>ui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\bladerunner\actor.h" />
-		<ClInclude Include="..\..\engines\bladerunner\actor_clues.h" />
-		<ClInclude Include="..\..\engines\bladerunner\actor_combat.h" />
-		<ClInclude Include="..\..\engines\bladerunner\actor_dialogue_queue.h" />
-		<ClInclude Include="..\..\engines\bladerunner\actor_walk.h" />
-		<ClInclude Include="..\..\engines\bladerunner\adpcm_decoder.h" />
-		<ClInclude Include="..\..\engines\bladerunner\ambient_sounds.h" />
-		<ClInclude Include="..\..\engines\bladerunner\archive.h" />
-		<ClInclude Include="..\..\engines\bladerunner\aud_stream.h" />
-		<ClInclude Include="..\..\engines\bladerunner\audio_cache.h" />
-		<ClInclude Include="..\..\engines\bladerunner\audio_mixer.h" />
-		<ClInclude Include="..\..\engines\bladerunner\audio_player.h" />
-		<ClInclude Include="..\..\engines\bladerunner\audio_speech.h" />
-		<ClInclude Include="..\..\engines\bladerunner\bladerunner.h" />
-		<ClInclude Include="..\..\engines\bladerunner\boundingbox.h" />
-		<ClInclude Include="..\..\engines\bladerunner\chapters.h" />
-		<ClInclude Include="..\..\engines\bladerunner\color.h" />
-		<ClInclude Include="..\..\engines\bladerunner\combat.h" />
-		<ClInclude Include="..\..\engines\bladerunner\crimes_database.h" />
-		<ClInclude Include="..\..\engines\bladerunner\debugger.h" />
-		<ClInclude Include="..\..\engines\bladerunner\decompress_lcw.h" />
-		<ClInclude Include="..\..\engines\bladerunner\decompress_lzo.h" />
-		<ClInclude Include="..\..\engines\bladerunner\detection.h" />
-		<ClInclude Include="..\..\engines\bladerunner\detection_tables.h" />
-		<ClInclude Include="..\..\engines\bladerunner\dialogue_menu.h" />
-		<ClInclude Include="..\..\engines\bladerunner\fog.h" />
-		<ClInclude Include="..\..\engines\bladerunner\font.h" />
-		<ClInclude Include="..\..\engines\bladerunner\framelimiter.h" />
-		<ClInclude Include="..\..\engines\bladerunner\game_constants.h" />
-		<ClInclude Include="..\..\engines\bladerunner\game_flags.h" />
-		<ClInclude Include="..\..\engines\bladerunner\game_info.h" />
-		<ClInclude Include="..\..\engines\bladerunner\image.h" />
-		<ClInclude Include="..\..\engines\bladerunner\item.h" />
-		<ClInclude Include="..\..\engines\bladerunner\item_pickup.h" />
-		<ClInclude Include="..\..\engines\bladerunner\items.h" />
-		<ClInclude Include="..\..\engines\bladerunner\light.h" />
-		<ClInclude Include="..\..\engines\bladerunner\lights.h" />
-		<ClInclude Include="..\..\engines\bladerunner\matrix.h" />
-		<ClInclude Include="..\..\engines\bladerunner\mouse.h" />
-		<ClInclude Include="..\..\engines\bladerunner\movement_track.h" />
-		<ClInclude Include="..\..\engines\bladerunner\music.h" />
-		<ClInclude Include="..\..\engines\bladerunner\obstacles.h" />
-		<ClInclude Include="..\..\engines\bladerunner\outtake.h" />
-		<ClInclude Include="..\..\engines\bladerunner\overlays.h" />
-		<ClInclude Include="..\..\engines\bladerunner\rect_float.h" />
-		<ClInclude Include="..\..\engines\bladerunner\regions.h" />
-		<ClInclude Include="..\..\engines\bladerunner\savefile.h" />
-		<ClInclude Include="..\..\engines\bladerunner\scene.h" />
-		<ClInclude Include="..\..\engines\bladerunner\scene_objects.h" />
-		<ClInclude Include="..\..\engines\bladerunner\screen_effects.h" />
-		<ClInclude Include="..\..\engines\bladerunner\set.h" />
-		<ClInclude Include="..\..\engines\bladerunner\set_effects.h" />
-		<ClInclude Include="..\..\engines\bladerunner\settings.h" />
-		<ClInclude Include="..\..\engines\bladerunner\shape.h" />
-		<ClInclude Include="..\..\engines\bladerunner\slice_animations.h" />
-		<ClInclude Include="..\..\engines\bladerunner\slice_renderer.h" />
-		<ClInclude Include="..\..\engines\bladerunner\subtitles.h" />
-		<ClInclude Include="..\..\engines\bladerunner\suspects_database.h" />
-		<ClInclude Include="..\..\engines\bladerunner\text_resource.h" />
-		<ClInclude Include="..\..\engines\bladerunner\time.h" />
 		<ClInclude Include="..\..\engines\bladerunner\vector.h" />
 		<ClInclude Include="..\..\engines\bladerunner\view.h" />
 		<ClInclude Include="..\..\engines\bladerunner\vqa_decoder.h" />

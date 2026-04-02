@@ -1,167 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="nuvie">
-			<UniqueIdentifier>D50D90FE-D91A-4551-9708-DE3479096472</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96DB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\actors">
-			<UniqueIdentifier>BC1AB1E4-8B24-46E4-A89C-24349881963D</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96DC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\conf">
-			<UniqueIdentifier>C085C3C4-4DAE-4C73-A982-8DC220C35891</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96DD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\core">
-			<UniqueIdentifier>4D15CAF9-EAD9-4311-92DC-CE0762683748</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96DE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\files">
-			<UniqueIdentifier>6860A64B-0F21-4CC3-B860-FBB59DC88481</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96DF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\fonts">
-			<UniqueIdentifier>5FD55523-5B79-4168-8E5E-98A7192BC368</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\gui">
-			<UniqueIdentifier>BDD8CABD-B39E-4A18-8DBD-D9E0622F16F3</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\gui\widgets">
-			<UniqueIdentifier>4C3B5F06-E48C-4667-B051-0301FE719A8E</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\keybinding">
-			<UniqueIdentifier>665AB4B8-69A5-4A90-BA28-3B1C275640D1</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\menus">
-			<UniqueIdentifier>55AAC2FE-35BC-4A8F-B3EA-63BEC7B1F79C</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\misc">
-			<UniqueIdentifier>228A8D15-E45E-401A-8DB7-3DB5B3B7B680</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\pathfinder">
-			<UniqueIdentifier>6F9D7F8F-BFEB-4C5A-AFF8-58AB0DB3BB02</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\portraits">
-			<UniqueIdentifier>D954B7C0-BCA1-41FE-8327-D4E8DECD3D3D</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\save">
-			<UniqueIdentifier>8F2EB5A7-A478-4185-ABC1-F1239516E17C</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\screen">
-			<UniqueIdentifier>DDBAB38D-8D21-45EA-AC1B-1D943653165E</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96E9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\script">
-			<UniqueIdentifier>052DFABF-BB52-4A0A-9EF2-4CEBAF5D536F</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96EA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\sound">
-			<UniqueIdentifier>10816F95-9AB3-4CB7-981D-7C4F578A18C3</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96EB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\sound\adplug">
-			<UniqueIdentifier>06E05328-3B5D-4CA6-8E77-5219CD235788</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96EC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\sound\decoder">
-			<UniqueIdentifier>790E0BEB-DDD0-42AA-B749-71EDAD0CDBD8</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96ED-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\usecode">
-			<UniqueIdentifier>08397CE1-DC29-476A-83D7-0CE7189ADB49</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96EE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="nuvie\views">
-			<UniqueIdentifier>B54CC887-FE1B-4EA7-B87B-0890ACEB4B75</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96EF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared">
-			<UniqueIdentifier>591039BB-21A7-47D1-BC45-22C668DD027D</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\conf">
-			<UniqueIdentifier>66FCDB0D-0ED2-434F-A491-2016EED86E0A</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="shared\engine">
-			<UniqueIdentifier>EFB82D48-06BA-4BF4-B52E-BB3FFC176817</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4">
-			<UniqueIdentifier>5BA3BA13-C913-4851-BF48-50380F3C61AA</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\controllers">
-			<UniqueIdentifier>9378D7E6-BB30-4CC4-AD8E-1C330C32834B</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\conversation">
-			<UniqueIdentifier>B30201A4-CDDB-46D3-9EBA-DED472F5BC30</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\core">
-			<UniqueIdentifier>7FF5433B-0132-46A8-8F8D-C834BFDA47A5</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\core\lzw">
-			<UniqueIdentifier>3CB7C1B5-A681-419A-BD65-619E56A3CAE9</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\events">
-			<UniqueIdentifier>4A81CB70-0BD2-4A04-802B-F62704297FD6</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\filesys">
-			<UniqueIdentifier>E36F430F-0ED2-4ADB-84B6-3B4506C6CC85</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96F9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\game">
-			<UniqueIdentifier>6D33B439-4ABE-4493-B94C-48954C17FD9F</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\gfx">
-			<UniqueIdentifier>B20423AE-FE4A-4B35-89C9-5BC94D312C81</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\map">
-			<UniqueIdentifier>FC39884D-C0CB-48E2-844E-5A575089EB63</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\sound">
-			<UniqueIdentifier>17224224-FB6E-45BE-8FF3-F420EE6C61A2</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima4\views">
-			<UniqueIdentifier>3665CC35-D838-4F32-9439-5E13A3F63D19</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8">
-			<UniqueIdentifier>D940186D-F87F-47B2-BE8A-9B836AE5C815</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96FF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\audio">
-			<UniqueIdentifier>8F514CA1-7D10-4A87-87BA-26EC2D871A5E</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9700-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\conf">
-			<UniqueIdentifier>A294F277-2595-4490-98A2-1D15E29CBCBC</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9701-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\convert">
-			<UniqueIdentifier>F2AF1629-70BB-4CF6-8344-2BE915558F29</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9702-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\convert\crusader">
-			<UniqueIdentifier>60D9769F-58A4-4035-A256-EDE96A952C94</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9703-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\convert\u8">
-			<UniqueIdentifier>15AFF85C-C252-4AF6-AE92-E6F45387DD5D</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9704-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\filesys">
-			<UniqueIdentifier>8421418A-022F-498E-9886-0BA97488CAB5</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9705-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\games">
-			<UniqueIdentifier>3FC7494F-4EFC-41D2-9343-D2D81B1DDECF</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9706-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\gfx">
-			<UniqueIdentifier>6805AA5F-3629-40FA-9E7E-92ABA0A9A0CE</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9707-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\gfx\fonts">
-			<UniqueIdentifier>D7F4325D-813B-44E1-9F01-2E21DCBCA2B3</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9708-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\gumps">
-			<UniqueIdentifier>6CDC42AB-263E-401A-8776-BA1D9903490F</UniqueIdentifier>
+			<UniqueIdentifier>F5DE9709-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\gumps\widgets">
-			<UniqueIdentifier>B4259DE3-C7F4-4678-BC46-0230E83AEFC5</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\kernel">
-			<UniqueIdentifier>6BA9099F-E529-445A-8A0A-13A297545F57</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\misc">
-			<UniqueIdentifier>370A6EE9-73C3-45B9-B930-B08E94A47D3E</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\usecode">
-			<UniqueIdentifier>B20EE889-8B94-48C5-B17C-0335E89EC8D9</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\world">
-			<UniqueIdentifier>225BD48F-E980-4140-B693-CB3AC3A05C5D</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ultima8\world\actors">
-			<UniqueIdentifier>9B820921-5E57-4191-9A00-5D254C60EBCD</UniqueIdentifier>
+			<UniqueIdentifier>F5DE970F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\ultima\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\ultima\nuvie\actors\actor.cpp">
 			<Filter>nuvie\actors</Filter>
 		</ClCompile>
@@ -306,39 +307,6 @@
 		<ClCompile Include="..\..\engines\ultima\nuvie\fonts\wou_font.cpp">
 			<Filter>nuvie\fonts</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\background.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar_new_ui.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\console.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump_wou.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\fps_counter.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\gui_widget.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\map_window.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll_new_ui.cpp">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\gui\gui.cpp">
 			<Filter>nuvie\gui</Filter>
 		</ClCompile>
@@ -381,6 +349,39 @@
 		<ClCompile Include="..\..\engines\ultima\nuvie\gui\gui_yes_no_dialog.cpp">
 			<Filter>nuvie\gui</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\background.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar_new_ui.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\console.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump_wou.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\fps_counter.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\gui_widget.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\map_window.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll_new_ui.cpp">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\keybinding\key_actions.cpp">
 			<Filter>nuvie\keybinding</Filter>
 		</ClCompile>
@@ -411,6 +412,9 @@
 		<ClCompile Include="..\..\engines\ultima\nuvie\menus\video_dialog.cpp">
 			<Filter>nuvie\menus</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\metaengine.cpp">
+			<Filter>nuvie</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\misc\iavl_tree.cpp">
 			<Filter>nuvie\misc</Filter>
 		</ClCompile>
@@ -425,6 +429,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\misc\u6_misc.cpp">
 			<Filter>nuvie\misc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\nuvie.cpp">
+			<Filter>nuvie</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\pathfinder\actor_path_finder.cpp">
 			<Filter>nuvie\pathfinder</Filter>
@@ -492,6 +499,9 @@
 		<ClCompile Include="..\..\engines\ultima\nuvie\script\script_cutscene.cpp">
 			<Filter>nuvie\script</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\nuvie\sound\adlib_sfx_manager.cpp">
+			<Filter>nuvie\sound</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\sound\adplug\adplug_player.cpp">
 			<Filter>nuvie\sound\adplug</Filter>
 		</ClCompile>
@@ -530,9 +540,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\sound\decoder\u6_adplug_decoder_stream.cpp">
 			<Filter>nuvie\sound\decoder</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\sound\adlib_sfx_manager.cpp">
-			<Filter>nuvie\sound</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\nuvie\sound\mididrv_m_adlib.cpp">
 			<Filter>nuvie\sound</Filter>
@@ -639,12 +646,6 @@
 		<ClCompile Include="..\..\engines\ultima\nuvie\views\view_manager.cpp">
 			<Filter>nuvie\views</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\metaengine.cpp">
-			<Filter>nuvie</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\nuvie\nuvie.cpp">
-			<Filter>nuvie</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\shared\conf\xml_node.cpp">
 			<Filter>shared\conf</Filter>
 		</ClCompile>
@@ -720,15 +721,6 @@
 		<ClCompile Include="..\..\engines\ultima\ultima4\conversation\dialogueloader_tlk.cpp">
 			<Filter>ultima4\conversation</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\hash.cpp">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\lzw.cpp">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\u4decode.cpp">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\core\config.cpp">
 			<Filter>ultima4\core</Filter>
 		</ClCompile>
@@ -737,6 +729,15 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\core\debugger_actions.cpp">
 			<Filter>ultima4\core</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\hash.cpp">
+			<Filter>ultima4\core\lzw</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\lzw.cpp">
+			<Filter>ultima4\core\lzw</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima4\core\lzw\u4decode.cpp">
+			<Filter>ultima4\core\lzw</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\core\settings.cpp">
 			<Filter>ultima4\core</Filter>
@@ -876,11 +877,17 @@
 		<ClCompile Include="..\..\engines\ultima\ultima4\map\tileset.cpp">
 			<Filter>ultima4\map</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima4\metaengine.cpp">
+			<Filter>ultima4</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\sound\music.cpp">
 			<Filter>ultima4\sound</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\sound\sound.cpp">
 			<Filter>ultima4\sound</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima4\ultima4.cpp">
+			<Filter>ultima4</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\views\dungeonview.cpp">
 			<Filter>ultima4\views</Filter>
@@ -905,12 +912,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima4\views\view.cpp">
 			<Filter>ultima4\views</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima4\metaengine.cpp">
-			<Filter>ultima4</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima4\ultima4.cpp">
-			<Filter>ultima4</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\audio\audio_channel.cpp">
 			<Filter>ultima8\audio</Filter>
@@ -954,14 +955,17 @@
 		<ClCompile Include="..\..\engines\ultima\ultima8\conf\config_file_manager.cpp">
 			<Filter>ultima8\conf</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\convert\convert_shape.cpp">
+			<Filter>ultima8\convert</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\convert\crusader\convert_shape_crusader.cpp">
 			<Filter>ultima8\convert\crusader</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\convert\u8\convert_shape_u8.cpp">
 			<Filter>ultima8\convert\u8</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\convert\convert_shape.cpp">
-			<Filter>ultima8\convert</Filter>
+		<ClCompile Include="..\..\engines\ultima\ultima8\debugtools.cpp">
+			<Filter>ultima8</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\filesys\archive.cpp">
 			<Filter>ultima8\filesys</Filter>
@@ -1002,6 +1006,18 @@
 		<ClCompile Include="..\..\engines\ultima\ultima8\games\u8_game.cpp">
 			<Filter>ultima8\games</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\anim_dat.cpp">
+			<Filter>ultima8\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\avi_player.cpp">
+			<Filter>ultima8\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\cycle_process.cpp">
+			<Filter>ultima8\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\fade_to_modal_process.cpp">
+			<Filter>ultima8\gfx</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\fonts\font.cpp">
 			<Filter>ultima8\gfx\fonts</Filter>
 		</ClCompile>
@@ -1031,18 +1047,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\fonts\ttf_rendered_text.cpp">
 			<Filter>ultima8\gfx\fonts</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\anim_dat.cpp">
-			<Filter>ultima8\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\avi_player.cpp">
-			<Filter>ultima8\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\cycle_process.cpp">
-			<Filter>ultima8\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\fade_to_modal_process.cpp">
-			<Filter>ultima8\gfx</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\frame_id.cpp">
 			<Filter>ultima8\gfx</Filter>
@@ -1094,18 +1098,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\gfx\xform_blend.cpp">
 			<Filter>ultima8\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\button_widget.cpp">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\edit_widget.cpp">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\sliding_widget.cpp">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\text_widget.cpp">
-			<Filter>ultima8\gumps\widgets</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\ask_gump.cpp">
 			<Filter>ultima8\gumps</Filter>
@@ -1248,6 +1240,18 @@
 		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\weasel_gump.cpp">
 			<Filter>ultima8\gumps</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\button_widget.cpp">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\edit_widget.cpp">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\sliding_widget.cpp">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\gumps\widgets\text_widget.cpp">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\kernel\delay_process.cpp">
 			<Filter>ultima8\kernel</Filter>
 		</ClCompile>
@@ -1266,6 +1270,9 @@
 		<ClCompile Include="..\..\engines\ultima\ultima8\kernel\process.cpp">
 			<Filter>ultima8\kernel</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\metaengine.cpp">
+			<Filter>ultima8</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\misc\debugger.cpp">
 			<Filter>ultima8\misc</Filter>
 		</ClCompile>
@@ -1277,6 +1284,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\misc\util.cpp">
 			<Filter>ultima8\misc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\ultima\ultima8\ultima8.cpp">
+			<Filter>ultima8</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\ultima\ultima8\usecode\bit_set.cpp">
 			<Filter>ultima8\usecode</Filter>
@@ -1509,18 +1519,11 @@
 		<ClCompile Include="..\..\engines\ultima\ultima8\world\world.cpp">
 			<Filter>ultima8\world</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\debugtools.cpp">
-			<Filter>ultima8</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\metaengine.cpp">
-			<Filter>ultima8</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\ultima8\ultima8.cpp">
-			<Filter>ultima8</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\ultima\metaengine.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\ultima\detection.h" />
+		<ClInclude Include="..\..\engines\ultima\detection_tables.h" />
+		<ClInclude Include="..\..\engines\ultima\metaengine.h" />
 		<ClInclude Include="..\..\engines\ultima\nuvie\actors\actor.h">
 			<Filter>nuvie\actors</Filter>
 		</ClInclude>
@@ -1674,39 +1677,6 @@
 		<ClInclude Include="..\..\engines\ultima\nuvie\fonts\wou_font.h">
 			<Filter>nuvie\fonts</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\background.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar_new_ui.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\console.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump_wou.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\fps_counter.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\gui_widget.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\map_window.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll_new_ui.h">
-			<Filter>nuvie\gui\widgets</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\gui\gui.h">
 			<Filter>nuvie\gui</Filter>
 		</ClInclude>
@@ -1764,6 +1734,39 @@
 		<ClInclude Include="..\..\engines\ultima\nuvie\gui\the_font.h">
 			<Filter>nuvie\gui</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\background.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\command_bar_new_ui.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\console.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\converse_gump_wou.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\fps_counter.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\gui_widget.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\map_window.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\gui\widgets\msg_scroll_new_ui.h">
+			<Filter>nuvie\gui\widgets</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\keybinding\key_actions.h">
 			<Filter>nuvie\keybinding</Filter>
 		</ClInclude>
@@ -1797,6 +1800,9 @@
 		<ClInclude Include="..\..\engines\ultima\nuvie\menus\video_dialog.h">
 			<Filter>nuvie\menus</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\metaengine.h">
+			<Filter>nuvie</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\misc\actor_list.h">
 			<Filter>nuvie\misc</Filter>
 		</ClInclude>
@@ -1820,6 +1826,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\misc\u6_misc.h">
 			<Filter>nuvie\misc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\nuvie.h">
+			<Filter>nuvie</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\pathfinder\actor_path_finder.h">
 			<Filter>nuvie\pathfinder</Filter>
@@ -1890,6 +1899,9 @@
 		<ClInclude Include="..\..\engines\ultima\nuvie\script\script_cutscene.h">
 			<Filter>nuvie\script</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\nuvie\sound\adlib_sfx_manager.h">
+			<Filter>nuvie\sound</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\sound\adplug\adplug_player.h">
 			<Filter>nuvie\sound\adplug</Filter>
 		</ClInclude>
@@ -1934,9 +1946,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\sound\decoder\u6_adplug_decoder_stream.h">
 			<Filter>nuvie\sound\decoder</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\sound\adlib_sfx_manager.h">
-			<Filter>nuvie\sound</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\nuvie\sound\mididrv_m_adlib.h">
 			<Filter>nuvie\sound</Filter>
@@ -2061,12 +2070,6 @@
 		<ClInclude Include="..\..\engines\ultima\nuvie\views\view_manager.h">
 			<Filter>nuvie\views</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\metaengine.h">
-			<Filter>nuvie</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\nuvie\nuvie.h">
-			<Filter>nuvie</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\shared\conf\conf_serializer.h">
 			<Filter>shared\conf</Filter>
 		</ClInclude>
@@ -2094,6 +2097,7 @@
 		<ClInclude Include="..\..\engines\ultima\shared\engine\resources.h">
 			<Filter>shared\engine</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima.h" />
 		<ClInclude Include="..\..\engines\ultima\ultima4\controllers\alpha_action_controller.h">
 			<Filter>ultima4\controllers</Filter>
 		</ClInclude>
@@ -2160,15 +2164,6 @@
 		<ClInclude Include="..\..\engines\ultima\ultima4\conversation\dialogueloader_tlk.h">
 			<Filter>ultima4\conversation</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\hash.h">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\lzw.h">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\u4decode.h">
-			<Filter>ultima4\core\lzw</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima4\core\config.h">
 			<Filter>ultima4\core</Filter>
 		</ClInclude>
@@ -2180,6 +2175,15 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima4\core\debugger_actions.h">
 			<Filter>ultima4\core</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\hash.h">
+			<Filter>ultima4\core\lzw</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\lzw.h">
+			<Filter>ultima4\core\lzw</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima4\core\lzw\u4decode.h">
+			<Filter>ultima4\core\lzw</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima4\core\observable.h">
 			<Filter>ultima4\core</Filter>
@@ -2337,6 +2341,9 @@
 		<ClInclude Include="..\..\engines\ultima\ultima4\map\xml_map.h">
 			<Filter>ultima4\map</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima4\metaengine.h">
+			<Filter>ultima4</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima4\sound\music.h">
 			<Filter>ultima4\sound</Filter>
 		</ClInclude>
@@ -2369,9 +2376,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima4\views\view.h">
 			<Filter>ultima4\views</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima4\metaengine.h">
-			<Filter>ultima4</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\audio\audio_channel.h">
 			<Filter>ultima8\audio</Filter>
@@ -2415,6 +2419,12 @@
 		<ClInclude Include="..\..\engines\ultima\ultima8\conf\config_file_manager.h">
 			<Filter>ultima8\conf</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\convert\convert_shape.h">
+			<Filter>ultima8\convert</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\convert\convert_usecode.h">
+			<Filter>ultima8\convert</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\convert\crusader\convert_shape_crusader.h">
 			<Filter>ultima8\convert\crusader</Filter>
 		</ClInclude>
@@ -2430,11 +2440,8 @@
 		<ClInclude Include="..\..\engines\ultima\ultima8\convert\u8\convert_usecode_u8.h">
 			<Filter>ultima8\convert\u8</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\convert\convert_shape.h">
-			<Filter>ultima8\convert</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\convert\convert_usecode.h">
-			<Filter>ultima8\convert</Filter>
+		<ClInclude Include="..\..\engines\ultima\ultima8\debugtools.h">
+			<Filter>ultima8</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\filesys\archive.h">
 			<Filter>ultima8\filesys</Filter>
@@ -2475,6 +2482,18 @@
 		<ClInclude Include="..\..\engines\ultima\ultima8\games\u8_game.h">
 			<Filter>ultima8\games</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\anim_dat.h">
+			<Filter>ultima8\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\avi_player.h">
+			<Filter>ultima8\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\cycle_process.h">
+			<Filter>ultima8\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\fade_to_modal_process.h">
+			<Filter>ultima8\gfx</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\fonts\font.h">
 			<Filter>ultima8\gfx\fonts</Filter>
 		</ClInclude>
@@ -2504,18 +2523,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\fonts\ttf_rendered_text.h">
 			<Filter>ultima8\gfx\fonts</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\anim_dat.h">
-			<Filter>ultima8\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\avi_player.h">
-			<Filter>ultima8\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\cycle_process.h">
-			<Filter>ultima8\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\fade_to_modal_process.h">
-			<Filter>ultima8\gfx</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\frame_id.h">
 			<Filter>ultima8\gfx</Filter>
@@ -2579,18 +2586,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\gfx\xform_blend.h">
 			<Filter>ultima8\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\button_widget.h">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\edit_widget.h">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\sliding_widget.h">
-			<Filter>ultima8\gumps\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\text_widget.h">
-			<Filter>ultima8\gumps\widgets</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\ask_gump.h">
 			<Filter>ultima8\gumps</Filter>
@@ -2733,6 +2728,18 @@
 		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\weasel_gump.h">
 			<Filter>ultima8\gumps</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\button_widget.h">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\edit_widget.h">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\sliding_widget.h">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\gumps\widgets\text_widget.h">
+			<Filter>ultima8\gumps\widgets</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\kernel\delay_process.h">
 			<Filter>ultima8\kernel</Filter>
 		</ClInclude>
@@ -2750,6 +2757,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\kernel\process.h">
 			<Filter>ultima8\kernel</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\metaengine.h">
+			<Filter>ultima8</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\misc\box.h">
 			<Filter>ultima8\misc</Filter>
@@ -2789,6 +2799,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\misc\util.h">
 			<Filter>ultima8\misc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\ultima\ultima8\ultima8.h">
+			<Filter>ultima8</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\ultima\ultima8\usecode\bit_set.h">
 			<Filter>ultima8\usecode</Filter>
@@ -3066,19 +3079,6 @@
 		<ClInclude Include="..\..\engines\ultima\ultima8\world\world_point.h">
 			<Filter>ultima8\world</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\debugtools.h">
-			<Filter>ultima8</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\metaengine.h">
-			<Filter>ultima8</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\ultima8\ultima8.h">
-			<Filter>ultima8</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\ultima\detection.h" />
-		<ClInclude Include="..\..\engines\ultima\detection_tables.h" />
-		<ClInclude Include="..\..\engines\ultima\metaengine.h" />
-		<ClInclude Include="..\..\engines\ultima\ultima.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\ultima\module.mk" />

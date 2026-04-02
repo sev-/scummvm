@@ -1,335 +1,359 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="LICENSES">
-			<UniqueIdentifier>3C65F88A-2CD0-4F49-A00D-0803EBCF53C9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio">
-			<UniqueIdentifier>80DDDBEA-6F1A-4857-8375-C9986E696CF3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\decoders">
-			<UniqueIdentifier>43B2625C-3043-46A0-91E8-037D1EC81625</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\mods">
-			<UniqueIdentifier>09E1BEE3-CD52-4865-B416-AF3294E98D26</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth">
-			<UniqueIdentifier>5A997A8B-65E5-4F6C-BBA9-F6646644B703</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB4FF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\fmtowns_pc98">
-			<UniqueIdentifier>D519257D-7284-4BA0-9BAB-46C3A600B138</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB500-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32">
-			<UniqueIdentifier>1DE284E0-24EC-4AAB-A1B6-41892D34B487</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB501-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32\c_interface">
-			<UniqueIdentifier>E10246E6-791D-454E-8318-75BD5C5CB2C3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB502-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32\sha1">
-			<UniqueIdentifier>3B1454E2-20EF-49EF-89AF-C07C52862354</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB503-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32\srchelper">
-			<UniqueIdentifier>E5D65D34-19CA-4DE2-A683-63B1792F7F9B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB504-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32\srchelper\srctools">
-			<UniqueIdentifier>7EF757B9-9430-4B77-A200-1540DB47F022</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB505-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\mt32\srchelper\srctools\src">
-			<UniqueIdentifier>B10F8924-AE9F-434B-A0F8-D3B0A0F2CDA3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB506-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\softsynth\opl">
-			<UniqueIdentifier>9BBA5922-E199-4E1A-823E-C4373C47A6B4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB507-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\soundfont">
-			<UniqueIdentifier>08EF2669-0376-4848-AD0E-BAD5A4FA1C24</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB508-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="audio\soundfont\vab">
-			<UniqueIdentifier>CB5ADAEE-EAFB-4F4F-9F69-A24F4E056970</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB509-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends">
-			<UniqueIdentifier>46181DE6-01DC-4A14-B5AB-E4F1798BCC67</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\audiocd">
-			<UniqueIdentifier>C88EE833-EE87-48DC-A0FC-4D26562A94C8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\audiocd\default">
-			<UniqueIdentifier>4E811A13-E66D-4011-A80D-F362A7C642B1</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\audiocd\win32">
-			<UniqueIdentifier>4538A55B-F9AC-41AF-9A10-D709FA457B93</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud">
-			<UniqueIdentifier>133C4C78-E940-4CDE-9DF6-74FB12CB33BC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud\box">
-			<UniqueIdentifier>32736998-B848-4CCC-91E5-A1D71EEE3A32</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB50F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud\dropbox">
-			<UniqueIdentifier>FC572B5F-C55D-4F41-A22F-01943084F669</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB510-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud\googledrive">
-			<UniqueIdentifier>80A8529F-C1D1-43F5-8BB7-A82EDE8A0FA8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB511-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud\id">
-			<UniqueIdentifier>C356179D-CB27-472C-863A-B304FD8A5734</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB512-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\cloud\onedrive">
-			<UniqueIdentifier>C7E95D43-CA40-412E-88B0-5FE79615D836</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB513-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\dialogs">
-			<UniqueIdentifier>4D2FACF2-356F-4DC4-9114-54A772BA2E4E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB514-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\dialogs\win32">
-			<UniqueIdentifier>CDB85ADC-00EE-4E3A-9CE0-C00600C86DE7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB515-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\events">
-			<UniqueIdentifier>BC2544A3-DB94-4C14-B6B3-3E49179C09F0</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB516-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\events\default">
-			<UniqueIdentifier>E3E56E6A-EBD2-433E-8259-6B127AABF351</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB517-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\events\sdl">
-			<UniqueIdentifier>B90D9BF8-67C4-4602-A3C9-124028B68924</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB518-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\fs">
-			<UniqueIdentifier>A32B22BD-8DF8-4F56-89BD-DAB1E15A3E4B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB519-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\fs\windows">
-			<UniqueIdentifier>6863A0D0-FD26-4AE1-884E-AD4DE79EFAFA</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics">
-			<UniqueIdentifier>049A1343-0170-4179-B642-767116743D3F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\opengl">
-			<UniqueIdentifier>7687B561-0156-461B-9FCA-99805D2C3125</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\opengl\pipelines">
-			<UniqueIdentifier>5CC91AD0-7BA7-444A-8BB9-9FDEACDF2ABF</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\opengl\pipelines\libretro">
-			<UniqueIdentifier>6A6E56FA-27F7-4B56-BBA7-2511775D6AA2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\openglsdl">
-			<UniqueIdentifier>6236C0EB-099B-4C31-9103-AF4BE749B704</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB51F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\sdl">
-			<UniqueIdentifier>52D361EE-2D1F-4C17-AF06-F45FFE06FB7D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB520-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\graphics\surfacesdl">
-			<UniqueIdentifier>D1C4224C-0666-480A-B239-610401D7B5AC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB521-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\imgui">
-			<UniqueIdentifier>B57D1B33-9332-46C1-B614-41BD95896D86</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB522-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\imgui\backends">
-			<UniqueIdentifier>218BC11A-E407-4DBF-86DE-38FE6CA0CA20</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB523-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\imgui\components">
-			<UniqueIdentifier>8996AC4E-5782-47D7-A069-F710B6C6EDE5</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB524-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\imgui\misc">
-			<UniqueIdentifier>34A5C4CC-FBA4-42C6-A06C-1ACA95EBAE03</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB525-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\imgui\misc\freetype">
-			<UniqueIdentifier>66ED49ED-2C34-4234-A4F3-F9A62A8D8727</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB526-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\keymapper">
-			<UniqueIdentifier>1E314214-DFE5-481B-99FA-BA9F7B690D45</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB527-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\log">
-			<UniqueIdentifier>E0BA6F87-6EDB-4B50-9812-375C4D224D7E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB528-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\midi">
-			<UniqueIdentifier>37BC88EE-CF1C-443D-998C-6BFAD25A515B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB529-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\mixer">
-			<UniqueIdentifier>0679244E-01E6-424C-889F-B03BC2758ADC</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\mixer\null">
-			<UniqueIdentifier>50F420D2-D814-48ED-BC45-3E95D6E38595</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\mixer\sdl">
-			<UniqueIdentifier>E951C6AF-2B54-4CB4-89CA-BD0798D831A8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\mutex">
-			<UniqueIdentifier>A77B28C0-F510-4C25-93F7-C67CB3ED5C2D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\mutex\sdl">
-			<UniqueIdentifier>9D68ED2E-D7F6-44A6-915A-3886C0C4356D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking">
-			<UniqueIdentifier>685DCFE7-84B2-48D0-8AF6-FBA0F9F590F7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB52F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\basic">
-			<UniqueIdentifier>9BBD1DFD-95DB-4DB0-B933-098659A5F951</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB530-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\basic\curl">
-			<UniqueIdentifier>B10FF2C0-0C0B-4CAB-B83B-EA242C345365</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB531-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\enet">
-			<UniqueIdentifier>14BA012A-4CAA-45B1-91BB-A2708EFCBCBF</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB532-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\enet\source">
-			<UniqueIdentifier>38EC10E1-7DE6-4B20-8FD2-EC20418C309F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB533-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\http">
-			<UniqueIdentifier>60281508-22D4-4475-A94D-B652B7161091</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB534-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\http\curl">
-			<UniqueIdentifier>D0F7582C-CBCF-4121-9FB8-9D27611817E2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB535-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\sdl_net">
-			<UniqueIdentifier>CA43320F-D022-49E7-B7E3-2369B620D10D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB536-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\networking\sdl_net\handlers">
-			<UniqueIdentifier>AE2338C4-710E-487B-B50D-C9F0B8E864C2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB537-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\platform">
-			<UniqueIdentifier>BD5EDB59-1D52-4F64-BEF3-CB67E512917A</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB538-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\platform\sdl">
-			<UniqueIdentifier>8616EBA9-33C9-441A-B472-2442101335B5</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB539-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\platform\sdl\win32">
-			<UniqueIdentifier>EBA078C7-B256-4A17-B69B-B0320C01CEA7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\plugins">
-			<UniqueIdentifier>20FDA0B5-A356-4CD4-ABB8-C4EABD5A9E24</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\plugins\sdl">
-			<UniqueIdentifier>F116D64A-AF54-40B8-9276-732AE3F78E6C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\plugins\win32">
-			<UniqueIdentifier>F9E440B7-C177-436C-BA13-12D5117C871D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\printing">
-			<UniqueIdentifier>31C4AB8B-46F4-4A04-B485-4008815767F2</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\printing\win32">
-			<UniqueIdentifier>FE40FA68-41DE-44AD-B49A-33DACDC75438</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB53F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\saves">
-			<UniqueIdentifier>B076B80B-7779-4886-AE0F-78CB9A364E74</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB540-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\saves\default">
-			<UniqueIdentifier>EF273FEE-8515-4940-9360-F7A75B9B8DE4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB541-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\saves\windows">
-			<UniqueIdentifier>75F97B2C-36F5-412E-B58F-A0B2C923C7EF</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB542-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\taskbar">
-			<UniqueIdentifier>DFFAA21D-3119-4D4F-B142-ADC9A367A3D3</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB543-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\taskbar\win32">
-			<UniqueIdentifier>6D15A361-0839-4138-B6DC-D6DF3E689B74</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB544-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\text-to-speech">
-			<UniqueIdentifier>5F8F4852-1D3C-44EF-B73B-FC949688AB26</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB545-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\text-to-speech\windows">
-			<UniqueIdentifier>3B0A2ECF-4675-4764-995D-6D67DBC52579</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB546-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\timer">
-			<UniqueIdentifier>3683497F-7E1F-47D6-983E-02BEFBD32FF7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB547-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\timer\default">
-			<UniqueIdentifier>56DC5D9C-A73E-412C-ABFD-71025546A408</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB548-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\timer\sdl">
-			<UniqueIdentifier>3056E360-FC4B-47D4-AEFE-847E9AA65780</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB549-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\updates">
-			<UniqueIdentifier>7C83FDBB-3B5E-4FEB-BD72-AE9DB89C4011</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="backends\updates\win32">
-			<UniqueIdentifier>911380FE-4247-4785-B0AA-2786F9BE6479</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="base">
-			<UniqueIdentifier>6ABA9408-8310-40D8-AB43-D46200556473</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common">
-			<UniqueIdentifier>AA16268C-24D6-433D-8C10-381379F63F7C</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common\compression">
-			<UniqueIdentifier>700A3544-F94D-456D-9A3D-A8CAF87F3C5E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common\encodings">
-			<UniqueIdentifier>CC52E8E1-58F8-4207-A98D-14F0F7960784</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB54F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common\formats">
-			<UniqueIdentifier>5253A46F-7038-4CD2-A92F-2865F083AFB8</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB550-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common\lua">
-			<UniqueIdentifier>193596B6-83F4-4D88-9EF9-6F3CDB9FA0F6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB551-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="common\std">
-			<UniqueIdentifier>76E2E8B7-C872-427E-9F06-1C17A9406061</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB552-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dists">
-			<UniqueIdentifier>FE9BC977-7561-4D4F-8058-851904A97B84</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB553-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="engines">
-			<UniqueIdentifier>AFD35CB6-CC0D-4C18-B85F-D1B30DE8FBD1</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB554-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics">
-			<UniqueIdentifier>C280C90E-3EC9-40AC-9D85-4D61BACF77C0</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB555-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\blit">
-			<UniqueIdentifier>A1852E38-153A-41F0-968D-579A3A0A637D</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB556-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\fonts">
-			<UniqueIdentifier>4D44807D-1DD5-45C3-A810-DB1D68752479</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB557-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\macgui">
-			<UniqueIdentifier>F77596A2-5051-415D-B5F0-B5D8CB6BBA1E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB558-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\mfc">
-			<UniqueIdentifier>625A6A59-FB32-4F73-9E75-A3655072C437</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB559-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\mfc\gfx">
-			<UniqueIdentifier>0D47FA71-E392-4638-BD01-E56107E15A80</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\mfc\libs">
-			<UniqueIdentifier>C9629138-C4F0-4536-B00D-0277B025D3F4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\opengl">
-			<UniqueIdentifier>E283EF31-A937-4095-9033-15A2A0C6E6B7</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\scaler">
-			<UniqueIdentifier>4657AD8F-686F-4245-A2DB-AD99C894E078</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics\tinygl">
-			<UniqueIdentifier>0716082F-3783-4C8C-BA6D-46DBE2A55E5F</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gui">
-			<UniqueIdentifier>2E945884-BB39-4AC1-B0F6-7DE66BA9BC36</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB55F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gui\animation">
-			<UniqueIdentifier>65221198-D0D9-444D-81F8-A5AE73591EF9</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB560-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gui\widgets">
-			<UniqueIdentifier>672FD0F4-DE43-4227-84BF-D8F351774018</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB561-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="icons">
-			<UniqueIdentifier>1E55843E-79EB-472B-8661-3D15EDB605B4</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB562-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="image">
-			<UniqueIdentifier>8B8938D7-C64A-43A1-A387-CBC122C5291B</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB563-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="image\codecs">
-			<UniqueIdentifier>D22C2C5F-E785-4918-B280-BBCCF3023C5E</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB564-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="image\codecs\indeo">
-			<UniqueIdentifier>918562F5-8E76-490A-ABB9-A4B93A5306E6</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB565-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="math">
-			<UniqueIdentifier>80547B91-2AA4-48D3-BA57-D6CE4DEC4863</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB566-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="video">
-			<UniqueIdentifier>35F8B497-7897-4BA7-A09B-12C1D84AA271</UniqueIdentifier>
+			<UniqueIdentifier>FEEDB567-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\audio\adlib.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\adlib_ctmidi.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\adlib_hmisos.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\adlib_ms.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\audiostream.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\casio.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\chip.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\cms.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\audio\decoders\3do.cpp">
 			<Filter>audio\decoders</Filter>
 		</ClCompile>
@@ -390,6 +414,45 @@
 		<ClCompile Include="..\..\audio\decoders\xan_dpcm.cpp">
 			<Filter>audio\decoders</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\audio\fmopl.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\mac_plugin.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\mididrv.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\mididrv_ms.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiparser.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiparser_hmp.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiparser_qt.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiparser_smf.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiparser_xmidi.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\midiplayer.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\miles_adlib.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\miles_midi.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\mixer.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\audio\mods\desktoptracker.cpp">
 			<Filter>audio\mods</Filter>
 		</ClCompile>
@@ -426,6 +489,39 @@
 		<ClCompile Include="..\..\audio\mods\universaltracker.cpp">
 			<Filter>audio\mods</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\audio\mpu401.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\mt32gm.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\musicplugin.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\null.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\rate.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\sid.cpp">
+			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\appleiigs.cpp">
+			<Filter>audio\softsynth</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\ay8912.cpp">
+			<Filter>audio\softsynth</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\cms.cpp">
+			<Filter>audio\softsynth</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\eas.cpp">
+			<Filter>audio\softsynth</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\fluidsynth.cpp">
+			<Filter>audio\softsynth</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\audio\softsynth\fmtowns_pc98\pc98_audio.cpp">
 			<Filter>audio\softsynth\fmtowns_pc98</Filter>
 		</ClCompile>
@@ -450,29 +546,8 @@
 		<ClCompile Include="..\..\audio\softsynth\fmtowns_pc98\towns_pc98_plugins.cpp">
 			<Filter>audio\softsynth\fmtowns_pc98</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\c_interface\c_interface.cpp">
-			<Filter>audio\softsynth\mt32\c_interface</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\sha1\sha1.cpp">
-			<Filter>audio\softsynth\mt32\sha1</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\FIRResampler.cpp">
-			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\IIR2xResampler.cpp">
-			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\LinearResampler.cpp">
-			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\ResamplerModel.cpp">
-			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\SincResampler.cpp">
-			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\InternalResampler.cpp">
-			<Filter>audio\softsynth\mt32\srchelper</Filter>
+		<ClCompile Include="..\..\audio\softsynth\mt32.cpp">
+			<Filter>audio\softsynth</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\audio\softsynth\mt32\Analog.cpp">
 			<Filter>audio\softsynth\mt32</Filter>
@@ -534,6 +609,30 @@
 		<ClCompile Include="..\..\audio\softsynth\mt32\Tables.cpp">
 			<Filter>audio\softsynth\mt32</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\c_interface\c_interface.cpp">
+			<Filter>audio\softsynth\mt32\c_interface</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\sha1\sha1.cpp">
+			<Filter>audio\softsynth\mt32\sha1</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\InternalResampler.cpp">
+			<Filter>audio\softsynth\mt32\srchelper</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\FIRResampler.cpp">
+			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\IIR2xResampler.cpp">
+			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\LinearResampler.cpp">
+			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\ResamplerModel.cpp">
+			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\softsynth\mt32\srchelper\srctools\src\SincResampler.cpp">
+			<Filter>audio\softsynth\mt32\srchelper\srctools\src</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\audio\softsynth\opl\dbopl.cpp">
 			<Filter>audio\softsynth\opl</Filter>
 		</ClCompile>
@@ -545,24 +644,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\audio\softsynth\opl\nuked.cpp">
 			<Filter>audio\softsynth\opl</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\appleiigs.cpp">
-			<Filter>audio\softsynth</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\ay8912.cpp">
-			<Filter>audio\softsynth</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\cms.cpp">
-			<Filter>audio\softsynth</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\eas.cpp">
-			<Filter>audio\softsynth</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\fluidsynth.cpp">
-			<Filter>audio\softsynth</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\softsynth\mt32.cpp">
-			<Filter>audio\softsynth</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\audio\softsynth\pcspk.cpp">
 			<Filter>audio\softsynth</Filter>
@@ -576,12 +657,6 @@
 		<ClCompile Include="..\..\audio\softsynth\ym2149.cpp">
 			<Filter>audio\softsynth</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\audio\soundfont\vab\psxspu.cpp">
-			<Filter>audio\soundfont\vab</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\soundfont\vab\vab.cpp">
-			<Filter>audio\soundfont\vab</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\audio\soundfont\rawfile.cpp">
 			<Filter>audio\soundfont</Filter>
 		</ClCompile>
@@ -593,6 +668,12 @@
 		</ClCompile>
 		<ClCompile Include="..\..\audio\soundfont\synthfile.cpp">
 			<Filter>audio\soundfont</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\soundfont\vab\psxspu.cpp">
+			<Filter>audio\soundfont\vab</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\audio\soundfont\vab\vab.cpp">
+			<Filter>audio\soundfont\vab</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\audio\soundfont\vgmcoll.cpp">
 			<Filter>audio\soundfont</Filter>
@@ -606,92 +687,14 @@
 		<ClCompile Include="..\..\audio\soundfont\vgmsamp.cpp">
 			<Filter>audio\soundfont</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\audio\adlib.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\adlib_ctmidi.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\adlib_hmisos.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\adlib_ms.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\audiostream.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\casio.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\chip.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\cms.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\fmopl.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mac_plugin.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mididrv.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mididrv_ms.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiparser.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiparser_hmp.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiparser_qt.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiparser_smf.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiparser_xmidi.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\midiplayer.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\miles_adlib.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\miles_midi.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mixer.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mpu401.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\mt32gm.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\musicplugin.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\null.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\rate.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\audio\sid.cpp">
-			<Filter>audio</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\audio\timestamp.cpp">
 			<Filter>audio</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\audio\ym2149.cpp">
 			<Filter>audio</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\audiocd\audiocd-stream.cpp">
+			<Filter>backends\audiocd</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\audiocd\default\default-audiocd.cpp">
 			<Filter>backends\audiocd\default</Filter>
@@ -699,8 +702,11 @@
 		<ClCompile Include="..\..\backends\audiocd\win32\win32-audiocd.cpp">
 			<Filter>backends\audiocd\win32</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\audiocd\audiocd-stream.cpp">
-			<Filter>backends\audiocd</Filter>
+		<ClCompile Include="..\..\backends\base-backend.cpp">
+			<Filter>backends</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\basestorage.cpp">
+			<Filter>backends\cloud</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\box\boxlistdirectorybyidrequest.cpp">
 			<Filter>backends\cloud\box</Filter>
@@ -713,6 +719,15 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\box\boxuploadrequest.cpp">
 			<Filter>backends\cloud\box</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\cloudicon.cpp">
+			<Filter>backends\cloud</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\cloudmanager.cpp">
+			<Filter>backends\cloud</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\downloadrequest.cpp">
+			<Filter>backends\cloud</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\dropbox\dropboxcreatedirectoryrequest.cpp">
 			<Filter>backends\cloud\dropbox</Filter>
@@ -731,6 +746,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\dropbox\dropboxuploadrequest.cpp">
 			<Filter>backends\cloud\dropbox</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\folderdownloadrequest.cpp">
+			<Filter>backends\cloud</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\googledrive\googledrivelistdirectorybyidrequest.cpp">
 			<Filter>backends\cloud\googledrive</Filter>
@@ -762,6 +780,9 @@
 		<ClCompile Include="..\..\backends\cloud\id\idstreamfilerequest.cpp">
 			<Filter>backends\cloud\id</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\backends\cloud\iso8601.cpp">
+			<Filter>backends\cloud</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\onedrive\onedrivecreatedirectoryrequest.cpp">
 			<Filter>backends\cloud\onedrive</Filter>
 		</ClCompile>
@@ -776,24 +797,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\onedrive\onedriveuploadrequest.cpp">
 			<Filter>backends\cloud\onedrive</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\basestorage.cpp">
-			<Filter>backends\cloud</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\cloudicon.cpp">
-			<Filter>backends\cloud</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\cloudmanager.cpp">
-			<Filter>backends\cloud</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\downloadrequest.cpp">
-			<Filter>backends\cloud</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\folderdownloadrequest.cpp">
-			<Filter>backends\cloud</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\cloud\iso8601.cpp">
-			<Filter>backends\cloud</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\cloud\savessyncrequest.cpp">
 			<Filter>backends\cloud</Filter>
@@ -816,20 +819,23 @@
 		<ClCompile Include="..\..\backends\events\sdl\sdl2-events.cpp">
 			<Filter>backends\events\sdl</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\fs\windows\windows-fs-factory.cpp">
-			<Filter>backends\fs\windows</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\fs\windows\windows-fs.cpp">
-			<Filter>backends\fs\windows</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\backends\fs\abstract-fs.cpp">
 			<Filter>backends\fs</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\fs\stdiostream.cpp">
 			<Filter>backends\fs</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\libretro\parser.cpp">
-			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		<ClCompile Include="..\..\backends\fs\windows\windows-fs-factory.cpp">
+			<Filter>backends\fs\windows</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\fs\windows\windows-fs.cpp">
+			<Filter>backends\fs\windows</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\graphics\opengl\framebuffer.cpp">
+			<Filter>backends\graphics\opengl</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\graphics\opengl\opengl-graphics.cpp">
+			<Filter>backends\graphics\opengl</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\clut8.cpp">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
@@ -840,17 +846,14 @@
 		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\libretro.cpp">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\libretro\parser.cpp">
+			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\pipeline.cpp">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\graphics\opengl\pipelines\shader.cpp">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\graphics\opengl\framebuffer.cpp">
-			<Filter>backends\graphics\opengl</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\graphics\opengl\opengl-graphics.cpp">
-			<Filter>backends\graphics\opengl</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\graphics\opengl\renderer3d.cpp">
 			<Filter>backends\graphics\opengl</Filter>
@@ -882,9 +885,6 @@
 		<ClCompile Include="..\..\backends\imgui\components\imgui_logger.cpp">
 			<Filter>backends\imgui\components</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\imgui\misc\freetype\imgui_freetype.cpp">
-			<Filter>backends\imgui\misc\freetype</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\backends\imgui\imgui.cpp">
 			<Filter>backends\imgui</Filter>
 		</ClCompile>
@@ -905,6 +905,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\imgui\imgui_widgets.cpp">
 			<Filter>backends\imgui</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\imgui\misc\freetype\imgui_freetype.cpp">
+			<Filter>backends\imgui\misc\freetype</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\keymapper\action.cpp">
 			<Filter>backends\keymapper</Filter>
@@ -960,6 +963,9 @@
 		<ClCompile Include="..\..\backends\mixer\sdl\sdl-mixer.cpp">
 			<Filter>backends\mixer\sdl</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\backends\modular-backend.cpp">
+			<Filter>backends</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\backends\mutex\sdl\sdl-mutex.cpp">
 			<Filter>backends\mutex\sdl</Filter>
 		</ClCompile>
@@ -971,6 +977,15 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\basic\curl\url.cpp">
 			<Filter>backends\networking\basic\curl</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\networking\enet\enet.cpp">
+			<Filter>backends\networking\enet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\networking\enet\host.cpp">
+			<Filter>backends\networking\enet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\networking\enet\socket.cpp">
+			<Filter>backends\networking\enet</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\enet\source\callbacks.cpp">
 			<Filter>backends\networking\enet\source</Filter>
@@ -996,23 +1011,14 @@
 		<ClCompile Include="..\..\backends\networking\enet\source\win32.cpp">
 			<Filter>backends\networking\enet\source</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\enet\enet.cpp">
-			<Filter>backends\networking\enet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\enet\host.cpp">
-			<Filter>backends\networking\enet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\enet\socket.cpp">
-			<Filter>backends\networking\enet</Filter>
+		<ClCompile Include="..\..\backends\networking\http\connectionmanager.cpp">
+			<Filter>backends\networking\http</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\http\curl\connectionmanager-curl.cpp">
 			<Filter>backends\networking\http\curl</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\http\curl\networkreadstream-curl.cpp">
 			<Filter>backends\networking\http\curl</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\http\connectionmanager.cpp">
-			<Filter>backends\networking\http</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\http\httpjsonrequest.cpp">
 			<Filter>backends\networking\http</Filter>
@@ -1034,6 +1040,12 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\http\sessionrequest.cpp">
 			<Filter>backends\networking\http</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\networking\sdl_net\client.cpp">
+			<Filter>backends\networking\sdl_net</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\networking\sdl_net\getclienthandler.cpp">
+			<Filter>backends\networking\sdl_net</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\sdl_net\handlers\connectcloudhandler.cpp">
 			<Filter>backends\networking\sdl_net\handlers</Filter>
@@ -1065,12 +1077,6 @@
 		<ClCompile Include="..\..\backends\networking\sdl_net\handlers\uploadfilehandler.cpp">
 			<Filter>backends\networking\sdl_net\handlers</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\sdl_net\client.cpp">
-			<Filter>backends\networking\sdl_net</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\networking\sdl_net\getclienthandler.cpp">
-			<Filter>backends\networking\sdl_net</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\sdl_net\handlerutils.cpp">
 			<Filter>backends\networking\sdl_net</Filter>
 		</ClCompile>
@@ -1082,6 +1088,12 @@
 		</ClCompile>
 		<ClCompile Include="..\..\backends\networking\sdl_net\uploadfileclienthandler.cpp">
 			<Filter>backends\networking\sdl_net</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\platform\sdl\sdl-window.cpp">
+			<Filter>backends\platform\sdl</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\platform\sdl\sdl.cpp">
+			<Filter>backends\platform\sdl</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\platform\sdl\win32\win32-main.cpp">
 			<Filter>backends\platform\sdl\win32</Filter>
@@ -1095,12 +1107,6 @@
 		<ClCompile Include="..\..\backends\platform\sdl\win32\win32_wrapper.cpp">
 			<Filter>backends\platform\sdl\win32</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\platform\sdl\sdl-window.cpp">
-			<Filter>backends\platform\sdl</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\platform\sdl\sdl.cpp">
-			<Filter>backends\platform\sdl</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\backends\plugins\sdl\sdl-provider.cpp">
 			<Filter>backends\plugins\sdl</Filter>
 		</ClCompile>
@@ -1113,11 +1119,11 @@
 		<ClCompile Include="..\..\backends\saves\default\default-saves.cpp">
 			<Filter>backends\saves\default</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\saves\windows\windows-saves.cpp">
-			<Filter>backends\saves\windows</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\backends\saves\savefile.cpp">
 			<Filter>backends\saves</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\backends\saves\windows\windows-saves.cpp">
+			<Filter>backends\saves\windows</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\backends\taskbar\win32\win32-taskbar.cpp">
 			<Filter>backends\taskbar\win32</Filter>
@@ -1134,12 +1140,6 @@
 		<ClCompile Include="..\..\backends\updates\win32\win32-updates.cpp">
 			<Filter>backends\updates\win32</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\backends\base-backend.cpp">
-			<Filter>backends</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\backends\modular-backend.cpp">
-			<Filter>backends</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\base\commandLine.cpp">
 			<Filter>base</Filter>
 		</ClCompile>
@@ -1154,6 +1154,15 @@
 		</ClCompile>
 		<ClCompile Include="..\..\base\version.cpp">
 			<Filter>base</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\archive.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\base64.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\btea.cpp">
+			<Filter>common</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\common\compression\clickteam.cpp">
 			<Filter>common\compression</Filter>
@@ -1194,8 +1203,35 @@
 		<ClCompile Include="..\..\common\compression\zlib.cpp">
 			<Filter>common\compression</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\common\concatstream.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\config-manager.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\coroutines.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\dbcs-str.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\debug.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\common\encodings\singlebyte.cpp">
 			<Filter>common\encodings</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\engine_data.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\error.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\events.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\file.cpp">
+			<Filter>common</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\common\formats\cue.cpp">
 			<Filter>common\formats</Filter>
@@ -1238,6 +1274,21 @@
 		</ClCompile>
 		<ClCompile Include="..\..\common\formats\xmlparser.cpp">
 			<Filter>common\formats</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\fs.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\gui_options.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\hashmap.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\language.cpp">
+			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\localization.cpp">
+			<Filter>common</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\common\lua\double_serialization.cpp">
 			<Filter>common\lua</Filter>
@@ -1335,60 +1386,6 @@
 		<ClCompile Include="..\..\common\lua\scummvm_file.cpp">
 			<Filter>common\lua</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\common\std\std.cpp">
-			<Filter>common\std</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\archive.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\base64.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\btea.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\concatstream.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\config-manager.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\coroutines.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\dbcs-str.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\debug.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\engine_data.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\error.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\events.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\file.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\fs.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\gui_options.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\hashmap.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\language.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\common\localization.cpp">
-			<Filter>common</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\common\macresman.cpp">
 			<Filter>common</Filter>
 		</ClCompile>
@@ -1430,6 +1427,9 @@
 		</ClCompile>
 		<ClCompile Include="..\..\common\rotationmode.cpp">
 			<Filter>common</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\common\std\std.cpp">
+			<Filter>common\std</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\common\str-base.cpp">
 			<Filter>common</Filter>
@@ -1500,6 +1500,15 @@
 		<ClCompile Include="..\..\engines\savestate.cpp">
 			<Filter>engines</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\graphics\VectorRenderer.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\VectorRendererSpec.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\big5.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\graphics\blit\blit-alpha.cpp">
 			<Filter>graphics\blit</Filter>
 		</ClCompile>
@@ -1514,6 +1523,18 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\blit\blit.cpp">
 			<Filter>graphics\blit</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\color_quantizer.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\cursorman.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\font.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\fontman.cpp">
+			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\fonts\amigafont.cpp">
 			<Filter>graphics\fonts</Filter>
@@ -1547,6 +1568,21 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\fonts\winfont.cpp">
 			<Filter>graphics\fonts</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\framelimiter.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\image-archive.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\korfont.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\larryScale.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\maccursor.cpp">
+			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\macgui\datafiles.cpp">
 			<Filter>graphics\macgui</Filter>
@@ -1590,38 +1626,8 @@
 		<ClCompile Include="..\..\graphics\macgui\macwindowmanager.cpp">
 			<Filter>graphics\macgui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\blitter.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\cursor.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\dialog_template.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\fonts.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\palette_map.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\surface.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\gfx\text_render.cpp">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\libs\event_loop.cpp">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\libs\events.cpp">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\libs\resources.cpp">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\mfc\libs\settings.cpp">
-			<Filter>graphics\mfc\libs</Filter>
+		<ClCompile Include="..\..\graphics\managed_surface.cpp">
+			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\mfc\afx.cpp">
 			<Filter>graphics\mfc</Filter>
@@ -1671,6 +1677,27 @@
 		<ClCompile Include="..\..\graphics\mfc\gdi_object.cpp">
 			<Filter>graphics\mfc</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\blitter.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\cursor.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\dialog_template.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\fonts.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\palette_map.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\surface.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\gfx\text_render.cpp">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\graphics\mfc\global_functions.cpp">
 			<Filter>graphics\mfc</Filter>
 		</ClCompile>
@@ -1679,6 +1706,18 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\mfc\joystickapi.cpp">
 			<Filter>graphics\mfc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\libs\event_loop.cpp">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\libs\events.cpp">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\libs\resources.cpp">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\mfc\libs\settings.cpp">
+			<Filter>graphics\mfc\libs</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\mfc\listbox.cpp">
 			<Filter>graphics\mfc</Filter>
@@ -1731,6 +1770,9 @@
 		<ClCompile Include="..\..\graphics\mfc\wnd.cpp">
 			<Filter>graphics\mfc</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\graphics\nine_patch.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\graphics\opengl\context.cpp">
 			<Filter>graphics\opengl</Filter>
 		</ClCompile>
@@ -1742,6 +1784,24 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\opengl\texture.cpp">
 			<Filter>graphics\opengl</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\palette.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\pixelformat.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\pm5544.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\primitives.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\renderer.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\riscoscursor.cpp">
+			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\scaler\aspect.cpp">
 			<Filter>graphics\scaler</Filter>
@@ -1781,6 +1841,24 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\scaler\tv.cpp">
 			<Filter>graphics\scaler</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\scalerplugin.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\screen.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\sjis.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\surface.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\svg.cpp">
+			<Filter>graphics</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\graphics\thumbnail.cpp">
+			<Filter>graphics</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\tinygl\api.cpp">
 			<Filter>graphics\tinygl</Filter>
@@ -1854,84 +1932,6 @@
 		<ClCompile Include="..\..\graphics\tinygl\ztriangle.cpp">
 			<Filter>graphics\tinygl</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\graphics\VectorRenderer.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\VectorRendererSpec.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\big5.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\color_quantizer.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\cursorman.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\font.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\fontman.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\framelimiter.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\image-archive.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\korfont.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\larryScale.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\maccursor.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\managed_surface.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\nine_patch.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\palette.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\pixelformat.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\pm5544.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\primitives.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\renderer.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\riscoscursor.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\scalerplugin.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\screen.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\sjis.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\surface.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\svg.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\graphics\thumbnail.cpp">
-			<Filter>graphics</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\graphics\transform_struct.cpp">
 			<Filter>graphics</Filter>
 		</ClCompile>
@@ -1943,45 +1943,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\graphics\yuv_to_rgb.cpp">
 			<Filter>graphics</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\animation\Animation.cpp">
-			<Filter>gui\animation</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\animation\RepeatAnimationWrapper.cpp">
-			<Filter>gui\animation</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\animation\SequenceAnimationComposite.cpp">
-			<Filter>gui\animation</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\editable.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\edittext.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\grid.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\groupedlist.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\list.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\popup.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\richtext.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\scrollbar.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\scrollcontainer.cpp">
-			<Filter>gui\widgets</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\gui\widgets\tab.cpp">
-			<Filter>gui\widgets</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\gui\EventRecorder.cpp">
 			<Filter>gui</Filter>
@@ -2006,6 +1967,15 @@
 		</ClCompile>
 		<ClCompile Include="..\..\gui\about.cpp">
 			<Filter>gui</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\animation\Animation.cpp">
+			<Filter>gui\animation</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\animation\RepeatAnimationWrapper.cpp">
+			<Filter>gui\animation</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\animation\SequenceAnimationComposite.cpp">
+			<Filter>gui\animation</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\gui\browser.cpp">
 			<Filter>gui</Filter>
@@ -2103,17 +2073,47 @@
 		<ClCompile Include="..\..\gui\widget.cpp">
 			<Filter>gui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\image\codecs\indeo\indeo.cpp">
-			<Filter>image\codecs\indeo</Filter>
+		<ClCompile Include="..\..\gui\widgets\editable.cpp">
+			<Filter>gui\widgets</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\image\codecs\indeo\indeo_dsp.cpp">
-			<Filter>image\codecs\indeo</Filter>
+		<ClCompile Include="..\..\gui\widgets\edittext.cpp">
+			<Filter>gui\widgets</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\image\codecs\indeo\mem.cpp">
-			<Filter>image\codecs\indeo</Filter>
+		<ClCompile Include="..\..\gui\widgets\grid.cpp">
+			<Filter>gui\widgets</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\image\codecs\indeo\vlc.cpp">
-			<Filter>image\codecs\indeo</Filter>
+		<ClCompile Include="..\..\gui\widgets\groupedlist.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\list.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\popup.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\richtext.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\scrollbar.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\scrollcontainer.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\gui\widgets\tab.cpp">
+			<Filter>gui\widgets</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\ani.cpp">
+			<Filter>image</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\bmp.cpp">
+			<Filter>image</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\cel_3do.cpp">
+			<Filter>image</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\cicn.cpp">
+			<Filter>image</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\image\codecs\bmp_raw.cpp">
 			<Filter>image\codecs</Filter>
@@ -2141,6 +2141,18 @@
 		</ClCompile>
 		<ClCompile Include="..\..\image\codecs\indeo5.cpp">
 			<Filter>image\codecs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\codecs\indeo\indeo.cpp">
+			<Filter>image\codecs\indeo</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\codecs\indeo\indeo_dsp.cpp">
+			<Filter>image\codecs\indeo</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\codecs\indeo\mem.cpp">
+			<Filter>image\codecs\indeo</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\image\codecs\indeo\vlc.cpp">
+			<Filter>image\codecs\indeo</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\image\codecs\jyv1.cpp">
 			<Filter>image\codecs</Filter>
@@ -2177,18 +2189,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\image\codecs\xan.cpp">
 			<Filter>image\codecs</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\image\ani.cpp">
-			<Filter>image</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\image\bmp.cpp">
-			<Filter>image</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\image\cel_3do.cpp">
-			<Filter>image</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\image\cicn.cpp">
-			<Filter>image</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\image\icocur.cpp">
 			<Filter>image</Filter>
@@ -2345,6 +2345,27 @@
 		</ClCompile>
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\audio\adlib_ctmidi.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\adlib_hmisos.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\adlib_ms.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\audiostream.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\casio.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\chip.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\cms.h">
+			<Filter>audio</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\decoders\3do.h">
 			<Filter>audio\decoders</Filter>
 		</ClInclude>
@@ -2435,6 +2456,39 @@
 		<ClInclude Include="..\..\audio\decoders\xan_dpcm.h">
 			<Filter>audio\decoders</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\audio\fmopl.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\mididrv.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\mididrv_ms.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\midiparser.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\midiparser_hmp.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\midiparser_qt.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\midiparser_smf.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\midiplayer.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\miles.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\mixer.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\mixer_intern.h">
+			<Filter>audio</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\mods\desktoptracker.h">
 			<Filter>audio\mods</Filter>
 		</ClInclude>
@@ -2471,6 +2525,36 @@
 		<ClInclude Include="..\..\audio\mods\universaltracker.h">
 			<Filter>audio\mods</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\audio\mpu401.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\mt32gm.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\musicplugin.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\null.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\rate.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\rwopl3.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\sid.h">
+			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\ay8912.h">
+			<Filter>audio\softsynth</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\cms.h">
+			<Filter>audio\softsynth</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\emumidi.h">
+			<Filter>audio\softsynth</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\fmtowns_pc98\pc98_audio.h">
 			<Filter>audio\softsynth\fmtowns_pc98</Filter>
 		</ClInclude>
@@ -2491,27 +2575,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\fmtowns_pc98\towns_pc98_fmsynth.h">
 			<Filter>audio\softsynth\fmtowns_pc98</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\c_interface.h">
-			<Filter>audio\softsynth\mt32\c_interface</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\c_types.h">
-			<Filter>audio\softsynth\mt32\c_interface</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\cpp_interface.h">
-			<Filter>audio\softsynth\mt32\c_interface</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\sha1\sha1.h">
-			<Filter>audio\softsynth\mt32\sha1</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\InternalResampler.h">
-			<Filter>audio\softsynth\mt32\srchelper</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\SamplerateAdapter.h">
-			<Filter>audio\softsynth\mt32\srchelper</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\SoxrAdapter.h">
-			<Filter>audio\softsynth\mt32\srchelper</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\mt32\Analog.h">
 			<Filter>audio\softsynth\mt32</Filter>
@@ -2591,6 +2654,15 @@
 		<ClInclude Include="..\..\audio\softsynth\mt32\VersionTagging.h">
 			<Filter>audio\softsynth\mt32</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\c_interface.h">
+			<Filter>audio\softsynth\mt32\c_interface</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\c_types.h">
+			<Filter>audio\softsynth\mt32\c_interface</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\c_interface\cpp_interface.h">
+			<Filter>audio\softsynth\mt32\c_interface</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\mt32\config.h">
 			<Filter>audio\softsynth\mt32</Filter>
 		</ClInclude>
@@ -2612,6 +2684,18 @@
 		<ClInclude Include="..\..\audio\softsynth\mt32\mt32emu.h">
 			<Filter>audio\softsynth\mt32</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\sha1\sha1.h">
+			<Filter>audio\softsynth\mt32\sha1</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\InternalResampler.h">
+			<Filter>audio\softsynth\mt32\srchelper</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\SamplerateAdapter.h">
+			<Filter>audio\softsynth\mt32\srchelper</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\softsynth\mt32\srchelper\SoxrAdapter.h">
+			<Filter>audio\softsynth\mt32\srchelper</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\opl\dbopl.h">
 			<Filter>audio\softsynth\opl</Filter>
 		</ClInclude>
@@ -2624,15 +2708,6 @@
 		<ClInclude Include="..\..\audio\softsynth\opl\nuked.h">
 			<Filter>audio\softsynth\opl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\ay8912.h">
-			<Filter>audio\softsynth</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\cms.h">
-			<Filter>audio\softsynth</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\softsynth\emumidi.h">
-			<Filter>audio\softsynth</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\pcspk.h">
 			<Filter>audio\softsynth</Filter>
 		</ClInclude>
@@ -2641,12 +2716,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\audio\softsynth\ym2149.h">
 			<Filter>audio\softsynth</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\soundfont\vab\psxspu.h">
-			<Filter>audio\soundfont\vab</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\soundfont\vab\vab.h">
-			<Filter>audio\soundfont\vab</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\audio\soundfont\common.h">
 			<Filter>audio\soundfont</Filter>
@@ -2663,6 +2732,12 @@
 		<ClInclude Include="..\..\audio\soundfont\synthfile.h">
 			<Filter>audio\soundfont</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\audio\soundfont\vab\psxspu.h">
+			<Filter>audio\soundfont\vab</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\audio\soundfont\vab\vab.h">
+			<Filter>audio\soundfont\vab</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\audio\soundfont\vgmcoll.h">
 			<Filter>audio\soundfont</Filter>
 		</ClInclude>
@@ -2675,86 +2750,17 @@
 		<ClInclude Include="..\..\audio\soundfont\vgmsamp.h">
 			<Filter>audio\soundfont</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\audio\adlib_ctmidi.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\adlib_hmisos.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\adlib_ms.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\audiostream.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\casio.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\chip.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\cms.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\fmopl.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mididrv.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mididrv_ms.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\midiparser.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\midiparser_hmp.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\midiparser_qt.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\midiparser_smf.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\midiplayer.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\miles.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mixer.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mixer_intern.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mpu401.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\mt32gm.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\musicplugin.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\null.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\rate.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\rwopl3.h">
-			<Filter>audio</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\audio\sid.h">
-			<Filter>audio</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\audio\timestamp.h">
 			<Filter>audio</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\audio\ym2149.h">
 			<Filter>audio</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\audiocd\audiocd-stream.h">
+			<Filter>backends\audiocd</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\audiocd\audiocd.h">
+			<Filter>backends\audiocd</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\audiocd\default\default-audiocd.h">
 			<Filter>backends\audiocd\default</Filter>
@@ -2762,11 +2768,11 @@
 		<ClInclude Include="..\..\backends\audiocd\win32\win32-audiocd.h">
 			<Filter>backends\audiocd\win32</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\audiocd\audiocd-stream.h">
-			<Filter>backends\audiocd</Filter>
+		<ClInclude Include="..\..\backends\base-backend.h">
+			<Filter>backends</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\audiocd\audiocd.h">
-			<Filter>backends\audiocd</Filter>
+		<ClInclude Include="..\..\backends\cloud\basestorage.h">
+			<Filter>backends\cloud</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\box\boxlistdirectorybyidrequest.h">
 			<Filter>backends\cloud\box</Filter>
@@ -2780,10 +2786,19 @@
 		<ClInclude Include="..\..\backends\cloud\box\boxuploadrequest.h">
 			<Filter>backends\cloud\box</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\backends\cloud\cloudicon.h">
+			<Filter>backends\cloud</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\cloud\cloudicon_data.h">
+			<Filter>backends\cloud</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\cloudicon_disabled_data.h">
 			<Filter>backends\cloud</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\cloudmanager.h">
+			<Filter>backends\cloud</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\cloud\downloadrequest.h">
 			<Filter>backends\cloud</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\dropbox\dropboxcreatedirectoryrequest.h">
@@ -2803,6 +2818,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\dropbox\dropboxuploadrequest.h">
 			<Filter>backends\cloud\dropbox</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\cloud\folderdownloadrequest.h">
+			<Filter>backends\cloud</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\googledrive\googledrivelistdirectorybyidrequest.h">
 			<Filter>backends\cloud\googledrive</Filter>
@@ -2834,6 +2852,9 @@
 		<ClInclude Include="..\..\backends\cloud\id\idstreamfilerequest.h">
 			<Filter>backends\cloud\id</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\backends\cloud\iso8601.h">
+			<Filter>backends\cloud</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\onedrive\onedrivecreatedirectoryrequest.h">
 			<Filter>backends\cloud\onedrive</Filter>
 		</ClInclude>
@@ -2848,24 +2869,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\onedrive\onedriveuploadrequest.h">
 			<Filter>backends\cloud\onedrive</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\basestorage.h">
-			<Filter>backends\cloud</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\cloudicon.h">
-			<Filter>backends\cloud</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\cloudicon_data.h">
-			<Filter>backends\cloud</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\downloadrequest.h">
-			<Filter>backends\cloud</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\folderdownloadrequest.h">
-			<Filter>backends\cloud</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\cloud\iso8601.h">
-			<Filter>backends\cloud</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\cloud\savessyncrequest.h">
 			<Filter>backends\cloud</Filter>
@@ -2891,12 +2894,6 @@
 		<ClInclude Include="..\..\backends\events\sdl\sdl-events.h">
 			<Filter>backends\events\sdl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\fs\windows\windows-fs-factory.h">
-			<Filter>backends\fs\windows</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\fs\windows\windows-fs.h">
-			<Filter>backends\fs\windows</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\backends\fs\abstract-fs.h">
 			<Filter>backends\fs</Filter>
 		</ClInclude>
@@ -2906,11 +2903,23 @@
 		<ClInclude Include="..\..\backends\fs\stdiostream.h">
 			<Filter>backends\fs</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\libretro\parser.h">
-			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		<ClInclude Include="..\..\backends\fs\windows\windows-fs-factory.h">
+			<Filter>backends\fs\windows</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\libretro\types.h">
-			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		<ClInclude Include="..\..\backends\fs\windows\windows-fs.h">
+			<Filter>backends\fs\windows</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\default-palette.h">
+			<Filter>backends\graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\graphics.h">
+			<Filter>backends\graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\opengl\framebuffer.h">
+			<Filter>backends\graphics\opengl</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\opengl\opengl-graphics.h">
+			<Filter>backends\graphics\opengl</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\clut8.h">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
@@ -2921,17 +2930,17 @@
 		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\libretro.h">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\libretro\parser.h">
+			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\libretro\types.h">
+			<Filter>backends\graphics\opengl\pipelines\libretro</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\pipeline.h">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\graphics\opengl\pipelines\shader.h">
 			<Filter>backends\graphics\opengl\pipelines</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\opengl\framebuffer.h">
-			<Filter>backends\graphics\opengl</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\opengl\opengl-graphics.h">
-			<Filter>backends\graphics\opengl</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\graphics\opengl\renderer3d.h">
 			<Filter>backends\graphics\opengl</Filter>
@@ -2951,14 +2960,11 @@
 		<ClInclude Include="..\..\backends\graphics\surfacesdl\surfacesdl-graphics.h">
 			<Filter>backends\graphics\surfacesdl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\default-palette.h">
-			<Filter>backends\graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\graphics\graphics.h">
-			<Filter>backends\graphics</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\backends\graphics\windowed.h">
 			<Filter>backends\graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\imgui\IconsMaterialSymbols.h">
+			<Filter>backends\imgui</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\imgui\backends\imgui_impl_opengl3.h">
 			<Filter>backends\imgui\backends</Filter>
@@ -2984,12 +2990,6 @@
 		<ClInclude Include="..\..\backends\imgui\components\imgui_memory_editor.h">
 			<Filter>backends\imgui\components</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\imgui\misc\freetype\imgui_freetype.h">
-			<Filter>backends\imgui\misc\freetype</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\imgui\IconsMaterialSymbols.h">
-			<Filter>backends\imgui</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\backends\imgui\imconfig.h">
 			<Filter>backends\imgui</Filter>
 		</ClInclude>
@@ -3013,6 +3013,9 @@
 		</ClInclude>
 		<ClInclude Include="..\..\backends\imgui\imstb_truetype.h">
 			<Filter>backends\imgui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\imgui\misc\freetype\imgui_freetype.h">
+			<Filter>backends\imgui\misc\freetype</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\keymapper\action.h">
 			<Filter>backends\keymapper</Filter>
@@ -3044,14 +3047,17 @@
 		<ClInclude Include="..\..\backends\log\log.h">
 			<Filter>backends\log</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\backends\mixer\mixer.h">
+			<Filter>backends\mixer</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\backends\mixer\null\null-mixer.h">
 			<Filter>backends\mixer\null</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\mixer\sdl\sdl-mixer.h">
 			<Filter>backends\mixer\sdl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\mixer\mixer.h">
-			<Filter>backends\mixer</Filter>
+		<ClInclude Include="..\..\backends\modular-backend.h">
+			<Filter>backends</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\mutex\sdl\sdl-mutex.h">
 			<Filter>backends\mutex\sdl</Filter>
@@ -3070,6 +3076,15 @@
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\basic\url.h">
 			<Filter>backends\networking\basic</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\networking\enet\enet.h">
+			<Filter>backends\networking\enet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\networking\enet\host.h">
+			<Filter>backends\networking\enet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\networking\enet\socket.h">
+			<Filter>backends\networking\enet</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\enet\source\callbacks.h">
 			<Filter>backends\networking\enet\source</Filter>
@@ -3098,23 +3113,14 @@
 		<ClInclude Include="..\..\backends\networking\enet\source\win32.h">
 			<Filter>backends\networking\enet\source</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\enet\enet.h">
-			<Filter>backends\networking\enet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\enet\host.h">
-			<Filter>backends\networking\enet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\enet\socket.h">
-			<Filter>backends\networking\enet</Filter>
+		<ClInclude Include="..\..\backends\networking\http\connectionmanager.h">
+			<Filter>backends\networking\http</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\http\curl\connectionmanager-curl.h">
 			<Filter>backends\networking\http\curl</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\http\curl\networkreadstream-curl.h">
 			<Filter>backends\networking\http\curl</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\http\connectionmanager.h">
-			<Filter>backends\networking\http</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\http\httpjsonrequest.h">
 			<Filter>backends\networking\http</Filter>
@@ -3136,6 +3142,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\http\sessionrequest.h">
 			<Filter>backends\networking\http</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\networking\sdl_net\client.h">
+			<Filter>backends\networking\sdl_net</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\networking\sdl_net\getclienthandler.h">
+			<Filter>backends\networking\sdl_net</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\sdl_net\handlers\basehandler.h">
 			<Filter>backends\networking\sdl_net\handlers</Filter>
@@ -3170,12 +3182,6 @@
 		<ClInclude Include="..\..\backends\networking\sdl_net\handlers\uploadfilehandler.h">
 			<Filter>backends\networking\sdl_net\handlers</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\sdl_net\client.h">
-			<Filter>backends\networking\sdl_net</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\networking\sdl_net\getclienthandler.h">
-			<Filter>backends\networking\sdl_net</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\backends\networking\sdl_net\handlerutils.h">
 			<Filter>backends\networking\sdl_net</Filter>
 		</ClInclude>
@@ -3188,15 +3194,6 @@
 		<ClInclude Include="..\..\backends\networking\sdl_net\uploadfileclienthandler.h">
 			<Filter>backends\networking\sdl_net</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\platform\sdl\win32\win32-window.h">
-			<Filter>backends\platform\sdl\win32</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\platform\sdl\win32\win32.h">
-			<Filter>backends\platform\sdl\win32</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\platform\sdl\win32\win32_wrapper.h">
-			<Filter>backends\platform\sdl\win32</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\backends\platform\sdl\sdl-sys.h">
 			<Filter>backends\platform\sdl</Filter>
 		</ClInclude>
@@ -3206,14 +3203,23 @@
 		<ClInclude Include="..\..\backends\platform\sdl\sdl.h">
 			<Filter>backends\platform\sdl</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\backends\platform\sdl\win32\win32-window.h">
+			<Filter>backends\platform\sdl\win32</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\platform\sdl\win32\win32.h">
+			<Filter>backends\platform\sdl\win32</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\platform\sdl\win32\win32_wrapper.h">
+			<Filter>backends\platform\sdl\win32</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\backends\plugins\dynamic-plugin.h">
+			<Filter>backends\plugins</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\backends\plugins\sdl\sdl-provider.h">
 			<Filter>backends\plugins\sdl</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\plugins\win32\win32-provider.h">
 			<Filter>backends\plugins\win32</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\plugins\dynamic-plugin.h">
-			<Filter>backends\plugins</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\backends\printing\win32\win32-printman.h">
 			<Filter>backends\printing\win32</Filter>
@@ -3242,12 +3248,6 @@
 		<ClInclude Include="..\..\backends\updates\win32\win32-updates.h">
 			<Filter>backends\updates\win32</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\backends\base-backend.h">
-			<Filter>backends</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\backends\modular-backend.h">
-			<Filter>backends</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\base\commandLine.h">
 			<Filter>base</Filter>
 		</ClInclude>
@@ -3266,7 +3266,31 @@
 		<ClInclude Include="..\..\base\version.h">
 			<Filter>base</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\common\algorithm.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\archive.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\array.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\base64.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\bitarray.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\bitstream.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\btea.h">
+			<Filter>common</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\common\bufferedstream.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\callback.h">
 			<Filter>common</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\common\compression\clickteam.h">
@@ -3307,6 +3331,57 @@
 		</ClInclude>
 		<ClInclude Include="..\..\common\compression\vise.h">
 			<Filter>common\compression</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\concatstream.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\config-manager.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\coroutines.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\crc.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\crc_slow.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\data-io.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\dbcs-str.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\debug-channels.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\debug.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\dialogs.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\enc-internal.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\endian.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\engine_data.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\error.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\events.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\file.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\forbidden.h">
+			<Filter>common</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\common\formats\cue.h">
 			<Filter>common\formats</Filter>
@@ -3349,6 +3424,48 @@
 		</ClInclude>
 		<ClInclude Include="..\..\common\formats\xmlparser.h">
 			<Filter>common\formats</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\frac.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\fs.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\func.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\gui_options.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\hash-ptr.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\hash-str.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\hashmap.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\intrinsics.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\keyboard.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\language.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\list.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\list_intern.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\localization.h">
+			<Filter>common</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\log.h">
+			<Filter>common</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\common\lua\double_serialization.h">
 			<Filter>common\lua</Filter>
@@ -3427,186 +3544,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\common\lua\scummvm_file.h">
 			<Filter>common\lua</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\algorithm.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\array.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\chrono.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\functional.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\initializer_list.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\limits.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\list.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\map.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\memory.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\mutex.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\queue.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\regex.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\set.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\stack.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\thread.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\type_traits.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\unordered_set.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\utility.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\vector.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\xtr1common.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\std\xutility.h">
-			<Filter>common\std</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\algorithm.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\archive.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\array.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\base64.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\bitarray.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\bitstream.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\btea.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\callback.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\concatstream.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\config-manager.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\coroutines.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\crc.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\crc_slow.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\data-io.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\dbcs-str.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\debug-channels.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\debug.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\dialogs.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\enc-internal.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\endian.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\engine_data.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\error.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\events.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\file.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\forbidden.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\frac.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\fs.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\func.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\gui_options.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\hash-ptr.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\hash-str.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\hashmap.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\intrinsics.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\keyboard.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\language.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\list.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\list_intern.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\localization.h">
-			<Filter>common</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\common\log.h">
-			<Filter>common</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\common\macresman.h">
 			<Filter>common</Filter>
@@ -3704,6 +3641,69 @@
 		<ClInclude Include="..\..\common\stack.h">
 			<Filter>common</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\common\std\algorithm.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\array.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\chrono.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\functional.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\initializer_list.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\limits.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\list.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\map.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\memory.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\mutex.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\queue.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\regex.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\set.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\stack.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\thread.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\type_traits.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\unordered_set.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\utility.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\vector.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\xtr1common.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\common\std\xutility.h">
+			<Filter>common\std</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\common\str-array.h">
 			<Filter>common</Filter>
 		</ClInclude>
@@ -3770,6 +3770,7 @@
 		<ClInclude Include="..\..\common\zip-set.h">
 			<Filter>common</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\config.h" />
 		<ClInclude Include="..\..\engines\achievements.h">
 			<Filter>engines</Filter>
 		</ClInclude>
@@ -3809,8 +3810,41 @@
 		<ClInclude Include="..\..\engines\util.h">
 			<Filter>engines</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\graphics\VectorRenderer.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\VectorRendererSpec.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\big5.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\blit.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\graphics\blit\blit-alpha.h">
 			<Filter>graphics\blit</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\color_quantizer.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\colormasks.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\conversion.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\cursor.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\cursorman.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\font.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\fontman.h">
+			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\fonts\amigafont.h">
 			<Filter>graphics\fonts</Filter>
@@ -3835,6 +3869,27 @@
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\fonts\winfont.h">
 			<Filter>graphics\fonts</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\framelimiter.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\image-archive.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\korfont.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\larryScale.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\maccursor.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\macega.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\macgamma.h">
+			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\macgui\macbutton.h">
 			<Filter>graphics\macgui</Filter>
@@ -3872,47 +3927,8 @@
 		<ClInclude Include="..\..\graphics\macgui\macwindowmanager.h">
 			<Filter>graphics\macgui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\blitter.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\cursor.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\dialog_template.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\fonts.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\palette_map.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\surface.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\gfx\text_render.h">
-			<Filter>graphics\mfc\gfx</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\keyboard.h">
-			<Filter>graphics\mfc</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\array.h">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\event_loop.h">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\events.h">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\list.h">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\resources.h">
-			<Filter>graphics\mfc\libs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mfc\libs\settings.h">
-			<Filter>graphics\mfc\libs</Filter>
+		<ClInclude Include="..\..\graphics\managed_surface.h">
+			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\mfc\afx.h">
 			<Filter>graphics\mfc</Filter>
@@ -3938,6 +3954,27 @@
 		<ClInclude Include="..\..\graphics\mfc\atltypes.h">
 			<Filter>graphics\mfc</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\blitter.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\cursor.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\dialog_template.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\fonts.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\palette_map.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\surface.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\gfx\text_render.h">
+			<Filter>graphics\mfc\gfx</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\graphics\mfc\global_functions.h">
 			<Filter>graphics\mfc</Filter>
 		</ClInclude>
@@ -3946,6 +3983,27 @@
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\mfc\joystickapi.h">
 			<Filter>graphics\mfc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\keyboard.h">
+			<Filter>graphics\mfc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\array.h">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\event_loop.h">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\events.h">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\list.h">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\resources.h">
+			<Filter>graphics\mfc\libs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mfc\libs\settings.h">
+			<Filter>graphics\mfc\libs</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\mfc\mfc.h">
 			<Filter>graphics\mfc</Filter>
@@ -3961,6 +4019,12 @@
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\mfc\winnt.h">
 			<Filter>graphics\mfc</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\mode.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\nine_patch.h">
+			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\opengl\context.h">
 			<Filter>graphics\opengl</Filter>
@@ -3979,6 +4043,30 @@
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\opengl\texture.h">
 			<Filter>graphics\opengl</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\palette.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\paletteman.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\pixelformat.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\pm5544.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\primitives.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\renderer.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\riscoscursor.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\scaler.h">
+			<Filter>graphics</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\scaler\aspect.h">
 			<Filter>graphics\scaler</Filter>
@@ -4019,6 +4107,24 @@
 		<ClInclude Include="..\..\graphics\scaler\tv.h">
 			<Filter>graphics\scaler</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\graphics\scalerplugin.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\screen.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\sjis.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\surface.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\svg.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\graphics\thumbnail.h">
+			<Filter>graphics</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\graphics\tinygl\colormasks.h">
 			<Filter>graphics\tinygl</Filter>
 		</ClInclude>
@@ -4055,111 +4161,6 @@
 		<ClInclude Include="..\..\graphics\tinygl\zmath.h">
 			<Filter>graphics\tinygl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\graphics\VectorRenderer.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\VectorRendererSpec.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\big5.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\blit.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\color_quantizer.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\colormasks.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\conversion.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\cursor.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\cursorman.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\font.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\fontman.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\framelimiter.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\image-archive.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\korfont.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\larryScale.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\maccursor.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\macega.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\macgamma.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\managed_surface.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\mode.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\nine_patch.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\palette.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\paletteman.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\pixelformat.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\pm5544.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\primitives.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\renderer.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\riscoscursor.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\scaler.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\scalerplugin.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\screen.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\sjis.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\surface.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\svg.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\graphics\thumbnail.h">
-			<Filter>graphics</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\graphics\transform_struct.h">
 			<Filter>graphics</Filter>
 		</ClInclude>
@@ -4171,6 +4172,30 @@
 		</ClInclude>
 		<ClInclude Include="..\..\graphics\yuv_to_rgb.h">
 			<Filter>graphics</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\EventRecorder.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\MetadataParser.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\ThemeEngine.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\ThemeEval.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\ThemeLayout.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\ThemeParser.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\Tooltip.h">
+			<Filter>gui</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\about.h">
+			<Filter>gui</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\gui\animation\AccelerateInterpolator.h">
 			<Filter>gui\animation</Filter>
@@ -4204,60 +4229,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\gui\animation\WaitForConditionAnimation.h">
 			<Filter>gui\animation</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\editable.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\edittext.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\grid.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\groupedlist.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\list.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\popup.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\richtext.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\scrollbar.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\scrollcontainer.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\widgets\tab.h">
-			<Filter>gui\widgets</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\EventRecorder.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\MetadataParser.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\ThemeEngine.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\ThemeEval.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\ThemeLayout.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\ThemeParser.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\Tooltip.h">
-			<Filter>gui</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\gui\about.h">
-			<Filter>gui</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\gui\browser.h">
 			<Filter>gui</Filter>
@@ -4376,23 +4347,50 @@
 		<ClInclude Include="..\..\gui\widget.h">
 			<Filter>gui</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\editable.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\edittext.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\grid.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\groupedlist.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\list.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\popup.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\richtext.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\scrollbar.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\scrollcontainer.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\gui\widgets\tab.h">
+			<Filter>gui\widgets</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\ani.h">
+			<Filter>image</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\image\bmp.h">
 			<Filter>image</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\image\codecs\indeo\get_bits.h">
-			<Filter>image\codecs\indeo</Filter>
+		<ClInclude Include="..\..\image\cel_3do.h">
+			<Filter>image</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\image\codecs\indeo\indeo.h">
-			<Filter>image\codecs\indeo</Filter>
+		<ClInclude Include="..\..\image\cicn.h">
+			<Filter>image</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\image\codecs\indeo\indeo_dsp.h">
-			<Filter>image\codecs\indeo</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\codecs\indeo\mem.h">
-			<Filter>image\codecs\indeo</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\codecs\indeo\vlc.h">
-			<Filter>image\codecs\indeo</Filter>
+		<ClInclude Include="..\..\image\codec-options.h">
+			<Filter>image</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\image\codecs\bmp_raw.h">
 			<Filter>image\codecs</Filter>
@@ -4426,6 +4424,21 @@
 		</ClInclude>
 		<ClInclude Include="..\..\image\codecs\indeo5.h">
 			<Filter>image\codecs</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\codecs\indeo\get_bits.h">
+			<Filter>image\codecs\indeo</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\codecs\indeo\indeo.h">
+			<Filter>image\codecs\indeo</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\codecs\indeo\indeo_dsp.h">
+			<Filter>image\codecs\indeo</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\codecs\indeo\mem.h">
+			<Filter>image\codecs\indeo</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\image\codecs\indeo\vlc.h">
+			<Filter>image\codecs\indeo</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\image\codecs\jyv1.h">
 			<Filter>image\codecs</Filter>
@@ -4471,18 +4484,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\image\codecs\xan.h">
 			<Filter>image\codecs</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\ani.h">
-			<Filter>image</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\cel_3do.h">
-			<Filter>image</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\cicn.h">
-			<Filter>image</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\image\codec-options.h">
-			<Filter>image</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\image\gif.h">
 			<Filter>image</Filter>
@@ -4670,9 +4671,11 @@
 		<ClInclude Include="..\..\video\video_decoder.h">
 			<Filter>video</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\config.h" />
 	</ItemGroup>
 	<ItemGroup>
+		<None Include="..\..\AUTHORS" />
+		<None Include="..\..\COPYING" />
+		<None Include="..\..\COPYRIGHT" />
 		<None Include="..\..\LICENSES\COPYING.Apache">
 			<Filter>LICENSES</Filter>
 		</None>
@@ -4712,20 +4715,22 @@
 		<None Include="..\..\LICENSES\CatharonLicense.txt">
 			<Filter>LICENSES</Filter>
 		</None>
-		<None Include="..\..\audio\softsynth\mt32\module.mk">
-			<Filter>audio\softsynth\mt32</Filter>
-		</None>
+		<None Include="..\..\NEWS.md" />
+		<None Include="..\..\README.md" />
 		<None Include="..\..\audio\module.mk">
 			<Filter>audio</Filter>
+		</None>
+		<None Include="..\..\audio\softsynth\mt32\module.mk">
+			<Filter>audio\softsynth\mt32</Filter>
 		</None>
 		<None Include="..\..\backends\imgui\misc\freetype\README.md">
 			<Filter>backends\imgui\misc\freetype</Filter>
 		</None>
-		<None Include="..\..\backends\platform\sdl\module.mk">
-			<Filter>backends\platform\sdl</Filter>
-		</None>
 		<None Include="..\..\backends\module.mk">
 			<Filter>backends</Filter>
+		</None>
+		<None Include="..\..\backends\platform\sdl\module.mk">
+			<Filter>backends\platform\sdl</Filter>
 		</None>
 		<None Include="..\..\base\module.mk">
 			<Filter>base</Filter>
@@ -4775,11 +4780,6 @@
 		<None Include="..\..\video\module.mk">
 			<Filter>video</Filter>
 		</None>
-		<None Include="..\..\AUTHORS" />
-		<None Include="..\..\COPYING" />
-		<None Include="..\..\COPYRIGHT" />
-		<None Include="..\..\NEWS.md" />
-		<None Include="..\..\README.md" />
 	</ItemGroup>
 	<ItemGroup>
 		<ResourceCompile Include="..\..\dists\scummvm.rc">

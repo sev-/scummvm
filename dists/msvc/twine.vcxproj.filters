@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="audio">
-			<UniqueIdentifier>4DFAD8CD-4FA6-4713-8E9D-3ED9DC64F825</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="debugger">
-			<UniqueIdentifier>71860618-DC72-4931-947C-FCC680415BE8</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="menu">
-			<UniqueIdentifier>CCF2E5F6-4FD7-4387-984B-8D8964170D03</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="parser">
-			<UniqueIdentifier>1379FEA4-CCE3-453E-B44F-39290E513601</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="renderer">
-			<UniqueIdentifier>5CF2D80C-272F-49D6-968D-E5D00784742A</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="resources">
-			<UniqueIdentifier>529EABED-ECFD-4512-8C83-AC47C8AD40D7</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scene">
-			<UniqueIdentifier>706EC03F-DB9B-4FF3-AC5E-53CC34FA0DC1</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="script">
-			<UniqueIdentifier>73ABD407-4C9C-4D78-92C6-0BAF030645E8</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -42,6 +42,9 @@
 		<ClCompile Include="..\..\engines\twine\debugger\debugtools.cpp">
 			<Filter>debugger</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\twine\holomap_v1.cpp" />
+		<ClCompile Include="..\..\engines\twine\holomap_v2.cpp" />
+		<ClCompile Include="..\..\engines\twine\input.cpp" />
 		<ClCompile Include="..\..\engines\twine\menu\interface.cpp">
 			<Filter>menu</Filter>
 		</ClCompile>
@@ -51,6 +54,8 @@
 		<ClCompile Include="..\..\engines\twine\menu\menuoptions.cpp">
 			<Filter>menu</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\twine\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\twine\movies.cpp" />
 		<ClCompile Include="..\..\engines\twine\parser\anim.cpp">
 			<Filter>parser</Filter>
 		</ClCompile>
@@ -150,17 +155,13 @@
 		<ClCompile Include="..\..\engines\twine\script\script_move_v2.cpp">
 			<Filter>script</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\twine\holomap_v1.cpp" />
-		<ClCompile Include="..\..\engines\twine\holomap_v2.cpp" />
-		<ClCompile Include="..\..\engines\twine\input.cpp" />
-		<ClCompile Include="..\..\engines\twine\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\twine\movies.cpp" />
 		<ClCompile Include="..\..\engines\twine\shared.cpp" />
 		<ClCompile Include="..\..\engines\twine\slideshow.cpp" />
 		<ClCompile Include="..\..\engines\twine\text.cpp" />
 		<ClCompile Include="..\..\engines\twine\twine.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\twine\achievements_tables.h" />
 		<ClInclude Include="..\..\engines\twine\audio\music.h">
 			<Filter>audio</Filter>
 		</ClInclude>
@@ -182,6 +183,11 @@
 		<ClInclude Include="..\..\engines\twine\debugger\ringbuffer.h">
 			<Filter>debugger</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\twine\detection.h" />
+		<ClInclude Include="..\..\engines\twine\holomap.h" />
+		<ClInclude Include="..\..\engines\twine\holomap_v1.h" />
+		<ClInclude Include="..\..\engines\twine\holomap_v2.h" />
+		<ClInclude Include="..\..\engines\twine\input.h" />
 		<ClInclude Include="..\..\engines\twine\menu\interface.h">
 			<Filter>menu</Filter>
 		</ClInclude>
@@ -191,6 +197,7 @@
 		<ClInclude Include="..\..\engines\twine\menu\menuoptions.h">
 			<Filter>menu</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\twine\movies.h" />
 		<ClInclude Include="..\..\engines\twine\parser\anim.h">
 			<Filter>parser</Filter>
 		</ClInclude>
@@ -299,13 +306,6 @@
 		<ClInclude Include="..\..\engines\twine\script\script_move_v2.h">
 			<Filter>script</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\twine\achievements_tables.h" />
-		<ClInclude Include="..\..\engines\twine\detection.h" />
-		<ClInclude Include="..\..\engines\twine\holomap.h" />
-		<ClInclude Include="..\..\engines\twine\holomap_v1.h" />
-		<ClInclude Include="..\..\engines\twine\holomap_v2.h" />
-		<ClInclude Include="..\..\engines\twine\input.h" />
-		<ClInclude Include="..\..\engines\twine\movies.h" />
 		<ClInclude Include="..\..\engines\twine\shared.h" />
 		<ClInclude Include="..\..\engines\twine\slideshow.h" />
 		<ClInclude Include="..\..\engines\twine\text.h" />

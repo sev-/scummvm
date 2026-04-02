@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="blue_force">
-			<UniqueIdentifier>B72F6BD4-6E8C-4987-A3C8-C71FBFD655EB</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96CD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ringworld">
-			<UniqueIdentifier>F335B9FB-13A6-4359-831E-38EDB9BAF3DC</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96CE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ringworld2">
-			<UniqueIdentifier>1DA6C86D-7D8B-41C0-B707-7295E8485FD0</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96CF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sherlock">
-			<UniqueIdentifier>34DC72CB-2DCC-4C7A-A9DF-56A11057490B</UniqueIdentifier>
+			<UniqueIdentifier>F5DE96D0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -54,6 +54,45 @@
 		<ClCompile Include="..\..\engines\tsage\blue_force\blueforce_speakers.cpp">
 			<Filter>blue_force</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\converse.cpp" />
+		<ClCompile Include="..\..\engines\tsage\core.cpp" />
+		<ClCompile Include="..\..\engines\tsage\debugger.cpp" />
+		<ClCompile Include="..\..\engines\tsage\dialogs.cpp" />
+		<ClCompile Include="..\..\engines\tsage\events.cpp" />
+		<ClCompile Include="..\..\engines\tsage\globals.cpp" />
+		<ClCompile Include="..\..\engines\tsage\graphics.cpp" />
+		<ClCompile Include="..\..\engines\tsage\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\tsage\resources.cpp" />
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_airduct.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_dialogs.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_logic.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_outpost.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes0.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes1.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes2.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes3.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_speakers.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_vampire.cpp">
+			<Filter>ringworld2</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\tsage\ringworld\ringworld_demo.cpp">
 			<Filter>ringworld</Filter>
 		</ClCompile>
@@ -90,51 +129,12 @@
 		<ClCompile Include="..\..\engines\tsage\ringworld\ringworld_speakers.cpp">
 			<Filter>ringworld</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_airduct.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_dialogs.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_logic.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_outpost.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes0.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes1.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes2.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_scenes3.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_speakers.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\ringworld2\ringworld2_vampire.cpp">
-			<Filter>ringworld2</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\sherlock\sherlock_logo.cpp">
-			<Filter>sherlock</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\tsage\converse.cpp" />
-		<ClCompile Include="..\..\engines\tsage\core.cpp" />
-		<ClCompile Include="..\..\engines\tsage\debugger.cpp" />
-		<ClCompile Include="..\..\engines\tsage\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\tsage\events.cpp" />
-		<ClCompile Include="..\..\engines\tsage\globals.cpp" />
-		<ClCompile Include="..\..\engines\tsage\graphics.cpp" />
-		<ClCompile Include="..\..\engines\tsage\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\tsage\resources.cpp" />
 		<ClCompile Include="..\..\engines\tsage\saveload.cpp" />
 		<ClCompile Include="..\..\engines\tsage\scenes.cpp" />
 		<ClCompile Include="..\..\engines\tsage\screen.cpp" />
+		<ClCompile Include="..\..\engines\tsage\sherlock\sherlock_logo.cpp">
+			<Filter>sherlock</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\tsage\sound.cpp" />
 		<ClCompile Include="..\..\engines\tsage\staticres.cpp" />
 		<ClCompile Include="..\..\engines\tsage\tsage.cpp" />
@@ -180,6 +180,46 @@
 		<ClInclude Include="..\..\engines\tsage\blue_force\blueforce_speakers.h">
 			<Filter>blue_force</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\converse.h" />
+		<ClInclude Include="..\..\engines\tsage\core.h" />
+		<ClInclude Include="..\..\engines\tsage\debugger.h" />
+		<ClInclude Include="..\..\engines\tsage\detection.h" />
+		<ClInclude Include="..\..\engines\tsage\detection_tables.h" />
+		<ClInclude Include="..\..\engines\tsage\dialogs.h" />
+		<ClInclude Include="..\..\engines\tsage\events.h" />
+		<ClInclude Include="..\..\engines\tsage\globals.h" />
+		<ClInclude Include="..\..\engines\tsage\graphics.h" />
+		<ClInclude Include="..\..\engines\tsage\resources.h" />
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_airduct.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_dialogs.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_logic.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_outpost.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes0.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes1.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes2.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes3.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_speakers.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_vampire.h">
+			<Filter>ringworld2</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\tsage\ringworld\ringworld_demo.h">
 			<Filter>ringworld</Filter>
 		</ClInclude>
@@ -216,52 +256,12 @@
 		<ClInclude Include="..\..\engines\tsage\ringworld\ringworld_speakers.h">
 			<Filter>ringworld</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_airduct.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_dialogs.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_logic.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_outpost.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes0.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes1.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes2.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_scenes3.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_speakers.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\ringworld2\ringworld2_vampire.h">
-			<Filter>ringworld2</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\sherlock\sherlock_logo.h">
-			<Filter>sherlock</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\tsage\converse.h" />
-		<ClInclude Include="..\..\engines\tsage\core.h" />
-		<ClInclude Include="..\..\engines\tsage\debugger.h" />
-		<ClInclude Include="..\..\engines\tsage\detection.h" />
-		<ClInclude Include="..\..\engines\tsage\detection_tables.h" />
-		<ClInclude Include="..\..\engines\tsage\dialogs.h" />
-		<ClInclude Include="..\..\engines\tsage\events.h" />
-		<ClInclude Include="..\..\engines\tsage\globals.h" />
-		<ClInclude Include="..\..\engines\tsage\graphics.h" />
-		<ClInclude Include="..\..\engines\tsage\resources.h" />
 		<ClInclude Include="..\..\engines\tsage\saveload.h" />
 		<ClInclude Include="..\..\engines\tsage\scenes.h" />
 		<ClInclude Include="..\..\engines\tsage\screen.h" />
+		<ClInclude Include="..\..\engines\tsage\sherlock\sherlock_logo.h">
+			<Filter>sherlock</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\tsage\sound.h" />
 		<ClInclude Include="..\..\engines\tsage\staticres.h" />
 		<ClInclude Include="..\..\engines\tsage\tsage.h" />

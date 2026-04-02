@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="fullpipe">
-			<UniqueIdentifier>8D730EAD-018D-4959-9DBF-6E46FD0E62D7</UniqueIdentifier>
+			<UniqueIdentifier>EFDBA6F5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\ngi\anihandler.cpp" />
+		<ClCompile Include="..\..\engines\ngi\behavior.cpp" />
+		<ClCompile Include="..\..\engines\ngi\console.cpp" />
+		<ClCompile Include="..\..\engines\ngi\floaters.cpp" />
 		<ClCompile Include="..\..\engines\ngi\fullpipe\scene01.cpp">
 			<Filter>fullpipe</Filter>
 		</ClCompile>
@@ -129,10 +133,6 @@
 		<ClCompile Include="..\..\engines\ngi\fullpipe\sceneIntroDemo.cpp">
 			<Filter>fullpipe</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\ngi\anihandler.cpp" />
-		<ClCompile Include="..\..\engines\ngi\behavior.cpp" />
-		<ClCompile Include="..\..\engines\ngi\console.cpp" />
-		<ClCompile Include="..\..\engines\ngi\floaters.cpp" />
 		<ClCompile Include="..\..\engines\ngi\gameloader.cpp" />
 		<ClCompile Include="..\..\engines\ngi\gfx.cpp" />
 		<ClCompile Include="..\..\engines\ngi\init.cpp" />
