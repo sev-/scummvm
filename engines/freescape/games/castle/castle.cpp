@@ -741,6 +741,10 @@ bool CastleEngine::triggerWinCondition() {
 		if (!_areaMap.contains(74))
 			return false;
 		gotoArea(74, 0);
+	} else if (isCastleMaster2()) {
+		// CM2: escape is script-driven (game boolean 3 bit 6).
+		// The escape animation plays from the current location.
+		return true;
 	} else {
 		_gameStateVars[31] = 10;
 		gotoArea(16, 136);
@@ -756,8 +760,11 @@ void CastleEngine::endGame() {
 	if (hasEscaped()) {
 		insertTemporaryMessage(_messagesList[5], INT_MIN);
 
-		if (isDOS()) {
+		if (isDOS() && !isCastleMaster2()) {
 			drawFullscreenEndGameAndWait();
+		} else if (isCastleMaster2()) {
+			executeEscapeCameraSequence();
+			drawFullscreenGameOverAndWait();
 		} else
 			drawFullscreenGameOverAndWait();
 	} else {
@@ -766,6 +773,47 @@ void CastleEngine::endGame() {
 
 	_gameStateControl = kFreescapeGameStateRestart;
 	_endGameKeyPressed = false;
+}
+
+void CastleEngine::executeEscapeCameraSequence() {
+	// Escape camera animation from CM2 disassembly (L9fa1_escape_castle_sequence):
+	// 1. Rotate player to face yaw=180 (away from castle), pitch=0 (level)
+	// 2. Walk backward (increase Z) until leaving the map
+
+	// Step 1: Rotate toward yaw=180, pitch=0
+	float yawStep = (_yaw < 180.0f) ? 10.0f : -10.0f;
+	float pitchStep = (_pitch < 180.0f) ? -10.0f : 10.0f;
+
+	while (ABS(_yaw - 180.0f) > 5.0f || (ABS(_pitch) > 5.0f && ABS(_pitch - 360.0f) > 5.0f)) {
+		if (ABS(_yaw - 180.0f) > 5.0f)
+			_yaw += yawStep;
+		if (ABS(_pitch) > 5.0f && ABS(_pitch - 360.0f) > 5.0f)
+			_pitch += pitchStep;
+
+		if (_yaw < 0) _yaw += 360.0f;
+		if (_yaw >= 360.0f) _yaw -= 360.0f;
+		if (_pitch < 0) _pitch += 360.0f;
+		if (_pitch >= 360.0f) _pitch -= 360.0f;
+
+		_cameraFront = directionToVector(_yaw, _pitch, false);
+		drawFrame();
+		_gfx->flipBuffer();
+		g_system->updateScreen();
+		g_system->delayMillis(40);
+	}
+
+	_yaw = 180.0f;
+	_pitch = 0.0f;
+	_cameraFront = directionToVector(_yaw, _pitch, false);
+
+	// Step 2: Move backward (increase Z) until out of bounds
+	for (int i = 0; i < 40; i++) {
+		_position.setValue(2, _position.z() + 256.0f);
+		drawFrame();
+		_gfx->flipBuffer();
+		g_system->updateScreen();
+		g_system->delayMillis(40);
+	}
 }
 
 bool CastleEngine::hasEscaped() {
@@ -1975,7 +2023,9 @@ void CastleEngine::borderScreen() {
 		surface->free();
 		delete surface;
 	}
-	selectCharacterScreen();
+
+	if (!isCastleMaster2())
+		selectCharacterScreen();
 }
 
 void CastleEngine::drawOption() {

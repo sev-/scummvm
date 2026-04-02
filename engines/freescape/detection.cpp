@@ -35,6 +35,7 @@ static const PlainGameDescriptor freescapeGames[] = {
 	{"totaleclipse", "Total Eclipse"},
 	{"totaleclipse2", "Total Eclipse 2"},
 	{"castlemaster", "Castle Master"},
+	{"castlemaster2", "Castle Master 2: The Crypt"},
 	{0, 0}
 };
 
@@ -984,6 +985,16 @@ static const ADGameDescription gameDescriptions[] = {
 		Common::kPlatformDOS,
 		ADGF_NO_FLAGS,
 		GUIO5(GUIO_NOMIDI, GAMEOPTION_TRAVEL_ROCK, GUIO_RENDEREGA, GUIO_RENDERCGA, GAMEOPTION_WASD_CONTROLS)
+	},
+	// Castle Master 2: The Crypt
+	{
+		"castlemaster2",
+		"",
+		AD_ENTRY1s("castlemaster2.zx.data", "a470acb51c7925e921b0de056cdb880f", 35328),
+		Common::EN_ANY,
+		Common::kPlatformZX,
+		ADGF_NO_FLAGS,
+		GUIO3(GUIO_NOMIDI, GUIO_RENDERZX, GAMEOPTION_WASD_CONTROLS)
 	},
 	// 3D Construction Kit games
 	{

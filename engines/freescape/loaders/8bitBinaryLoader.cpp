@@ -308,7 +308,9 @@ Object *FreescapeEngine::load8bitObject(Common::SeekableReadStream *file) {
 
 	byte rawFlagsAndType = readField(file, 8);
 	debugC(1, kFreescapeDebugParser, "Raw object data flags and type: %d", rawFlagsAndType);
-	ObjectType objectType = (ObjectType)(rawFlagsAndType & 0x1F);
+	// Castle Master uses a 4-bit type field (0x0F mask); other Freescape games use 5 bits (0x1F).
+	byte typeMask = isCastle() ? 0x0F : 0x1F;
+	ObjectType objectType = (ObjectType)(rawFlagsAndType & typeMask);
 
 	if (objectType == ObjectType::kGroupType)
 		return load8bitGroup(file, rawFlagsAndType);
@@ -643,7 +645,9 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 	uint8 skyColor = areaFlags & 15;
 	uint8 groundColor = areaFlags >> 4;
 
-	if (groundColor == 0)
+	// In Castle Master, areaFlags holds sky/floor texture IDs, not colors.
+	// A value of 0 means no sky/floor (indoor area), not "missing color".
+	if (groundColor == 0 && !isCastle())
 		groundColor = 255;
 
 	uint8 usualBackgroundColor = 0;
@@ -744,7 +748,7 @@ Area *FreescapeEngine::load8bitArea(Common::SeekableReadStream *file, uint16 nco
 		if (isAmiga())
 			name = _messagesList[idx + 51];
 		else if (isSpectrum() || isCPC() || isC64())
-			name = areaNumber == 255 ? "GLOBAL" : _messagesList[idx + 16];
+			name = areaNumber == 255 ? "GLOBAL" : _messagesList[idx + (isCastleMaster2() ? 41 : 16)];
 		else
 			name = _messagesList[idx + 41];
 

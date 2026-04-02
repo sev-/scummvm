@@ -199,38 +199,102 @@ void FreescapeEngine::traverseEntrance(uint16 entranceID) {
 }
 
 void FreescapeEngine::activate() {
+	// Castle Master interaction following the original Z80 code (Lb464 in
+	// castlemaster2-annotated.asm). activate() is only called by Castle Master.
+	//
+	// 1. Find object under pointer via ray cast (equivalent to Lb607)
+	// 2. Reject objects where any dimension > room_scale * 5 (line 10216-10223)
+	// 3. Compute manhattan distance to object center (lines 10227-10266)
+	// 4. Normalize by room_scale if scale >= 2 (lines 10269-10277)
+	// 5. If distance >= 300, show "OUT OF REACH" (lines 10279-10283)
+	// 6. Otherwise execute the object's rules
+
 	Common::Point center(_viewArea.left + _viewArea.width() / 2, _viewArea.top + _viewArea.height() / 2);
-	// Convert to normalized coordinates [-1, 1]
 	float ndcX = (2.0f * (_crossairPosition.x - _viewArea.left) / _viewArea.width()) - 1.0f;
 	float ndcY = 1.0f - (2.0f * (_crossairPosition.y - _viewArea.top) / _viewArea.height());
 
-	// Calculate angular offsets using perspective projection
 	float fovHorizontalRad = (float)(75.0f * M_PI / 180.0f);
-	float aspectRatio = isCastle() ? 1.6 : 2.18;
+	float aspectRatio = 1.6;
 	float fovVerticalRad = 2.0f * atan(tan(fovHorizontalRad / 2.0f) / aspectRatio);
 
-	// Convert NDC to angle offset
 	float angleOffsetX = atan(ndcX * tan(fovHorizontalRad / 2.0f)) * 180.0f / M_PI;
 	float angleOffsetY = atan(ndcY * tan(fovVerticalRad / 2.0f)) * 180.0f / M_PI;
 
 	Math::Vector3d direction = directionToVector(_pitch + angleOffsetY, _yaw - angleOffsetX, false);
 	Math::Ray ray(_position, direction);
-	Object *interacted = _currentArea->checkCollisionRay(ray, 1250.0 / _currentArea->getScale());
+	// Use a wide ray to find the object under the pointer. The original code
+	// (Lb607_find_object_under_pointer) works in screen-space projected
+	// coordinates, so it finds objects regardless of their 3D thickness.
+	// The manhattan distance check below handles reachability.
+	Object *interacted = _currentArea->checkCollisionRay(ray, 8000.0 / _currentArea->getScale());
+
 	if (interacted) {
 		GeometricObject *gobj = (GeometricObject *)interacted;
-		debugC(1, kFreescapeDebugMove, "Interact with object %d with flags %x", gobj->getObjectID(), gobj->getObjectFlags());
+		int scale = _currentArea->getScale();
+		// Z80 (line 10216-10222): rejects objects with any raw dimension > scale * 5.
+		// ScummVM sizes are in raw * 32 / scale units, so the equivalent
+		// threshold is: scale * 5 * 32 / scale = 160.
+		int maxSize = 160;
+		Math::Vector3d objOrigin = gobj->getOrigin();
+		Math::Vector3d objSize = gobj->getSize();
 
-		if (!gobj->_conditionSource.empty())
-			debugC(1, kFreescapeDebugMove, "Must use interact = true when executing: %s", gobj->_conditionSource.c_str());
+		debugC(1, kFreescapeDebugMove, "Activate: found object %d (type %d) at (%.0f,%.0f,%.0f) size (%.0f,%.0f,%.0f) scale %d",
+			gobj->getObjectID(), (int)gobj->getType(),
+			objOrigin.x(), objOrigin.y(), objOrigin.z(),
+			objSize.x(), objSize.y(), objSize.z(), scale);
 
-		executeObjectConditions(gobj, false, false, true);
+		// Reject objects where any dimension > room_scale * 5
+		bool tooLarge = false;
+		for (int i = 0; i < 3; i++) {
+			if ((int)objSize.getValue(i) > maxSize) {
+				tooLarge = true;
+				break;
+			}
+		}
+
+		if (tooLarge) {
+			debugC(1, kFreescapeDebugMove, "Activate: object %d too large (maxSize %d), skipping", gobj->getObjectID(), maxSize);
+		} else {
+			// Manhattan distance to object center, matching the Z80 code at
+			// Lb486 (castlemaster2-annotated.asm lines 10215-10281).
+			//
+			// Z80 works in *64 space: center = raw_pos*64 + raw_size*32,
+			// player = raw*64+32.
+			// ScummVM stores positions as raw*32/scale (after load8bitObject
+			// multiplies by 32 and load8bitArea divides by scale).
+			// So ScummVM center = origin + size/2, and the Z80 distance
+			// (after its /scale normalization) maps to:
+			//   dist_z80_normalized = dist_scummvm * 2 * scale / scale
+			//                       = dist_scummvm * 2
+			// Threshold in Z80 (post-normalization) = 300, so in ScummVM = 150.
+			int manhattanDist = 0;
+			for (int i = 0; i < 3; i++) {
+				float objCenter = objOrigin.getValue(i) + objSize.getValue(i) / 2.0f;
+				float playerPos = _position.getValue(i);
+				int diff = (int)ABS(objCenter - playerPos);
+				debugC(1, kFreescapeDebugMove, "Activate: axis %d: objCenter=%.1f playerPos=%.1f |diff|=%d",
+					i, objCenter, playerPos, diff);
+				manhattanDist += diff;
+			}
+
+			debugC(1, kFreescapeDebugMove, "Activate: object %d manhattanDist=%d (threshold 150)",
+				gobj->getObjectID(), manhattanDist);
+
+			if (manhattanDist >= 150) {
+				clearTemporalMessages();
+				insertTemporaryMessage(_outOfReachMessage, _countdown - 2);
+			} else {
+				debugC(1, kFreescapeDebugMove, "Activate: interacting with object %d", gobj->getObjectID());
+				executeObjectConditions(gobj, false, false, true);
+			}
+		}
 	} else {
+		debugC(1, kFreescapeDebugMove, "Activate: no object found under pointer");
 		if (!_outOfReachMessage.empty()) {
 			clearTemporalMessages();
 			insertTemporaryMessage(_outOfReachMessage, _countdown - 2);
 		}
 	}
-	//executeLocalGlobalConditions(true, false, false); // Only execute "on shot" room/global conditions
 }
 
 

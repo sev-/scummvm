@@ -59,6 +59,7 @@ public:
 	void initGameState() override;
 	bool triggerWinCondition() override;
 	void endGame() override;
+	void executeEscapeCameraSequence();
 
 	void drawInfoMenu() override;
 	void loadAssets() override;
