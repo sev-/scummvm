@@ -143,6 +143,7 @@ EclipseAYMusicPlayer::~EclipseAYMusicPlayer() {
 // ============================================================================
 
 void EclipseAYMusicPlayer::startMusic() {
+	stopMusic();
 	_mixer->playStream(Audio::Mixer::kMusicSoundType, &_handle, toAudioStream(),
 	                   -1, Audio::Mixer::kMaxChannelVolume, 0, DisposeAfterUse::NO);
 	setupSong();

@@ -125,6 +125,8 @@ public:
 
 	EclipseAYMusicPlayer *_playerAYMusic;
 	EclipseOPLMusicPlayer *_playerOPLMusic;
+	void restartBackgroundMusic();
+	void stopBackgroundMusic();
 
 	// Atari ST UI sprites (extracted from binary, pre-converted to target format)
 	Font _fontScore; // Font B (10 score digit glyphs, 4-plane at $249BE)

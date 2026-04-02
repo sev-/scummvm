@@ -26,7 +26,8 @@
  * Shared music data for Total Eclipse backported music players.
  *
  * Song data extracted from the C64 version's Wally Beben music engine.
- * SID-only fields (pulse width, PWM) have been stripped from instruments.
+ * The shared instrument table strips SID-only pulse-width fields, but the
+ * original pulse-width values are kept below for ports that can use them.
  * This header is included by both the AY and OPL player implementations.
  */
 
@@ -51,6 +52,16 @@ static const byte kInstruments[] = {
 };
 static const byte kInstrumentSize = 6;
 static const byte kInstrumentCount = 12;
+
+// SID pulse-width data kept alongside the shared instruments so the OPL port
+// can retain some of the original timbre motion.
+static const byte kPulseWidthInit[] = {
+	0x00, 0x02, 0x00, 0x64, 0x20, 0x20, 0x22, 0x43, 0x44, 0x30, 0x80, 0x41
+};
+
+static const byte kPulseWidthMod[] = {
+	0x00, 0x0F, 0x0B, 0x2F, 0x08, 0x01, 0x00, 0x00, 0x22, 0x00, 0x22, 0x40
+};
 
 static const byte kOrderList0[] = {
 	0xE0, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x0B, 0x0B, 0x0B, 0x0B, 0x01, 0x01,

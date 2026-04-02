@@ -33,7 +33,7 @@ namespace Freescape {
  * - Reusing the same sequencer (order lists, patterns, instruments)
  * - Converting SID note numbers to OPL F-number/block pairs
  * - Mapping SID waveforms to OPL FM instrument patches
- * - Using OPL's built-in ADSR envelopes
+ * - Rebuilding the SID envelope and pulse-width motion on top of AdLib timbres
  */
 class EclipseOPLMusicPlayer {
 public:
@@ -45,8 +45,18 @@ public:
 	bool isPlaying() const;
 
 private:
-	static const byte kChannelCount = 3;
-	static const byte kMaxNote = 94;
+	enum {
+		kChannelCount = 3,
+		kMaxNote = 94
+	};
+
+	enum ADSRPhase {
+		kPhaseOff,
+		kPhaseAttack,
+		kPhaseDecay,
+		kPhaseSustain,
+		kPhaseRelease
+	};
 
 	struct ChannelState {
 		const byte *orderList;
@@ -58,6 +68,8 @@ private:
 		byte instrumentOffset;
 		byte currentNote;
 		byte transpose;
+		uint16 frequencyFnum;
+		byte frequencyBlock;
 
 		byte durationReload;
 		byte durationCounter;
@@ -83,6 +95,19 @@ private:
 		byte instrumentFlags;
 		bool gateOffDisabled;
 		bool keyOn;
+		uint16 pulseWidth;
+		byte pulseWidthMod;
+		byte pulseWidthDirection;
+		byte modBaseLevel;
+		byte carBaseLevel;
+		byte modLevel;
+		byte carLevel;
+		ADSRPhase adsrPhase;
+		uint16 adsrVolume;
+		uint16 attackRate;
+		uint16 decayRate;
+		byte sustainLevel;
+		uint16 releaseRate;
 
 		void reset();
 	};
@@ -108,11 +133,17 @@ private:
 	bool applyInstrumentVibrato(int channel);
 	void applyEffectArpeggio(int channel);
 	void applyTimedSlide(int channel);
+	void triggerADSR(int channel, byte ad, byte sr);
+	void releaseADSR(int channel);
+	void updateADSR(int channel);
+	void updatePulseWidth(int channel, bool advance);
+	void applyOperatorLevels(int channel);
 
 	void setOPLInstrument(int channel, byte instrumentOffset);
-	void noteOn(int channel, byte note);
+	void noteOn(int channel);
 	void noteOff(int channel);
 	void setFrequency(int channel, uint16 fnum, byte block);
+	void writeFrequency(int channel, uint16 fnum, byte block);
 	void noteToFnumBlock(byte note, uint16 &fnum, byte &block) const;
 
 	byte readPatternByte(int channel);

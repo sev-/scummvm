@@ -30,6 +30,18 @@ using namespace Freescape::EclipseMusicData;
 
 namespace Freescape {
 
+namespace {
+
+struct OPLBasePatch {
+	byte modChar;
+	byte carChar;
+	byte modLevel;
+	byte carLevel;
+	byte modWave;
+	byte carWave;
+	byte feedbackConnection;
+};
+
 // ============================================================================
 // Embedded music data (shared with AY player, extracted from C64)
 // ============================================================================
@@ -37,7 +49,7 @@ namespace Freescape {
 // OPL2 F-number/block table (95 entries)
 // Format: fnum (bits 0-9) | block (bits 10-12)
 // Derived from SID frequency table
-static const uint16 kOPLFreqs[] = {
+const uint16 kOPLFreqs[] = {
 	0x0000, 0x0168, 0x017D, 0x0194, 0x01AD, 0x01C5,
 	0x01E1, 0x01FD, 0x021B, 0x023B, 0x025E, 0x0282,
 	0x02A8, 0x02D0, 0x02FB, 0x0328, 0x0358, 0x038B,
@@ -63,60 +75,61 @@ static const uint16 kOPLFreqs[] = {
 // (pattern data removed - now in eclipse.musicdata.h)
 //
 // ============================================================================
-// OPL2 FM instrument patches (our own creation, not from C64)
+// OPL2 FM base patches (our own creation, but driven by the original SID data)
 // ============================================================================
 
 // OPL operator register offsets for channels 0-2
 // Each OPL channel has 2 operators (modulator + carrier)
 // Modulator offsets: 0x00, 0x01, 0x02 for channels 0-2
 // Carrier offsets:   0x03, 0x04, 0x05 for channels 0-2
-static const byte kOPLModOffset[] = { 0x00, 0x01, 0x02 };
-static const byte kOPLCarOffset[] = { 0x03, 0x04, 0x05 };
+const byte kOPLModOffset[] = { 0x00, 0x01, 0x02 };
+const byte kOPLCarOffset[] = { 0x03, 0x04, 0x05 };
 
-// FM patch definitions, 11 bytes each:
-//  [0] mod: AM/VIB/EG/KSR/MULT  (reg 0x20+mod)
-//  [1] car: AM/VIB/EG/KSR/MULT  (reg 0x20+car)
-//  [2] mod: KSL/output level     (reg 0x40+mod)
-//  [3] car: KSL/output level     (reg 0x40+car)
-//  [4] mod: attack/decay          (reg 0x60+mod)
-//  [5] car: attack/decay          (reg 0x60+car)
-//  [6] mod: sustain/release       (reg 0x80+mod)
-//  [7] car: sustain/release       (reg 0x80+car)
-//  [8] mod: wave select           (reg 0xE0+mod)
-//  [9] car: wave select           (reg 0xE0+car)
-// [10] feedback/connection        (reg 0xC0+ch)
-// Carrier ADSR derived from SID AD/SR bytes using timing-matched conversion.
-// Modulator settings tuned per SID waveform type:
-//   triangle → additive sine (soft, warm)
-//   pulse    → FM with slight harmonic content (brighter)
-//   sawtooth → FM with feedback (rich harmonics)
-//   noise    → inharmonic FM (metallic percussion)
-static const byte kOPLPatches[][11] = {
-	// 0: rest — silent
-	{ 0x00, 0x00, 0x3F, 0x3F, 0xFF, 0xFF, 0x0F, 0x0F, 0x00, 0x00, 0x00 },
-	// 1: bass pulse (AD=0x42 SR=0x24) — punchy FM bass
-	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x8A, 0x07, 0xD9, 0x00, 0x01, 0x06 },
-	// 2: triangle lead (AD=0x8A SR=0xAC) — warm sine lead
-	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x75, 0x07, 0x54, 0x00, 0x00, 0x01 },
-	// 3: triangle pad (AD=0x6C SR=0x4F) — soft sustained pad
-	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x84, 0x07, 0xB1, 0x00, 0x00, 0x01 },
-	// 4: pulse arpeggio (AD=0x3A SR=0xAC) — bright arpeggio
-	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x95, 0x07, 0x54, 0x00, 0x01, 0x06 },
-	// 5: noise percussion (AD=0x42 SR=0x00) — metallic hit
-	{ 0x01, 0x0C, 0x00, 0x00, 0xFA, 0x8A, 0x07, 0xFD, 0x00, 0x00, 0x01 },
-	// 6: triangle melody (AD=0x3D SR=0x1C) — flute-like
-	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x92, 0x07, 0xE4, 0x00, 0x00, 0x01 },
-	// 7: pulse melody (AD=0x4C SR=0x2C) — vibrato lead
-	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x84, 0x07, 0xD4, 0x00, 0x01, 0x06 },
-	// 8: triangle sustain (AD=0x5D SR=0xBC) — organ-like
-	{ 0x01, 0x01, 0x2A, 0x00, 0xF1, 0x82, 0x07, 0x44, 0x00, 0x00, 0x01 },
-	// 9: pulse sustain (AD=0x4C SR=0xAF) — electric piano
-	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x84, 0x07, 0x51, 0x00, 0x01, 0x06 },
-	// 10: sawtooth lead (AD=0x4A SR=0x2A) — brass-like
-	{ 0x21, 0x21, 0x1A, 0x00, 0xF1, 0x85, 0x07, 0xD5, 0x02, 0x00, 0x0E },
-	// 11: pulse w/ arpeggio (AD=0x6A SR=0x6B) — harpsichord-like
-	{ 0x02, 0x01, 0x1E, 0x00, 0xF1, 0x85, 0x07, 0x94, 0x00, 0x01, 0x06 },
+const OPLBasePatch kOPLBasePatches[] = {
+	// 0: silent
+	{ 0x00, 0x00, 0x3F, 0x3F, 0x00, 0x00, 0x00 },
+	// 1: triangle - soft additive sine
+	{ 0x01, 0x01, 0x28, 0x00, 0x00, 0x00, 0x01 },
+	// 2: sawtooth - brighter feedback voice
+	{ 0x21, 0x21, 0x18, 0x00, 0x02, 0x00, 0x0C },
+	// 3: pulse - compact square-like FM voice
+	{ 0x02, 0x01, 0x18, 0x00, 0x00, 0x01, 0x06 },
+	// 4: noise - metallic inharmonic approximation
+	{ 0x11, 0x0C, 0x08, 0x00, 0x00, 0x00, 0x05 },
 };
+
+// Software ADSR rate tables (8.8 fixed point, per-frame at 50 Hz)
+const uint16 kAttackRate[16] = {
+	0x0F00, 0x0F00, 0x0F00, 0x0C80,
+	0x07E5, 0x055B, 0x0469, 0x03C0,
+	0x0300, 0x0133, 0x009A, 0x0060,
+	0x004D, 0x001A, 0x000F, 0x000A
+};
+
+const uint16 kDecayReleaseRate[16] = {
+	0x0F00, 0x0C80, 0x0640, 0x042B,
+	0x02A2, 0x01C9, 0x0178, 0x0140,
+	0x0100, 0x0066, 0x0033, 0x0020,
+	0x001A, 0x0009, 0x0005, 0x0003
+};
+
+byte getWaveformFamily(byte ctrl) {
+	if ((ctrl & 0x80) != 0)
+		return 4;
+	if ((ctrl & 0x40) != 0)
+		return 3;
+	if ((ctrl & 0x20) != 0)
+		return 2;
+	if ((ctrl & 0x10) != 0)
+		return 1;
+	return 0;
+}
+
+uint16 decodePulseWidth(byte packed) {
+	return ((packed & 0x0F) << 8) | (packed & 0xF0);
+}
+
+} // namespace
 
 // ============================================================================
 // ChannelState
@@ -130,6 +143,8 @@ void EclipseOPLMusicPlayer::ChannelState::reset() {
 	instrumentOffset = 0;
 	currentNote = 0;
 	transpose = 0;
+	frequencyFnum = 0;
+	frequencyBlock = 0;
 	durationReload = 0;
 	durationCounter = 0;
 	effectMode = 0;
@@ -149,6 +164,19 @@ void EclipseOPLMusicPlayer::ChannelState::reset() {
 	instrumentFlags = 0;
 	gateOffDisabled = false;
 	keyOn = false;
+	pulseWidth = 0;
+	pulseWidthMod = 0;
+	pulseWidthDirection = 0;
+	modBaseLevel = 0x3F;
+	carBaseLevel = 0x3F;
+	modLevel = 0x3F;
+	carLevel = 0x3F;
+	adsrPhase = kPhaseOff;
+	adsrVolume = 0;
+	attackRate = 0;
+	decayRate = 0;
+	sustainLevel = 0;
+	releaseRate = 0;
 }
 
 // ============================================================================
@@ -182,6 +210,7 @@ EclipseOPLMusicPlayer::~EclipseOPLMusicPlayer() {
 void EclipseOPLMusicPlayer::startMusic() {
 	if (!_opl)
 		return;
+	stopMusic();
 	_opl->start(new Common::Functor0Mem<void, EclipseOPLMusicPlayer>(
 		this, &EclipseOPLMusicPlayer::onTimer), 50);
 	setupSong();
@@ -212,6 +241,12 @@ void EclipseOPLMusicPlayer::noteToFnumBlock(byte note, uint16 &fnum, byte &block
 }
 
 void EclipseOPLMusicPlayer::setFrequency(int channel, uint16 fnum, byte block) {
+	_channels[channel].frequencyFnum = fnum;
+	_channels[channel].frequencyBlock = block;
+	writeFrequency(channel, fnum, block);
+}
+
+void EclipseOPLMusicPlayer::writeFrequency(int channel, uint16 fnum, byte block) {
 	if (!_opl)
 		return;
 	_opl->writeReg(0xA0 + channel, fnum & 0xFF);
@@ -226,44 +261,51 @@ void EclipseOPLMusicPlayer::setOPLInstrument(int channel, byte instrumentOffset)
 	if (!_opl)
 		return;
 	byte patchIdx = instrumentOffset / kInstrumentSize;
-	if (patchIdx >= ARRAYSIZE(kOPLPatches))
+	if (patchIdx >= kInstrumentCount)
 		patchIdx = 0;
 
-	const byte *patch = kOPLPatches[patchIdx];
+	byte ctrl = kInstruments[instrumentOffset + 0];
+	const OPLBasePatch &patch = kOPLBasePatches[getWaveformFamily(ctrl)];
 	byte mod = kOPLModOffset[channel];
 	byte car = kOPLCarOffset[channel];
 
-	_opl->writeReg(0x20 + mod, patch[0]);
-	_opl->writeReg(0x20 + car, patch[1]);
-	_opl->writeReg(0x40 + mod, patch[2]);
-	_opl->writeReg(0x40 + car, patch[3]);
-	_opl->writeReg(0x60 + mod, patch[4]);
-	_opl->writeReg(0x60 + car, patch[5]);
-	_opl->writeReg(0x80 + mod, patch[6]);
-	_opl->writeReg(0x80 + car, patch[7]);
-	_opl->writeReg(0xE0 + mod, patch[8]);
-	_opl->writeReg(0xE0 + car, patch[9]);
-	_opl->writeReg(0xC0 + channel, patch[10]);
+	_channels[channel].pulseWidth = decodePulseWidth(kPulseWidthInit[patchIdx]);
+	_channels[channel].pulseWidthMod = kPulseWidthMod[patchIdx];
+	_channels[channel].pulseWidthDirection = 0;
+	_channels[channel].modBaseLevel = patch.modLevel;
+	_channels[channel].carBaseLevel = patch.carLevel;
+	_channels[channel].modLevel = patch.modLevel;
+	_channels[channel].carLevel = patch.carLevel;
+
+	_opl->writeReg(0x20 + mod, patch.modChar);
+	_opl->writeReg(0x20 + car, patch.carChar);
+	_opl->writeReg(0x60 + mod, 0xF0);
+	_opl->writeReg(0x60 + car, 0xF0);
+	_opl->writeReg(0x80 + mod, 0x00);
+	_opl->writeReg(0x80 + car, 0x00);
+	_opl->writeReg(0xE0 + mod, patch.modWave);
+	_opl->writeReg(0xE0 + car, patch.carWave);
+	_opl->writeReg(0xC0 + channel, patch.feedbackConnection);
+
+	updatePulseWidth(channel, false);
+	applyOperatorLevels(channel);
 }
 
-void EclipseOPLMusicPlayer::noteOn(int channel, byte note) {
+void EclipseOPLMusicPlayer::noteOn(int channel) {
 	if (!_opl)
 		return;
-	uint16 fnum;
-	byte block;
-	noteToFnumBlock(note, fnum, block);
-
 	_channels[channel].keyOn = true;
-	_opl->writeReg(0xA0 + channel, fnum & 0xFF);
-	_opl->writeReg(0xB0 + channel, 0x20 | (block << 2) | ((fnum >> 8) & 0x03));
+	_opl->writeReg(0xA0 + channel, _channels[channel].frequencyFnum & 0xFF);
+	_opl->writeReg(0xB0 + channel, 0x20 | (_channels[channel].frequencyBlock << 2) |
+	                                 ((_channels[channel].frequencyFnum >> 8) & 0x03));
 }
 
 void EclipseOPLMusicPlayer::noteOff(int channel) {
 	if (!_opl)
 		return;
 	_channels[channel].keyOn = false;
-	// Clear key-on bit, preserve frequency
-	byte b0 = _opl ? 0x00 : 0x00; // just clear everything
+	byte b0 = ((_channels[channel].frequencyFnum >> 8) & 0x03) |
+	          (_channels[channel].frequencyBlock << 2);
 	_opl->writeReg(0xB0 + channel, b0);
 }
 
@@ -325,12 +367,14 @@ void EclipseOPLMusicPlayer::processChannel(int channel, bool newBeat) {
 }
 
 void EclipseOPLMusicPlayer::finalizeChannel(int channel) {
-	// Gate off at half duration: trigger release via key-off
 	if (_channels[channel].durationReload != 0 &&
 	    !_channels[channel].gateOffDisabled &&
 	    ((_channels[channel].durationReload >> 1) == _channels[channel].durationCounter)) {
-		noteOff(channel);
+		releaseADSR(channel);
 	}
+
+	updatePulseWidth(channel, true);
+	updateADSR(channel);
 }
 
 // ============================================================================
@@ -361,10 +405,11 @@ void EclipseOPLMusicPlayer::setupSong() {
 void EclipseOPLMusicPlayer::silenceAll() {
 	if (!_opl)
 		return;
-	for (int ch = 0; ch < 9; ch++) {
+	for (int ch = 0; ch < kChannelCount; ch++) {
+		_channels[ch].keyOn = false;
 		_opl->writeReg(0xB0 + ch, 0x00); // key off
-		_opl->writeReg(0x40 + kOPLModOffset[ch < 3 ? ch : 0], 0x3F); // silence mod
-		_opl->writeReg(0x40 + kOPLCarOffset[ch < 3 ? ch : 0], 0x3F); // silence car
+		_opl->writeReg(0x40 + kOPLModOffset[ch], 0x3F); // silence mod
+		_opl->writeReg(0x40 + kOPLCarOffset[ch], 0x3F); // silence car
 	}
 }
 
@@ -511,10 +556,12 @@ void EclipseOPLMusicPlayer::parseCommands(int channel) {
 void EclipseOPLMusicPlayer::applyNote(int channel, byte note) {
 	byte instrumentOffset = _channels[channel].instrumentOffset;
 	byte ctrl = kInstruments[instrumentOffset + 0];
+	byte attackDecay = kInstruments[instrumentOffset + 1];
+	byte sustainRelease = kInstruments[instrumentOffset + 2];
 	byte autoEffect = kInstruments[instrumentOffset + 4];
 	byte flags = kInstruments[instrumentOffset + 5];
-	byte sustainRelease = kInstruments[instrumentOffset + 2];
 	byte actualNote = note;
+	bool gateEnabled = (ctrl & 0x01) != 0;
 
 	if (actualNote != 0)
 		actualNote = clampNote(actualNote + _channels[channel].transpose);
@@ -539,12 +586,19 @@ void EclipseOPLMusicPlayer::applyNote(int channel, byte note) {
 
 	_channels[channel].gateOffDisabled = (sustainRelease & 0x0F) == 0x0F;
 
-	if (actualNote == 0) {
+	if (actualNote != 0)
+		loadCurrentFrequency(channel);
+
+	if (actualNote == 0 || !gateEnabled) {
+		_channels[channel].adsrPhase = kPhaseOff;
+		_channels[channel].adsrVolume = 0;
+		applyOperatorLevels(channel);
 		noteOff(channel);
 	} else {
-		// Key off then on to retrigger envelope
+		triggerADSR(channel, attackDecay, sustainRelease);
+		applyOperatorLevels(channel);
 		noteOff(channel);
-		noteOn(channel, actualNote);
+		noteOn(channel);
 	}
 
 	_channels[channel].durationCounter = _channels[channel].durationReload;
@@ -630,7 +684,7 @@ bool EclipseOPLMusicPlayer::applyInstrumentVibrato(int channel) {
 		return false;
 	}
 
-	int32 freq = noteFreq;
+	int32 freq = (int32)_channels[channel].frequencyFnum << _channels[channel].frequencyBlock;
 	for (byte i = 0; i < (span >> 1); i++)
 		freq -= delta;
 	for (byte i = 0; i < _channels[channel].vibratoCounter; i++)
@@ -644,7 +698,7 @@ bool EclipseOPLMusicPlayer::applyInstrumentVibrato(int channel) {
 		freq >>= 1;
 		block++;
 	}
-	setFrequency(channel, freq & 0x3FF, block);
+	writeFrequency(channel, freq & 0x3FF, block);
 	return true;
 }
 
@@ -662,7 +716,7 @@ void EclipseOPLMusicPlayer::applyEffectArpeggio(int channel) {
 	uint16 fnum;
 	byte block;
 	noteToFnumBlock(note, fnum, block);
-	setFrequency(channel, fnum, block);
+	writeFrequency(channel, fnum, block);
 }
 
 void EclipseOPLMusicPlayer::applyTimedSlide(int channel) {
@@ -699,11 +753,7 @@ void EclipseOPLMusicPlayer::applyTimedSlide(int channel) {
 	if (delta == 0)
 		return;
 
-	// Read current frequency from stored fnum/block
-	uint16 curFnum;
-	byte curBlock;
-	noteToFnumBlock(currentNote, curFnum, curBlock);
-	int32 curFreq = curFnum << curBlock;
+	int32 curFreq = (int32)_channels[channel].frequencyFnum << _channels[channel].frequencyBlock;
 
 	if (tgtFreq > srcFreq)
 		curFreq += delta;
@@ -718,6 +768,113 @@ void EclipseOPLMusicPlayer::applyTimedSlide(int channel) {
 		block++;
 	}
 	setFrequency(channel, curFreq & 0x3FF, block);
+}
+
+void EclipseOPLMusicPlayer::triggerADSR(int channel, byte ad, byte sr) {
+	_channels[channel].adsrPhase = kPhaseAttack;
+	// Match the SID re-gate behavior: keep the current level when a new note
+	// starts so ornaments stay smooth instead of re-attacking from silence.
+	_channels[channel].attackRate = kAttackRate[ad >> 4];
+	_channels[channel].decayRate = kDecayReleaseRate[ad & 0x0F];
+	_channels[channel].sustainLevel = sr >> 4;
+	_channels[channel].releaseRate = kDecayReleaseRate[sr & 0x0F];
+}
+
+void EclipseOPLMusicPlayer::releaseADSR(int channel) {
+	if (_channels[channel].adsrPhase != kPhaseRelease &&
+	    _channels[channel].adsrPhase != kPhaseOff) {
+		_channels[channel].adsrPhase = kPhaseRelease;
+	}
+}
+
+void EclipseOPLMusicPlayer::updateADSR(int channel) {
+	switch (_channels[channel].adsrPhase) {
+	case kPhaseAttack:
+		_channels[channel].adsrVolume += _channels[channel].attackRate;
+		if (_channels[channel].adsrVolume >= 0x0F00) {
+			_channels[channel].adsrVolume = 0x0F00;
+			_channels[channel].adsrPhase = kPhaseDecay;
+		}
+		break;
+
+	case kPhaseDecay: {
+		uint16 sustainTarget = (uint16)_channels[channel].sustainLevel << 8;
+		if (_channels[channel].adsrVolume > _channels[channel].decayRate + sustainTarget) {
+			_channels[channel].adsrVolume -= _channels[channel].decayRate;
+		} else {
+			_channels[channel].adsrVolume = sustainTarget;
+			_channels[channel].adsrPhase = kPhaseSustain;
+		}
+		break;
+	}
+
+	case kPhaseSustain:
+		break;
+
+	case kPhaseRelease:
+		if (_channels[channel].adsrVolume > _channels[channel].releaseRate) {
+			_channels[channel].adsrVolume -= _channels[channel].releaseRate;
+		} else {
+			_channels[channel].adsrVolume = 0;
+			_channels[channel].adsrPhase = kPhaseOff;
+		}
+		break;
+
+	case kPhaseOff:
+		_channels[channel].adsrVolume = 0;
+		break;
+	}
+
+	applyOperatorLevels(channel);
+}
+
+void EclipseOPLMusicPlayer::updatePulseWidth(int channel, bool advance) {
+	if ((_channels[channel].waveform & 0x40) == 0) {
+		_channels[channel].modLevel = _channels[channel].modBaseLevel;
+		_channels[channel].carLevel = _channels[channel].carBaseLevel;
+		return;
+	}
+
+	if (advance && _channels[channel].pulseWidthMod != 0) {
+		if ((_channels[channel].instrumentFlags & 0x04) != 0) {
+			uint16 pulseWidth = _channels[channel].pulseWidth;
+			pulseWidth = (pulseWidth & 0x0F00) |
+			             (((pulseWidth & 0x00FF) + _channels[channel].pulseWidthMod) & 0x00FF);
+			_channels[channel].pulseWidth = pulseWidth;
+		} else if (_channels[channel].pulseWidthDirection == 0) {
+			_channels[channel].pulseWidth += _channels[channel].pulseWidthMod;
+			if ((_channels[channel].pulseWidth >> 8) >= 0x0F)
+				_channels[channel].pulseWidthDirection = 1;
+		} else {
+			_channels[channel].pulseWidth -= _channels[channel].pulseWidthMod;
+			if ((_channels[channel].pulseWidth >> 8) < 0x08)
+				_channels[channel].pulseWidthDirection = 0;
+		}
+	}
+
+	uint16 pulseWidth = MIN<uint16>(_channels[channel].pulseWidth & 0x0FFF, 0x0800);
+	byte brightnessBoost = pulseWidth < 0x0800 ? (0x0800 - pulseWidth) >> 7 : 0;
+	if (brightnessBoost > 12)
+		brightnessBoost = 12;
+
+	_channels[channel].modLevel = (_channels[channel].modBaseLevel > brightnessBoost) ?
+	                              (_channels[channel].modBaseLevel - brightnessBoost) : 0;
+	_channels[channel].carLevel = _channels[channel].carBaseLevel;
+}
+
+void EclipseOPLMusicPlayer::applyOperatorLevels(int channel) {
+	if (!_opl)
+		return;
+
+	byte mod = kOPLModOffset[channel];
+	byte car = kOPLCarOffset[channel];
+	uint16 inverseVolume = 0x0F00 - _channels[channel].adsrVolume;
+	byte attenuation = (inverseVolume * 63 + 0x0780) / 0x0F00;
+	byte modLevel = MIN<byte>(_channels[channel].modLevel + attenuation, 0x3F);
+	byte carLevel = MIN<byte>(_channels[channel].carLevel + attenuation, 0x3F);
+
+	_opl->writeReg(0x40 + mod, modLevel);
+	_opl->writeReg(0x40 + car, carLevel);
 }
 
 } // namespace Freescape

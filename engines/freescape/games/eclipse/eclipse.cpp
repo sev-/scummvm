@@ -109,7 +109,40 @@ EclipseEngine::EclipseEngine(OSystem *syst, const ADGameDescription *gd) : Frees
 	_flashlightOn = false;
 }
 
+void EclipseEngine::stopBackgroundMusic() {
+	if (_playerOPLMusic)
+		_playerOPLMusic->stopMusic();
+	if (_playerAYMusic)
+		_playerAYMusic->stopMusic();
+	if (_playerC64Music)
+		_playerC64Music->stopMusic();
+	if (_mixer)
+		_mixer->stopHandle(_musicHandle);
+}
+
+void EclipseEngine::restartBackgroundMusic() {
+	if (isC64() && _playerC64Music) {
+		_playerC64Music->startMusic();
+	} else if ((isCPC() || isSpectrum()) && _playerAYMusic) {
+		_playerAYMusic->startMusic();
+	} else if (isDOS() && _playerOPLMusic) {
+		_playerOPLMusic->startMusic();
+	} else if (isAtariST() && !_musicData.empty()) {
+		if (_mixer)
+			_mixer->stopHandle(_musicHandle);
+		Audio::AudioStream *musicStream = makeEclipseAtariMusicStream(
+			_musicData.data(), _musicData.size(), 1);
+		if (musicStream) {
+			_mixer->playStream(Audio::Mixer::kMusicSoundType,
+				&_musicHandle, musicStream);
+		}
+	} else {
+		playMusic("Total Eclipse Theme");
+	}
+}
+
 EclipseEngine::~EclipseEngine() {
+	stopBackgroundMusic();
 	delete _playerOPLMusic;
 	delete _playerAYMusic;
 	delete _playerC64Music;
@@ -132,15 +165,7 @@ void EclipseEngine::initGameState() {
 	_lastHeartIndicatorFrame = 1;
 	_resting = false;
 	_flashlightOn = false;
-
-	if (isC64() && _playerC64Music)
-		_playerC64Music->startMusic();
-	else if ((isCPC() || isSpectrum()) && _playerAYMusic)
-		_playerAYMusic->startMusic();
-	else if (isDOS() && _playerOPLMusic)
-		_playerOPLMusic->startMusic();
-	else
-		playMusic("Total Eclipse Theme");
+	restartBackgroundMusic();
 }
 
 void EclipseEngine::loadAssets() {
@@ -237,6 +262,10 @@ bool EclipseEngine::triggerWinCondition() {
 }
 
 void EclipseEngine::endGame() {
+	bool enteringEndArea = (_gameStateControl == kFreescapeGameStateEnd && !_endGamePlayerEndArea);
+	if (enteringEndArea)
+		restartBackgroundMusic();
+
 	FreescapeEngine::endGame();
 
 	if (!_endGamePlayerEndArea)
