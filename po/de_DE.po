@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 13:52+0000\n"
+"POT-Creation-Date: 2026-04-03 16:12+0000\n"
 "PO-Revision-Date: 2026-03-28 08:34+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
@@ -1097,12 +1097,12 @@ msgstr "Runter"
 #: gui/gui-manager.cpp:186 engines/metaengine.cpp:149
 #: engines/awe/metaengine.cpp:59 engines/bagel/metaengine.cpp:68
 #: engines/crab/input/input.cpp:107 engines/crab/input/input.cpp:157
-#: engines/dragons/metaengine.cpp:170 engines/got/metaengine.cpp:72
-#: engines/griffon/metaengine.cpp:133 engines/grim/grim.cpp:491
-#: engines/grim/grim.cpp:573 engines/icb/icb.cpp:78 engines/icb/icb.cpp:162
-#: engines/scumm/metaengine.cpp:1020 engines/twine/metaengine.cpp:452
-#: engines/twine/metaengine.cpp:520 engines/twp/metaengine.cpp:152
-#: engines/ultima/ultima4/metaengine.cpp:46
+#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:324
+#: engines/got/metaengine.cpp:72 engines/griffon/metaengine.cpp:133
+#: engines/grim/grim.cpp:491 engines/grim/grim.cpp:573 engines/icb/icb.cpp:78
+#: engines/icb/icb.cpp:162 engines/scumm/metaengine.cpp:1020
+#: engines/twine/metaengine.cpp:452 engines/twine/metaengine.cpp:520
+#: engines/twp/metaengine.cpp:152 engines/ultima/ultima4/metaengine.cpp:46
 #: engines/ultima/ultima4/metaengine.cpp:141
 #: engines/ultima/ultima4/metaengine.cpp:151
 #: engines/wintermute/keymapper_tables.h:320
@@ -1117,12 +1117,12 @@ msgstr "Links"
 #: gui/gui-manager.cpp:192 engines/metaengine.cpp:155
 #: engines/awe/metaengine.cpp:60 engines/bagel/metaengine.cpp:69
 #: engines/crab/input/input.cpp:113 engines/crab/input/input.cpp:163
-#: engines/dragons/metaengine.cpp:176 engines/got/metaengine.cpp:73
-#: engines/griffon/metaengine.cpp:139 engines/grim/grim.cpp:496
-#: engines/grim/grim.cpp:578 engines/icb/icb.cpp:83 engines/icb/icb.cpp:167
-#: engines/scumm/metaengine.cpp:1027 engines/twine/metaengine.cpp:444
-#: engines/twine/metaengine.cpp:513 engines/twp/metaengine.cpp:153
-#: engines/ultima/ultima4/metaengine.cpp:47
+#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:326
+#: engines/got/metaengine.cpp:73 engines/griffon/metaengine.cpp:139
+#: engines/grim/grim.cpp:496 engines/grim/grim.cpp:578 engines/icb/icb.cpp:83
+#: engines/icb/icb.cpp:167 engines/scumm/metaengine.cpp:1027
+#: engines/twine/metaengine.cpp:444 engines/twine/metaengine.cpp:513
+#: engines/twp/metaengine.cpp:153 engines/ultima/ultima4/metaengine.cpp:47
 #: engines/ultima/ultima4/metaengine.cpp:142
 #: engines/ultima/ultima4/metaengine.cpp:152
 #: engines/wintermute/keymapper_tables.h:326
@@ -3635,7 +3635,7 @@ msgstr "Zur Spiele~l~iste"
 #: engines/dialogs.cpp:98 engines/engine.cpp:1048 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:858
 #: engines/groovie/script.cpp:2256 engines/groovie/script.cpp:2283
 #: engines/groovie/script.cpp:2324 engines/hugo/file.cpp:297
@@ -3656,7 +3656,7 @@ msgstr "Speichern:"
 #: engines/dialogs.cpp:98 engines/engine.cpp:1048 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:853
 #: engines/groovie/script.cpp:858 engines/groovie/script.cpp:2256
 #: engines/groovie/script.cpp:2283 engines/groovie/script.cpp:2324
@@ -6641,7 +6641,7 @@ msgstr ""
 #: engines/adl/metaengine.cpp:117 engines/agi/metaengine.cpp:220
 #: engines/cge/metaengine.cpp:56 engines/cine/metaengine.cpp:69
 #: engines/cruise/metaengine.cpp:45 engines/drascula/metaengine.cpp:55
-#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:193
+#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:205
 #: engines/gob/metaengine.cpp:57 engines/got/metaengine.cpp:48
 #: engines/griffon/metaengine.cpp:40 engines/hugo/metaengine.cpp:56
 #: engines/made/metaengine.cpp:51 engines/mm/metaengine.cpp:91
@@ -6828,7 +6828,7 @@ msgstr "Dieses Spiel kann keine Spielstände speichern"
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:870 engines/groovie/script.cpp:2243
 #: engines/groovie/script.cpp:2270 engines/groovie/script.cpp:2340
@@ -6848,7 +6848,7 @@ msgstr "Spiel laden:"
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:853 engines/groovie/script.cpp:870
 #: engines/groovie/script.cpp:2243 engines/groovie/script.cpp:2270
@@ -9308,15 +9308,15 @@ msgstr "[ zum Beenden beliebige Taste drücken ]"
 msgid "Untitled Savegame"
 msgstr "Unbenannter Spielstand"
 
-#: engines/glk/metaengine.cpp:194
+#: engines/glk/metaengine.cpp:206
 msgid "Use TTS to read the text"
 msgstr "Verwende Sprachausgabe, um den Text vorzulesen"
 
-#: engines/glk/metaengine.cpp:201
+#: engines/glk/metaengine.cpp:213
 msgid "Also read input text"
 msgstr "Eingegebenen Text ebenfalls vorlesen"
 
-#: engines/glk/metaengine.cpp:202
+#: engines/glk/metaengine.cpp:214
 msgid "Use TTS to read the input text"
 msgstr "Verwende Sprachausgabe, um den eingegebenen Text vorzulesen"
 
@@ -9365,6 +9365,41 @@ msgstr "Spielstand"
 #: engines/glk/comprehend/game.cpp:860
 msgid "Picture window toggled\n"
 msgstr "Bild-Fenster umgeschaltet\n"
+
+#: engines/glk/dialogs.cpp:269 engines/glk/dialogs.cpp:278
+#: engines/glk/dialogs.cpp:286
+msgid "Off"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:270 engines/mohawk/dialogs.cpp:366
+msgid "Normal"
+msgstr "Normal"
+
+#: engines/glk/dialogs.cpp:271
+msgid "Rabid"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:279
+msgid "Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:280
+msgid "En+Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:287
+msgid "Compress double spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:288
+msgid "Expand single spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:325
+#, fuzzy
+#| msgid "Center"
+msgid "Centre"
+msgstr "Zentriert"
 
 #: engines/glk/glulx/glulx.cpp:81
 msgid "This is too short to be a valid Glulx file."
@@ -10959,10 +10994,6 @@ msgstr ""
 #: engines/mohawk/dialogs.cpp:365
 msgid "Fastest"
 msgstr "Schnellste"
-
-#: engines/mohawk/dialogs.cpp:366
-msgid "Normal"
-msgstr "Normal"
 
 #: engines/mohawk/dialogs.cpp:367 engines/scumm/dialogs.cpp:1582
 msgid "Best"
