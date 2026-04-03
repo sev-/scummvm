@@ -49,7 +49,8 @@ namespace Colony {
 
 class ColonyMacDialog : public Graphics::MacDialog {
 public:
-	using Graphics::MacDialog::MacDialog;
+	ColonyMacDialog(Graphics::ManagedSurface *screen, Graphics::MacWindowManager *wm, int width, Graphics::MacText *mactext, int maxTextWidth, Graphics::MacDialogButtonArray *buttons, uint defaultButton)
+		: Graphics::MacDialog(screen, wm, width, mactext, maxTextWidth, buttons, defaultButton) {}
 
 	int runWithRenderer(Renderer *gfx) {
 		if (!_screen || !gfx)
