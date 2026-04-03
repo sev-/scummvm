@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 13:33+0000\n"
+"POT-Creation-Date: 2026-04-03 13:52+0000\n"
 "PO-Revision-Date: 2023-12-14 14:28+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Norwegian Nynorsk <https://translations.scummvm.org/projects/"
@@ -2922,30 +2922,30 @@ msgstr "Vel eit tema"
 msgid "Select a Theme"
 msgstr "Vel eit tema"
 
-#: gui/ThemeEngine.cpp:270
+#: gui/ThemeEngine.cpp:266
 msgid "Disabled GFX"
 msgstr "Deaktivert GFX"
 
-#: gui/ThemeEngine.cpp:270
+#: gui/ThemeEngine.cpp:266
 msgctxt "lowres"
 msgid "Disabled GFX"
 msgstr "Deaktivert GFX"
 
-#: gui/ThemeEngine.cpp:271
+#: gui/ThemeEngine.cpp:267
 #, fuzzy
 msgid "Standard renderer"
 msgstr "Standardteiknar"
 
-#: gui/ThemeEngine.cpp:271 engines/scumm/dialogs.cpp:1054
+#: gui/ThemeEngine.cpp:267 engines/scumm/dialogs.cpp:1054
 msgid "Standard"
 msgstr "Standard"
 
-#: gui/ThemeEngine.cpp:273
+#: gui/ThemeEngine.cpp:269
 #, fuzzy
 msgid "Antialiased renderer"
 msgstr "Kantutjevna teiknar"
 
-#: gui/ThemeEngine.cpp:273
+#: gui/ThemeEngine.cpp:269
 msgid "Antialiased"
 msgstr "Kantutjevna"
 
