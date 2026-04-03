@@ -1,6 +1,11 @@
 For a more comprehensive changelog of the latest experimental code, see:
         https://github.com/scummvm/scummvm/commits/
 
+#### 2026.3.0 (2026-06-XX)
+ General:
+   - Highlight clickable links in the URL with cursor change.
+
+
 #### 2026.2.0 "Railmonicon" (2026-03-28)
 
  New games:
