@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 07:36+0000\n"
+"POT-Creation-Date: 2026-04-03 13:33+0000\n"
 "PO-Revision-Date: 2026-03-26 12:16+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
@@ -4447,7 +4447,8 @@ msgstr "Capture d'écran impossible"
 msgid "Windowed mode"
 msgstr "Mode Fenêtre"
 
-#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
+#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/colony/metaengine.cpp:169
+#: engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
 msgstr "Basculer en plein écran"
 
@@ -6193,10 +6194,10 @@ msgstr "R2"
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
-#: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
-#: engines/toltecs/metaengine.cpp:252
+#: engines/alcachofa/metaengine.cpp:110 engines/colony/metaengine.cpp:180
+#: engines/grim/grim.cpp:545 engines/grim/grim.cpp:645
+#: engines/hdb/metaengine.cpp:264 engines/made/metaengine.cpp:186
+#: engines/phoenixvr/metaengine.cpp:101 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "Menu"
 
@@ -7948,19 +7949,19 @@ msgstr "Regarder en haut"
 msgid "Look down"
 msgstr "Regarder en bas"
 
-#: engines/buried/metaengine.cpp:204
+#: engines/buried/metaengine.cpp:204 engines/colony/metaengine.cpp:138
 msgid "Look left"
 msgstr "Regarder à gauche"
 
-#: engines/buried/metaengine.cpp:211
+#: engines/buried/metaengine.cpp:211 engines/colony/metaengine.cpp:143
 msgid "Look right"
 msgstr "Regarder à droite"
 
-#: engines/buried/metaengine.cpp:218 engines/dm/metaengine.cpp:196
-#: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
-#: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
-#: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/buried/metaengine.cpp:218 engines/colony/metaengine.cpp:100
+#: engines/dm/metaengine.cpp:196 engines/kyra/engine/eobcommon.cpp:371
+#: engines/kyra/engine/lol.cpp:510 engines/mohawk/riven.cpp:881
+#: engines/titanic/metaengine.cpp:336 engines/titanic/metaengine.cpp:378
+#: engines/twine/metaengine.cpp:332 engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -8269,6 +8270,89 @@ msgstr ""
 "redémarrer Operation Stealth depuis le début en utilisant de nouvelles "
 "sauvegardes."
 
+#: engines/colony/metaengine.cpp:46 engines/myst3/metaengine.cpp:40
+msgid "Widescreen mod"
+msgstr "Mode Ecran large"
+
+#: engines/colony/metaengine.cpp:47 engines/myst3/metaengine.cpp:41
+msgid "Enable widescreen rendering in fullscreen mode."
+msgstr "Active le rendu écran large en mode plein écran."
+
+#: engines/colony/metaengine.cpp:107
+msgid "Move backward"
+msgstr "Bouger en arrière"
+
+#: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
+#: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
+#: engines/mm/mm1/metaengine.cpp:99
+msgid "Strafe left"
+msgstr "Esquive gauche"
+
+#: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
+#: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
+#: engines/mm/mm1/metaengine.cpp:100
+msgid "Strafe right"
+msgstr "Esquive droite"
+
+#: engines/colony/metaengine.cpp:128
+#: engines/freescape/games/castle/castle.cpp:488
+#: engines/freescape/games/dark/dark.cpp:252
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:324
+msgid "Rotate left"
+msgstr "Tourner à gauche"
+
+#: engines/colony/metaengine.cpp:133
+#: engines/freescape/games/castle/castle.cpp:493
+#: engines/freescape/games/dark/dark.cpp:257
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:329
+msgid "Rotate right"
+msgstr "Tourner à droite"
+
+#: engines/colony/metaengine.cpp:148
+#, fuzzy
+#| msgid "Look down"
+msgid "Look behind"
+msgstr "Regarder en bas"
+
+#: engines/colony/metaengine.cpp:153
+#, fuzzy
+#| msgid "Toggle mute"
+msgid "Toggle mouselook"
+msgstr "Act. / Désact. muet"
+
+#: engines/colony/metaengine.cpp:159
+#, fuzzy
+#| msgid "Toggle sound"
+msgid "Toggle dashboard"
+msgstr "Act. / Désact. le son"
+
+#: engines/colony/metaengine.cpp:164
+#, fuzzy
+#| msgid "Toggle frame by frame"
+msgid "Toggle wireframe"
+msgstr "Act. / Désact. image par image"
+
+#: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
+#: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
+#: engines/sherlock/metaengine.cpp:872 engines/teenagent/metaengine.cpp:232
+#: engines/toon/metaengine.cpp:98 engines/voyeur/metaengine.cpp:235
+msgid "Skip intro"
+msgstr "Passer l'intro"
+
+#: engines/colony/metaengine.cpp:186 engines/ultima/ultima8/metaengine.cpp:89
+msgid "Fire weapon"
+msgstr "Tirer avec l'arme"
+
+#: engines/colony/savegame.cpp:290
+msgid "Saving is only available in first-person view."
+msgstr ""
+
+#: engines/colony/savegame.cpp:299
+msgid "Loading is only available in first-person view."
+msgstr ""
+
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
 msgstr "Parler / Interagir"
@@ -8540,11 +8624,6 @@ msgstr "Act. / Désact. l'inventaire du champion 3"
 msgid "Toggle champion 4 inventory"
 msgstr "Act. / Désact. l'inventaire du champion 4"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
-#: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-msgid "Strafe left"
-msgstr "Esquive gauche"
-
 #: engines/dm/metaengine.cpp:226 engines/kyra/engine/eobcommon.cpp:372
 #: engines/kyra/engine/lol.cpp:511 engines/mohawk/riven.cpp:895
 #: engines/titanic/metaengine.cpp:343 engines/titanic/metaengine.cpp:384
@@ -8553,11 +8632,6 @@ msgstr "Esquive gauche"
 #: engines/wintermute/keymapper_tables.h:2238
 msgid "Move backwards"
 msgstr "Bouger en arrière"
-
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
-#: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-msgid "Strafe right"
-msgstr "Esquive droite"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
@@ -9143,20 +9217,6 @@ msgstr "Sélectionner la princesse"
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "Act. / Désact. le son"
-
-#: engines/freescape/games/castle/castle.cpp:488
-#: engines/freescape/games/dark/dark.cpp:252
-#: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:324
-msgid "Rotate left"
-msgstr "Tourner à gauche"
-
-#: engines/freescape/games/castle/castle.cpp:493
-#: engines/freescape/games/dark/dark.cpp:257
-#: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:329
-msgid "Rotate right"
-msgstr "Tourner à droite"
 
 #: engines/freescape/games/castle/castle.cpp:509
 msgid "Crawl"
@@ -9870,13 +9930,6 @@ msgstr "Tir primaire"
 #: engines/hypno/metaengine.cpp:140
 msgid "Secondary shoot"
 msgstr "Tir secondaire"
-
-#: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
-#: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
-#: engines/teenagent/metaengine.cpp:232 engines/toon/metaengine.cpp:98
-#: engines/voyeur/metaengine.cpp:235
-msgid "Skip intro"
-msgstr "Passer l'intro"
 
 #: engines/hypno/metaengine.cpp:167
 msgid "Exit menu keymappings"
@@ -11221,14 +11274,6 @@ msgstr "Impossible de trouver le fichier de données du moteur '%s'"
 #: engines/myst3/detection.cpp:220 engines/myst3/detection.cpp:234
 msgid "PS2 version is not yet supported"
 msgstr "La version PS2 n'est pas encore prise en charge"
-
-#: engines/myst3/metaengine.cpp:40
-msgid "Widescreen mod"
-msgstr "Mode Ecran large"
-
-#: engines/myst3/metaengine.cpp:41
-msgid "Enable widescreen rendering in fullscreen mode."
-msgstr "Active le rendu écran large en mode plein écran."
 
 #: engines/myst3/myst3.cpp:412
 #, c-format
@@ -15936,10 +15981,6 @@ msgstr "Utiliser la sélection"
 msgid "Grab items"
 msgstr "Ramasser les items"
 
-#: engines/ultima/ultima8/metaengine.cpp:89
-msgid "Fire weapon"
-msgstr "Tirer avec l'arme"
-
 #: engines/ultima/ultima8/metaengine.cpp:90
 msgid "Center screen on Silencer"
 msgstr "Centrer l'écran sur le Silencer"
@@ -16896,9 +16937,6 @@ msgstr ""
 
 #~ msgid "Face Forward"
 #~ msgstr "Marcher vers l'avant"
-
-#~ msgid "Move backward"
-#~ msgstr "Bouger en arrière"
 
 #~ msgid "Yes/No keymapping"
 #~ msgstr "Conf. des touches Oui/Non"

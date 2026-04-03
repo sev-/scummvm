@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 07:36+0000\n"
+"POT-Creation-Date: 2026-04-03 13:33+0000\n"
 "PO-Revision-Date: 2026-04-01 20:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -4328,7 +4328,8 @@ msgstr "스크린샷을 저장할 수 없음"
 msgid "Windowed mode"
 msgstr "창 모드"
 
-#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
+#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/colony/metaengine.cpp:169
+#: engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
 msgstr "전체화면 전환"
 
@@ -6026,10 +6027,10 @@ msgstr "R2 버튼"
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
-#: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
-#: engines/toltecs/metaengine.cpp:252
+#: engines/alcachofa/metaengine.cpp:110 engines/colony/metaengine.cpp:180
+#: engines/grim/grim.cpp:545 engines/grim/grim.cpp:645
+#: engines/hdb/metaengine.cpp:264 engines/made/metaengine.cpp:186
+#: engines/phoenixvr/metaengine.cpp:101 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "메뉴"
 
@@ -7746,19 +7747,19 @@ msgstr "위를 보기"
 msgid "Look down"
 msgstr "아래를 보기"
 
-#: engines/buried/metaengine.cpp:204
+#: engines/buried/metaengine.cpp:204 engines/colony/metaengine.cpp:138
 msgid "Look left"
 msgstr "왼쪽 보기"
 
-#: engines/buried/metaengine.cpp:211
+#: engines/buried/metaengine.cpp:211 engines/colony/metaengine.cpp:143
 msgid "Look right"
 msgstr "오른쪽 보기"
 
-#: engines/buried/metaengine.cpp:218 engines/dm/metaengine.cpp:196
-#: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
-#: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
-#: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/buried/metaengine.cpp:218 engines/colony/metaengine.cpp:100
+#: engines/dm/metaengine.cpp:196 engines/kyra/engine/eobcommon.cpp:371
+#: engines/kyra/engine/lol.cpp:510 engines/mohawk/riven.cpp:881
+#: engines/titanic/metaengine.cpp:336 engines/titanic/metaengine.cpp:378
+#: engines/twine/metaengine.cpp:332 engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -8065,6 +8066,89 @@ msgstr ""
 "모든 부분이 잘못 동작할 것입니다. 새 저장 게임을 사용하여 처음부터 Operation "
 "Stealth를 시작하는 것을 고려해 보세요."
 
+#: engines/colony/metaengine.cpp:46 engines/myst3/metaengine.cpp:40
+msgid "Widescreen mod"
+msgstr "와이드 스크린 개조"
+
+#: engines/colony/metaengine.cpp:47 engines/myst3/metaengine.cpp:41
+msgid "Enable widescreen rendering in fullscreen mode."
+msgstr "전체 화면 모드에서 와이드 스크린 렌더링을 활성화합니다."
+
+#: engines/colony/metaengine.cpp:107
+msgid "Move backward"
+msgstr "뒤로 이동"
+
+#: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
+#: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
+#: engines/mm/mm1/metaengine.cpp:99
+msgid "Strafe left"
+msgstr "왼쪽 폭격"
+
+#: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
+#: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
+#: engines/mm/mm1/metaengine.cpp:100
+msgid "Strafe right"
+msgstr "오른쪽 폭격"
+
+#: engines/colony/metaengine.cpp:128
+#: engines/freescape/games/castle/castle.cpp:488
+#: engines/freescape/games/dark/dark.cpp:252
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:324
+msgid "Rotate left"
+msgstr "왼쪽으로 회전"
+
+#: engines/colony/metaengine.cpp:133
+#: engines/freescape/games/castle/castle.cpp:493
+#: engines/freescape/games/dark/dark.cpp:257
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:329
+msgid "Rotate right"
+msgstr "오른쪽으로 회전"
+
+#: engines/colony/metaengine.cpp:148
+#, fuzzy
+#| msgid "Look down"
+msgid "Look behind"
+msgstr "아래를 보기"
+
+#: engines/colony/metaengine.cpp:153
+#, fuzzy
+#| msgid "Toggle mute"
+msgid "Toggle mouselook"
+msgstr "음소거 전환"
+
+#: engines/colony/metaengine.cpp:159
+#, fuzzy
+#| msgid "Toggle sound"
+msgid "Toggle dashboard"
+msgstr "사운드 전환"
+
+#: engines/colony/metaengine.cpp:164
+#, fuzzy
+#| msgid "Toggle frame by frame"
+msgid "Toggle wireframe"
+msgstr "프레임별로 전환"
+
+#: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
+#: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
+#: engines/sherlock/metaengine.cpp:872 engines/teenagent/metaengine.cpp:232
+#: engines/toon/metaengine.cpp:98 engines/voyeur/metaengine.cpp:235
+msgid "Skip intro"
+msgstr "인트로 건너뛰기"
+
+#: engines/colony/metaengine.cpp:186 engines/ultima/ultima8/metaengine.cpp:89
+msgid "Fire weapon"
+msgstr "무기 발사"
+
+#: engines/colony/savegame.cpp:290
+msgid "Saving is only available in first-person view."
+msgstr ""
+
+#: engines/colony/savegame.cpp:299
+msgid "Loading is only available in first-person view."
+msgstr ""
+
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
 msgstr "대화 / 소통"
@@ -8329,11 +8413,6 @@ msgstr "챔피언 3 인벤토리 전환"
 msgid "Toggle champion 4 inventory"
 msgstr "챔피언 4 인벤토리 전환"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
-#: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-msgid "Strafe left"
-msgstr "왼쪽 폭격"
-
 #: engines/dm/metaengine.cpp:226 engines/kyra/engine/eobcommon.cpp:372
 #: engines/kyra/engine/lol.cpp:511 engines/mohawk/riven.cpp:895
 #: engines/titanic/metaengine.cpp:343 engines/titanic/metaengine.cpp:384
@@ -8342,11 +8421,6 @@ msgstr "왼쪽 폭격"
 #: engines/wintermute/keymapper_tables.h:2238
 msgid "Move backwards"
 msgstr "뒤로 이동"
-
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
-#: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-msgid "Strafe right"
-msgstr "오른쪽 폭격"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
@@ -8924,20 +8998,6 @@ msgstr "공주 선택"
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "사운드 전환"
-
-#: engines/freescape/games/castle/castle.cpp:488
-#: engines/freescape/games/dark/dark.cpp:252
-#: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:324
-msgid "Rotate left"
-msgstr "왼쪽으로 회전"
-
-#: engines/freescape/games/castle/castle.cpp:493
-#: engines/freescape/games/dark/dark.cpp:257
-#: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:329
-msgid "Rotate right"
-msgstr "오른쪽으로 회전"
 
 #: engines/freescape/games/castle/castle.cpp:509
 msgid "Crawl"
@@ -9629,13 +9689,6 @@ msgstr "1차 촬영"
 #: engines/hypno/metaengine.cpp:140
 msgid "Secondary shoot"
 msgstr "2차 촬영"
-
-#: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
-#: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
-#: engines/teenagent/metaengine.cpp:232 engines/toon/metaengine.cpp:98
-#: engines/voyeur/metaengine.cpp:235
-msgid "Skip intro"
-msgstr "인트로 건너뛰기"
 
 #: engines/hypno/metaengine.cpp:167
 msgid "Exit menu keymappings"
@@ -10933,14 +10986,6 @@ msgstr "'%s' 엔진 데이터 파일을 찾을 수 없음"
 #: engines/myst3/detection.cpp:220 engines/myst3/detection.cpp:234
 msgid "PS2 version is not yet supported"
 msgstr "PS2 버전은 아직 지원되지 않았음"
-
-#: engines/myst3/metaengine.cpp:40
-msgid "Widescreen mod"
-msgstr "와이드 스크린 개조"
-
-#: engines/myst3/metaengine.cpp:41
-msgid "Enable widescreen rendering in fullscreen mode."
-msgstr "전체 화면 모드에서 와이드 스크린 렌더링을 활성화합니다."
 
 #: engines/myst3/myst3.cpp:412
 #, c-format
@@ -15505,10 +15550,6 @@ msgstr "선택 사용"
 msgid "Grab items"
 msgstr "아이템 획득"
 
-#: engines/ultima/ultima8/metaengine.cpp:89
-msgid "Fire weapon"
-msgstr "무기 발사"
-
 #: engines/ultima/ultima8/metaengine.cpp:90
 msgid "Center screen on Silencer"
 msgstr "소음기의 중앙 화면"
@@ -16442,9 +16483,6 @@ msgstr ""
 
 #~ msgid "Face Forward"
 #~ msgstr "얼굴 앞으로"
-
-#~ msgid "Move backward"
-#~ msgstr "뒤로 이동"
 
 #~ msgid "Yes/No keymapping"
 #~ msgstr "예/아니요 키맵핑"

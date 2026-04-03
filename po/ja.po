@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 07:36+0000\n"
+"POT-Creation-Date: 2026-04-03 13:33+0000\n"
 "PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
@@ -4289,7 +4289,8 @@ msgstr "スクリーンショットを保存できませんでした"
 msgid "Windowed mode"
 msgstr "ウインドーモード"
 
-#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
+#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/colony/metaengine.cpp:169
+#: engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
 msgstr "全面モードの切替"
 
@@ -6080,10 +6081,10 @@ msgstr "R2"
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
-#: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
-#: engines/toltecs/metaengine.cpp:252
+#: engines/alcachofa/metaengine.cpp:110 engines/colony/metaengine.cpp:180
+#: engines/grim/grim.cpp:545 engines/grim/grim.cpp:645
+#: engines/hdb/metaengine.cpp:264 engines/made/metaengine.cpp:186
+#: engines/phoenixvr/metaengine.cpp:101 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "メニュー"
 
@@ -7869,23 +7870,23 @@ msgstr "上を見る"
 msgid "Look down"
 msgstr "下を見る"
 
-#: engines/buried/metaengine.cpp:204
+#: engines/buried/metaengine.cpp:204 engines/colony/metaengine.cpp:138
 #, fuzzy
 #| msgid "Look at"
 msgid "Look left"
 msgstr "見る"
 
-#: engines/buried/metaengine.cpp:211
+#: engines/buried/metaengine.cpp:211 engines/colony/metaengine.cpp:143
 #, fuzzy
 #| msgid "Look at"
 msgid "Look right"
 msgstr "見る"
 
-#: engines/buried/metaengine.cpp:218 engines/dm/metaengine.cpp:196
-#: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
-#: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
-#: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/buried/metaengine.cpp:218 engines/colony/metaengine.cpp:100
+#: engines/dm/metaengine.cpp:196 engines/kyra/engine/eobcommon.cpp:371
+#: engines/kyra/engine/lol.cpp:510 engines/mohawk/riven.cpp:881
+#: engines/titanic/metaengine.cpp:336 engines/titanic/metaengine.cpp:378
+#: engines/twine/metaengine.cpp:332 engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -8233,6 +8234,103 @@ msgstr ""
 "自体も壊れるおそれがあります。新しいセーブからOperation Stealthを開始する事も"
 "検討してください。"
 
+#: engines/colony/metaengine.cpp:46 engines/myst3/metaengine.cpp:40
+msgid "Widescreen mod"
+msgstr "ワイドスクリーン対応MOD"
+
+#: engines/colony/metaengine.cpp:47 engines/myst3/metaengine.cpp:41
+msgid "Enable widescreen rendering in fullscreen mode."
+msgstr "全画面モードでワイドスクリーンレンダリングを有効にします。"
+
+#: engines/colony/metaengine.cpp:107
+#, fuzzy
+#| msgid "Move backwards"
+msgid "Move backward"
+msgstr "後退"
+
+#: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
+#: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
+#: engines/mm/mm1/metaengine.cpp:99
+#, fuzzy
+#| msgid "Strafe Left"
+msgid "Strafe left"
+msgstr "左ステップ"
+
+#: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
+#: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
+#: engines/mm/mm1/metaengine.cpp:100
+#, fuzzy
+#| msgid "Strafe Right"
+msgid "Strafe right"
+msgstr "右ステップ"
+
+#: engines/colony/metaengine.cpp:128
+#: engines/freescape/games/castle/castle.cpp:488
+#: engines/freescape/games/dark/dark.cpp:252
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:324
+#, fuzzy
+#| msgid "Rotate Left"
+msgid "Rotate left"
+msgstr "左回転"
+
+#: engines/colony/metaengine.cpp:133
+#: engines/freescape/games/castle/castle.cpp:493
+#: engines/freescape/games/dark/dark.cpp:257
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:329
+#, fuzzy
+#| msgid "Rotate Right"
+msgid "Rotate right"
+msgstr "右回転"
+
+#: engines/colony/metaengine.cpp:148
+#, fuzzy
+#| msgid "Look down"
+msgid "Look behind"
+msgstr "下を見る"
+
+#: engines/colony/metaengine.cpp:153
+#, fuzzy
+#| msgid "Toggle mute"
+msgid "Toggle mouselook"
+msgstr "消音の切替"
+
+#: engines/colony/metaengine.cpp:159
+#, fuzzy
+#| msgid "Toggle mute"
+msgid "Toggle dashboard"
+msgstr "消音の切替"
+
+#: engines/colony/metaengine.cpp:164
+#, fuzzy
+#| msgid "Toggle fast mode"
+msgid "Toggle wireframe"
+msgstr "高速モードの切り替え"
+
+#: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
+#: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
+#: engines/sherlock/metaengine.cpp:872 engines/teenagent/metaengine.cpp:232
+#: engines/toon/metaengine.cpp:98 engines/voyeur/metaengine.cpp:235
+#, fuzzy
+#| msgid "Skip line"
+msgid "Skip intro"
+msgstr "行単位でスキップ"
+
+#: engines/colony/metaengine.cpp:186 engines/ultima/ultima8/metaengine.cpp:89
+#, fuzzy
+#| msgid "Next action"
+msgid "Fire weapon"
+msgstr "次の行動"
+
+#: engines/colony/savegame.cpp:290
+msgid "Saving is only available in first-person view."
+msgstr ""
+
+#: engines/colony/savegame.cpp:299
+msgid "Loading is only available in first-person view."
+msgstr ""
+
 #: engines/crab/input/input.cpp:119
 #, fuzzy
 #| msgid "Talk/Interact"
@@ -8521,13 +8619,6 @@ msgstr "インベントリー/IQポイント表示の切り替え"
 msgid "Toggle champion 4 inventory"
 msgstr "インベントリー/IQポイント表示の切り替え"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
-#: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-#, fuzzy
-#| msgid "Strafe Left"
-msgid "Strafe left"
-msgstr "左ステップ"
-
 #: engines/dm/metaengine.cpp:226 engines/kyra/engine/eobcommon.cpp:372
 #: engines/kyra/engine/lol.cpp:511 engines/mohawk/riven.cpp:895
 #: engines/titanic/metaengine.cpp:343 engines/titanic/metaengine.cpp:384
@@ -8538,13 +8629,6 @@ msgstr "左ステップ"
 #| msgid "Move backwards"
 msgid "Move backwards"
 msgstr "後退"
-
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
-#: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-#, fuzzy
-#| msgid "Strafe Right"
-msgid "Strafe right"
-msgstr "右ステップ"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
@@ -9276,24 +9360,6 @@ msgstr "Princessを選択"
 #| msgid "Toggle mute"
 msgid "Toggle sound"
 msgstr "消音の切替"
-
-#: engines/freescape/games/castle/castle.cpp:488
-#: engines/freescape/games/dark/dark.cpp:252
-#: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:324
-#, fuzzy
-#| msgid "Rotate Left"
-msgid "Rotate left"
-msgstr "左回転"
-
-#: engines/freescape/games/castle/castle.cpp:493
-#: engines/freescape/games/dark/dark.cpp:257
-#: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:329
-#, fuzzy
-#| msgid "Rotate Right"
-msgid "Rotate right"
-msgstr "右回転"
 
 #: engines/freescape/games/castle/castle.cpp:509
 msgid "Crawl"
@@ -10076,15 +10142,6 @@ msgstr "1番目の射撃"
 #| msgid "Seconds"
 msgid "Secondary shoot"
 msgstr "秒"
-
-#: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
-#: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
-#: engines/teenagent/metaengine.cpp:232 engines/toon/metaengine.cpp:98
-#: engines/voyeur/metaengine.cpp:235
-#, fuzzy
-#| msgid "Skip line"
-msgid "Skip intro"
-msgstr "行単位でスキップ"
 
 #: engines/hypno/metaengine.cpp:167
 #, fuzzy
@@ -11516,14 +11573,6 @@ msgstr "エンジンデータファイル%sが見つかりません"
 #: engines/myst3/detection.cpp:220 engines/myst3/detection.cpp:234
 msgid "PS2 version is not yet supported"
 msgstr "PS2版はまだサポートされていません"
-
-#: engines/myst3/metaengine.cpp:40
-msgid "Widescreen mod"
-msgstr "ワイドスクリーン対応MOD"
-
-#: engines/myst3/metaengine.cpp:41
-msgid "Enable widescreen rendering in fullscreen mode."
-msgstr "全画面モードでワイドスクリーンレンダリングを有効にします。"
 
 #: engines/myst3/myst3.cpp:412
 #, c-format
@@ -16763,12 +16812,6 @@ msgstr "次の行動"
 msgid "Grab items"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:89
-#, fuzzy
-#| msgid "Next action"
-msgid "Fire weapon"
-msgstr "次の行動"
-
 #: engines/ultima/ultima8/metaengine.cpp:90
 #, fuzzy
 #| msgid "Camera moves with Silencer"
@@ -17755,11 +17798,6 @@ msgstr ""
 #~| msgid "Move Forward"
 #~ msgid "Face Forward"
 #~ msgstr "前に進む"
-
-#, fuzzy
-#~| msgid "Move backwards"
-#~ msgid "Move backward"
-#~ msgstr "後退"
 
 #~ msgid "Yes/No keymapping"
 #~ msgstr "Yes / Noキーマップ"

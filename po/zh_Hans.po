@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 07:36+0000\n"
+"POT-Creation-Date: 2026-04-03 13:33+0000\n"
 "PO-Revision-Date: 2024-12-01 22:18+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -4330,7 +4330,8 @@ msgstr "无法保存截图"
 msgid "Windowed mode"
 msgstr "窗口模式"
 
-#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
+#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/colony/metaengine.cpp:169
+#: engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
 msgstr "切换全屏"
 
@@ -6185,10 +6186,10 @@ msgstr "R2"
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
-#: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
-#: engines/toltecs/metaengine.cpp:252
+#: engines/alcachofa/metaengine.cpp:110 engines/colony/metaengine.cpp:180
+#: engines/grim/grim.cpp:545 engines/grim/grim.cpp:645
+#: engines/hdb/metaengine.cpp:264 engines/made/metaengine.cpp:186
+#: engines/phoenixvr/metaengine.cpp:101 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "菜单"
 
@@ -7952,23 +7953,23 @@ msgstr "向上看"
 msgid "Look down"
 msgstr "向下看"
 
-#: engines/buried/metaengine.cpp:204
+#: engines/buried/metaengine.cpp:204 engines/colony/metaengine.cpp:138
 #, fuzzy
 #| msgid "Look at"
 msgid "Look left"
 msgstr "观察"
 
-#: engines/buried/metaengine.cpp:211
+#: engines/buried/metaengine.cpp:211 engines/colony/metaengine.cpp:143
 #, fuzzy
 #| msgid "Look at"
 msgid "Look right"
 msgstr "观察"
 
-#: engines/buried/metaengine.cpp:218 engines/dm/metaengine.cpp:196
-#: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
-#: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
-#: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/buried/metaengine.cpp:218 engines/colony/metaengine.cpp:100
+#: engines/dm/metaengine.cpp:196 engines/kyra/engine/eobcommon.cpp:371
+#: engines/kyra/engine/lol.cpp:510 engines/mohawk/riven.cpp:881
+#: engines/titanic/metaengine.cpp:336 engines/titanic/metaengine.cpp:378
+#: engines/twine/metaengine.cpp:332 engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -8310,6 +8311,101 @@ msgstr ""
 "警告：正加载的存档使用了临时的损坏格式。游戏内容会出现问题。请考虑使用新存档"
 "从头开始启动《隐秘行动》。"
 
+#: engines/colony/metaengine.cpp:46 engines/myst3/metaengine.cpp:40
+msgid "Widescreen mod"
+msgstr "宽屏模组"
+
+#: engines/colony/metaengine.cpp:47 engines/myst3/metaengine.cpp:41
+msgid "Enable widescreen rendering in fullscreen mode."
+msgstr "启用全屏模式的宽屏渲染。"
+
+#: engines/colony/metaengine.cpp:107
+#, fuzzy
+#| msgid "Move backwards"
+msgid "Move backward"
+msgstr "向后移动"
+
+#: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
+#: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
+#: engines/mm/mm1/metaengine.cpp:99
+#, fuzzy
+#| msgid "Strafe Left"
+msgid "Strafe left"
+msgstr "向左冲"
+
+#: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
+#: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
+#: engines/mm/mm1/metaengine.cpp:100
+#, fuzzy
+#| msgid "Strafe Right"
+msgid "Strafe right"
+msgstr "向右冲"
+
+#: engines/colony/metaengine.cpp:128
+#: engines/freescape/games/castle/castle.cpp:488
+#: engines/freescape/games/dark/dark.cpp:252
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:324
+#, fuzzy
+#| msgid "Rotate Left"
+msgid "Rotate left"
+msgstr "向左转"
+
+#: engines/colony/metaengine.cpp:133
+#: engines/freescape/games/castle/castle.cpp:493
+#: engines/freescape/games/dark/dark.cpp:257
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:329
+#, fuzzy
+#| msgid "Rotate Right"
+msgid "Rotate right"
+msgstr "向右转"
+
+#: engines/colony/metaengine.cpp:148
+#, fuzzy
+#| msgid "Look down"
+msgid "Look behind"
+msgstr "向下看"
+
+#: engines/colony/metaengine.cpp:153
+#, fuzzy
+#| msgid "Toggle mute"
+msgid "Toggle mouselook"
+msgstr "开关静音"
+
+#: engines/colony/metaengine.cpp:159
+#, fuzzy
+#| msgid "Toggle sound"
+msgid "Toggle dashboard"
+msgstr "开关声音"
+
+#: engines/colony/metaengine.cpp:164
+#, fuzzy
+#| msgid "Toggle panel style"
+msgid "Toggle wireframe"
+msgstr "切换面板样式"
+
+#: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
+#: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
+#: engines/sherlock/metaengine.cpp:872 engines/teenagent/metaengine.cpp:232
+#: engines/toon/metaengine.cpp:98 engines/voyeur/metaengine.cpp:235
+msgid "Skip intro"
+msgstr "跳过入场动画"
+
+#: engines/colony/metaengine.cpp:186 engines/ultima/ultima8/metaengine.cpp:89
+#, fuzzy
+#| msgid "Next action"
+msgid "Fire weapon"
+msgstr "下一个操作"
+
+#: engines/colony/savegame.cpp:290
+msgid "Saving is only available in first-person view."
+msgstr ""
+
+#: engines/colony/savegame.cpp:299
+msgid "Loading is only available in first-person view."
+msgstr ""
+
 #: engines/crab/input/input.cpp:119
 #, fuzzy
 #| msgid "Talk/Interact"
@@ -8594,13 +8690,6 @@ msgstr "开关物品栏/智商显示"
 msgid "Toggle champion 4 inventory"
 msgstr "开关物品栏/智商显示"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
-#: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-#, fuzzy
-#| msgid "Strafe Left"
-msgid "Strafe left"
-msgstr "向左冲"
-
 #: engines/dm/metaengine.cpp:226 engines/kyra/engine/eobcommon.cpp:372
 #: engines/kyra/engine/lol.cpp:511 engines/mohawk/riven.cpp:895
 #: engines/titanic/metaengine.cpp:343 engines/titanic/metaengine.cpp:384
@@ -8611,13 +8700,6 @@ msgstr "向左冲"
 #| msgid "Move backwards"
 msgid "Move backwards"
 msgstr "向后移动"
-
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
-#: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-#, fuzzy
-#| msgid "Strafe Right"
-msgid "Strafe right"
-msgstr "向右冲"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
@@ -9335,24 +9417,6 @@ msgstr "选择公主"
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "开关声音"
-
-#: engines/freescape/games/castle/castle.cpp:488
-#: engines/freescape/games/dark/dark.cpp:252
-#: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:324
-#, fuzzy
-#| msgid "Rotate Left"
-msgid "Rotate left"
-msgstr "向左转"
-
-#: engines/freescape/games/castle/castle.cpp:493
-#: engines/freescape/games/dark/dark.cpp:257
-#: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:329
-#, fuzzy
-#| msgid "Rotate Right"
-msgid "Rotate right"
-msgstr "向右转"
 
 #: engines/freescape/games/castle/castle.cpp:509
 msgid "Crawl"
@@ -10102,13 +10166,6 @@ msgstr ""
 #: engines/hypno/metaengine.cpp:140
 msgid "Secondary shoot"
 msgstr ""
-
-#: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
-#: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
-#: engines/teenagent/metaengine.cpp:232 engines/toon/metaengine.cpp:98
-#: engines/voyeur/metaengine.cpp:235
-msgid "Skip intro"
-msgstr "跳过入场动画"
 
 #: engines/hypno/metaengine.cpp:167
 #, fuzzy
@@ -11464,14 +11521,6 @@ msgstr "无法定位“%s”引擎数据文件"
 #: engines/myst3/detection.cpp:220 engines/myst3/detection.cpp:234
 msgid "PS2 version is not yet supported"
 msgstr "尚未支持 PS2 版本"
-
-#: engines/myst3/metaengine.cpp:40
-msgid "Widescreen mod"
-msgstr "宽屏模组"
-
-#: engines/myst3/metaengine.cpp:41
-msgid "Enable widescreen rendering in fullscreen mode."
-msgstr "启用全屏模式的宽屏渲染。"
 
 #: engines/myst3/myst3.cpp:412
 #, c-format
@@ -16591,12 +16640,6 @@ msgstr "使用屏幕："
 msgid "Grab items"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:89
-#, fuzzy
-#| msgid "Next action"
-msgid "Fire weapon"
-msgstr "下一个操作"
-
 #: engines/ultima/ultima8/metaengine.cpp:90
 #, fuzzy
 #| msgid "Camera moves with Silencer"
@@ -17582,11 +17625,6 @@ msgstr ""
 
 #~ msgid "Face Forward"
 #~ msgstr "面向前"
-
-#, fuzzy
-#~| msgid "Move backwards"
-#~ msgid "Move backward"
-#~ msgstr "向后移动"
 
 #~ msgid "Yes/No keymapping"
 #~ msgstr "是/否按键绑定"

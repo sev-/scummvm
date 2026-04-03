@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-03 07:36+0000\n"
+"POT-Creation-Date: 2026-04-03 13:33+0000\n"
 "PO-Revision-Date: 2023-09-07 17:04+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Danish <https://translations.scummvm.org/projects/scummvm/"
@@ -4374,7 +4374,8 @@ msgstr "Jævn bevægelse til"
 msgid "Windowed mode"
 msgstr "Vinduestilstand"
 
-#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/scumm/help.cpp:88
+#: backends/graphics/sdl/sdl-graphics.cpp:492 engines/colony/metaengine.cpp:169
+#: engines/scumm/help.cpp:88
 msgid "Toggle fullscreen"
 msgstr "Fuldskærm til/fra"
 
@@ -5876,10 +5877,10 @@ msgstr ""
 #. I18N: Hardware key
 #: backends/platform/sdl/miyoo/miyoo.cpp:83
 #: backends/platform/sdl/miyoo/miyoo.cpp:114
-#: engines/alcachofa/metaengine.cpp:110 engines/grim/grim.cpp:545
-#: engines/grim/grim.cpp:645 engines/hdb/metaengine.cpp:264
-#: engines/made/metaengine.cpp:186 engines/phoenixvr/metaengine.cpp:101
-#: engines/toltecs/metaengine.cpp:252
+#: engines/alcachofa/metaengine.cpp:110 engines/colony/metaengine.cpp:180
+#: engines/grim/grim.cpp:545 engines/grim/grim.cpp:645
+#: engines/hdb/metaengine.cpp:264 engines/made/metaengine.cpp:186
+#: engines/phoenixvr/metaengine.cpp:101 engines/toltecs/metaengine.cpp:252
 msgid "Menu"
 msgstr "Menu"
 
@@ -7685,23 +7686,23 @@ msgstr "Se"
 msgid "Look down"
 msgstr "Forstør"
 
-#: engines/buried/metaengine.cpp:204
+#: engines/buried/metaengine.cpp:204 engines/colony/metaengine.cpp:138
 #, fuzzy
 #| msgid "Look at"
 msgid "Look left"
 msgstr "Lur på"
 
-#: engines/buried/metaengine.cpp:211
+#: engines/buried/metaengine.cpp:211 engines/colony/metaengine.cpp:143
 #, fuzzy
 #| msgid "Look at"
 msgid "Look right"
 msgstr "Lur på"
 
-#: engines/buried/metaengine.cpp:218 engines/dm/metaengine.cpp:196
-#: engines/kyra/engine/eobcommon.cpp:371 engines/kyra/engine/lol.cpp:510
-#: engines/mohawk/riven.cpp:881 engines/titanic/metaengine.cpp:336
-#: engines/titanic/metaengine.cpp:378 engines/twine/metaengine.cpp:332
-#: engines/ultima/ultima0/metaengine.cpp:78
+#: engines/buried/metaengine.cpp:218 engines/colony/metaengine.cpp:100
+#: engines/dm/metaengine.cpp:196 engines/kyra/engine/eobcommon.cpp:371
+#: engines/kyra/engine/lol.cpp:510 engines/mohawk/riven.cpp:881
+#: engines/titanic/metaengine.cpp:336 engines/titanic/metaengine.cpp:378
+#: engines/twine/metaengine.cpp:332 engines/ultima/ultima0/metaengine.cpp:78
 #: engines/ultima/ultima8/metaengine.cpp:50
 #: engines/wintermute/keymapper_tables.h:149
 #: engines/wintermute/keymapper_tables.h:731
@@ -8046,6 +8047,98 @@ msgid ""
 "beginning using new savegames."
 msgstr ""
 
+#: engines/colony/metaengine.cpp:46 engines/myst3/metaengine.cpp:40
+#, fuzzy
+msgid "Widescreen mod"
+msgstr "Fuldskærmstilstand"
+
+#: engines/colony/metaengine.cpp:47 engines/myst3/metaengine.cpp:41
+msgid "Enable widescreen rendering in fullscreen mode."
+msgstr ""
+
+#: engines/colony/metaengine.cpp:107
+#, fuzzy
+msgid "Move backward"
+msgstr "Flyt bagud"
+
+#: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
+#: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
+#: engines/mm/mm1/metaengine.cpp:99
+#, fuzzy
+#| msgid "Slide Left"
+msgid "Strafe left"
+msgstr "Flyt til venstre"
+
+#: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
+#: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
+#: engines/mm/mm1/metaengine.cpp:100
+#, fuzzy
+#| msgid "Slide Right"
+msgid "Strafe right"
+msgstr "Flyt til højre"
+
+#: engines/colony/metaengine.cpp:128
+#: engines/freescape/games/castle/castle.cpp:488
+#: engines/freescape/games/dark/dark.cpp:252
+#: engines/freescape/games/driller/driller.cpp:149
+#: engines/freescape/games/eclipse/eclipse.cpp:324
+#, fuzzy
+#| msgid "Slide Left"
+msgid "Rotate left"
+msgstr "Flyt til venstre"
+
+#: engines/colony/metaengine.cpp:133
+#: engines/freescape/games/castle/castle.cpp:493
+#: engines/freescape/games/dark/dark.cpp:257
+#: engines/freescape/games/driller/driller.cpp:154
+#: engines/freescape/games/eclipse/eclipse.cpp:329
+#, fuzzy
+#| msgid "Slide Right"
+msgid "Rotate right"
+msgstr "Flyt til højre"
+
+#: engines/colony/metaengine.cpp:148
+#, fuzzy
+msgid "Look behind"
+msgstr "Forstør"
+
+#: engines/colony/metaengine.cpp:153
+#, fuzzy
+msgid "Toggle mouselook"
+msgstr "Museindfangning til/fra"
+
+#: engines/colony/metaengine.cpp:159
+#, fuzzy
+msgid "Toggle dashboard"
+msgstr "Museindfangning til/fra"
+
+#: engines/colony/metaengine.cpp:164
+#, fuzzy
+msgid "Toggle wireframe"
+msgstr "Hurtigtilstand"
+
+#: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
+#: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
+#: engines/sherlock/metaengine.cpp:872 engines/teenagent/metaengine.cpp:232
+#: engines/toon/metaengine.cpp:98 engines/voyeur/metaengine.cpp:235
+#, fuzzy
+#| msgid "Skip line"
+msgid "Skip intro"
+msgstr "Spring linje over"
+
+#: engines/colony/metaengine.cpp:186 engines/ultima/ultima8/metaengine.cpp:89
+#, fuzzy
+msgid "Fire weapon"
+msgstr "Fo~r~rige"
+
+#: engines/colony/savegame.cpp:290
+msgid "Saving is only available in first-person view."
+msgstr ""
+
+#: engines/colony/savegame.cpp:299
+msgid "Loading is only available in first-person view."
+msgstr ""
+
 #: engines/crab/input/input.cpp:119
 #, fuzzy
 #| msgid "Interact"
@@ -8351,13 +8444,6 @@ msgstr "Skift inventar/IQ-point-visning"
 msgid "Toggle champion 4 inventory"
 msgstr "Skift inventar/IQ-point-visning"
 
-#: engines/dm/metaengine.cpp:216 engines/freescape/movement.cpp:53
-#: engines/hpl1/metaengine.cpp:78 engines/mm/mm1/metaengine.cpp:99
-#, fuzzy
-#| msgid "Slide Left"
-msgid "Strafe left"
-msgstr "Flyt til venstre"
-
 #: engines/dm/metaengine.cpp:226 engines/kyra/engine/eobcommon.cpp:372
 #: engines/kyra/engine/lol.cpp:511 engines/mohawk/riven.cpp:895
 #: engines/titanic/metaengine.cpp:343 engines/titanic/metaengine.cpp:384
@@ -8367,13 +8453,6 @@ msgstr "Flyt til venstre"
 #, fuzzy
 msgid "Move backwards"
 msgstr "Flyt bagud"
-
-#: engines/dm/metaengine.cpp:236 engines/freescape/movement.cpp:61
-#: engines/hpl1/metaengine.cpp:79 engines/mm/mm1/metaengine.cpp:100
-#, fuzzy
-#| msgid "Slide Right"
-msgid "Strafe right"
-msgstr "Flyt til højre"
 
 #. I18N: (Game name: Dungeon Master) The player has a team of 4 characters called "champions" which they choose themselves. The champions can be put to sleep. This action wakes up the sleeping champion.
 #: engines/dm/metaengine.cpp:247
@@ -9059,24 +9138,6 @@ msgstr "Vælg et tema"
 #, fuzzy
 msgid "Toggle sound"
 msgstr "Museindfangning til/fra"
-
-#: engines/freescape/games/castle/castle.cpp:488
-#: engines/freescape/games/dark/dark.cpp:252
-#: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:324
-#, fuzzy
-#| msgid "Slide Left"
-msgid "Rotate left"
-msgstr "Flyt til venstre"
-
-#: engines/freescape/games/castle/castle.cpp:493
-#: engines/freescape/games/dark/dark.cpp:257
-#: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:329
-#, fuzzy
-#| msgid "Slide Right"
-msgid "Rotate right"
-msgstr "Flyt til højre"
 
 #: engines/freescape/games/castle/castle.cpp:509
 msgid "Crawl"
@@ -9818,15 +9879,6 @@ msgstr ""
 #, fuzzy
 msgid "Secondary shoot"
 msgstr "Andet barn"
-
-#: engines/hypno/metaengine.cpp:146 engines/lab/metaengine.cpp:209
-#: engines/ngi/metaengine.cpp:168 engines/sherlock/metaengine.cpp:872
-#: engines/teenagent/metaengine.cpp:232 engines/toon/metaengine.cpp:98
-#: engines/voyeur/metaengine.cpp:235
-#, fuzzy
-#| msgid "Skip line"
-msgid "Skip intro"
-msgstr "Spring linje over"
 
 #: engines/hypno/metaengine.cpp:167
 #, fuzzy
@@ -11237,15 +11289,6 @@ msgstr "Kan ikke finde '%s'-motorens datafil."
 #, fuzzy
 msgid "PS2 version is not yet supported"
 msgstr "Spil-id ikke understøttet"
-
-#: engines/myst3/metaengine.cpp:40
-#, fuzzy
-msgid "Widescreen mod"
-msgstr "Fuldskærmstilstand"
-
-#: engines/myst3/metaengine.cpp:41
-msgid "Enable widescreen rendering in fullscreen mode."
-msgstr ""
 
 #: engines/myst3/myst3.cpp:412
 #, c-format
@@ -16282,11 +16325,6 @@ msgstr "Fo~r~rige"
 msgid "Grab items"
 msgstr ""
 
-#: engines/ultima/ultima8/metaengine.cpp:89
-#, fuzzy
-msgid "Fire weapon"
-msgstr "Fo~r~rige"
-
 #: engines/ultima/ultima8/metaengine.cpp:90
 msgid "Center screen on Silencer"
 msgstr ""
@@ -17328,10 +17366,6 @@ msgstr ""
 #~| msgid "Move Forward"
 #~ msgid "Face Forward"
 #~ msgstr "Flyt fremad"
-
-#, fuzzy
-#~ msgid "Move backward"
-#~ msgstr "Flyt bagud"
 
 #, fuzzy
 #~ msgid "Yes/No keymapping"
