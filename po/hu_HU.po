@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-01 17:29+0000\n"
+"POT-Creation-Date: 2026-04-03 07:07+0000\n"
 "PO-Revision-Date: 2025-03-07 00:18+0000\n"
 "Last-Translator: Hovánszki Tamás <gahex68379@lofiey.com>\n"
 "Language-Team: Hungarian <https://translations.scummvm.org/projects/scummvm/"
@@ -8002,7 +8002,7 @@ msgstr "Nyom publikálása"
 #: engines/freescape/games/castle/castle.cpp:465
 #: engines/freescape/games/dark/dark.cpp:226
 #: engines/freescape/games/driller/driller.cpp:125
-#: engines/freescape/games/eclipse/eclipse.cpp:272
+#: engines/freescape/games/eclipse/eclipse.cpp:301
 #: engines/hopkins/metaengine.cpp:236 engines/hugo/metaengine.cpp:165
 #: engines/lure/metaengine.cpp:191 engines/made/metaengine.cpp:192
 #: engines/mads/metaengine.cpp:305 engines/mohawk/myst.cpp:583
@@ -8030,7 +8030,7 @@ msgstr "Játék mentés"
 #: engines/freescape/games/castle/castle.cpp:470
 #: engines/freescape/games/dark/dark.cpp:231
 #: engines/freescape/games/driller/driller.cpp:130
-#: engines/freescape/games/eclipse/eclipse.cpp:277
+#: engines/freescape/games/eclipse/eclipse.cpp:306
 #: engines/hopkins/metaengine.cpp:242 engines/made/metaengine.cpp:198
 #: engines/mohawk/myst_stacks/menu.cpp:283
 #: engines/mohawk/riven_stacks/aspit.cpp:349 engines/pegasus/pegasus.cpp:2831
@@ -8086,7 +8086,7 @@ msgstr "Nyom Adatbázis"
 #: engines/freescape/games/castle/castle.cpp:478
 #: engines/freescape/games/dark/dark.cpp:236
 #: engines/freescape/games/driller/driller.cpp:135
-#: engines/freescape/games/eclipse/eclipse.cpp:282
+#: engines/freescape/games/eclipse/eclipse.cpp:311
 #: engines/mads/metaengine.cpp:361 engines/phoenixvr/metaengine.cpp:80
 #: engines/saga/metaengine.cpp:437 engines/sherlock/metaengine.cpp:359
 #: engines/sherlock/metaengine.cpp:618 engines/sherlock/metaengine.cpp:852
@@ -9556,7 +9556,7 @@ msgstr "Királykisasszony kiválasztása"
 #: engines/freescape/games/castle/castle.cpp:483
 #: engines/freescape/games/dark/dark.cpp:246
 #: engines/freescape/games/driller/driller.cpp:143
-#: engines/freescape/games/eclipse/eclipse.cpp:290
+#: engines/freescape/games/eclipse/eclipse.cpp:319
 #: engines/hugo/metaengine.cpp:154
 msgid "Toggle sound"
 msgstr "Hang ki/be Kapcsolása"
@@ -9564,7 +9564,7 @@ msgstr "Hang ki/be Kapcsolása"
 #: engines/freescape/games/castle/castle.cpp:488
 #: engines/freescape/games/dark/dark.cpp:252
 #: engines/freescape/games/driller/driller.cpp:149
-#: engines/freescape/games/eclipse/eclipse.cpp:295
+#: engines/freescape/games/eclipse/eclipse.cpp:324
 #, fuzzy
 #| msgid "Rotate Left"
 msgid "Rotate left"
@@ -9573,7 +9573,7 @@ msgstr "Forgatás Balra"
 #: engines/freescape/games/castle/castle.cpp:493
 #: engines/freescape/games/dark/dark.cpp:257
 #: engines/freescape/games/driller/driller.cpp:154
-#: engines/freescape/games/eclipse/eclipse.cpp:300
+#: engines/freescape/games/eclipse/eclipse.cpp:329
 #, fuzzy
 #| msgid "Rotate Right"
 msgid "Rotate right"
@@ -9584,7 +9584,7 @@ msgid "Crawl"
 msgstr "Kúszás"
 
 #: engines/freescape/games/castle/castle.cpp:515
-#: engines/freescape/games/eclipse/eclipse.cpp:338
+#: engines/freescape/games/eclipse/eclipse.cpp:367
 #, fuzzy
 #| msgid "Face Forward"
 msgid "Face forward"
@@ -9672,38 +9672,38 @@ msgid "Collect drilling rig"
 msgstr "Olajfúró begyűjtése"
 
 #. I18N: Illustrates the angle at which you turn left or right.
-#: engines/freescape/games/eclipse/eclipse.cpp:306
+#: engines/freescape/games/eclipse/eclipse.cpp:335
 #, fuzzy
 #| msgid "Change Angle"
 msgid "Change angle"
 msgstr "Fok változtatása"
 
 #. I18N: STEP SIZE: Measures the size of one movement in the direction you are facing (1-250 standard distance units (SDUs))
-#: engines/freescape/games/eclipse/eclipse.cpp:312
+#: engines/freescape/games/eclipse/eclipse.cpp:341
 #, fuzzy
 #| msgid "Change Step Size"
 msgid "Change step size"
 msgstr "Lépésméret változtatása"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:318
+#: engines/freescape/games/eclipse/eclipse.cpp:347
 msgid "Sprint (hold)"
 msgstr ""
 
-#: engines/freescape/games/eclipse/eclipse.cpp:326
+#: engines/freescape/games/eclipse/eclipse.cpp:355
 #, fuzzy
 #| msgid "Toggle Height"
 msgid "Toggle height"
 msgstr "Magasság változtatás"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/freescape/games/eclipse/eclipse.cpp:332
+#: engines/freescape/games/eclipse/eclipse.cpp:361
 #: engines/kyra/engine/lol.cpp:516 engines/mm/mm1/metaengine.cpp:109
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
 msgstr "Pihenés"
 
-#: engines/freescape/games/eclipse/eclipse.cpp:343
+#: engines/freescape/games/eclipse/eclipse.cpp:372
 #, fuzzy
 #| msgid "Flashlight"
 msgid "Toggle flashlight"
