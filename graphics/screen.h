@@ -80,13 +80,13 @@ public:
 	/**
 	 * Clear the current dirty rects list
 	 */
-	virtual void clearDirtyRects() { _dirtyRects.clear(); }
+	void clearDirtyRects() override { _dirtyRects.clear(); }
 
 	/**
 	 * Adds a rectangle to the list of modified areas of the screen during the
 	 * current frame
 	 */
-	virtual void addDirtyRect(const Common::Rect &r);
+	void addDirtyRect(const Common::Rect &r) override;
 
 	/**
 	 * Updates the screen by copying any affected areas to the system
