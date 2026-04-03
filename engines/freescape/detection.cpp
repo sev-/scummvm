@@ -727,7 +727,7 @@ static const ADGameDescription gameDescriptions[] = {
 		AD_ENTRY1s("TOTALECLIPSE.C64.DATA", "968fd46b941a00f887741dfc348ac149", 47105),
 		Common::EN_ANY,
 		Common::kPlatformC64,
-		ADGF_UNSTABLE | GF_C64_TAPE,
+		ADGF_TESTING | GF_C64_TAPE,
 		GUIO2(GUIO_NOMIDI, GUIO_RENDERC64)
 	},
 	{
@@ -736,7 +736,7 @@ static const ADGameDescription gameDescriptions[] = {
 		AD_ENTRY1s("TOTALECLIPSE.C64.DATA", "b9d3aa682777ee50840cabfc036693b0", 50356),
 		Common::EN_ANY,
 		Common::kPlatformC64,
-		ADGF_UNSTABLE | GF_C64_DISC,
+		ADGF_TESTING | GF_C64_DISC,
 		GUIO2(GUIO_NOMIDI, GUIO_RENDERC64)
 	},
 	{
@@ -863,7 +863,7 @@ static const ADGameDescription gameDescriptions[] = {
 		},
 		Common::EN_ANY,
 		Common::kPlatformAmiga,
-		ADGF_UNSTABLE | ADGF_DEMO,
+		ADGF_DEMO,
 		GUIO4(GUIO_NOMIDI, GAMEOPTION_TRAVEL_ROCK, GUIO_RENDERAMIGA, GAMEOPTION_WASD_CONTROLS)
 	},
 	{

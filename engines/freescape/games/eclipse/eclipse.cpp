@@ -385,22 +385,6 @@ void EclipseEngine::gotoArea(uint16 areaID, int entranceID) {
 	_currentAreaMessages.clear();
 	_currentAreaMessages.push_back(_currentArea->_name);
 
-	if (isEclipse2() && areaID != _startArea && _messagesList.size() > 15) {
-		// Eclipse 2 displays the sphinx parts count when entering indoor areas
-		Common::String partsMsg = _messagesList[15];
-		Common::String::size_type pos = partsMsg.find("XX");
-		if (pos != Common::String::npos) {
-			int parts = _gameStateVars[kVariableEclipse2SphinxParts];
-			Common::String replacement;
-			if (parts < 10)
-				replacement = Common::String::format("%d ", parts);
-			else
-				replacement = Common::String::format("%d", parts);
-			partsMsg.replace(pos, 2, replacement);
-		}
-		insertTemporaryMessage(partsMsg, _countdown - 2);
-	}
-
 	if (entranceID > 0)
 		traverseEntrance(entranceID);
 	else if (entranceID == -1)
@@ -1084,8 +1068,8 @@ void EclipseEngine::executePrint(FCLInstruction &instruction) {
 	}
 	Common::String message = _messagesList[index];
 	if (isEclipse2()) {
-		// Message 16 (1-based, index 15) contains "XX" placeholder for sphinx parts count.
-		// The original Z80 code at $22FC patches these bytes with the count from variable 0.
+		// Message 16 (1-based, index 15) contains the "NO. OF PARTS XX" placeholder.
+		// The original routine patches those two bytes immediately before drawing the string.
 		Common::String::size_type pos = message.find("XX");
 		if (pos != Common::String::npos) {
 			int parts = _gameStateVars[kVariableEclipse2SphinxParts];
