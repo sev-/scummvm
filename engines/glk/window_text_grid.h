@@ -118,8 +118,6 @@ public:
 	 */
 	void rearrange(const Rect &box) override;
 
-	void refreshStyles();
-
 	/**
 	 * Get window split size within parent pair window
 	 */
