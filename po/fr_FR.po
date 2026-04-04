@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-03 16:26+0000\n"
-"PO-Revision-Date: 2026-04-03 17:22+0000\n"
+"PO-Revision-Date: 2026-04-04 10:40+0000\n"
 "Last-Translator: Purple T <ZEONK@hotmail.com>\n"
 "Language-Team: French <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/fr/>\n"
@@ -1723,8 +1723,7 @@ msgid ""
 "Do you really want to remove the following %d game configurations?\n"
 "\n"
 msgstr ""
-"Voulez-vous vraiment supprimer les\n"
-"configurations suivantes du jeu %d ?\n"
+"Voulez-vous vraiment supprimer les configurations suivantes du jeu %d ?\n"
 "\n"
 
 #: gui/massadd.cpp:77 gui/massadd.cpp:80
@@ -8311,28 +8310,20 @@ msgid "Rotate right"
 msgstr "Tourner à droite"
 
 #: engines/colony/metaengine.cpp:148
-#, fuzzy
-#| msgid "Look down"
 msgid "Look behind"
-msgstr "Regarder en bas"
+msgstr "Regarder derrière"
 
 #: engines/colony/metaengine.cpp:153
-#, fuzzy
-#| msgid "Toggle mute"
 msgid "Toggle mouselook"
-msgstr "Act. / Désact. muet"
+msgstr "Act. / Désact. la vue à la souris"
 
 #: engines/colony/metaengine.cpp:159
-#, fuzzy
-#| msgid "Toggle sound"
 msgid "Toggle dashboard"
-msgstr "Act. / Désact. le son"
+msgstr "Act. / Désact. le tableau de bord"
 
 #: engines/colony/metaengine.cpp:164
-#, fuzzy
-#| msgid "Toggle frame by frame"
 msgid "Toggle wireframe"
-msgstr "Act. / Désact. image par image"
+msgstr "Act. / Désact. la vue fil de fer"
 
 #: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
 #: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
@@ -8347,11 +8338,11 @@ msgstr "Tirer avec l'arme"
 
 #: engines/colony/savegame.cpp:290
 msgid "Saving is only available in first-person view."
-msgstr ""
+msgstr "La sauvegarde n'est disponible qu'en vue à la première personne."
 
 #: engines/colony/savegame.cpp:299
 msgid "Loading is only available in first-person view."
-msgstr ""
+msgstr "Le chargement n'est disponible qu'en vue à la première personne."
 
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
