@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-03 16:26+0000\n"
-"PO-Revision-Date: 2026-03-28 08:34+0000\n"
+"PO-Revision-Date: 2026-04-04 10:40+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -1357,8 +1357,8 @@ msgstr ""
 "\n"
 "4. Wählen Sie **Server ausführen** und dann **Weiter**.\n"
 "\n"
-"\t  ![Server ausführen](run_server.png \"Server ausführen\")"
-"{w=70%,maxw=50em}\n"
+"\t  ![Server ausführen](run_server.png \"Server ausführen\"){w=70%,maxw=50em}"
+"\n"
 "\n"
 "\t  ![Nächster Schritt](server_next.png \"Nächster Schritt\")"
 "{w=70%,maxw=50em}\n"
@@ -1380,7 +1380,6 @@ msgstr ""
 "beenden. \n"
 "\n"
 "\t  ![Erfolg](cloud_success.png \"Erfolg\"){w=70%,maxw=50em}\n"
-"\n"
 "9. Wählen Sie zurück auf der Hauptregisterkarte \"Cloud\" die Option "
 "**Speicher aktivieren**.\n"
 "\n"
@@ -3874,7 +3873,7 @@ msgid ""
 "not yet fully supported by ScummVM. As such, it is likely to be unstable, "
 "and any saved game you make might not work in future versions of ScummVM."
 msgstr ""
-"WARNUNG: Das Spiel, das Sie starten möchten, enthält das Add-on „%s“, das "
+"WARNUNG: Das Spiel, das Sie starten möchten, enthält das Add-on \"%s“, das "
 "von ScummVM noch nicht vollständig unterstützt wird. Daher ist es "
 "wahrscheinlich instabil, und alle gespeicherten Spielstände funktionieren "
 "möglicherweise in zukünftigen Versionen von ScummVM nicht mehr."
@@ -3886,7 +3885,7 @@ msgid ""
 "run independently. Please copy the add-on contents into a subdirectory of "
 "the base game, and start the base game itself."
 msgstr ""
-"Das Spiel „%s“, das Sie hinzufügen möchten, ist ein Add-on für „%s“, das "
+"Das Spiel \"%s“, das Sie hinzufügen möchten, ist ein Add-on für \"%s“, das "
 "nicht unabhängig davon ausgeführt werden kann. Bitte kopieren Sie den Inhalt "
 "des Add-ons in ein Unterverzeichnis des Basisspiels und starten Sie das "
 "Basisspiel selbst."
@@ -3917,14 +3916,15 @@ msgid ""
 "The directory '%s' looks like an add-on for the game '%s', but ScummVM could "
 "not find any matching add-on in it."
 msgstr ""
-"Das Verzeichnis „%s” sieht aus wie ein Add-on für das Spiel „%s”, aber "
+"Das Verzeichnis \"%s\" sieht aus wie ein Add-on für das Spiel \"%s\", aber "
 "ScummVM konnte darin kein passendes Add-on finden."
 
 #: engines/engine.cpp:1241
 #, c-format
 msgid "Directory '%s' matches several add-ons, please pick one."
 msgstr ""
-"Das Verzeichnis „%s“ entspricht mehreren Add-ons. Bitte wählen Sie eines aus."
+"Das Verzeichnis \"%s“ entspricht mehreren Add-ons. Bitte wählen Sie eines "
+"aus."
 
 #: engines/game.cpp:199
 #, c-format
@@ -5174,20 +5174,20 @@ msgstr ""
 "Die Touch-Steuerung erfolgt direkt. Der Zeiger springt zu der Stelle, an der "
 "der Finger den Bildschirm berührt (Standardeinstellung für Menüs).\n"
 "\n"
-" ![Direkter Mausmodus](mouse.png „Direkter Mausmodus”){w=10em}\n"
+" ![Direkter Mausmodus](mouse.png \"Direkter Mausmodus\"){w=10em}\n"
 "\n"
 "### Touchpad-Emulation \n"
 "\n"
 "Die Touch-Steuerung erfolgt indirekt, wie bei einem Laptop-Touchpad. \n"
 "\n"
-"![Touchpad-Modus](touchpad.png „Touchpad-Modus”){w=10em}\n"
+"![Touchpad-Modus](touchpad.png \"Touchpad-Modus\"){w=10em}\n"
 "\n"
 "### Gamepad-Emulation \n"
 "\n"
 "Die Finger müssen links und rechts unten auf dem Bildschirm platziert "
 "werden, um ein Steuerkreuz und Aktionstasten zu emulieren.\n"
 "\n"
-"  ![Gamepad-Modus](gamepad.png „Gamepad-Modus”){w=10em}\n"
+"  ![Gamepad-Modus](gamepad.png \"Gamepad-Modus\"){w=10em}\n"
 "\n"
 "Um den bevorzugten Touch-Modus für Menüs, 2D-Spiele und 3D-Spiele "
 "auszuwählen, gehen Sie zu **Globale Optionen > Backend > Bevorzugten Touch-"
@@ -5223,7 +5223,7 @@ msgstr ""
 "Um das globale Hauptmenü zu öffnen, tippen Sie auf das Menüsymbol oben "
 "rechts auf dem Bildschirm.\n"
 "\n"
-" ![Menüsymbol](menu.png „Menüsymbol”){w=10em}\n"
+" ![Menüsymbol](menu.png \"Menüsymbol\"){w=10em}\n"
 "\n"
 "## Virtuelle Tastatur\n"
 "\n"
@@ -5235,7 +5235,7 @@ msgstr ""
 "\n"
 "\n"
 "\n"
-" ![Tastatursymbol](keyboard.png „Tastatursymbol”){w=10em}\n"
+" ![Tastatursymbol](keyboard.png \"Tastatursymbol\"){w=10em}\n"
 "\n"
 
 #: backends/platform/android/android.cpp:1147
@@ -5294,25 +5294,25 @@ msgstr ""
 "\n"
 "3. Tippen Sie zweimal auf **<Add a new folder>**. Navigieren Sie im "
 "Dateibrowser Ihres Geräts zu dem Ordner, der alle Ihre Spielordner enthält. "
-"Zum Beispiel **SD-Karte &gt; ScummVMgames**.\n"
+"Zum Beispiel **SD-Karte > ScummVMgames**.\n"
 "\n"
 "4. Wählen Sie **Diesen Ordner verwenden**.\n"
 "\n"
-"  ![Vom Betriebssystem auswählbarer Ordner](fs-folder.png „Vom "
-"Betriebssystem auswählbarer Ordner”){w=70%,maxw=50em}\n"
+"  ![Vom Betriebssystem auswählbarer Ordner](fs-folder.png \"Vom "
+"Betriebssystem auswählbarer Ordner\"){w=70%,maxw=50em}\n"
 "\n"
 "5. Wählen Sie **ZULASSEN**, um ScummVM die Berechtigung zum Zugriff auf den "
 "Ordner zu erteilen. \n"
 "\n"
-"  ![OS-Zugriffsberechtigungsdialog](fs-permission.png „OS-"
-"Zugriffsberechtigung”){w=70%,maxw=50em}\n"
+"  ![OS-Zugriffsberechtigungsdialog](fs-permission.png \"OS-"
+"Zugriffsberechtigung\"){w=70%,maxw=50em}\n"
 "\n"
 "6. Tippen Sie im ScummVM-Dateibrowser doppelt, um den hinzugefügten Ordner "
 "zu durchsuchen. Fügen Sie ein Spiel hinzu, indem Sie den Unterordner mit den "
 "Spieledateien auswählen und dann auf **Auswählen** tippen. \n"
 "\n"
-"  ![SAF-Ordner hinzugefügt](browser-folder-in-list.png „SAF-Ordner "
-"hinzugefügt”){w=70%,maxw=50em}\n"
+"  ![SAF-Ordner hinzugefügt](browser-folder-in-list.png \"SAF-Ordner "
+"hinzugefügt\"){w=70%,maxw=50em}\n"
 "\n"
 "Die Schritte 2 und 3 müssen nur einmal durchgeführt werden. Um weitere "
 "Spiele hinzuzufügen, wiederholen Sie die Schritte 1 und 6. \n"
@@ -6563,7 +6563,7 @@ msgstr "Gehe"
 
 #: engines/access/metaengine.cpp:348
 msgid "Open save/load menu"
-msgstr "Menü „Speichern/Laden“ öffnen"
+msgstr "Menü \"Speichern/Laden“ öffnen"
 
 #: engines/access/resources.cpp:43 engines/drascula/drascula.cpp:993
 #: engines/hugo/hugo.cpp:461 engines/lure/lure.cpp:57
@@ -8156,7 +8156,7 @@ msgstr "Das Dialogfeld schließen"
 #: engines/lab/metaengine.cpp:151 engines/sherlock/metaengine.cpp:338
 #: engines/sherlock/metaengine.cpp:790 engines/tot/metaengine.cpp:104
 msgid "Quit dialog keymappings"
-msgstr "Dialogfeld „Beenden“ – Tastaturbelegungen"
+msgstr "Dialogfeld \"Beenden“ – Tastaturbelegungen"
 
 #: engines/cine/metaengine.cpp:57
 msgid "Use transparent dialog boxes in 16 color scenes"
@@ -8296,28 +8296,20 @@ msgid "Rotate right"
 msgstr "Nach rechts drehen"
 
 #: engines/colony/metaengine.cpp:148
-#, fuzzy
-#| msgid "Look down"
 msgid "Look behind"
-msgstr "Nach unten schauen"
+msgstr "Nach hinten schauen"
 
 #: engines/colony/metaengine.cpp:153
-#, fuzzy
-#| msgid "Toggle mute"
 msgid "Toggle mouselook"
-msgstr "Stummschaltung umschalten"
+msgstr "Mit der Maus umsehen"
 
 #: engines/colony/metaengine.cpp:159
-#, fuzzy
-#| msgid "Toggle sound"
 msgid "Toggle dashboard"
-msgstr "Sound umschalten"
+msgstr "Dashboard umschalten"
 
 #: engines/colony/metaengine.cpp:164
-#, fuzzy
-#| msgid "Toggle frame by frame"
 msgid "Toggle wireframe"
-msgstr "Bild für Bild umschalten"
+msgstr "Drahtmodell umschalten"
 
 #: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
 #: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
@@ -8332,11 +8324,11 @@ msgstr "Feuerwaffe"
 
 #: engines/colony/savegame.cpp:290
 msgid "Saving is only available in first-person view."
-msgstr ""
+msgstr "Speichern wird nur in der first-person-Ansicht unterstützt."
 
 #: engines/colony/savegame.cpp:299
 msgid "Loading is only available in first-person view."
-msgstr ""
+msgstr "Laden wird nur in der first-person-Ansicht unterstützt."
 
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
@@ -9140,21 +9132,23 @@ msgstr "Verwende die WASD-Tasten für die Steuerung und Shift zum rennen"
 #. I18N: Enable background music using AdLib/OPL2 FM synthesis
 #: engines/freescape/metaengine.cpp:165
 msgid "Backported music from C64 releases (AdLib)"
-msgstr ""
+msgstr "Musik aus C64-Versionen (AdLib)"
 
 #: engines/freescape/metaengine.cpp:166
 msgid ""
 "Enable background music ported from the C64 version using AdLib FM synthesis"
 msgstr ""
+"Hintergrundmusik aus der C64-Version mithilfe der AdLib-FM-Synthese "
+"aktivieren"
 
 #. I18N: Enable background music using AY chip emulation
 #: engines/freescape/metaengine.cpp:177
 msgid "Backported music from C64 releases"
-msgstr ""
+msgstr "Musik aus C64-Versionen"
 
 #: engines/freescape/metaengine.cpp:178
 msgid "Enable background music ported from the C64 version"
-msgstr ""
+msgstr "Hintergrundmusik aus der C64-Version aktivieren"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9596,10 +9590,10 @@ msgid ""
 msgstr ""
 "FEHLER: Nicht genügend Musiktitel gefunden!\n"
 "Escape from Monkey Island hat zwei Versionen von FullMonkeyMap.imt.\n"
-"Sie müssen beide Dateien von beiden CDs in den Ordner „Textures/“ kopieren\n"
+"Sie müssen beide Dateien von beiden CDs in den Ordner \"Textures/“ kopieren\n"
 "und wie folgt umbenennen, um die Musikunterstützung im Spiel zu erhalten:\n"
-"CD 1: „FullMonkeyMap.imt“ -> „FullMonkeyMap1.imt“\n"
-"CD 2: „FullMonkeyMap.imt” -> „FullMonkeyMap2.imt”\n"
+"CD 1: \"FullMonkeyMap.imt“ -> \"FullMonkeyMap1.imt“\n"
+"CD 2: \"FullMonkeyMap.imt\" -> \"FullMonkeyMap2.imt\"\n"
 "\n"
 "Alternativ verfügt eine Steam- oder GOG-Kopie über eine kombinierte "
 "FullMonkeyMap.imt"
@@ -10454,7 +10448,7 @@ msgstr "Zur Hauptanzeige wechseln"
 
 #: engines/lab/metaengine.cpp:317
 msgid "Open save / load dialog"
-msgstr "Dialogfeld „Speichern/Laden“ öffnen"
+msgstr "Dialogfeld \"Speichern/Laden“ öffnen"
 
 #: engines/lab/metaengine.cpp:329
 msgid "Look at scene"
@@ -13846,7 +13840,7 @@ msgstr "Puzzle schließen"
 #: engines/sherlock/metaengine.cpp:1177
 msgid "Exit inventory / Close verb menu / Cancel item use action"
 msgstr ""
-"Bestand verlassen / Verb-Menü schließen / Aktion „Artikel verwenden“ "
+"Bestand verlassen / Verb-Menü schließen / Aktion \"Artikel verwenden“ "
 "abbrechen"
 
 #: engines/sherlock/metaengine.cpp:1239
@@ -13933,7 +13927,7 @@ msgstr "Inventar / Untersuchen"
 
 #: engines/sludge/keymapper_tables.h:281 engines/sword25/metaengine.cpp:118
 msgid "Examine / Skip dialog"
-msgstr "Dialogfeld „Prüfen/Überspringen“"
+msgstr "Dialogfeld \"Prüfen/Überspringen“"
 
 #: engines/sludge/keymapper_tables.h:287 engines/sludge/keymapper_tables.h:398
 #: engines/sludge/keymapper_tables.h:522
@@ -14395,15 +14389,15 @@ msgstr "Tastenkürzel für speichern/laden"
 
 #: engines/tinsel/metaengine.cpp:341
 msgid "Page up in save / load menu"
-msgstr "Seite nach oben im Menü „Speichern/Laden“"
+msgstr "Seite nach oben im Menü \"Speichern/Laden“"
 
 #: engines/tinsel/metaengine.cpp:347
 msgid "Page down in save / load menu"
-msgstr "Seite nach unten im Menü „Speichern/Laden“"
+msgstr "Seite nach unten im Menü \"Speichern/Laden“"
 
 #: engines/tinsel/metaengine.cpp:353
 msgid "Go to start of save / load menu"
-msgstr "Zum Anfang des Menüs „Speichern/Laden“ gehen"
+msgstr "Zum Anfang des Menüs \"Speichern/Laden“ gehen"
 
 #: engines/tinsel/metaengine.cpp:359
 msgid "Go to end of save / load menu"
