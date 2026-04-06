@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="preagi">
-			<UniqueIdentifier>EFDBA5A8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>46A3D3B6-1BC5-4B78-8B15-68DE57AFF3C1</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="..\..\engines\agi\preagi\mickey.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agi\preagi\picture_mickey_winnie.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agi\preagi\picture_troll.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agi\preagi\preagi.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agi\preagi\troll.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agi\preagi\winnie.cpp">
+			<Filter>preagi</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\agi\agi.cpp" />
 		<ClCompile Include="..\..\engines\agi\checks.cpp" />
 		<ClCompile Include="..\..\engines\agi\console.cpp" />
@@ -35,24 +53,6 @@
 		<ClCompile Include="..\..\engines\agi\opcodes.cpp" />
 		<ClCompile Include="..\..\engines\agi\picture.cpp" />
 		<ClCompile Include="..\..\engines\agi\picture_gal.cpp" />
-		<ClCompile Include="..\..\engines\agi\preagi\mickey.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\agi\preagi\picture_mickey_winnie.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\agi\preagi\picture_troll.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\agi\preagi\preagi.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\agi\preagi\troll.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\agi\preagi\winnie.cpp">
-			<Filter>preagi</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\agi\saveload.cpp" />
 		<ClCompile Include="..\..\engines\agi\sound.cpp" />
 		<ClCompile Include="..\..\engines\agi\sound_2gs.cpp" />
@@ -68,6 +68,24 @@
 		<ClCompile Include="..\..\engines\agi\words.cpp" />
 	</ItemGroup>
 	<ItemGroup>
+		<ClInclude Include="..\..\engines\agi\preagi\mickey.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agi\preagi\picture_mickey_winnie.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agi\preagi\picture_troll.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agi\preagi\preagi.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agi\preagi\troll.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agi\preagi\winnie.h">
+			<Filter>preagi</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\agi\agi.h" />
 		<ClInclude Include="..\..\engines\agi\appleIIgs_timedelay_overwrite.h" />
 		<ClInclude Include="..\..\engines\agi\console.h" />
@@ -87,24 +105,6 @@
 		<ClInclude Include="..\..\engines\agi\palette.h" />
 		<ClInclude Include="..\..\engines\agi\picture.h" />
 		<ClInclude Include="..\..\engines\agi\picture_gal.h" />
-		<ClInclude Include="..\..\engines\agi\preagi\mickey.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\agi\preagi\picture_mickey_winnie.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\agi\preagi\picture_troll.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\agi\preagi\preagi.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\agi\preagi\troll.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\agi\preagi\winnie.h">
-			<Filter>preagi</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\agi\sound.h" />
 		<ClInclude Include="..\..\engines\agi\sound_2gs.h" />
 		<ClInclude Include="..\..\engines\agi\sound_a2.h" />

@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="objects">
-			<UniqueIdentifier>EFDBA705-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F4E721C5-EE32-4E98-A9A5-111A2A04B1CC</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\actions">
-			<UniqueIdentifier>EFDBA706-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>BAA1CFDE-2ADF-4A07-A966-ACFC145A8551</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\actors">
-			<UniqueIdentifier>EFDBA707-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>D69BCEF9-1505-4954-B75B-92C643C71F0E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\handlers">
-			<UniqueIdentifier>EFDBA708-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3760BBB9-C45A-4A1D-B157-79977AC53975</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\pages">
-			<UniqueIdentifier>EFDBA709-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>30FAD3DD-1E74-45AF-8888-E1C55ACB84B0</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\sequences">
-			<UniqueIdentifier>EFDBA70A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>A7953EBB-1587-4925-9B15-712636C21C2F</UniqueIdentifier>
 		</Filter>
 		<Filter Include="objects\walk">
-			<UniqueIdentifier>EFDBA70B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>4745735E-FBBD-4018-89F5-F021D48C798E</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\pink\archive.cpp" />
-		<ClCompile Include="..\..\engines\pink\audio_info_mgr.cpp" />
-		<ClCompile Include="..\..\engines\pink\cel_decoder.cpp" />
-		<ClCompile Include="..\..\engines\pink\console.cpp" />
-		<ClCompile Include="..\..\engines\pink\cursor_mgr.cpp" />
-		<ClCompile Include="..\..\engines\pink\file.cpp" />
-		<ClCompile Include="..\..\engines\pink\gui.cpp" />
-		<ClCompile Include="..\..\engines\pink\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\pink\objects\actions\action.cpp">
 			<Filter>objects\actions</Filter>
 		</ClCompile>
@@ -80,23 +72,11 @@
 		<ClCompile Include="..\..\engines\pink\objects\actors\supporting_actor.cpp">
 			<Filter>objects\actors</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\pink\objects\condition.cpp">
-			<Filter>objects</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\pink\objects\handlers\handler.cpp">
 			<Filter>objects\handlers</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pink\objects\handlers\handler_mgr.cpp">
 			<Filter>objects\handlers</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pink\objects\inventory.cpp">
-			<Filter>objects</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pink\objects\module.cpp">
-			<Filter>objects</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\pink\objects\object.cpp">
-			<Filter>objects</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\pink\objects\pages\game_page.cpp">
 			<Filter>objects\pages</Filter>
@@ -122,9 +102,6 @@
 		<ClCompile Include="..\..\engines\pink\objects\sequences\sequencer.cpp">
 			<Filter>objects\sequences</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\pink\objects\side_effect.cpp">
-			<Filter>objects</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\pink\objects\walk\walk_location.cpp">
 			<Filter>objects\walk</Filter>
 		</ClCompile>
@@ -134,6 +111,29 @@
 		<ClCompile Include="..\..\engines\pink\objects\walk\walk_shortest_path.cpp">
 			<Filter>objects\walk</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\objects\condition.cpp">
+			<Filter>objects</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\objects\inventory.cpp">
+			<Filter>objects</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\objects\module.cpp">
+			<Filter>objects</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\objects\object.cpp">
+			<Filter>objects</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\objects\side_effect.cpp">
+			<Filter>objects</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\pink\archive.cpp" />
+		<ClCompile Include="..\..\engines\pink\audio_info_mgr.cpp" />
+		<ClCompile Include="..\..\engines\pink\cel_decoder.cpp" />
+		<ClCompile Include="..\..\engines\pink\console.cpp" />
+		<ClCompile Include="..\..\engines\pink\cursor_mgr.cpp" />
+		<ClCompile Include="..\..\engines\pink\file.cpp" />
+		<ClCompile Include="..\..\engines\pink\gui.cpp" />
+		<ClCompile Include="..\..\engines\pink\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\pink\pda_mgr.cpp" />
 		<ClCompile Include="..\..\engines\pink\pink.cpp" />
 		<ClCompile Include="..\..\engines\pink\resource_mgr.cpp" />
@@ -142,14 +142,6 @@
 		<ClCompile Include="..\..\engines\pink\sound.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\pink\archive.h" />
-		<ClInclude Include="..\..\engines\pink\audio_info_mgr.h" />
-		<ClInclude Include="..\..\engines\pink\cel_decoder.h" />
-		<ClInclude Include="..\..\engines\pink\console.h" />
-		<ClInclude Include="..\..\engines\pink\constants.h" />
-		<ClInclude Include="..\..\engines\pink\cursor_mgr.h" />
-		<ClInclude Include="..\..\engines\pink\detection_tables.h" />
-		<ClInclude Include="..\..\engines\pink\file.h" />
 		<ClInclude Include="..\..\engines\pink\objects\actions\action.h">
 			<Filter>objects\actions</Filter>
 		</ClInclude>
@@ -204,23 +196,11 @@
 		<ClInclude Include="..\..\engines\pink\objects\actors\supporting_actor.h">
 			<Filter>objects\actors</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\pink\objects\condition.h">
-			<Filter>objects</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\pink\objects\handlers\handler.h">
 			<Filter>objects\handlers</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pink\objects\handlers\handler_mgr.h">
 			<Filter>objects\handlers</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pink\objects\inventory.h">
-			<Filter>objects</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pink\objects\module.h">
-			<Filter>objects</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\pink\objects\object.h">
-			<Filter>objects</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\pink\objects\pages\game_page.h">
 			<Filter>objects\pages</Filter>
@@ -246,9 +226,6 @@
 		<ClInclude Include="..\..\engines\pink\objects\sequences\sequencer.h">
 			<Filter>objects\sequences</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\pink\objects\side_effect.h">
-			<Filter>objects</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\pink\objects\walk\walk_location.h">
 			<Filter>objects\walk</Filter>
 		</ClInclude>
@@ -258,6 +235,29 @@
 		<ClInclude Include="..\..\engines\pink\objects\walk\walk_shortest_path.h">
 			<Filter>objects\walk</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\objects\condition.h">
+			<Filter>objects</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\objects\inventory.h">
+			<Filter>objects</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\objects\module.h">
+			<Filter>objects</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\objects\object.h">
+			<Filter>objects</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\objects\side_effect.h">
+			<Filter>objects</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\pink\archive.h" />
+		<ClInclude Include="..\..\engines\pink\audio_info_mgr.h" />
+		<ClInclude Include="..\..\engines\pink\cel_decoder.h" />
+		<ClInclude Include="..\..\engines\pink\console.h" />
+		<ClInclude Include="..\..\engines\pink\constants.h" />
+		<ClInclude Include="..\..\engines\pink\cursor_mgr.h" />
+		<ClInclude Include="..\..\engines\pink\detection_tables.h" />
+		<ClInclude Include="..\..\engines\pink\file.h" />
 		<ClInclude Include="..\..\engines\pink\pda_mgr.h" />
 		<ClInclude Include="..\..\engines\pink\pink.h" />
 		<ClInclude Include="..\..\engines\pink\resource_mgr.h" />

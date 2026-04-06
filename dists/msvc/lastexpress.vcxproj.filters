@@ -1,56 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="characters">
-			<UniqueIdentifier>EFDBA6AB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>FE011DE4-1B21-46A9-9B74-91737E47D071</UniqueIdentifier>
 		</Filter>
 		<Filter Include="characters\demo">
-			<UniqueIdentifier>EFDBA6AC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F53E802C-2102-471A-8036-C99FD46946EC</UniqueIdentifier>
 		</Filter>
 		<Filter Include="data">
-			<UniqueIdentifier>EFDBA6AD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>9B61AE82-79D8-47C1-A2A6-AA517182672C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="fight">
-			<UniqueIdentifier>EFDBA6AE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>47CD73F4-64F9-4EFD-9879-D56C24DA43B2</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game">
-			<UniqueIdentifier>EFDBA6AF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3DAEC2BA-8E5E-4608-9488-CFFD9897AAF0</UniqueIdentifier>
 		</Filter>
 		<Filter Include="menu">
-			<UniqueIdentifier>EFDBA6B0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B5C60AEC-B5FB-4410-91F6-3A3ED9B66C30</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound">
-			<UniqueIdentifier>EFDBA6B1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>43C063F3-666E-47A4-A647-CB94C92FA23A</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\lastexpress\characters\abbot.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\alexei.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\alouan.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\anna.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\august.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\clerk.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\cond1.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\cond2.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\characters\cook.cpp">
-			<Filter>characters</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\lastexpress\characters\demo\demo_abbot.cpp">
 			<Filter>characters\demo</Filter>
 		</ClCompile>
@@ -107,6 +80,33 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\lastexpress\characters\demo\demo_waiter1.cpp">
 			<Filter>characters\demo</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\abbot.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\alexei.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\alouan.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\anna.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\august.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\clerk.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\cond1.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\cond2.cpp">
+			<Filter>characters</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\characters\cook.cpp">
+			<Filter>characters</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\lastexpress\characters\francois.cpp">
 			<Filter>characters</Filter>
@@ -210,7 +210,6 @@
 		<ClCompile Include="..\..\engines\lastexpress\data\sprites.cpp">
 			<Filter>data</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\debug.cpp" />
 		<ClCompile Include="..\..\engines\lastexpress\fight\fight.cpp">
 			<Filter>fight</Filter>
 		</ClCompile>
@@ -268,16 +267,12 @@
 		<ClCompile Include="..\..\engines\lastexpress\game\vcr.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\graphics.cpp" />
-		<ClCompile Include="..\..\engines\lastexpress\lastexpress.cpp" />
-		<ClCompile Include="..\..\engines\lastexpress\memory.cpp" />
 		<ClCompile Include="..\..\engines\lastexpress\menu\clock.cpp">
 			<Filter>menu</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\lastexpress\menu\menu.cpp">
 			<Filter>menu</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\lastexpress\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\lastexpress\sound\driver.cpp">
 			<Filter>sound</Filter>
 		</ClCompile>
@@ -293,6 +288,11 @@
 		<ClCompile Include="..\..\engines\lastexpress\sound\subtitle.cpp">
 			<Filter>sound</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\lastexpress\debug.cpp" />
+		<ClCompile Include="..\..\engines\lastexpress\graphics.cpp" />
+		<ClCompile Include="..\..\engines\lastexpress\lastexpress.cpp" />
+		<ClCompile Include="..\..\engines\lastexpress\memory.cpp" />
+		<ClCompile Include="..\..\engines\lastexpress\metaengine.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="..\..\engines\lastexpress\data\archive.h">
@@ -307,7 +307,6 @@
 		<ClInclude Include="..\..\engines\lastexpress\data\sprites.h">
 			<Filter>data</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\lastexpress\debug.h" />
 		<ClInclude Include="..\..\engines\lastexpress\fight\fight.h">
 			<Filter>fight</Filter>
 		</ClInclude>
@@ -335,17 +334,12 @@
 		<ClInclude Include="..\..\engines\lastexpress\game\vcr.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\lastexpress\graphics.h" />
-		<ClInclude Include="..\..\engines\lastexpress\helpers.h" />
-		<ClInclude Include="..\..\engines\lastexpress\lastexpress.h" />
-		<ClInclude Include="..\..\engines\lastexpress\memory.h" />
 		<ClInclude Include="..\..\engines\lastexpress\menu\clock.h">
 			<Filter>menu</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\lastexpress\menu\menu.h">
 			<Filter>menu</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\lastexpress\shared.h" />
 		<ClInclude Include="..\..\engines\lastexpress\sound\slot.h">
 			<Filter>sound</Filter>
 		</ClInclude>
@@ -355,6 +349,12 @@
 		<ClInclude Include="..\..\engines\lastexpress\sound\subtitle.h">
 			<Filter>sound</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\lastexpress\debug.h" />
+		<ClInclude Include="..\..\engines\lastexpress\graphics.h" />
+		<ClInclude Include="..\..\engines\lastexpress\helpers.h" />
+		<ClInclude Include="..\..\engines\lastexpress\lastexpress.h" />
+		<ClInclude Include="..\..\engines\lastexpress\memory.h" />
+		<ClInclude Include="..\..\engines\lastexpress\shared.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\lastexpress\module.mk" />

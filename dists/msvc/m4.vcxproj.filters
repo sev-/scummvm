@@ -1,113 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="adv_db_r">
-			<UniqueIdentifier>EFDBA6B2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>EF2E12C9-9A4B-418F-92AA-B73D6CA8FB0E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="adv_r">
-			<UniqueIdentifier>EFDBA6B3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>C99C02FE-3BD7-4E93-BD8E-1F1101D7115C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger">
-			<UniqueIdentifier>EFDBA6B4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>637209D7-1F0F-4B5D-A011-B36AA4DDC780</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\core">
-			<UniqueIdentifier>EFDBA6B5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>574FBDC1-7455-46CA-8093-A877DC2D28B6</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\gui">
-			<UniqueIdentifier>EFDBA6B6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>E80E6FB7-4F5F-488B-BDDD-5BAE4585BBE8</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms">
-			<UniqueIdentifier>EFDBA6B7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>4774C1B6-351A-40BC-A7D6-985EF6EAAB3E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section1">
-			<UniqueIdentifier>EFDBA6B8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>5DA1408E-756F-43B8-99BE-7AA6D766A325</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section2">
-			<UniqueIdentifier>EFDBA6B9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>BCA4F503-EEEF-4854-8186-E4A99B42C903</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section3">
-			<UniqueIdentifier>EFDBA6BA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>9D3780B5-4EBC-499E-A8B0-E88D77FEDA0A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section4">
-			<UniqueIdentifier>EFDBA6BB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B68FA4DC-E073-4CE2-A02E-15F4EC1EA13D</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section5">
-			<UniqueIdentifier>EFDBA6BC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>954166FE-5E19-4B6E-83A9-002EEE290E57</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section6">
-			<UniqueIdentifier>EFDBA6BD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>41E618DF-D076-49AB-9373-262BF16E41E5</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section7">
-			<UniqueIdentifier>EFDBA6BE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>4987E29B-5B44-45B8-B4E1-8F4A40F260FD</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section8">
-			<UniqueIdentifier>EFDBA6BF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>DC5E5098-EED4-4536-836A-B013761E3B62</UniqueIdentifier>
 		</Filter>
 		<Filter Include="burger\rooms\section9">
-			<UniqueIdentifier>EFDBA6C0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B6894C00-78E7-425F-8EFB-555FDEE3C924</UniqueIdentifier>
 		</Filter>
 		<Filter Include="core">
-			<UniqueIdentifier>EFDBA6C1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>30B214A5-4CFB-46D2-94E7-1F362426F288</UniqueIdentifier>
 		</Filter>
 		<Filter Include="dbg">
-			<UniqueIdentifier>EFDBA6C2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F6A06404-9204-4C7D-84FD-FE8946B9436B</UniqueIdentifier>
 		</Filter>
 		<Filter Include="fileio">
-			<UniqueIdentifier>EFDBA6C3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>DEE4E4D7-9387-460D-8DF0-55BB8F9BA1D5</UniqueIdentifier>
 		</Filter>
 		<Filter Include="graphics">
-			<UniqueIdentifier>EFDBA6C4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>8685C234-0ECF-4F30-9066-18D43015FB86</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gui">
-			<UniqueIdentifier>EFDBA6C5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>21BEFDDE-10EF-44F2-B3B6-360F18FD486B</UniqueIdentifier>
 		</Filter>
 		<Filter Include="mem">
-			<UniqueIdentifier>EFDBA6C6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>9BC45A1C-38F7-4546-B575-2D37C3FAE549</UniqueIdentifier>
 		</Filter>
 		<Filter Include="platform">
-			<UniqueIdentifier>EFDBA6C7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>6060D2D8-CCD7-4334-B1D0-6BC7FA3FB774</UniqueIdentifier>
 		</Filter>
 		<Filter Include="platform\sound">
-			<UniqueIdentifier>EFDBA6C8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B0879F16-0E4D-468B-A3BB-C1B9FE27FDE2</UniqueIdentifier>
 		</Filter>
 		<Filter Include="platform\tile">
-			<UniqueIdentifier>EFDBA6C9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>5EFAABEC-3DAD-4B91-90A3-86F159055285</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle">
-			<UniqueIdentifier>EFDBA6CA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>45853D2E-EE41-4464-A2E8-551AE0FCE2B5</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\gui">
-			<UniqueIdentifier>EFDBA6CB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3F18B04A-485D-4148-8DBF-0F682786BA48</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms">
-			<UniqueIdentifier>EFDBA6CC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>50BDFD41-A07D-43CC-923F-71241CEE7240</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section2">
-			<UniqueIdentifier>EFDBA6CD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>0ABB380B-C438-4316-A896-EB9AF009EF58</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section3">
-			<UniqueIdentifier>EFDBA6CE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>347EF4CE-8AA7-4103-B35D-641C17A82F2A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section4">
-			<UniqueIdentifier>EFDBA6CF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>5D382D1F-0C3D-4BE1-B0DF-FAB22CAB47DE</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section5">
-			<UniqueIdentifier>EFDBA6D0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>C8089DE9-C24E-4A5D-9A75-D86E7E842F82</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section6">
-			<UniqueIdentifier>EFDBA6D1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>11471088-AACE-456A-A8FE-22B36C391A66</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section7">
-			<UniqueIdentifier>EFDBA6D2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>0BF4255B-C945-416B-AC93-2CE4178B4AF6</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section8">
-			<UniqueIdentifier>EFDBA6D3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>EB2894E7-80DF-4A6C-9260-55F4806D8146</UniqueIdentifier>
 		</Filter>
 		<Filter Include="riddle\rooms\section9">
-			<UniqueIdentifier>EFDBA6D4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>9B04892E-F40A-44C2-9A66-287345CAC199</UniqueIdentifier>
 		</Filter>
 		<Filter Include="wscript">
-			<UniqueIdentifier>EFDBA6D5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>674F1E8D-CD7C-4284-AE20-5FDE4A35C216</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -168,12 +168,6 @@
 		<ClCompile Include="..\..\engines\m4\adv_r\other.cpp">
 			<Filter>adv_r</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\burger.cpp">
-			<Filter>burger</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\console.cpp">
-			<Filter>burger</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\core\conv.cpp">
 			<Filter>burger\core</Filter>
 		</ClCompile>
@@ -185,9 +179,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\core\stream_break.cpp">
 			<Filter>burger\core</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\flags.cpp">
-			<Filter>burger</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\gui\game_menu.cpp">
 			<Filter>burger\gui</Filter>
@@ -201,19 +192,7 @@
 		<ClCompile Include="..\..\engines\m4\burger\gui\inventory.cpp">
 			<Filter>burger\gui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\hotkeys.cpp">
-			<Filter>burger</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\inventory.cpp">
-			<Filter>burger</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\other.cpp">
-			<Filter>burger</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\rooms\room.cpp">
-			<Filter>burger\rooms</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\burger\rooms\section.cpp">
 			<Filter>burger\rooms</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\rooms\section1\room101.cpp">
@@ -477,6 +456,27 @@
 		<ClCompile Include="..\..\engines\m4\burger\rooms\section9\section9.cpp">
 			<Filter>burger\rooms\section9</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\rooms\section.cpp">
+			<Filter>burger\rooms</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\burger.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\console.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\flags.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\hotkeys.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\inventory.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\burger\other.cpp">
+			<Filter>burger</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\burger\series_player.cpp">
 			<Filter>burger</Filter>
 		</ClCompile>
@@ -486,7 +486,6 @@
 		<ClCompile Include="..\..\engines\m4\burger\walker.cpp">
 			<Filter>burger</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\console.cpp" />
 		<ClCompile Include="..\..\engines\m4\core\cstring.cpp">
 			<Filter>core</Filter>
 		</ClCompile>
@@ -595,7 +594,6 @@
 		<ClCompile Include="..\..\engines\m4\gui\hotkeys.cpp">
 			<Filter>gui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\m4.cpp" />
 		<ClCompile Include="..\..\engines\m4\mem\mem.cpp">
 			<Filter>mem</Filter>
 		</ClCompile>
@@ -608,13 +606,6 @@
 		<ClCompile Include="..\..\engines\m4\mem\res.cpp">
 			<Filter>mem</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\m4\platform\draw.cpp">
-			<Filter>platform</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\platform\events.cpp">
-			<Filter>platform</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\platform\sound\digi.cpp">
 			<Filter>platform\sound</Filter>
 		</ClCompile>
@@ -624,14 +615,14 @@
 		<ClCompile Include="..\..\engines\m4\platform\tile\tile_read.cpp">
 			<Filter>platform\tile</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\platform\timer.cpp">
+		<ClCompile Include="..\..\engines\m4\platform\draw.cpp">
 			<Filter>platform</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\console.cpp">
-			<Filter>riddle</Filter>
+		<ClCompile Include="..\..\engines\m4\platform\events.cpp">
+			<Filter>platform</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\flags.cpp">
-			<Filter>riddle</Filter>
+		<ClCompile Include="..\..\engines\m4\platform\timer.cpp">
+			<Filter>platform</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\riddle\gui\game_menu.cpp">
 			<Filter>riddle\gui</Filter>
@@ -645,19 +636,7 @@
 		<ClCompile Include="..\..\engines\m4\riddle\gui\inventory.cpp">
 			<Filter>riddle\gui</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\hotkeys.cpp">
-			<Filter>riddle</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\inventory.cpp">
-			<Filter>riddle</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\riddle.cpp">
-			<Filter>riddle</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\riddle\rooms\room.cpp">
-			<Filter>riddle\rooms</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\riddle\rooms\section.cpp">
 			<Filter>riddle\rooms</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\riddle\rooms\section2\room201.cpp">
@@ -1035,6 +1014,24 @@
 		<ClCompile Include="..\..\engines\m4\riddle\rooms\section9\section9_room.cpp">
 			<Filter>riddle\rooms\section9</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\rooms\section.cpp">
+			<Filter>riddle\rooms</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\console.cpp">
+			<Filter>riddle</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\flags.cpp">
+			<Filter>riddle</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\hotkeys.cpp">
+			<Filter>riddle</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\inventory.cpp">
+			<Filter>riddle</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\riddle\riddle.cpp">
+			<Filter>riddle</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\m4\riddle\triggers.cpp">
 			<Filter>riddle</Filter>
 		</ClCompile>
@@ -1044,8 +1041,6 @@
 		<ClCompile Include="..\..\engines\m4\riddle\walker.cpp">
 			<Filter>riddle</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\m4\subtitles.cpp" />
-		<ClCompile Include="..\..\engines\m4\vars.cpp" />
 		<ClCompile Include="..\..\engines\m4\wscript\ws_cruncher.cpp">
 			<Filter>wscript</Filter>
 		</ClCompile>
@@ -1064,6 +1059,11 @@
 		<ClCompile Include="..\..\engines\m4\wscript\wst_regs.cpp">
 			<Filter>wscript</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\m4\console.cpp" />
+		<ClCompile Include="..\..\engines\m4\m4.cpp" />
+		<ClCompile Include="..\..\engines\m4\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\m4\subtitles.cpp" />
+		<ClCompile Include="..\..\engines\m4\vars.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="..\..\engines\m4\adv_db_r\database.h">
@@ -1135,12 +1135,6 @@
 		<ClInclude Include="..\..\engines\m4\adv_r\other.h">
 			<Filter>adv_r</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\burger.h">
-			<Filter>burger</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\console.h">
-			<Filter>burger</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\core\conv.h">
 			<Filter>burger\core</Filter>
 		</ClInclude>
@@ -1152,9 +1146,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\core\stream_break.h">
 			<Filter>burger\core</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\flags.h">
-			<Filter>burger</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\gui\game_menu.h">
 			<Filter>burger\gui</Filter>
@@ -1171,19 +1162,7 @@
 		<ClInclude Include="..\..\engines\m4\burger\gui\inventory.h">
 			<Filter>burger\gui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\hotkeys.h">
-			<Filter>burger</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\inventory.h">
-			<Filter>burger</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\other.h">
-			<Filter>burger</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\rooms\room.h">
-			<Filter>burger\rooms</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\burger\rooms\section.h">
 			<Filter>burger\rooms</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\rooms\section1\room101.h">
@@ -1447,6 +1426,27 @@
 		<ClInclude Include="..\..\engines\m4\burger\rooms\section9\section9.h">
 			<Filter>burger\rooms\section9</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\rooms\section.h">
+			<Filter>burger\rooms</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\burger.h">
+			<Filter>burger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\console.h">
+			<Filter>burger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\flags.h">
+			<Filter>burger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\hotkeys.h">
+			<Filter>burger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\inventory.h">
+			<Filter>burger</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\burger\other.h">
+			<Filter>burger</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\burger\series_player.h">
 			<Filter>burger</Filter>
 		</ClInclude>
@@ -1456,7 +1456,6 @@
 		<ClInclude Include="..\..\engines\m4\burger\walker.h">
 			<Filter>burger</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\console.h" />
 		<ClInclude Include="..\..\engines\m4\core\cstring.h">
 			<Filter>core</Filter>
 		</ClInclude>
@@ -1484,8 +1483,6 @@
 		<ClInclude Include="..\..\engines\m4\dbg\dbg_wscript.h">
 			<Filter>dbg</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\detection.h" />
-		<ClInclude Include="..\..\engines\m4\detection_tables.h" />
 		<ClInclude Include="..\..\engines\m4\fileio\extensions.h">
 			<Filter>fileio</Filter>
 		</ClInclude>
@@ -1585,8 +1582,6 @@
 		<ClInclude Include="..\..\engines\m4\gui\hotkeys.h">
 			<Filter>gui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\m4.h" />
-		<ClInclude Include="..\..\engines\m4\m4_types.h" />
 		<ClInclude Include="..\..\engines\m4\mem\mem.h">
 			<Filter>mem</Filter>
 		</ClInclude>
@@ -1599,16 +1594,6 @@
 		<ClInclude Include="..\..\engines\m4\mem\res.h">
 			<Filter>mem</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\metaengine.h" />
-		<ClInclude Include="..\..\engines\m4\platform\draw.h">
-			<Filter>platform</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\platform\events.h">
-			<Filter>platform</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\platform\keys.h">
-			<Filter>platform</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\platform\sound\digi.h">
 			<Filter>platform\sound</Filter>
 		</ClInclude>
@@ -1618,14 +1603,17 @@
 		<ClInclude Include="..\..\engines\m4\platform\tile\tile_read.h">
 			<Filter>platform\tile</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\platform\timer.h">
+		<ClInclude Include="..\..\engines\m4\platform\draw.h">
 			<Filter>platform</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\console.h">
-			<Filter>riddle</Filter>
+		<ClInclude Include="..\..\engines\m4\platform\events.h">
+			<Filter>platform</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\flags.h">
-			<Filter>riddle</Filter>
+		<ClInclude Include="..\..\engines\m4\platform\keys.h">
+			<Filter>platform</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\platform\timer.h">
+			<Filter>platform</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\riddle\gui\game_menu.h">
 			<Filter>riddle\gui</Filter>
@@ -1639,19 +1627,7 @@
 		<ClInclude Include="..\..\engines\m4\riddle\gui\inventory.h">
 			<Filter>riddle\gui</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\hotkeys.h">
-			<Filter>riddle</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\inventory.h">
-			<Filter>riddle</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\riddle.h">
-			<Filter>riddle</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\riddle\rooms\room.h">
-			<Filter>riddle\rooms</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\riddle\rooms\section.h">
 			<Filter>riddle\rooms</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\riddle\rooms\section2\room201.h">
@@ -2029,6 +2005,24 @@
 		<ClInclude Include="..\..\engines\m4\riddle\rooms\section9\section9_room.h">
 			<Filter>riddle\rooms\section9</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\rooms\section.h">
+			<Filter>riddle\rooms</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\console.h">
+			<Filter>riddle</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\flags.h">
+			<Filter>riddle</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\hotkeys.h">
+			<Filter>riddle</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\inventory.h">
+			<Filter>riddle</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\riddle\riddle.h">
+			<Filter>riddle</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\m4\riddle\triggers.h">
 			<Filter>riddle</Filter>
 		</ClInclude>
@@ -2038,8 +2032,6 @@
 		<ClInclude Include="..\..\engines\m4\riddle\walker.h">
 			<Filter>riddle</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\m4\subtitles.h" />
-		<ClInclude Include="..\..\engines\m4\vars.h" />
 		<ClInclude Include="..\..\engines\m4\wscript\ws_cruncher.h">
 			<Filter>wscript</Filter>
 		</ClInclude>
@@ -2061,6 +2053,14 @@
 		<ClInclude Include="..\..\engines\m4\wscript\wst_regs.h">
 			<Filter>wscript</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\m4\console.h" />
+		<ClInclude Include="..\..\engines\m4\detection.h" />
+		<ClInclude Include="..\..\engines\m4\detection_tables.h" />
+		<ClInclude Include="..\..\engines\m4\m4.h" />
+		<ClInclude Include="..\..\engines\m4\m4_types.h" />
+		<ClInclude Include="..\..\engines\m4\metaengine.h" />
+		<ClInclude Include="..\..\engines\m4\subtitles.h" />
+		<ClInclude Include="..\..\engines\m4\vars.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\m4\module.mk" />

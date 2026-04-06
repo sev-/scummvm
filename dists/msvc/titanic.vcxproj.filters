@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="carry">
-			<UniqueIdentifier>F5DE96B7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>8D9F276D-C871-4C6D-BEC4-92FDE4BDF690</UniqueIdentifier>
 		</Filter>
 		<Filter Include="core">
-			<UniqueIdentifier>F5DE96B8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>BA9E065F-D500-486A-8286-92917460FEBA</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game">
-			<UniqueIdentifier>F5DE96B9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>654EF44F-9C7B-4273-AAC0-678307581020</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\gondolier">
-			<UniqueIdentifier>F5DE96BA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>241ED90A-B601-45EF-B9AD-A20B2AA55824</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\maitred">
-			<UniqueIdentifier>F5DE96BB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>AA7DE4ED-E16C-403D-A0C1-F5B4E4E212EB</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\parrot">
-			<UniqueIdentifier>F5DE96BC-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>BBA8B3A7-E7CA-489D-B867-B0E583FDCFF1</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\pet">
-			<UniqueIdentifier>F5DE96BD-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>280563E8-B1EC-430A-B96F-D3315ECDF093</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\pickup">
-			<UniqueIdentifier>F5DE96BE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>CFDBB6D0-273B-4555-AB7A-910B64BDB35C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\placeholder">
-			<UniqueIdentifier>F5DE96BF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>C3E28D7B-B41A-42F0-8FD4-F03EE43D7EC6</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\sgt">
-			<UniqueIdentifier>F5DE96C0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>7EF85049-E5CF-4A1C-8AE9-F3D2CD4DCF1D</UniqueIdentifier>
 		</Filter>
 		<Filter Include="game\transport">
-			<UniqueIdentifier>F5DE96C1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>AAB2E9D8-8DB7-4543-BFA5-0578ED1D013C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="gfx">
-			<UniqueIdentifier>F5DE96C2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>27DE9E42-7915-4856-B191-EC2F67C28B8E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="messages">
-			<UniqueIdentifier>F5DE96C3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>4FE98CA6-EE14-4452-88F1-3B69F7B47A24</UniqueIdentifier>
 		</Filter>
 		<Filter Include="moves">
-			<UniqueIdentifier>F5DE96C4-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>109E0B1D-11CC-40D6-B870-FEE534A47F93</UniqueIdentifier>
 		</Filter>
 		<Filter Include="npcs">
-			<UniqueIdentifier>F5DE96C5-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>E1C5B92C-4F9C-4F8D-953F-B11B91E69B77</UniqueIdentifier>
 		</Filter>
 		<Filter Include="pet_control">
-			<UniqueIdentifier>F5DE96C6-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>6D49E3C0-9DA3-42C7-8298-F55535A06013</UniqueIdentifier>
 		</Filter>
 		<Filter Include="sound">
-			<UniqueIdentifier>F5DE96C7-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>A009C8FC-602F-4322-B556-AE43F0041CC2</UniqueIdentifier>
 		</Filter>
 		<Filter Include="star_control">
-			<UniqueIdentifier>F5DE96C8-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>99AE81B3-00BD-4EF8-B2B6-B955FAF97ECA</UniqueIdentifier>
 		</Filter>
 		<Filter Include="support">
-			<UniqueIdentifier>F5DE96C9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>FD498203-C684-4F51-9B6E-778AAAC69713</UniqueIdentifier>
 		</Filter>
 		<Filter Include="true_talk">
-			<UniqueIdentifier>F5DE96CA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B361A892-0E41-4A37-93EF-CCB9019736A4</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -177,7 +177,6 @@
 		<ClCompile Include="..\..\engines\titanic\carry\vision_centre.cpp">
 			<Filter>carry</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\continue_save_dialog.cpp" />
 		<ClCompile Include="..\..\engines\titanic\core\background.cpp">
 			<Filter>core</Filter>
 		</ClCompile>
@@ -250,8 +249,204 @@
 		<ClCompile Include="..\..\engines\titanic\core\view_item.cpp">
 			<Filter>core</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\debugger.cpp" />
-		<ClCompile Include="..\..\engines\titanic\events.cpp" />
+		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_base.cpp">
+			<Filter>game\gondolier</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_chest.cpp">
+			<Filter>game\gondolier</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_face.cpp">
+			<Filter>game\gondolier</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_mixer.cpp">
+			<Filter>game\gondolier</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_slider.cpp">
+			<Filter>game\gondolier</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_arm_holder.cpp">
+			<Filter>game\maitred</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_body.cpp">
+			<Filter>game\maitred</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_legs.cpp">
+			<Filter>game\maitred</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_prod_receptor.cpp">
+			<Filter>game\maitred</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_controller.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_link_updater.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_object.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_view_object.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_loser.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_nut_bowl_actor.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_nut_eater.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_perch_holder.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_trigger.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\parrot\player_meets_parrot.cpp">
+			<Filter>game\parrot</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class1.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class2.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class3.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_lift.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_monitor.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_pellerator.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_position.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_sentinal.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_sounds.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_transition.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pet\pet_transport.cpp">
+			<Filter>game\pet</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_bar_glass.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_hose.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_lemon.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_speech_centre.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_vis_centre.cpp">
+			<Filter>game\pickup</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\placeholder\bar_shelf_vis_centre.cpp">
+			<Filter>game\placeholder</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\placeholder\lemon_on_bar.cpp">
+			<Filter>game\placeholder</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\placeholder\place_holder.cpp">
+			<Filter>game\placeholder</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\placeholder\tv_on_bar.cpp">
+			<Filter>game\placeholder</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\armchair.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\basin.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\bedfoot.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\bedhead.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\chest_of_drawers.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\desk.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\deskchair.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\drawer.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_doors.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_nav.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_navigation.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_restaurant_doors.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_state_control.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_state_room.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_tv.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_upper_doors_sound.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\toilet.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\vase.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\sgt\washstand.cpp">
+			<Filter>game\sgt</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\gondolier.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\lift.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\lift_indicator.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\pellerator.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\service_elevator.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\game\transport\transport.cpp">
+			<Filter>game\transport</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\announce.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
@@ -426,21 +621,6 @@
 		<ClCompile Include="..\..\engines\titanic\game\glass_smasher.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_base.cpp">
-			<Filter>game\gondolier</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_chest.cpp">
-			<Filter>game\gondolier</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_face.cpp">
-			<Filter>game\gondolier</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_mixer.cpp">
-			<Filter>game\gondolier</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\gondolier\gondolier_slider.cpp">
-			<Filter>game\gondolier</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\hammer_clip.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
@@ -482,18 +662,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\long_stick_dispenser.cpp">
 			<Filter>game</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_arm_holder.cpp">
-			<Filter>game\maitred</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_body.cpp">
-			<Filter>game\maitred</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_legs.cpp">
-			<Filter>game\maitred</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\maitred\maitred_prod_receptor.cpp">
-			<Filter>game\maitred</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\missiveomat.cpp">
 			<Filter>game</Filter>
@@ -543,72 +711,6 @@
 		<ClCompile Include="..\..\engines\titanic\game\nut_replacer.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_controller.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_link_updater.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_object.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_lobby_view_object.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_loser.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_nut_bowl_actor.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_nut_eater.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_perch_holder.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\parrot_trigger.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\parrot\player_meets_parrot.cpp">
-			<Filter>game\parrot</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class1.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class2.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_class3.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_lift.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_monitor.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_pellerator.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_position.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_sentinal.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_sounds.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_transition.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pet\pet_transport.cpp">
-			<Filter>game\pet</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\pet_disabler.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
@@ -618,38 +720,8 @@
 		<ClCompile Include="..\..\engines\titanic\game\phonograph_lid.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_bar_glass.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_hose.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_lemon.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_speech_centre.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\pickup\pick_up_vis_centre.cpp">
-			<Filter>game\pickup</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\place_holder_item.cpp">
 			<Filter>game</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\placeholder\bar_shelf_vis_centre.cpp">
-			<Filter>game\placeholder</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\placeholder\lemon_on_bar.cpp">
-			<Filter>game\placeholder</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\placeholder\place_holder.cpp">
-			<Filter>game\placeholder</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\placeholder\tv_on_bar.cpp">
-			<Filter>game\placeholder</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\play_music_button.cpp">
 			<Filter>game</Filter>
@@ -692,63 +764,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\service_elevator_window.cpp">
 			<Filter>game</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\armchair.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\basin.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\bedfoot.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\bedhead.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\chest_of_drawers.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\desk.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\deskchair.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\drawer.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_doors.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_nav.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_navigation.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_restaurant_doors.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_state_control.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_state_room.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_tv.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\sgt_upper_doors_sound.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\toilet.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\vase.cpp">
-			<Filter>game\sgt</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\sgt\washstand.cpp">
-			<Filter>game\sgt</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\ship_setting.cpp">
 			<Filter>game</Filter>
@@ -798,24 +813,6 @@
 		<ClCompile Include="..\..\engines\titanic\game\tow_parrot_nav.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\gondolier.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\lift.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\lift_indicator.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\pellerator.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\service_elevator.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game\transport\transport.cpp">
-			<Filter>game\transport</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\titanic\game\up_lighter.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
@@ -840,10 +837,6 @@
 		<ClCompile Include="..\..\engines\titanic\game\wheel_spin_horn.cpp">
 			<Filter>game</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\game_location.cpp" />
-		<ClCompile Include="..\..\engines\titanic\game_manager.cpp" />
-		<ClCompile Include="..\..\engines\titanic\game_state.cpp" />
-		<ClCompile Include="..\..\engines\titanic\game_view.cpp" />
 		<ClCompile Include="..\..\engines\titanic\gfx\act_button.cpp">
 			<Filter>gfx</Filter>
 		</ClCompile>
@@ -982,9 +975,6 @@
 		<ClCompile Include="..\..\engines\titanic\gfx\toggle_switch.cpp">
 			<Filter>gfx</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\input_handler.cpp" />
-		<ClCompile Include="..\..\engines\titanic\input_translator.cpp" />
-		<ClCompile Include="..\..\engines\titanic\main_game_window.cpp" />
 		<ClCompile Include="..\..\engines\titanic\messages\auto_sound_event.cpp">
 			<Filter>messages</Filter>
 		</ClCompile>
@@ -1006,7 +996,6 @@
 		<ClCompile Include="..\..\engines\titanic\messages\service_elevator_door.cpp">
 			<Filter>messages</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\titanic\moves\call_pellerator.cpp">
 			<Filter>moves</Filter>
 		</ClCompile>
@@ -1229,7 +1218,6 @@
 		<ClCompile Include="..\..\engines\titanic\pet_control\pet_translation.cpp">
 			<Filter>pet_control</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\room_flags.cpp" />
 		<ClCompile Include="..\..\engines\titanic\sound\audio_buffer.cpp">
 			<Filter>sound</Filter>
 		</ClCompile>
@@ -1485,7 +1473,6 @@
 		<ClCompile Include="..\..\engines\titanic\support\video_surface.cpp">
 			<Filter>support</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\titanic\titanic.cpp" />
 		<ClCompile Include="..\..\engines\titanic\true_talk\barbot_script.cpp">
 			<Filter>true_talk</Filter>
 		</ClCompile>
@@ -1603,6 +1590,19 @@
 		<ClCompile Include="..\..\engines\titanic\true_talk\tt_word.cpp">
 			<Filter>true_talk</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\titanic\continue_save_dialog.cpp" />
+		<ClCompile Include="..\..\engines\titanic\debugger.cpp" />
+		<ClCompile Include="..\..\engines\titanic\events.cpp" />
+		<ClCompile Include="..\..\engines\titanic\game_location.cpp" />
+		<ClCompile Include="..\..\engines\titanic\game_manager.cpp" />
+		<ClCompile Include="..\..\engines\titanic\game_state.cpp" />
+		<ClCompile Include="..\..\engines\titanic\game_view.cpp" />
+		<ClCompile Include="..\..\engines\titanic\input_handler.cpp" />
+		<ClCompile Include="..\..\engines\titanic\input_translator.cpp" />
+		<ClCompile Include="..\..\engines\titanic\main_game_window.cpp" />
+		<ClCompile Include="..\..\engines\titanic\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\titanic\room_flags.cpp" />
+		<ClCompile Include="..\..\engines\titanic\titanic.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="..\..\engines\titanic\carry\arm.h">
@@ -1719,7 +1719,6 @@
 		<ClInclude Include="..\..\engines\titanic\carry\vision_centre.h">
 			<Filter>carry</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\continue_save_dialog.h" />
 		<ClInclude Include="..\..\engines\titanic\core\background.h">
 			<Filter>core</Filter>
 		</ClInclude>
@@ -1792,10 +1791,210 @@
 		<ClInclude Include="..\..\engines\titanic\core\view_item.h">
 			<Filter>core</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\debugger.h" />
-		<ClInclude Include="..\..\engines\titanic\detection.h" />
-		<ClInclude Include="..\..\engines\titanic\detection_tables.h" />
-		<ClInclude Include="..\..\engines\titanic\events.h" />
+		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_base.h">
+			<Filter>game\gondolier</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_chest.h">
+			<Filter>game\gondolier</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_face.h">
+			<Filter>game\gondolier</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_mixer.h">
+			<Filter>game\gondolier</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_slider.h">
+			<Filter>game\gondolier</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_arm_holder.h">
+			<Filter>game\maitred</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_body.h">
+			<Filter>game\maitred</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_legs.h">
+			<Filter>game\maitred</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_prod_receptor.h">
+			<Filter>game\maitred</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_controller.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_link_updater.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_object.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_view_object.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_loser.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_nut_bowl_actor.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_nut_eater.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_perch_holder.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_trigger.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\parrot\player_meets_parrot.h">
+			<Filter>game\parrot</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class1.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class2.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class3.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_lift.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_monitor.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_pellerator.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_position.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_sentinal.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_sounds.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_transition.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_transport.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pet\pet_val_base.h">
+			<Filter>game\pet</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_bar_glass.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_hose.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_lemon.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_speech_centre.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_vis_centre.h">
+			<Filter>game\pickup</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\placeholder\bar_shelf_vis_centre.h">
+			<Filter>game\placeholder</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\placeholder\lemon_on_bar.h">
+			<Filter>game\placeholder</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\placeholder\place_holder.h">
+			<Filter>game\placeholder</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\placeholder\tv_on_bar.h">
+			<Filter>game\placeholder</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\armchair.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\basin.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\bedfoot.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\bedhead.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\chest_of_drawers.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\desk.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\deskchair.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\drawer.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_doors.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_nav.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_navigation.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_restaurant_doors.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_state_control.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_state_room.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_tv.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_upper_doors_sound.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\toilet.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\vase.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\sgt\washstand.h">
+			<Filter>game\sgt</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\exit_pellerator.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\gondolier.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\lift.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\lift_indicator.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\pellerator.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\service_elevator.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\game\transport\transport.h">
+			<Filter>game\transport</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\announce.h">
 			<Filter>game</Filter>
 		</ClInclude>
@@ -1970,21 +2169,6 @@
 		<ClInclude Include="..\..\engines\titanic\game\glass_smasher.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_base.h">
-			<Filter>game\gondolier</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_chest.h">
-			<Filter>game\gondolier</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_face.h">
-			<Filter>game\gondolier</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_mixer.h">
-			<Filter>game\gondolier</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\gondolier\gondolier_slider.h">
-			<Filter>game\gondolier</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\hammer_clip.h">
 			<Filter>game</Filter>
 		</ClInclude>
@@ -2026,18 +2210,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\long_stick_dispenser.h">
 			<Filter>game</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_arm_holder.h">
-			<Filter>game\maitred</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_body.h">
-			<Filter>game\maitred</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_legs.h">
-			<Filter>game\maitred</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\maitred\maitred_prod_receptor.h">
-			<Filter>game\maitred</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\missiveomat.h">
 			<Filter>game</Filter>
@@ -2087,75 +2259,6 @@
 		<ClInclude Include="..\..\engines\titanic\game\nut_replacer.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_controller.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_link_updater.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_object.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_lobby_view_object.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_loser.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_nut_bowl_actor.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_nut_eater.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_perch_holder.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\parrot_trigger.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\parrot\player_meets_parrot.h">
-			<Filter>game\parrot</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class1.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class2.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_class3.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_lift.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_monitor.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_pellerator.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_position.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_sentinal.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_sounds.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_transition.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_transport.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pet\pet_val_base.h">
-			<Filter>game\pet</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\pet_disabler.h">
 			<Filter>game</Filter>
 		</ClInclude>
@@ -2165,38 +2268,8 @@
 		<ClInclude Include="..\..\engines\titanic\game\phonograph_lid.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_bar_glass.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_hose.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_lemon.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_speech_centre.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\pickup\pick_up_vis_centre.h">
-			<Filter>game\pickup</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\place_holder_item.h">
 			<Filter>game</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\placeholder\bar_shelf_vis_centre.h">
-			<Filter>game\placeholder</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\placeholder\lemon_on_bar.h">
-			<Filter>game\placeholder</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\placeholder\place_holder.h">
-			<Filter>game\placeholder</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\placeholder\tv_on_bar.h">
-			<Filter>game\placeholder</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\play_music_button.h">
 			<Filter>game</Filter>
@@ -2239,63 +2312,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\service_elevator_window.h">
 			<Filter>game</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\armchair.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\basin.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\bedfoot.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\bedhead.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\chest_of_drawers.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\desk.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\deskchair.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\drawer.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_doors.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_nav.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_navigation.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_restaurant_doors.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_state_control.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_state_room.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_tv.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\sgt_upper_doors_sound.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\toilet.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\vase.h">
-			<Filter>game\sgt</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\sgt\washstand.h">
-			<Filter>game\sgt</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\ship_setting.h">
 			<Filter>game</Filter>
@@ -2345,27 +2361,6 @@
 		<ClInclude Include="..\..\engines\titanic\game\tow_parrot_nav.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\exit_pellerator.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\gondolier.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\lift.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\lift_indicator.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\pellerator.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\service_elevator.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game\transport\transport.h">
-			<Filter>game\transport</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\titanic\game\up_lighter.h">
 			<Filter>game</Filter>
 		</ClInclude>
@@ -2390,10 +2385,6 @@
 		<ClInclude Include="..\..\engines\titanic\game\wheel_spin_horn.h">
 			<Filter>game</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\game_location.h" />
-		<ClInclude Include="..\..\engines\titanic\game_manager.h" />
-		<ClInclude Include="..\..\engines\titanic\game_state.h" />
-		<ClInclude Include="..\..\engines\titanic\game_view.h" />
 		<ClInclude Include="..\..\engines\titanic\gfx\act_button.h">
 			<Filter>gfx</Filter>
 		</ClInclude>
@@ -2532,9 +2523,6 @@
 		<ClInclude Include="..\..\engines\titanic\gfx\toggle_switch.h">
 			<Filter>gfx</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\input_handler.h" />
-		<ClInclude Include="..\..\engines\titanic\input_translator.h" />
-		<ClInclude Include="..\..\engines\titanic\main_game_window.h" />
 		<ClInclude Include="..\..\engines\titanic\messages\auto_sound_event.h">
 			<Filter>messages</Filter>
 		</ClInclude>
@@ -2781,7 +2769,6 @@
 		<ClInclude Include="..\..\engines\titanic\pet_control\pet_translation.h">
 			<Filter>pet_control</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\room_flags.h" />
 		<ClInclude Include="..\..\engines\titanic\sound\audio_buffer.h">
 			<Filter>sound</Filter>
 		</ClInclude>
@@ -3046,8 +3033,6 @@
 		<ClInclude Include="..\..\engines\titanic\support\video_surface.h">
 			<Filter>support</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\titanic\titanic.h" />
-		<ClInclude Include="..\..\engines\titanic\translation.h" />
 		<ClInclude Include="..\..\engines\titanic\true_talk\barbot_script.h">
 			<Filter>true_talk</Filter>
 		</ClInclude>
@@ -3165,6 +3150,21 @@
 		<ClInclude Include="..\..\engines\titanic\true_talk\tt_word.h">
 			<Filter>true_talk</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\titanic\continue_save_dialog.h" />
+		<ClInclude Include="..\..\engines\titanic\debugger.h" />
+		<ClInclude Include="..\..\engines\titanic\detection.h" />
+		<ClInclude Include="..\..\engines\titanic\detection_tables.h" />
+		<ClInclude Include="..\..\engines\titanic\events.h" />
+		<ClInclude Include="..\..\engines\titanic\game_location.h" />
+		<ClInclude Include="..\..\engines\titanic\game_manager.h" />
+		<ClInclude Include="..\..\engines\titanic\game_state.h" />
+		<ClInclude Include="..\..\engines\titanic\game_view.h" />
+		<ClInclude Include="..\..\engines\titanic\input_handler.h" />
+		<ClInclude Include="..\..\engines\titanic\input_translator.h" />
+		<ClInclude Include="..\..\engines\titanic\main_game_window.h" />
+		<ClInclude Include="..\..\engines\titanic\room_flags.h" />
+		<ClInclude Include="..\..\engines\titanic\titanic.h" />
+		<ClInclude Include="..\..\engines\titanic\translation.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\titanic\module.mk" />

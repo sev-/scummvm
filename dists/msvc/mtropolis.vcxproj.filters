@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="plugin">
-			<UniqueIdentifier>EFDBA6EE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>32E517E9-5CBA-4EAC-9381-AD1E344A2B2E</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\mtropolis\asset_factory.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\assets.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\audio_player.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\boot.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\core.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\coroutine_exec.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\coroutine_manager.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\coroutines.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\data.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\debug.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\element_factory.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\elements.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\hacks.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\miniscript.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\modifier_factory.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\modifiers.cpp" />
-		<ClCompile Include="..\..\engines\mtropolis\mtropolis.cpp" />
 		<ClCompile Include="..\..\engines\mtropolis\plugin\axlogic.cpp">
 			<Filter>plugin</Filter>
 		</ClCompile>
@@ -96,6 +78,24 @@
 		<ClCompile Include="..\..\engines\mtropolis\plugin\thereware_data.cpp">
 			<Filter>plugin</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\mtropolis\asset_factory.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\assets.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\audio_player.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\boot.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\core.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\coroutine_exec.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\coroutine_manager.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\coroutines.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\data.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\debug.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\element_factory.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\elements.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\hacks.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\miniscript.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\modifier_factory.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\modifiers.cpp" />
+		<ClCompile Include="..\..\engines\mtropolis\mtropolis.cpp" />
 		<ClCompile Include="..\..\engines\mtropolis\render.cpp" />
 		<ClCompile Include="..\..\engines\mtropolis\runtime.cpp" />
 		<ClCompile Include="..\..\engines\mtropolis\saveload.cpp" />
@@ -104,30 +104,6 @@
 		<ClCompile Include="..\..\engines\mtropolis\vthread.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\mtropolis\actions.h" />
-		<ClInclude Include="..\..\engines\mtropolis\asset_factory.h" />
-		<ClInclude Include="..\..\engines\mtropolis\assets.h" />
-		<ClInclude Include="..\..\engines\mtropolis\audio_player.h" />
-		<ClInclude Include="..\..\engines\mtropolis\boot.h" />
-		<ClInclude Include="..\..\engines\mtropolis\core.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutine_compiler.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutine_exec.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutine_manager.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutine_protos.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutine_return_value.h" />
-		<ClInclude Include="..\..\engines\mtropolis\coroutines.h" />
-		<ClInclude Include="..\..\engines\mtropolis\data.h" />
-		<ClInclude Include="..\..\engines\mtropolis\debug.h" />
-		<ClInclude Include="..\..\engines\mtropolis\detection.h" />
-		<ClInclude Include="..\..\engines\mtropolis\detection_tables.h" />
-		<ClInclude Include="..\..\engines\mtropolis\element_factory.h" />
-		<ClInclude Include="..\..\engines\mtropolis\elements.h" />
-		<ClInclude Include="..\..\engines\mtropolis\hacks.h" />
-		<ClInclude Include="..\..\engines\mtropolis\miniscript.h" />
-		<ClInclude Include="..\..\engines\mtropolis\miniscript_protos.h" />
-		<ClInclude Include="..\..\engines\mtropolis\modifier_factory.h" />
-		<ClInclude Include="..\..\engines\mtropolis\modifiers.h" />
-		<ClInclude Include="..\..\engines\mtropolis\mtropolis.h" />
 		<ClInclude Include="..\..\engines\mtropolis\plugin\axlogic.h">
 			<Filter>plugin</Filter>
 		</ClInclude>
@@ -200,6 +176,30 @@
 		<ClInclude Include="..\..\engines\mtropolis\plugin\thereware_data.h">
 			<Filter>plugin</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\mtropolis\actions.h" />
+		<ClInclude Include="..\..\engines\mtropolis\asset_factory.h" />
+		<ClInclude Include="..\..\engines\mtropolis\assets.h" />
+		<ClInclude Include="..\..\engines\mtropolis\audio_player.h" />
+		<ClInclude Include="..\..\engines\mtropolis\boot.h" />
+		<ClInclude Include="..\..\engines\mtropolis\core.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutine_compiler.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutine_exec.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutine_manager.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutine_protos.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutine_return_value.h" />
+		<ClInclude Include="..\..\engines\mtropolis\coroutines.h" />
+		<ClInclude Include="..\..\engines\mtropolis\data.h" />
+		<ClInclude Include="..\..\engines\mtropolis\debug.h" />
+		<ClInclude Include="..\..\engines\mtropolis\detection.h" />
+		<ClInclude Include="..\..\engines\mtropolis\detection_tables.h" />
+		<ClInclude Include="..\..\engines\mtropolis\element_factory.h" />
+		<ClInclude Include="..\..\engines\mtropolis\elements.h" />
+		<ClInclude Include="..\..\engines\mtropolis\hacks.h" />
+		<ClInclude Include="..\..\engines\mtropolis\miniscript.h" />
+		<ClInclude Include="..\..\engines\mtropolis\miniscript_protos.h" />
+		<ClInclude Include="..\..\engines\mtropolis\modifier_factory.h" />
+		<ClInclude Include="..\..\engines\mtropolis\modifiers.h" />
+		<ClInclude Include="..\..\engines\mtropolis\mtropolis.h" />
 		<ClInclude Include="..\..\engines\mtropolis\plugins.h" />
 		<ClInclude Include="..\..\engines\mtropolis\render.h" />
 		<ClInclude Include="..\..\engines\mtropolis\runtime.h" />

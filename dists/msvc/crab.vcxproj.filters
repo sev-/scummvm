@@ -1,56 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="TMX">
-			<UniqueIdentifier>EFDBA623-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F33246E4-14BC-403E-9C0C-D8668AB35561</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ai">
-			<UniqueIdentifier>EFDBA624-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>5583D815-D2CE-4F38-BAC0-5F0AE2E30C1A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="animation">
-			<UniqueIdentifier>EFDBA625-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>5BCF0C96-907D-4001-86DE-59BF096D586A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="event">
-			<UniqueIdentifier>EFDBA626-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>DCE621A6-2E28-4264-B3B0-7AEB67288CEE</UniqueIdentifier>
 		</Filter>
 		<Filter Include="image">
-			<UniqueIdentifier>EFDBA627-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>CF86045A-060E-4347-9315-019B83605CFD</UniqueIdentifier>
 		</Filter>
 		<Filter Include="input">
-			<UniqueIdentifier>EFDBA628-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3E7B0B49-2B07-400A-9434-13C7E2C70837</UniqueIdentifier>
 		</Filter>
 		<Filter Include="item">
-			<UniqueIdentifier>EFDBA629-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>1DCFFAC9-63F2-46AF-91BC-FBDA9CAE9B04</UniqueIdentifier>
 		</Filter>
 		<Filter Include="level">
-			<UniqueIdentifier>EFDBA62A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>50D2B0C0-4933-4135-9BFD-93325D7C4F90</UniqueIdentifier>
 		</Filter>
 		<Filter Include="music">
-			<UniqueIdentifier>EFDBA62B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F7DA5014-757E-44DD-8471-CBAE72684EF8</UniqueIdentifier>
 		</Filter>
 		<Filter Include="people">
-			<UniqueIdentifier>EFDBA62C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>67162F0A-4500-4C30-AD0B-601487EA172D</UniqueIdentifier>
 		</Filter>
 		<Filter Include="stat">
-			<UniqueIdentifier>EFDBA62D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>D5567593-50B5-4661-8DD4-ECFEFEED4311</UniqueIdentifier>
 		</Filter>
 		<Filter Include="text">
-			<UniqueIdentifier>EFDBA62E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>20B40D97-BE74-452B-9DD5-A7ED98F2009C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui">
-			<UniqueIdentifier>EFDBA62F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>7879FD3E-82D4-49A0-A69F-E898AFBE8144</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\crab\GameParam.cpp" />
-		<ClCompile Include="..\..\engines\crab\LoadingScreen.cpp" />
-		<ClCompile Include="..\..\engines\crab\PathfindingAgent.cpp" />
-		<ClCompile Include="..\..\engines\crab\PathfindingGraphNode.cpp" />
-		<ClCompile Include="..\..\engines\crab\PathfindingGrid.cpp" />
-		<ClCompile Include="..\..\engines\crab\Polygon.cpp" />
-		<ClCompile Include="..\..\engines\crab\Rectangle.cpp" />
-		<ClCompile Include="..\..\engines\crab\ScreenSettings.cpp" />
-		<ClCompile Include="..\..\engines\crab\Shape.cpp" />
 		<ClCompile Include="..\..\engines\crab\TMX\TMXLayer.cpp">
 			<Filter>TMX</Filter>
 		</ClCompile>
@@ -60,8 +51,6 @@
 		<ClCompile Include="..\..\engines\crab\TMX\TMXTileSet.cpp">
 			<Filter>TMX</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\TTSHandler.cpp" />
-		<ClCompile Include="..\..\engines\crab\XMLDoc.cpp" />
 		<ClCompile Include="..\..\engines\crab\ai\SpriteConstant.cpp">
 			<Filter>ai</Filter>
 		</ClCompile>
@@ -107,10 +96,6 @@
 		<ClCompile Include="..\..\engines\crab\animation\walkframes.cpp">
 			<Filter>animation</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\app.cpp" />
-		<ClCompile Include="..\..\engines\crab\collision.cpp" />
-		<ClCompile Include="..\..\engines\crab\console.cpp" />
-		<ClCompile Include="..\..\engines\crab\crab.cpp" />
 		<ClCompile Include="..\..\engines\crab\event\EventSeqGroup.cpp">
 			<Filter>event</Filter>
 		</ClCompile>
@@ -144,8 +129,6 @@
 		<ClCompile Include="..\..\engines\crab\event\triggerset.cpp">
 			<Filter>event</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\filesystem.cpp" />
-		<ClCompile Include="..\..\engines\crab\game.cpp" />
 		<ClCompile Include="..\..\engines\crab\image\Image.cpp">
 			<Filter>image</Filter>
 		</ClCompile>
@@ -209,9 +192,6 @@
 		<ClCompile Include="..\..\engines\crab\level\talknotify.cpp">
 			<Filter>level</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\loaders.cpp" />
-		<ClCompile Include="..\..\engines\crab\mainmenu.cpp" />
-		<ClCompile Include="..\..\engines\crab\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\crab\music\MusicManager.cpp">
 			<Filter>music</Filter>
 		</ClCompile>
@@ -227,7 +207,6 @@
 		<ClCompile Include="..\..\engines\crab\people\trait.cpp">
 			<Filter>people</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\splash.cpp" />
 		<ClCompile Include="..\..\engines\crab\stat\Stat.cpp">
 			<Filter>stat</Filter>
 		</ClCompile>
@@ -243,7 +222,6 @@
 		<ClCompile Include="..\..\engines\crab\text\color.cpp">
 			<Filter>text</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\crab\timer.cpp" />
 		<ClCompile Include="..\..\engines\crab\ui\AlphaImage.cpp">
 			<Filter>ui</Filter>
 		</ClCompile>
@@ -385,21 +363,30 @@
 		<ClCompile Include="..\..\engines\crab\ui\textdata.cpp">
 			<Filter>ui</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\crab\GameParam.cpp" />
+		<ClCompile Include="..\..\engines\crab\LoadingScreen.cpp" />
+		<ClCompile Include="..\..\engines\crab\PathfindingAgent.cpp" />
+		<ClCompile Include="..\..\engines\crab\PathfindingGraphNode.cpp" />
+		<ClCompile Include="..\..\engines\crab\PathfindingGrid.cpp" />
+		<ClCompile Include="..\..\engines\crab\Polygon.cpp" />
+		<ClCompile Include="..\..\engines\crab\Rectangle.cpp" />
+		<ClCompile Include="..\..\engines\crab\ScreenSettings.cpp" />
+		<ClCompile Include="..\..\engines\crab\Shape.cpp" />
+		<ClCompile Include="..\..\engines\crab\TTSHandler.cpp" />
+		<ClCompile Include="..\..\engines\crab\XMLDoc.cpp" />
+		<ClCompile Include="..\..\engines\crab\app.cpp" />
+		<ClCompile Include="..\..\engines\crab\collision.cpp" />
+		<ClCompile Include="..\..\engines\crab\console.cpp" />
+		<ClCompile Include="..\..\engines\crab\crab.cpp" />
+		<ClCompile Include="..\..\engines\crab\filesystem.cpp" />
+		<ClCompile Include="..\..\engines\crab\game.cpp" />
+		<ClCompile Include="..\..\engines\crab\loaders.cpp" />
+		<ClCompile Include="..\..\engines\crab\mainmenu.cpp" />
+		<ClCompile Include="..\..\engines\crab\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\crab\splash.cpp" />
+		<ClCompile Include="..\..\engines\crab\timer.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\crab\GameClock.h" />
-		<ClInclude Include="..\..\engines\crab\GameParam.h" />
-		<ClInclude Include="..\..\engines\crab\LevelResult.h" />
-		<ClInclude Include="..\..\engines\crab\Line.h" />
-		<ClInclude Include="..\..\engines\crab\LoadingScreen.h" />
-		<ClInclude Include="..\..\engines\crab\PathfindingAgent.h" />
-		<ClInclude Include="..\..\engines\crab\PathfindingGraphNode.h" />
-		<ClInclude Include="..\..\engines\crab\PathfindingGrid.h" />
-		<ClInclude Include="..\..\engines\crab\Polygon.h" />
-		<ClInclude Include="..\..\engines\crab\PriorityQueue.h" />
-		<ClInclude Include="..\..\engines\crab\Rectangle.h" />
-		<ClInclude Include="..\..\engines\crab\ScreenSettings.h" />
-		<ClInclude Include="..\..\engines\crab\Shape.h" />
 		<ClInclude Include="..\..\engines\crab\TMX\TMXLayer.h">
 			<Filter>TMX</Filter>
 		</ClInclude>
@@ -412,8 +399,6 @@
 		<ClInclude Include="..\..\engines\crab\TMX\TileInfo.h">
 			<Filter>TMX</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\TTSHandler.h" />
-		<ClInclude Include="..\..\engines\crab\XMLDoc.h" />
 		<ClInclude Include="..\..\engines\crab\ai\SpriteConstant.h">
 			<Filter>ai</Filter>
 		</ClInclude>
@@ -471,13 +456,6 @@
 		<ClInclude Include="..\..\engines\crab\animation\walkframes.h">
 			<Filter>animation</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\app.h" />
-		<ClInclude Include="..\..\engines\crab\backInserter.h" />
-		<ClInclude Include="..\..\engines\crab\collision.h" />
-		<ClInclude Include="..\..\engines\crab\color.h" />
-		<ClInclude Include="..\..\engines\crab\console.h" />
-		<ClInclude Include="..\..\engines\crab\crab.h" />
-		<ClInclude Include="..\..\engines\crab\detection.h" />
 		<ClInclude Include="..\..\engines\crab\event\EventSeqGroup.h">
 			<Filter>event</Filter>
 		</ClInclude>
@@ -514,11 +492,6 @@
 		<ClInclude Include="..\..\engines\crab\event\triggerset.h">
 			<Filter>event</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\filesystem.h" />
-		<ClInclude Include="..\..\engines\crab\game.h" />
-		<ClInclude Include="..\..\engines\crab\gamestate_container.h" />
-		<ClInclude Include="..\..\engines\crab\gamestates.h" />
-		<ClInclude Include="..\..\engines\crab\gametype.h" />
 		<ClInclude Include="..\..\engines\crab\image\Image.h">
 			<Filter>image</Filter>
 		</ClInclude>
@@ -570,17 +543,12 @@
 		<ClInclude Include="..\..\engines\crab\level\talknotify.h">
 			<Filter>level</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\levelpaths.h" />
-		<ClInclude Include="..\..\engines\crab\loaders.h" />
-		<ClInclude Include="..\..\engines\crab\mainmenu.h" />
-		<ClInclude Include="..\..\engines\crab\metaengine.h" />
 		<ClInclude Include="..\..\engines\crab\music\MusicManager.h">
 			<Filter>music</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\crab\music\musicparam.h">
 			<Filter>music</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\numstr.h" />
 		<ClInclude Include="..\..\engines\crab\people\opinion.h">
 			<Filter>people</Filter>
 		</ClInclude>
@@ -593,7 +561,6 @@
 		<ClInclude Include="..\..\engines\crab\people\trait.h">
 			<Filter>people</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\splash.h" />
 		<ClInclude Include="..\..\engines\crab\stat\Stat.h">
 			<Filter>stat</Filter>
 		</ClInclude>
@@ -612,7 +579,6 @@
 		<ClInclude Include="..\..\engines\crab\text\color.h">
 			<Filter>text</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\crab\timer.h" />
 		<ClInclude Include="..\..\engines\crab\ui\AlphaImage.h">
 			<Filter>ui</Filter>
 		</ClInclude>
@@ -775,6 +741,40 @@
 		<ClInclude Include="..\..\engines\crab\ui\textarea.h">
 			<Filter>ui</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\crab\GameClock.h" />
+		<ClInclude Include="..\..\engines\crab\GameParam.h" />
+		<ClInclude Include="..\..\engines\crab\LevelResult.h" />
+		<ClInclude Include="..\..\engines\crab\Line.h" />
+		<ClInclude Include="..\..\engines\crab\LoadingScreen.h" />
+		<ClInclude Include="..\..\engines\crab\PathfindingAgent.h" />
+		<ClInclude Include="..\..\engines\crab\PathfindingGraphNode.h" />
+		<ClInclude Include="..\..\engines\crab\PathfindingGrid.h" />
+		<ClInclude Include="..\..\engines\crab\Polygon.h" />
+		<ClInclude Include="..\..\engines\crab\PriorityQueue.h" />
+		<ClInclude Include="..\..\engines\crab\Rectangle.h" />
+		<ClInclude Include="..\..\engines\crab\ScreenSettings.h" />
+		<ClInclude Include="..\..\engines\crab\Shape.h" />
+		<ClInclude Include="..\..\engines\crab\TTSHandler.h" />
+		<ClInclude Include="..\..\engines\crab\XMLDoc.h" />
+		<ClInclude Include="..\..\engines\crab\app.h" />
+		<ClInclude Include="..\..\engines\crab\backInserter.h" />
+		<ClInclude Include="..\..\engines\crab\collision.h" />
+		<ClInclude Include="..\..\engines\crab\color.h" />
+		<ClInclude Include="..\..\engines\crab\console.h" />
+		<ClInclude Include="..\..\engines\crab\crab.h" />
+		<ClInclude Include="..\..\engines\crab\detection.h" />
+		<ClInclude Include="..\..\engines\crab\filesystem.h" />
+		<ClInclude Include="..\..\engines\crab\game.h" />
+		<ClInclude Include="..\..\engines\crab\gamestate_container.h" />
+		<ClInclude Include="..\..\engines\crab\gamestates.h" />
+		<ClInclude Include="..\..\engines\crab\gametype.h" />
+		<ClInclude Include="..\..\engines\crab\levelpaths.h" />
+		<ClInclude Include="..\..\engines\crab\loaders.h" />
+		<ClInclude Include="..\..\engines\crab\mainmenu.h" />
+		<ClInclude Include="..\..\engines\crab\metaengine.h" />
+		<ClInclude Include="..\..\engines\crab\numstr.h" />
+		<ClInclude Include="..\..\engines\crab\splash.h" />
+		<ClInclude Include="..\..\engines\crab\timer.h" />
 		<ClInclude Include="..\..\engines\crab\vectors.h" />
 	</ItemGroup>
 	<ItemGroup>

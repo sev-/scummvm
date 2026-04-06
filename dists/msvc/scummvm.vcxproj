@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup Label="ProjectConfigurations">
 		<ProjectConfiguration Include="Debug|Win32">
 			<Configuration>Debug</Configuration>
@@ -51,73 +51,70 @@
 		</ProjectConfiguration>
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{ECEA4AF3-126A-31E0-AEF8-E6F45E92DE9C}</ProjectGuid>
+		<ProjectGuid>{2085C743-473A-4039-BF35-65919BF10340}</ProjectGuid>
 		<RootNamespace>scummvm</RootNamespace>
 		<Keyword>Win32Proj</Keyword>
-		<VCTargetsPath Condition="'$(VCTargetsPath18)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath18)</VCTargetsPath>
+		<VCTargetsPath Condition="'$(VCTargetsPath14)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath14)</VCTargetsPath>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|arm64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|arm64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'" Label="Configuration">
 		<ConfigurationType>Application</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -1801,344 +1798,328 @@
 			<FileType>Document</FileType>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">true</BuildInParallel>
 		</CustomBuild>
 		<CustomBuild Include="..\..\graphics\scaler\hq3x_i386.asm">
 			<FileType>Document</FileType>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</BuildInParallel>
 			<Command Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">nasm.exe -f win32 -g -o "$(IntDir)graphics_scaler_%(Filename).obj" "%(FullPath)"</Command>
 			<Outputs Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">$(IntDir)graphics_scaler_%(Filename).obj;%(Outputs)</Outputs>
-			<OutputItemType Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">Object</OutputItemType>
-			<BuildInParallel Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'">true</BuildInParallel>
 		</CustomBuild>
 	</ItemGroup>
 	<ItemGroup>
 	<ProjectReference Include="access.vcxproj">
-		<Project>{B20BE4C6-E089-3BEF-9614-1F01A5557531}</Project>
+		<Project>{C6D5DBFD-AF06-461B-9AF0-B943A2502CC7}</Project>
 	</ProjectReference>
 	<ProjectReference Include="adl.vcxproj">
-		<Project>{A7D2A7ED-3679-3FC7-B03B-C55E612A3F7B}</Project>
+		<Project>{BA3662A8-0289-43BF-B920-151A8D68A686}</Project>
 	</ProjectReference>
 	<ProjectReference Include="agi.vcxproj">
-		<Project>{C660F55A-0E99-39E9-8879-6CB32B02F8F0}</Project>
+		<Project>{16C9CDC4-1601-448E-8BC1-C0B8488BA950}</Project>
 	</ProjectReference>
 	<ProjectReference Include="agos.vcxproj">
-		<Project>{1DAB72F0-9644-3165-865C-0AE87DA59CF2}</Project>
+		<Project>{9D814079-722A-4794-B4B2-1BF57C65C571}</Project>
 	</ProjectReference>
 	<ProjectReference Include="ags.vcxproj">
-		<Project>{F08A3076-F19B-39E4-B3A2-72F09E331A4A}</Project>
+		<Project>{9DC16087-2E0D-4026-A340-66F59F97BD28}</Project>
 	</ProjectReference>
 	<ProjectReference Include="alcachofa.vcxproj">
-		<Project>{48892AF2-980B-303F-A787-A30015732F2F}</Project>
+		<Project>{1CAA4EF4-9ADA-45D3-8F7E-2AD34C3F45AA}</Project>
 	</ProjectReference>
 	<ProjectReference Include="alg.vcxproj">
-		<Project>{BF2A86C2-336F-3EE8-B679-327823797DEF}</Project>
+		<Project>{B79B25D3-9F33-40F5-9157-F6C9FE1CABFD}</Project>
 	</ProjectReference>
 	<ProjectReference Include="asylum.vcxproj">
-		<Project>{D2638735-944A-36AF-BC8C-8169AA5CBD36}</Project>
+		<Project>{AD33E9D5-8E4A-4D4C-A484-5E54E3EDDF89}</Project>
 	</ProjectReference>
 	<ProjectReference Include="awe.vcxproj">
-		<Project>{671B7CAC-9C84-356C-9088-85CBD15BE5EC}</Project>
+		<Project>{9EB5EE55-CFE5-4857-97F2-AC31AF34A0F4}</Project>
 	</ProjectReference>
 	<ProjectReference Include="bagel.vcxproj">
-		<Project>{1682E3E8-B4BF-348E-A00C-81267DB52CE5}</Project>
+		<Project>{1DA78742-2840-49AF-8ED3-E473C5353044}</Project>
 	</ProjectReference>
 	<ProjectReference Include="bbvs.vcxproj">
-		<Project>{085128FA-84D5-3ED6-890C-A1CC39DB3701}</Project>
+		<Project>{C8807703-ACF0-4672-8437-C93AD859377B}</Project>
 	</ProjectReference>
 	<ProjectReference Include="bladerunner.vcxproj">
-		<Project>{32D59313-44A1-3CC2-AC13-DE5916EBE514}</Project>
+		<Project>{0A6E23AF-B59C-4B81-974B-FC877EF400D5}</Project>
 	</ProjectReference>
 	<ProjectReference Include="buried.vcxproj">
-		<Project>{ED5D36D8-68B0-3A25-B9C5-FA2DBDABCF38}</Project>
+		<Project>{1CA60C59-EA73-468E-9065-AE1D67EC0F02}</Project>
 	</ProjectReference>
 	<ProjectReference Include="cge.vcxproj">
-		<Project>{37EB5338-FB2A-349E-A897-0B0D90739D1B}</Project>
+		<Project>{8E8B5EF3-64F9-414B-8B4F-C693C9809436}</Project>
 	</ProjectReference>
 	<ProjectReference Include="cge2.vcxproj">
-		<Project>{0484D058-6344-36A7-8ABC-44A9C28CF6F7}</Project>
+		<Project>{8955EA12-6349-4258-8D3F-0494BEBC7AC8}</Project>
 	</ProjectReference>
 	<ProjectReference Include="chewy.vcxproj">
-		<Project>{5DB999DF-71AE-3922-8503-BF0772EC131F}</Project>
+		<Project>{13195C55-0CDB-4B58-81C5-7196EA0C4D60}</Project>
 	</ProjectReference>
 	<ProjectReference Include="cine.vcxproj">
-		<Project>{63643830-B54A-30FE-9A3B-C43DDA1A3FAC}</Project>
+		<Project>{F7A3F4E0-FA99-445D-A242-96B7EFB5C833}</Project>
 	</ProjectReference>
 	<ProjectReference Include="composer.vcxproj">
-		<Project>{505C81BD-2E55-329B-994D-CB880B3439B5}</Project>
+		<Project>{3CDB3C09-E4E8-41FE-9379-ABBC9A794651}</Project>
 	</ProjectReference>
 	<ProjectReference Include="crab.vcxproj">
-		<Project>{96FD22B1-C4BB-3601-93C0-AE6E696C335E}</Project>
+		<Project>{A210D233-85D1-48BC-8C68-9444CDDBF182}</Project>
 	</ProjectReference>
 	<ProjectReference Include="cruise.vcxproj">
-		<Project>{DFF9692E-C648-3760-97A5-93381B836789}</Project>
+		<Project>{881D12E9-9325-479D-8239-18498FF315B4}</Project>
 	</ProjectReference>
 	<ProjectReference Include="cryomni3d.vcxproj">
-		<Project>{1D76BB75-8D69-35A4-84F5-9824AA6492BB}</Project>
+		<Project>{1CB7DC9D-CC4A-49F6-B7BB-DBB73FBE06D9}</Project>
 	</ProjectReference>
 	<ProjectReference Include="darkseed.vcxproj">
-		<Project>{CFB2F956-0D0F-3FEF-9B87-FDC1A36CA1A0}</Project>
+		<Project>{B099D113-15BF-4967-B924-E98D2F367702}</Project>
 	</ProjectReference>
 	<ProjectReference Include="dgds.vcxproj">
-		<Project>{2B9612A0-C18E-3923-89D6-8328013D78F2}</Project>
+		<Project>{69390D00-18B7-4363-908D-1F81424B2DFC}</Project>
 	</ProjectReference>
 	<ProjectReference Include="director.vcxproj">
-		<Project>{1F6E45F5-A4CC-3D20-9F15-908863D1A5B9}</Project>
+		<Project>{B1B852AB-C4F3-4DE8-BC73-FEB58A75F969}</Project>
 	</ProjectReference>
 	<ProjectReference Include="draci.vcxproj">
-		<Project>{7BEF05FD-F300-3C25-823B-6BE5F2A15614}</Project>
+		<Project>{37541F55-2E35-4C6B-9F1D-E7C940E689DE}</Project>
 	</ProjectReference>
 	<ProjectReference Include="dragons.vcxproj">
-		<Project>{29FA5703-5B3F-3F53-AC71-6CBBCC20314F}</Project>
+		<Project>{F4510FD2-3E0A-4FF9-8533-63960EC2FCBB}</Project>
 	</ProjectReference>
 	<ProjectReference Include="drascula.vcxproj">
-		<Project>{2B16E879-A8BA-3D29-99CA-F6F72B621269}</Project>
+		<Project>{4AFD27EC-6486-44AB-90DA-AE5A7C2D57D3}</Project>
 	</ProjectReference>
 	<ProjectReference Include="dreamweb.vcxproj">
-		<Project>{CB66C83C-DB28-3BB3-904E-522FD8E4EB95}</Project>
+		<Project>{1751DE3E-8245-47FB-B4DB-B6E890A05D26}</Project>
 	</ProjectReference>
 	<ProjectReference Include="efh.vcxproj">
-		<Project>{552F4941-F444-3A55-B960-766A22BAC181}</Project>
+		<Project>{454E3F3C-40CC-4A04-89F7-8D18B47C2A25}</Project>
 	</ProjectReference>
 	<ProjectReference Include="freescape.vcxproj">
-		<Project>{91381BCC-F314-3F5F-A709-2DB7BA9F3DA1}</Project>
+		<Project>{5BD14D2B-3415-4308-8328-CE757F257762}</Project>
 	</ProjectReference>
 	<ProjectReference Include="glk.vcxproj">
-		<Project>{0D01C69A-EDE1-311D-B26D-ACB7D1600101}</Project>
+		<Project>{B275C5CB-ED38-4F98-930B-EAA7907FF7AF}</Project>
 	</ProjectReference>
 	<ProjectReference Include="gnap.vcxproj">
-		<Project>{7064A075-E2C6-3577-A651-50FED0B655EC}</Project>
+		<Project>{BC51272A-7664-4C27-9405-8F7E795CA661}</Project>
 	</ProjectReference>
 	<ProjectReference Include="gob.vcxproj">
-		<Project>{46611E37-2506-38B2-99C6-F5CBFE792D5A}</Project>
+		<Project>{FA345D19-D2C9-4A0B-92BC-A348D0099220}</Project>
 	</ProjectReference>
 	<ProjectReference Include="got.vcxproj">
-		<Project>{047CA3F1-CD28-3967-8992-B5659626AB30}</Project>
+		<Project>{8A569FED-D06D-4727-BAB5-8E5A61C552C6}</Project>
 	</ProjectReference>
 	<ProjectReference Include="griffon.vcxproj">
-		<Project>{A65EE75D-37E4-3C30-844A-78422F550B84}</Project>
+		<Project>{2D380BCB-EFE6-4B4D-87BA-9773E238802D}</Project>
 	</ProjectReference>
 	<ProjectReference Include="grim.vcxproj">
-		<Project>{E5CAA1D4-641D-3550-9AA4-717CF5B88D43}</Project>
+		<Project>{E7B47383-76A6-468E-84DA-50998473C9D8}</Project>
 	</ProjectReference>
 	<ProjectReference Include="groovie.vcxproj">
-		<Project>{19797E71-3837-31DA-8D07-851E51DF4FE8}</Project>
+		<Project>{849099E9-7D8D-4C12-8834-F5C36677536B}</Project>
 	</ProjectReference>
 	<ProjectReference Include="hadesch.vcxproj">
-		<Project>{4A034F80-1BFE-3AE1-B75A-C7ED619E6825}</Project>
+		<Project>{F2FE6D6D-E6EC-44EA-99A1-980596745CAD}</Project>
 	</ProjectReference>
 	<ProjectReference Include="hdb.vcxproj">
-		<Project>{7C289F88-5F72-3B27-8274-ADA320E4CE57}</Project>
+		<Project>{33882445-22D8-4130-9FCC-05A7011A84B9}</Project>
 	</ProjectReference>
 	<ProjectReference Include="hopkins.vcxproj">
-		<Project>{770AAA89-ABF4-3BF1-A781-FB8D33857579}</Project>
+		<Project>{F2EA23DD-77BC-46C8-8F9B-9980470A610D}</Project>
 	</ProjectReference>
 	<ProjectReference Include="hugo.vcxproj">
-		<Project>{22242772-C555-3FE0-B23F-7D088A572CB2}</Project>
+		<Project>{B319A88C-BC9C-444E-9301-4AD920671ED6}</Project>
 	</ProjectReference>
 	<ProjectReference Include="hypno.vcxproj">
-		<Project>{BDA39897-5444-3AF3-A566-323337C655B5}</Project>
+		<Project>{458D8821-A6CD-460A-A93D-BED9334FE6D5}</Project>
 	</ProjectReference>
 	<ProjectReference Include="illusions.vcxproj">
-		<Project>{652B5844-0B20-3859-8A5B-EEC214A42F67}</Project>
+		<Project>{68477D63-BEEF-422C-9209-45CFD0652E0A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="kingdom.vcxproj">
-		<Project>{2585A7E5-ED7D-3746-A1E2-34A970E4E51A}</Project>
+		<Project>{F73FF088-2162-4DEC-971A-6B35F16B2500}</Project>
 	</ProjectReference>
 	<ProjectReference Include="kyra.vcxproj">
-		<Project>{D4155A59-2C40-3EA8-A16A-DE16DDCD02F6}</Project>
+		<Project>{840DB0DF-C9EF-4D19-8F48-1F68BB937627}</Project>
 	</ProjectReference>
 	<ProjectReference Include="lab.vcxproj">
-		<Project>{E9188CF6-0A90-336C-B497-80F6FAC27ED0}</Project>
+		<Project>{F552C305-52B3-41E5-A407-F16507D703E8}</Project>
 	</ProjectReference>
 	<ProjectReference Include="lastexpress.vcxproj">
-		<Project>{2B994921-427F-32C5-BC93-1D4095A49C8C}</Project>
+		<Project>{F452A160-749A-437B-A78D-39F5AE67E5FD}</Project>
 	</ProjectReference>
 	<ProjectReference Include="lure.vcxproj">
-		<Project>{07E7B9EE-2ABD-3529-8EA2-BAE97B3D0349}</Project>
+		<Project>{E3D42434-0300-45C9-A90A-70E503D6562F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="m4.vcxproj">
-		<Project>{CDFC9E3A-0800-3A66-9BC7-A6AAC23F632A}</Project>
+		<Project>{95413E15-0E10-43B7-B3AC-BA486085384C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="made.vcxproj">
-		<Project>{DBF29363-2A31-3A3A-86E3-E13C534E31C4}</Project>
+		<Project>{CEAB279A-E1AB-4593-A352-0ACF9A366A07}</Project>
 	</ProjectReference>
 	<ProjectReference Include="mads.vcxproj">
-		<Project>{13996FED-87E6-3B46-973C-A85EB147B9B0}</Project>
+		<Project>{6D9E09FB-516F-4AB7-B256-D065B6FCB9A8}</Project>
 	</ProjectReference>
 	<ProjectReference Include="mm.vcxproj">
-		<Project>{1EB4A33B-E5A6-3D52-9CF2-4ABC3663DA74}</Project>
+		<Project>{A2CA1F15-E523-4090-BDB0-7F84A435C6DC}</Project>
 	</ProjectReference>
 	<ProjectReference Include="mohawk.vcxproj">
-		<Project>{DF2A27C2-2323-31F1-A697-E6DC82DAA4A6}</Project>
+		<Project>{CC4CE3CF-C54D-4004-81CB-47E9C6E8547B}</Project>
 	</ProjectReference>
 	<ProjectReference Include="mortevielle.vcxproj">
-		<Project>{A91EFB6B-0F63-3E47-A6D1-AD4C48199CCB}</Project>
+		<Project>{0B7163EA-DCBB-4C60-924D-50CC824E78E0}</Project>
 	</ProjectReference>
 	<ProjectReference Include="mtropolis.vcxproj">
-		<Project>{D07C0737-9FC2-3EC8-B2FE-D9A0071F3973}</Project>
+		<Project>{113CF583-B4A1-45CE-BC8C-09623E765525}</Project>
 	</ProjectReference>
 	<ProjectReference Include="myst3.vcxproj">
-		<Project>{B64299B3-859E-3960-BC22-099B1D1FE03B}</Project>
+		<Project>{2CCF5A81-FC10-4CB9-B6DC-31638663B89C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="nancy.vcxproj">
-		<Project>{A732E7BA-B5E3-3362-BB1D-15AEB54135F2}</Project>
+		<Project>{F105ABCD-7C3D-4F13-940B-93C4A8553E47}</Project>
 	</ProjectReference>
 	<ProjectReference Include="neverhood.vcxproj">
-		<Project>{08CDAE9B-909C-31E4-B39E-ABA8EC5DF057}</Project>
+		<Project>{C13E204E-E20F-4BCD-B3CE-0F4F89FA7C9F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="ngi.vcxproj">
-		<Project>{BC3D45E9-C853-390A-B792-B5E56535F3A5}</Project>
+		<Project>{C2FA157B-AB5C-421E-8D59-EF080E1C565C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="parallaction.vcxproj">
-		<Project>{FFB84BBF-3063-3F7C-98F8-0783D85DF2B3}</Project>
+		<Project>{15F6038C-603B-47E5-8218-0CE72885906D}</Project>
 	</ProjectReference>
 	<ProjectReference Include="pegasus.vcxproj">
-		<Project>{DE9E5B95-BB53-3ADE-98D3-1DD2E5CC01AA}</Project>
+		<Project>{5A3BC327-3955-4C1A-8C65-52B85614605F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="petka.vcxproj">
-		<Project>{69DD1D25-ED65-3173-886A-466ED1E8697F}</Project>
+		<Project>{CCCC0394-B878-4BF9-B548-A176A9446660}</Project>
 	</ProjectReference>
 	<ProjectReference Include="pink.vcxproj">
-		<Project>{51969B55-A5FB-3270-B53E-36A3367A2F93}</Project>
+		<Project>{904FEFA2-2452-4669-949E-B109A82EF7B6}</Project>
 	</ProjectReference>
 	<ProjectReference Include="plumbers.vcxproj">
-		<Project>{898529ED-C91C-3108-9870-3E83469BADBF}</Project>
+		<Project>{CA854DF0-9D22-447D-9CDB-A1652DA21FCB}</Project>
 	</ProjectReference>
 	<ProjectReference Include="prince.vcxproj">
-		<Project>{3AF5E348-7323-3679-B81F-1A9FC433B110}</Project>
+		<Project>{96E7A670-49DA-4D73-8906-79035C538378}</Project>
 	</ProjectReference>
 	<ProjectReference Include="private.vcxproj">
-		<Project>{506E3158-FF17-3237-8D7D-753835717C65}</Project>
+		<Project>{3BA67EF3-B773-4C28-B39C-4ACF1702A83F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="qdengine.vcxproj">
-		<Project>{08C1AF66-2F20-3980-AC6B-EED976D342C4}</Project>
+		<Project>{6562DDEC-F3E8-40BF-9B7E-93067E811665}</Project>
 	</ProjectReference>
 	<ProjectReference Include="queen.vcxproj">
-		<Project>{4174F46F-FF28-3777-A2BD-ED6ABBA7752B}</Project>
+		<Project>{21B639E4-3F67-46D5-9317-4A6D44D5007D}</Project>
 	</ProjectReference>
 	<ProjectReference Include="saga.vcxproj">
-		<Project>{5FDDD4AF-EE43-38FC-B7F5-A16298FB5CAD}</Project>
+		<Project>{C7C929E7-DEA8-45F0-8E75-5B1FFD5B1D61}</Project>
 	</ProjectReference>
 	<ProjectReference Include="saga2.vcxproj">
-		<Project>{CC8D73AA-418A-317B-9365-B3CCBBFD8719}</Project>
+		<Project>{015CC5F8-B1FC-456F-93C9-85EE9A394F0A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sci.vcxproj">
-		<Project>{46E59FE2-943B-3C15-9B62-80FC1B412489}</Project>
+		<Project>{EC785BFA-C2D1-44E9-821F-81805EAB15A5}</Project>
 	</ProjectReference>
 	<ProjectReference Include="scumm.vcxproj">
-		<Project>{9F791A5A-9C37-3C05-B2F2-4202518B0A0B}</Project>
+		<Project>{A06BA9BB-59AE-4E07-B535-4A3206F7B396}</Project>
 	</ProjectReference>
 	<ProjectReference Include="scummvm-detection.vcxproj">
-		<Project>{21F7A724-F038-32DA-9B59-C043222633FC}</Project>
+		<Project>{974B8C37-9C6D-44C3-BF92-04B6EDF46A01}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sherlock.vcxproj">
-		<Project>{BFB79F19-1405-3DE2-A401-9B27783C357B}</Project>
+		<Project>{6B83D631-C590-4E9F-A05D-78DEEA01AE8C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sky.vcxproj">
-		<Project>{B44A6504-1C3F-3E37-A07F-FB92B29157FC}</Project>
+		<Project>{B616D182-28D2-4983-AC8E-D2B8A8A4B2F8}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sludge.vcxproj">
-		<Project>{8091DBFC-C85E-37D8-AC14-EB5CC779F8E4}</Project>
+		<Project>{5418B26D-8CD5-4DC4-BE1A-A6ABC9768A5A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="stark.vcxproj">
-		<Project>{FA8AD885-68A4-3A8A-B2EB-01A94754FEE0}</Project>
+		<Project>{832BBB3B-65E1-4697-ABFC-1EEE1C3BFAFC}</Project>
 	</ProjectReference>
 	<ProjectReference Include="supernova.vcxproj">
-		<Project>{BE0DC0B2-2751-3666-A73F-3B0776AEB3E6}</Project>
+		<Project>{4DA4B6D8-9EBE-4879-9B45-66AA54078A75}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sword1.vcxproj">
-		<Project>{A9275E33-8040-3698-99BC-4CCA0DA1FE6E}</Project>
+		<Project>{35C4C082-EBBC-4252-904F-FBEE63D5DD4C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sword2.vcxproj">
-		<Project>{030B1991-07C5-352C-B916-D6E088BA09A3}</Project>
+		<Project>{84E5239E-63AA-43AB-ADBE-9889376BF85A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="sword25.vcxproj">
-		<Project>{80C90F82-235D-32E2-AB77-21EF91D153F1}</Project>
+		<Project>{52963F01-34CE-4435-8A5C-730786AF4A9F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="teenagent.vcxproj">
-		<Project>{C545B4E6-03AF-39C5-B35B-D75175C443E0}</Project>
+		<Project>{64ED5DC0-37E3-40DF-A3DA-BFA2E260C547}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tetraedge.vcxproj">
-		<Project>{7AA80133-3BE3-382B-AA28-498E20DE8290}</Project>
+		<Project>{A75ED5B8-35F5-443E-9319-BA58CF4A22E7}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tinsel.vcxproj">
-		<Project>{E27F481B-E13F-317D-BE8D-95160A169B27}</Project>
+		<Project>{3802A140-B9FC-4A6B-8B0F-002B4374869A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="titanic.vcxproj">
-		<Project>{5E71A483-69B1-3DF0-B0F5-911ABFBCF369}</Project>
+		<Project>{E63B7423-1F86-4CEE-AA69-111439AA2620}</Project>
 	</ProjectReference>
 	<ProjectReference Include="toltecs.vcxproj">
-		<Project>{17397800-8467-32C7-9493-E8FED6F0D7B2}</Project>
+		<Project>{6B0E2907-8A3F-400F-ABFE-25B4590AA0A3}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tony.vcxproj">
-		<Project>{70CC0B2C-91AF-3E81-B588-11A8488F7D3E}</Project>
+		<Project>{647A659F-2F21-463D-8E96-0916B2119676}</Project>
 	</ProjectReference>
 	<ProjectReference Include="toon.vcxproj">
-		<Project>{E5CB4CF8-277E-3424-8220-F46E7A8945CC}</Project>
+		<Project>{319EC0F0-88A1-4E13-9859-1C43E833497F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tot.vcxproj">
-		<Project>{2C94D570-D8C3-3B17-B96A-B855E5DE7061}</Project>
+		<Project>{F0E38506-B384-4B9E-BF4E-428919FA95E6}</Project>
 	</ProjectReference>
 	<ProjectReference Include="touche.vcxproj">
-		<Project>{7876A691-F729-3B0F-834D-19BFB0A139D4}</Project>
+		<Project>{4B75BDD7-7D1B-4FA4-9797-B3FB376C7C5E}</Project>
 	</ProjectReference>
 	<ProjectReference Include="trecision.vcxproj">
-		<Project>{49D6975D-BE79-34F0-AC85-19E5F3B1DD7A}</Project>
+		<Project>{1DB7EE8F-A901-4DDB-B4E5-833B240BCE18}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tsage.vcxproj">
-		<Project>{27643500-1E26-38A3-8DF3-CBBCB5DA2D18}</Project>
+		<Project>{BBCFE306-1EAA-4B67-92FC-A4A6016089C7}</Project>
 	</ProjectReference>
 	<ProjectReference Include="tucker.vcxproj">
-		<Project>{76B97AE9-794A-3F9D-8BF0-DDC236EAED40}</Project>
+		<Project>{A67FF9C2-7E1E-47E9-B5B6-95131D31F1A5}</Project>
 	</ProjectReference>
 	<ProjectReference Include="twine.vcxproj">
-		<Project>{DD50A997-9F35-3795-94DA-1AA2C4D25C35}</Project>
+		<Project>{E852F7B2-D5B0-453B-A518-720BAA0B08DE}</Project>
 	</ProjectReference>
 	<ProjectReference Include="twp.vcxproj">
-		<Project>{E8FB2A80-CCEC-360A-AB89-7DE2B200F8AC}</Project>
+		<Project>{70AC7E9B-82E1-4EAB-9033-82AD3C98EC1D}</Project>
 	</ProjectReference>
 	<ProjectReference Include="ultima.vcxproj">
-		<Project>{8D408D71-88E6-3080-80FF-182BD2017750}</Project>
+		<Project>{EDF7FC4A-9D1D-442B-B82D-3C65F8BCC101}</Project>
 	</ProjectReference>
 	<ProjectReference Include="vcruise.vcxproj">
-		<Project>{595C33FB-A87E-33AC-85BA-E3A728359A89}</Project>
+		<Project>{5A5E1B58-78EA-460E-AFB5-8403341E151A}</Project>
 	</ProjectReference>
 	<ProjectReference Include="voyeur.vcxproj">
-		<Project>{F6D5F85D-5E9E-3B01-82EE-EE1A8D5DDCEA}</Project>
+		<Project>{68352A40-B001-49B1-B8CC-E28B6C7B557F}</Project>
 	</ProjectReference>
 	<ProjectReference Include="wage.vcxproj">
-		<Project>{CD451246-D595-3308-B2FA-DA4B8E078648}</Project>
+		<Project>{EB21AF8C-C218-41A8-892A-A3630A67ECE9}</Project>
 	</ProjectReference>
 	<ProjectReference Include="wintermute.vcxproj">
-		<Project>{35811FEB-72DB-31CA-899A-7C11BF08B56A}</Project>
+		<Project>{74D6344C-FA5B-4441-A06E-A43436D2176C}</Project>
 	</ProjectReference>
 	<ProjectReference Include="zvision.vcxproj">
-		<Project>{AFFA36D7-1E2F-3363-BF1A-D85E458E850B}</Project>
+		<Project>{CBA10827-F1EA-4348-9D91-6E3D90D58964}</Project>
 	</ProjectReference>
 	</ItemGroup>
 	<ItemGroup>

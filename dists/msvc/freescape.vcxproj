@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup Label="ProjectConfigurations">
 		<ProjectConfiguration Include="Debug|Win32">
 			<Configuration>Debug</Configuration>
@@ -51,73 +51,70 @@
 		</ProjectConfiguration>
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-		<ProjectGuid>{91381BCC-F314-3F5F-A709-2DB7BA9F3DA1}</ProjectGuid>
+		<ProjectGuid>{5BD14D2B-3415-4308-8328-CE757F257762}</ProjectGuid>
 		<RootNamespace>freescape</RootNamespace>
 		<Keyword>Win32Proj</Keyword>
-		<VCTargetsPath Condition="'$(VCTargetsPath18)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath18)</VCTargetsPath>
+		<VCTargetsPath Condition="'$(VCTargetsPath14)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath14)</VCTargetsPath>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ASan|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
-		<EnableASAN>true</EnableASAN>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LLVM|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>llvm</PlatformToolset>
+		<PlatformToolset>LLVM-vs2014</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'" Label="Configuration">
 		<ConfigurationType>StaticLibrary</ConfigurationType>
-		<PlatformToolset>v145</PlatformToolset>
+		<PlatformToolset>v140</PlatformToolset>
 		<CharacterSet>Unicode</CharacterSet>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -200,7 +197,6 @@
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\atari.cpp" />
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\atari.music.cpp" />
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\c64.cpp" />
-		<ClCompile Include="..\..\engines\freescape\games\eclipse\c64.music.cpp" />
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\cpc.cpp" />
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\dos.cpp" />
 		<ClCompile Include="..\..\engines\freescape\games\eclipse\eclipse.cpp" />
@@ -248,7 +244,6 @@
 		<ClInclude Include="..\..\engines\freescape\games\driller\c64.music.h" />
 		<ClInclude Include="..\..\engines\freescape\games\driller\c64.sfx.h" />
 		<ClInclude Include="..\..\engines\freescape\games\driller\driller.h" />
-		<ClInclude Include="..\..\engines\freescape\games\eclipse\c64.music.h" />
 		<ClInclude Include="..\..\engines\freescape\games\eclipse\eclipse.h" />
 		<ClInclude Include="..\..\engines\freescape\language\8bitDetokeniser.h" />
 		<ClInclude Include="..\..\engines\freescape\language\instruction.h" />

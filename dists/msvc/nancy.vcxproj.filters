@@ -1,56 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="action">
-			<UniqueIdentifier>EFDBA6EF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>DE5E8AE6-0111-4EF5-B935-DB11797A302A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="action\puzzle">
-			<UniqueIdentifier>EFDBA6F0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>7B1D7FD6-3690-44E8-AD5A-0D92FAAEC32E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="misc">
-			<UniqueIdentifier>EFDBA6F1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>2EE10E88-CDC6-4E7E-8E81-5E05C0E43331</UniqueIdentifier>
 		</Filter>
 		<Filter Include="state">
-			<UniqueIdentifier>EFDBA6F2-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>2B1B79DF-2F2C-4212-A9C1-04118C55853D</UniqueIdentifier>
 		</Filter>
 		<Filter Include="ui">
-			<UniqueIdentifier>EFDBA6F3-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>BAB703CA-8E5A-465E-BE18-2BA40C46D094</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\nancy\action\actionmanager.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\actionrecord.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\arfactory.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\autotext.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\conversation.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\datarecords.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\interactivevideo.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\inventoryrecords.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\miscrecords.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\navigationrecords.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\action\overlay.cpp">
-			<Filter>action</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\nancy\action\puzzle\angletosspuzzle.cpp">
 			<Filter>action\puzzle</Filter>
 		</ClCompile>
@@ -165,6 +132,39 @@
 		<ClCompile Include="..\..\engines\nancy\action\puzzle\whalesurvivorpuzzle.cpp">
 			<Filter>action\puzzle</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\actionmanager.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\actionrecord.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\arfactory.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\autotext.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\conversation.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\datarecords.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\interactivevideo.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\inventoryrecords.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\miscrecords.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\navigationrecords.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\action\overlay.cpp">
+			<Filter>action</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\nancy\action\secondarymovie.cpp">
 			<Filter>action</Filter>
 		</ClCompile>
@@ -174,17 +174,6 @@
 		<ClCompile Include="..\..\engines\nancy\action\soundrecords.cpp">
 			<Filter>action</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\cif.cpp" />
-		<ClCompile Include="..\..\engines\nancy\commontypes.cpp" />
-		<ClCompile Include="..\..\engines\nancy\console.cpp" />
-		<ClCompile Include="..\..\engines\nancy\cursor.cpp" />
-		<ClCompile Include="..\..\engines\nancy\decompress.cpp" />
-		<ClCompile Include="..\..\engines\nancy\enginedata.cpp" />
-		<ClCompile Include="..\..\engines\nancy\font.cpp" />
-		<ClCompile Include="..\..\engines\nancy\graphics.cpp" />
-		<ClCompile Include="..\..\engines\nancy\iff.cpp" />
-		<ClCompile Include="..\..\engines\nancy\input.cpp" />
-		<ClCompile Include="..\..\engines\nancy\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\nancy\misc\hypertext.cpp">
 			<Filter>misc</Filter>
 		</ClCompile>
@@ -197,12 +186,6 @@
 		<ClCompile Include="..\..\engines\nancy\misc\specialeffect.cpp">
 			<Filter>misc</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\nancy\nancy.cpp" />
-		<ClCompile Include="..\..\engines\nancy\puzzledata.cpp" />
-		<ClCompile Include="..\..\engines\nancy\renderobject.cpp" />
-		<ClCompile Include="..\..\engines\nancy\resource.cpp" />
-		<ClCompile Include="..\..\engines\nancy\sound.cpp" />
-		<ClCompile Include="..\..\engines\nancy\sound_vorbis.cpp" />
 		<ClCompile Include="..\..\engines\nancy\state\credits.cpp">
 			<Filter>state</Filter>
 		</ClCompile>
@@ -257,37 +240,27 @@
 		<ClCompile Include="..\..\engines\nancy\ui\viewport.cpp">
 			<Filter>ui</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\nancy\cif.cpp" />
+		<ClCompile Include="..\..\engines\nancy\commontypes.cpp" />
+		<ClCompile Include="..\..\engines\nancy\console.cpp" />
+		<ClCompile Include="..\..\engines\nancy\cursor.cpp" />
+		<ClCompile Include="..\..\engines\nancy\decompress.cpp" />
+		<ClCompile Include="..\..\engines\nancy\enginedata.cpp" />
+		<ClCompile Include="..\..\engines\nancy\font.cpp" />
+		<ClCompile Include="..\..\engines\nancy\graphics.cpp" />
+		<ClCompile Include="..\..\engines\nancy\iff.cpp" />
+		<ClCompile Include="..\..\engines\nancy\input.cpp" />
+		<ClCompile Include="..\..\engines\nancy\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\nancy\nancy.cpp" />
+		<ClCompile Include="..\..\engines\nancy\puzzledata.cpp" />
+		<ClCompile Include="..\..\engines\nancy\renderobject.cpp" />
+		<ClCompile Include="..\..\engines\nancy\resource.cpp" />
+		<ClCompile Include="..\..\engines\nancy\sound.cpp" />
+		<ClCompile Include="..\..\engines\nancy\sound_vorbis.cpp" />
 		<ClCompile Include="..\..\engines\nancy\util.cpp" />
 		<ClCompile Include="..\..\engines\nancy\video.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\nancy\action\actionmanager.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\actionrecord.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\autotext.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\conversation.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\datarecords.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\interactivevideo.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\inventoryrecords.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\miscrecords.h">
-			<Filter>action</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\action\navigationrecords.h">
-			<Filter>action</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\nancy\action\overlay.h">
 			<Filter>action</Filter>
 		</ClInclude>
@@ -405,6 +378,33 @@
 		<ClInclude Include="..\..\engines\nancy\action\puzzle\whalesurvivorpuzzle.h">
 			<Filter>action\puzzle</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\actionmanager.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\actionrecord.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\autotext.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\conversation.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\datarecords.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\interactivevideo.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\inventoryrecords.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\miscrecords.h">
+			<Filter>action</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\action\navigationrecords.h">
+			<Filter>action</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\nancy\action\secondarymovie.h">
 			<Filter>action</Filter>
 		</ClInclude>
@@ -414,18 +414,6 @@
 		<ClInclude Include="..\..\engines\nancy\action\soundrecords.h">
 			<Filter>action</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\cif.h" />
-		<ClInclude Include="..\..\engines\nancy\commontypes.h" />
-		<ClInclude Include="..\..\engines\nancy\console.h" />
-		<ClInclude Include="..\..\engines\nancy\cursor.h" />
-		<ClInclude Include="..\..\engines\nancy\decompress.h" />
-		<ClInclude Include="..\..\engines\nancy\detection.h" />
-		<ClInclude Include="..\..\engines\nancy\detection_tables.h" />
-		<ClInclude Include="..\..\engines\nancy\enginedata.h" />
-		<ClInclude Include="..\..\engines\nancy\font.h" />
-		<ClInclude Include="..\..\engines\nancy\graphics.h" />
-		<ClInclude Include="..\..\engines\nancy\iff.h" />
-		<ClInclude Include="..\..\engines\nancy\input.h" />
 		<ClInclude Include="..\..\engines\nancy\misc\hypertext.h">
 			<Filter>misc</Filter>
 		</ClInclude>
@@ -438,12 +426,6 @@
 		<ClInclude Include="..\..\engines\nancy\misc\specialeffect.h">
 			<Filter>misc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\nancy.h" />
-		<ClInclude Include="..\..\engines\nancy\puzzledata.h" />
-		<ClInclude Include="..\..\engines\nancy\renderobject.h" />
-		<ClInclude Include="..\..\engines\nancy\resource.h" />
-		<ClInclude Include="..\..\engines\nancy\sound.h" />
-		<ClInclude Include="..\..\engines\nancy\sound_vorbis.h" />
 		<ClInclude Include="..\..\engines\nancy\state\credits.h">
 			<Filter>state</Filter>
 		</ClInclude>
@@ -474,7 +456,6 @@
 		<ClInclude Include="..\..\engines\nancy\state\state.h">
 			<Filter>state</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\nancy\time.h" />
 		<ClInclude Include="..\..\engines\nancy\ui\animatedbutton.h">
 			<Filter>ui</Filter>
 		</ClInclude>
@@ -502,6 +483,25 @@
 		<ClInclude Include="..\..\engines\nancy\ui\viewport.h">
 			<Filter>ui</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\nancy\cif.h" />
+		<ClInclude Include="..\..\engines\nancy\commontypes.h" />
+		<ClInclude Include="..\..\engines\nancy\console.h" />
+		<ClInclude Include="..\..\engines\nancy\cursor.h" />
+		<ClInclude Include="..\..\engines\nancy\decompress.h" />
+		<ClInclude Include="..\..\engines\nancy\detection.h" />
+		<ClInclude Include="..\..\engines\nancy\detection_tables.h" />
+		<ClInclude Include="..\..\engines\nancy\enginedata.h" />
+		<ClInclude Include="..\..\engines\nancy\font.h" />
+		<ClInclude Include="..\..\engines\nancy\graphics.h" />
+		<ClInclude Include="..\..\engines\nancy\iff.h" />
+		<ClInclude Include="..\..\engines\nancy\input.h" />
+		<ClInclude Include="..\..\engines\nancy\nancy.h" />
+		<ClInclude Include="..\..\engines\nancy\puzzledata.h" />
+		<ClInclude Include="..\..\engines\nancy\renderobject.h" />
+		<ClInclude Include="..\..\engines\nancy\resource.h" />
+		<ClInclude Include="..\..\engines\nancy\sound.h" />
+		<ClInclude Include="..\..\engines\nancy\sound_vorbis.h" />
+		<ClInclude Include="..\..\engines\nancy\time.h" />
 		<ClInclude Include="..\..\engines\nancy\util.h" />
 		<ClInclude Include="..\..\engines\nancy\video.h" />
 	</ItemGroup>

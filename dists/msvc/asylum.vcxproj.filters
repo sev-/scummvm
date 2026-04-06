@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="puzzles">
-			<UniqueIdentifier>EFDBA5EE-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>96574E55-6359-41DC-8455-EDC04A0149D1</UniqueIdentifier>
 		</Filter>
 		<Filter Include="resources">
-			<UniqueIdentifier>EFDBA5EF-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>C8998514-4BE1-4D13-99ED-8D1C3821DA65</UniqueIdentifier>
 		</Filter>
 		<Filter Include="system">
-			<UniqueIdentifier>EFDBA5F0-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>CCA67BCF-5A51-40DE-B20C-9983D10ADE0A</UniqueIdentifier>
 		</Filter>
 		<Filter Include="views">
-			<UniqueIdentifier>EFDBA5F1-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>D5414D56-ED0D-4095-A0D5-C149CF3AB0EC</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\asylum\asylum.cpp" />
-		<ClCompile Include="..\..\engines\asylum\console.cpp" />
-		<ClCompile Include="..\..\engines\asylum\metaengine.cpp" />
 		<ClCompile Include="..\..\engines\asylum\puzzles\board.cpp">
 			<Filter>puzzles</Filter>
 		</ClCompile>
@@ -99,7 +96,6 @@
 		<ClCompile Include="..\..\engines\asylum\resources\worldstats.cpp">
 			<Filter>resources</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\asylum\respack.cpp" />
 		<ClCompile Include="..\..\engines\asylum\system\config.cpp">
 			<Filter>system</Filter>
 		</ClCompile>
@@ -142,13 +138,12 @@
 		<ClCompile Include="..\..\engines\asylum\views\video.cpp">
 			<Filter>views</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\asylum\asylum.cpp" />
+		<ClCompile Include="..\..\engines\asylum\console.cpp" />
+		<ClCompile Include="..\..\engines\asylum\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\asylum\respack.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\asylum\asylum.h" />
-		<ClInclude Include="..\..\engines\asylum\console.h" />
-		<ClInclude Include="..\..\engines\asylum\detection.h" />
-		<ClInclude Include="..\..\engines\asylum\detection_tables.h" />
-		<ClInclude Include="..\..\engines\asylum\eventhandler.h" />
 		<ClInclude Include="..\..\engines\asylum\puzzles\board.h">
 			<Filter>puzzles</Filter>
 		</ClInclude>
@@ -230,9 +225,6 @@
 		<ClInclude Include="..\..\engines\asylum\resources\worldstats.h">
 			<Filter>resources</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\asylum\respack.h" />
-		<ClInclude Include="..\..\engines\asylum\shared.h" />
-		<ClInclude Include="..\..\engines\asylum\staticres.h" />
 		<ClInclude Include="..\..\engines\asylum\system\config.h">
 			<Filter>system</Filter>
 		</ClInclude>
@@ -275,6 +267,14 @@
 		<ClInclude Include="..\..\engines\asylum\views\video.h">
 			<Filter>views</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\asylum\asylum.h" />
+		<ClInclude Include="..\..\engines\asylum\console.h" />
+		<ClInclude Include="..\..\engines\asylum\detection.h" />
+		<ClInclude Include="..\..\engines\asylum\detection_tables.h" />
+		<ClInclude Include="..\..\engines\asylum\eventhandler.h" />
+		<ClInclude Include="..\..\engines\asylum\respack.h" />
+		<ClInclude Include="..\..\engines\asylum\shared.h" />
+		<ClInclude Include="..\..\engines\asylum\staticres.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\asylum\module.mk" />

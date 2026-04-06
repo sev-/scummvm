@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="adrift">
-			<UniqueIdentifier>EFDBA669-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>D02E9209-F276-4AD6-9CAC-34C1D50B1A8F</UniqueIdentifier>
 		</Filter>
 		<Filter Include="advsys">
-			<UniqueIdentifier>EFDBA66A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>CB9C11E3-E289-43F8-9FC9-10BD27C15BA9</UniqueIdentifier>
 		</Filter>
 		<Filter Include="agt">
-			<UniqueIdentifier>EFDBA66B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>2087D9D2-4FAB-45BE-9470-431C69CC3355</UniqueIdentifier>
 		</Filter>
 		<Filter Include="alan2">
-			<UniqueIdentifier>EFDBA66C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3B624DE7-2F10-48C6-85A2-C1E957716BD8</UniqueIdentifier>
 		</Filter>
 		<Filter Include="alan3">
-			<UniqueIdentifier>EFDBA66D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>CE16B7C5-4B69-44CE-9441-5B91741D1C66</UniqueIdentifier>
 		</Filter>
 		<Filter Include="archetype">
-			<UniqueIdentifier>EFDBA66E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>A82EC4B3-575F-4C6C-9D01-7BA110EB8C46</UniqueIdentifier>
 		</Filter>
 		<Filter Include="comprehend">
-			<UniqueIdentifier>EFDBA66F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>8748BD1C-EB97-4AD7-BBB9-02204A7CAF27</UniqueIdentifier>
 		</Filter>
 		<Filter Include="glulx">
-			<UniqueIdentifier>EFDBA670-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F21C657A-9C5D-4A8E-8B10-EB995B260F92</UniqueIdentifier>
 		</Filter>
 		<Filter Include="hugo">
-			<UniqueIdentifier>EFDBA671-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>DAABF4DC-B8DC-4024-9E18-5A94F24B840B</UniqueIdentifier>
 		</Filter>
 		<Filter Include="jacl">
-			<UniqueIdentifier>EFDBA672-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>7471F986-744F-4E03-83B6-DF1151FE6B7B</UniqueIdentifier>
 		</Filter>
 		<Filter Include="level9">
-			<UniqueIdentifier>EFDBA673-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>E5CC63D7-BBE8-4D04-88B9-BBEFA6EFF162</UniqueIdentifier>
 		</Filter>
 		<Filter Include="magnetic">
-			<UniqueIdentifier>EFDBA674-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>9486B2F9-8A94-48C2-A6EF-31B87FB2CC1C</UniqueIdentifier>
 		</Filter>
 		<Filter Include="quest">
-			<UniqueIdentifier>EFDBA675-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F11017B0-2AA5-46B9-A091-58E16C369DE3</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scott">
-			<UniqueIdentifier>EFDBA676-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>FD914B58-EB6B-4966-BE6B-49DE6A3F1541</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scott\unp64">
-			<UniqueIdentifier>EFDBA677-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>C36A9C70-DB92-4B40-9D20-E3B52CA1B69F</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scott\unp64\scanners">
-			<UniqueIdentifier>EFDBA678-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>EAEC68AD-5923-4E8D-943D-0D1076186093</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tads">
-			<UniqueIdentifier>EFDBA679-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>AE29FA37-85B8-4DA3-AD45-4934470CBBA7</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tads\tads2">
-			<UniqueIdentifier>EFDBA67A-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>AF99793B-99B7-4058-9A11-36247138F6A8</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tads\tads3">
-			<UniqueIdentifier>EFDBA67B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>921E46B1-E040-4A12-A764-C0E69669F169</UniqueIdentifier>
 		</Filter>
 		<Filter Include="zcode">
-			<UniqueIdentifier>EFDBA67C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>2BAB498C-88A8-4D2C-881C-DF8E88E06355</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -480,7 +480,6 @@
 		<ClCompile Include="..\..\engines\glk\archetype\token.cpp">
 			<Filter>archetype</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\blorb.cpp" />
 		<ClCompile Include="..\..\engines\glk\comprehend\charset.cpp">
 			<Filter>comprehend</Filter>
 		</ClCompile>
@@ -532,14 +531,6 @@
 		<ClCompile Include="..\..\engines\glk\comprehend\pics.cpp">
 			<Filter>comprehend</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\conf.cpp" />
-		<ClCompile Include="..\..\engines\glk\debugger.cpp" />
-		<ClCompile Include="..\..\engines\glk\detection.cpp" />
-		<ClCompile Include="..\..\engines\glk\events.cpp" />
-		<ClCompile Include="..\..\engines\glk\fonts.cpp" />
-		<ClCompile Include="..\..\engines\glk\glk.cpp" />
-		<ClCompile Include="..\..\engines\glk\glk_api.cpp" />
-		<ClCompile Include="..\..\engines\glk\glk_dispa.cpp" />
 		<ClCompile Include="..\..\engines\glk\glulx\accel.cpp">
 			<Filter>glulx</Filter>
 		</ClCompile>
@@ -699,9 +690,6 @@
 		<ClCompile Include="..\..\engines\glk\magnetic\magnetic.cpp">
 			<Filter>magnetic</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\glk\pc_speaker.cpp" />
-		<ClCompile Include="..\..\engines\glk\picture.cpp" />
 		<ClCompile Include="..\..\engines\glk\quest\detection.cpp">
 			<Filter>quest</Filter>
 		</ClCompile>
@@ -732,8 +720,63 @@
 		<ClCompile Include="..\..\engines\glk\quest\string.cpp">
 			<Filter>quest</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\quetzal.cpp" />
-		<ClCompile Include="..\..\engines\glk\raw_decoder.cpp" />
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\action_packer.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\byte_boiler.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\caution.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\ccs.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\cruel.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\eca.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\exomizer.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\expert.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\master_compressor.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\megabyte.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\pu_crunch.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\scanners.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\section8.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\tbc_multicomp.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\tcs_crunch.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\xtc.cpp">
+			<Filter>scott\unp64\scanners</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\6502_emu.cpp">
+			<Filter>scott\unp64</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\exo_util.cpp">
+			<Filter>scott\unp64</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\scott\unp64\unp64.cpp">
+			<Filter>scott\unp64</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\glk\scott\c64_checksums.cpp">
 			<Filter>scott</Filter>
 		</ClCompile>
@@ -805,89 +848,6 @@
 		</ClCompile>
 		<ClCompile Include="..\..\engines\glk\scott\ti99_4a_terp.cpp">
 			<Filter>scott</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\6502_emu.cpp">
-			<Filter>scott\unp64</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\exo_util.cpp">
-			<Filter>scott\unp64</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\action_packer.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\byte_boiler.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\caution.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\ccs.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\cruel.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\eca.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\exomizer.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\expert.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\master_compressor.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\megabyte.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\pu_crunch.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\scanners.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\section8.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\tbc_multicomp.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\tcs_crunch.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\scanners\xtc.cpp">
-			<Filter>scott\unp64\scanners</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\scott\unp64\unp64.cpp">
-			<Filter>scott\unp64</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\screen.cpp" />
-		<ClCompile Include="..\..\engines\glk\selection.cpp" />
-		<ClCompile Include="..\..\engines\glk\sound.cpp" />
-		<ClCompile Include="..\..\engines\glk\speech.cpp" />
-		<ClCompile Include="..\..\engines\glk\streams.cpp" />
-		<ClCompile Include="..\..\engines\glk\tads\detection.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\os_banners.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\os_buffer.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\os_frob_tads.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\os_glk.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\os_parse.cpp">
-			<Filter>tads</Filter>
-		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\tads\tads.cpp">
-			<Filter>tads</Filter>
 		</ClCompile>
 		<ClCompile Include="..\..\engines\glk\tads\tads2\built_in.cpp">
 			<Filter>tads\tads2</Filter>
@@ -991,15 +951,27 @@
 		<ClCompile Include="..\..\engines\glk\tads\tads3\tads3.cpp">
 			<Filter>tads\tads3</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\glk\time.cpp" />
-		<ClCompile Include="..\..\engines\glk\unicode.cpp" />
-		<ClCompile Include="..\..\engines\glk\unicode_gen.cpp" />
-		<ClCompile Include="..\..\engines\glk\utils.cpp" />
-		<ClCompile Include="..\..\engines\glk\window_graphics.cpp" />
-		<ClCompile Include="..\..\engines\glk\window_pair.cpp" />
-		<ClCompile Include="..\..\engines\glk\window_text_buffer.cpp" />
-		<ClCompile Include="..\..\engines\glk\window_text_grid.cpp" />
-		<ClCompile Include="..\..\engines\glk\windows.cpp" />
+		<ClCompile Include="..\..\engines\glk\tads\detection.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\os_banners.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\os_buffer.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\os_frob_tads.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\os_glk.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\os_parse.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\tads\tads.cpp">
+			<Filter>tads</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\engines\glk\zcode\bitmap_font.cpp">
 			<Filter>zcode</Filter>
 		</ClCompile>
@@ -1072,6 +1044,34 @@
 		<ClCompile Include="..\..\engines\glk\zcode\zcode.cpp">
 			<Filter>zcode</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\glk\blorb.cpp" />
+		<ClCompile Include="..\..\engines\glk\conf.cpp" />
+		<ClCompile Include="..\..\engines\glk\debugger.cpp" />
+		<ClCompile Include="..\..\engines\glk\detection.cpp" />
+		<ClCompile Include="..\..\engines\glk\events.cpp" />
+		<ClCompile Include="..\..\engines\glk\fonts.cpp" />
+		<ClCompile Include="..\..\engines\glk\glk.cpp" />
+		<ClCompile Include="..\..\engines\glk\glk_api.cpp" />
+		<ClCompile Include="..\..\engines\glk\glk_dispa.cpp" />
+		<ClCompile Include="..\..\engines\glk\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\glk\pc_speaker.cpp" />
+		<ClCompile Include="..\..\engines\glk\picture.cpp" />
+		<ClCompile Include="..\..\engines\glk\quetzal.cpp" />
+		<ClCompile Include="..\..\engines\glk\raw_decoder.cpp" />
+		<ClCompile Include="..\..\engines\glk\screen.cpp" />
+		<ClCompile Include="..\..\engines\glk\selection.cpp" />
+		<ClCompile Include="..\..\engines\glk\sound.cpp" />
+		<ClCompile Include="..\..\engines\glk\speech.cpp" />
+		<ClCompile Include="..\..\engines\glk\streams.cpp" />
+		<ClCompile Include="..\..\engines\glk\time.cpp" />
+		<ClCompile Include="..\..\engines\glk\unicode.cpp" />
+		<ClCompile Include="..\..\engines\glk\unicode_gen.cpp" />
+		<ClCompile Include="..\..\engines\glk\utils.cpp" />
+		<ClCompile Include="..\..\engines\glk\window_graphics.cpp" />
+		<ClCompile Include="..\..\engines\glk\window_pair.cpp" />
+		<ClCompile Include="..\..\engines\glk\window_text_buffer.cpp" />
+		<ClCompile Include="..\..\engines\glk\window_text_grid.cpp" />
+		<ClCompile Include="..\..\engines\glk\windows.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="..\..\engines\glk\adrift\adrift.h">
@@ -1422,7 +1422,6 @@
 		<ClInclude Include="..\..\engines\glk\archetype\token.h">
 			<Filter>archetype</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\blorb.h" />
 		<ClInclude Include="..\..\engines\glk\comprehend\charset.h">
 			<Filter>comprehend</Filter>
 		</ClInclude>
@@ -1477,15 +1476,6 @@
 		<ClInclude Include="..\..\engines\glk\comprehend\pics.h">
 			<Filter>comprehend</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\conf.h" />
-		<ClInclude Include="..\..\engines\glk\debugger.h" />
-		<ClInclude Include="..\..\engines\glk\detection.h" />
-		<ClInclude Include="..\..\engines\glk\events.h" />
-		<ClInclude Include="..\..\engines\glk\fonts.h" />
-		<ClInclude Include="..\..\engines\glk\game_description.h" />
-		<ClInclude Include="..\..\engines\glk\glk.h" />
-		<ClInclude Include="..\..\engines\glk\glk_api.h" />
-		<ClInclude Include="..\..\engines\glk\glk_types.h" />
 		<ClInclude Include="..\..\engines\glk\glulx\detection.h">
 			<Filter>glulx</Filter>
 		</ClInclude>
@@ -1552,7 +1542,6 @@
 		<ClInclude Include="..\..\engines\glk\jacl\version.h">
 			<Filter>jacl</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\jumps.h" />
 		<ClInclude Include="..\..\engines\glk\level9\detection.h">
 			<Filter>level9</Filter>
 		</ClInclude>
@@ -1583,8 +1572,6 @@
 		<ClInclude Include="..\..\engines\glk\magnetic\magnetic_types.h">
 			<Filter>magnetic</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\pc_speaker.h" />
-		<ClInclude Include="..\..\engines\glk\picture.h" />
 		<ClInclude Include="..\..\engines\glk\quest\detection.h">
 			<Filter>quest</Filter>
 		</ClInclude>
@@ -1627,8 +1614,18 @@
 		<ClInclude Include="..\..\engines\glk\quest\string.h">
 			<Filter>quest</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\quetzal.h" />
-		<ClInclude Include="..\..\engines\glk\raw_decoder.h" />
+		<ClInclude Include="..\..\engines\glk\scott\unp64\6502_emu.h">
+			<Filter>scott\unp64</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\scott\unp64\exo_util.h">
+			<Filter>scott\unp64</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\scott\unp64\unp64.h">
+			<Filter>scott\unp64</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\scott\unp64\unp64_interface.h">
+			<Filter>scott\unp64</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\glk\scott\c64_checksums.h">
 			<Filter>scott</Filter>
 		</ClInclude>
@@ -1709,50 +1706,6 @@
 		</ClInclude>
 		<ClInclude Include="..\..\engines\glk\scott\types.h">
 			<Filter>scott</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\scott\unp64\6502_emu.h">
-			<Filter>scott\unp64</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\scott\unp64\exo_util.h">
-			<Filter>scott\unp64</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\scott\unp64\unp64.h">
-			<Filter>scott\unp64</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\scott\unp64\unp64_interface.h">
-			<Filter>scott\unp64</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\screen.h" />
-		<ClInclude Include="..\..\engines\glk\selection.h" />
-		<ClInclude Include="..\..\engines\glk\sound.h" />
-		<ClInclude Include="..\..\engines\glk\speech.h" />
-		<ClInclude Include="..\..\engines\glk\streams.h" />
-		<ClInclude Include="..\..\engines\glk\tads\detection.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\detection_tables.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_banners.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_buffer.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_filetype.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_frob_tads.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_glk.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\os_parse.h">
-			<Filter>tads</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\tads\tads.h">
-			<Filter>tads</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\engines\glk\tads\tads2\appctx.h">
 			<Filter>tads\tads2</Filter>
@@ -1853,15 +1806,33 @@
 		<ClInclude Include="..\..\engines\glk\tads\tads3\tads3.h">
 			<Filter>tads\tads3</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\glk\time.h" />
-		<ClInclude Include="..\..\engines\glk\unicode.h" />
-		<ClInclude Include="..\..\engines\glk\unicode_gen.h" />
-		<ClInclude Include="..\..\engines\glk\utils.h" />
-		<ClInclude Include="..\..\engines\glk\window_graphics.h" />
-		<ClInclude Include="..\..\engines\glk\window_pair.h" />
-		<ClInclude Include="..\..\engines\glk\window_text_buffer.h" />
-		<ClInclude Include="..\..\engines\glk\window_text_grid.h" />
-		<ClInclude Include="..\..\engines\glk\windows.h" />
+		<ClInclude Include="..\..\engines\glk\tads\detection.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\detection_tables.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_banners.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_buffer.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_filetype.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_frob_tads.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_glk.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\os_parse.h">
+			<Filter>tads</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\tads\tads.h">
+			<Filter>tads</Filter>
+		</ClInclude>
 		<ClInclude Include="..\..\engines\glk\zcode\bitmap_font.h">
 			<Filter>zcode</Filter>
 		</ClInclude>
@@ -1907,6 +1878,35 @@
 		<ClInclude Include="..\..\engines\glk\zcode\zcode.h">
 			<Filter>zcode</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\glk\blorb.h" />
+		<ClInclude Include="..\..\engines\glk\conf.h" />
+		<ClInclude Include="..\..\engines\glk\debugger.h" />
+		<ClInclude Include="..\..\engines\glk\detection.h" />
+		<ClInclude Include="..\..\engines\glk\events.h" />
+		<ClInclude Include="..\..\engines\glk\fonts.h" />
+		<ClInclude Include="..\..\engines\glk\game_description.h" />
+		<ClInclude Include="..\..\engines\glk\glk.h" />
+		<ClInclude Include="..\..\engines\glk\glk_api.h" />
+		<ClInclude Include="..\..\engines\glk\glk_types.h" />
+		<ClInclude Include="..\..\engines\glk\jumps.h" />
+		<ClInclude Include="..\..\engines\glk\pc_speaker.h" />
+		<ClInclude Include="..\..\engines\glk\picture.h" />
+		<ClInclude Include="..\..\engines\glk\quetzal.h" />
+		<ClInclude Include="..\..\engines\glk\raw_decoder.h" />
+		<ClInclude Include="..\..\engines\glk\screen.h" />
+		<ClInclude Include="..\..\engines\glk\selection.h" />
+		<ClInclude Include="..\..\engines\glk\sound.h" />
+		<ClInclude Include="..\..\engines\glk\speech.h" />
+		<ClInclude Include="..\..\engines\glk\streams.h" />
+		<ClInclude Include="..\..\engines\glk\time.h" />
+		<ClInclude Include="..\..\engines\glk\unicode.h" />
+		<ClInclude Include="..\..\engines\glk\unicode_gen.h" />
+		<ClInclude Include="..\..\engines\glk\utils.h" />
+		<ClInclude Include="..\..\engines\glk\window_graphics.h" />
+		<ClInclude Include="..\..\engines\glk\window_pair.h" />
+		<ClInclude Include="..\..\engines\glk\window_text_buffer.h" />
+		<ClInclude Include="..\..\engines\glk\window_text_grid.h" />
+		<ClInclude Include="..\..\engines\glk\windows.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\engines\glk\module.mk" />

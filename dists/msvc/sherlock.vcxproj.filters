@@ -1,38 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="scalpel">
-			<UniqueIdentifier>EFDBA72E-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>F9C31A96-14B0-456A-8281-34EA773A1B48</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scalpel\3do">
-			<UniqueIdentifier>EFDBA72F-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>661A60F6-C449-4BC6-9084-F1E3D9393113</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scalpel\drivers">
-			<UniqueIdentifier>EFDBA730-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>68676620-0B7B-4FA4-8BFA-4E52D6BCD49E</UniqueIdentifier>
 		</Filter>
 		<Filter Include="scalpel\tsage">
-			<UniqueIdentifier>EFDBA731-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>E71ABF6A-E494-4B85-BC08-E3AF015C7C89</UniqueIdentifier>
 		</Filter>
 		<Filter Include="tattoo">
-			<UniqueIdentifier>EFDBA732-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>3303C1A6-1EC1-48E1-8AA0-43DD4AE79946</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\sherlock\animation.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\debugger.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\events.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\fixed_text.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\fonts.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\image_file.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\inventory.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\journal.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\map.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\music.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\objects.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\people.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\resources.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\saveload.cpp" />
 		<ClCompile Include="..\..\engines\sherlock\scalpel\3do\scalpel_3do_screen.cpp">
 			<Filter>scalpel\3do</Filter>
 		</ClCompile>
@@ -90,12 +75,6 @@
 		<ClCompile Include="..\..\engines\sherlock\scalpel\tsage\resources.cpp">
 			<Filter>scalpel\tsage</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\sherlock\scene.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\screen.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\sherlock.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\sound.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\surface.cpp" />
-		<ClCompile Include="..\..\engines\sherlock\talk.cpp" />
 		<ClCompile Include="..\..\engines\sherlock\tattoo\tattoo.cpp">
 			<Filter>tattoo</Filter>
 		</ClCompile>
@@ -174,25 +153,30 @@
 		<ClCompile Include="..\..\engines\sherlock\tattoo\widget_verbs.cpp">
 			<Filter>tattoo</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\sherlock\animation.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\debugger.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\events.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\fixed_text.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\fonts.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\image_file.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\inventory.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\journal.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\map.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\music.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\objects.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\people.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\resources.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\saveload.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\scene.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\screen.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\sherlock.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\sound.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\surface.cpp" />
+		<ClCompile Include="..\..\engines\sherlock\talk.cpp" />
 		<ClCompile Include="..\..\engines\sherlock\user_interface.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\sherlock\animation.h" />
-		<ClInclude Include="..\..\engines\sherlock\debugger.h" />
-		<ClInclude Include="..\..\engines\sherlock\detection.h" />
-		<ClInclude Include="..\..\engines\sherlock\detection_tables.h" />
-		<ClInclude Include="..\..\engines\sherlock\events.h" />
-		<ClInclude Include="..\..\engines\sherlock\fixed_text.h" />
-		<ClInclude Include="..\..\engines\sherlock\fonts.h" />
-		<ClInclude Include="..\..\engines\sherlock\image_file.h" />
-		<ClInclude Include="..\..\engines\sherlock\inventory.h" />
-		<ClInclude Include="..\..\engines\sherlock\journal.h" />
-		<ClInclude Include="..\..\engines\sherlock\map.h" />
-		<ClInclude Include="..\..\engines\sherlock\music.h" />
-		<ClInclude Include="..\..\engines\sherlock\objects.h" />
-		<ClInclude Include="..\..\engines\sherlock\people.h" />
-		<ClInclude Include="..\..\engines\sherlock\resources.h" />
-		<ClInclude Include="..\..\engines\sherlock\saveload.h" />
 		<ClInclude Include="..\..\engines\sherlock\scalpel\3do\scalpel_3do_screen.h">
 			<Filter>scalpel\3do</Filter>
 		</ClInclude>
@@ -247,12 +231,6 @@
 		<ClInclude Include="..\..\engines\sherlock\scalpel\tsage\resources.h">
 			<Filter>scalpel\tsage</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\sherlock\scene.h" />
-		<ClInclude Include="..\..\engines\sherlock\screen.h" />
-		<ClInclude Include="..\..\engines\sherlock\sherlock.h" />
-		<ClInclude Include="..\..\engines\sherlock\sound.h" />
-		<ClInclude Include="..\..\engines\sherlock\surface.h" />
-		<ClInclude Include="..\..\engines\sherlock\talk.h" />
 		<ClInclude Include="..\..\engines\sherlock\tattoo\tattoo.h">
 			<Filter>tattoo</Filter>
 		</ClInclude>
@@ -331,6 +309,28 @@
 		<ClInclude Include="..\..\engines\sherlock\tattoo\widget_verbs.h">
 			<Filter>tattoo</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\sherlock\animation.h" />
+		<ClInclude Include="..\..\engines\sherlock\debugger.h" />
+		<ClInclude Include="..\..\engines\sherlock\detection.h" />
+		<ClInclude Include="..\..\engines\sherlock\detection_tables.h" />
+		<ClInclude Include="..\..\engines\sherlock\events.h" />
+		<ClInclude Include="..\..\engines\sherlock\fixed_text.h" />
+		<ClInclude Include="..\..\engines\sherlock\fonts.h" />
+		<ClInclude Include="..\..\engines\sherlock\image_file.h" />
+		<ClInclude Include="..\..\engines\sherlock\inventory.h" />
+		<ClInclude Include="..\..\engines\sherlock\journal.h" />
+		<ClInclude Include="..\..\engines\sherlock\map.h" />
+		<ClInclude Include="..\..\engines\sherlock\music.h" />
+		<ClInclude Include="..\..\engines\sherlock\objects.h" />
+		<ClInclude Include="..\..\engines\sherlock\people.h" />
+		<ClInclude Include="..\..\engines\sherlock\resources.h" />
+		<ClInclude Include="..\..\engines\sherlock\saveload.h" />
+		<ClInclude Include="..\..\engines\sherlock\scene.h" />
+		<ClInclude Include="..\..\engines\sherlock\screen.h" />
+		<ClInclude Include="..\..\engines\sherlock\sherlock.h" />
+		<ClInclude Include="..\..\engines\sherlock\sound.h" />
+		<ClInclude Include="..\..\engines\sherlock\surface.h" />
+		<ClInclude Include="..\..\engines\sherlock\talk.h" />
 		<ClInclude Include="..\..\engines\sherlock\user_interface.h" />
 	</ItemGroup>
 	<ItemGroup>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="boyz">
-			<UniqueIdentifier>EFDBA69B-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B9A53D8A-1547-4147-ADB2-17852A9CDBDC</UniqueIdentifier>
 		</Filter>
 		<Filter Include="spider">
-			<UniqueIdentifier>EFDBA69C-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>32364601-6E87-44F8-8795-80099548BAE8</UniqueIdentifier>
 		</Filter>
 		<Filter Include="wet">
-			<UniqueIdentifier>EFDBA69D-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>A61466C4-F61E-43E7-AB93-FA9C0F22F9B3</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
@@ -26,15 +26,6 @@
 		<ClCompile Include="..\..\engines\hypno\boyz\scene.cpp">
 			<Filter>boyz</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\hypno\cursors.cpp" />
-		<ClCompile Include="..\..\engines\hypno\grammar_arc.cpp" />
-		<ClCompile Include="..\..\engines\hypno\grammar_mis.cpp" />
-		<ClCompile Include="..\..\engines\hypno\hypno.cpp" />
-		<ClCompile Include="..\..\engines\hypno\lexer_arc.cpp" />
-		<ClCompile Include="..\..\engines\hypno\lexer_mis.cpp" />
-		<ClCompile Include="..\..\engines\hypno\libfile.cpp" />
-		<ClCompile Include="..\..\engines\hypno\metaengine.cpp" />
-		<ClCompile Include="..\..\engines\hypno\scene.cpp" />
 		<ClCompile Include="..\..\engines\hypno\spider\arcade.cpp">
 			<Filter>spider</Filter>
 		</ClCompile>
@@ -47,7 +38,6 @@
 		<ClCompile Include="..\..\engines\hypno\spider\talk.cpp">
 			<Filter>spider</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\hypno\video.cpp" />
 		<ClCompile Include="..\..\engines\hypno\wet\arcade.cpp">
 			<Filter>wet</Filter>
 		</ClCompile>
@@ -60,6 +50,16 @@
 		<ClCompile Include="..\..\engines\hypno\wet\wet.cpp">
 			<Filter>wet</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\hypno\cursors.cpp" />
+		<ClCompile Include="..\..\engines\hypno\grammar_arc.cpp" />
+		<ClCompile Include="..\..\engines\hypno\grammar_mis.cpp" />
+		<ClCompile Include="..\..\engines\hypno\hypno.cpp" />
+		<ClCompile Include="..\..\engines\hypno\lexer_arc.cpp" />
+		<ClCompile Include="..\..\engines\hypno\lexer_mis.cpp" />
+		<ClCompile Include="..\..\engines\hypno\libfile.cpp" />
+		<ClCompile Include="..\..\engines\hypno\metaengine.cpp" />
+		<ClCompile Include="..\..\engines\hypno\scene.cpp" />
+		<ClCompile Include="..\..\engines\hypno\video.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="..\..\engines\hypno\detection.h" />

@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
 		<Filter Include="drivers">
-			<UniqueIdentifier>EFDBA5A9-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>B4DAE7E1-CA1B-4490-BD7D-886EFA54A6A0</UniqueIdentifier>
 		</Filter>
 		<Filter Include="drivers\accolade">
-			<UniqueIdentifier>EFDBA5AA-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>EE140F7F-5537-4218-A1EF-6F30800CB5F4</UniqueIdentifier>
 		</Filter>
 		<Filter Include="drivers\simon1">
-			<UniqueIdentifier>EFDBA5AB-2E1D-11F1-A827-001A7DDA7111</UniqueIdentifier>
+			<UniqueIdentifier>98E96543-FCA3-423B-9E75-FD394624A939</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
-		<ClCompile Include="..\..\engines\agos\agos.cpp" />
-		<ClCompile Include="..\..\engines\agos\animation.cpp" />
-		<ClCompile Include="..\..\engines\agos\charset-fontdata.cpp" />
-		<ClCompile Include="..\..\engines\agos\charset.cpp" />
-		<ClCompile Include="..\..\engines\agos\contain.cpp" />
-		<ClCompile Include="..\..\engines\agos\cursor.cpp" />
-		<ClCompile Include="..\..\engines\agos\debug.cpp" />
-		<ClCompile Include="..\..\engines\agos\debugger.cpp" />
-		<ClCompile Include="..\..\engines\agos\dialogs.cpp" />
-		<ClCompile Include="..\..\engines\agos\draw.cpp" />
 		<ClCompile Include="..\..\engines\agos\drivers\accolade\adlib.cpp">
 			<Filter>drivers\accolade</Filter>
 		</ClCompile>
@@ -40,12 +30,22 @@
 		<ClCompile Include="..\..\engines\agos\drivers\accolade\pc98.cpp">
 			<Filter>drivers\accolade</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\engines\agos\drivers\elvira_atarist.cpp">
-			<Filter>drivers</Filter>
-		</ClCompile>
 		<ClCompile Include="..\..\engines\agos\drivers\simon1\adlib.cpp">
 			<Filter>drivers\simon1</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\engines\agos\drivers\elvira_atarist.cpp">
+			<Filter>drivers</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\engines\agos\agos.cpp" />
+		<ClCompile Include="..\..\engines\agos\animation.cpp" />
+		<ClCompile Include="..\..\engines\agos\charset-fontdata.cpp" />
+		<ClCompile Include="..\..\engines\agos\charset.cpp" />
+		<ClCompile Include="..\..\engines\agos\contain.cpp" />
+		<ClCompile Include="..\..\engines\agos\cursor.cpp" />
+		<ClCompile Include="..\..\engines\agos\debug.cpp" />
+		<ClCompile Include="..\..\engines\agos\debugger.cpp" />
+		<ClCompile Include="..\..\engines\agos\dialogs.cpp" />
+		<ClCompile Include="..\..\engines\agos\draw.cpp" />
 		<ClCompile Include="..\..\engines\agos\event.cpp" />
 		<ClCompile Include="..\..\engines\agos\feeble.cpp" />
 		<ClCompile Include="..\..\engines\agos\gfx.cpp" />
@@ -94,14 +94,6 @@
 		<ClCompile Include="..\..\engines\agos\zones.cpp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ClInclude Include="..\..\engines\agos\agos.h" />
-		<ClInclude Include="..\..\engines\agos\animation.h" />
-		<ClInclude Include="..\..\engines\agos\debug.h" />
-		<ClInclude Include="..\..\engines\agos\debugger.h" />
-		<ClInclude Include="..\..\engines\agos\detection.h" />
-		<ClInclude Include="..\..\engines\agos\detection_fallback.h" />
-		<ClInclude Include="..\..\engines\agos\detection_tables.h" />
-		<ClInclude Include="..\..\engines\agos\dialogs.h" />
 		<ClInclude Include="..\..\engines\agos\drivers\accolade\adlib.h">
 			<Filter>drivers\accolade</Filter>
 		</ClInclude>
@@ -117,12 +109,20 @@
 		<ClInclude Include="..\..\engines\agos\drivers\accolade\mt32.h">
 			<Filter>drivers\accolade</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\engines\agos\drivers\elvira_atarist.h">
-			<Filter>drivers</Filter>
-		</ClInclude>
 		<ClInclude Include="..\..\engines\agos\drivers\simon1\adlib.h">
 			<Filter>drivers\simon1</Filter>
 		</ClInclude>
+		<ClInclude Include="..\..\engines\agos\drivers\elvira_atarist.h">
+			<Filter>drivers</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\engines\agos\agos.h" />
+		<ClInclude Include="..\..\engines\agos\animation.h" />
+		<ClInclude Include="..\..\engines\agos\debug.h" />
+		<ClInclude Include="..\..\engines\agos\debugger.h" />
+		<ClInclude Include="..\..\engines\agos\detection.h" />
+		<ClInclude Include="..\..\engines\agos\detection_fallback.h" />
+		<ClInclude Include="..\..\engines\agos\detection_tables.h" />
+		<ClInclude Include="..\..\engines\agos\dialogs.h" />
 		<ClInclude Include="..\..\engines\agos\intern.h" />
 		<ClInclude Include="..\..\engines\agos\intern_detection.h" />
 		<ClInclude Include="..\..\engines\agos\midi.h" />
