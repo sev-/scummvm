@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:41+0000\n"
+"POT-Creation-Date: 2026-04-06 23:11+0000\n"
 "PO-Revision-Date: 2024-07-11 17:47+0000\n"
 "Last-Translator: Krish <ganatrakrish2882005@gmail.com>\n"
 "Language-Team: Hindi <https://translations.scummvm.org/projects/scummvm/"
@@ -7227,6 +7227,18 @@ msgstr ""
 #| msgid "Quit Game"
 msgid "Quit game"
 msgstr "गेम quit करें"
+
+#: engines/bolt/metaengine.cpp:34
+#, fuzzy
+#| msgid "Change game options"
+msgid "Extended game resolution"
+msgstr "गेम के विकल्प चुनें"
+
+#: engines/bolt/metaengine.cpp:35
+msgid ""
+"This option allows the game to play at a slightly extended resolution. This "
+"is what the Mac and CDi versions are supposed to play like."
+msgstr ""
 
 #: engines/buried/buried.cpp:598
 msgid "Are you sure you want to quit?"

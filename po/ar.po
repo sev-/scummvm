@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.8.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:41+0000\n"
+"POT-Creation-Date: 2026-04-06 23:11+0000\n"
 "PO-Revision-Date: 2026-02-24 22:26+0000\n"
 "Last-Translator: Mohamed Shaaban <mohmedbashamedo@hotmail.com>\n"
 "Language-Team: Arabic <https://translations.scummvm.org/projects/scummvm/"
@@ -7635,6 +7635,18 @@ msgstr "قاعدة بيانات الدليل"
 #| msgid "Quit Game"
 msgid "Quit game"
 msgstr "قم بإنهاء اللعبة"
+
+#: engines/bolt/metaengine.cpp:34
+#, fuzzy
+#| msgid "Enable high resolution"
+msgid "Extended game resolution"
+msgstr "تفعيل الدقة العالية"
+
+#: engines/bolt/metaengine.cpp:35
+msgid ""
+"This option allows the game to play at a slightly extended resolution. This "
+"is what the Mac and CDi versions are supposed to play like."
+msgstr ""
 
 #: engines/buried/buried.cpp:598
 msgid "Are you sure you want to quit?"
