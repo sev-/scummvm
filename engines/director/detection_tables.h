@@ -9865,6 +9865,11 @@ static const DirectorGameDescription gameDescriptions[] = {
 	WINGAME2_l("webmaster", "", "Webmaster.exe",  "t:b757ff13f0f10c94b1b9fc5f2ceac6ec", 1820594,
 								"Data/chaos.dxr", "d:a974288bad555038af8a0791b1ae0292", 556715, Common::EN_ANY, 702),
 
+	// French: "Webmaster: le maître d'internet"
+	// developed by IJsfontein, published by Multimédia Gallimard
+	WINGAME2_l("webmaster", "", "Webmaster.exe",  "t:e1e8d498214e8ffc50f65973c510962b", 178102,
+								"Data/chaos.dxr", "d:a8857ee87e3435190a880e3f45085212", 436488, Common::FR_FRA, 702),
+
 	// Published by The Wine CD Corp (1999)
 	// Windows version needs installation
 	MACGAME1("winecd", "", "Start Wine CD", "rt:40cc0f0d9595e19d6e9f78ad29456f02", 109134, 700),
