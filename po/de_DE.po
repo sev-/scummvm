@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-06 17:31+0000\n"
-"PO-Revision-Date: 2026-04-06 17:51+0000\n"
+"PO-Revision-Date: 2026-04-06 17:52+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -9384,7 +9384,7 @@ msgstr "Schwarz"
 
 #: engines/glk/dialogs.cpp:146
 msgid "grey"
-msgstr ""
+msgstr "Grau"
 
 #: engines/glk/dialogs.cpp:195
 msgid "Monospace Regular"
