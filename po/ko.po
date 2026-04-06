@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:30+0000\n"
+"POT-Creation-Date: 2026-04-06 20:41+0000\n"
 "PO-Revision-Date: 2026-04-01 20:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -11768,11 +11768,6 @@ msgstr "하위 시퀀스 건너뛰기"
 msgid "Restart sequence"
 msgstr "시퀀스 재시작"
 
-#. I18N: Plumbers is the title of the game. 3DO is the name of platform
-#: engines/plumbers/metaengine.cpp:51
-msgid "3DO Plumbers requires RGB support."
-msgstr "3DO Plumbers에는 RGB 지원이 필요합니다."
-
 #: engines/prince/metaengine.cpp:237
 msgid "Open interaction menu"
 msgstr "상호작용 메뉴 열기"
@@ -16834,6 +16829,9 @@ msgstr ""
 "MIDI 재생을 사용할 수 없거나, 제대로 구성되지 않았습니다. 죠크 네미시스에는 "
 "MIDI 오디오가 필요한 여러 음악 퍼즐이 포함되어 있습니다.  이러한 퍼즐은 지원"
 "되는 경우 자막을 사용하여 해결할 수 있습니다. 게임을 계속 실행할까요?"
+
+#~ msgid "3DO Plumbers requires RGB support."
+#~ msgstr "3DO Plumbers에는 RGB 지원이 필요합니다."
 
 #~ msgid "Load game:"
 #~ msgstr "게임 불러오기:"

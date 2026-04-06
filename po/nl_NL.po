@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:30+0000\n"
+"POT-Creation-Date: 2026-04-06 20:41+0000\n"
 "PO-Revision-Date: 2026-02-11 14:23+0000\n"
 "Last-Translator: SecularSteve <fairfull.playing@gmail.com>\n"
 "Language-Team: Dutch <https://translations.scummvm.org/projects/scummvm/"
@@ -11978,11 +11978,6 @@ msgstr "Subreeks overslaan"
 msgid "Restart sequence"
 msgstr "Herstartvolgorde"
 
-#. I18N: Plumbers is the title of the game. 3DO is the name of platform
-#: engines/plumbers/metaengine.cpp:51
-msgid "3DO Plumbers requires RGB support."
-msgstr "3DO Plumbers vereist RGB-ondersteuning."
-
 #: engines/prince/metaengine.cpp:237
 msgid "Open interaction menu"
 msgstr "Interactie-menu openen"
@@ -17183,6 +17178,9 @@ msgstr ""
 "opgelost te kunnen worden. Deze puzzels kunnen ook worden opgelost met "
 "behulp van ondertitels, indien ondersteund. Doorgaan met het starten van het "
 "spel?"
+
+#~ msgid "3DO Plumbers requires RGB support."
+#~ msgstr "3DO Plumbers vereist RGB-ondersteuning."
 
 #~ msgid "Load game:"
 #~ msgstr "Laad spel:"

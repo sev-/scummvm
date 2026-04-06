@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:30+0000\n"
+"POT-Creation-Date: 2026-04-06 20:41+0000\n"
 "PO-Revision-Date: 2026-04-05 16:27+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -12017,11 +12017,6 @@ msgstr "Salta sotto-sequenza"
 msgid "Restart sequence"
 msgstr "Ricomincia sequenza"
 
-#. I18N: Plumbers is the title of the game. 3DO is the name of platform
-#: engines/plumbers/metaengine.cpp:51
-msgid "3DO Plumbers requires RGB support."
-msgstr "La versione 3DO di Plumbers richiede il supporto RGB."
-
 #: engines/prince/metaengine.cpp:237
 msgid "Open interaction menu"
 msgstr "Apri menù interazioni"
@@ -17211,6 +17206,9 @@ msgstr ""
 "Zork Nemesis contiene alcuni puzzle musicali the richiedono l'audio MIDI per "
 "poterli risolvere. In alternativa, i puzzle possono essere risolti usando i "
 "sottotitoli, se supportati. Desideri continuare ad avviare il gioco?"
+
+#~ msgid "3DO Plumbers requires RGB support."
+#~ msgstr "La versione 3DO di Plumbers richiede il supporto RGB."
 
 #~ msgid "Load game:"
 #~ msgstr "Carica gioco:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 20:30+0000\n"
+"POT-Creation-Date: 2026-04-06 20:41+0000\n"
 "PO-Revision-Date: 2024-07-11 17:47+0000\n"
 "Last-Translator: Krish <ganatrakrish2882005@gmail.com>\n"
 "Language-Team: Hindi <https://translations.scummvm.org/projects/scummvm/"
@@ -11588,11 +11588,6 @@ msgstr "ऑटोसेव स्किप करें"
 #| msgid "Saved games"
 msgid "Restart sequence"
 msgstr "सेव गेम्स"
-
-#. I18N: Plumbers is the title of the game. 3DO is the name of platform
-#: engines/plumbers/metaengine.cpp:51
-msgid "3DO Plumbers requires RGB support."
-msgstr ""
 
 #: engines/prince/metaengine.cpp:237
 #, fuzzy
