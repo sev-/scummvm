@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 16:32+0000\n"
+"POT-Creation-Date: 2026-04-06 16:56+0000\n"
 "PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
@@ -4234,37 +4234,37 @@ msgstr "ウィンドウに合わせて拡大"
 msgid "Fit to window (4:3)"
 msgstr "ウィンドウに合わせる(4:3)"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:971
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:975
 #, c-format
 msgid "Resolution: %dx%d"
 msgstr "解像度: %dx%d"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1015
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1019
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2869
 msgid "Active graphics filter:"
 msgstr "適用中の映像フィルター："
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1036
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1040
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2903
 msgid "Enabled aspect ratio correction"
 msgstr "縦横比修正適用"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1038
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1042
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2909
 msgid "Disabled aspect ratio correction"
 msgstr "縦横比修正無効"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1051
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1055
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2925
 msgid "Filtering enabled"
 msgstr "フィルター適用"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1053
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1057
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2927
 msgid "Filtering disabled"
 msgstr "フィルター無効"
 
-#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1079
+#: backends/graphics/openglsdl/openglsdl-graphics.cpp:1083
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:2954
 msgid "Stretch mode"
 msgstr "ストレッチモード"
