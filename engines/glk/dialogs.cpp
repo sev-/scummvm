@@ -138,12 +138,12 @@ struct GlkColor {
 };
 
 static const GlkColor GLK_COLORS[] = {
-	{ "white", 0xFFFFFF },
-	{ "green", 0x00FF00 },
-	{ "red",   0xFF0000 },
-	{ "blue",  0x0000FF },
-	{ "black", 0x000000 },
-	{ "grey",  0x808080 }
+	{ _s("white"), 0xFFFFFF },
+	{ _s("green"), 0x00FF00 },
+	{ _s("red"),   0xFF0000 },
+	{ _s("blue"),  0x0000FF },
+	{ _s("black"), 0x000000 },
+	{ _s("grey"),  0x808080 }
 };
 
 struct BoolOption {
@@ -182,8 +182,8 @@ struct FontOption {
 	const char *confKeyPrefix;
 };
 
-static GUI::StaticTextWidget *createHeading(GUI::GuiObject *boss, const char *id, const char *text) {
-	auto h = new GUI::StaticTextWidget(boss, id, _(text));
+static GUI::StaticTextWidget *createHeading(GUI::GuiObject *boss, const char *id, Common::U32String text) {
+	auto h = new GUI::StaticTextWidget(boss, id, text);
 	h->setAlign(Graphics::kTextAlignCenter);
 	return h;
 }
@@ -207,7 +207,7 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 		_gfontPopUps[f] = nullptr;
 	}
 
-	_fontHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.FontHeading", "Font");
+	_fontHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.FontHeading", _("Font"));
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.TFont", _("Text:"), _tfontPopUps[0], "GlkOptionsDialog.TFont0", _("Font for the text"));
 	for (int f = MONOR; f <= PROPZ; ++f)
@@ -217,73 +217,80 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 	for (int f = MONOR; f <= PROPZ; ++f)
 		_gfontPopUps[0]->appendEntry(_(fontLabels[f]), f);
 
-	_colorHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.ColorHeading", "Color");
+	_colorHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.ColorHeading", _("Color"));
 
 	COLOR_EDIT("GlkOptionsDialog.T", _manualTColorHexInput, _tcolorPopUps[0], _("Text:"), _("Color of the interactive text"), kTHexChangedCmd, kTColorChangedCmd);
 	for (int c = 0; c <= 5; ++c)
 		_tcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_tcolorPopUps[0]->appendEntry("custom", 6);
+	_tcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
 	COLOR_EDIT("GlkOptionsDialog.G", _manualGColorHexInput, _gcolorPopUps[0], _("Grid:"), _("Color for drawn graphics such as maps, diagrams, puzzles, etc"), kGHexChangedCmd, kGColorChangedCmd);
 	for (int c = 0; c <= 5; ++c)
 		_gcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_gcolorPopUps[0]->appendEntry("custom", 6);
+	_gcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
-	COLOR_EDIT("GlkOptionsDialog.W", _manualWColorHexInput, _wcolorPopUps[0], _("Window:"), _("Color of the window(background)"), kWHexChangedCmd, kWColorChangedCmd);
-	_wcolorPopUps[0]->appendEntry("<default>", 7);
+	COLOR_EDIT("GlkOptionsDialog.W", _manualWColorHexInput, _wcolorPopUps[0], _("Window:"), _("Color of the window (background)"), kWHexChangedCmd, kWColorChangedCmd);
+	_wcolorPopUps[0]->appendEntry(_("<default>"), 7);
 	for (int c = 0; c <= 5; ++c)
 		_wcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_wcolorPopUps[0]->appendEntry("custom", 6);
+	_wcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
 	COLOR_EDIT("GlkOptionsDialog.B", _manualBColorHexInput, _bcolorPopUps[0], _("Border:"), _("Color of the window border"), kBHexChangedCmd, kBColorChangedCmd);
-	_bcolorPopUps[0]->appendEntry("<default>", 7);
+	_bcolorPopUps[0]->appendEntry(_("<default>"), 7);
 	for (int c = 0; c <= 5; ++c)
 		_bcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_bcolorPopUps[0]->appendEntry("custom", 6);
+	_bcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
-	_borderHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.wborderlbl", "Border");
+    // I18N: This is a section for text windows border settings
+	_borderHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.wborderlbl", _("Border"));
 
 	NEW_LABEL_EDIT("GlkOptionsDialog.wborderx", _("Horizontal:"), _wborderx, "GlkOptionsDialog.wborderhorizontal", _("Horizontal border size"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.wbordery", _("Vertical:"), _wbordery, "GlkOptionsDialog.wbordervertical", _("Vertical border size"));
 
 	COLOR_EDIT("GlkOptionsDialog.C", _manualCColorHexInput, _ccolorPopUps[0], _("Caret:"), _("Color of the cursor"), kCHexChangedCmd, kCColorChangedCmd);
-	_ccolorPopUps[0]->appendEntry("<default>", 7);
+	_ccolorPopUps[0]->appendEntry(_("<default>"), 7);
 	for (int c = 0; c <= 5; ++c)
 		_ccolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_ccolorPopUps[0]->appendEntry("custom", 6);
+	_ccolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
 	COLOR_EDIT("GlkOptionsDialog.L", _manualLColorHexInput, _lcolorPopUps[0], _("Link:"), _("Color for URLs if they appear in-game"), kLHexChangedCmd, kLColorChangedCmd);
-	_lcolorPopUps[0]->appendEntry("<default>", 7);
+	_lcolorPopUps[0]->appendEntry(_("<default>"), 7);
 	for (int c = 0; c <= 5; ++c)
 		_lcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_lcolorPopUps[0]->appendEntry("custom", 6);
+	_lcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
-	COLOR_EDIT("GlkOptionsDialog.M", _manualMColorHexInput, _mcolorPopUps[0], _("More:"), _("Color for the \"More...\" markers in the text"), kMHexChangedCmd, kMColorChangedCmd);
-	_mcolorPopUps[0]->appendEntry("<default>", 7);
+	COLOR_EDIT("GlkOptionsDialog.M", _manualMColorHexInput, _mcolorPopUps[0],
+		// I18N: "More..." is a prompt in text windows, which appears when the text exceeds the window size
+		_("More:"),
+		_("Color for the \"More...\" markers in the text"), kMHexChangedCmd, kMColorChangedCmd);
+	_mcolorPopUps[0]->appendEntry(_("<default>"), 7);
 	for (int c = 0; c <= 5; ++c)
 		_mcolorPopUps[0]->appendEntry(_(GLK_COLORS[c].name), c);
-	_mcolorPopUps[0]->appendEntry("custom", 6);
+	_mcolorPopUps[0]->appendEntry(_("<custom>"), 6);
 
-	_typographyHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.topographyheadinglbl", "Typography");
+	// I18n: This is a section for typography settings, such as font size, spacing, etc.
+	_typographyHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.topographyheadinglbl", _("Typography"));
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.linkstyle", _("Link style:"), _linkStyle, "GlkOptionsDialog.linkStyle", _("Style for URLs if they appear in-game"));
-	_linkStyle->appendEntry(_("1"), 0);
-	_linkStyle->appendEntry(_("2"), 1);
-	_linkStyle->appendEntry(_("3"), 2);
+	_linkStyle->appendEntry("1", 0);
+	_linkStyle->appendEntry("2", 1);
+	_linkStyle->appendEntry("3", 2);
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.caretshape", _("Caret shape:"), _caretShape, "GlkOptionsDialog.caretShape", _("Shape of the cursor"));
-	_caretShape->appendEntry(_("0"), 0);
-	_caretShape->appendEntry(_("1"), 1);
-	_caretShape->appendEntry(_("2"), 2);
-	_caretShape->appendEntry(_("3"), 3);
-	_caretShape->appendEntry(_("4"), 4);
+	_caretShape->appendEntry("0", 0);
+	_caretShape->appendEntry("1", 1);
+	_caretShape->appendEntry("2", 2);
+	_caretShape->appendEntry("3", 3);
+	_caretShape->appendEntry("4", 4);
 
 	NEW_LABEL_EDIT("GlkOptionsDialog.moreprompt", _("More prompt:"), _morePrompt, "GlkOptionsDialog.morePrompt", _("Custom marker in place of the \"More...\" marker for eg. \"continue\". Leave it blank to use the game's default"));
 
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.stylehintlabel", _("Style hints:"), _styleHint, "GlkOptionsDialog.stylehint", _("Let the game suggest text styling options"));
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.safeclickslabel", _("Safe clicks:"), _safeClicks, "GlkOptionsDialog.safeclicks", _("Safely apply clicks while input is pending"));
 
+	// I18N: This is setting for number of text columns
 	NEW_LABEL_EDIT("GlkOptionsDialog.colslbl", _("Column count:"), _cols, "GlkOptionsDialog.cols", _("Number of columns"));
+	// I18N: This is setting for number of text rows
 	NEW_LABEL_EDIT("GlkOptionsDialog.rowslbl", _("Rows count:"), _rows, "GlkOptionsDialog.rows", _("Number of rows"));
 
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.lockcolslbl", _("Lock columns:"), _lockcols, "GlkOptionsDialog.lockcols", _("Check it to manually change the column count"));
@@ -293,34 +300,40 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.quoteslbl", _("Typographic quotes:"), _quotes, "GlkOptionsDialog.quotes", _("Choose typographic quotes"));
 	_quotes->appendEntry(_("Off"), 0);
+	// I18N: This is a setting for using normal typographic quotes, which are like in most books, with the opening quote higher than the closing one
 	_quotes->appendEntry(_("Normal"), 1);
+	// I18N: This is a setting for using "rabid" quotes, which are like normal typographic quotes but with the opening quote lower than the closing one, like in some comic books
 	_quotes->appendEntry(_("Rabid"), 2);
 
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.capslbl", _("Caps:"), _caps, "GlkOptionsDialog.caps", _("Force uppercase input"));
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.dasheslbl", _("Dashes:"), _dashes, "GlkOptionsDialog.dashes", _("Types of dashes"));
 	_dashes->appendEntry(_("Off"), 0);
+	// I18N: This is a setting for using normal typographic dashes, which are like in most books, with the em dash being the longest and the en dash being half of it
 	_dashes->appendEntry(_("Em dashes"), 1);
+	// I18N: This is a setting for using "en+em" dashes, which are like normal typographic dashes but with the en dash being the same length as the em dash, like in some comic books
 	_dashes->appendEntry(_("En+Em dashes"), 2);
 
-	_userExperiencelbl = createHeading(widgetsBoss(), "GlkOptionsDialog.userexplbl", "User experience");
+	_userExperiencelbl = createHeading(widgetsBoss(), "GlkOptionsDialog.userexplbl", _("User experience"));
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.spaceslbl", _("Spaces:"), _spaces, "GlkOptionsDialog.spaces", _("Types of spaces"));
 	_spaces->appendEntry(_("Off"), 0);
+	// I18N: This is a setting for compressing double spaces into single ones in text
 	_spaces->appendEntry(_("Compress double spaces"), 1);
+	// I18N: This is a setting for expanding single spaces into double ones in text
 	_spaces->appendEntry(_("Expand single spaces"), 2);
 
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.graphicslbl", _("Graphics:"), _graphics, "GlkOptionsDialog.graphics", _("Turn graphics on/off"));
 
-	_wmarginHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.WindowMarginHeading", "Window margin");
+	_wmarginHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.WindowMarginHeading", _("Window margin"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.wmarginxlbl", _("Horizontal:"), _wmarginx, "GlkOptionsDialog.wmarginx", _("Horizontal margin for window"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.wmarginylbl", _("Vertical:"), _wmarginy, "GlkOptionsDialog.wmarginy", _("Vertical margin for window"));
 
-	_wpaddingHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.wpaddinglbl", "Window padding");
+	_wpaddingHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.wpaddinglbl", _("Window padding"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.wpaddingxlbl", _("Horizontal:"), _wpaddingx, "GlkOptionsDialog.wpaddingx", _("Horizontal padding for window"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.wpaddingylbl", _("Vertical:"), _wpaddingy, "GlkOptionsDialog.wpaddingy", _("Vertical padding for window"));
 
-	_tmarginHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.tmarginlbl", "Text margin");
+	_tmarginHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.tmarginlbl", _("Text margin"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.tmarginxlbl", _("Horizontal:"), _tmarginx, "GlkOptionsDialog.tmarginx", _("Horizontal margin for text"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.tmarginylbl", _("Vertical:"), _tmarginy, "GlkOptionsDialog.tmarginy", _("Vertical margin for text"));
 
@@ -330,7 +343,8 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.monosizelbl", _("Monosize:"), _monosize, "GlkOptionsDialog.monosize", _monosizeVal, "GlkOptionsDialog.monosizeval", _("Font size scaling for the monospace text font"), kMonoSizeCmd);
 	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.propsizelbl", _("Propsize:"), _propsize, "GlkOptionsDialog.propsize", _propsizeVal, "GlkOptionsDialog.propsizeval", _("Font size scaling for the proportional text font"), kPropSizeCmd);
 
-	_moreHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.morelbl", "More");
+	// I18N: This is a section for settings related to the "More..." prompt in text windows
+	_moreHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.morelbl", _("More"));
 	NEW_LABEL_POPUP("GlkOptionsDialog.morealignlbl", _("Align:"), _morealign, "GlkOptionsDialog.morealign", _("Alignment of the \"More...\" marker on the window"));
 	_morealign->appendEntry(_("Left"), 0);
 	_morealign->appendEntry(_("Centre"), 1);
