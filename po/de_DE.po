@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-06 17:31+0000\n"
-"PO-Revision-Date: 2026-04-06 11:57+0000\n"
+"PO-Revision-Date: 2026-04-06 17:51+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -9364,25 +9364,23 @@ msgstr "Bild-Fenster umgeschaltet\n"
 
 #: engines/glk/dialogs.cpp:141
 msgid "white"
-msgstr ""
+msgstr "Weiß"
 
 #: engines/glk/dialogs.cpp:142
 msgid "green"
-msgstr ""
+msgstr "Grün"
 
 #: engines/glk/dialogs.cpp:143
-#, fuzzy
-#| msgid "Proceed"
 msgid "red"
-msgstr "Fortfahren"
+msgstr "Rot"
 
 #: engines/glk/dialogs.cpp:144
 msgid "blue"
-msgstr ""
+msgstr "Blau"
 
 #: engines/glk/dialogs.cpp:145
 msgid "black"
-msgstr ""
+msgstr "Schwarz"
 
 #: engines/glk/dialogs.cpp:146
 msgid "grey"
