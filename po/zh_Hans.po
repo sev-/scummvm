@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-05 23:32+0000\n"
+"POT-Creation-Date: 2026-04-06 16:00+0000\n"
 "PO-Revision-Date: 2024-12-01 22:18+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -1066,12 +1066,12 @@ msgstr "向下"
 #: gui/gui-manager.cpp:186 engines/metaengine.cpp:149
 #: engines/awe/metaengine.cpp:59 engines/bagel/metaengine.cpp:68
 #: engines/crab/input/input.cpp:107 engines/crab/input/input.cpp:157
-#: engines/dragons/metaengine.cpp:170 engines/got/metaengine.cpp:72
-#: engines/griffon/metaengine.cpp:133 engines/grim/grim.cpp:491
-#: engines/grim/grim.cpp:573 engines/icb/icb.cpp:78 engines/icb/icb.cpp:162
-#: engines/scumm/metaengine.cpp:1020 engines/twine/metaengine.cpp:452
-#: engines/twine/metaengine.cpp:520 engines/twp/metaengine.cpp:152
-#: engines/ultima/ultima4/metaengine.cpp:46
+#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:326
+#: engines/got/metaengine.cpp:72 engines/griffon/metaengine.cpp:133
+#: engines/grim/grim.cpp:491 engines/grim/grim.cpp:573 engines/icb/icb.cpp:78
+#: engines/icb/icb.cpp:162 engines/scumm/metaengine.cpp:1020
+#: engines/twine/metaengine.cpp:452 engines/twine/metaengine.cpp:520
+#: engines/twp/metaengine.cpp:152 engines/ultima/ultima4/metaengine.cpp:46
 #: engines/ultima/ultima4/metaengine.cpp:141
 #: engines/ultima/ultima4/metaengine.cpp:151
 #: engines/wintermute/keymapper_tables.h:320
@@ -1086,12 +1086,12 @@ msgstr "向左"
 #: gui/gui-manager.cpp:192 engines/metaengine.cpp:155
 #: engines/awe/metaengine.cpp:60 engines/bagel/metaengine.cpp:69
 #: engines/crab/input/input.cpp:113 engines/crab/input/input.cpp:163
-#: engines/dragons/metaengine.cpp:176 engines/got/metaengine.cpp:73
-#: engines/griffon/metaengine.cpp:139 engines/grim/grim.cpp:496
-#: engines/grim/grim.cpp:578 engines/icb/icb.cpp:83 engines/icb/icb.cpp:167
-#: engines/scumm/metaengine.cpp:1027 engines/twine/metaengine.cpp:444
-#: engines/twine/metaengine.cpp:513 engines/twp/metaengine.cpp:153
-#: engines/ultima/ultima4/metaengine.cpp:47
+#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:328
+#: engines/got/metaengine.cpp:73 engines/griffon/metaengine.cpp:139
+#: engines/grim/grim.cpp:496 engines/grim/grim.cpp:578 engines/icb/icb.cpp:83
+#: engines/icb/icb.cpp:167 engines/scumm/metaengine.cpp:1027
+#: engines/twine/metaengine.cpp:444 engines/twine/metaengine.cpp:513
+#: engines/twp/metaengine.cpp:153 engines/ultima/ultima4/metaengine.cpp:47
 #: engines/ultima/ultima4/metaengine.cpp:142
 #: engines/ultima/ultima4/metaengine.cpp:152
 #: engines/wintermute/keymapper_tables.h:326
@@ -3565,7 +3565,7 @@ msgstr "回到启动器 (~R~)"
 #: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:858
 #: engines/groovie/script.cpp:2256 engines/groovie/script.cpp:2283
 #: engines/groovie/script.cpp:2324 engines/hugo/file.cpp:297
@@ -3586,7 +3586,7 @@ msgstr "保存游戏："
 #: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:853
 #: engines/groovie/script.cpp:858 engines/groovie/script.cpp:2256
 #: engines/groovie/script.cpp:2283 engines/groovie/script.cpp:2324
@@ -6669,7 +6669,7 @@ msgstr "使用较新 Apple II 机型中的方格光标"
 #: engines/adl/metaengine.cpp:117 engines/agi/metaengine.cpp:220
 #: engines/cge/metaengine.cpp:56 engines/cine/metaengine.cpp:69
 #: engines/cruise/metaengine.cpp:45 engines/drascula/metaengine.cpp:55
-#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:193
+#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:205
 #: engines/gob/metaengine.cpp:57 engines/got/metaengine.cpp:48
 #: engines/griffon/metaengine.cpp:40 engines/hugo/metaengine.cpp:56
 #: engines/made/metaengine.cpp:51 engines/mm/metaengine.cpp:91
@@ -6835,7 +6835,7 @@ msgstr "此游戏不支持保存"
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:870 engines/groovie/script.cpp:2243
 #: engines/groovie/script.cpp:2270 engines/groovie/script.cpp:2340
@@ -6855,7 +6855,7 @@ msgstr "恢复游戏："
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:853 engines/groovie/script.cpp:870
 #: engines/groovie/script.cpp:2243 engines/groovie/script.cpp:2270
@@ -9556,15 +9556,15 @@ msgstr "[ 按任意键退出 ]"
 msgid "Untitled Savegame"
 msgstr "未命名存档"
 
-#: engines/glk/metaengine.cpp:194
+#: engines/glk/metaengine.cpp:206
 msgid "Use TTS to read the text"
 msgstr "使用 TTS 读出文本"
 
-#: engines/glk/metaengine.cpp:201
+#: engines/glk/metaengine.cpp:213
 msgid "Also read input text"
 msgstr "也读出输入文本"
 
-#: engines/glk/metaengine.cpp:202
+#: engines/glk/metaengine.cpp:214
 msgid "Use TTS to read the input text"
 msgstr "使用 TTS 读出输入文本"
 
@@ -9612,6 +9612,389 @@ msgstr "存档"
 #: engines/glk/comprehend/game.cpp:860
 msgid "Picture window toggled\n"
 msgstr "已切换图片窗口开关\n"
+
+#: engines/glk/dialogs.cpp:203 engines/glk/dialogs.cpp:213
+msgid "Text:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:203
+msgid "Font for the text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:207 engines/glk/dialogs.cpp:218
+msgid "Grid:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:207
+msgid "Font for drawn graphics like maps, diagrams, puzzles, etc"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:213
+#, fuzzy
+#| msgid "Go to next object"
+msgid "Color of the interactive text"
+msgstr "转到下一个物品"
+
+#: engines/glk/dialogs.cpp:218
+msgid "Color for drawn graphics such as maps, diagrams, puzzles, etc"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:223
+#, fuzzy
+#| msgid "Window"
+msgid "Window:"
+msgstr "窗口"
+
+#: engines/glk/dialogs.cpp:223
+msgid "Color of the window(background)"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:229
+#, fuzzy
+#| msgid "New kid"
+msgid "Border:"
+msgstr "新儿童"
+
+#: engines/glk/dialogs.cpp:229
+#, fuzzy
+#| msgid "Toggle fast mode"
+msgid "Color of the window border"
+msgstr "开关快速模式"
+
+#: engines/glk/dialogs.cpp:237 engines/glk/dialogs.cpp:307
+#: engines/glk/dialogs.cpp:311 engines/glk/dialogs.cpp:315
+#, fuzzy
+#| msgid "Horizontal underscan:"
+msgid "Horizontal:"
+msgstr "水平欠扫描："
+
+#: engines/glk/dialogs.cpp:237
+#, fuzzy
+#| msgid "Horizontal underscan:"
+msgid "Horizontal border size"
+msgstr "水平欠扫描："
+
+#: engines/glk/dialogs.cpp:238 engines/glk/dialogs.cpp:308
+#: engines/glk/dialogs.cpp:312 engines/glk/dialogs.cpp:316
+#, fuzzy
+#| msgid "Vertical underscan:"
+msgid "Vertical:"
+msgstr "垂直欠扫描："
+
+#: engines/glk/dialogs.cpp:238
+#, fuzzy
+#| msgid "Vertical underscan:"
+msgid "Vertical border size"
+msgstr "垂直欠扫描："
+
+#: engines/glk/dialogs.cpp:240
+msgid "Caret:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:240
+#, fuzzy
+#| msgid "Regular cursor"
+msgid "Color of the cursor"
+msgstr "常规光标"
+
+#: engines/glk/dialogs.cpp:246
+msgid "Link:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:246
+msgid "Color for URLs if they appear in-game"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:252
+msgid "More:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:252
+msgid "Color for the \"More...\" markers in the text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:260
+msgid "Link style:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:260
+msgid "Style for URLs if they appear in-game"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:261 engines/glk/dialogs.cpp:267
+#, fuzzy
+#| msgid "L1"
+msgid "1"
+msgstr "L1"
+
+#: engines/glk/dialogs.cpp:262 engines/glk/dialogs.cpp:268
+#, fuzzy
+#| msgid "L2"
+msgid "2"
+msgstr "L2"
+
+#: engines/glk/dialogs.cpp:263 engines/glk/dialogs.cpp:269
+#, fuzzy
+#| msgid "L3"
+msgid "3"
+msgstr "L3"
+
+#: engines/glk/dialogs.cpp:265
+#, fuzzy
+#| msgid "Change shadow type"
+msgid "Caret shape:"
+msgstr "更改阴影类型"
+
+#: engines/glk/dialogs.cpp:265
+#, fuzzy
+#| msgid "Show mouse cursor"
+msgid "Shape of the cursor"
+msgstr "显示鼠标光标"
+
+#: engines/glk/dialogs.cpp:266
+msgid "0"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:270
+msgid "4"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:272
+#, fuzzy
+#| msgid "Quit Prompt"
+msgid "More prompt:"
+msgstr "退出提示"
+
+#: engines/glk/dialogs.cpp:272
+msgid ""
+"Custom marker in place of the \"More...\" marker for eg. \"continue\". Leave "
+"it blank to use the game's default"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:274
+#, fuzzy
+#| msgid "Hide hints"
+msgid "Style hints:"
+msgstr "隐藏提示"
+
+#: engines/glk/dialogs.cpp:274
+msgid "Let the game suggest text styling options"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:275
+#, fuzzy
+#| msgid "Left Click"
+msgid "Safe clicks:"
+msgstr "左键点击"
+
+#: engines/glk/dialogs.cpp:275
+msgid "Safely apply clicks while input is pending"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:277
+#, fuzzy
+#| msgid "Touch Controls"
+msgid "Column count:"
+msgstr "触屏控制"
+
+#: engines/glk/dialogs.cpp:277
+msgid "Number of columns"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:278
+msgid "Rows count:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:278
+msgid "Number of rows"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:280
+msgid "Lock columns:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:280
+msgid "Check it to manually change the column count"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:281
+#, fuzzy
+#| msgid "Block low"
+msgid "Lock rows:"
+msgstr "挡住低处"
+
+#: engines/glk/dialogs.cpp:281
+msgid "Check it to manually change the row count"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:283
+msgid "Justify:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:283
+#, fuzzy
+#| msgid "Enable short transitions"
+msgid "Enable text justification"
+msgstr "启用短转场"
+
+#: engines/glk/dialogs.cpp:285
+#, fuzzy
+#| msgid "Graphics mode:"
+msgid "Typographic quotes:"
+msgstr "图形模式："
+
+#: engines/glk/dialogs.cpp:285
+#, fuzzy
+#| msgid "Color graphics"
+msgid "Choose typographic quotes"
+msgstr "颜色图形"
+
+#: engines/glk/dialogs.cpp:286 engines/glk/dialogs.cpp:293
+#: engines/glk/dialogs.cpp:300
+msgid "Off"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:287 engines/mohawk/dialogs.cpp:366
+msgid "Normal"
+msgstr "正常"
+
+#: engines/glk/dialogs.cpp:288
+msgid "Rabid"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:290
+msgid "Caps:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:290
+msgid "Force uppercase input"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:292
+msgid "Dashes:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:292
+msgid "Types of dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:294
+msgid "Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:295
+msgid "En+Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:299
+#, fuzzy
+#| msgid "Space"
+msgid "Spaces:"
+msgstr "空格"
+
+#: engines/glk/dialogs.cpp:299
+msgid "Types of spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:301
+msgid "Compress double spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:302
+msgid "Expand single spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:304
+#, fuzzy
+#| msgid "Graphics"
+msgid "Graphics:"
+msgstr "图形"
+
+#: engines/glk/dialogs.cpp:304
+msgid "Turn graphics on/off"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:307
+msgid "Horizontal margin for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:308
+msgid "Vertical margin for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:311
+msgid "Horizontal padding for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:312
+msgid "Vertical padding for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:315
+msgid "Horizontal margin for text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:316
+msgid "Vertical margin for text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:318
+msgid "Leading:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:318
+msgid "Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."
+msgstr ""
+
+#: engines/glk/dialogs.cpp:319
+msgid "Baseline:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:319
+msgid ""
+"Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as "
+"per your font size"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:321
+msgid "Monosize:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:321
+msgid "Font size scaling for the monospace text font"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:322
+msgid "Propsize:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:322
+msgid "Font size scaling for the proportional text font"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:325
+msgid "Align:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:325
+msgid "Alignment of the \"More...\" marker on the window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:327
+#, fuzzy
+#| msgid "Center"
+msgid "Centre"
+msgstr "中心"
+
+#: engines/glk/dialogs.cpp:330
+#, fuzzy
+#| msgid "SoundFont:"
+msgid "Font:"
+msgstr "声音字体："
+
+#: engines/glk/dialogs.cpp:330
+msgid "Font for the \"More...\" marker"
+msgstr ""
 
 #: engines/glk/glulx/glulx.cpp:81
 msgid "This is too short to be a valid Glulx file."
@@ -11258,10 +11641,6 @@ msgstr "调整屏幕转场速度。禁用转场能够使你在游戏中导航更
 #: engines/mohawk/dialogs.cpp:365
 msgid "Fastest"
 msgstr "最快"
-
-#: engines/mohawk/dialogs.cpp:366
-msgid "Normal"
-msgstr "正常"
 
 #: engines/mohawk/dialogs.cpp:367 engines/scumm/dialogs.cpp:1582
 msgid "Best"
@@ -17568,11 +17947,6 @@ msgstr ""
 #~ "activated in your ScummVM build"
 #~ msgstr ""
 #~ "EOB II FM-TOWNS 需要 16bit 颜色模式支持，但在你的 ScummVM 版本未被激活"
-
-#, fuzzy
-#~| msgid "Center"
-#~ msgid "Centre"
-#~ msgstr "中心"
 
 #~ msgid "Move Forward"
 #~ msgstr "向前移动"

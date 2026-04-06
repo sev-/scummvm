@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.8.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-05 23:32+0000\n"
+"POT-Creation-Date: 2026-04-06 16:00+0000\n"
 "PO-Revision-Date: 2026-03-28 17:49+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Russian <https://translations.scummvm.org/projects/scummvm/"
@@ -1084,12 +1084,12 @@ msgstr "Вниз"
 #: gui/gui-manager.cpp:186 engines/metaengine.cpp:149
 #: engines/awe/metaengine.cpp:59 engines/bagel/metaengine.cpp:68
 #: engines/crab/input/input.cpp:107 engines/crab/input/input.cpp:157
-#: engines/dragons/metaengine.cpp:170 engines/got/metaengine.cpp:72
-#: engines/griffon/metaengine.cpp:133 engines/grim/grim.cpp:491
-#: engines/grim/grim.cpp:573 engines/icb/icb.cpp:78 engines/icb/icb.cpp:162
-#: engines/scumm/metaengine.cpp:1020 engines/twine/metaengine.cpp:452
-#: engines/twine/metaengine.cpp:520 engines/twp/metaengine.cpp:152
-#: engines/ultima/ultima4/metaengine.cpp:46
+#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:326
+#: engines/got/metaengine.cpp:72 engines/griffon/metaengine.cpp:133
+#: engines/grim/grim.cpp:491 engines/grim/grim.cpp:573 engines/icb/icb.cpp:78
+#: engines/icb/icb.cpp:162 engines/scumm/metaengine.cpp:1020
+#: engines/twine/metaengine.cpp:452 engines/twine/metaengine.cpp:520
+#: engines/twp/metaengine.cpp:152 engines/ultima/ultima4/metaengine.cpp:46
 #: engines/ultima/ultima4/metaengine.cpp:141
 #: engines/ultima/ultima4/metaengine.cpp:151
 #: engines/wintermute/keymapper_tables.h:320
@@ -1104,12 +1104,12 @@ msgstr "Влево"
 #: gui/gui-manager.cpp:192 engines/metaengine.cpp:155
 #: engines/awe/metaengine.cpp:60 engines/bagel/metaengine.cpp:69
 #: engines/crab/input/input.cpp:113 engines/crab/input/input.cpp:163
-#: engines/dragons/metaengine.cpp:176 engines/got/metaengine.cpp:73
-#: engines/griffon/metaengine.cpp:139 engines/grim/grim.cpp:496
-#: engines/grim/grim.cpp:578 engines/icb/icb.cpp:83 engines/icb/icb.cpp:167
-#: engines/scumm/metaengine.cpp:1027 engines/twine/metaengine.cpp:444
-#: engines/twine/metaengine.cpp:513 engines/twp/metaengine.cpp:153
-#: engines/ultima/ultima4/metaengine.cpp:47
+#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:328
+#: engines/got/metaengine.cpp:73 engines/griffon/metaengine.cpp:139
+#: engines/grim/grim.cpp:496 engines/grim/grim.cpp:578 engines/icb/icb.cpp:83
+#: engines/icb/icb.cpp:167 engines/scumm/metaengine.cpp:1027
+#: engines/twine/metaengine.cpp:444 engines/twine/metaengine.cpp:513
+#: engines/twp/metaengine.cpp:153 engines/ultima/ultima4/metaengine.cpp:47
 #: engines/ultima/ultima4/metaengine.cpp:142
 #: engines/ultima/ultima4/metaengine.cpp:152
 #: engines/wintermute/keymapper_tables.h:326
@@ -3607,7 +3607,7 @@ msgstr "~В~ главное меню"
 #: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:858
 #: engines/groovie/script.cpp:2256 engines/groovie/script.cpp:2283
 #: engines/groovie/script.cpp:2324 engines/hugo/file.cpp:297
@@ -3628,7 +3628,7 @@ msgstr "Сохранить игру:"
 #: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
 #: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
 #: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1432
+#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
 #: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:853
 #: engines/groovie/script.cpp:858 engines/groovie/script.cpp:2256
 #: engines/groovie/script.cpp:2283 engines/groovie/script.cpp:2324
@@ -6602,7 +6602,7 @@ msgstr "Используйте курсор-шахматку из более п�
 #: engines/adl/metaengine.cpp:117 engines/agi/metaengine.cpp:220
 #: engines/cge/metaengine.cpp:56 engines/cine/metaengine.cpp:69
 #: engines/cruise/metaengine.cpp:45 engines/drascula/metaengine.cpp:55
-#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:193
+#: engines/efh/metaengine.cpp:44 engines/glk/metaengine.cpp:205
 #: engines/gob/metaengine.cpp:57 engines/got/metaengine.cpp:48
 #: engines/griffon/metaengine.cpp:40 engines/hugo/metaengine.cpp:56
 #: engines/made/metaengine.cpp:51 engines/mm/metaengine.cpp:91
@@ -6785,7 +6785,7 @@ msgstr "Эта игра не поддерживает сохранение"
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:870 engines/groovie/script.cpp:2243
 #: engines/groovie/script.cpp:2270 engines/groovie/script.cpp:2340
@@ -6805,7 +6805,7 @@ msgstr "Восстановить игру:"
 #: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
 #: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
 #: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1441
+#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
 #: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
 #: engines/groovie/script.cpp:853 engines/groovie/script.cpp:870
 #: engines/groovie/script.cpp:2243 engines/groovie/script.cpp:2270
@@ -9240,15 +9240,15 @@ msgstr "[ нажмите любую клавишу для выхода ]"
 msgid "Untitled Savegame"
 msgstr "Без названия Savegame"
 
-#: engines/glk/metaengine.cpp:194
+#: engines/glk/metaengine.cpp:206
 msgid "Use TTS to read the text"
 msgstr "Использовать TTS для чтения текста"
 
-#: engines/glk/metaengine.cpp:201
+#: engines/glk/metaengine.cpp:213
 msgid "Also read input text"
 msgstr "Также читать введённый текст"
 
-#: engines/glk/metaengine.cpp:202
+#: engines/glk/metaengine.cpp:214
 msgid "Use TTS to read the input text"
 msgstr "Использовать TTS для чтения введённого текста"
 
@@ -9296,6 +9296,392 @@ msgstr "Сохранение игры"
 #: engines/glk/comprehend/game.cpp:860
 msgid "Picture window toggled\n"
 msgstr "Окно и с иллюстрацией переключено\n"
+
+#: engines/glk/dialogs.cpp:203 engines/glk/dialogs.cpp:213
+#, fuzzy
+#| msgid "ProText"
+msgid "Text:"
+msgstr "ПроТекст"
+
+#: engines/glk/dialogs.cpp:203
+msgid "Font for the text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:207 engines/glk/dialogs.cpp:218
+msgid "Grid:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:207
+msgid "Font for drawn graphics like maps, diagrams, puzzles, etc"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:213
+#, fuzzy
+#| msgid "Move focus to interactive object"
+msgid "Color of the interactive text"
+msgstr "Переместить фокус на следующий объект"
+
+#: engines/glk/dialogs.cpp:218
+msgid "Color for drawn graphics such as maps, diagrams, puzzles, etc"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:223
+#, fuzzy
+#| msgid "Window"
+msgid "Window:"
+msgstr "Окно"
+
+#: engines/glk/dialogs.cpp:223
+msgid "Color of the window(background)"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:229
+#, fuzzy
+#| msgid "New order"
+msgid "Border:"
+msgstr "Новый приказ"
+
+#: engines/glk/dialogs.cpp:229
+#, fuzzy
+#| msgid "Toggle windows mode"
+msgid "Color of the window border"
+msgstr "Переключить оконный режим"
+
+#: engines/glk/dialogs.cpp:237 engines/glk/dialogs.cpp:307
+#: engines/glk/dialogs.cpp:311 engines/glk/dialogs.cpp:315
+#, fuzzy
+#| msgid "Horizontal underscan:"
+msgid "Horizontal:"
+msgstr "Горизонтальный underscan:"
+
+#: engines/glk/dialogs.cpp:237
+#, fuzzy
+#| msgid "Horizontal underscan:"
+msgid "Horizontal border size"
+msgstr "Горизонтальный underscan:"
+
+#: engines/glk/dialogs.cpp:238 engines/glk/dialogs.cpp:308
+#: engines/glk/dialogs.cpp:312 engines/glk/dialogs.cpp:316
+#, fuzzy
+#| msgid "Vertical underscan:"
+msgid "Vertical:"
+msgstr "Вертикальный underscan:"
+
+#: engines/glk/dialogs.cpp:238
+#, fuzzy
+#| msgid "Vertical underscan:"
+msgid "Vertical border size"
+msgstr "Вертикальный underscan:"
+
+#: engines/glk/dialogs.cpp:240
+msgid "Caret:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:240
+#, fuzzy
+#| msgid "Teleport to cursor"
+msgid "Color of the cursor"
+msgstr "Телепортироваться к курсору"
+
+#: engines/glk/dialogs.cpp:246
+msgid "Link:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:246
+msgid "Color for URLs if they appear in-game"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:252
+msgid "More:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:252
+msgid "Color for the \"More...\" markers in the text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:260
+msgid "Link style:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:260
+msgid "Style for URLs if they appear in-game"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:261 engines/glk/dialogs.cpp:267
+#, fuzzy
+#| msgid "L1"
+msgid "1"
+msgstr "L1"
+
+#: engines/glk/dialogs.cpp:262 engines/glk/dialogs.cpp:268
+#, fuzzy
+#| msgid "L2"
+msgid "2"
+msgstr "L2"
+
+#: engines/glk/dialogs.cpp:263 engines/glk/dialogs.cpp:269
+#, fuzzy
+#| msgid "L3"
+msgid "3"
+msgstr "L3"
+
+#: engines/glk/dialogs.cpp:265
+#, fuzzy
+#| msgid "Change shadow type"
+msgid "Caret shape:"
+msgstr "Изменить тип тени"
+
+#: engines/glk/dialogs.cpp:265
+#, fuzzy
+#| msgid "Show mouse cursor"
+msgid "Shape of the cursor"
+msgstr "Показывать курсор мыши"
+
+#: engines/glk/dialogs.cpp:266
+msgid "0"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:270
+msgid "4"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:272
+#, fuzzy
+#| msgid "Quit prompt"
+msgid "More prompt:"
+msgstr "Подтверждение выхода из игры"
+
+#: engines/glk/dialogs.cpp:272
+msgid ""
+"Custom marker in place of the \"More...\" marker for eg. \"continue\". Leave "
+"it blank to use the game's default"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:274
+#, fuzzy
+#| msgid "Hide hints"
+msgid "Style hints:"
+msgstr "Скрыть подсказки"
+
+#: engines/glk/dialogs.cpp:274
+msgid "Let the game suggest text styling options"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:275
+#, fuzzy
+#| msgid "Left click"
+msgid "Safe clicks:"
+msgstr "Левый щелчок"
+
+#: engines/glk/dialogs.cpp:275
+msgid "Safely apply clicks while input is pending"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:277
+#, fuzzy
+#| msgid "Volume controls"
+msgid "Column count:"
+msgstr "Управление громкостью"
+
+#: engines/glk/dialogs.cpp:277
+msgid "Number of columns"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:278
+msgid "Rows count:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:278
+msgid "Number of rows"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:280
+msgid "Lock columns:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:280
+msgid "Check it to manually change the column count"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:281
+#, fuzzy
+#| msgid "Block low"
+msgid "Lock rows:"
+msgstr "Защита снизу"
+
+#: engines/glk/dialogs.cpp:281
+msgid "Check it to manually change the row count"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:283
+msgid "Justify:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:283
+#, fuzzy
+#| msgid "Enable short transitions"
+msgid "Enable text justification"
+msgstr "Включить короткие переходы"
+
+#: engines/glk/dialogs.cpp:285
+#, fuzzy
+#| msgid "Graphics mode:"
+msgid "Typographic quotes:"
+msgstr "Граф. режим:"
+
+#: engines/glk/dialogs.cpp:285
+#, fuzzy
+#| msgid "Color graphics"
+msgid "Choose typographic quotes"
+msgstr "Цветная графика"
+
+#: engines/glk/dialogs.cpp:286 engines/glk/dialogs.cpp:293
+#: engines/glk/dialogs.cpp:300
+msgid "Off"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:287 engines/mohawk/dialogs.cpp:366
+msgid "Normal"
+msgstr "Обычные"
+
+#: engines/glk/dialogs.cpp:288
+msgid "Rabid"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:290
+msgid "Caps:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:290
+msgid "Force uppercase input"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:292
+msgid "Dashes:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:292
+msgid "Types of dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:294
+msgid "Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:295
+msgid "En+Em dashes"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:299
+#, fuzzy
+#| msgid "Space"
+msgid "Spaces:"
+msgstr "Пробел"
+
+#: engines/glk/dialogs.cpp:299
+msgid "Types of spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:301
+msgid "Compress double spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:302
+msgid "Expand single spaces"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:304
+#, fuzzy
+#| msgid "Graphics"
+msgid "Graphics:"
+msgstr "Графика"
+
+#: engines/glk/dialogs.cpp:304
+msgid "Turn graphics on/off"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:307
+msgid "Horizontal margin for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:308
+msgid "Vertical margin for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:311
+msgid "Horizontal padding for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:312
+msgid "Vertical padding for window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:315
+msgid "Horizontal margin for text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:316
+msgid "Vertical margin for text"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:318
+#, fuzzy
+msgid "Leading:"
+msgstr "Загружаю игру..."
+
+#: engines/glk/dialogs.cpp:318
+msgid "Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."
+msgstr ""
+
+#: engines/glk/dialogs.cpp:319
+msgid "Baseline:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:319
+msgid ""
+"Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as "
+"per your font size"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:321
+msgid "Monosize:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:321
+msgid "Font size scaling for the monospace text font"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:322
+msgid "Propsize:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:322
+msgid "Font size scaling for the proportional text font"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:325
+msgid "Align:"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:325
+msgid "Alignment of the \"More...\" marker on the window"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:327
+#, fuzzy
+#| msgid "Center"
+msgid "Centre"
+msgstr "По центру"
+
+#: engines/glk/dialogs.cpp:330
+#, fuzzy
+#| msgid "SoundFont:"
+msgid "Font:"
+msgstr "SoundFont:"
+
+#: engines/glk/dialogs.cpp:330
+msgid "Font for the \"More...\" marker"
+msgstr ""
 
 #: engines/glk/glulx/glulx.cpp:81
 msgid "This is too short to be a valid Glulx file."
@@ -10857,10 +11243,6 @@ msgstr ""
 #: engines/mohawk/dialogs.cpp:365
 msgid "Fastest"
 msgstr "Быстрые"
-
-#: engines/mohawk/dialogs.cpp:366
-msgid "Normal"
-msgstr "Обычные"
 
 #: engines/mohawk/dialogs.cpp:367 engines/scumm/dialogs.cpp:1582
 msgid "Best"
@@ -16671,11 +17053,6 @@ msgstr ""
 #~ "EOB II FM-TOWNS требует поддержки режимов 16-битного цвета, но они не "
 #~ "были активированы в вашей сборке ScummVM"
 
-#, fuzzy
-#~| msgid "Center"
-#~ msgid "Centre"
-#~ msgstr "По центру"
-
 #~ msgid "Move Forward"
 #~ msgstr "Идти вперёд"
 
@@ -18146,10 +18523,6 @@ msgstr ""
 
 #~ msgid "Saved games sync complete."
 #~ msgstr "Синхронизация сохранений игр завершена."
-
-#, fuzzy
-#~ msgid "Loading..."
-#~ msgstr "Загружаю игру..."
 
 #~ msgid "Scanlines"
 #~ msgstr "Скан-линии"
