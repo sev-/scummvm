@@ -1246,9 +1246,12 @@ bool GlkOptionsWidget::save() {
 static void setManualColorHex(GUI::PopUpWidget *popup, GUI::EditTextWidget *hexInput) {
 	int idx = popup->getSelectedTag();
 
+    if (idx < 0 || idx > 5)
+        return;
+
 	byte r = (GLK_COLORS[idx].rgb >> 16) & 0xFF;
-	byte g = (GLK_COLORS[idx].rgb >> 8) & 0xFF;
-	byte b = GLK_COLORS[idx].rgb & 0xFF;
+	byte g = (GLK_COLORS[idx].rgb >> 8)  & 0xFF;
+	byte b = (GLK_COLORS[idx].rgb        & 0xFF);
 	hexInput->setEditString(Common::U32String(Common::String::format("%02X%02X%02X", r, g, b)));
 }
 
