@@ -296,18 +296,27 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.lockcolslbl", _("Lock columns:"), _lockcols, "GlkOptionsDialog.lockcols", _("Check it to manually change the column count"));
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.lockrowslbl", _("Lock rows:"), _lockrows, "GlkOptionsDialog.lockrows", _("Check it to manually change the row count"));
 
-	NEW_LABEL_CHECKBOX("GlkOptionsDialog.justifylbl", _("Justify:"), _justify, "GlkOptionsDialog.justify", _("Enable text justification"));
+	NEW_LABEL_CHECKBOX("GlkOptionsDialog.justifylbl",
+		// I18N: This is a setting for enabling text justification
+		_("Justify:"),
+		_justify, "GlkOptionsDialog.justify", _("Enable text justification"));
 
-	NEW_LABEL_POPUP("GlkOptionsDialog.quoteslbl", _("Typographic quotes:"), _quotes, "GlkOptionsDialog.quotes", _("Choose typographic quotes"));
+	// I18N: These is setting for type of text quote symbols
+	NEW_LABEL_POPUP("GlkOptionsDialog.quoteslbl", _("Typographic quotes:"),
+		 _quotes, "GlkOptionsDialog.quotes", _("Choose typographic quotes"));
 	_quotes->appendEntry(_("Off"), 0);
 	// I18N: This is a setting for using normal typographic quotes, which are like in most books, with the opening quote higher than the closing one
 	_quotes->appendEntry(_("Normal"), 1);
 	// I18N: This is a setting for using "rabid" quotes, which are like normal typographic quotes but with the opening quote lower than the closing one, like in some comic books
 	_quotes->appendEntry(_("Rabid"), 2);
 
+	// I18N: This is a setting for forcing all input to be in uppercase
 	NEW_LABEL_CHECKBOX("GlkOptionsDialog.capslbl", _("Caps:"), _caps, "GlkOptionsDialog.caps", _("Force uppercase input"));
 
-	NEW_LABEL_POPUP("GlkOptionsDialog.dasheslbl", _("Dashes:"), _dashes, "GlkOptionsDialog.dashes", _("Types of dashes"));
+	// I18N: This is a setting for type of text dash symbols
+	NEW_LABEL_POPUP("GlkOptionsDialog.dasheslbl", _("Dashes:"), _dashes, "GlkOptionsDialog.dashes",
+		// I18N: This is a setting for type of text dash symbols
+		_("Types of dashes"));
 	_dashes->appendEntry(_("Off"), 0);
 	// I18N: This is a setting for using normal typographic dashes, which are like in most books, with the em dash being the longest and the en dash being half of it
 	_dashes->appendEntry(_("Em dashes"), 1);
@@ -316,7 +325,10 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 
 	_userExperiencelbl = createHeading(widgetsBoss(), "GlkOptionsDialog.userexplbl", _("User experience"));
 
-	NEW_LABEL_POPUP("GlkOptionsDialog.spaceslbl", _("Spaces:"), _spaces, "GlkOptionsDialog.spaces", _("Types of spaces"));
+	// I18N: This is a setting for type of spaces in the text
+	NEW_LABEL_POPUP("GlkOptionsDialog.spaceslbl", _("Spaces:"), _spaces, "GlkOptionsDialog.spaces",
+		// I18N: This is a setting for type of spaces in the text
+		_("Types of spaces"));
 	_spaces->appendEntry(_("Off"), 0);
 	// I18N: This is a setting for compressing double spaces into single ones in text
 	_spaces->appendEntry(_("Compress double spaces"), 1);
@@ -337,17 +349,27 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 	NEW_LABEL_EDIT("GlkOptionsDialog.tmarginxlbl", _("Horizontal:"), _tmarginx, "GlkOptionsDialog.tmarginx", _("Horizontal margin for text"));
 	NEW_LABEL_EDIT("GlkOptionsDialog.tmarginylbl", _("Vertical:"), _tmarginy, "GlkOptionsDialog.tmarginy", _("Vertical margin for text"));
 
-	NEW_LABEL_EDIT("GlkOptionsDialog.leadinglbl", _("Leading:"), _leading, "GlkOptionsDialog.leading", _("Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."));
-	NEW_LABEL_EDIT("GlkOptionsDialog.baselinelbl", _("Baseline:"), _baseline, "GlkOptionsDialog.baseline", _("Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as per your font size"));
+	// I18N: This is a setting for leading, which is the vertical distance between text rows
+	NEW_LABEL_EDIT("GlkOptionsDialog.leadinglbl", _("Leading:"),
+		_leading, "GlkOptionsDialog.leading", _("Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."));
+	// I18N: This is a setting for baseline, which is the invisible horizontal line on which text sits
+	NEW_LABEL_EDIT("GlkOptionsDialog.baselinelbl", _("Baseline:"),
+		_baseline, "GlkOptionsDialog.baseline", _("Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as per your font size"));
 
-	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.monosizelbl", _("Monosize:"), _monosize, "GlkOptionsDialog.monosize", _monosizeVal, "GlkOptionsDialog.monosizeval", _("Font size scaling for the monospace text font"), kMonoSizeCmd);
-	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.propsizelbl", _("Propsize:"), _propsize, "GlkOptionsDialog.propsize", _propsizeVal, "GlkOptionsDialog.propsizeval", _("Font size scaling for the proportional text font"), kPropSizeCmd);
+	// I18N: Font size scaling for the monospace text font
+	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.monosizelbl", _("Monosize:"),
+		_monosize, "GlkOptionsDialog.monosize", _monosizeVal, "GlkOptionsDialog.monosizeval", _("Font size scaling for the monospace text font"), kMonoSizeCmd);
+	// I18N: Font size scaling for the proportional text font
+	NEW_LABEL_SLIDER_CMD("GlkOptionsDialog.propsizelbl", _("Propsize:"),
+		_propsize, "GlkOptionsDialog.propsize", _propsizeVal, "GlkOptionsDialog.propsizeval", _("Font size scaling for the proportional text font"), kPropSizeCmd);
 
 	// I18N: This is a section for settings related to the "More..." prompt in text windows
 	_moreHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.morelbl", _("More"));
-	NEW_LABEL_POPUP("GlkOptionsDialog.morealignlbl", _("Align:"), _morealign, "GlkOptionsDialog.morealign", _("Alignment of the \"More...\" marker on the window"));
+	// I18N: This is a setting for alignment of the "More..." prompt in text windows
+	NEW_LABEL_POPUP("GlkOptionsDialog.morealignlbl", _("Align:"),
+		_morealign, "GlkOptionsDialog.morealign", _("Alignment of the \"More...\" marker on the window"));
 	_morealign->appendEntry(_("Left"), 0);
-	_morealign->appendEntry(_("Centre"), 1);
+	_morealign->appendEntry(_("Center"), 1);
 	_morealign->appendEntry(_("Right"), 2);
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.morefontlbl", _("Font:"), _morefont, "GlkOptionsDialog.morefont", _("Font for the \"More...\" marker"));
