@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.1.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 16:56+0000\n"
+"POT-Creation-Date: 2026-04-06 17:31+0000\n"
 "PO-Revision-Date: 2025-04-09 20:18+0000\n"
 "Last-Translator: Niv Baehr <bloop93@gmail.com>\n"
 "Language-Team: Hebrew <https://translations.scummvm.org/projects/scummvm/"
@@ -1067,7 +1067,7 @@ msgstr "למטה"
 #: gui/gui-manager.cpp:186 engines/metaengine.cpp:149
 #: engines/awe/metaengine.cpp:59 engines/bagel/metaengine.cpp:68
 #: engines/crab/input/input.cpp:107 engines/crab/input/input.cpp:157
-#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:349
+#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:371
 #: engines/got/metaengine.cpp:72 engines/griffon/metaengine.cpp:133
 #: engines/grim/grim.cpp:491 engines/grim/grim.cpp:573 engines/icb/icb.cpp:78
 #: engines/icb/icb.cpp:162 engines/scumm/metaengine.cpp:1020
@@ -1087,7 +1087,7 @@ msgstr "שמאלה"
 #: gui/gui-manager.cpp:192 engines/metaengine.cpp:155
 #: engines/awe/metaengine.cpp:60 engines/bagel/metaengine.cpp:69
 #: engines/crab/input/input.cpp:113 engines/crab/input/input.cpp:163
-#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:351
+#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:373
 #: engines/got/metaengine.cpp:73 engines/griffon/metaengine.cpp:139
 #: engines/grim/grim.cpp:496 engines/grim/grim.cpp:578 engines/icb/icb.cpp:83
 #: engines/icb/icb.cpp:167 engines/scumm/metaengine.cpp:1027
@@ -2685,7 +2685,7 @@ msgstr "דף ראשון"
 
 #: gui/printing-dialog.cpp:60 backends/graphics/opengl/opengl-graphics.cpp:315
 #: backends/graphics/surfacesdl/surfacesdl-graphics.cpp:127
-#: engines/twine/metaengine.cpp:312
+#: engines/glk/dialogs.cpp:372 engines/twine/metaengine.cpp:312
 msgid "Center"
 msgstr "מרכז"
 
@@ -9507,8 +9507,8 @@ msgstr "מיתוג מצב מהיר"
 msgid "Border"
 msgstr "ילד חדש"
 
-#: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:329
-#: engines/glk/dialogs.cpp:333 engines/glk/dialogs.cpp:337
+#: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:341
+#: engines/glk/dialogs.cpp:345 engines/glk/dialogs.cpp:349
 #, fuzzy
 #| msgid "Horizontal underscan:"
 msgid "Horizontal:"
@@ -9520,8 +9520,8 @@ msgstr "חסר-סריקה אופקי:"
 msgid "Horizontal border size"
 msgstr "חסר-סריקה אופקי:"
 
-#: engines/glk/dialogs.cpp:248 engines/glk/dialogs.cpp:330
-#: engines/glk/dialogs.cpp:334 engines/glk/dialogs.cpp:338
+#: engines/glk/dialogs.cpp:248 engines/glk/dialogs.cpp:342
+#: engines/glk/dialogs.cpp:346 engines/glk/dialogs.cpp:350
 #, fuzzy
 #| msgid "Vertical underscan:"
 msgid "Vertical:"
@@ -9656,209 +9656,215 @@ msgstr "חסימה נמוכה"
 msgid "Check it to manually change the row count"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:299
+#. I18N: This is a setting for enabling text justification
+#: engines/glk/dialogs.cpp:301
 msgid "Justify:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:299
+#: engines/glk/dialogs.cpp:302
 #, fuzzy
 #| msgid "Enable short transitions"
 msgid "Enable text justification"
 msgstr "הפעלת מעברים קצרים"
 
-#: engines/glk/dialogs.cpp:301
+#. I18N: These is setting for type of text quote symbols
+#: engines/glk/dialogs.cpp:305
 #, fuzzy
 #| msgid "Graphics mode:"
 msgid "Typographic quotes:"
 msgstr "מצב תצוגה:"
 
-#: engines/glk/dialogs.cpp:301
+#: engines/glk/dialogs.cpp:306
 #, fuzzy
 #| msgid "Color graphics"
 msgid "Choose typographic quotes"
 msgstr "גרפיקה צבעונית"
 
-#: engines/glk/dialogs.cpp:302 engines/glk/dialogs.cpp:311
-#: engines/glk/dialogs.cpp:320
+#: engines/glk/dialogs.cpp:307 engines/glk/dialogs.cpp:320
+#: engines/glk/dialogs.cpp:332
 msgid "Off"
 msgstr ""
 
 #. I18N: This is a setting for using normal typographic quotes, which are like in most books, with the opening quote higher than the closing one
-#: engines/glk/dialogs.cpp:304 engines/mohawk/dialogs.cpp:366
+#: engines/glk/dialogs.cpp:309 engines/mohawk/dialogs.cpp:366
 msgid "Normal"
 msgstr "רגיל"
 
 #. I18N: This is a setting for using "rabid" quotes, which are like normal typographic quotes but with the opening quote lower than the closing one, like in some comic books
-#: engines/glk/dialogs.cpp:306
+#: engines/glk/dialogs.cpp:311
 msgid "Rabid"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:308
+#. I18N: This is a setting for forcing all input to be in uppercase
+#: engines/glk/dialogs.cpp:314
 msgid "Caps:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:308
+#: engines/glk/dialogs.cpp:314
 msgid "Force uppercase input"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:310
+#. I18N: This is a setting for type of text dash symbols
+#: engines/glk/dialogs.cpp:317
 msgid "Dashes:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:310
+#. I18N: This is a setting for type of text dash symbols
+#: engines/glk/dialogs.cpp:319
 msgid "Types of dashes"
 msgstr ""
 
 #. I18N: This is a setting for using normal typographic dashes, which are like in most books, with the em dash being the longest and the en dash being half of it
-#: engines/glk/dialogs.cpp:313
+#: engines/glk/dialogs.cpp:322
 msgid "Em dashes"
 msgstr ""
 
 #. I18N: This is a setting for using "en+em" dashes, which are like normal typographic dashes but with the en dash being the same length as the em dash, like in some comic books
-#: engines/glk/dialogs.cpp:315
+#: engines/glk/dialogs.cpp:324
 msgid "En+Em dashes"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:317
+#: engines/glk/dialogs.cpp:326
 #, fuzzy
 #| msgid "Preferences"
 msgid "User experience"
 msgstr "העדפות"
 
-#: engines/glk/dialogs.cpp:319
+#. I18N: This is a setting for type of spaces in the text
+#: engines/glk/dialogs.cpp:329
 #, fuzzy
 #| msgid "Space"
 msgid "Spaces:"
 msgstr "שטח"
 
-#: engines/glk/dialogs.cpp:319
+#. I18N: This is a setting for type of spaces in the text
+#: engines/glk/dialogs.cpp:331
 msgid "Types of spaces"
 msgstr ""
 
 #. I18N: This is a setting for compressing double spaces into single ones in text
-#: engines/glk/dialogs.cpp:322
+#: engines/glk/dialogs.cpp:334
 msgid "Compress double spaces"
 msgstr ""
 
 #. I18N: This is a setting for expanding single spaces into double ones in text
-#: engines/glk/dialogs.cpp:324
+#: engines/glk/dialogs.cpp:336
 msgid "Expand single spaces"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:326
+#: engines/glk/dialogs.cpp:338
 #, fuzzy
 #| msgid "Graphics"
 msgid "Graphics:"
 msgstr "תצוגה"
 
-#: engines/glk/dialogs.cpp:326
+#: engines/glk/dialogs.cpp:338
 msgid "Turn graphics on/off"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:328
+#: engines/glk/dialogs.cpp:340
 #, fuzzy
 #| msgid "Window"
 msgid "Window margin"
 msgstr "חלון"
 
-#: engines/glk/dialogs.cpp:329
+#: engines/glk/dialogs.cpp:341
 msgid "Horizontal margin for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:330
+#: engines/glk/dialogs.cpp:342
 msgid "Vertical margin for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:332
+#: engines/glk/dialogs.cpp:344
 #, fuzzy
 #| msgid "Window"
 msgid "Window padding"
 msgstr "חלון"
 
-#: engines/glk/dialogs.cpp:333
+#: engines/glk/dialogs.cpp:345
 msgid "Horizontal padding for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:334
+#: engines/glk/dialogs.cpp:346
 msgid "Vertical padding for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:336
+#: engines/glk/dialogs.cpp:348
 #, fuzzy
 #| msgid "Next action"
 msgid "Text margin"
 msgstr "פעולה הבאה"
 
-#: engines/glk/dialogs.cpp:337
+#: engines/glk/dialogs.cpp:349
 msgid "Horizontal margin for text"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:338
+#: engines/glk/dialogs.cpp:350
 msgid "Vertical margin for text"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:340
+#. I18N: This is a setting for leading, which is the vertical distance between text rows
+#: engines/glk/dialogs.cpp:353
 #, fuzzy
 #| msgid "Loading '%s'"
 msgid "Leading:"
 msgstr "טוען '%s'"
 
-#: engines/glk/dialogs.cpp:340
+#: engines/glk/dialogs.cpp:354
 msgid "Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."
 msgstr ""
 
-#: engines/glk/dialogs.cpp:341
+#. I18N: This is a setting for baseline, which is the invisible horizontal line on which text sits
+#: engines/glk/dialogs.cpp:356
 msgid "Baseline:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:341
+#: engines/glk/dialogs.cpp:357
 msgid ""
 "Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as "
 "per your font size"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:343
+#. I18N: Font size scaling for the monospace text font
+#: engines/glk/dialogs.cpp:360
 msgid "Monosize:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:343
+#: engines/glk/dialogs.cpp:361
 msgid "Font size scaling for the monospace text font"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:344
+#. I18N: Font size scaling for the proportional text font
+#: engines/glk/dialogs.cpp:363
 msgid "Propsize:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:344
+#: engines/glk/dialogs.cpp:364
 msgid "Font size scaling for the proportional text font"
 msgstr ""
 
 #. I18N: This is a section for settings related to the "More..." prompt in text windows
-#: engines/glk/dialogs.cpp:347
+#: engines/glk/dialogs.cpp:367
 msgid "More"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:348
+#. I18N: This is a setting for alignment of the "More..." prompt in text windows
+#: engines/glk/dialogs.cpp:369
 msgid "Align:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:348
+#: engines/glk/dialogs.cpp:370
 msgid "Alignment of the \"More...\" marker on the window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:350
-#, fuzzy
-#| msgid "Center"
-msgid "Centre"
-msgstr "מרכז"
-
-#: engines/glk/dialogs.cpp:353
+#: engines/glk/dialogs.cpp:375
 #, fuzzy
 #| msgid "SoundFont:"
 msgid "Font:"
 msgstr "גופן קול (SoundFont):"
 
-#: engines/glk/dialogs.cpp:353
+#: engines/glk/dialogs.cpp:375
 msgid "Font for the \"More...\" marker"
 msgstr ""
 
@@ -18028,6 +18034,11 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "Center"
+#~ msgid "Centre"
+#~ msgstr "מרכז"
 
 #, fuzzy
 #~| msgid "L1"
