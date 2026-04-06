@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 16:13+0000\n"
+"POT-Creation-Date: 2026-04-06 16:32+0000\n"
 "PO-Revision-Date: 2024-12-01 22:18+0000\n"
 "Last-Translator: 复予 <clonewith@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -794,7 +794,9 @@ msgstr "游戏的语言。这并不会转换游戏本身的语言"
 #: backends/platform/ios7/ios7_options.mm:132
 #: backends/platform/ios7/ios7_options.mm:133
 #: backends/platform/ios7/ios7_options.mm:158 engines/ags/dialogs.cpp:65
-#: engines/sword1/metaengine.cpp:98
+#: engines/glk/dialogs.cpp:233 engines/glk/dialogs.cpp:239
+#: engines/glk/dialogs.cpp:251 engines/glk/dialogs.cpp:257
+#: engines/glk/dialogs.cpp:266 engines/sword1/metaengine.cpp:98
 msgid "<default>"
 msgstr "<默认>"
 
@@ -1066,7 +1068,7 @@ msgstr "向下"
 #: gui/gui-manager.cpp:186 engines/metaengine.cpp:149
 #: engines/awe/metaengine.cpp:59 engines/bagel/metaengine.cpp:68
 #: engines/crab/input/input.cpp:107 engines/crab/input/input.cpp:157
-#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:335
+#: engines/dragons/metaengine.cpp:170 engines/glk/dialogs.cpp:349
 #: engines/got/metaengine.cpp:72 engines/griffon/metaengine.cpp:133
 #: engines/grim/grim.cpp:491 engines/grim/grim.cpp:573 engines/icb/icb.cpp:78
 #: engines/icb/icb.cpp:162 engines/scumm/metaengine.cpp:1020
@@ -1086,7 +1088,7 @@ msgstr "向左"
 #: gui/gui-manager.cpp:192 engines/metaengine.cpp:155
 #: engines/awe/metaengine.cpp:60 engines/bagel/metaengine.cpp:69
 #: engines/crab/input/input.cpp:113 engines/crab/input/input.cpp:163
-#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:337
+#: engines/dragons/metaengine.cpp:176 engines/glk/dialogs.cpp:351
 #: engines/got/metaengine.cpp:73 engines/griffon/metaengine.cpp:139
 #: engines/grim/grim.cpp:496 engines/grim/grim.cpp:578 engines/icb/icb.cpp:83
 #: engines/icb/icb.cpp:167 engines/scumm/metaengine.cpp:1027
@@ -9613,6 +9615,32 @@ msgstr "存档"
 msgid "Picture window toggled\n"
 msgstr "已切换图片窗口开关\n"
 
+#: engines/glk/dialogs.cpp:141
+msgid "white"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:142
+msgid "green"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:143
+#, fuzzy
+#| msgid "Proceed"
+msgid "red"
+msgstr "继续"
+
+#: engines/glk/dialogs.cpp:144
+msgid "blue"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:145
+msgid "black"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:146
+msgid "grey"
+msgstr ""
+
 #: engines/glk/dialogs.cpp:195
 msgid "Monospace Regular"
 msgstr ""
@@ -9645,6 +9673,12 @@ msgstr ""
 msgid "Proportional Bold Italic"
 msgstr ""
 
+#: engines/glk/dialogs.cpp:210
+#, fuzzy
+#| msgid "SoundFont:"
+msgid "Font"
+msgstr "声音字体："
+
 #: engines/glk/dialogs.cpp:212 engines/glk/dialogs.cpp:222
 msgid "Text:"
 msgstr ""
@@ -9661,11 +9695,22 @@ msgstr ""
 msgid "Font for drawn graphics like maps, diagrams, puzzles, etc"
 msgstr ""
 
+#: engines/glk/dialogs.cpp:220
+msgid "Color"
+msgstr ""
+
 #: engines/glk/dialogs.cpp:222
 #, fuzzy
 #| msgid "Go to next object"
 msgid "Color of the interactive text"
 msgstr "转到下一个物品"
+
+#: engines/glk/dialogs.cpp:225 engines/glk/dialogs.cpp:230
+#: engines/glk/dialogs.cpp:236 engines/glk/dialogs.cpp:242
+#: engines/glk/dialogs.cpp:254 engines/glk/dialogs.cpp:260
+#: engines/glk/dialogs.cpp:269
+msgid "<custom>"
+msgstr ""
 
 #: engines/glk/dialogs.cpp:227
 msgid "Color for drawn graphics such as maps, diagrams, puzzles, etc"
@@ -9678,8 +9723,10 @@ msgid "Window:"
 msgstr "窗口"
 
 #: engines/glk/dialogs.cpp:232
-msgid "Color of the window(background)"
-msgstr ""
+#, fuzzy
+#| msgid "Toggle fast mode"
+msgid "Color of the window (background)"
+msgstr "开关快速模式"
 
 #: engines/glk/dialogs.cpp:238
 #, fuzzy
@@ -9693,338 +9740,363 @@ msgstr "新儿童"
 msgid "Color of the window border"
 msgstr "开关快速模式"
 
-#: engines/glk/dialogs.cpp:246 engines/glk/dialogs.cpp:316
-#: engines/glk/dialogs.cpp:320 engines/glk/dialogs.cpp:324
+#. I18N: This is a section for text windows border settings
+#: engines/glk/dialogs.cpp:245
+#, fuzzy
+#| msgid "New kid"
+msgid "Border"
+msgstr "新儿童"
+
+#: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:329
+#: engines/glk/dialogs.cpp:333 engines/glk/dialogs.cpp:337
 #, fuzzy
 #| msgid "Horizontal underscan:"
 msgid "Horizontal:"
 msgstr "水平欠扫描："
 
-#: engines/glk/dialogs.cpp:246
+#: engines/glk/dialogs.cpp:247
 #, fuzzy
 #| msgid "Horizontal underscan:"
 msgid "Horizontal border size"
 msgstr "水平欠扫描："
 
-#: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:317
-#: engines/glk/dialogs.cpp:321 engines/glk/dialogs.cpp:325
+#: engines/glk/dialogs.cpp:248 engines/glk/dialogs.cpp:330
+#: engines/glk/dialogs.cpp:334 engines/glk/dialogs.cpp:338
 #, fuzzy
 #| msgid "Vertical underscan:"
 msgid "Vertical:"
 msgstr "垂直欠扫描："
 
-#: engines/glk/dialogs.cpp:247
+#: engines/glk/dialogs.cpp:248
 #, fuzzy
 #| msgid "Vertical underscan:"
 msgid "Vertical border size"
 msgstr "垂直欠扫描："
 
-#: engines/glk/dialogs.cpp:249
+#: engines/glk/dialogs.cpp:250
 msgid "Caret:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:249
+#: engines/glk/dialogs.cpp:250
 #, fuzzy
 #| msgid "Regular cursor"
 msgid "Color of the cursor"
 msgstr "常规光标"
 
-#: engines/glk/dialogs.cpp:255
+#: engines/glk/dialogs.cpp:256
 msgid "Link:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:255
+#: engines/glk/dialogs.cpp:256
 msgid "Color for URLs if they appear in-game"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:261
+#. I18N: "More..." is a prompt in text windows, which appears when the text exceeds the window size
+#: engines/glk/dialogs.cpp:264
 msgid "More:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:261
+#: engines/glk/dialogs.cpp:265
 msgid "Color for the \"More...\" markers in the text"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:269
+#: engines/glk/dialogs.cpp:272
+#, fuzzy
+#| msgid "Graphics mode:"
+msgid "Typography"
+msgstr "图形模式："
+
+#: engines/glk/dialogs.cpp:274
 msgid "Link style:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:269
+#: engines/glk/dialogs.cpp:274
 msgid "Style for URLs if they appear in-game"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:270 engines/glk/dialogs.cpp:276
-#, fuzzy
-#| msgid "L1"
-msgid "1"
-msgstr "L1"
-
-#: engines/glk/dialogs.cpp:271 engines/glk/dialogs.cpp:277
-#, fuzzy
-#| msgid "L2"
-msgid "2"
-msgstr "L2"
-
-#: engines/glk/dialogs.cpp:272 engines/glk/dialogs.cpp:278
-#, fuzzy
-#| msgid "L3"
-msgid "3"
-msgstr "L3"
-
-#: engines/glk/dialogs.cpp:274
+#: engines/glk/dialogs.cpp:279
 #, fuzzy
 #| msgid "Change shadow type"
 msgid "Caret shape:"
 msgstr "更改阴影类型"
 
-#: engines/glk/dialogs.cpp:274
+#: engines/glk/dialogs.cpp:279
 #, fuzzy
 #| msgid "Show mouse cursor"
 msgid "Shape of the cursor"
 msgstr "显示鼠标光标"
 
-#: engines/glk/dialogs.cpp:275
-msgid "0"
-msgstr ""
-
-#: engines/glk/dialogs.cpp:279
-msgid "4"
-msgstr ""
-
-#: engines/glk/dialogs.cpp:281
+#: engines/glk/dialogs.cpp:286
 #, fuzzy
 #| msgid "Quit Prompt"
 msgid "More prompt:"
 msgstr "退出提示"
 
-#: engines/glk/dialogs.cpp:281
+#: engines/glk/dialogs.cpp:286
 msgid ""
 "Custom marker in place of the \"More...\" marker for eg. \"continue\". Leave "
 "it blank to use the game's default"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:283
+#: engines/glk/dialogs.cpp:288
 #, fuzzy
 #| msgid "Hide hints"
 msgid "Style hints:"
 msgstr "隐藏提示"
 
-#: engines/glk/dialogs.cpp:283
+#: engines/glk/dialogs.cpp:288
 msgid "Let the game suggest text styling options"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:284
+#: engines/glk/dialogs.cpp:289
 #, fuzzy
 #| msgid "Left Click"
 msgid "Safe clicks:"
 msgstr "左键点击"
 
-#: engines/glk/dialogs.cpp:284
+#: engines/glk/dialogs.cpp:289
 msgid "Safely apply clicks while input is pending"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:286
+#. I18N: This is setting for number of text columns
+#: engines/glk/dialogs.cpp:292
 #, fuzzy
 #| msgid "Touch Controls"
 msgid "Column count:"
 msgstr "触屏控制"
 
-#: engines/glk/dialogs.cpp:286
+#: engines/glk/dialogs.cpp:292
 msgid "Number of columns"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:287
+#. I18N: This is setting for number of text rows
+#: engines/glk/dialogs.cpp:294
 msgid "Rows count:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:287
+#: engines/glk/dialogs.cpp:294
 msgid "Number of rows"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:289
+#: engines/glk/dialogs.cpp:296
 msgid "Lock columns:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:289
+#: engines/glk/dialogs.cpp:296
 msgid "Check it to manually change the column count"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:290
+#: engines/glk/dialogs.cpp:297
 #, fuzzy
 #| msgid "Block low"
 msgid "Lock rows:"
 msgstr "挡住低处"
 
-#: engines/glk/dialogs.cpp:290
+#: engines/glk/dialogs.cpp:297
 msgid "Check it to manually change the row count"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:292
+#: engines/glk/dialogs.cpp:299
 msgid "Justify:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:292
+#: engines/glk/dialogs.cpp:299
 #, fuzzy
 #| msgid "Enable short transitions"
 msgid "Enable text justification"
 msgstr "启用短转场"
 
-#: engines/glk/dialogs.cpp:294
+#: engines/glk/dialogs.cpp:301
 #, fuzzy
 #| msgid "Graphics mode:"
 msgid "Typographic quotes:"
 msgstr "图形模式："
 
-#: engines/glk/dialogs.cpp:294
+#: engines/glk/dialogs.cpp:301
 #, fuzzy
 #| msgid "Color graphics"
 msgid "Choose typographic quotes"
 msgstr "颜色图形"
 
-#: engines/glk/dialogs.cpp:295 engines/glk/dialogs.cpp:302
-#: engines/glk/dialogs.cpp:309
+#: engines/glk/dialogs.cpp:302 engines/glk/dialogs.cpp:311
+#: engines/glk/dialogs.cpp:320
 msgid "Off"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:296 engines/mohawk/dialogs.cpp:366
+#. I18N: This is a setting for using normal typographic quotes, which are like in most books, with the opening quote higher than the closing one
+#: engines/glk/dialogs.cpp:304 engines/mohawk/dialogs.cpp:366
 msgid "Normal"
 msgstr "正常"
 
-#: engines/glk/dialogs.cpp:297
+#. I18N: This is a setting for using "rabid" quotes, which are like normal typographic quotes but with the opening quote lower than the closing one, like in some comic books
+#: engines/glk/dialogs.cpp:306
 msgid "Rabid"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:299
+#: engines/glk/dialogs.cpp:308
 msgid "Caps:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:299
+#: engines/glk/dialogs.cpp:308
 msgid "Force uppercase input"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:301
+#: engines/glk/dialogs.cpp:310
 msgid "Dashes:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:301
+#: engines/glk/dialogs.cpp:310
 msgid "Types of dashes"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:303
+#. I18N: This is a setting for using normal typographic dashes, which are like in most books, with the em dash being the longest and the en dash being half of it
+#: engines/glk/dialogs.cpp:313
 msgid "Em dashes"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:304
+#. I18N: This is a setting for using "en+em" dashes, which are like normal typographic dashes but with the en dash being the same length as the em dash, like in some comic books
+#: engines/glk/dialogs.cpp:315
 msgid "En+Em dashes"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:308
+#: engines/glk/dialogs.cpp:317
+#, fuzzy
+#| msgid "Preferences"
+msgid "User experience"
+msgstr "偏好选项"
+
+#: engines/glk/dialogs.cpp:319
 #, fuzzy
 #| msgid "Space"
 msgid "Spaces:"
 msgstr "空格"
 
-#: engines/glk/dialogs.cpp:308
+#: engines/glk/dialogs.cpp:319
 msgid "Types of spaces"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:310
+#. I18N: This is a setting for compressing double spaces into single ones in text
+#: engines/glk/dialogs.cpp:322
 msgid "Compress double spaces"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:311
+#. I18N: This is a setting for expanding single spaces into double ones in text
+#: engines/glk/dialogs.cpp:324
 msgid "Expand single spaces"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:313
+#: engines/glk/dialogs.cpp:326
 #, fuzzy
 #| msgid "Graphics"
 msgid "Graphics:"
 msgstr "图形"
 
-#: engines/glk/dialogs.cpp:313
+#: engines/glk/dialogs.cpp:326
 msgid "Turn graphics on/off"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:316
+#: engines/glk/dialogs.cpp:328
+#, fuzzy
+#| msgid "Window"
+msgid "Window margin"
+msgstr "窗口"
+
+#: engines/glk/dialogs.cpp:329
 msgid "Horizontal margin for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:317
+#: engines/glk/dialogs.cpp:330
 msgid "Vertical margin for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:320
+#: engines/glk/dialogs.cpp:332
+#, fuzzy
+#| msgid "Window"
+msgid "Window padding"
+msgstr "窗口"
+
+#: engines/glk/dialogs.cpp:333
 msgid "Horizontal padding for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:321
+#: engines/glk/dialogs.cpp:334
 msgid "Vertical padding for window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:324
+#: engines/glk/dialogs.cpp:336
+#, fuzzy
+#| msgid "Next action"
+msgid "Text margin"
+msgstr "下一个操作"
+
+#: engines/glk/dialogs.cpp:337
 msgid "Horizontal margin for text"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:325
+#: engines/glk/dialogs.cpp:338
 msgid "Vertical margin for text"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:327
+#: engines/glk/dialogs.cpp:340
 msgid "Leading:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:327
+#: engines/glk/dialogs.cpp:340
 msgid "Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."
 msgstr ""
 
-#: engines/glk/dialogs.cpp:328
+#: engines/glk/dialogs.cpp:341
 msgid "Baseline:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:328
+#: engines/glk/dialogs.cpp:341
 msgid ""
 "Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as "
 "per your font size"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:330
+#: engines/glk/dialogs.cpp:343
 msgid "Monosize:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:330
+#: engines/glk/dialogs.cpp:343
 msgid "Font size scaling for the monospace text font"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:331
+#: engines/glk/dialogs.cpp:344
 msgid "Propsize:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:331
+#: engines/glk/dialogs.cpp:344
 msgid "Font size scaling for the proportional text font"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:334
+#. I18N: This is a section for settings related to the "More..." prompt in text windows
+#: engines/glk/dialogs.cpp:347
+msgid "More"
+msgstr ""
+
+#: engines/glk/dialogs.cpp:348
 msgid "Align:"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:334
+#: engines/glk/dialogs.cpp:348
 msgid "Alignment of the \"More...\" marker on the window"
 msgstr ""
 
-#: engines/glk/dialogs.cpp:336
+#: engines/glk/dialogs.cpp:350
 #, fuzzy
 #| msgid "Center"
 msgid "Centre"
 msgstr "中心"
 
-#: engines/glk/dialogs.cpp:339
+#: engines/glk/dialogs.cpp:353
 #, fuzzy
 #| msgid "SoundFont:"
 msgid "Font:"
 msgstr "声音字体："
 
-#: engines/glk/dialogs.cpp:339
+#: engines/glk/dialogs.cpp:353
 msgid "Font for the \"More...\" marker"
 msgstr ""
 
@@ -17973,6 +18045,21 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#, fuzzy
+#~| msgid "L1"
+#~ msgid "1"
+#~ msgstr "L1"
+
+#, fuzzy
+#~| msgid "L2"
+#~ msgid "2"
+#~ msgstr "L2"
+
+#, fuzzy
+#~| msgid "L3"
+#~ msgid "3"
+#~ msgstr "L3"
 
 #~ msgid ""
 #~ "EOB II FM-TOWNS requires support of 16bit color modes which has not been "
