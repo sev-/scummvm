@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 17:31+0000\n"
+"POT-Creation-Date: 2026-04-06 20:30+0000\n"
 "PO-Revision-Date: 2024-10-10 12:33+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Turkish <https://translations.scummvm.org/projects/scummvm/"
@@ -277,13 +277,8 @@ msgstr "Yapıştır"
 msgid "Paste code from clipboard"
 msgstr "Bellekten kodu yapıştır"
 
-#: gui/cloudconnectionwizard.cpp:387 gui/launcher.cpp:324
-#: engines/dialogs.cpp:97 engines/engine.cpp:1011 engines/mm/xeen/saves.cpp:259
-#: engines/nancy/state/loadsave.cpp:108 engines/nancy/state/loadsave.cpp:153
-#: engines/parallaction/metaengine.cpp:151
-#: engines/parallaction/saveload.cpp:193 engines/pegasus/pegasus.cpp:388
-#: engines/tinsel/metaengine.cpp:329 engines/trecision/saveload.cpp:253
-#: engines/tsage/scenes.cpp:642 engines/wage/saveload.cpp:753
+#: gui/cloudconnectionwizard.cpp:387 engines/nancy/state/loadsave.cpp:108
+#: engines/parallaction/metaengine.cpp:151 engines/tinsel/metaengine.cpp:329
 msgid "Load"
 msgstr "Yükle"
 
@@ -1498,13 +1493,6 @@ msgstr "Oyun listesinde ara"
 #: gui/shaderbrowser-dialog.cpp:107
 msgid "Search:"
 msgstr "Arama:"
-
-#: gui/launcher.cpp:324 engines/dialogs.cpp:97 engines/engine.cpp:1011
-#: engines/mm/xeen/saves.cpp:259 engines/nancy/state/loadsave.cpp:153
-#: engines/pegasus/pegasus.cpp:388 engines/trecision/saveload.cpp:253
-#: engines/tsage/scenes.cpp:642 engines/wage/saveload.cpp:753
-msgid "Load game:"
-msgstr "Oyun yükle:"
 
 #: gui/launcher.cpp:416
 msgid "This directory cannot be used yet, it is being downloaded into!"
@@ -2856,6 +2844,27 @@ msgstr "Bilinmeyen Yazar"
 msgid "ScummVM could not access the directory!"
 msgstr "ScummVM belirtilen klasörü açamadı!"
 
+#: gui/saveload.cpp:36
+msgid "Save game:"
+msgstr "Oyun kaydet:"
+
+#: gui/saveload.cpp:36
+#, fuzzy
+msgid "Restore game:"
+msgstr "Oyun yükle:"
+
+#: gui/saveload.cpp:37 engines/groovie/script.cpp:853
+#: engines/lab/savegame.cpp:237 engines/nancy/state/loadsave.cpp:108
+#: engines/parallaction/metaengine.cpp:157 engines/saga/metaengine.cpp:469
+#: engines/tinsel/metaengine.cpp:323 engines/zvision/metaengine.cpp:282
+msgid "Save"
+msgstr "Kaydet"
+
+#: gui/saveload.cpp:37 engines/groovie/script.cpp:853
+#: engines/lab/savegame.cpp:237 engines/zvision/metaengine.cpp:287
+msgid "Restore"
+msgstr ""
+
 #: gui/saveload-dialog.cpp:56
 msgid "Downloading saves..."
 msgstr "Kayıtları indiriyor..."
@@ -3559,53 +3568,6 @@ msgstr "~B~aşlatıcıya Dön"
 msgctxt "lowres"
 msgid "~R~eturn to Launcher"
 msgstr "~B~aşlatıcıya Dön"
-
-#: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
-#: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
-#: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
-#: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:858
-#: engines/groovie/script.cpp:2256 engines/groovie/script.cpp:2283
-#: engines/groovie/script.cpp:2324 engines/hugo/file.cpp:297
-#: engines/illusions/menusystem.cpp:702 engines/kingdom/kingdom.cpp:731
-#: engines/lab/savegame.cpp:242 engines/mads/nebular/dialogs_nebular.cpp:358
-#: engines/mads/phantom/dialogs_phantom.cpp:354 engines/mm/xeen/saves.cpp:280
-#: engines/mtropolis/saveload.cpp:76 engines/nancy/state/loadsave.cpp:136
-#: engines/neverhood/menumodule.cpp:925 engines/pegasus/pegasus.cpp:407
-#: engines/prince/saveload.cpp:54 engines/sci/engine/guest_additions.cpp:746
-#: engines/sci/engine/kfile.cpp:1104 engines/sherlock/scalpel/scalpel.cpp:1250
-#: engines/sherlock/tattoo/widget_files.cpp:81 engines/startrek/saveload.cpp:42
-#: engines/toltecs/menu.cpp:308 engines/toon/toon.cpp:3820
-#: engines/trecision/saveload.cpp:67 engines/tsage/scenes.cpp:640
-#: engines/wage/saveload.cpp:763 engines/zvision/file/save_manager.cpp:47
-msgid "Save game:"
-msgstr "Oyun kaydet:"
-
-#: engines/dialogs.cpp:98 engines/engine.cpp:1040 engines/agi/saveload.cpp:766
-#: engines/avalanche/parser.cpp:1918 engines/cine/various.cpp:349
-#: engines/dm/loadsave.cpp:199 engines/drascula/saveload.cpp:390
-#: engines/dreamweb/saveload.cpp:261 engines/glk/streams.cpp:1441
-#: engines/gnap/menu.cpp:465 engines/groovie/script.cpp:853
-#: engines/groovie/script.cpp:858 engines/groovie/script.cpp:2256
-#: engines/groovie/script.cpp:2283 engines/groovie/script.cpp:2324
-#: engines/hugo/file.cpp:297 engines/illusions/menusystem.cpp:702
-#: engines/kingdom/kingdom.cpp:731 engines/lab/savegame.cpp:237
-#: engines/lab/savegame.cpp:242 engines/mads/nebular/dialogs_nebular.cpp:358
-#: engines/mads/phantom/dialogs_phantom.cpp:354 engines/mm/xeen/saves.cpp:280
-#: engines/mtropolis/saveload.cpp:76 engines/nancy/state/loadsave.cpp:108
-#: engines/nancy/state/loadsave.cpp:136 engines/neverhood/menumodule.cpp:925
-#: engines/parallaction/metaengine.cpp:157
-#: engines/parallaction/saveload.cpp:208 engines/pegasus/pegasus.cpp:407
-#: engines/prince/saveload.cpp:54 engines/saga/metaengine.cpp:469
-#: engines/sci/engine/guest_additions.cpp:747 engines/sci/engine/kfile.cpp:1104
-#: engines/sherlock/scalpel/scalpel.cpp:1250
-#: engines/sherlock/tattoo/widget_files.cpp:81 engines/startrek/saveload.cpp:42
-#: engines/tinsel/metaengine.cpp:323 engines/toltecs/menu.cpp:308
-#: engines/toon/toon.cpp:3820 engines/trecision/saveload.cpp:67
-#: engines/tsage/scenes.cpp:640 engines/wage/saveload.cpp:763
-#: engines/zvision/file/save_manager.cpp:47 engines/zvision/metaengine.cpp:282
-msgid "Save"
-msgstr "Kaydet"
 
 #: engines/dialogs.cpp:128
 msgid ""
@@ -6429,49 +6391,6 @@ msgstr "Bu oyun, başlatıcısan kaydedilmiş oyun yüklemeyi desteklemiyor."
 #, fuzzy
 msgid "This game does not support saving"
 msgstr "Bu oyun, başlatıcısan kaydedilmiş oyun yüklemeyi desteklemiyor."
-
-#: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
-#: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
-#: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
-#: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
-#: engines/groovie/script.cpp:870 engines/groovie/script.cpp:2243
-#: engines/groovie/script.cpp:2270 engines/groovie/script.cpp:2340
-#: engines/hugo/file.cpp:399 engines/illusions/menusystem.cpp:679
-#: engines/kingdom/kingdom.cpp:741 engines/lab/savegame.cpp:257
-#: engines/mads/nebular/dialogs_nebular.cpp:385
-#: engines/mads/phantom/dialogs_phantom.cpp:381
-#: engines/mtropolis/saveload.cpp:120 engines/neverhood/menumodule.cpp:938
-#: engines/prince/saveload.cpp:63 engines/sci/engine/guest_additions.cpp:749
-#: engines/sci/engine/kfile.cpp:1246 engines/sherlock/scalpel/scalpel.cpp:1263
-#: engines/sherlock/tattoo/widget_files.cpp:100
-#: engines/startrek/saveload.cpp:67 engines/toltecs/menu.cpp:278
-#: engines/toon/toon.cpp:3914 engines/zvision/file/save_manager.cpp:60
-#, fuzzy
-msgid "Restore game:"
-msgstr "Oyun yükle:"
-
-#: engines/agi/saveload.cpp:779 engines/avalanche/parser.cpp:1906
-#: engines/cine/various.cpp:360 engines/dm/dm.cpp:271
-#: engines/dm/loadsave.cpp:187 engines/drascula/saveload.cpp:403
-#: engines/dreamweb/saveload.cpp:169 engines/glk/streams.cpp:1450
-#: engines/gnap/menu.cpp:474 engines/groovie/script.cpp:835
-#: engines/groovie/script.cpp:853 engines/groovie/script.cpp:870
-#: engines/groovie/script.cpp:2243 engines/groovie/script.cpp:2270
-#: engines/groovie/script.cpp:2340 engines/hugo/file.cpp:399
-#: engines/illusions/menusystem.cpp:679 engines/kingdom/kingdom.cpp:741
-#: engines/lab/savegame.cpp:237 engines/lab/savegame.cpp:257
-#: engines/mads/nebular/dialogs_nebular.cpp:385
-#: engines/mads/phantom/dialogs_phantom.cpp:381
-#: engines/mtropolis/saveload.cpp:120 engines/neverhood/menumodule.cpp:938
-#: engines/prince/saveload.cpp:63 engines/sci/engine/guest_additions.cpp:750
-#: engines/sci/engine/kfile.cpp:1246 engines/sherlock/scalpel/scalpel.cpp:1263
-#: engines/sherlock/tattoo/widget_files.cpp:100
-#: engines/startrek/saveload.cpp:67 engines/toltecs/menu.cpp:278
-#: engines/toon/toon.cpp:3914 engines/zvision/file/save_manager.cpp:60
-#: engines/zvision/metaengine.cpp:287
-msgid "Restore"
-msgstr ""
 
 #: engines/agos/animation.cpp:576
 #, c-format
@@ -11538,19 +11457,10 @@ msgid ""
 "\n"
 msgstr ""
 
-#: engines/parallaction/saveload.cpp:193
-#, fuzzy
-msgid "Load file"
-msgstr "Oyun yükle:"
-
 #: engines/parallaction/saveload.cpp:200
 #, fuzzy
 msgid "Loading game..."
 msgstr "Oyun yükle:"
-
-#: engines/parallaction/saveload.cpp:208
-msgid "Save file"
-msgstr ""
 
 #: engines/parallaction/saveload.cpp:215
 msgid "Saving game..."
@@ -16997,6 +16907,13 @@ msgid ""
 "solved.  These puzzles may alternatively be solved using subtitles, if "
 "supported. Continue launching game?"
 msgstr ""
+
+#~ msgid "Load game:"
+#~ msgstr "Oyun yükle:"
+
+#, fuzzy
+#~ msgid "Load file"
+#~ msgstr "Oyun yükle:"
 
 #, fuzzy
 #~| msgid "Backend"
