@@ -191,7 +191,16 @@ static GUI::StaticTextWidget *createHeading(GUI::GuiObject *boss, const char *id
 GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, const Common::String &domain)
 	: GUI::OptionsContainerWidget(boss, name, "GlkOptionsDialog", domain) {
 
-	static const char *fontLabels[] = { "Monospace Regular", "Monospace Bold", "Monospace Italic", "Monospace Bold Italic", "Proportional Regular", "Proportional Bold", "Proportional Italic", "Proportional Bold Italic" };
+	static const char *fontLabels[] = {
+		_s("Monospace Regular"),
+		_s("Monospace Bold"),
+		_s("Monospace Italic"),
+		_s("Monospace Bold Italic"),
+		_s("Proportional Regular"),
+		_s("Proportional Bold"),
+		_s("Proportional Italic"),
+		_s("Proportional Bold Italic"),
+	};
 
 	for (int f = MONOR; f <= PROPZ; ++f) {
 		_tfontPopUps[f] = nullptr;
@@ -202,11 +211,11 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.TFont", _s("Text:"), _tfontPopUps[0], "GlkOptionsDialog.TFont0", _s("Font for the text"));
 	for (int f = MONOR; f <= PROPZ; ++f)
-		_tfontPopUps[0]->appendEntry(fontLabels[f], f);
+		_tfontPopUps[0]->appendEntry(_(fontLabels[f]), f);
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.GFont", _s("Grid:"), _gfontPopUps[0], "GlkOptionsDialog.GFont0", _s("Font for drawn graphics like maps, diagrams, puzzles, etc"));
 	for (int f = MONOR; f <= PROPZ; ++f)
-		_gfontPopUps[0]->appendEntry(fontLabels[f], f);
+		_gfontPopUps[0]->appendEntry(_(fontLabels[f]), f);
 
 	_colorHeadinglbl = createHeading(widgetsBoss(), "GlkOptionsDialog.ColorHeading", "Color");
 
@@ -329,7 +338,7 @@ GlkOptionsWidget::GlkOptionsWidget(GuiObject *boss, const Common::String &name, 
 
 	NEW_LABEL_POPUP("GlkOptionsDialog.morefontlbl", _s("Font:"), _morefont, "GlkOptionsDialog.morefont", _s("Font for the \"More...\" marker"));
 	for (int f = MONOR; f <= PROPZ; ++f)
-		_morefont->appendEntry(fontLabels[f], f);
+		_morefont->appendEntry(_(fontLabels[f]), f);
 
 }
 
@@ -1246,12 +1255,12 @@ bool GlkOptionsWidget::save() {
 static void setManualColorHex(GUI::PopUpWidget *popup, GUI::EditTextWidget *hexInput) {
 	int idx = popup->getSelectedTag();
 
-    if (idx < 0 || idx > 5)
-        return;
+	if (idx < 0 || idx > 5)
+		return;
 
 	byte r = (GLK_COLORS[idx].rgb >> 16) & 0xFF;
 	byte g = (GLK_COLORS[idx].rgb >> 8)  & 0xFF;
-	byte b = (GLK_COLORS[idx].rgb        & 0xFF);
+	byte b = (GLK_COLORS[idx].rgb		& 0xFF);
 	hexInput->setEditString(Common::U32String(Common::String::format("%02X%02X%02X", r, g, b)));
 }
 
