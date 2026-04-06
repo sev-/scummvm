@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-06 16:56+0000\n"
-"PO-Revision-Date: 2026-03-28 17:49+0000\n"
+"PO-Revision-Date: 2026-04-06 17:30+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/uk/>\n"
@@ -8215,28 +8215,20 @@ msgid "Rotate right"
 msgstr "Обертання направо"
 
 #: engines/colony/metaengine.cpp:148
-#, fuzzy
-#| msgid "Look down"
 msgid "Look behind"
-msgstr "Глянути донизу"
+msgstr "Глянути позаду"
 
 #: engines/colony/metaengine.cpp:153
-#, fuzzy
-#| msgid "Toggle mute"
 msgid "Toggle mouselook"
-msgstr "Перемкнути звук"
+msgstr "Перемкнути між режимами миші"
 
 #: engines/colony/metaengine.cpp:159
-#, fuzzy
-#| msgid "Toggle sound"
 msgid "Toggle dashboard"
-msgstr "Перемкнути звук"
+msgstr "Перемкнути панель інструментів"
 
 #: engines/colony/metaengine.cpp:164
-#, fuzzy
-#| msgid "Toggle frame by frame"
 msgid "Toggle wireframe"
-msgstr "Перемкнути кадр за кадром"
+msgstr "Перемкнути каркасне зображення"
 
 #: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
 #: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
@@ -8251,11 +8243,11 @@ msgstr "Вистрілити зі зброї"
 
 #: engines/colony/savegame.cpp:290
 msgid "Saving is only available in first-person view."
-msgstr ""
+msgstr "Збереження доступне лише у режимі від першої особи."
 
 #: engines/colony/savegame.cpp:299
 msgid "Loading is only available in first-person view."
-msgstr ""
+msgstr "Завантаження доступне лише у режимі від першої особи."
 
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
@@ -9053,21 +9045,23 @@ msgstr "Використовувати клавіші WASD для руху та 
 #. I18N: Enable background music using AdLib/OPL2 FM synthesis
 #: engines/freescape/metaengine.cpp:165
 msgid "Backported music from C64 releases (AdLib)"
-msgstr ""
+msgstr "Музика, перенесена з релізів C64 (AdLib)"
 
 #: engines/freescape/metaengine.cpp:166
 msgid ""
 "Enable background music ported from the C64 version using AdLib FM synthesis"
 msgstr ""
+"Увімкнути фонову музику, портовану з версії C64, за допомогою синтезу AdLib "
+"FM"
 
 #. I18N: Enable background music using AY chip emulation
 #: engines/freescape/metaengine.cpp:177
 msgid "Backported music from C64 releases"
-msgstr ""
+msgstr "Музика, перенесена з релізів C64"
 
 #: engines/freescape/metaengine.cpp:178
 msgid "Enable background music ported from the C64 version"
-msgstr ""
+msgstr "Увімкнути фонову музику, портовану з версії C64"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
@@ -9280,313 +9274,268 @@ msgstr "Вікно з ілюстрацією перемкнено\n"
 
 #: engines/glk/dialogs.cpp:141
 msgid "white"
-msgstr ""
+msgstr "білий"
 
 #: engines/glk/dialogs.cpp:142
 msgid "green"
-msgstr ""
+msgstr "зелений"
 
 #: engines/glk/dialogs.cpp:143
-#, fuzzy
-#| msgid "Proceed"
 msgid "red"
-msgstr "Продовжити"
+msgstr "червоний"
 
 #: engines/glk/dialogs.cpp:144
 msgid "blue"
-msgstr ""
+msgstr "блакитний"
 
 #: engines/glk/dialogs.cpp:145
 msgid "black"
-msgstr ""
+msgstr "чорний"
 
 #: engines/glk/dialogs.cpp:146
 msgid "grey"
-msgstr ""
+msgstr "сірий"
 
 #: engines/glk/dialogs.cpp:195
 msgid "Monospace Regular"
-msgstr ""
+msgstr "Моноширинний звичайний"
 
 #: engines/glk/dialogs.cpp:196
 msgid "Monospace Bold"
-msgstr ""
+msgstr "Моноширинний жирний"
 
 #: engines/glk/dialogs.cpp:197
 msgid "Monospace Italic"
-msgstr ""
+msgstr "Моноширинний курсив"
 
 #: engines/glk/dialogs.cpp:198
 msgid "Monospace Bold Italic"
-msgstr ""
+msgstr "Моноширинний жирний курсив"
 
 #: engines/glk/dialogs.cpp:199
 msgid "Proportional Regular"
-msgstr ""
+msgstr "Пропроційний звичайний"
 
 #: engines/glk/dialogs.cpp:200
 msgid "Proportional Bold"
-msgstr ""
+msgstr "Пропроційний жирний"
 
 #: engines/glk/dialogs.cpp:201
 msgid "Proportional Italic"
-msgstr ""
+msgstr "Пропроційний курсив"
 
 #: engines/glk/dialogs.cpp:202
 msgid "Proportional Bold Italic"
-msgstr ""
+msgstr "Пропроційний жирний курсив"
 
 #: engines/glk/dialogs.cpp:210
-#, fuzzy
-#| msgid "SoundFont:"
 msgid "Font"
-msgstr "SoundFont:"
+msgstr "Шрифт"
 
 #: engines/glk/dialogs.cpp:212 engines/glk/dialogs.cpp:222
-#, fuzzy
-#| msgid "ProText"
 msgid "Text:"
-msgstr "ПроТекст"
+msgstr "Текст:"
 
 #: engines/glk/dialogs.cpp:212
 msgid "Font for the text"
-msgstr ""
+msgstr "Шрифт тексту"
 
 #: engines/glk/dialogs.cpp:216 engines/glk/dialogs.cpp:227
 msgid "Grid:"
-msgstr ""
+msgstr "Сітка:"
 
 #: engines/glk/dialogs.cpp:216
 msgid "Font for drawn graphics like maps, diagrams, puzzles, etc"
 msgstr ""
+"Шрифт для мальованої графіки, такої як карти, діаграми, головоломки тощо"
 
 #: engines/glk/dialogs.cpp:220
 msgid "Color"
-msgstr ""
+msgstr "Колір"
 
 #: engines/glk/dialogs.cpp:222
-#, fuzzy
-#| msgid "Move focus to interactive object"
 msgid "Color of the interactive text"
-msgstr "Перемістити фокус на інтерактивний об'єкт"
+msgstr "Колір інтерактивного тексту"
 
 #: engines/glk/dialogs.cpp:225 engines/glk/dialogs.cpp:230
 #: engines/glk/dialogs.cpp:236 engines/glk/dialogs.cpp:242
 #: engines/glk/dialogs.cpp:254 engines/glk/dialogs.cpp:260
 #: engines/glk/dialogs.cpp:269
 msgid "<custom>"
-msgstr ""
+msgstr "<користувацький>"
 
 #: engines/glk/dialogs.cpp:227
 msgid "Color for drawn graphics such as maps, diagrams, puzzles, etc"
 msgstr ""
+"Колір для мальованої графіки, такої як карти, діаграми, головоломки тощо"
 
 #: engines/glk/dialogs.cpp:232
-#, fuzzy
-#| msgid "Window"
 msgid "Window:"
-msgstr "Вікно"
+msgstr "Вікно:"
 
 #: engines/glk/dialogs.cpp:232
-#, fuzzy
-#| msgid "Toggle windows mode"
 msgid "Color of the window (background)"
-msgstr "Перемкнути режим вікон"
+msgstr "Колір вікна (фону)"
 
 #: engines/glk/dialogs.cpp:238
-#, fuzzy
-#| msgid "New order"
 msgid "Border:"
-msgstr "Нова вказівка"
+msgstr "Облямівка:"
 
 #: engines/glk/dialogs.cpp:238
-#, fuzzy
-#| msgid "Toggle windows mode"
 msgid "Color of the window border"
-msgstr "Перемкнути режим вікон"
+msgstr "Колір облямівки вікна"
 
 #. I18N: This is a section for text windows border settings
 #: engines/glk/dialogs.cpp:245
-#, fuzzy
-#| msgid "New order"
 msgid "Border"
-msgstr "Нова вказівка"
+msgstr "Облямівка"
 
 #: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:329
 #: engines/glk/dialogs.cpp:333 engines/glk/dialogs.cpp:337
-#, fuzzy
-#| msgid "Horizontal underscan:"
 msgid "Horizontal:"
-msgstr "Горизонтальний underscan:"
+msgstr "Горизонтальна:"
 
 #: engines/glk/dialogs.cpp:247
-#, fuzzy
-#| msgid "Horizontal underscan:"
 msgid "Horizontal border size"
-msgstr "Горизонтальний underscan:"
+msgstr "Розмір горизонтальної облямівки"
 
 #: engines/glk/dialogs.cpp:248 engines/glk/dialogs.cpp:330
 #: engines/glk/dialogs.cpp:334 engines/glk/dialogs.cpp:338
-#, fuzzy
-#| msgid "Vertical underscan:"
 msgid "Vertical:"
-msgstr "Вертикальний underscan:"
+msgstr "Вертикальна:"
 
 #: engines/glk/dialogs.cpp:248
-#, fuzzy
-#| msgid "Vertical underscan:"
 msgid "Vertical border size"
-msgstr "Вертикальний underscan:"
+msgstr "Розмір вертикальної облямівки"
 
 #: engines/glk/dialogs.cpp:250
 msgid "Caret:"
-msgstr ""
+msgstr "Каретка:"
 
 #: engines/glk/dialogs.cpp:250
-#, fuzzy
-#| msgid "Teleport to cursor"
 msgid "Color of the cursor"
-msgstr "Телепортуватись до курсора"
+msgstr "Колір курсора"
 
 #: engines/glk/dialogs.cpp:256
 msgid "Link:"
-msgstr ""
+msgstr "Посилання:"
 
 #: engines/glk/dialogs.cpp:256
 msgid "Color for URLs if they appear in-game"
-msgstr ""
+msgstr "Колір для URL-адрес, якщо вони відображаються в грі"
 
 #. I18N: "More..." is a prompt in text windows, which appears when the text exceeds the window size
 #: engines/glk/dialogs.cpp:264
 msgid "More:"
-msgstr ""
+msgstr "Далі:"
 
 #: engines/glk/dialogs.cpp:265
 msgid "Color for the \"More...\" markers in the text"
-msgstr ""
+msgstr "Колір для маркерів «Далі...» у тексті"
 
 #: engines/glk/dialogs.cpp:272
-#, fuzzy
-#| msgid "Graphics mode:"
 msgid "Typography"
-msgstr "Графічн. режим:"
+msgstr "Типографіка"
 
 #: engines/glk/dialogs.cpp:274
 msgid "Link style:"
-msgstr ""
+msgstr "Стиль посилань:"
 
 #: engines/glk/dialogs.cpp:274
 msgid "Style for URLs if they appear in-game"
-msgstr ""
+msgstr "Стиль для URL-адрес, якщо вони відображаються в грі"
 
 #: engines/glk/dialogs.cpp:279
-#, fuzzy
-#| msgid "Change shadow type"
 msgid "Caret shape:"
-msgstr "Змінити тип тіні"
+msgstr "Форма каретки:"
 
 #: engines/glk/dialogs.cpp:279
-#, fuzzy
-#| msgid "Show mouse cursor"
 msgid "Shape of the cursor"
-msgstr "Показувати курсор миші"
+msgstr "Форма курсора"
 
 #: engines/glk/dialogs.cpp:286
-#, fuzzy
-#| msgid "Quit prompt"
 msgid "More prompt:"
-msgstr "Запит виходу з гри"
+msgstr "Запит «Далі»:"
 
 #: engines/glk/dialogs.cpp:286
 msgid ""
 "Custom marker in place of the \"More...\" marker for eg. \"continue\". Leave "
 "it blank to use the game's default"
 msgstr ""
+"Власний маркер замість маркера «Далі...», наприклад, для «продовжити». "
+"Залиште це поле порожнім, щоб використовувати налаштування гри за "
+"замовчуванням"
 
 #: engines/glk/dialogs.cpp:288
-#, fuzzy
-#| msgid "Hide hints"
 msgid "Style hints:"
-msgstr "Сховати підказки"
+msgstr "Автостиль:"
 
 #: engines/glk/dialogs.cpp:288
 msgid "Let the game suggest text styling options"
-msgstr ""
+msgstr "Дозволити грі пропонувати варіанти стилізації тексту"
 
 #: engines/glk/dialogs.cpp:289
-#, fuzzy
-#| msgid "Left click"
 msgid "Safe clicks:"
-msgstr "Лівий клік"
+msgstr "Безпечні кліки:"
 
 #: engines/glk/dialogs.cpp:289
 msgid "Safely apply clicks while input is pending"
-msgstr ""
+msgstr "Безпечно застосовувати кліки, поки очікується введення тексту"
 
 #. I18N: This is setting for number of text columns
 #: engines/glk/dialogs.cpp:292
-#, fuzzy
-#| msgid "Volume controls"
 msgid "Column count:"
-msgstr "Керування гучністю"
+msgstr "Кількість стовпців:"
 
 #: engines/glk/dialogs.cpp:292
 msgid "Number of columns"
-msgstr ""
+msgstr "Кількість колонок"
 
 #. I18N: This is setting for number of text rows
 #: engines/glk/dialogs.cpp:294
 msgid "Rows count:"
-msgstr ""
+msgstr "Кількість рядків:"
 
 #: engines/glk/dialogs.cpp:294
 msgid "Number of rows"
-msgstr ""
+msgstr "Кількість рядків"
 
 #: engines/glk/dialogs.cpp:296
 msgid "Lock columns:"
-msgstr ""
+msgstr "Заблокувати стовпці:"
 
 #: engines/glk/dialogs.cpp:296
 msgid "Check it to manually change the column count"
-msgstr ""
+msgstr "Поставте позначку, щоб вручну змінити кількість стовпців"
 
 #: engines/glk/dialogs.cpp:297
-#, fuzzy
-#| msgid "Block low"
 msgid "Lock rows:"
-msgstr "Блокувати знизу"
+msgstr "Блокувати рядки:"
 
 #: engines/glk/dialogs.cpp:297
 msgid "Check it to manually change the row count"
-msgstr ""
+msgstr "Поставте позначку, щоб вручну змінити кількість рядків"
 
 #: engines/glk/dialogs.cpp:299
 msgid "Justify:"
-msgstr ""
+msgstr "Вирівняти:"
 
 #: engines/glk/dialogs.cpp:299
-#, fuzzy
-#| msgid "Enable short transitions"
 msgid "Enable text justification"
-msgstr "Ввімкнути короткі переходи"
+msgstr "Ввімкнути вирівнювання тексту"
 
 #: engines/glk/dialogs.cpp:301
-#, fuzzy
-#| msgid "Graphics mode:"
 msgid "Typographic quotes:"
-msgstr "Графічн. режим:"
+msgstr "Типографічні лапки:"
 
 #: engines/glk/dialogs.cpp:301
-#, fuzzy
-#| msgid "Color graphics"
 msgid "Choose typographic quotes"
-msgstr "Кольорова графіка"
+msgstr "Виберіть стиль типографічних лапкок"
 
 #: engines/glk/dialogs.cpp:302 engines/glk/dialogs.cpp:311
 #: engines/glk/dialogs.cpp:320
 msgid "Off"
-msgstr ""
+msgstr "Вимкнені"
 
 #. I18N: This is a setting for using normal typographic quotes, which are like in most books, with the opening quote higher than the closing one
 #: engines/glk/dialogs.cpp:304 engines/mohawk/dialogs.cpp:366
@@ -9596,175 +9545,162 @@ msgstr "Нормальний"
 #. I18N: This is a setting for using "rabid" quotes, which are like normal typographic quotes but with the opening quote lower than the closing one, like in some comic books
 #: engines/glk/dialogs.cpp:306
 msgid "Rabid"
-msgstr ""
+msgstr "Особливі"
 
 #: engines/glk/dialogs.cpp:308
 msgid "Caps:"
-msgstr ""
+msgstr "Великі літери:"
 
 #: engines/glk/dialogs.cpp:308
 msgid "Force uppercase input"
-msgstr ""
+msgstr "Примусові великі літери для введеного тексту"
 
 #: engines/glk/dialogs.cpp:310
 msgid "Dashes:"
-msgstr ""
+msgstr "Тире:"
 
 #: engines/glk/dialogs.cpp:310
 msgid "Types of dashes"
-msgstr ""
+msgstr "Типи тире"
 
 #. I18N: This is a setting for using normal typographic dashes, which are like in most books, with the em dash being the longest and the en dash being half of it
 #: engines/glk/dialogs.cpp:313
 msgid "Em dashes"
-msgstr ""
+msgstr "Довгі тире"
 
 #. I18N: This is a setting for using "en+em" dashes, which are like normal typographic dashes but with the en dash being the same length as the em dash, like in some comic books
 #: engines/glk/dialogs.cpp:315
 msgid "En+Em dashes"
-msgstr ""
+msgstr "Тире En+Em"
 
 #: engines/glk/dialogs.cpp:317
-#, fuzzy
-#| msgid "Preferences"
 msgid "User experience"
-msgstr "Уподобання"
+msgstr "Досвід користувача"
 
 #: engines/glk/dialogs.cpp:319
-#, fuzzy
-#| msgid "Space"
 msgid "Spaces:"
-msgstr "Space"
+msgstr "Пробіли:"
 
 #: engines/glk/dialogs.cpp:319
 msgid "Types of spaces"
-msgstr ""
+msgstr "Типи пробілів"
 
 #. I18N: This is a setting for compressing double spaces into single ones in text
 #: engines/glk/dialogs.cpp:322
 msgid "Compress double spaces"
-msgstr ""
+msgstr "Стиснути подвійні пробіли"
 
 #. I18N: This is a setting for expanding single spaces into double ones in text
 #: engines/glk/dialogs.cpp:324
 msgid "Expand single spaces"
-msgstr ""
+msgstr "Розширити одинарні пробіли"
 
 #: engines/glk/dialogs.cpp:326
-#, fuzzy
-#| msgid "Graphics"
 msgid "Graphics:"
-msgstr "Графіка"
+msgstr "Графіка:"
 
 #: engines/glk/dialogs.cpp:326
 msgid "Turn graphics on/off"
-msgstr ""
+msgstr "Увімкнення/вимкнення графіки"
 
 #: engines/glk/dialogs.cpp:328
-#, fuzzy
-#| msgid "Window"
 msgid "Window margin"
-msgstr "Вікно"
+msgstr "Поля вікна"
 
 #: engines/glk/dialogs.cpp:329
 msgid "Horizontal margin for window"
-msgstr ""
+msgstr "Горизонтальне поле у вікні"
 
 #: engines/glk/dialogs.cpp:330
 msgid "Vertical margin for window"
-msgstr ""
+msgstr "Вертикальне поле у вікні"
 
 #: engines/glk/dialogs.cpp:332
-#, fuzzy
-#| msgid "Window"
 msgid "Window padding"
-msgstr "Вікно"
+msgstr "Відступання вікна"
 
 #: engines/glk/dialogs.cpp:333
 msgid "Horizontal padding for window"
-msgstr ""
+msgstr "Горизонтальне відступання вікна"
 
 #: engines/glk/dialogs.cpp:334
 msgid "Vertical padding for window"
-msgstr ""
+msgstr "Вертикальне відступання вікна"
 
 #: engines/glk/dialogs.cpp:336
-#, fuzzy
-#| msgid "Next action"
 msgid "Text margin"
-msgstr "Наступна дія"
+msgstr "Поля тексту"
 
 #: engines/glk/dialogs.cpp:337
 msgid "Horizontal margin for text"
-msgstr ""
+msgstr "Горизонтальне поле для тексту"
 
 #: engines/glk/dialogs.cpp:338
 msgid "Vertical margin for text"
-msgstr ""
+msgstr "Вертикальне поле для тексту"
 
 #: engines/glk/dialogs.cpp:340
-#, fuzzy
 msgid "Leading:"
-msgstr "Завантажую гру..."
+msgstr "Інтерліньяж:"
 
 #: engines/glk/dialogs.cpp:340
 msgid "Vertical distance between text rows. Valid inputs - 12, 16, 22 etc."
 msgstr ""
+"Вертикальна відстань між рядками тексту. Допустимі значення – 12, 16, 22 "
+"тощо."
 
 #: engines/glk/dialogs.cpp:341
 msgid "Baseline:"
-msgstr ""
+msgstr "Базова лінія:"
 
 #: engines/glk/dialogs.cpp:341
 msgid ""
 "Invisible horizontal line on which text sits. Valid inputs - 8, 16 etc. as "
 "per your font size"
 msgstr ""
+"Невидима горизонтальна лінія, на якій розташований текст. Дійсні значення – "
+"8, 16 тощо, залежно від розміру вашого шрифту"
 
 #: engines/glk/dialogs.cpp:343
 msgid "Monosize:"
-msgstr ""
+msgstr "Монорозмір:"
 
 #: engines/glk/dialogs.cpp:343
 msgid "Font size scaling for the monospace text font"
-msgstr ""
+msgstr "Масштабування розміру шрифту для моноширинного тексту"
 
 #: engines/glk/dialogs.cpp:344
 msgid "Propsize:"
-msgstr ""
+msgstr "Пропрозмір:"
 
 #: engines/glk/dialogs.cpp:344
 msgid "Font size scaling for the proportional text font"
-msgstr ""
+msgstr "Масштабування розміру шрифту для пропорційного шрифту тексту"
 
 #. I18N: This is a section for settings related to the "More..." prompt in text windows
 #: engines/glk/dialogs.cpp:347
 msgid "More"
-msgstr ""
+msgstr "Далі"
 
 #: engines/glk/dialogs.cpp:348
 msgid "Align:"
-msgstr ""
+msgstr "Вирівнювання:"
 
 #: engines/glk/dialogs.cpp:348
 msgid "Alignment of the \"More...\" marker on the window"
-msgstr ""
+msgstr "Вирівнювання маркера «Далі...» у вікні"
 
 #: engines/glk/dialogs.cpp:350
-#, fuzzy
-#| msgid "Center"
 msgid "Centre"
 msgstr "По центру"
 
 #: engines/glk/dialogs.cpp:353
-#, fuzzy
-#| msgid "SoundFont:"
 msgid "Font:"
-msgstr "SoundFont:"
+msgstr "Шрифт:"
 
 #: engines/glk/dialogs.cpp:353
 msgid "Font for the \"More...\" marker"
-msgstr ""
+msgstr "Шрифт для маркера «Далі...»"
 
 #: engines/glk/glulx/glulx.cpp:81
 msgid "This is too short to be a valid Glulx file."
