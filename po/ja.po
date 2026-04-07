@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-07 11:59+0000\n"
+"POT-Creation-Date: 2026-04-07 12:25+0000\n"
 "PO-Revision-Date: 2026-02-06 00:22+0000\n"
 "Last-Translator: VAN-Gluon <van.gluonp@gmail.com>\n"
 "Language-Team: Japanese <https://translations.scummvm.org/projects/scummvm/"
@@ -8498,13 +8498,17 @@ msgid "Brighten the graphics to simulate a Macintosh monitor"
 msgstr "明るさを上げてMacintoshのモニターをシミュレート"
 
 #: engines/director/metaengine.cpp:81
-msgid "Force true color"
+#, fuzzy
+#| msgid "Force true color"
+msgid "Force true color (32bpp) mode"
 msgstr "True Colorを強制"
 
 #: engines/director/metaengine.cpp:82
 #, fuzzy
 #| msgid "Use antialiasing to draw text even if the game does not ask for it"
-msgid "Use true color graphics mode, even if the game is not designed for it"
+msgid ""
+"Use true color graphics mode (32 bits per pixel), even if the game is not "
+"designed for it"
 msgstr "ゲームが要求していない場合でも、テキストにアンチエイリアシングを使用"
 
 #: engines/dm/metaengine.cpp:125

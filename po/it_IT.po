@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.3.0svn\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-07 11:59+0000\n"
+"POT-Creation-Date: 2026-04-07 12:25+0000\n"
 "PO-Revision-Date: 2026-04-05 16:27+0000\n"
 "Last-Translator: Walter Agazzi <walter.agazzi@protonmail.com>\n"
 "Language-Team: Italian <https://translations.scummvm.org/projects/scummvm/"
@@ -8479,11 +8479,18 @@ msgid "Brighten the graphics to simulate a Macintosh monitor"
 msgstr "Rende i colori più brillanti per simulare un schermo Macintosh"
 
 #: engines/director/metaengine.cpp:81
-msgid "Force true color"
+#, fuzzy
+#| msgid "Force true color"
+msgid "Force true color (32bpp) mode"
 msgstr "Forza modalità true color"
 
 #: engines/director/metaengine.cpp:82
-msgid "Use true color graphics mode, even if the game is not designed for it"
+#, fuzzy
+#| msgid ""
+#| "Use true color graphics mode, even if the game is not designed for it"
+msgid ""
+"Use true color graphics mode (32 bits per pixel), even if the game is not "
+"designed for it"
 msgstr ""
 "Utilizza la modalità grafica true color, anche se il gioco non richiede tale "
 "modalità"
