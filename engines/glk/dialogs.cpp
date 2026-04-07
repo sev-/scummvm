@@ -646,11 +646,11 @@ void GlkOptionsWidget::load() {
 void GlkOptionsWidget::defineLayout(GUI::ThemeEval &layouts,
 									const Common::String &layoutName,
 									const Common::String &overlayedLayout) const {
-	int16 baseScale = g_gui.xmlEval()->getVar("Globals.Line.Height", 16);
-	int16 labelWidth = baseScale * 4;
-	int16 popUpWidth = baseScale * 4.5;
-	int16 prefixWidth = baseScale * 1.5;
-	int16 hexWidth = baseScale * 3.5;
+	int baseScale = g_gui.xmlEval()->getVar("Globals.Line.Height", 16);
+	int labelWidth = baseScale * 4;
+	int popUpWidth = baseScale * 4.5;
+	int prefixWidth = baseScale * 1.5;
+	int hexWidth = baseScale * 3.5;
 
 	layouts.addDialog(layoutName, overlayedLayout)
 			.addLayout(GUI::ThemeLayout::kLayoutHorizontal)
