@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-07 12:25+0000\n"
-"PO-Revision-Date: 2026-04-06 18:50+0000\n"
+"PO-Revision-Date: 2026-04-07 12:46+0000\n"
 "Last-Translator: Lothar Serra Mari <lothar.serramari@scummvm.org>\n"
 "Language-Team: German <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/de/>\n"
@@ -7797,16 +7797,17 @@ msgid "Quit game"
 msgstr "Spiel beenden"
 
 #: engines/bolt/metaengine.cpp:34
-#, fuzzy
-#| msgid "Enable high resolution"
 msgid "Extended game resolution"
-msgstr "Aktiviere hohe Auflösung"
+msgstr "Erweiterte Spiel-Auflösung"
 
 #: engines/bolt/metaengine.cpp:35
 msgid ""
 "This option allows the game to play at a slightly extended resolution. This "
 "is what the Mac and CDi versions are supposed to play like."
 msgstr ""
+"Diese Option erlaubt, das Spiel in einer leicht erweiterten Auflösung zu "
+"spielen. Durch diese Option wird das Verhalten der Mac- und CDi-Versionen "
+"nachgebildet."
 
 #: engines/buried/buried.cpp:598
 msgid "Are you sure you want to quit?"
@@ -8489,21 +8490,16 @@ msgid "Brighten the graphics to simulate a Macintosh monitor"
 msgstr "Hellt das Bild auf, um einen Macintosh-Monitor zu simulieren"
 
 #: engines/director/metaengine.cpp:81
-#, fuzzy
-#| msgid "Force true color"
 msgid "Force true color (32bpp) mode"
-msgstr "True Color-Modus erzwingen"
+msgstr "True Color (32-Bit)-Modus erzwingen"
 
 #: engines/director/metaengine.cpp:82
-#, fuzzy
-#| msgid ""
-#| "Use true color graphics mode, even if the game is not designed for it"
 msgid ""
 "Use true color graphics mode (32 bits per pixel), even if the game is not "
 "designed for it"
 msgstr ""
-"Verwenden Sie den Echtfarbgrafikmodus, auch wenn das Spiel nicht dafür "
-"ausgelegt ist"
+"Verwendet den True Color-Grafikmodus (32-Bit), selbst wenn das Spiel dafür "
+"nicht designed wurde"
 
 #: engines/dm/metaengine.cpp:125
 msgid "Dialog choice selection keymappings"
