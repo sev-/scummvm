@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-07 11:52+0000\n"
+"POT-Creation-Date: 2026-04-07 11:59+0000\n"
 "PO-Revision-Date: 2026-04-01 20:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -3830,14 +3830,15 @@ msgstr "기본 게임 키설정"
 #: engines/hugo/metaengine.cpp:134 engines/illusions/metaengine.cpp:94
 #: engines/kyra/engine/eobcommon.cpp:369 engines/kyra/engine/lol.cpp:505
 #: engines/lure/metaengine.cpp:177 engines/made/metaengine.cpp:137
-#: engines/mads/metaengine.cpp:280 engines/mtropolis/metaengine.cpp:161
-#: engines/nancy/input.cpp:181 engines/parallaction/metaengine.cpp:138
-#: engines/saga/metaengine.cpp:278 engines/sludge/keymapper_tables.h:561
-#: engines/sludge/keymapper_tables.h:580 engines/stark/metaengine.cpp:189
-#: engines/sword1/metaengine.cpp:271 engines/tinsel/metaengine.cpp:246
-#: engines/toon/metaengine.cpp:86 engines/touche/metaengine.cpp:122
-#: engines/trecision/metaengine.cpp:125 engines/tsage/metaengine.cpp:178
-#: engines/tucker/metaengine.cpp:172 engines/ultima/ultima0/metaengine.cpp:180
+#: engines/mads/metaengine.cpp:280 engines/mm/metaengine.cpp:186
+#: engines/mtropolis/metaengine.cpp:161 engines/nancy/input.cpp:181
+#: engines/parallaction/metaengine.cpp:138 engines/saga/metaengine.cpp:278
+#: engines/sludge/keymapper_tables.h:561 engines/sludge/keymapper_tables.h:580
+#: engines/stark/metaengine.cpp:189 engines/sword1/metaengine.cpp:271
+#: engines/tinsel/metaengine.cpp:246 engines/toon/metaengine.cpp:86
+#: engines/touche/metaengine.cpp:122 engines/trecision/metaengine.cpp:125
+#: engines/tsage/metaengine.cpp:178 engines/tucker/metaengine.cpp:172
+#: engines/ultima/ultima0/metaengine.cpp:180
 #: engines/ultima/ultima4/metaengine.cpp:227
 #: engines/ultima/nuvie/metaengine.cpp:238
 #: engines/ultima/ultima8/metaengine.cpp:138 engines/vcruise/metaengine.cpp:158
@@ -3863,14 +3864,14 @@ msgstr "중간 클릭"
 #: engines/illusions/metaengine.cpp:101 engines/kyra/engine/eobcommon.cpp:370
 #: engines/kyra/engine/lol.cpp:506 engines/lure/metaengine.cpp:183
 #: engines/made/metaengine.cpp:144 engines/mads/metaengine.cpp:286
-#: engines/mtropolis/metaengine.cpp:167 engines/nancy/input.cpp:188
-#: engines/parallaction/metaengine.cpp:144 engines/saga/metaengine.cpp:289
-#: engines/sludge/keymapper_tables.h:567 engines/sludge/keymapper_tables.h:586
-#: engines/stark/metaengine.cpp:195 engines/sword1/metaengine.cpp:277
-#: engines/tinsel/metaengine.cpp:252 engines/toon/metaengine.cpp:92
-#: engines/touche/metaengine.cpp:128 engines/trecision/metaengine.cpp:131
-#: engines/tsage/metaengine.cpp:184 engines/tucker/metaengine.cpp:178
-#: engines/ultima/ultima0/metaengine.cpp:186
+#: engines/mm/metaengine.cpp:192 engines/mtropolis/metaengine.cpp:167
+#: engines/nancy/input.cpp:188 engines/parallaction/metaengine.cpp:144
+#: engines/saga/metaengine.cpp:289 engines/sludge/keymapper_tables.h:567
+#: engines/sludge/keymapper_tables.h:586 engines/stark/metaengine.cpp:195
+#: engines/sword1/metaengine.cpp:277 engines/tinsel/metaengine.cpp:252
+#: engines/toon/metaengine.cpp:92 engines/touche/metaengine.cpp:128
+#: engines/trecision/metaengine.cpp:131 engines/tsage/metaengine.cpp:184
+#: engines/tucker/metaengine.cpp:178 engines/ultima/ultima0/metaengine.cpp:186
 #: engines/ultima/ultima4/metaengine.cpp:233
 #: engines/ultima/nuvie/metaengine.cpp:244
 #: engines/ultima/ultima8/metaengine.cpp:144
@@ -4781,7 +4782,7 @@ msgstr "Y 버튼"
 #: backends/platform/sdl/ps3/ps3.cpp:49 backends/platform/sdl/psp2/psp2.cpp:51
 #: engines/bagel/metaengine.cpp:64 engines/efh/metaengine.cpp:397
 #: engines/got/metaengine.cpp:76 engines/hypno/metaengine.cpp:363
-#: engines/mm/mm1/metaengine.cpp:49 engines/mm/mm1/metaengine.cpp:92
+#: engines/mm/mm1/metaengine.cpp:50 engines/mm/mm1/metaengine.cpp:93
 #: engines/sherlock/metaengine.cpp:660 engines/sherlock/metaengine.cpp:672
 #: engines/sherlock/metaengine.cpp:1014 engines/supernova/metaengine.cpp:303
 #: engines/titanic/metaengine.cpp:233 engines/ultima/ultima0/metaengine.cpp:47
@@ -6317,7 +6318,7 @@ msgstr "얻기"
 #: engines/access/metaengine.cpp:291 engines/access/metaengine.cpp:312
 #: engines/bbvs/metaengine.cpp:136 engines/cine/metaengine.cpp:342
 #: engines/efh/metaengine.cpp:462 engines/hdb/metaengine.cpp:237
-#: engines/lab/metaengine.cpp:323 engines/mm/mm1/metaengine.cpp:81
+#: engines/lab/metaengine.cpp:323 engines/mm/mm1/metaengine.cpp:82
 #: engines/petka/metaengine.cpp:151 engines/queen/metaengine.cpp:294
 #: engines/saga/metaengine.cpp:379 engines/scumm/help.cpp:129
 #: engines/scumm/help.cpp:153 engines/scumm/help.cpp:171
@@ -6794,7 +6795,7 @@ msgstr "뒤로 돌아가기"
 
 #: engines/agos/metaengine.cpp:228 engines/dm/metaengine.cpp:186
 #: engines/kyra/engine/eobcommon.cpp:375 engines/kyra/engine/lol.cpp:517
-#: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:97
+#: engines/lab/metaengine.cpp:257 engines/mm/mm1/metaengine.cpp:98
 #: engines/mohawk/riven.cpp:901 engines/pegasus/pegasus.cpp:2740
 #: engines/twine/metaengine.cpp:353 engines/ultima/ultima0/metaengine.cpp:80
 #: engines/ultima/ultima8/metaengine.cpp:48
@@ -6808,7 +6809,7 @@ msgstr "왼쪽으로"
 
 #: engines/agos/metaengine.cpp:234 engines/dm/metaengine.cpp:206
 #: engines/kyra/engine/eobcommon.cpp:376 engines/kyra/engine/lol.cpp:518
-#: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:98
+#: engines/lab/metaengine.cpp:271 engines/mm/mm1/metaengine.cpp:99
 #: engines/mohawk/riven.cpp:907 engines/pegasus/pegasus.cpp:2747
 #: engines/twine/metaengine.cpp:346 engines/ultima/ultima0/metaengine.cpp:81
 #: engines/ultima/ultima8/metaengine.cpp:49
@@ -7228,8 +7229,8 @@ msgstr "Soldier 714 Eye 치트"
 #: engines/bbvs/metaengine.cpp:111 engines/cruise/metaengine.cpp:223
 #: engines/freescape/movement.cpp:107 engines/got/metaengine.cpp:78
 #: engines/hugo/metaengine.cpp:197 engines/lure/metaengine.cpp:209
-#: engines/mads/metaengine.cpp:292 engines/mm/mm1/metaengine.cpp:41
-#: engines/mm/mm1/metaengine.cpp:47 engines/saga/metaengine.cpp:328
+#: engines/mads/metaengine.cpp:292 engines/mm/mm1/metaengine.cpp:42
+#: engines/mm/mm1/metaengine.cpp:48 engines/saga/metaengine.cpp:328
 #: engines/tinsel/metaengine.cpp:258 engines/tsage/metaengine.cpp:190
 #: engines/tucker/metaengine.cpp:221 engines/twine/metaengine.cpp:388
 #: engines/ultima/ultima0/metaengine.cpp:40 engines/vcruise/metaengine.cpp:164
@@ -8013,13 +8014,13 @@ msgstr "뒤로 이동"
 
 #: engines/colony/metaengine.cpp:114 engines/dm/metaengine.cpp:216
 #: engines/freescape/movement.cpp:53 engines/hpl1/metaengine.cpp:78
-#: engines/mm/mm1/metaengine.cpp:99
+#: engines/mm/mm1/metaengine.cpp:100
 msgid "Strafe left"
 msgstr "왼쪽 폭격"
 
 #: engines/colony/metaengine.cpp:121 engines/dm/metaengine.cpp:236
 #: engines/freescape/movement.cpp:61 engines/hpl1/metaengine.cpp:79
-#: engines/mm/mm1/metaengine.cpp:100
+#: engines/mm/mm1/metaengine.cpp:101
 msgid "Strafe right"
 msgstr "오른쪽 폭격"
 
@@ -8089,7 +8090,7 @@ msgstr "대화 / 소통"
 #. I18N: Combat command in Might & Magic 1
 #: engines/crab/input/input.cpp:125 engines/efh/metaengine.cpp:487
 #: engines/efh/metaengine.cpp:512 engines/griffon/metaengine.cpp:145
-#: engines/mm/mm1/metaengine.cpp:65 engines/scumm/metaengine.cpp:1053
+#: engines/mm/mm1/metaengine.cpp:66 engines/scumm/metaengine.cpp:1053
 #: engines/ultima/ultima0/metaengine.cpp:82
 #: engines/ultima/ultima4/metaengine.cpp:48
 #: engines/ultima/nuvie/metaengine.cpp:74
@@ -8097,7 +8098,7 @@ msgid "Attack"
 msgstr "공격"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/crab/input/input.cpp:130 engines/mm/mm1/metaengine.cpp:67
+#: engines/crab/input/input.cpp:130 engines/mm/mm1/metaengine.cpp:68
 msgid "Block"
 msgstr "차단"
 
@@ -8891,7 +8892,7 @@ msgid "Enable background music ported from the C64 version"
 msgstr ""
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:79
+#: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:80
 msgid "Shoot"
 msgstr "사격"
 
@@ -9024,7 +9025,7 @@ msgstr "높이 전환"
 
 #. I18N: Action of hero party in Might & Magic 1
 #: engines/freescape/games/eclipse/eclipse.cpp:361
-#: engines/kyra/engine/lol.cpp:519 engines/mm/mm1/metaengine.cpp:109
+#: engines/kyra/engine/lol.cpp:519 engines/mm/mm1/metaengine.cpp:110
 #: engines/ultima/nuvie/metaengine.cpp:195
 #: engines/ultima/nuvie/metaengine.cpp:200
 msgid "Rest"
@@ -10385,7 +10386,7 @@ msgstr "인벤토리 / 캐릭터 화면 전환"
 msgid "Camp"
 msgstr "캠프"
 
-#: engines/kyra/engine/eobcommon.cpp:380 engines/mm/mm1/metaengine.cpp:102
+#: engines/kyra/engine/eobcommon.cpp:380 engines/mm/mm1/metaengine.cpp:103
 msgid "Cast spell"
 msgstr "주문 시전"
 
@@ -10426,7 +10427,7 @@ msgid "Attack 3"
 msgstr "공격 3"
 
 #: engines/kyra/engine/lol.cpp:512 engines/lab/metaengine.cpp:278
-#: engines/mm/mm1/metaengine.cpp:103 engines/mohawk/myst.cpp:606
+#: engines/mm/mm1/metaengine.cpp:104 engines/mohawk/myst.cpp:606
 #: engines/wintermute/keymapper_tables.h:1526
 #: engines/wintermute/keymapper_tables.h:1673
 #: engines/wintermute/keymapper_tables.h:1722
@@ -10881,130 +10882,133 @@ msgstr "히트포인트 바"
 msgid "Replace a colored gem with bars for hit points and spell points."
 msgstr "색깔 있는 보석을 히트 포인트와 주문 포인트를 나타내는 바로 대체합니다."
 
-#: engines/mm/mm1/metaengine.cpp:54
+#: engines/mm/metaengine.cpp:183
+#, fuzzy
+#| msgid "Might and Magic 1"
+msgid "Might and Magic"
+msgstr "마이트 앤 매직 1"
+
+#: engines/mm/mm1/metaengine.cpp:55
 msgid "View party member 1"
 msgstr "파티 멤버 1 보기"
 
-#: engines/mm/mm1/metaengine.cpp:55
+#: engines/mm/mm1/metaengine.cpp:56
 msgid "View party member 2"
 msgstr "파티 멤버 2 보기"
 
-#: engines/mm/mm1/metaengine.cpp:56
+#: engines/mm/mm1/metaengine.cpp:57
 msgid "View party member 3"
 msgstr "파티 멤버 3 보기"
 
-#: engines/mm/mm1/metaengine.cpp:57
+#: engines/mm/mm1/metaengine.cpp:58
 msgid "View party member 4"
 msgstr "파티 멤버 4 보기"
 
-#: engines/mm/mm1/metaengine.cpp:58
+#: engines/mm/mm1/metaengine.cpp:59
 msgid "View party member 5"
 msgstr "파티 멤버 5 보기"
 
-#: engines/mm/mm1/metaengine.cpp:59
+#: engines/mm/mm1/metaengine.cpp:60
 msgid "View party member 6"
 msgstr "파티 멤버 6 보기"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:69 engines/ultima/ultima4/metaengine.cpp:50
+#: engines/mm/mm1/metaengine.cpp:70 engines/ultima/ultima4/metaengine.cpp:50
 #: engines/ultima/nuvie/metaengine.cpp:194
 msgid "Cast"
 msgstr "시전"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:71
+#: engines/mm/mm1/metaengine.cpp:72
 msgid "Exchange"
 msgstr "교환"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:73
+#: engines/mm/mm1/metaengine.cpp:74
 msgid "Fight"
 msgstr "대결"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:75 engines/mm/mm1/metaengine.cpp:116
+#: engines/mm/mm1/metaengine.cpp:76 engines/mm/mm1/metaengine.cpp:117
 msgid "Quick reference"
 msgstr "빠른 참조"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:77
+#: engines/mm/mm1/metaengine.cpp:78
 msgid "Retreat"
 msgstr "철수"
 
 #. I18N: Combat command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:84
+#: engines/mm/mm1/metaengine.cpp:85
 msgid "Delay"
 msgstr "지연"
 
 #. I18N: Combat command in Might & Magic 1
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:86 engines/mm/mm1/metaengine.cpp:107
+#: engines/mm/mm1/metaengine.cpp:87 engines/mm/mm1/metaengine.cpp:108
 msgid "Protect"
 msgstr "보호"
 
 #. I18N: Party arrangement command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:94
+#: engines/mm/mm1/metaengine.cpp:95
 msgid "Forwards"
 msgstr "앞으로"
 
 #. I18N: Party arrangement command in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:96
+#: engines/mm/mm1/metaengine.cpp:97
 msgid "Backwards"
 msgstr "뒤로"
 
-#: engines/mm/mm1/metaengine.cpp:104
+#: engines/mm/mm1/metaengine.cpp:105
 msgid "Toggle minimap"
 msgstr "미니맵 전환"
 
-#: engines/mm/mm1/metaengine.cpp:105
+#: engines/mm/mm1/metaengine.cpp:106
 msgid "Reorder party"
 msgstr "파티 재편성"
 
 #. I18N: Action of hero party in Might & Magic 1
 #. I18N: (Game: The Lost Files of Sherlock Holmes: The Case of the Serrated Scalpel) The game has a journal, this action is used to search the journal
-#: engines/mm/mm1/metaengine.cpp:111 engines/sherlock/metaengine.cpp:514
+#: engines/mm/mm1/metaengine.cpp:112 engines/sherlock/metaengine.cpp:514
 #: engines/sherlock/metaengine.cpp:961 engines/ultima/ultima4/metaengine.cpp:71
 msgid "Search"
 msgstr "검색"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:113
+#: engines/mm/mm1/metaengine.cpp:114
 msgid "Bash"
 msgstr "강타"
 
 #. I18N: Action of hero party in Might & Magic 1
-#: engines/mm/mm1/metaengine.cpp:115 engines/scumm/help.cpp:147
+#: engines/mm/mm1/metaengine.cpp:116 engines/scumm/help.cpp:147
 msgid "Unlock"
 msgstr "잠금 해제"
 
-#: engines/mm/mm1/metaengine.cpp:122 engines/ultima/ultima4/metaengine.cpp:112
+#: engines/mm/mm1/metaengine.cpp:123 engines/ultima/ultima4/metaengine.cpp:112
 msgid "Goto location"
 msgstr "위치로 이동"
 
-#: engines/mm/mm1/metaengine.cpp:133 engines/mm/mm1/metaengine.cpp:143
+#: engines/mm/mm1/metaengine.cpp:148
 msgid "Might and Magic 1 - Menus"
 msgstr "마이트 앤 매직 1 - 메뉴"
 
-#: engines/mm/mm1/metaengine.cpp:138
+#: engines/mm/mm1/metaengine.cpp:149
 msgid "Might and Magic 1 - Minimal Keys"
 msgstr "마이트 앤 매직 1 - 최소한의 키"
 
-#: engines/mm/mm1/metaengine.cpp:144 engines/mm/mm1/metaengine.cpp:150
-#: engines/mm/mm1/metaengine.cpp:156
+#: engines/mm/mm1/metaengine.cpp:150
+#, fuzzy
+#| msgid "Might and Magic 1 - Menus"
+msgid "Might and Magic 1 - Main"
+msgstr "마이트 앤 매직 1 - 메뉴"
+
+#: engines/mm/mm1/metaengine.cpp:151
 msgid "Might and Magic 1 - Party"
 msgstr "마이트 앤 매직 1 - 파티"
 
-#: engines/mm/mm1/metaengine.cpp:149
+#: engines/mm/mm1/metaengine.cpp:152
 msgid "Might and Magic 1 - Combat"
 msgstr "마이트 앤 매직 1 - 전투"
-
-#: engines/mm/mm1/metaengine.cpp:155
-msgid "Might and Magic 1"
-msgstr "마이트 앤 매직 1"
-
-#: engines/mm/mm1/metaengine.cpp:157
-msgid "Might and Magic 1 - Cheats"
-msgstr "마이트 앤 매직 - 치트"
 
 #: engines/mm/mm1/mm1.cpp:57
 msgid ""
@@ -16841,6 +16845,9 @@ msgstr ""
 "MIDI 재생을 사용할 수 없거나, 제대로 구성되지 않았습니다. 죠크 네미시스에는 "
 "MIDI 오디오가 필요한 여러 음악 퍼즐이 포함되어 있습니다.  이러한 퍼즐은 지원"
 "되는 경우 자막을 사용하여 해결할 수 있습니다. 게임을 계속 실행할까요?"
+
+#~ msgid "Might and Magic 1 - Cheats"
+#~ msgstr "마이트 앤 매직 - 치트"
 
 #~ msgid "3DO Plumbers requires RGB support."
 #~ msgstr "3DO Plumbers에는 RGB 지원이 필요합니다."
