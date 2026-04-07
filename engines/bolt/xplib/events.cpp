@@ -167,7 +167,7 @@ void XpLib::pumpMessages() {
 	// Process all pending events...
 	while (_bolt->_eventMan->pollEvent(event) && !_bolt->shouldQuit()) {
 		switch (event.type) {
-		case Bolt::CustomEventType::EVENT_TIMER:
+		case Bolt::EVENT_TIMER:
 			handleTimer(event.customType);
 			break;
 

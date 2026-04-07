@@ -120,9 +120,7 @@ enum XPEventKeyStates : int16 {
 	eksJoystickMode = 2
 };
 
-enum CustomEventType {
-	EVENT_TIMER = Common::EVENT_USER_FIRST_AVAILABLE
-};
+static const Common::EventType EVENT_TIMER = Common::EVENT_USER_FIRST_AVAILABLE;
 
 typedef struct XPEvent {
 	XPEvent *prev;

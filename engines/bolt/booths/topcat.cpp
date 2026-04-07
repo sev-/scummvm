@@ -334,7 +334,6 @@ int16 BoltEngine::playTopCat() {
 			cursorX = (int16)(eventData & 0xFFFF);
 
 			// Hit-test against buttons...
-			int16 entryIdx = 0;
 			byte *entry = nullptr;
 			int16 off = 0;
 
@@ -355,7 +354,6 @@ int16 BoltEngine::playTopCat() {
 					break;
 
 				off += 4;
-				entryIdx++;
 			}
 
 			// Unhighlight previous entry if needed...
