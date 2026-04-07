@@ -14,6 +14,10 @@ Umfangreichere Informationen über die Änderungen des aktuellen Codes findest D
  GLK:
    - Text- und Engine-Optionen können jetzt über die Benutzeroberfläche gesetzt werden.
 
+ MM:
+   - Verbesserte Unterstützung für Tastenkürzel in MM1.
+
+
 #### 2026.2.0 "Railmonicon" (28.03.2026)
 
  Neue Spiele:
