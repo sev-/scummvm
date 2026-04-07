@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.5.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-06 23:11+0000\n"
+"POT-Creation-Date: 2026-04-07 11:52+0000\n"
 "PO-Revision-Date: 2024-02-05 18:42+0000\n"
 "Last-Translator: Josu Igoa <josuigoa@ni.eus>\n"
 "Language-Team: Basque <https://translations.scummvm.org/projects/scummvm/"
@@ -323,7 +323,7 @@ msgstr "Beste biltegiratzen bat dago orain martxan. Gelditu nahi al duzu?"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:152 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:534 gui/launcher.cpp:1926 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1938 gui/options.cpp:3485
 #: gui/options.cpp:3859 base/main.cpp:604
 #: backends/events/default/default-events.cpp:193 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:91 engines/director/events.cpp:122
@@ -342,7 +342,7 @@ msgstr "Bai"
 #: gui/cloudconnectionwizard.cpp:530 gui/downloaddialog.cpp:118
 #: gui/downloaddialog.cpp:153 gui/filebrowser-dialog.cpp:135
 #: gui/fluidsynth-dialog.cpp:210 gui/launcher.cpp:428 gui/launcher.cpp:457
-#: gui/launcher.cpp:534 gui/launcher.cpp:1927 gui/options.cpp:3485
+#: gui/launcher.cpp:534 gui/launcher.cpp:1939 gui/options.cpp:3485
 #: gui/options.cpp:3859 engines/buried/buried.cpp:598
 #: engines/chamber/metaengine.cpp:97 engines/director/events.cpp:122
 #: engines/director/lingo/xlibs/j/jitdraw3.cpp:139
@@ -1610,87 +1610,87 @@ msgstr "Zerrenda ikuspegia"
 msgid "Grid view"
 msgstr "Sareta ikuspegia"
 
-#: gui/launcher.cpp:1143
+#: gui/launcher.cpp:1145
 msgid "~S~tart"
 msgstr "~H~asi"
 
-#: gui/launcher.cpp:1143
+#: gui/launcher.cpp:1145
 msgid "Start selected game"
 msgstr "Aukeraturiko jokora jolastu"
 
-#: gui/launcher.cpp:1146
+#: gui/launcher.cpp:1148
 msgid "~L~oad..."
 msgstr "~K~argatu..."
 
-#: gui/launcher.cpp:1146
+#: gui/launcher.cpp:1148
 msgid "Load saved game for selected game"
 msgstr "Aukeraturiko jokorako partida gordea kargatu"
 
-#: gui/launcher.cpp:1148
+#: gui/launcher.cpp:1150
 msgid "Record..."
 msgstr "Grabatu..."
 
-#: gui/launcher.cpp:1154
+#: gui/launcher.cpp:1156
 #, fuzzy
 msgid "~G~ame Options..."
 msgstr "~A~ukerak..."
 
-#: gui/launcher.cpp:1154
+#: gui/launcher.cpp:1156
 msgid "Change game options"
 msgstr "Aldatu jokoaren aukerak"
 
-#: gui/launcher.cpp:1154
+#: gui/launcher.cpp:1156
 #, fuzzy
 msgctxt "lowres"
 msgid "~G~ame Opts..."
 msgstr "~A~ukerak..."
 
-#: gui/launcher.cpp:1240
+#: gui/launcher.cpp:1242
 msgid "Add-on"
 msgstr ""
 
 #. I18N: List grouping when no engine is specified
-#: gui/launcher.cpp:1297 gui/launcher.cpp:1542
+#: gui/launcher.cpp:1309 gui/launcher.cpp:1554
 msgid "Unknown Engine"
 msgstr "Motore Ezezaguna"
 
 #. I18N: List grouping when no publisher is specified
 #. I18N: List group when no publisher is specified
-#: gui/launcher.cpp:1314 gui/launcher.cpp:1559
+#: gui/launcher.cpp:1326 gui/launcher.cpp:1571
 msgid "Unknown Publisher"
 msgstr "Argitaratzaile ezezaguna"
 
 #. I18N: List group when no game series is specified
 #. I18N: List grouping when no game series is specified
-#: gui/launcher.cpp:1331 gui/launcher.cpp:1576
+#: gui/launcher.cpp:1343 gui/launcher.cpp:1588
 msgid "No Series"
 msgstr "Sailik ez"
 
 #. I18N: List group when no language is specified
-#: gui/launcher.cpp:1345 gui/launcher.cpp:1590
+#: gui/launcher.cpp:1357 gui/launcher.cpp:1602
 msgid "Language not detected"
 msgstr "Hizkuntza ez da detektatu"
 
 #. I18N: List group when no platform is specified
-#: gui/launcher.cpp:1359 gui/launcher.cpp:1604
+#: gui/launcher.cpp:1371 gui/launcher.cpp:1616
 msgid "Platform not detected"
 msgstr "Plataforma ez da detektatu"
 
 #. I18N: List group when no year is specified
-#: gui/launcher.cpp:1376 gui/launcher.cpp:1621
+#: gui/launcher.cpp:1388 gui/launcher.cpp:1633
 msgid "Unknown Year"
 msgstr "Urte ezezaguna"
 
 #. I18N: Group for All items
-#: gui/launcher.cpp:1628 gui/widgets/groupedlist.cpp:81
+#: gui/launcher.cpp:1640 gui/widgets/groupedlist.cpp:81
 msgid "All"
 msgstr "Guztiak"
 
-#: gui/launcher.cpp:1800
+#: gui/launcher.cpp:1812
 msgid "Icons per row:"
 msgstr ""
 
-#: gui/launcher.cpp:1857
+#: gui/launcher.cpp:1869
 #, fuzzy, c-format
 #| msgid "Do you really want to remove this game configuration?"
 msgid ""
