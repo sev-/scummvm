@@ -14,6 +14,9 @@ For a more comprehensive changelog of the latest experimental code, see:
  GLK:
    - Exposed text and engine settings in the GUI.
 
+ MM:
+   - Reworked keymapper for MM1.
+
 
 #### 2026.2.0 "Railmonicon" (2026-03-28)
 
