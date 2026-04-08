@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.10.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-08 12:16+0000\n"
+"POT-Creation-Date: 2026-04-08 20:02+0000\n"
 "PO-Revision-Date: 2022-06-05 14:09+0000\n"
 "Last-Translator: Daniel <supsuper@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) <https://translations.scummvm.org/"
@@ -25,44 +25,44 @@ msgid "Apple Macintosh Audio"
 msgstr ""
 
 #. I18N: built on <build date> with <compiler>
-#: gui/about.cpp:103
+#: gui/about.cpp:112
 #, c-format
 msgid "(built on %s with %s)"
 msgstr "(desenvolvido em %s com %s)"
 
-#: gui/about.cpp:110
+#: gui/about.cpp:119
 msgid "Features compiled in:"
 msgstr "Funcionalidades disponíveis:"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 #, fuzzy
 #| msgid "Game id not supported"
 msgid "not supported"
 msgstr "ID de jogo não suportado"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 #, fuzzy
 #| msgid "Disabled"
 msgid "disabled"
 msgstr "Desactivado"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 #, fuzzy
 #| msgid "Disabled"
 msgid "enabled"
 msgstr "Desactivado"
 
 #. I18N: CPU extensions are sets of extra processor instructions used to speed up operations. See Intel AVX2, ARM NEON, etc.
-#: gui/about.cpp:142
+#: gui/about.cpp:151
 msgid "CPU extensions support:"
 msgstr ""
 
-#: gui/about.cpp:155
+#: gui/about.cpp:164
 msgid "Available engines:"
 msgstr "Motores de jogo disponíveis:"
 
 #. I18N: Close dialog button
-#: gui/about.cpp:527 gui/downloadpacksdialog.cpp:298
+#: gui/about.cpp:506 gui/about.cpp:635 gui/downloadpacksdialog.cpp:298
 #: gui/downloadpacksdialog.cpp:389 gui/integrity-dialog.cpp:354
 #: gui/gui-manager.cpp:168 gui/helpdialog.cpp:128 gui/imagealbum-dialog.cpp:133
 #: gui/textviewer.cpp:56 gui/unknown-game-dialog.cpp:53

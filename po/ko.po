@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-08 12:16+0000\n"
+"POT-Creation-Date: 2026-04-08 20:02+0000\n"
 "PO-Revision-Date: 2026-04-08 18:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
@@ -25,38 +25,38 @@ msgid "Apple Macintosh Audio"
 msgstr "애플 매킨토시 오디오"
 
 #. I18N: built on <build date> with <compiler>
-#: gui/about.cpp:103
+#: gui/about.cpp:112
 #, c-format
 msgid "(built on %s with %s)"
 msgstr "(%s에서 %s로 빌드됨)"
 
-#: gui/about.cpp:110
+#: gui/about.cpp:119
 msgid "Features compiled in:"
 msgstr "다음과 같은 기능이 있습니다:"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 msgid "not supported"
 msgstr "지원되지 않음"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 msgid "disabled"
 msgstr "비활성화됨"
 
-#: gui/about.cpp:118
+#: gui/about.cpp:127
 msgid "enabled"
 msgstr "활성화됨"
 
 #. I18N: CPU extensions are sets of extra processor instructions used to speed up operations. See Intel AVX2, ARM NEON, etc.
-#: gui/about.cpp:142
+#: gui/about.cpp:151
 msgid "CPU extensions support:"
 msgstr "CPU 확장 지원:"
 
-#: gui/about.cpp:155
+#: gui/about.cpp:164
 msgid "Available engines:"
 msgstr "사용 가능한 엔진:"
 
 #. I18N: Close dialog button
-#: gui/about.cpp:527 gui/downloadpacksdialog.cpp:298
+#: gui/about.cpp:506 gui/about.cpp:635 gui/downloadpacksdialog.cpp:298
 #: gui/downloadpacksdialog.cpp:389 gui/integrity-dialog.cpp:354
 #: gui/gui-manager.cpp:168 gui/helpdialog.cpp:128 gui/imagealbum-dialog.cpp:133
 #: gui/textviewer.cpp:56 gui/unknown-game-dialog.cpp:53
@@ -3688,8 +3688,8 @@ msgid ""
 "needed.\n"
 "Alternatively, you can skip the autosave (will prompt again in 5 minutes)."
 msgstr ""
-"경고: 자동 저장 슬롯에는 %s라는 이름의 저장된 게임이 포함되어 있으며 자동 "
-"저장이 보류 중입니다.\n"
+"경고: 자동 저장 슬롯에는 %s라는 이름의 저장된 게임이 포함되어 있으며 자동 저"
+"장이 보류 중입니다.\n"
 "이 저장된 게임을 새 슬롯으로 옮기거나 더 이상 필요하지 않으면 삭제하세요.\n"
 "그 대신에, 자동 저장을 건너뛸 수 있습니다 (5 분 후에 다시 메세지 표시)."
 
@@ -8305,8 +8305,8 @@ msgid ""
 "Use true color graphics mode (32 bits per pixel), even if the game is not "
 "designed for it"
 msgstr ""
-"게임이 해당 모드를 지원하지 않더라도, 트루 컬러 그래픽 모드(픽셀당 32비트) "
-"사용"
+"게임이 해당 모드를 지원하지 않더라도, 트루 컬러 그래픽 모드(픽셀당 32비트) 사"
+"용"
 
 #: engines/dm/metaengine.cpp:125
 msgid "Dialog choice selection keymappings"
