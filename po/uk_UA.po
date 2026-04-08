@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ScummVM 1.9.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
-"POT-Creation-Date: 2026-04-07 12:25+0000\n"
+"POT-Creation-Date: 2026-04-08 12:16+0000\n"
 "PO-Revision-Date: 2026-04-06 17:30+0000\n"
 "Last-Translator: Eugene Sandulenko <sev@scummvm.org>\n"
 "Language-Team: Ukrainian <https://translations.scummvm.org/projects/scummvm/"
@@ -3734,9 +3734,15 @@ msgid "Skip autosave"
 msgstr "Пропустити автозбереження"
 
 #: engines/engine.cpp:644
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| "WARNING: The autosave slot contains a saved game named %S, and an "
+#| "autosave is pending.\n"
+#| "Please move this saved game to a new slot, or delete it if it's no longer "
+#| "needed.\n"
+#| "Alternatively, you can skip the autosave (will prompt again in 5 minutes)."
 msgid ""
-"WARNING: The autosave slot contains a saved game named %S, and an autosave "
+"WARNING: The autosave slot contains a saved game named %s, and an autosave "
 "is pending.\n"
 "Please move this saved game to a new slot, or delete it if it's no longer "
 "needed.\n"
@@ -3752,7 +3758,7 @@ msgstr ""
 msgid "ERROR: Could not copy the savegame to a new slot"
 msgstr "ПОМИЛКА: Не вдалося скопіювати збереження ігри у новий слот"
 
-#: engines/engine.cpp:681 engines/savestate.cpp:98
+#: engines/engine.cpp:681 engines/savestate.cpp:103
 #: backends/platform/ios7/ios7_osys_main.cpp:266 engines/mm/xeen/saves.cpp:293
 #: engines/sky/metaengine.cpp:218
 msgid "Autosave"
@@ -14053,7 +14059,7 @@ msgstr "Вступ з флоппі-версії"
 msgid "Use the floppy version's intro (CD version only)"
 msgstr "Використовувати введення з флоппі-версії (тільки для CD версії гри)"
 
-#: engines/sky/metaengine.cpp:235
+#: engines/sky/metaengine.cpp:237
 msgid "WARNING: Deleting the autosave slot is not supported by this engine"
 msgstr "УВАГА: Видалення слоту автозбереження не підтримується цим движком"
 
