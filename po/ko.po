@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: ScummVM 2.3.0git\n"
 "Report-Msgid-Bugs-To: scummvm-devel@lists.scummvm.org\n"
 "POT-Creation-Date: 2026-04-08 12:16+0000\n"
-"PO-Revision-Date: 2026-04-01 20:22+0000\n"
+"PO-Revision-Date: 2026-04-08 18:22+0000\n"
 "Last-Translator: Hoseok Seo <ddinghoya@gmail.com>\n"
 "Language-Team: Korean <https://translations.scummvm.org/projects/scummvm/"
 "scummvm/ko/>\n"
@@ -3680,13 +3680,7 @@ msgid "Skip autosave"
 msgstr "자동 저장 건너뛰기"
 
 #: engines/engine.cpp:644
-#, fuzzy, c-format
-#| msgid ""
-#| "WARNING: The autosave slot contains a saved game named %S, and an "
-#| "autosave is pending.\n"
-#| "Please move this saved game to a new slot, or delete it if it's no longer "
-#| "needed.\n"
-#| "Alternatively, you can skip the autosave (will prompt again in 5 minutes)."
+#, c-format
 msgid ""
 "WARNING: The autosave slot contains a saved game named %s, and an autosave "
 "is pending.\n"
@@ -3694,8 +3688,8 @@ msgid ""
 "needed.\n"
 "Alternatively, you can skip the autosave (will prompt again in 5 minutes)."
 msgstr ""
-"경고: 자동 저장 슬롯에는 %S라는 이름의 저장된 게임이 포함되어 있으며 자동 저"
-"장이 보류 중입니다.\n"
+"경고: 자동 저장 슬롯에는 %s라는 이름의 저장된 게임이 포함되어 있으며 자동 "
+"저장이 보류 중입니다.\n"
 "이 저장된 게임을 새 슬롯으로 옮기거나 더 이상 필요하지 않으면 삭제하세요.\n"
 "그 대신에, 자동 저장을 건너뛸 수 있습니다 (5 분 후에 다시 메세지 표시)."
 
@@ -7618,16 +7612,16 @@ msgid "Quit game"
 msgstr "게임 종료"
 
 #: engines/bolt/metaengine.cpp:34
-#, fuzzy
-#| msgid "Enable high resolution"
 msgid "Extended game resolution"
-msgstr "고해상도 활성화"
+msgstr "확장된 게임 해상도"
 
 #: engines/bolt/metaengine.cpp:35
 msgid ""
 "This option allows the game to play at a slightly extended resolution. This "
 "is what the Mac and CDi versions are supposed to play like."
 msgstr ""
+"이 옵션을 선택하면 게임을 약간 더 높은 해상도로 실행할 수 있습니다. 맥 및 "
+"CDi 버전은 바로 이러한 해상도로 실행되도록 설계되었습니다."
 
 #: engines/buried/buried.cpp:598
 msgid "Are you sure you want to quit?"
@@ -8047,28 +8041,20 @@ msgid "Rotate right"
 msgstr "오른쪽으로 회전"
 
 #: engines/colony/metaengine.cpp:148
-#, fuzzy
-#| msgid "Look down"
 msgid "Look behind"
-msgstr "아래를 보기"
+msgstr "뒤를 보기"
 
 #: engines/colony/metaengine.cpp:153
-#, fuzzy
-#| msgid "Toggle mute"
 msgid "Toggle mouselook"
-msgstr "음소거 전환"
+msgstr "마우스 시점 전환"
 
 #: engines/colony/metaengine.cpp:159
-#, fuzzy
-#| msgid "Toggle sound"
 msgid "Toggle dashboard"
-msgstr "사운드 전환"
+msgstr "대시보드 전환"
 
 #: engines/colony/metaengine.cpp:164
-#, fuzzy
-#| msgid "Toggle frame by frame"
 msgid "Toggle wireframe"
-msgstr "프레임별로 전환"
+msgstr "와이어프레임 전환"
 
 #: engines/colony/metaengine.cpp:174 engines/hypno/metaengine.cpp:146
 #: engines/lab/metaengine.cpp:209 engines/ngi/metaengine.cpp:168
@@ -8083,11 +8069,11 @@ msgstr "무기 발사"
 
 #: engines/colony/savegame.cpp:290
 msgid "Saving is only available in first-person view."
-msgstr ""
+msgstr "저장 기능은 1인칭 시점에서만 사용할 수 있습니다."
 
 #: engines/colony/savegame.cpp:299
 msgid "Loading is only available in first-person view."
-msgstr ""
+msgstr "로딩은 1인칭 시점에서만 가능합니다."
 
 #: engines/crab/input/input.cpp:119
 msgid "Talk / Interact"
@@ -8311,20 +8297,16 @@ msgid "Brighten the graphics to simulate a Macintosh monitor"
 msgstr "매킨토시 모니터를 시뮬레이션하기 위해 그래픽을 밝게 함"
 
 #: engines/director/metaengine.cpp:81
-#, fuzzy
-#| msgid "Force true color"
 msgid "Force true color (32bpp) mode"
-msgstr "강제 트루 컬러"
+msgstr "강제 트루 컬러 (32bpp) 모드"
 
 #: engines/director/metaengine.cpp:82
-#, fuzzy
-#| msgid ""
-#| "Use true color graphics mode, even if the game is not designed for it"
 msgid ""
 "Use true color graphics mode (32 bits per pixel), even if the game is not "
 "designed for it"
 msgstr ""
-"게임이 실제 색상 그래픽 모드로 설계되지 않았더라도 실제 색상 그래픽 모드 사용"
+"게임이 해당 모드를 지원하지 않더라도, 트루 컬러 그래픽 모드(픽셀당 32비트) "
+"사용"
 
 #: engines/dm/metaengine.cpp:125
 msgid "Dialog choice selection keymappings"
@@ -8888,21 +8870,21 @@ msgstr "WASD 키로 이동하고 Shift 키로 달리기"
 #. I18N: Enable background music using AdLib/OPL2 FM synthesis
 #: engines/freescape/metaengine.cpp:165
 msgid "Backported music from C64 releases (AdLib)"
-msgstr ""
+msgstr "C64 릴리스에서 가져온 음악 (애드립)"
 
 #: engines/freescape/metaengine.cpp:166
 msgid ""
 "Enable background music ported from the C64 version using AdLib FM synthesis"
-msgstr ""
+msgstr "애드립 FM 합성 방식을 사용하여 C64 버전에서 이식된 배경 음악 활성화"
 
 #. I18N: Enable background music using AY chip emulation
 #: engines/freescape/metaengine.cpp:177
 msgid "Backported music from C64 releases"
-msgstr ""
+msgstr "C64 릴리스에서 가져온 음악"
 
 #: engines/freescape/metaengine.cpp:178
 msgid "Enable background music ported from the C64 version"
-msgstr ""
+msgstr "C64 버전에서 이식된 배경 음악 활성화"
 
 #. I18N: Combat command in Might & Magic 1
 #: engines/freescape/movement.cpp:69 engines/mm/mm1/metaengine.cpp:80
@@ -9115,204 +9097,174 @@ msgstr "사진 창 전환됨\n"
 
 #: engines/glk/dialogs.cpp:141
 msgid "white"
-msgstr ""
+msgstr "흰색"
 
 #: engines/glk/dialogs.cpp:142
 msgid "green"
-msgstr ""
+msgstr "초록색"
 
 #: engines/glk/dialogs.cpp:143
-#, fuzzy
-#| msgid "Proceed"
 msgid "red"
-msgstr "진행"
+msgstr "빨간색"
 
 #: engines/glk/dialogs.cpp:144
 msgid "blue"
-msgstr ""
+msgstr "파란색"
 
 #: engines/glk/dialogs.cpp:145
 msgid "black"
-msgstr ""
+msgstr "검은색"
 
 #: engines/glk/dialogs.cpp:146
 msgid "grey"
-msgstr ""
+msgstr "회색"
 
 #: engines/glk/dialogs.cpp:195
 msgid "Monospace Regular"
-msgstr ""
+msgstr "모노스페이스 레귤러"
 
 #: engines/glk/dialogs.cpp:196
 msgid "Monospace Bold"
-msgstr ""
+msgstr "모노스페이스 볼드"
 
 #: engines/glk/dialogs.cpp:197
 msgid "Monospace Italic"
-msgstr ""
+msgstr "모노스페이스 이탤릭"
 
 #: engines/glk/dialogs.cpp:198
 msgid "Monospace Bold Italic"
-msgstr ""
+msgstr "모노스페이스 볼드 이탤릭"
 
 #: engines/glk/dialogs.cpp:199
 msgid "Proportional Regular"
-msgstr ""
+msgstr "프러포셔널 레귤러"
 
 #: engines/glk/dialogs.cpp:200
 msgid "Proportional Bold"
-msgstr ""
+msgstr "프러포셔널 볼드"
 
 #: engines/glk/dialogs.cpp:201
 msgid "Proportional Italic"
-msgstr ""
+msgstr "프러포셔널 이탤릭"
 
 #: engines/glk/dialogs.cpp:202
 msgid "Proportional Bold Italic"
-msgstr ""
+msgstr "프러포셔널 볼드 이탤릭"
 
 #: engines/glk/dialogs.cpp:210
-#, fuzzy
-#| msgid "SoundFont:"
 msgid "Font"
-msgstr "사운드폰트:"
+msgstr "글꼴"
 
 #: engines/glk/dialogs.cpp:212 engines/glk/dialogs.cpp:222
-#, fuzzy
-#| msgid "ProText"
 msgid "Text:"
-msgstr "ProText"
+msgstr "텍스트:"
 
 #: engines/glk/dialogs.cpp:212
 msgid "Font for the text"
-msgstr ""
+msgstr "텍스트 글꼴"
 
 #: engines/glk/dialogs.cpp:216 engines/glk/dialogs.cpp:227
 msgid "Grid:"
-msgstr ""
+msgstr "격자:"
 
 #: engines/glk/dialogs.cpp:216
 msgid "Font for drawn graphics like maps, diagrams, puzzles, etc"
-msgstr ""
+msgstr "지도, 도표, 퍼즐 등과 같은 그림에 사용되는 글꼴"
 
 #: engines/glk/dialogs.cpp:220
 msgid "Color"
-msgstr ""
+msgstr "색상"
 
 #: engines/glk/dialogs.cpp:222
-#, fuzzy
-#| msgid "Move focus to interactive object"
 msgid "Color of the interactive text"
-msgstr "대화형 객체로 포커스 이동"
+msgstr "인터랙티브 텍스트의 색상"
 
 #: engines/glk/dialogs.cpp:225 engines/glk/dialogs.cpp:230
 #: engines/glk/dialogs.cpp:236 engines/glk/dialogs.cpp:242
 #: engines/glk/dialogs.cpp:254 engines/glk/dialogs.cpp:260
 #: engines/glk/dialogs.cpp:269
 msgid "<custom>"
-msgstr ""
+msgstr "<커스텀>"
 
 #: engines/glk/dialogs.cpp:227
 msgid "Color for drawn graphics such as maps, diagrams, puzzles, etc"
-msgstr ""
+msgstr "지도, 도표, 퍼즐 등과 같은 그림에 사용되는 색상"
 
 #: engines/glk/dialogs.cpp:232
-#, fuzzy
-#| msgid "Window"
 msgid "Window:"
-msgstr "윈도우"
+msgstr "윈도우:"
 
 #: engines/glk/dialogs.cpp:232
-#, fuzzy
-#| msgid "Toggle windows mode"
 msgid "Color of the window (background)"
-msgstr "윈도우 모드 전환"
+msgstr "윈도우(배경)의 색상"
 
 #: engines/glk/dialogs.cpp:238
-#, fuzzy
-#| msgid "New order"
 msgid "Border:"
-msgstr "새로운 주문"
+msgstr "테두리:"
 
 #: engines/glk/dialogs.cpp:238
-#, fuzzy
-#| msgid "Toggle windows mode"
 msgid "Color of the window border"
-msgstr "윈도우 모드 전환"
+msgstr "창 테두리 색상"
 
 #. I18N: This is a section for text windows border settings
 #: engines/glk/dialogs.cpp:245
-#, fuzzy
-#| msgid "New order"
 msgid "Border"
-msgstr "새로운 주문"
+msgstr "테두리"
 
 #: engines/glk/dialogs.cpp:247 engines/glk/dialogs.cpp:341
 #: engines/glk/dialogs.cpp:345 engines/glk/dialogs.cpp:349
-#, fuzzy
-#| msgid "Horizontal underscan:"
 msgid "Horizontal:"
-msgstr "수평 언더스캔:"
+msgstr "수평:"
 
 #: engines/glk/dialogs.cpp:247
-#, fuzzy
-#| msgid "Horizontal underscan:"
 msgid "Horizontal border size"
-msgstr "수평 언더스캔:"
+msgstr "수평 테두리 크기"
 
 #: engines/glk/dialogs.cpp:248 engines/glk/dialogs.cpp:342
 #: engines/glk/dialogs.cpp:346 engines/glk/dialogs.cpp:350
-#, fuzzy
-#| msgid "Vertical underscan:"
 msgid "Vertical:"
-msgstr "수직 언더스캔:"
+msgstr "수직:"
 
 #: engines/glk/dialogs.cpp:248
-#, fuzzy
-#| msgid "Vertical underscan:"
 msgid "Vertical border size"
-msgstr "수직 언더스캔:"
+msgstr "수직 테두리 크기"
 
 #: engines/glk/dialogs.cpp:250
 msgid "Caret:"
 msgstr ""
 
 #: engines/glk/dialogs.cpp:250
-#, fuzzy
-#| msgid "Teleport to cursor"
 msgid "Color of the cursor"
-msgstr "커서로 순간이동"
+msgstr "커서 색상"
 
 #: engines/glk/dialogs.cpp:256
 msgid "Link:"
-msgstr ""
+msgstr "링크:"
 
 #: engines/glk/dialogs.cpp:256
 msgid "Color for URLs if they appear in-game"
-msgstr ""
+msgstr "게임 내에 URL이 표시되는 URL 색상"
 
 #. I18N: "More..." is a prompt in text windows, which appears when the text exceeds the window size
 #: engines/glk/dialogs.cpp:264
 msgid "More:"
-msgstr ""
+msgstr "더 보기:"
 
 #: engines/glk/dialogs.cpp:265
 msgid "Color for the \"More...\" markers in the text"
-msgstr ""
+msgstr "본문의 \"더 보기...\" 표시 부분 색상"
 
 #: engines/glk/dialogs.cpp:272
-#, fuzzy
-#| msgid "Graphics mode:"
 msgid "Typography"
-msgstr "그래픽 모드:"
+msgstr "타이포그래피"
 
 #: engines/glk/dialogs.cpp:274
 msgid "Link style:"
-msgstr ""
+msgstr "링크 스타일:"
 
 #: engines/glk/dialogs.cpp:274
 msgid "Style for URLs if they appear in-game"
-msgstr ""
+msgstr "게임 내에 URL이 표시되는 스타일"
 
 #: engines/glk/dialogs.cpp:279
 #, fuzzy
