@@ -90,12 +90,16 @@ ActionRecord *ActionManager::createActionRecord(uint16 type, Common::SeekableRea
 		if (g_nancy->getGameType() <= kGameTypeNancy9) {
 			return new HotMultiframeSceneChange(CursorManager::kHotspot);
 		} else {
-			// TODO: Handle this correctly, as it messes up scene hotspots
-			return nullptr;
-			//return new HotSingleFrameSceneChange(true);
+			return new HotSingleFrameSceneChange(true);
 		}
 	case 12:
-		return new SceneChange();
+		if (g_nancy->getGameType() <= kGameTypeNancy9) {
+			return new SceneChange();
+		} else {
+			// Nancy11+
+			// TODO: Handle this correctly
+			return nullptr;
+		}
 	case 13:
 		return new HotMultiframeMultisceneChange();
 	case 14:
