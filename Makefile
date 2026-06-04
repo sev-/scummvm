@@ -122,18 +122,37 @@ else
 	$(error You need to run $(srcdir)/configure before you can run make. Check $(srcdir)/configure --help for a list of parameters)
 endif
 
-config.h config.mk engines/plugins_table.h engines/detection_table.h engines/engines.mk: configure.stamp
+po/POTFILES:
+	@echo "po/module.mk is missing. Cloning scummvm-po repository"
+	@git clone https://github.com/sev-/scummvm-po.git po
+
+dists/engine-data/engine_data.mk:
+	@echo "dists/engine-data is missing. Cloning scummvm-engine-data repository"
+	@git clone https://github.com/sev-/scummvm-engine-data.git dists/engine-data
+
+config.h config.mk engines/plugins_table.h engines/detection_table.h engines/engines.mk: configure.stamp po/POTFILES dists/engine-data/engine_data.mk
 	@if ! test -f $@; then \
 		rm -f configure.stamp; \
 		$(MAKE) configure.stamp; \
 	fi
+
+.PHONY: engine-data-repo po-repo update-repos
+engine-data-repo:
+	@echo "Updating dists/engine-data files from repositories"
+	git -C $(srcdir)/dists/engine-data pull --ff-only
+
+po-repo:
+	@echo "Updating po files from repositories"
+	git -C $(srcdir)/po pull --ff-only
+
+update-repos: engine-data-repo po-repo
 
 ifneq ($(origin port_mk), undefined)
 include $(srcdir)/$(port_mk)
 endif
 
 .PHONY: print-dists print-executables print-version print-distversion
-print-dists:
+print-dists: engine-data-repo
 	@echo $(DIST_FILES_DOCS) $(DIST_FILES_THEMES) $(DIST_FILES_NETWORKING) $(DIST_FILES_VKEYBD) $(DIST_FILES_ENGINEDATA) $(DIST_FILES_ENGINEDATA_BIG) $(DIST_FILES_SOUNDFONTS) $(DIST_FILES_PLATFORM) $(srcdir)/doc
 
 print-executables:

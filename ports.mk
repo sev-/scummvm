@@ -5,7 +5,7 @@
 #
 # POSIX specific
 #
-install-data:
+install-data: engine-data-repo
 	$(INSTALL) -d "$(DESTDIR)$(mandir)/man6/"
 	$(INSTALL) -c -m 644 "$(srcdir)/dists/scummvm.6" "$(DESTDIR)$(mandir)/man6/scummvm.6"
 	$(INSTALL) -d "$(DESTDIR)$(datarootdir)/pixmaps/"
@@ -56,7 +56,7 @@ endif
 
 # Special generic target for simple archive distribution
 
-dist-generic: $(EXECUTABLE) $(PLUGINS)
+dist-generic: $(EXECUTABLE) $(PLUGINS) engine-data-repo
 	mkdir -p ./dist-generic/scummvm/data
 	mkdir -p ./dist-generic/scummvm/doc
 	rm -f ./dist-generic/scummvm/$(EXECUTABLE)
@@ -136,7 +136,7 @@ endif
 
 bundle_name = ScummVM.app
 
-bundle-pack:
+bundle-pack: engine-data-repo
 	mkdir -p $(bundle_name)/Contents/MacOS
 	mkdir -p $(bundle_name)/Contents/Resources
 	printf "APPL????" > $(bundle_name)/Contents/PkgInfo
@@ -220,12 +220,12 @@ ifndef MACOSX_LEOPARD_OR_BELOW
 endif
 
 ifdef USE_DOCKTILEPLUGIN
-bundle: scummvm-static plugins scummvm.docktileplugin bundle-pack
+bundle: scummvm-static plugins scummvm.docktileplugin bundle-pack engine-data-repo
 else
-bundle: scummvm-static plugins bundle-pack
+bundle: scummvm-static plugins bundle-pack engine-data-repo
 endif
 
-ios7bundle: scummvm-static-ios
+ios7bundle: scummvm-static-ios engine-data-repo
 	mkdir -p $(bundle_name)
 	awk 'BEGIN {s=0}\
 		/<key>CFBundleIcons<\/key>/ {\
@@ -370,7 +370,7 @@ endif
 	cp $(srcdir)/dists/ios7/PrivacyInfo.xcprivacy $(bundle_name)/PrivacyInfo.xcprivacy
 	codesign -s - --deep --force $(bundle_name)
 
-tvosbundle: scummvm-static-ios
+tvosbundle: scummvm-static-ios engine-data-repo
 	mkdir -p $(bundle_name)
 	awk 'BEGIN {s=0}\
 		/<key>CFBundleIcons<\/key>/ {\
