@@ -441,6 +441,12 @@ void ScummEngine::getScriptBaseAddress() {
 			_scriptOrgPointer = getResourceAddress(rtRoom, _roomResource);
 			assert(_roomResource < _numRooms);
 			_lastCodePtr = &_res->_types[rtRoom][_roomResource]._address;
+
+			int cacheIdx = _roomResource * 100000 + ss->number;
+			if (_scriptOverrides.contains(cacheIdx)) {
+				_lastCodePtr = (const byte *const *)_scriptOverrides[cacheIdx];
+				_scriptOrgPointer = (const byte *)_scriptOverrides[cacheIdx] + _resourceHeaderSize - 2;
+			}
 		}
 		break;
 
@@ -473,6 +479,10 @@ void ScummEngine::resetScriptPointer() {
 	if (_currentScript == 0xFF)
 		return;
 	_scriptPointer = _scriptOrgPointer + vm.slot[_currentScript].offs;
+
+	if (_scriptOverrides.contains(_roomResource * 100000 + vm.slot[_currentScript].number)) {
+		_scriptPointer = _scriptOrgPointer;
+	}
 }
 
 /**
@@ -505,7 +515,7 @@ void ScummEngine::executeScript() {
 		_opcode = fetchScriptByte();
 		if (_game.version > 2) // V0-V2 games didn't use the didexec flag
 			vm.slot[_currentScript].didexec = true;
-		debugC(DEBUG_OPCODES, "Script %d, offset 0x%x: [%X] %s()",
+				debugC(DEBUG_OPCODES, "Script %d, offset 0x%x: [%X] %s()",
 				vm.slot[_currentScript].number,
 				(uint)(_scriptPointer - _scriptOrgPointer),
 				_opcode,
