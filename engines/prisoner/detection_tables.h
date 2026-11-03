@@ -99,7 +99,7 @@ const ADGameDescription gameDescriptions[] = {
 		"prisoner",
 		0,
 		AD_ENTRY1s("w_klang.bin", "68ee7ecba3965975bb857d41026be4b7", 561),
-		Common::SE_SWE,
+		Common::SV_SWE,
 		Common::kPlatformDOS,
 		ADGF_TESTING,
 		GUIO4(GAMEOPTION_ORIGINAL_SAVELOAD, GAMEOPTION_MIDI_MUSIC, GUIO_MIDIGM, GUIO_MIDIADLIB)

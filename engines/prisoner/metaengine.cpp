@@ -123,9 +123,9 @@ int PrisonerMetaEngine::getMaximumSaveSlot() const {
 	return 999;
 }
 
-void PrisonerMetaEngine::removeSaveState(const char *target, int slot) const {
+bool PrisonerMetaEngine::removeSaveState(const char *target, int slot) const {
 	Common::String filename = Prisoner::PrisonerEngine::getSavegameFilename(target, slot);
-	g_system->getSavefileManager()->removeSavefile(filename);
+	return g_system->getSavefileManager()->removeSavefile(filename);
 }
 
 SaveStateDescriptor PrisonerMetaEngine::querySaveMetaInfos(const char *target, int slot) const {

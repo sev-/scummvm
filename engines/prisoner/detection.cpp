@@ -26,8 +26,7 @@
 #include "prisoner/detection.h"
 #include "prisoner/detection_tables.h"
 
-PrisonerMetaEngineDetection::PrisonerMetaEngineDetection() : AdvancedMetaEngineDetection(Prisoner::gameDescriptions,
-	sizeof(ADGameDescription), Prisoner::prisonerGames) {
+PrisonerMetaEngineDetection::PrisonerMetaEngineDetection() : AdvancedMetaEngineDetection(Prisoner::gameDescriptions, Prisoner::prisonerGames) {
 }
 
 REGISTER_PLUGIN_STATIC(PRISONER_DETECTION, PLUGIN_TYPE_ENGINE_DETECTION, PrisonerMetaEngineDetection);

@@ -45,7 +45,7 @@ extern const ADGameDescription gameDescriptions[];
 
 } // End of namespace Prisoner
 
-class PrisonerMetaEngineDetection : public AdvancedMetaEngineDetection {
+class PrisonerMetaEngineDetection : public AdvancedMetaEngineDetection<ADGameDescription> {
 	static const DebugChannelDef debugFlagList[];
 
 public:

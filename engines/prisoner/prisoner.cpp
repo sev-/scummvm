@@ -30,7 +30,7 @@
 #include "base/plugins.h"
 #include "base/version.h"
 
-//#include "graphics/cursorman.h"
+#include "graphics/cursorman.h"
 
 #include "engines/advancedDetector.h"
 #include "engines/util.h"
@@ -163,7 +163,7 @@ Common::Error PrisonerEngine::run() {
 
 	initInput();
 
-	_system->showMouse(true);
+	CursorMan.showMouse(true);
 	loadMouseCursors();
 
 	// Sets _talkieEnabled and _speechMuted from ScummVM's settings
@@ -1066,7 +1066,7 @@ void PrisonerEngine::playMux(Common::String filename) {
 		suspendSounds();
 		setVoicesMuted(true);
 	}
-	_system->showMouse(false);
+	CursorMan.showMouse(false);
 	// TODO: resetDirtyRects();
 	if (_muxClearScreenBefore) {
 		_screen->clear();
@@ -1099,7 +1099,7 @@ void PrisonerEngine::playMux(Common::String filename) {
 		_screen->clear();
 	}
 	_screen->setFullPalette(_scenePalette);
-	_system->showMouse(true);
+	CursorMan.showMouse(true);
 	resetFrameValues();
 }
 
@@ -1154,7 +1154,7 @@ void PrisonerEngine::runPauseScreen() {
 	AnimationResource *pausePanel = _res->get<AnimationResource>(_menuPanelResourceCacheSlots[kPausePanel]);
 	Graphics::Surface *screen = _screen->getScreen();
 
-	_system->showMouse(false);
+	CursorMan.showMouse(false);
 
 	// Every second pixel of every second line of the game area
 	Common::Array<byte> picture;
@@ -1213,7 +1213,7 @@ void PrisonerEngine::runPauseScreen() {
 	memcpy(_effectPalette, savedPalette, 768);
 	_screen->setFullPalette(_effectPalette);
 	inpSetWaitRelease(true);
-	_system->showMouse(true);
+	CursorMan.showMouse(true);
 	updateScreen(true, -1, -1);
 	resetFrameValues();
 }
